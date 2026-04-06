@@ -13,7 +13,7 @@ func flush(entries unsafe.Pointer, tail, head uint32) {
 	for i := tail; i != head; i++ {
 		CrashIndex = i & Mask
 		e := &ring[i&Mask]
-		gdunsafe.Object(e.Object).UnsafeCall(
+		gdunsafe.Object(e.Object).ShapedCall(
 			gdunsafe.MethodForClass(e.Method),
 			unsafe.Pointer(&e.Result[0]),
 			uint64(e.Shape),

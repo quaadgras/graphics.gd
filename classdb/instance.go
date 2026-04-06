@@ -6,11 +6,7 @@ import (
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
-	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/threadsafe"
 )
-
-var instances threadsafe.Handles[*instanceImplementation, gdextension.ExtensionInstanceID]
 
 func nameOf(rtype reflect.Type) string {
 	if rtype.Kind() == reflect.Array {

@@ -16,12 +16,7 @@
 // emscripten can only expose std::string to JS, not char *
 // we want emscripten to be able to deal with 64bit values without resorting to slow big ints.
 #ifdef __EMSCRIPTEN__
-    #define UINT64_FROM(v) ((uint64_t)(v##_1) << 32) | ((uint64_t)(v##_2))
-    #define UINT64_MAKE(v) (uint32_t)(v >> 32), (uint32_t)(v & 0xFFFFFFFF)
-    #define INT64_FROM(v) std::__bit_cast<int64_t>(((uint64_t)(v##_1) << 32) | ((uint64_t)(v##_2)))
-    #define BUFFER_POINTER(s) (char*)(s)
     #define EXPORT EMSCRIPTEN_KEEPALIVE
-    #define RETURN(T, v) *(T*)result = v; return
     extern "C" {
 #else
 	#ifdef _WIN32
@@ -29,11 +24,6 @@
 	#else
 	#define EXPORT
 	#endif
-    #define UINT64_FROM(v) (v)
-    #define UINT64_MAKE(v) (v)
-    #define INT64_FROM(v) (v)
-    #define BUFFER_POINTER(s) (s)
-    #define RETURN(T, v) return v
 #endif
 
 #define VARIANT_ARG_GET(n) (Variant){n##_1, {n##_2, n##_3}}
@@ -220,6 +210,7 @@ typedef struct { uint64_t part[8]; } result_64;
 
 static void engine_exit(void *ignore, GDExtensionInitializationLevel level) {
     gd_on_engine_exit(level);
+    gd_on_yield();
 }
 static void extension_instance_dynamic_call(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
     gd_on_extension_instance_dynamic_call((uintptr_t)p_instance, (uintptr_t)method_userdata, (Variant*)r_return, p_argument_count, (VariadicVariants)p_args, (CallError*)r_error);
@@ -253,7 +244,11 @@ GDExtensionPtrKeyedGetter variant_ptr_keyed_getters[GDEXTENSION_VARIANT_TYPE_VAR
 
 static void engine_init(void *ignore, GDExtensionInitializationLevel level) {
     gd_on_engine_init(level);
+    gd_on_yield();
 }
+static void first_frame(void) { gd_on_first_frame(); gd_on_yield(); }
+static void every_frame(void) { gd_on_every_frame(); gd_on_yield(); }
+static void final_frame(void) { gd_on_final_frame(); gd_on_yield(); }
 
 EXPORT GDExtensionBool gd_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
     #define LOAD_PROC(name, type) gdextension_##name = (type)p_get_proc_address(#name);
@@ -266,9 +261,9 @@ EXPORT GDExtensionBool gd_extension_init(GDExtensionInterfaceGetProcAddress p_ge
     r_initialization->deinitialize = engine_exit;
     gdextension_get_godot_version2(&gd_godot_version_cached);
     GDExtensionMainLoopCallbacks callbacks = {
-    	.startup_func = gd_on_first_frame,
-    	.shutdown_func = gd_on_final_frame,
-    	.frame_func = gd_on_every_frame,
+    	.startup_func = first_frame,
+    	.shutdown_func = final_frame,
+    	.frame_func = every_frame,
     };
     gdextension_register_main_loop_callbacks(p_library, &callbacks);
     for (int i = 1; i < GDEXTENSION_VARIANT_TYPE_VARIANT_MAX; i++) {
@@ -284,7 +279,7 @@ EXPORT GDExtensionBool gd_extension_init(GDExtensionInterfaceGetProcAddress p_ge
     }
     return true;
 }
-static void prepare_variants(void **frame, uint32_t argc, ANY args) {
+static void prepare_variants(void **frame, uint32_t argc, UnsafePointer args) {
     uint8_t *head = (uint8_t*)args;
     for (int i = 0; i < argc; i++) {
         frame[i] = head;
@@ -293,7 +288,7 @@ static void prepare_variants(void **frame, uint32_t argc, ANY args) {
 }
 // Helper macro to align a value to the next multiple of 'align'
 #define ALIGN_UP(value, align) (((value) + ((align) - 1)) & ~((align) - 1))
-static uint8_t prepare_callframe(int skip, void **frame, uint64_t shape, ANY args) {
+static uint8_t prepare_callframe(int skip, void **frame, uint64_t shape, UnsafePointer args) {
     uint8_t *head = (uint8_t *)args;
     ptrdiff_t offset = 0; // Track current offset in the frame
     for (int i = skip; i < 16; i++) {
@@ -374,7 +369,7 @@ EXPORT CallableID gd_callable_lookup(CALLABLE_ARG(c)) {
 
 EXPORT uintptr_t gd_builtin_name(uintptr_t name, int64_t hash) { return (uintptr_t)gdextension_variant_get_ptr_utility_function((GDExtensionConstStringNamePtr)&name, hash);}
 EXPORT void gd_builtin_call(uintptr_t fn, UnsafePointer result, uint64_t shape, UnsafePointer args) {
-    void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], shape, args);
     ((GDExtensionPtrUtilityFunction)fn)((GDExtensionTypePtr)result, (GDExtensionConstTypePtr*)&points[0], argc);
 }
 EXPORT uintptr_t gd_library_location() {
@@ -383,10 +378,10 @@ EXPORT uintptr_t gd_library_location() {
     return s;
 }
 EXPORT void gd_classdb_FileAccess_write(Object FileAccess, char* buf, Int len) {
-    gdextension_file_access_store_buffer((GDExtensionObjectPtr)FileAccess, (const uint8_t *)BUFFER_POINTER(buf), len);
+    gdextension_file_access_store_buffer((GDExtensionObjectPtr)FileAccess, (const uint8_t *)buf, len);
 };
 EXPORT Int gd_classdb_FileAccess_read(Object FileAccess, char* buf, Int len) {
-    return gdextension_file_access_get_buffer((GDExtensionObjectPtr)FileAccess, (uint8_t *)BUFFER_POINTER(buf), len);
+    return gdextension_file_access_get_buffer((GDExtensionObjectPtr)FileAccess, (uint8_t *)buf, len);
 };
 EXPORT UnsafePointer gd_classdb_Image_unsafe(Object Image) {
     return (UnsafePointer)gdextension_image_ptrw((GDExtensionObjectPtr)Image);
@@ -412,7 +407,7 @@ EXPORT uintptr_t gd_method_list_make(Int length) {
     list->info = (GDExtensionClassMethodInfo*)gdextension_mem_alloc(sizeof(GDExtensionClassMethodInfo) * length);
     return (uintptr_t)list;
 };
-EXPORT void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uint32_t method_flags, uintptr_t return_value_info, uintptr_t arguments_info, Int default_argument_count, ANY default_arguments) {
+EXPORT void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uint32_t method_flags, uintptr_t return_value_info, uintptr_t arguments_info, Int default_argument_count, UnsafePointer default_arguments) {
     method_list *list = (method_list *)list_p;
     if (list->push >= list->size) return;
     GDExtensionClassMethodInfo *info = &list->info[list->push++];
@@ -615,16 +610,16 @@ EXPORT void gd_classdb_register_methods(uintptr_t class_name, uintptr_t methods)
         gdextension_classdb_register_extension_class_method(gd_library, (GDExtensionConstStringNamePtr)&class_name, info);
     }
 };
-EXPORT void gd_classdb_register_constant(uintptr_t class_name, uintptr_t enum_name, uintptr_t name, INT64(value), bool bitfield) {
-    gdextension_classdb_register_extension_class_integer_constant(gd_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&enum_name, (GDExtensionConstStringNamePtr)&name, INT64_FROM(value), bitfield);
+EXPORT void gd_classdb_register_constant(uintptr_t class_name, uintptr_t enum_name, uintptr_t name, int64_t value, bool bitfield) {
+    gdextension_classdb_register_extension_class_integer_constant(gd_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&enum_name, (GDExtensionConstStringNamePtr)&name, value, bitfield);
 };
 EXPORT void gd_classdb_register_property(uintptr_t class_name, uintptr_t info, uintptr_t setter, uintptr_t getter) {
     property_list *list = (property_list *)info;
     gdextension_classdb_register_extension_class_property(gd_library, (GDExtensionConstStringNamePtr)&class_name, list->info, (GDExtensionConstStringNamePtr)&setter, (GDExtensionConstStringNamePtr)&getter);
 };
-EXPORT void gd_classdb_register_property_indexed(uintptr_t class_name, uintptr_t info, uintptr_t setter, uintptr_t getter, INT64(index)) {
+EXPORT void gd_classdb_register_property_indexed(uintptr_t class_name, uintptr_t info, uintptr_t setter, uintptr_t getter, int64_t index) {
     property_list *list = (property_list *)info;
-    gdextension_classdb_register_extension_class_property_indexed(gd_library, (GDExtensionConstStringNamePtr)&class_name, list->info, (GDExtensionConstStringNamePtr)&setter, (GDExtensionConstStringNamePtr)&getter, INT64_FROM(index));
+    gdextension_classdb_register_extension_class_property_indexed(gd_library, (GDExtensionConstStringNamePtr)&class_name, list->info, (GDExtensionConstStringNamePtr)&setter, (GDExtensionConstStringNamePtr)&getter, index);
 };
 EXPORT void gd_classdb_register_property_group(uintptr_t class_name, uintptr_t group, uintptr_t prefix) {
     gdextension_classdb_register_extension_class_property_group(gd_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&group, (GDExtensionConstStringPtr)&prefix);
@@ -646,7 +641,7 @@ EXPORT void gd_classdb_WorkerThreadPool_add_group_task(uintptr_t WorkerPool, uin
     gdextension_worker_thread_pool_add_native_group_task((GDExtensionObjectPtr)WorkerPool, (GDExtensionWorkerThreadPoolGroupTask)gd_on_worker_thread_pool_group_task, (void *)task_id, elements, tasks, priority, (GDExtensionConstStringNamePtr)&description);
 };
 EXPORT Int gd_classdb_XMLParser_load(uintptr_t XMLParser, char* buf, Int len) {
-    return gdextension_xml_parser_open_buffer((GDExtensionObjectPtr)XMLParser, (const uint8_t *)BUFFER_POINTER(buf), len);
+    return gdextension_xml_parser_open_buffer((GDExtensionObjectPtr)XMLParser, (const uint8_t *)buf, len);
 };
 EXPORT void gd_packed_dictionary_access(Dictionary dict, VARIANT_ARG(k), Variant* result) {
     Variant key = VARIANT_ARG_GET(k);
@@ -688,7 +683,7 @@ EXPORT bool gd_iterator_next(VARIANT_ARG(v), UnsafePointer iter, UnsafePointer e
 EXPORT void gd_iterator_load(VARIANT_ARG(v), VARIANT_ARG(i), UnsafePointer result, UnsafePointer err) {
     Variant self = VARIANT_ARG_GET(v);
     uint64_t iter[3] = {i_1, i_2, i_3};
-    void *points[16]; prepare_variants(&points[0], 1, (ANY)result);
+    void *points[16]; prepare_variants(&points[0], 1, (UnsafePointer)result);
     GDExtensionBool ok = false;
     gdextension_variant_iter_get(&self, &iter, (GDExtensionUninitializedVariantPtr)points[0], &ok);
     if (ok) return;
@@ -766,10 +761,10 @@ EXPORT uintptr_t gd_object_make(uintptr_t name) {
     return (uintptr_t)gdextension_classdb_construct_object2((GDExtensionConstStringNamePtr)&name);
 };
 EXPORT void gd_object_call(Object obj, MethodForClass fn, Variant* result, Int argc, Variant args[], CallError* err) {
-    void *points[16]; prepare_variants(&points[0], (uint32_t)argc, (ANY)args);
+    void *points[16]; prepare_variants(&points[0], (uint32_t)argc, (UnsafePointer)args);
     gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
-EXPORT result_24 gd_object_call_24(uintptr_t obj, uintptr_t fn, Int argc, ANY args, ANY err) {
+EXPORT result_24 gd_object_call_24(uintptr_t obj, uintptr_t fn, Int argc, UnsafePointer args, UnsafePointer err) {
     void *points[16]; prepare_variants(&points[0], argc, args);
     result_24 result = {};
     gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)&result, (GDExtensionCallError*)err);
@@ -816,7 +811,7 @@ EXPORT MethodForClass gd_object_method_lookup(StringName class_name, StringName 
     return (MethodForClass)gdextension_classdb_get_method_bind((GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&method, hash);
 };
 EXPORT void gd_object_shaped_call(Object obj, MethodForClass fn, UnsafePointer result, uint64_t shape, UnsafePointer args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result);
 };
 typedef struct {
@@ -835,7 +830,7 @@ EXPORT void gd_ring_flush(void *entries, uint32_t tail, uint32_t head, uint32_t 
         ring_entry *e = &ring[i & 0xFF];
         *crash_index = i & 0xFF;
         void *points[16];
-        prepare_callframe(1, &points[0], e->shape, (ANY)e->args);
+        prepare_callframe(1, &points[0], e->shape, (UnsafePointer)e->args);
         gdextension_object_method_bind_ptrcall(
             (GDExtensionMethodBindPtr)e->method,
             (GDExtensionObjectPtr)e->object,
@@ -845,26 +840,26 @@ EXPORT void gd_ring_flush(void *entries, uint32_t tail, uint32_t head, uint32_t 
     }
     *crash_index = 0xFFFFFFFF;
 }
-EXPORT uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     uint64_t result = 0;
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
 };
-EXPORT result_16 gd_object_unsafe_call_16(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT result_16 gd_object_unsafe_call_16(uintptr_t obj, uintptr_t method, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     result_16 result = {};
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
 };
-EXPORT result_32 gd_object_unsafe_call_32(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT result_32 gd_object_unsafe_call_32(uintptr_t obj, uintptr_t method, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     result_32 result = {};
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
 };
-EXPORT result_64 gd_object_unsafe_call_64(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+EXPORT result_64 gd_object_unsafe_call_64(uintptr_t obj, uintptr_t method, uint64_t shape, UnsafePointer args) {
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     result_64 result = {};
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
@@ -930,7 +925,7 @@ uintptr_t gd_object_script_make(uintptr_t instance) {
     return (uintptr_t)gdextension_script_instance_create3(&info, (GDExtensionScriptInstanceDataPtr)&instance);
 };
 EXPORT void gd_object_script_call(Object obj, StringName method, Variant* result, Int argc, Variant args[], CallError* err) {
-    void *points[16]; points[1] = 0; prepare_variants(&points[0], (uint32_t)argc, (ANY)args);
+    void *points[16]; points[1] = 0; prepare_variants(&points[0], (uint32_t)argc, (UnsafePointer)args);
     gdextension_object_call_script_method((GDExtensionObjectPtr)obj, (GDExtensionConstStringNamePtr)&method, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 EXPORT void gd_object_script_setup(uintptr_t obj, uintptr_t instance) {
@@ -1073,16 +1068,16 @@ EXPORT String gd_variant_type_name(uint32_t vtype) {
     return name;
 };
 EXPORT void gd_variant_unsafe_make_native(uint32_t vtype, VARIANT_ARG(v), uint64_t shape, UnsafePointer result) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)result);
+    void *points[16]; prepare_callframe(1, &points[0], shape, result);
     uint64_t self[4] = {v_1, v_2, v_3};
     type_from_variant_constructors[vtype](points[0], &self[0]);
 };
 EXPORT void gd_variant_unsafe_from_native(uint32_t vtype, Variant* result, uint64_t shape, UnsafePointer args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     variant_from_type_constructors[vtype]((GDExtensionUninitializedVariantPtr)result, points[0]);
 };
 EXPORT void gd_variant_type_call(uint32_t vtype, uintptr_t name, Variant* result, Int argc, Variant args[], CallError* err) {
-    void *points[16]; prepare_variants(&points[0], argc, (ANY)args);
+    void *points[16]; prepare_variants(&points[0], argc, (UnsafePointer)args);
     gdextension_variant_call_static((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 EXPORT bool gd_variant_type_convertable(uint32_t a, uint32_t b, bool strict) {
@@ -1102,7 +1097,7 @@ EXPORT void gd_variant_type_setup_dictionary(uintptr_t dict, uint32_t ktype, uin
     gdextension_dictionary_set_typed(&dict, (GDExtensionVariantType)ktype, &kclass_name, &k_script[0], (GDExtensionVariantType)vtype, &vclass_name, &v_script[0]);
 };
 EXPORT void gd_variant_type_fetch_constant(uint32_t vtype, uintptr_t name, UnsafePointer result) {
-    void *points[16]; prepare_variants(&points[0], 1, (ANY)result);
+    void *points[16]; prepare_variants(&points[0], 1, result);
     gdextension_variant_get_constant_value((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name, (GDExtensionTypePtr)points[0]);
 };
 EXPORT uintptr_t gd_variant_type_builtin_method(uint32_t vtype, uintptr_t name, int64_t hash) {
@@ -1112,7 +1107,7 @@ EXPORT uintptr_t gd_variant_type_unsafe_constructor(uint32_t vtype, Int n) {
     return (uintptr_t)gdextension_variant_get_ptr_constructor((GDExtensionVariantType)vtype, n);
 };
 EXPORT void gd_variant_type_unsafe_free(uint32_t vtype, uint64_t shape, UnsafePointer args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     variant_ptr_destructors[vtype](points[0]);
 };
 EXPORT void gd_variant_zero(Variant* result) {
@@ -1124,7 +1119,7 @@ EXPORT void gd_variant_copy(VARIANT_ARG(v), Variant* result) {
 };
 EXPORT void gd_variant_call(VARIANT_ARG(v), uintptr_t name, Variant* result, Int argc, Variant args[], CallError* err) {
     Variant self = VARIANT_ARG_GET(v);
-    void *points[16]; prepare_variants(&points[0], argc, (ANY)args);
+    void *points[16]; prepare_variants(&points[0], argc, (UnsafePointer)args);
     gdextension_variant_call(&self, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 EXPORT bool gd_variant_eval(uint32_t op, VARIANT_ARG(a), VARIANT_ARG(b), Variant* result) {
@@ -1220,11 +1215,11 @@ EXPORT bool gd_variant_set_field(VARIANT_ARG(v), uintptr_t name, VARIANT_ARG(val
     return valid;
 };
 EXPORT void gd_variant_unsafe_eval(uintptr_t fn, UnsafePointer result, uint64_t shape, UnsafePointer args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     ((GDExtensionPtrOperatorEvaluator)fn)(points[0], points[1], (GDExtensionTypePtr)result);
 };
 EXPORT void gd_variant_unsafe_call(uintptr_t fn, UnsafePointer result, uint64_t shape, UnsafePointer args) {
-    void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], shape, args);
     ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)points[0], (const GDExtensionConstTypePtr*)&points[1], (GDExtensionTypePtr)result, argc);
 };
 EXPORT void gd_variant_unsafe_free(VARIANT_ARG(v)) {
@@ -1236,27 +1231,27 @@ EXPORT uintptr_t gd_variant_unsafe_internal_pointer(uint32_t vtype, VARIANT_ARG(
     return (uintptr_t)variant_internal_ptr_funcs[vtype](&self);
 };
 EXPORT void gd_variant_unsafe_get_field(uintptr_t getter, UnsafePointer result, uint64_t shape, UnsafePointer args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     ((GDExtensionPtrGetter)getter)(points[0], (void*)&result);
 };
 EXPORT void gd_variant_unsafe_get_array(uint32_t vtype, Int i, UnsafePointer result, uint64_t shape, UnsafePointer args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     variant_ptr_indexed_getters[vtype]((GDExtensionConstTypePtr)result, i, points[0]);
 };
 EXPORT void gd_variant_unsafe_get_index(uint32_t vtype, UnsafePointer result, uint64_t shape, UnsafePointer args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     variant_ptr_keyed_getters[vtype](points[0], points[1], (GDExtensionTypePtr)result);
 };
 EXPORT void gd_variant_unsafe_set_field(uintptr_t setter, uint64_t shape, UnsafePointer args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     ((GDExtensionPtrSetter)setter)(points[1], points[2]);
 };
 EXPORT void gd_variant_unsafe_set_array(uint32_t vtype, Int i, uint64_t shape, UnsafePointer args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     variant_ptr_indexed_setters[vtype](points[0], i, points[1]);
 };
 EXPORT void gd_variant_unsafe_set_index(uint32_t vtype, uint64_t shape, UnsafePointer args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     variant_ptr_keyed_setters[vtype](points[0], points[1], points[2]);
 };
 EXPORT uintptr_t gd_variant_type_setter(uint32_t vtype, uintptr_t name) {
@@ -1266,15 +1261,15 @@ EXPORT uintptr_t gd_variant_type_getter(uint32_t vtype, uintptr_t name) {
     return (uintptr_t)gdextension_variant_get_ptr_getter((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name);
 }
 EXPORT void gd_variant_type_unsafe_make(uintptr_t fn, UnsafePointer result, uint64_t shape, UnsafePointer args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, (ANY)args);
+    void *points[16]; prepare_callframe(1, &points[0], shape, args);
     ((GDExtensionPtrConstructor)fn)((GDExtensionUninitializedTypePtr)result, (const GDExtensionConstTypePtr *)&points[0]);
 }
 EXPORT void gd_variant_type_make(uint32_t vtype, Variant* result, Int argc, Variant args[], CallError* err) {
-    void *points[16]; prepare_variants(&points[0], argc, (ANY)args);
+    void *points[16]; prepare_variants(&points[0], argc, (UnsafePointer)args);
     gdextension_variant_construct((GDExtensionVariantType)vtype, (GDExtensionUninitializedVariantPtr)result, (const GDExtensionConstVariantPtr *)&points[0], argc, (GDExtensionCallError*)err);
 }
 EXPORT void gd_variant_type_unsafe_call(UnsafePointer self, uintptr_t fn, UnsafePointer result, uint64_t shape, UnsafePointer args) {
-    void *points[16]; uint8_t argc = prepare_callframe(2, &points[0], shape, (ANY)args);
+    void *points[16]; uint8_t argc = prepare_callframe(2, &points[0], shape, args);
     ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)self, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result, argc);
 }
 EXPORT uintptr_t gd_variant_type_evaluator(uint32_t op, uint32_t a, uint32_t b) {

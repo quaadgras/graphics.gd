@@ -5,6 +5,7 @@ import (
 	"slices"
 	"testing"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/SceneTree"
@@ -49,35 +50,33 @@ func (engine *engineAsSharedLibrary) Rendering() iter.Seq[Float.X] {
 }
 
 func init() {
-	gdextension.On.Engine = gdextension.CallbacksForEngine{
-		Init: func(level gdextension.InitializationLevel) {
-			gd.Init(level)
-			if level == 2 {
-				for _, fn := range gd.StartupFunctions {
-					fn()
-				}
-				if testing.Testing() {
-					classdb.Register[goSceneTree]()
-				}
-				close(intialized)
-				for _, fn := range gd.PostStartupFunctions {
-					fn()
-				}
+	gdunsafe.OnEngineInit(func(level gdunsafe.InitializationLevel) {
+		gd.Init(gdextension.InitializationLevel(level))
+		if level == 2 {
+			for _, fn := range gd.StartupFunctions {
+				fn()
 			}
-		},
-		Exit: func(level gdextension.InitializationLevel) {
-			if level == 2 {
-				for _, cleanup := range slices.Backward(gd.Cleanups()) {
-					cleanup()
-				}
-				pointers.Cycle()
-				pointers.Cycle()
-				close(shutdown)
-				internal.Linked = false
+			if testing.Testing() {
+				classdb.Register[goSceneTree]()
 			}
-		},
-	}
-	gdextension.On.MainLoop.FirstFrame = func() {
+			close(intialized)
+			for _, fn := range gd.PostStartupFunctions {
+				fn()
+			}
+		}
+	})
+	gdunsafe.OnEngineExit(func(level gdunsafe.InitializationLevel) {
+		if level == 2 {
+			for _, cleanup := range slices.Backward(gd.Cleanups()) {
+				cleanup()
+			}
+			pointers.Cycle()
+			pointers.Cycle()
+			close(shutdown)
+			internal.Linked = false
+		}
+	})
+	gdunsafe.OnFirstFrame(func() {
 		Callable.Cycle()
 		if EngineClass.IsEditorHint() {
 			editorSetup()
@@ -86,7 +85,7 @@ func init() {
 			close(loaded)
 			hasLoaded = true
 		}
-	}
+	})
 }
 
 type goMain struct {

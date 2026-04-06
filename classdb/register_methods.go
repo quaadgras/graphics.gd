@@ -11,7 +11,6 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
-	"graphics.gd/internal/threadsafe"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Dictionary"
@@ -22,8 +21,6 @@ import (
 
 	"graphics.gd/classdb/Engine"
 )
-
-var methods threadsafe.Handles[*methodImplementation, gdextension.FunctionID]
 
 func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintptr]string) {
 	classTypePtr := reflect.PointerTo(rtype)
@@ -72,7 +69,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 		call := variantCall(method)
 		minfo.Push(
 			gdunsafe.StringName(pointers.Get(gd.NewStringName(method.Name))[0]),
-			gdunsafe.FunctionID(methods.New(&methodImplementation{
+			&methodFunctionWrapper{impl: &methodImplementation{
 				arg_count: method.Type.NumIn(),
 				dynamic:   call,
 				checked: func(instance *instanceImplementation, args, ret gdextension.Pointer) {
@@ -86,7 +83,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 					result, _ := call(instance, v...)
 					return result
 				},
-			})),
+			}},
 			0,
 			returns,
 			arguments,
@@ -96,7 +93,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 		defer arguments.Free()
 		defer returns.Free()
 	}
-	gdextension.Host.ClassDB.Register.Methods(pointers.Get(class), gdextension.MethodList(minfo))
+	gdunsafe.RegisterMethods(gdunsafe.StringName(pointers.Get(class)[0]), minfo)
 	minfo.Free()
 }
 
@@ -118,7 +115,7 @@ func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
 	var call = variantCallStatic(fn)
 	method.Push(
 		gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
-		gdunsafe.FunctionID(methods.New(&methodImplementation{
+		&methodFunctionWrapper{impl: &methodImplementation{
 			arg_count: ftype.NumIn(),
 			dynamic:   call,
 			checked: func(instance *instanceImplementation, args, ret gdextension.Pointer) {
@@ -128,14 +125,14 @@ func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
 				result, _ := call(instance, v...)
 				return result
 			},
-		})),
+		}},
 		uint32(gdextension.MethodFlagStatic),
 		returns,
 		arguments,
 		0,
 		unsafe.Pointer(nil),
 	)
-	gdextension.Host.ClassDB.Register.Methods(pointers.Get(class), gdextension.MethodList(method))
+	gdunsafe.RegisterMethods(gdunsafe.StringName(pointers.Get(class)[0]), method)
 	method.Free()
 	arguments.Free()
 	returns.Free()

@@ -281,6 +281,283 @@ func gd_on_callable_length(c CallableID) C.Int {
 	return C.Int(callables.Get(CallableID(c)).ArgumentCount())
 }
 
+// Extension binding callbacks (no-ops)
+
+//export gd_on_extension_binding_created
+func gd_on_extension_binding_created(p0 C.uintptr_t) C.uintptr_t { return 0 }
+
+//export gd_on_extension_binding_removed
+func gd_on_extension_binding_removed(p0, p1 C.uintptr_t) {}
+
+//export gd_on_extension_binding_reference
+func gd_on_extension_binding_reference(p0 C.uintptr_t, p1 C.bool) C.bool { return false }
+
+// Extension class callbacks
+
+//export gd_on_extension_class_create
+func gd_on_extension_class_create(p0 C.uintptr_t, p1 C.bool) C.uintptr_t {
+	return C.uintptr_t(classes.Get(ExtensionClassID(p0)).Create(bool(p1)))
+}
+
+//export gd_on_extension_class_method
+func gd_on_extension_class_method(p0 C.uintptr_t, p1 C.uintptr_t, p2 C.uint32_t) C.uintptr_t {
+	fn := classes.Get(ExtensionClassID(p0)).Method(StringName(p1), uint32(p2))
+	if fn == nil {
+		return 0
+	}
+	return C.uintptr_t(functions.New(fn))
+}
+
+//export gd_on_extension_class_caller
+func gd_on_extension_class_caller(p0 C.uintptr_t, p1 C.uintptr_t, p2 C.uint32_t) C.uintptr_t {
+	fn := classes.Get(ExtensionClassID(p0)).Method(StringName(p1), uint32(p2))
+	if fn == nil {
+		return 0
+	}
+	return C.uintptr_t(functions.New(fn))
+}
+
+// Extension instance callbacks
+
+//export gd_on_extension_instance_set
+func gd_on_extension_instance_set(p0 C.uintptr_t, p1 C.uintptr_t, p2, p3, p4 C.uint64_t) C.bool {
+	return C.bool(instances.Get(ExtensionInstanceID(p0)).Set(
+		StringName(p1), Variant{uint64(p2), uint64(p3), uint64(p4)}))
+}
+
+//export gd_on_extension_instance_get
+func gd_on_extension_instance_get(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant) C.bool {
+	v, ok := instances.Get(ExtensionInstanceID(p0)).Get(StringName(p1))
+	if ok {
+		*p2 = C.Variant{C.uint64_t(v[0]), [2]C.uint64_t{C.uint64_t(v[1]), C.uint64_t(v[2])}}
+	}
+	return C.bool(ok)
+}
+
+//export gd_on_extension_instance_property_list
+func gd_on_extension_instance_property_list(p0 C.uintptr_t) C.uintptr_t {
+	return C.uintptr_t(instances.Get(ExtensionInstanceID(p0)).PropertyList())
+}
+
+//export gd_on_extension_instance_property_has_default
+func gd_on_extension_instance_property_has_default(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
+	return C.bool(instances.Get(ExtensionInstanceID(p0)).HasDefault(StringName(p1)))
+}
+
+//export gd_on_extension_instance_property_get_default
+func gd_on_extension_instance_property_get_default(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant) C.bool {
+	v, ok := instances.Get(ExtensionInstanceID(p0)).GetDefault(StringName(p1))
+	if ok {
+		*p2 = C.Variant{C.uint64_t(v[0]), [2]C.uint64_t{C.uint64_t(v[1]), C.uint64_t(v[2])}}
+	}
+	return C.bool(ok)
+}
+
+//export gd_on_extension_instance_property_validation
+func gd_on_extension_instance_property_validation(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
+	return C.bool(instances.Get(ExtensionInstanceID(p0)).ValidateProperty(StringName(p1)))
+}
+
+//export gd_on_extension_instance_notification
+func gd_on_extension_instance_notification(p0 C.uintptr_t, p1 C.int32_t, p2 C.bool) {
+	instances.Get(ExtensionInstanceID(p0)).Notification(int32(p1), bool(p2))
+}
+
+//export gd_on_extension_instance_stringify
+func gd_on_extension_instance_stringify(p0 C.uintptr_t) C.uintptr_t {
+	return C.uintptr_t(instances.Get(ExtensionInstanceID(p0)).UnsafeString())
+}
+
+//export gd_on_extension_instance_reference
+func gd_on_extension_instance_reference(p0 C.uintptr_t, p1 C.bool) C.bool {
+	return C.bool(instances.Get(ExtensionInstanceID(p0)).Reference(bool(p1)))
+}
+
+//export gd_on_extension_instance_rid
+func gd_on_extension_instance_rid(p0 C.uintptr_t) C.uint64_t {
+	return C.uint64_t(instances.Get(ExtensionInstanceID(p0)).RID())
+}
+
+//export gd_on_extension_instance_checked_call
+func gd_on_extension_instance_checked_call(p0, p1 C.uintptr_t, p2, p3 C.UnsafePointer) {
+	var inst ExtensionInstance
+	if ExtensionInstanceID(p0) != 0 {
+		inst = instances.Get(ExtensionInstanceID(p0))
+	}
+	functions.Get(FunctionID(p1)).PointerCall(inst, Pointer(uintptr(p3)), Pointer(uintptr(p2)))
+}
+
+//export gd_on_extension_instance_called
+func gd_on_extension_instance_called(p0, p1 C.uintptr_t, p2, p3 C.UnsafePointer) {
+	inst := instances.Get(ExtensionInstanceID(p0))
+	functions.Get(FunctionID(p1)).PointerCall(inst, Pointer(uintptr(p3)), Pointer(uintptr(p2)))
+}
+
+//export gd_on_extension_instance_variant_call
+func gd_on_extension_instance_variant_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant, p3 C.VariadicVariants) {
+	var inst ExtensionInstance
+	if ExtensionInstanceID(p0) != 0 {
+		inst = instances.Get(ExtensionInstanceID(p0))
+	}
+	v := functions.Get(FunctionID(p1)).CheckedCall(inst, VariadicVariants{
+		First: PointerTo[PointerTo[Variant]](unsafe.Pointer(p3)),
+	})
+	*p2 = C.Variant{C.uint64_t(v[0]), [2]C.uint64_t{C.uint64_t(v[1]), C.uint64_t(v[2])}}
+}
+
+//export gd_on_extension_instance_dynamic_call
+func gd_on_extension_instance_dynamic_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant, p3 C.int64_t, p4 C.VariadicVariants, p5 *C.CallError) {
+	var inst ExtensionInstance
+	if ExtensionInstanceID(p0) != 0 {
+		inst = instances.Get(ExtensionInstanceID(p0))
+	}
+	v, err := functions.Get(FunctionID(p1)).DynamicCall(inst, VariadicVariants{
+		First: PointerTo[PointerTo[Variant]](unsafe.Pointer(p4)),
+		Count: int(p3),
+	})
+	*p2 = C.Variant{C.uint64_t(v[0]), [2]C.uint64_t{C.uint64_t(v[1]), C.uint64_t(v[2])}}
+	*p5 = C.CallError{C.uint32_t(err.Type), C.int32_t(err.Argument), C.int32_t(err.Expected)}
+}
+
+//export gd_on_extension_instance_free
+func gd_on_extension_instance_free(p0 C.uintptr_t) {
+	inst := instances.Get(ExtensionInstanceID(p0))
+	if f, ok := inst.(interface{ Free() }); ok {
+		f.Free()
+	}
+	instances.Del(ExtensionInstanceID(p0))
+}
+
+// Extension script callbacks
+
+//export gd_on_extension_script_categorization
+func gd_on_extension_script_categorization(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return false
+	}
+	return C.bool(script.PropertyCategory() != 0)
+}
+
+//export gd_on_extension_script_get_property_type
+func gd_on_extension_script_get_property_type(p0 C.uintptr_t, name C.uintptr_t, p1 *C.CallError) C.uint32_t {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		*p1 = C.CallError{C.uint32_t(CallInvalidMethod), 0, 0}
+		return 0
+	}
+	return C.uint32_t(script.PropertyType(StringName(name)))
+}
+
+//export gd_on_extension_script_get_owner
+func gd_on_extension_script_get_owner(p0 C.uintptr_t) C.uintptr_t {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	return C.uintptr_t(script.Owner())
+}
+
+//export gd_on_extension_script_get_property_state
+func gd_on_extension_script_get_property_state(p0 C.uintptr_t, p1 C.uintptr_t, p2 C.uintptr_t) {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return
+	}
+	script.ExportedProperties(func(name StringName, value Variant) bool {
+		ScriptPropertyStateAdd(FunctionID(p1), Pointer(p2), name, value)
+		return true
+	})
+}
+
+//export gd_on_extension_script_get_methods
+func gd_on_extension_script_get_methods(p0 C.uintptr_t) C.uintptr_t {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	return C.uintptr_t(script.MethodList())
+}
+
+//export gd_on_extension_script_has_method
+func gd_on_extension_script_has_method(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return false
+	}
+	return C.bool(script.HasMethod(StringName(p1)))
+}
+
+//export gd_on_extension_script_get_method_argument_count
+func gd_on_extension_script_get_method_argument_count(p0 C.uintptr_t, p1 C.uintptr_t) C.int64_t {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	return C.int64_t(script.MethodArgumentCount(StringName(p1)))
+}
+
+//export gd_on_extension_script_get
+func gd_on_extension_script_get(p0 C.uintptr_t) C.uintptr_t {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	return C.uintptr_t(script.Script())
+}
+
+//export gd_on_extension_script_is_placeholder
+func gd_on_extension_script_is_placeholder(p0 C.uintptr_t) C.bool {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return false
+	}
+	return C.bool(script.IsPlaceholder())
+}
+
+//export gd_on_extension_script_get_language
+func gd_on_extension_script_get_language(p0 C.uintptr_t) C.uintptr_t {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	return C.uintptr_t(script.ScriptLanguage())
+}
+
+// Non-extension callbacks
+
+//export gd_on_engine_init
+func gd_on_engine_init(p0 C.uint32_t) { onEngineInit(InitializationLevel(p0)) }
+
+//export gd_on_engine_exit
+func gd_on_engine_exit(p0 C.uint32_t) { onEngineExit(InitializationLevel(p0)) }
+
+//export gd_on_first_frame
+func gd_on_first_frame() { onFirstFrame() }
+
+//export gd_on_every_frame
+func gd_on_every_frame() { onEveryFrame() }
+
+//export gd_on_final_frame
+func gd_on_final_frame() { onFinalFrame() }
+
+//export gd_on_worker_thread_pool_task
+func gd_on_worker_thread_pool_task(p0 C.uintptr_t) { onWorkerThreadPoolTask(TaskID(p0)) }
+
+//export gd_on_worker_thread_pool_group_task
+func gd_on_worker_thread_pool_group_task(p0 C.uintptr_t, p1 C.uint32_t) {
+	onWorkerThreadPoolGroupTask(TaskID(p0), int32(p1))
+}
+
+//export gd_on_editor_class_in_use_detection
+func gd_on_editor_class_in_use_detection(p0, p1 C.uint64_t, p2 *C.PackedStringArray) {
+	if onEditorClassDetection != nil {
+		result := onEditorClassDetection(PackedArray[String]{uint64(p0), uint64(p1)})
+		p2.array = C.uint64_t(result[0])
+		p2.length = C.uint64_t(result[1])
+	}
+}
+
 // Object construction and identity
 
 func MakeObject(name StringName) Object {
@@ -328,11 +605,11 @@ func (obj Object) ShapedCall(fn MethodForClass, result unsafe.Pointer, shape uin
 
 // Extension instance management
 
-func (obj Object) ExtensionSetup(name StringName, inst ExtensionInstanceID) {
-	C.gd_object_extension_setup(C.Object(obj), C.StringName(name), C.ExtensionInstanceID(inst))
+func (obj Object) ExtensionSetup(name StringName, inst ExtensionInstance) {
+	C.gd_object_extension_setup(C.Object(obj), C.StringName(name), C.ExtensionInstanceID(instances.New(inst)))
 }
-func (obj Object) ExtensionFetch() ExtensionInstanceID {
-	return ExtensionInstanceID(C.gd_object_extension_fetch(C.Object(obj)))
+func (obj Object) ExtensionFetch() ExtensionInstance {
+	return instances.Get(ExtensionInstanceID(C.gd_object_extension_fetch(C.Object(obj))))
 }
 func (obj Object) ExtensionClose() {
 	C.gd_object_extension_close(C.Object(obj))
@@ -340,8 +617,8 @@ func (obj Object) ExtensionClose() {
 
 // Script instance management
 
-func ScriptMake(fn ExtensionInstanceID) ScriptInstance {
-	return ScriptInstance(C.gd_object_script_make(C.ExtensionInstanceID(fn)))
+func ScriptMake(fn ExtensionScript) ScriptInstance {
+	return ScriptInstance(C.gd_object_script_make(C.ExtensionInstanceID(instances.New(fn))))
 }
 func (obj Object) ScriptCall(name StringName, args ...Variant) (Variant, CallError) {
 	var ret C.Variant
@@ -573,8 +850,8 @@ func MakeMethodList(n Int) MethodList {
 	return MethodList(C.gd_method_list_make(C.int64_t(n)))
 }
 
-func (m MethodList) Push(name StringName, call FunctionID, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count Int, defaults unsafe.Pointer) {
-	C.gd_method_list_push(C.uintptr_t(m), C.uintptr_t(name), C.uintptr_t(call), C.uint32_t(flags), C.uintptr_t(returnInfo), C.uintptr_t(argsInfo), C.int64_t(count), defaults)
+func (m MethodList) Push(name StringName, call ExtensionFunction, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count Int, defaults unsafe.Pointer) {
+	C.gd_method_list_push(C.uintptr_t(m), C.uintptr_t(name), C.uintptr_t(functions.New(call)), C.uint32_t(flags), C.uintptr_t(returnInfo), C.uintptr_t(argsInfo), C.int64_t(count), C.UnsafePointer(defaults))
 }
 
 func (m MethodList) Free() {
@@ -609,6 +886,44 @@ func WorkerThreadPoolAddTask(pool Object, task Pointer, priority bool, descripti
 
 func WorkerThreadPoolAddGroupTask(pool Object, task Pointer, elements, arg int32, priority bool, description String) {
 	C.gd_classdb_WorkerThreadPool_add_group_task(C.uintptr_t(pool), C.uintptr_t(task), C.int32_t(elements), C.int32_t(arg), C._Bool(priority), C.uintptr_t(description))
+}
+
+// ClassDB registration
+
+func RegisterClass(class, parent StringName, id ExtensionClass, virtual, abstract, exposed, runtime bool, icon String) {
+	C.gd_classdb_register(C.uintptr_t(class), C.uintptr_t(parent), C.uintptr_t(classes.New(id)), C.bool(virtual), C.bool(abstract), C.bool(exposed), C.bool(runtime), C.uintptr_t(icon))
+}
+
+func RegisterMethods(class StringName, methods MethodList) {
+	C.gd_classdb_register_methods(C.uintptr_t(class), C.uintptr_t(methods))
+}
+
+func RegisterConstant(class, enum, name StringName, value int64, bitfield bool) {
+	C.gd_classdb_register_constant(C.uintptr_t(class), C.uintptr_t(enum), C.uintptr_t(name), C.int64_t(value), C.bool(bitfield))
+}
+
+func RegisterProperty(class StringName, property PropertyList, setter, getter StringName) {
+	C.gd_classdb_register_property(C.uintptr_t(class), C.uintptr_t(property), C.uintptr_t(setter), C.uintptr_t(getter))
+}
+
+func RegisterPropertyIndexed(class StringName, property PropertyList, setter, getter StringName, index int) {
+	C.gd_classdb_register_property_indexed(C.uintptr_t(class), C.uintptr_t(property), C.uintptr_t(setter), C.uintptr_t(getter), C.int64_t(index))
+}
+
+func RegisterPropertyGroup(class StringName, group, prefix String) {
+	C.gd_classdb_register_property_group(C.uintptr_t(class), C.uintptr_t(group), C.uintptr_t(prefix))
+}
+
+func RegisterPropertySubgroup(class StringName, subgroup, prefix String) {
+	C.gd_classdb_register_property_sub_group(C.uintptr_t(class), C.uintptr_t(subgroup), C.uintptr_t(prefix))
+}
+
+func RegisterSignal(class, signal StringName, args PropertyList) {
+	C.gd_classdb_register_signal(C.uintptr_t(class), C.uintptr_t(signal), C.uintptr_t(args))
+}
+
+func RegisterRemoval(class StringName) {
+	C.gd_classdb_register_removal(C.uintptr_t(class))
 }
 
 // Iterator operations

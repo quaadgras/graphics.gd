@@ -284,41 +284,7 @@ type API struct {
 		AddPlugin        func(name StringName) `gd:"editor_add_plugin"`
 		EndPlugin        func(name StringName) `gd:"editor_end_plugin"`
 	}*/
-	ClassDB struct {
-		/*PropertyList struct {
-			Make func(length int) PropertyList `gd:"property_list_make"`
-			Push func(info PropertyList,
-				vtype VariantType,
-				name StringName,
-				class_name StringName,
-				hint uint32,
-				hint_string String,
-				usage uint32,
-				meta ArgumentMetadata,
-			) `gd:"property_list_push"`
-			Info struct {
-				Type      func(info PropertyList) VariantType `gd:"property_info_type"`
-				Name      func(info PropertyList) StringName  `gd:"property_info_name"`
-				ClassName func(info PropertyList) StringName  `gd:"property_info_class_name"`
-				Hint      func(info PropertyList) uint32      `gd:"property_info_hint"`
-				HinString func(info PropertyList) String      `gd:"property_info_hint_string"`
-				Usage     func(info PropertyList) uint32      `gd:"property_info_usage"`
-			}
-			Free func(info PropertyList) `gd:"property_list_free"`
-		}*/
-		/*MethodList struct {
-			Make func(length int) MethodList `gd:"method_list_make"`
-			Push func(info MethodList,
-				name StringName,
-				call FunctionID,
-				method_flags MethodFlags,
-				return_value_info PropertyList,
-				arguments_info PropertyList,
-				count int,
-				default_arguments CallAccepts[Variant],
-			) `gd:"method_list_push"`
-			Free func(info MethodList) `gd:"method_list_free"`
-		}*/
+	/*ClassDB struct {
 		Register struct {
 			Class            func(class, parent_class StringName, id ExtensionClassID, virtual, abstract, exposed, runtime bool, icon_path String) `gd:"classdb_register"`
 			Methods          func(class StringName, methods MethodList)                                                                            `gd:"classdb_register_methods"`
@@ -330,22 +296,7 @@ type API struct {
 			Signal           func(class, signal StringName, args PropertyList)                                                                     `gd:"classdb_register_signal"`
 			Removal          func(class StringName)                                                                                                `gd:"classdb_register_removal"`
 		}
-		/*Image struct {
-			Unsafe func(img Object) Pointer       `gd:"classdb_Image_unsafe"`
-			Access func(img Object, idx int) byte `gd:"classdb_Image_access"`
-		}*/
-		/*XMLParser struct {
-			Load func(parser Object, buf []byte) int `gd:"classdb_XMLParser_load"`
-		}*/
-		/*FileAccess struct {
-			Write func(file Object, buf []byte)     `gd:"classdb_FileAccess_write"`
-			Read  func(file Object, buf []byte) int `gd:"classdb_FileAccess_read"`
-		}*/
-		/*WorkerThreadPool struct {
-			AddTask      func(pool Object, fn TaskID, priority bool, description String)                             `gd:"classdb_WorkerThreadPool_add_task"`
-			AddGroupTask func(pool Object, fn TaskID, elements int32, task int32, priority bool, description String) `gd:"classdb_WorkerThreadPool_add_group_task"`
-		}*/
-	}
+	}*/
 }
 
 type InitializationLevel uint32

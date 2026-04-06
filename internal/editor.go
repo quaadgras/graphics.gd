@@ -1,14 +1,11 @@
 package gd
 
 import (
-	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/gdmemory"
+	gdunsafe "graphics.gd"
 )
 
 func init() {
-	gdextension.On.Editor = gdextension.CallbacksForEditor{
-		ClassInUseDetection: func(classes gdextension.PackedArray[gdextension.String], result gdextension.Returns[gdextension.PackedArray[gdextension.String]]) {
-			gdmemory.Set(gdextension.Pointer(result), classes)
-		},
-	}
+	gdunsafe.OnEditorClassDetection(func(classes gdunsafe.PackedArray[gdunsafe.String]) gdunsafe.PackedArray[gdunsafe.String] {
+		return classes
+	})
 }

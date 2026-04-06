@@ -49,8 +49,6 @@ import (
 	"graphics.gd/internal/threadsafe"
 )
 
-var classes threadsafe.Handles[*classImplementation, gdextension.ExtensionClassID]
-
 // pendingRegistrations holds registration functions that are waiting for their parent
 // extension class to be registered first. Key is the parent's reflect.Type.
 var pendingRegistrations = make(map[reflect.Type][]func())
@@ -244,10 +242,10 @@ func Register[T Class](exports ...any) {
 		if icon, ok := tags.Lookup("icon"); ok {
 			iconString = gd.NewString(icon)
 		}
-		gdextension.Host.ClassDB.Register.Class(pointers.Get(className), pointers.Get(superName), classes.New(impl), false, false, true, false, pointers.Get(iconString))
+		gdunsafe.RegisterClass(gdunsafe.StringName(pointers.Get(className)[0]), gdunsafe.StringName(pointers.Get(superName)[0]), &classWrapper{impl: impl}, false, false, true, false, gdunsafe.String(pointers.Get(iconString)[0]))
 
 		gd.RegisterCleanup(func() {
-			gdextension.Host.ClassDB.Register.Removal(pointers.Get(className))
+			gdunsafe.RegisterRemoval(gdunsafe.StringName(pointers.Get(className)[0]))
 			gdclass.Registered.Delete(classType)
 			className.Free()
 			superName.Free()
@@ -265,10 +263,10 @@ func Register[T Class](exports ...any) {
 				maps.Copy(documentation, export)
 			case map[string]int:
 				for name, value := range export {
-					gdextension.Host.ClassDB.Register.Constant(
-						pointers.Get(className),
-						pointers.Get(gd.NewStringName("")),
-						pointers.Get(gd.NewStringName(name)),
+					gdunsafe.RegisterConstant(
+						gdunsafe.StringName(pointers.Get(className)[0]),
+						gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]),
+						gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
 						int64(value),
 						false,
 					)
@@ -511,7 +509,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			if !exists {
 				class.Members = append(class.Members, *member)
 			}
-			gdextension.Host.ClassDB.Register.Property(pointers.Get(className), gdextension.PropertyList(ptype), pointers.Get(gd.NewStringName("")), pointers.Get(gd.NewStringName("")))
+			gdunsafe.RegisterProperty(gdunsafe.StringName(pointers.Get(className)[0]), ptype, gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]), gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]))
 		}
 		ptype.Free()
 	}
@@ -519,10 +517,10 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		registerField(field)
 	}
 	for groupName, fields := range groupedFields {
-		gdextension.Host.ClassDB.Register.PropertyGroup(
-			pointers.Get(className),
-			pointers.Get(gd.NewString(groupName)),
-			pointers.Get(gd.NewString("")),
+		gdunsafe.RegisterPropertyGroup(
+			gdunsafe.StringName(pointers.Get(className)[0]),
+			gdunsafe.String(pointers.Get(gd.NewString(groupName))[0]),
+			gdunsafe.String(pointers.Get(gd.NewString(""))[0]),
 		)
 		for _, field := range fields {
 			registerField(field)
@@ -629,8 +627,7 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 		gd.RefCounted(*super).InitRef()
 	}
 	instance := class.reloadInstance(value, super)
-	id := gdextension.ExtensionInstanceID(instances.New(instance))
-	gdunsafe.Object(gdreference.GetObject(*super)).ExtensionSetup(gdunsafe.StringName(pointers.Get(class.Name)[0]), gdunsafe.ExtensionInstanceID(id))
+	gdunsafe.Object(gdreference.GetObject(*super)).ExtensionSetup(gdunsafe.StringName(pointers.Get(class.Name)[0]), &instanceWrapper{impl: instance})
 	if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
 		roots.Insert(value, keepalive)
 	}

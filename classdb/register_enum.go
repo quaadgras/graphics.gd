@@ -4,8 +4,8 @@ import (
 	"iter"
 	"reflect"
 
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Enum"
 )
@@ -23,10 +23,10 @@ func registerEnumsFor(class gd.StringName, rtype reflect.Type) iter.Seq2[string,
 	defer enumName.Free()
 	var reference = reflect.New(rtype).Interface().(Enum.Any)
 	for name, value := range reference.Enum {
-		gdextension.Host.ClassDB.Register.Constant(
-			pointers.Get(class),
-			pointers.Get(enumName),
-			pointers.Get(gd.NewStringName(name)),
+		gdunsafe.RegisterConstant(
+			gdunsafe.StringName(pointers.Get(class)[0]),
+			gdunsafe.StringName(pointers.Get(enumName)[0]),
+			gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
 			int64(value),
 			false,
 		)

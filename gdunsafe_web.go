@@ -707,6 +707,18 @@ func copyArguments(shape Shape, args unsafe.Pointer) Pointer {
 	return copyArgumentsTo(shape, args, wasmArgBuf)
 }
 
+func writeVariant(addr Pointer, v Variant) {
+	Pointer(addr).SetUint64(v[0])
+	Pointer(addr + 8).SetUint64(v[1])
+	Pointer(addr + 16).SetUint64(v[2])
+}
+
+func writeCallError(addr Pointer, e CallError) {
+	Pointer(addr).SetUint32(uint32(e.Type))
+	Pointer(addr + 4).SetInt32(e.Argument)
+	Pointer(addr + 8).SetInt32(e.Expected)
+}
+
 func readVariant(addr Pointer) Variant {
 	if addr == 0 {
 		panic("nil pointer dereference")
@@ -794,7 +806,7 @@ func (obj Object) Call(method MethodForClass, args ...Variant) (Variant, CallErr
 //go:wasmimport gd object_shaped_call
 func gd_object_shaped_call(obj Object, fn MethodForClass, result Pointer, shape uint64, args Pointer)
 
-func (obj Object) UnsafeCall(fn MethodForClass, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+func (obj Object) ShapedCall(fn MethodForClass, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
 	mem_result := makeResult(Shape(shape))
 	mem_args := copyArguments(Shape(shape), args)
 	gd_object_shaped_call(obj, fn, Pointer(mem_result), shape, Pointer(mem_args))
@@ -806,14 +818,16 @@ func (obj Object) UnsafeCall(fn MethodForClass, result unsafe.Pointer, shape uin
 //go:wasmimport gd object_extension_setup
 func gd_object_extension_setup(obj Object, name StringName, inst ExtensionInstanceID)
 
-func (obj Object) ExtensionSetup(name StringName, inst ExtensionInstanceID) {
-	gd_object_extension_setup(obj, name, inst)
+func (obj Object) ExtensionSetup(name StringName, inst ExtensionInstance) {
+	gd_object_extension_setup(obj, name, instances.New(inst))
 }
 
 //go:wasmimport gd object_extension_fetch
 func gd_object_extension_fetch(obj Object) ExtensionInstanceID
 
-func (obj Object) ExtensionFetch() ExtensionInstanceID { return gd_object_extension_fetch(obj) }
+func (obj Object) ExtensionFetch() ExtensionInstance {
+	return instances.Get(gd_object_extension_fetch(obj))
+}
 
 //go:wasmimport gd object_extension_close
 func gd_object_extension_close(obj Object)
@@ -1307,18 +1321,100 @@ func MakeMethodList(n Int) MethodList { return gd_method_list_make(int64(n)) }
 //go:wasmimport gd method_list_push
 func gd_method_list_push(list MethodList, name StringName, call FunctionID, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count int64, defaults Pointer)
 
-func (m MethodList) Push(name StringName, call FunctionID, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count Int, defaults unsafe.Pointer) {
+func (m MethodList) Push(name StringName, call ExtensionFunction, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count Int, defaults unsafe.Pointer) {
 	var def Pointer
 	if defaults != nil {
 		def = Pointer(*(*uint32)(defaults))
 	}
-	gd_method_list_push(m, name, call, flags, returnInfo, argsInfo, int64(count), def)
+	gd_method_list_push(m, name, functions.New(call), flags, returnInfo, argsInfo, int64(count), def)
 }
 
 //go:wasmimport gd method_list_free
 func gd_method_list_free(list MethodList)
 
 func (m MethodList) Free() { gd_method_list_free(m) }
+
+// ClassDB registration
+
+//go:wasmimport gd classdb_register
+func gd_classdb_register(class, parent uint32, id uint32, virtual, abstract, exposed, runtime, icon uint32)
+
+func RegisterClass(class, parent StringName, id ExtensionClass, virtual, abstract, exposed, runtime bool, icon String) {
+	var vb, ab, eb, rb uint32
+	if virtual {
+		vb = 1
+	}
+	if abstract {
+		ab = 1
+	}
+	if exposed {
+		eb = 1
+	}
+	if runtime {
+		rb = 1
+	}
+	gd_classdb_register(uint32(class), uint32(parent), uint32(classes.New(id)), vb, ab, eb, rb, uint32(icon))
+}
+
+//go:wasmimport gd classdb_register_methods
+func gd_classdb_register_methods(class uint32, methods uint32)
+
+func RegisterMethods(class StringName, methods MethodList) {
+	gd_classdb_register_methods(uint32(class), uint32(methods))
+}
+
+//go:wasmimport gd classdb_register_constant
+func gd_classdb_register_constant(class, enum, name uint32, value int64, bitfield uint32)
+
+func RegisterConstant(class, enum, name StringName, value int64, bitfield bool) {
+	var bf uint32
+	if bitfield {
+		bf = 1
+	}
+	gd_classdb_register_constant(uint32(class), uint32(enum), uint32(name), value, bf)
+}
+
+//go:wasmimport gd classdb_register_property
+func gd_classdb_register_property(class uint32, property uint32, setter, getter uint32)
+
+func RegisterProperty(class StringName, property PropertyList, setter, getter StringName) {
+	gd_classdb_register_property(uint32(class), uint32(property), uint32(setter), uint32(getter))
+}
+
+//go:wasmimport gd classdb_register_property_indexed
+func gd_classdb_register_property_indexed(class uint32, property uint32, setter, getter uint32, index int64)
+
+func RegisterPropertyIndexed(class StringName, property PropertyList, setter, getter StringName, index int) {
+	gd_classdb_register_property_indexed(uint32(class), uint32(property), uint32(setter), uint32(getter), int64(index))
+}
+
+//go:wasmimport gd classdb_register_property_group
+func gd_classdb_register_property_group(class, group, prefix uint32)
+
+func RegisterPropertyGroup(class StringName, group, prefix String) {
+	gd_classdb_register_property_group(uint32(class), uint32(group), uint32(prefix))
+}
+
+//go:wasmimport gd classdb_register_property_sub_group
+func gd_classdb_register_property_sub_group(class, subgroup, prefix uint32)
+
+func RegisterPropertySubgroup(class StringName, subgroup, prefix String) {
+	gd_classdb_register_property_sub_group(uint32(class), uint32(subgroup), uint32(prefix))
+}
+
+//go:wasmimport gd classdb_register_signal
+func gd_classdb_register_signal(class, signal uint32, args uint32)
+
+func RegisterSignal(class, signal StringName, args PropertyList) {
+	gd_classdb_register_signal(uint32(class), uint32(signal), uint32(args))
+}
+
+//go:wasmimport gd classdb_register_removal
+func gd_classdb_register_removal(class uint32)
+
+func RegisterRemoval(class StringName) {
+	gd_classdb_register_removal(uint32(class))
+}
 
 // ClassDB sub-API operations
 
@@ -1383,4 +1479,307 @@ func WorkerThreadPoolAddGroupTask(pool Object, task Pointer, elements, arg int32
 		p = 1
 	}
 	gd_classdb_WorkerThreadPool_add_group_task(pool, task, elements, arg, p, description)
+}
+
+// Extension binding callbacks (no-ops)
+
+//go:wasmexport gd_on_extension_binding_created
+func gd_on_extension_binding_created(p0 uint32) uint32 { return 0 }
+
+//go:wasmexport gd_on_extension_binding_removed
+func gd_on_extension_binding_removed(p0, p1 uint32) {}
+
+//go:wasmexport gd_on_extension_binding_reference
+func gd_on_extension_binding_reference(p0, p1 uint32) uint32 { return 0 }
+
+// Extension class callbacks
+
+//go:wasmexport gd_on_extension_class_create
+func gd_on_extension_class_create(p0, p1 uint32) uint32 {
+	return uint32(classes.Get(ExtensionClassID(p0)).Create(p1 != 0))
+}
+
+//go:wasmexport gd_on_extension_class_method
+func gd_on_extension_class_method(p0, p1, p2 uint32) uint32 {
+	fn := classes.Get(ExtensionClassID(p0)).Method(StringName(p1), p2)
+	if fn == nil {
+		return 0
+	}
+	return uint32(functions.New(fn))
+}
+
+//go:wasmexport gd_on_extension_class_caller
+func gd_on_extension_class_caller(p0, p1, p2 uint32) uint32 {
+	fn := classes.Get(ExtensionClassID(p0)).Method(StringName(p1), p2)
+	if fn == nil {
+		return 0
+	}
+	return uint32(functions.New(fn))
+}
+
+// Extension instance callbacks
+
+//go:wasmexport gd_on_extension_instance_set
+func gd_on_extension_instance_set(p0, p1 uint32, p2, p3, p4 uint64) uint32 {
+	if instances.Get(ExtensionInstanceID(p0)).Set(StringName(p1), Variant{p2, p3, p4}) {
+		return 1
+	}
+	return 0
+}
+
+//go:wasmexport gd_on_extension_instance_get
+func gd_on_extension_instance_get(p0, p1, p2 uint32) uint32 {
+	v, ok := instances.Get(ExtensionInstanceID(p0)).Get(StringName(p1))
+	if ok {
+		writeVariant(Pointer(p2), v)
+	}
+	if ok {
+		return 1
+	}
+	return 0
+}
+
+//go:wasmexport gd_on_extension_instance_property_list
+func gd_on_extension_instance_property_list(p0 uint32) uint32 {
+	return uint32(instances.Get(ExtensionInstanceID(p0)).PropertyList())
+}
+
+//go:wasmexport gd_on_extension_instance_property_has_default
+func gd_on_extension_instance_property_has_default(p0, p1 uint32) uint32 {
+	if instances.Get(ExtensionInstanceID(p0)).HasDefault(StringName(p1)) {
+		return 1
+	}
+	return 0
+}
+
+//go:wasmexport gd_on_extension_instance_property_get_default
+func gd_on_extension_instance_property_get_default(p0, p1, p2 uint32) uint32 {
+	v, ok := instances.Get(ExtensionInstanceID(p0)).GetDefault(StringName(p1))
+	if ok {
+		writeVariant(Pointer(p2), v)
+	}
+	if ok {
+		return 1
+	}
+	return 0
+}
+
+//go:wasmexport gd_on_extension_instance_property_validation
+func gd_on_extension_instance_property_validation(p0, p1 uint32) uint32 {
+	if instances.Get(ExtensionInstanceID(p0)).ValidateProperty(StringName(p1)) {
+		return 1
+	}
+	return 0
+}
+
+//go:wasmexport gd_on_extension_instance_notification
+func gd_on_extension_instance_notification(p0 uint32, p1 int32, p2 uint32) {
+	instances.Get(ExtensionInstanceID(p0)).Notification(p1, p2 != 0)
+}
+
+//go:wasmexport gd_on_extension_instance_stringify
+func gd_on_extension_instance_stringify(p0 uint32) uint32 {
+	return uint32(instances.Get(ExtensionInstanceID(p0)).UnsafeString())
+}
+
+//go:wasmexport gd_on_extension_instance_reference
+func gd_on_extension_instance_reference(p0, p1 uint32) uint32 {
+	if instances.Get(ExtensionInstanceID(p0)).Reference(p1 != 0) {
+		return 1
+	}
+	return 0
+}
+
+//go:wasmexport gd_on_extension_instance_rid
+func gd_on_extension_instance_rid(p0 uint32) uint64 {
+	return uint64(instances.Get(ExtensionInstanceID(p0)).RID())
+}
+
+//go:wasmexport gd_on_extension_instance_checked_call
+func gd_on_extension_instance_checked_call(p0, p1, p2, p3 uint32) {
+	var inst ExtensionInstance
+	if ExtensionInstanceID(p0) != 0 {
+		inst = instances.Get(ExtensionInstanceID(p0))
+	}
+	functions.Get(FunctionID(p1)).PointerCall(inst, Pointer(p3), Pointer(p2))
+}
+
+//go:wasmexport gd_on_extension_instance_called
+func gd_on_extension_instance_called(p0, p1, p2, p3 uint32) {
+	inst := instances.Get(ExtensionInstanceID(p0))
+	functions.Get(FunctionID(p1)).PointerCall(inst, Pointer(p3), Pointer(p2))
+}
+
+//go:wasmexport gd_on_extension_instance_variant_call
+func gd_on_extension_instance_variant_call(p0, p1, p2, p3 uint32) {
+	var inst ExtensionInstance
+	if ExtensionInstanceID(p0) != 0 {
+		inst = instances.Get(ExtensionInstanceID(p0))
+	}
+	v := functions.Get(FunctionID(p1)).CheckedCall(inst, VariadicVariants{
+		First: PointerTo[PointerTo[Variant]](p3),
+	})
+	writeVariant(Pointer(p2), v)
+}
+
+//go:wasmexport gd_on_extension_instance_dynamic_call
+func gd_on_extension_instance_dynamic_call(p0, p1, p2 uint32, p3 int64, p4, p5 uint32) {
+	var inst ExtensionInstance
+	if ExtensionInstanceID(p0) != 0 {
+		inst = instances.Get(ExtensionInstanceID(p0))
+	}
+	v, err := functions.Get(FunctionID(p1)).DynamicCall(inst, VariadicVariants{
+		First: PointerTo[PointerTo[Variant]](p4),
+		Count: int(p3),
+	})
+	writeVariant(Pointer(p2), v)
+	writeCallError(Pointer(p5), err)
+}
+
+//go:wasmexport gd_on_extension_instance_free
+func gd_on_extension_instance_free(p0 uint32) {
+	inst := instances.Get(ExtensionInstanceID(p0))
+	if f, ok := inst.(interface{ Free() }); ok {
+		f.Free()
+	}
+	instances.Del(ExtensionInstanceID(p0))
+}
+
+// Extension script callbacks
+
+//go:wasmexport gd_on_extension_script_categorization
+func gd_on_extension_script_categorization(p0, p1 uint32) uint32 {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	if script.PropertyCategory() != 0 {
+		return 1
+	}
+	return 0
+}
+
+//go:wasmexport gd_on_extension_script_get_property_type
+func gd_on_extension_script_get_property_type(p0, p1, p2 uint32) uint32 {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		writeCallError(Pointer(p2), CallError{Type: CallInvalidMethod})
+		return 0
+	}
+	return uint32(script.PropertyType(StringName(p1)))
+}
+
+//go:wasmexport gd_on_extension_script_get_owner
+func gd_on_extension_script_get_owner(p0 uint32) uint32 {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	return uint32(script.Owner())
+}
+
+//go:wasmexport gd_on_extension_script_get_property_state
+func gd_on_extension_script_get_property_state(p0, p1, p2 uint32) {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return
+	}
+	script.ExportedProperties(func(name StringName, value Variant) bool {
+		ScriptPropertyStateAdd(FunctionID(p1), Pointer(p2), name, value)
+		return true
+	})
+}
+
+//go:wasmexport gd_on_extension_script_get_methods
+func gd_on_extension_script_get_methods(p0 uint32) uint32 {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	return uint32(script.MethodList())
+}
+
+//go:wasmexport gd_on_extension_script_has_method
+func gd_on_extension_script_has_method(p0, p1 uint32) uint32 {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	if script.HasMethod(StringName(p1)) {
+		return 1
+	}
+	return 0
+}
+
+//go:wasmexport gd_on_extension_script_get_method_argument_count
+func gd_on_extension_script_get_method_argument_count(p0, p1 uint32) int64 {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	return int64(script.MethodArgumentCount(StringName(p1)))
+}
+
+//go:wasmexport gd_on_extension_script_get
+func gd_on_extension_script_get(p0 uint32) uint32 {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	return uint32(script.Script())
+}
+
+//go:wasmexport gd_on_extension_script_is_placeholder
+func gd_on_extension_script_is_placeholder(p0 uint32) uint32 {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	if script.IsPlaceholder() {
+		return 1
+	}
+	return 0
+}
+
+//go:wasmexport gd_on_extension_script_get_language
+func gd_on_extension_script_get_language(p0 uint32) uint32 {
+	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
+	if !ok {
+		return 0
+	}
+	return uint32(script.ScriptLanguage())
+}
+
+// Non-extension callbacks
+
+//go:wasmexport gd_on_engine_init
+func gd_on_engine_init(p0 uint32) { onEngineInit(InitializationLevel(p0)) }
+
+//go:wasmexport gd_on_engine_exit
+func gd_on_engine_exit(p0 uint32) { onEngineExit(InitializationLevel(p0)) }
+
+//go:wasmexport gd_on_first_frame
+func gd_on_first_frame() { onFirstFrame() }
+
+//go:wasmexport gd_on_every_frame
+func gd_on_every_frame() { onEveryFrame() }
+
+//go:wasmexport gd_on_final_frame
+func gd_on_final_frame() { onFinalFrame() }
+
+//go:wasmexport gd_on_worker_thread_pool_task
+func gd_on_worker_thread_pool_task(p0 uint32) { onWorkerThreadPoolTask(TaskID(p0)) }
+
+//go:wasmexport gd_on_worker_thread_pool_group_task
+func gd_on_worker_thread_pool_group_task(p0, p1 uint32) {
+	onWorkerThreadPoolGroupTask(TaskID(p0), int32(p1))
+}
+
+//go:wasmexport gd_on_editor_class_in_use_detection
+func gd_on_editor_class_in_use_detection(p0, p1, p2 uint32) {
+	if onEditorClassDetection != nil {
+		result := onEditorClassDetection(PackedArray[String]{p0, p1})
+		Pointer(p2).SetUint32(result[0])
+		Pointer(p2 + 4).SetUint32(result[1])
+	}
 }

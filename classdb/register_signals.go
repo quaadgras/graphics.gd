@@ -7,7 +7,6 @@ import (
 
 	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Object"
@@ -63,7 +62,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 					)
 				}
 			}
-			gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), gdextension.PropertyList(args))
+			gdunsafe.RegisterSignal(gdunsafe.StringName(pointers.Get(class)[0]), gdunsafe.StringName(pointers.Get(signalName)[0]), args)
 			args.Free()
 		}
 		if field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir {
@@ -90,7 +89,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 						)
 					}
 				}
-				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), gdextension.PropertyList(args))
+				gdunsafe.RegisterSignal(gdunsafe.StringName(pointers.Get(class)[0]), gdunsafe.StringName(pointers.Get(signalName)[0]), args)
 				args.Free()
 			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
 				var args = gdunsafe.MakePropertyList(1)
@@ -110,11 +109,11 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 						0,
 					)
 				}
-				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), gdextension.PropertyList(args))
+				gdunsafe.RegisterSignal(gdunsafe.StringName(pointers.Get(class)[0]), gdunsafe.StringName(pointers.Get(signalName)[0]), args)
 				args.Free()
 			} else {
 				var args = gdunsafe.MakePropertyList(0)
-				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), gdextension.PropertyList(args))
+				gdunsafe.RegisterSignal(gdunsafe.StringName(pointers.Get(class)[0]), gdunsafe.StringName(pointers.Get(signalName)[0]), args)
 				args.Free()
 			}
 		}

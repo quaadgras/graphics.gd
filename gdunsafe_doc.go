@@ -161,7 +161,7 @@ func VariantTypeUnsafeFree(vtype VariantType, shape uint64, args unsafe.Pointer)
 
 // Callable operations
 
-func MakeCallable(impl CallableImplementation, obj ObjectID) Callable { panic(unavailable) }
+func MakeCallable(impl ExtensionCallable, obj ObjectID) Callable { panic(unavailable) }
 
 // Object operations
 
@@ -193,7 +193,7 @@ func (obj Object) ExtensionClose()                                          { pa
 
 // Script instance management
 
-func ScriptMake(fn ExtensionInstanceID) ScriptInstance { panic(unavailable) }
+func ScriptMake(fn ExtensionScript) ScriptInstance { panic(unavailable) }
 func (obj Object) ScriptCall(name StringName, args ...Variant) (Variant, CallError) {
 	panic(unavailable)
 }
@@ -302,10 +302,28 @@ func (p PropertyList) InfoUsage() uint32         { panic(unavailable) }
 // MethodList operations
 
 func MakeMethodList(n Int) MethodList { panic(unavailable) }
-func (m MethodList) Push(name StringName, call FunctionID, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count Int, defaults unsafe.Pointer) {
+func (m MethodList) Push(name StringName, call ExtensionFunction, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count Int, defaults unsafe.Pointer) {
 	panic(unavailable)
 }
 func (m MethodList) Free() { panic(unavailable) }
+
+// ClassDB registration
+
+func RegisterClass(class, parent StringName, id ExtensionClass, virtual, abstract, exposed, runtime bool, icon String) {
+	panic(unavailable)
+}
+func RegisterMethods(class StringName, methods MethodList)                      { panic(unavailable) }
+func RegisterConstant(class, enum, name StringName, value int64, bitfield bool) { panic(unavailable) }
+func RegisterProperty(class StringName, property PropertyList, setter, getter StringName) {
+	panic(unavailable)
+}
+func RegisterPropertyIndexed(class StringName, property PropertyList, setter, getter StringName, index int) {
+	panic(unavailable)
+}
+func RegisterPropertyGroup(class StringName, group, prefix String)       { panic(unavailable) }
+func RegisterPropertySubgroup(class StringName, subgroup, prefix String) { panic(unavailable) }
+func RegisterSignal(class, signal StringName, args PropertyList)         { panic(unavailable) }
+func RegisterRemoval(class StringName)                                   { panic(unavailable) }
 
 // ClassDB sub-API operations
 

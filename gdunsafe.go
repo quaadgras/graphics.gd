@@ -39,6 +39,16 @@ type VariadicVariants struct {
 
 var callables threadsafe.Handles[ExtensionCallable, CallableID]
 
+var (
+	classes   threadsafe.Handles[ExtensionClass, ExtensionClassID]
+	instances threadsafe.Handles[ExtensionInstance, ExtensionInstanceID]
+	functions threadsafe.Handles[ExtensionFunction, FunctionID]
+)
+
+func ExtensionInstances(fn func(ExtensionInstance) bool) {
+	instances.All(fn)
+}
+
 // ExtensionCallable can be implemented to provide an extension-implemented
 // [Callable] to the engine.
 type ExtensionCallable interface {
@@ -388,18 +398,31 @@ type ExtensionScript interface {
 
 type InitializationLevel uint32
 
-func OnEngineInit(func(InitializationLevel)) {}
-func OnEngineExit(func(InitializationLevel)) {}
-func OnFirstFrame(func())                    {}
-func OnEveryFrame(func())                    {}
-func OnFinalFrame(func())                    {}
+var (
+	onEngineInit                func(InitializationLevel)
+	onEngineExit                func(InitializationLevel)
+	onFirstFrame                func()
+	onEveryFrame                func()
+	onFinalFrame                func()
+	onWorkerThreadPoolTask      func(TaskID)
+	onWorkerThreadPoolGroupTask func(TaskID, int32)
+	onEditorClassDetection      func(PackedArray[String]) PackedArray[String]
+)
+
+func OnEngineInit(fn func(InitializationLevel)) { onEngineInit = fn }
+func OnEngineExit(fn func(InitializationLevel)) { onEngineExit = fn }
+func OnFirstFrame(fn func())                    { onFirstFrame = fn }
+func OnEveryFrame(fn func())                    { onEveryFrame = fn }
+func OnFinalFrame(fn func())                    { onFinalFrame = fn }
 
 type TaskID uintptr
 
-func OnWorkerThreadPoolTask(func(TaskID))
-func OnWorkerThreadPoolGroupTask(func(TaskID, int32))
+func OnWorkerThreadPoolTask(fn func(TaskID))             { onWorkerThreadPoolTask = fn }
+func OnWorkerThreadPoolGroupTask(fn func(TaskID, int32)) { onWorkerThreadPoolGroupTask = fn }
 
-func OnEditorClassDetection(func(PackedArray[String]) PackedArray[String]) {}
+func OnEditorClassDetection(fn func(PackedArray[String]) PackedArray[String]) {
+	onEditorClassDetection = fn
+}
 
 // just a placeholder for functions that don't need to be implemented
 // as they are already available in the Go standard library.

@@ -1,28 +1,11 @@
+#pragma once
+#ifndef GD
+#define GD
+
 #include <stdint.h>
 #include <stdbool.h>
 
-#ifndef __EMSCRIPTEN__
-    #define INT64(n) int64_t n
-    #define SHAPE uint64_t
-    #define ANY void*
-    #define UINT uint64_t
-    #define OBJECT_ID(n) uint64_t n
-    #define UINT64(n) uint64_t n
-    #define BUFFER char*
-    #define STRING const char*
-    #define RESULT_POINTER
-    #define RETURNS(t) t
-#else
-    #define ANY uint32_t
-    #define UINT uint32_t
-    #define UINT64(n) uint32_t n##_1, uint32_t n##_2
-    #define INT64(n) uint32_t n##_1, uint32_t n##_2
-    #define SHAPE(n) uint32_t n##_1, uint32_t n##_2
-    #define OBJECT_ID(n) uint32_t n##_1, uint32_t n##_2
-    #define BUFFER uint32_t
-    #define STRING std::string
-    #define RESULT_POINTER , uint32_t result
-    #define RETURNS(t) void
+#ifdef __EMSCRIPTEN__
     extern "C" {
 #endif
 
@@ -149,52 +132,60 @@ CALLBACK(Int,      gd_on_callable_sorted, (CallableID a, CallableID b));
 CALLBACK(String,   gd_on_callable_string, (CallableID c));
 CALLBACK(Int,      gd_on_callable_length, (CallableID c));
 
-extern void gd_on_editor_class_in_use_detection(PACKED_ARRAY_ARG(a), PackedStringArray* result);
+CALLBACK(void, gd_on_editor_class_in_use_detection, (PACKED_ARRAY_ARG(a), PackedStringArray* result));
 
-extern void gd_on_engine_init(InitializationLevel level);
-extern void gd_on_engine_exit(InitializationLevel level);
+CALLBACK(void, gd_on_engine_init, (InitializationLevel level));
+CALLBACK(void, gd_on_engine_exit, (InitializationLevel level));
 
-extern ExtensionBindingID gd_on_extension_binding_created(ExtensionInstanceID inst);
-extern void               gd_on_extension_binding_removed(ExtensionInstanceID inst, ExtensionBindingID p1);
-extern bool               gd_on_extension_binding_reference(ExtensionInstanceID inst, bool p1);
+CALLBACK(ExtensionBindingID, gd_on_extension_binding_created,  (ExtensionInstanceID inst));
+CALLBACK(void,               gd_on_extension_binding_removed,  (ExtensionInstanceID inst, ExtensionBindingID p1));
+CALLBACK(bool,               gd_on_extension_binding_reference,(ExtensionInstanceID inst, bool p1));
 
-extern Object     gd_on_extension_class_create(ExtensionClassID class_name, bool notify_postinitialize);
-extern FunctionID gd_on_extension_class_method(ExtensionClassID class_name, StringName method, uint32_t hash);
-extern FunctionID gd_on_extension_class_caller(ExtensionClassID class_name, StringName method, uint32_t hash);
+CALLBACK(Object,     gd_on_extension_class_create, (ExtensionClassID class_name, bool notify_postinitialize));
+CALLBACK(FunctionID, gd_on_extension_class_method, (ExtensionClassID class_name, StringName method, uint32_t hash));
+CALLBACK(FunctionID, gd_on_extension_class_caller, (ExtensionClassID class_name, StringName method, uint32_t hash));
 
-extern bool   gd_on_extension_instance_set(ExtensionInstanceID inst, StringName property, VARIANT_ARG(val));
-extern bool   gd_on_extension_instance_get(ExtensionInstanceID inst, StringName property, Variant* p2);
-extern bool   gd_on_extension_instance_property_has_default(ExtensionInstanceID inst, StringName property);
-extern bool   gd_on_extension_instance_property_get_default(ExtensionInstanceID inst, StringName property, Variant* result);
-extern bool   gd_on_extension_instance_property_validation(ExtensionInstanceID inst, StringName property);
-extern void   gd_on_extension_instance_notification(ExtensionInstanceID inst, int32_t what, bool reverse);
-extern String gd_on_extension_instance_stringify(ExtensionInstanceID inst);
-extern bool   gd_on_extension_instance_reference(ExtensionInstanceID inst, bool increment);
-extern RID    gd_on_extension_instance_rid(ExtensionInstanceID inst);
-extern void   gd_on_extension_instance_checked_call(ExtensionInstanceID inst, FunctionID fn, UnsafePointer result, UnsafePointer args);
-extern void   gd_on_extension_instance_variant_call(ExtensionInstanceID inst, FunctionID fn, Variant* result, VariadicVariants args);
-extern void   gd_on_extension_instance_dynamic_call(ExtensionInstanceID inst, FunctionID fn, Variant* result, Int count, VariadicVariants args, CallError* err);
-extern void   gd_on_extension_instance_free(ExtensionInstanceID inst);
-extern void   gd_on_extension_instance_called(ExtensionInstanceID inst, FunctionID fn, UnsafePointer result, UnsafePointer args);
+CALLBACK(bool,         gd_on_extension_instance_set,                 (ExtensionInstanceID inst, StringName property, VARIANT_ARG(val)));
+CALLBACK(bool,         gd_on_extension_instance_get,                 (ExtensionInstanceID inst, StringName property, Variant* p2));
+CALLBACK(bool,         gd_on_extension_instance_property_has_default,(ExtensionInstanceID inst, StringName property));
+CALLBACK(bool,         gd_on_extension_instance_property_get_default,(ExtensionInstanceID inst, StringName property, Variant* result));
+CALLBACK(bool,         gd_on_extension_instance_property_validation, (ExtensionInstanceID inst, StringName property));
+CALLBACK(void,         gd_on_extension_instance_notification,        (ExtensionInstanceID inst, int32_t what, bool reverse));
+CALLBACK(String,       gd_on_extension_instance_stringify,           (ExtensionInstanceID inst));
+CALLBACK(bool,         gd_on_extension_instance_reference,           (ExtensionInstanceID inst, bool increment));
+CALLBACK(RID,          gd_on_extension_instance_rid,                 (ExtensionInstanceID inst));
+CALLBACK(void,         gd_on_extension_instance_checked_call,        (ExtensionInstanceID inst, FunctionID fn, UnsafePointer result, UnsafePointer args));
+CALLBACK(void,         gd_on_extension_instance_variant_call,        (ExtensionInstanceID inst, FunctionID fn, Variant* result, VariadicVariants args));
+CALLBACK(void,         gd_on_extension_instance_dynamic_call,        (ExtensionInstanceID inst, FunctionID fn, Variant* result, Int count, VariadicVariants args, CallError* err));
+CALLBACK(void,         gd_on_extension_instance_free,                (ExtensionInstanceID inst));
+CALLBACK(void,         gd_on_extension_instance_called,              (ExtensionInstanceID inst, FunctionID fn, UnsafePointer result, UnsafePointer args));
+CALLBACK(PropertyList, gd_on_extension_instance_property_list,       (ExtensionInstanceID inst));
 
-extern PropertyList gd_on_extension_instance_property_list(ExtensionInstanceID inst);
+CALLBACK(bool,        gd_on_extension_script_categorization,           (ExtensionInstanceID inst, PropertyList p1));
+CALLBACK(VariantType, gd_on_extension_script_get_property_type,        (ExtensionInstanceID inst, StringName property, CallError* err));
+CALLBACK(Object,      gd_on_extension_script_get_owner,                (ExtensionInstanceID inst));
+CALLBACK(void,        gd_on_extension_script_get_property_state,       (ExtensionInstanceID inst, FunctionID op, uintptr_t arg));
+CALLBACK(MethodList,  gd_on_extension_script_get_methods,              (ExtensionInstanceID inst));
+CALLBACK(bool,        gd_on_extension_script_has_method,               (ExtensionInstanceID inst, uintptr_t p1));
+CALLBACK(Int,         gd_on_extension_script_get_method_argument_count,(ExtensionInstanceID inst, StringName property));
+CALLBACK(Object,      gd_on_extension_script_get,                      (ExtensionInstanceID inst));
+CALLBACK(bool,        gd_on_extension_script_is_placeholder,           (ExtensionInstanceID inst));
+CALLBACK(Object,      gd_on_extension_script_get_language,             (ExtensionInstanceID inst));
 
-extern bool        gd_on_extension_script_categorization(ExtensionInstanceID inst, PropertyList p1);
-extern VariantType gd_on_extension_script_get_property_type(ExtensionInstanceID inst, StringName property, CallError* err);
-extern Object      gd_on_extension_script_get_owner(ExtensionInstanceID inst);
-extern void        gd_on_extension_script_get_property_state(ExtensionInstanceID inst, FunctionID op, uintptr_t arg);
-extern MethodList  gd_on_extension_script_get_methods(ExtensionInstanceID inst);
-extern bool        gd_on_extension_script_has_method(ExtensionInstanceID inst, uintptr_t p1);
-extern Int         gd_on_extension_script_get_method_argument_count(ExtensionInstanceID inst, StringName property);
-extern Object      gd_on_extension_script_get(ExtensionInstanceID inst);
-extern bool        gd_on_extension_script_is_placeholder(ExtensionInstanceID inst);
-extern Object      gd_on_extension_script_get_language(ExtensionInstanceID inst);
+CALLBACK(void, gd_on_first_frame,                  (void));
+CALLBACK(void, gd_on_every_frame,                  (void));
+CALLBACK(void, gd_on_final_frame,                  (void));
+CALLBACK(void, gd_on_worker_thread_pool_task,      (TaskID task));
+CALLBACK(void, gd_on_worker_thread_pool_group_task,(TaskID task, uint32_t n));
 
-extern void gd_on_first_frame(void);
-extern void gd_on_every_frame(void);
-extern void gd_on_final_frame(void);
-extern void gd_on_worker_thread_pool_task(TaskID task);
-extern void gd_on_worker_thread_pool_group_task(TaskID task, uint32_t n);
+// gd_on_yield re-enters the Go scheduler so that goroutines unblocked by
+// lifecycle callbacks (engine init/exit, frame callbacks) can run.
+// On native builds it is a no-op because the Go runtime handles this.
+#ifdef __EMSCRIPTEN__
+CALLBACK(void, gd_on_yield, (void));
+#else
+static inline void gd_on_yield(void) {}
+#endif
 
 void gd_array_get(Array a, Int i, Variant* result);
 void gd_array_set(Array a, Int i, VARIANT_ARG(v));
@@ -250,7 +241,7 @@ void       gd_method_list_free(MethodList list);
 void gd_method_list_push(MethodList list,
     StringName name, FunctionID call, MethodFlags method_flags,
     PropertyList return_value_info, PropertyList arguments_info,
-    Int count, ANY default_arguments
+    Int count, UnsafePointer default_arguments
 );
 
 PropertyList gd_property_list_make(Int property_count);
@@ -276,12 +267,12 @@ void gd_classdb_register(
 void gd_classdb_register_methods(StringName class_name, MethodList methods);
 void gd_classdb_register_constant(
     StringName class_name, StringName enum_name, StringName constant_name,
-    INT64(value), bool bitfield
+    int64_t value, bool bitfield
 );
 void gd_classdb_register_property(StringName class_name, PropertyList property, StringName setter, StringName getter);
 void gd_classdb_register_property_indexed(
     StringName class_name, PropertyList property,
-    StringName setter, StringName getter, INT64(index)
+    StringName setter, StringName getter, int64_t index
 );
 void gd_classdb_register_property_group(StringName class_name, String group, String prefix);
 void gd_classdb_register_property_sub_group(StringName class_name, String subgroup, String prefix);
@@ -436,4 +427,5 @@ String   gd_version_string(void);    // complete version string
 
 #ifdef __EMSCRIPTEN__
 }
+#endif
 #endif

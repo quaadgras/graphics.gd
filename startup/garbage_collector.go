@@ -1,8 +1,8 @@
 package startup
 
 import (
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/ring"
@@ -15,14 +15,13 @@ import (
 func keep_reachable_instances_alive()
 
 func init() {
-	gdextension.On.MainLoop.EveryFrame = func() {
+	gdunsafe.OnEveryFrame(func() {
 		Callable.Cycle()
 		ring.Main.Flush()
 		keep_reachable_instances_alive()
 		gdreference.GC(gd.Free)
 		pointers.Cycle()
-	}
-	gdextension.On.MainLoop.FinalFrame = func() {
-
-	}
+	})
+	gdunsafe.OnFinalFrame(func() {
+	})
 }

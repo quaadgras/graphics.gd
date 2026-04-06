@@ -14,7 +14,7 @@ import (
 	"slices"
 	"testing"
 
-	_ "graphics.gd"
+	gdunsafe "graphics.gd"
 
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"
@@ -32,57 +32,55 @@ var exitDone = false
 var toolUsed = false
 
 func init() {
-	gdextension.On.Engine = gdextension.CallbacksForEngine{
-		Init: func(level gdextension.InitializationLevel) {
-			if startup == nil {
-				startup = engineLoadingSharedGo{}
-				// little hack to enable `gd test` to work, we strip away the headless flag
-				// so that 'go test' doesn't complain on startup.
-				for i := 0; i < len(os.Args); i++ {
-					switch os.Args[i] {
-					case "--headless", "-race":
-						os.Args = append(os.Args[:i], os.Args[i+1:]...)
-						i--
-					}
+	gdunsafe.OnEngineInit(func(level gdunsafe.InitializationLevel) {
+		if startup == nil {
+			startup = engineLoadingSharedGo{}
+			// little hack to enable `gd test` to work, we strip away the headless flag
+			// so that 'go test' doesn't complain on startup.
+			for i := 0; i < len(os.Args); i++ {
+				switch os.Args[i] {
+				case "--headless", "-race":
+					os.Args = append(os.Args[:i], os.Args[i+1:]...)
+					i--
 				}
 			}
-			internal.Init(level)
-			if level == 0 {
-				initJumponly()
+		}
+		internal.Init(gdextension.InitializationLevel(level))
+		if level == 0 {
+			initJumponly()
+		}
+		if level == 2 && !initDone {
+			for _, fn := range internal.StartupFunctions {
+				fn()
 			}
-			if level == 2 && !initDone {
-				for _, fn := range internal.StartupFunctions {
-					fn()
-				}
-				if _, ok := startup.(engineLoadingSharedGo); ok {
-					if testing.Testing() {
-						classdb.Register[goSceneTree]()
-					} else {
-						resume_main, stop_main = iter.Pull(call_main_in_steps())
-						resume_main()
-					}
-				}
-				for _, fn := range internal.PostStartupFunctions {
-					fn()
-				}
-				initDone = true
-			}
-		},
-		Exit: func(level gdextension.InitializationLevel) {
-			if !exitDone && level == 2 {
-				for _, cleanup := range slices.Backward(internal.Cleanups()) {
-					cleanup()
-				}
-				pointers.Cycle()
-				pointers.Cycle()
-				if theMainFunctionIsWaitingForTheEngineToShutDown {
+			if _, ok := startup.(engineLoadingSharedGo); ok {
+				if testing.Testing() {
+					classdb.Register[goSceneTree]()
+				} else {
+					resume_main, stop_main = iter.Pull(call_main_in_steps())
 					resume_main()
 				}
-				internal.Linked = false
-				exitDone = true
 			}
-		},
-	}
+			for _, fn := range internal.PostStartupFunctions {
+				fn()
+			}
+			initDone = true
+		}
+	})
+	gdunsafe.OnEngineExit(func(level gdunsafe.InitializationLevel) {
+		if !exitDone && level == 2 {
+			for _, cleanup := range slices.Backward(internal.Cleanups()) {
+				cleanup()
+			}
+			pointers.Cycle()
+			pointers.Cycle()
+			if theMainFunctionIsWaitingForTheEngineToShutDown {
+				resume_main()
+			}
+			internal.Linked = false
+			exitDone = true
+		}
+	})
 }
 
 //go:linkname main main.main
@@ -153,7 +151,7 @@ func (engineLoadingSharedGo) Rendering() iter.Seq[Float.X] {
 }
 
 func init() {
-	gdextension.On.MainLoop.FirstFrame = func() {
+	gdunsafe.OnFirstFrame(func() {
 		threadcheck.Init()
 		if testing.Testing() && !toolUsed {
 			go main()
@@ -165,7 +163,7 @@ func init() {
 		if pause_main != nil {
 			resume_main()
 		}
-	}
+	})
 }
 
 type goMain struct {
