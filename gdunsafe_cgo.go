@@ -277,7 +277,7 @@ func gd_on_callable_string(c C.CallableID) C.String {
 }
 
 //export gd_on_callable_length
-func gd_on_callable_length(c CallableID) C.Int {
+func gd_on_callable_length(c C.CallableID) C.Int {
 	return C.Int(callables.Get(CallableID(c)).ArgumentCount())
 }
 
@@ -550,7 +550,7 @@ func gd_on_worker_thread_pool_group_task(p0 C.uintptr_t, p1 C.uint32_t) {
 }
 
 //export gd_on_editor_class_in_use_detection
-func gd_on_editor_class_in_use_detection(p0, p1 C.uint64_t, p2 *C.PackedStringArray) {
+func gd_on_editor_class_in_use_detection(p0, p1 C.uintptr_t, p2 *C.PackedStringArray) {
 	if onEditorClassDetection != nil {
 		result := onEditorClassDetection(PackedArray[String]{uint64(p0), uint64(p1)})
 		p2.array = C.uint64_t(result[0])
