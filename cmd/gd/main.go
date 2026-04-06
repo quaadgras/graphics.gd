@@ -30,24 +30,24 @@ import (
 )
 
 func main() {
-	if info, ok := debug.ReadBuildInfo(); ok && info.Main.Version != "(devel)" && info.Main.Version != "" {
-		if dir, goModPath, ok := findProjectGoMod(); ok {
-			if required := readGoModGraphicsVersion(goModPath); required != "" && required != info.Main.Version {
-				if goPath, err := exec.LookPath("go"); err == nil {
-					ensureGoToolGd(goPath, dir, goModPath)
-					cmd := exec.Command(goPath, append([]string{"tool", "gd"}, os.Args[1:]...)...)
-					cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
-					if err := cmd.Run(); err != nil {
-						if exitErr, ok := err.(*exec.ExitError); ok {
-							os.Exit(exitErr.ExitCode())
-						}
-						os.Exit(1)
+	/*if info, ok := debug.ReadBuildInfo(); ok && info.Main.Version != "(devel)" && info.Main.Version != "" {
+	if dir, goModPath, ok := findProjectGoMod(); ok {
+		if required := readGoModGraphicsVersion(goModPath); required != "" && required != info.Main.Version {
+			if goPath, err := exec.LookPath("go"); err == nil {
+				ensureGoToolGd(goPath, dir, goModPath)
+				cmd := exec.Command(goPath, append([]string{"tool", "gd"}, os.Args[1:]...)...)
+				cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
+				if err := cmd.Run(); err != nil {
+					if exitErr, ok := err.(*exec.ExitError); ok {
+						os.Exit(exitErr.ExitCode())
 					}
-					os.Exit(0)
+					os.Exit(1)
 				}
+				os.Exit(0)
 			}
 		}
 	}
+	}*/
 	if err := gd(os.Args[1:]...); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		fmt.Fprintln(os.Stderr, "\nis this error unexpected? open an issue! https://github.com/quaadgras/graphics.gd/issues/new/choose")
