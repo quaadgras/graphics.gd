@@ -41,7 +41,7 @@ func (variant Variant) Call(method StringName, args ...Variant) (Variant, error)
 		converted = append(converted, gdunsafe.Variant(pointers.Get(args[i])))
 	}
 	raw, err := gdunsafe.Variant(pointers.Get(variant)).VariantCall(gdunsafe.StringName(pointers.Get(method)[0]), converted...)
-	return pointers.New[Variant](raw), err.Err()
+	return pointers.New[Variant](raw), err
 }
 
 // Iterator returns an iterator for the variant.
@@ -49,7 +49,7 @@ func (variant Variant) Iterator() Iterator {
 	var err gdextension.CallError
 	var raw gdextension.Iterator
 	gdunsafe.Variant(pointers.Get(variant)).IteratorMake(unsafe.Pointer(&raw), unsafe.Pointer(&err))
-	if err.Type != 0 {
+	if err != (gdextension.CallError{}) {
 		panic("failed to initialize iterator")
 	}
 	return Iterator{
@@ -63,7 +63,7 @@ func (variant Variant) Hash() Int { return Int(gdunsafe.Variant(pointers.Get(var
 
 // RecursiveHash returns the hash value of the variant recursively.
 func (variant Variant) RecursiveHash(count Int) Int {
-	return Int(gdunsafe.Variant(pointers.Get(variant)).DeepHash(gdunsafe.Int(count)))
+	return Int(gdunsafe.Variant(pointers.Get(variant)).DeepHash(int64(count)))
 }
 
 // Eval evaluates a binary operator between two variants.

@@ -2,8 +2,6 @@ package Color
 
 import (
 	"math"
-
-	"graphics.gd/variant/Float"
 )
 
 // HSL constructs a color from an OK HSL profile. The hue (h), saturation (s), and
@@ -44,9 +42,9 @@ func HSL(h, s, l float64) RGBA { //gd:Color.from_ok_hsl
 	}
 	r, g, b := oklab_to_linear_srgb(L, C*a_, C*b_)
 	return Clamp(RGBA{
-		Float.X(srgb_transfer_function(r)),
-		Float.X(srgb_transfer_function(g)),
-		Float.X(srgb_transfer_function(b)),
+		float32(srgb_transfer_function(r)),
+		float32(srgb_transfer_function(g)),
+		float32(srgb_transfer_function(b)),
 		1,
 	}, RGBA{}, RGBA{1, 1, 1, 1})
 }

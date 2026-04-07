@@ -11,6 +11,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/threadsafe"
+	"graphics.gd/variant"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Vector2"
@@ -18,23 +19,54 @@ import (
 	"graphics.gd/variant/Vector4"
 )
 
-type Int = int64
+// Variant is the raw representation for a variant value in the engine.
+// It should be destroyed with [Variant.Free] when no longer in use.
 type Variant [3]uint64
-type CallError struct {
-	_ structs.HostLayout
 
-	Type     CallErrorType
-	Argument int32
-	Expected int32
-}
-type CallErrorType uint32
 type ObjectID uint64
 
+// PointerTo is a [Pointer] that points to a value of type T, it should
+// be treated as if it were an [unsafe.Pointer] from a different process.
 type PointerTo[T any] Pointer
 
-type VariadicVariants struct {
-	First PointerTo[PointerTo[Variant]]
-	Count int
+// Variants accessor, used to represent zero or more arguments.
+type Variants struct {
+	first PointerTo[PointerTo[Variant]]
+	count int
+}
+
+// Len returns the number of variants in the [Variants] list.
+func (args Variants) Len() int { return max(0, args.count) }
+
+// ExpectedLen returns an error if the number of variants does not match
+// the expected length.
+func (args Variants) ExpectedLen(n int) Error {
+	if args.count == n {
+		return Error{}
+	}
+	var kind = errorTooFewArguments
+	if args.count > n {
+		kind = errorTooManyArguments
+	}
+	return Error{
+		error:    kind,
+		argument: -1,
+		expected: int32(n),
+	}
+}
+
+// ExpectedArg returns the i-th variant and an error if it does not match
+// the expected type.
+func (args Variants) ExpectedArg(i int, vtype variant.Type) (Variant, Error) {
+	arg := args.Index(i)
+	if arg.Type() != vtype {
+		return arg, Error{
+			error:    errorInvalidArgumentType,
+			argument: int32(i),
+			expected: int32(vtype),
+		}
+	}
+	return arg, Error{}
 }
 
 var callables threadsafe.Handles[ExtensionCallable, CallableID]
@@ -45,18 +77,17 @@ var (
 	functions threadsafe.Handles[ExtensionFunction, FunctionID]
 )
 
-func ExtensionInstances(fn func(ExtensionInstance) bool) {
-	instances.All(fn)
-}
+// ExtensionInstances is an iterator over each active [ExtensionInstance].
+func ExtensionInstances(fn func(ExtensionInstance) bool) { instances.All(fn) }
 
 // ExtensionCallable can be implemented to provide an extension-implemented
-// [Callable] to the engine.
+// [Callable] that can be passed to the engine.
 type ExtensionCallable interface {
 
 	// Call is called whenever the [Callable] is called. It's given a variadic
 	// list of variants and the implementation returns a [Variant]. If the
-	// arguments aren't compatible, return a non-zero error.
-	Call(VariadicVariants) (Variant, CallError)
+	// arguments aren't compatible, return a non-nil [error].
+	Call(Variants) (Variant, Error)
 
 	// IsValid is called to verify that the [Callable] is valid. Return true
 	// if the callable is in a valid state (and callable), otherwise false.
@@ -67,11 +98,11 @@ type ExtensionCallable interface {
 	Hash() uint32
 
 	// UnsafeString is called when the [Callable] is being converted by the
-	// engine into a string. It should string representation of the callable.
+	// engine into a [String]. This should be a human-readable representation.
 	UnsafeString() String
 
 	// ArgumentCount is called to determine how many arguments the [Callable]
-	// expects to receive. Return -1, for variadic arguments.
+	// expects to receive. Return -1, for a variadic number of arguments.
 	ArgumentCount() int
 
 	// Compare is called to compare two different [CustomCallable] values. Return
@@ -79,124 +110,87 @@ type ExtensionCallable interface {
 	Compare(ExtensionCallable) int
 }
 
+// SetInt16 writes a uint16 value to the underlying memory address of the [Pointer].
+func (ptr Pointer) SetInt16(v int16) { ptr.SetUint16(*(*uint16)(unsafe.Pointer(&v))) }
+
+// SetInt32 writes a uint32 value to the underlying memory address of the [Pointer].
 func (ptr Pointer) SetInt32(v int32) {
 	ptr.SetUint32(*(*uint32)(unsafe.Pointer(&v)))
 }
 
-// Shape is used to correctly transfer data for unsafe calls into the engine.
+// Shape is used to represent the shape (structure, size and alignment) for a value
+// being passed to the engine. It's a four bit value that can represent up to 16
+// components. Typically the return value is represented in the lowest four bits,
+// the arguments (including the receiver) are represented in subsequent sets of four
+// bits each, increasing in significance.
+//
+// The [Shape] is used to correctly copy arguments between the engine and Go on
+// platforms where the engine exists in a different address space (ie. on WASM).
 type Shape uint64
 
 const (
-	ShapeEmpty Shape = iota
+	empty Shape = iota // means no data.
 
-	ShapeBytes1
-	ShapeBytes2
-	ShapeBytes4
-	ShapeBytes8
-	ShapeBytes4x2
-	ShapeBytes4x3
-	ShapeBytes8x2
-	ShapeBytes4x4
-	ShapeBytes8x3
-	ShapeBytes4x6
-	ShapeBytes4x9
-	ShapeBytes4x12
-	ShapeBytes4x16
+	bytes1   // shape for a single byte value
+	bytes2   // shape for a two byte value
+	bytes4   // shape for a four byte value
+	bytes8   // shape for an eight byte value
+	bytes4x2 // shape for two 4-byte values
+	bytes4x3 // shape for three 4-byte values
+	bytes8x2 // shape for two 8-byte values
+	bytes4x4 // shape for four 4-byte values
+
 )
 
 const (
-	SizeVariant     Shape = ShapeBytes8x3
-	SizeBool        Shape = ShapeBytes1
-	SizeInt         Shape = ShapeBytes8
-	SizeFloat       Shape = ShapeBytes8
-	SizeVector2     Shape = ShapeBytes4x2
-	SizeVector3     Shape = ShapeBytes4x3
-	SizeVector4     Shape = ShapeBytes4x4
-	SizeColor       Shape = ShapeBytes4x4
-	SizeRect2       Shape = ShapeBytes4x4
-	SizeRect2i      Shape = ShapeBytes4x4
-	SizeVector2i    Shape = ShapeBytes4x2
-	SizeVector3i    Shape = ShapeBytes4x3
-	SizeVector4i    Shape = ShapeBytes4x4
-	SizeTransform2D Shape = ShapeBytes4x6
-	SizeTransform3D Shape = ShapeBytes4x12
-	SizePlane       Shape = ShapeBytes4x4
-	SizeQuaternion  Shape = ShapeBytes4x4
-	SizeAABB        Shape = ShapeBytes4x6
-	SizeBasis       Shape = ShapeBytes4x9
-	SizeProjection  Shape = ShapeBytes4x16
-	SizeRID         Shape = ShapeBytes8
-	SizeCallable    Shape = ShapeBytes8x2
-	SizeSignal      Shape = ShapeBytes8x2
+	ShapeBool     Shape = bytes1   // shape of a [bool]
+	ShapeInt      Shape = bytes8   // shape of an [int64]
+	ShapeFloat    Shape = bytes8   // shape of a [float64]
+	ShapeColor    Shape = bytes4x4 // shape of a [Color.RGBA]
+	ShapeRect2i   Shape = bytes4x4 // shape of a [Rect2i.PositionSize]
+	ShapeVector2i Shape = bytes4x2 // shape of a [Vector2i.XY]
+	ShapeVector3i Shape = bytes4x3 // shape of a [Vector3i.XYZ]
+	ShapeVector4i Shape = bytes4x4 // shape of a [Vector4i.XYZW]
+	ShapeRID      Shape = bytes8   // shape of an [RID.Any]
+	ShapeCallable Shape = bytes8x2 // shape of a [Callable]
+	ShapeSignal   Shape = bytes8x2 // shape of a [Signal]
 
-	SizeCallError Shape = ShapeBytes4x3
+	ShapeError Shape = bytes4x3 // shape of an [Error]
 )
 
-func (shape Shape) SizeResult() (size int) {
-	switch shape & 0xF {
-	case ShapeEmpty:
-		return 0
-	case ShapeBytes1:
-		return 1
-	case ShapeBytes2:
-		return 2
-	case ShapeBytes4:
-		return 4
-	case ShapeBytes8:
-		return 8
-	case ShapeBytes4x2:
-		return 4 * 2
-	case ShapeBytes4x3:
-		return 4 * 3
-	case ShapeBytes8x2:
-		return 8 * 2
-	case ShapeBytes4x4:
-		return 4 * 4
-	case ShapeBytes8x3:
-		return 8 * 3
-	case ShapeBytes4x6:
-		return 4 * 6
-	case ShapeBytes4x9:
-		return 4 * 9
-	case ShapeBytes4x12:
-		return 4 * 12
-	case ShapeBytes4x16:
-		return 4 * 16
-	default:
-		panic("Shape.SizeResult: invalid shape")
-	}
+// Error is the underlying structure for an engine [error].
+type Error struct {
+	_ structs.HostLayout
+
+	error    errorType
+	argument int32
+	expected int32
 }
+
+type errorType uint32
 
 const (
-	CallOK               CallErrorType = iota
-	CallInvalidMethod    CallErrorType = 1
-	CallInvalidArguments CallErrorType = 2
-	CallTooManyArguments CallErrorType = 3
-	CallTooFewArguments  CallErrorType = 4
-	CallInstanceIsNull   CallErrorType = 5
-	CallMethodNotConst   CallErrorType = 6
+	errorInvalidMethod       errorType = 1
+	errorInvalidArgumentType errorType = 2
+	errorTooManyArguments    errorType = 3
+	errorTooFewArguments     errorType = 4
+	errorInstanceIsNull      errorType = 5
+	errorMethodNotConst      errorType = 6
 )
 
-func (err CallError) Err() error {
-	if err.Type == CallOK {
-		return nil
-	}
-	return err
-}
-
-func (err CallError) Error() string {
-	switch err.Type {
-	case CallInvalidMethod:
+func (err Error) Error() string {
+	switch err.error {
+	case errorInvalidMethod:
 		return "Call Invalid Method"
-	case CallInvalidArguments:
+	case errorInvalidArgumentType:
 		return "Call Invalid Arguments"
-	case CallTooManyArguments:
+	case errorTooManyArguments:
 		return "Call Too Many Arguments"
-	case CallTooFewArguments:
+	case errorTooFewArguments:
 		return "Call Too Few Arguments"
-	case CallInstanceIsNull:
+	case errorInstanceIsNull:
 		return "Call Instance Is Null"
-	case CallMethodNotConst:
+	case errorMethodNotConst:
 		return "Call Method Not Const"
 	default:
 		return "Unknown Call Error"
@@ -228,28 +222,12 @@ func alignUp(value, align uint32) uint32 {
 	return (value + (align - 1)) & ^(align - 1)
 }
 
-func (shape Shape) Alignment() int {
-	switch shape {
-	case ShapeEmpty:
-		return 0
-	case ShapeBytes1:
-		return 1
-	case ShapeBytes2:
-		return 2
-	case ShapeBytes4, ShapeBytes4x2, ShapeBytes4x3, ShapeBytes4x4, ShapeBytes4x6, ShapeBytes4x9, ShapeBytes4x12, ShapeBytes4x16:
-		return 4
-	case ShapeBytes8, ShapeBytes8x2, ShapeBytes8x3:
-		return 8
-	default:
-		panic("Shape.Alignment: invalid shape")
-	}
-}
-
+// SizeArguments returns the total size of the argument structure for a [Shape].
 func (shape Shape) SizeArguments() (size int) {
 	for i := 1; i < 16; i++ {
 		var current = (shape >> (i * 4)) & 0xF
 		switch current {
-		case ShapeEmpty:
+		case empty:
 			return size
 		default:
 			size += current.SizeResult()
@@ -343,8 +321,8 @@ type ExtensionInstance interface {
 
 type ExtensionFunction interface {
 	PointerCall(ExtensionInstance, Pointer, Pointer)
-	CheckedCall(ExtensionInstance, VariadicVariants) Variant
-	DynamicCall(ExtensionInstance, VariadicVariants) (Variant, CallError)
+	CheckedCall(ExtensionInstance, Variants) Variant
+	DynamicCall(ExtensionInstance, Variants) (Variant, Error)
 }
 
 type ExtensionClass interface {

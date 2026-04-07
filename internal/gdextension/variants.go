@@ -9,7 +9,7 @@ func (variant VariantType) Call(method StringName, args ...Variant) (Variant, er
 		converted[i] = gdunsafe.Variant(a)
 	}
 	raw, callErr := gdunsafe.VariantType(variant).StaticCall(gdunsafe.StringName(method[0]), converted...)
-	return Variant(raw), CallError(callErr)
+	return Variant(raw), callErr
 }
 
 // New calls the variant constructor with the given arguments and returns the
@@ -20,5 +20,5 @@ func (variant VariantType) New(args ...Variant) (Variant, error) {
 		converted[i] = gdunsafe.Variant(a)
 	}
 	raw, callErr := gdunsafe.VariantType(variant).Make(converted...)
-	return Variant(raw), CallError(callErr)
+	return Variant(raw), callErr
 }

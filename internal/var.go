@@ -98,7 +98,7 @@ func (iter Iterator) Value() Variant {
 	var err gdextension.CallError
 	var raw gdextension.Variant
 	gdunsafe.Variant(pointers.Get(iter.self)).IteratorLoad(gdunsafe.Variant(pointers.Get(iter.iter)), unsafe.Pointer(&raw), unsafe.Pointer(&err))
-	if err.Type != 0 {
+	if err != (gdextension.CallError{}) {
 		panic("failed to get iterator value")
 	}
 	return pointers.New[Variant](raw)

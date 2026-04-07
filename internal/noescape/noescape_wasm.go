@@ -40,7 +40,7 @@ func (method MethodForClass) Call(self gdextension.Object, args ...gdextension.V
 	var result gdextension.Variant
 	var err gdextension.CallError
 	object_method_call_noescape(self, gdextension.MethodForClass(method), &result, args, &err)
-	return result, err.Err()
+	return result, err
 }
 
 //go:noescape

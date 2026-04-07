@@ -114,7 +114,7 @@ func linkTypesetCreation() {
 		vtype, _ := variantTypeFromName(field.Name)
 		for i := 0; i < field.Type.Len(); i++ {
 			value := reflect.NewAt(field.Type.Elem(), unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset+uintptr(i)*esize))
-			*(value.Interface().(*gdextension.FunctionID)) = gdextension.FunctionID(gdunsafe.VariantTypeConstructor(gdunsafe.VariantType(vtype), gdunsafe.Int(i)))
+			*(value.Interface().(*gdextension.FunctionID)) = gdextension.FunctionID(gdunsafe.VariantTypeConstructor(gdunsafe.VariantType(vtype), int64(i)))
 		}
 	}
 }

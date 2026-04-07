@@ -180,7 +180,7 @@ func (proxy StringProxy) Index(raw complex128, n int) byte {
 	if proxy.indirect != nil {
 		return StringProxy{}.Index(pointers.Pack(*proxy.indirect), n)
 	}
-	return byte(gdunsafe.String(pointers.Get(pointers.Load[String](raw))[0]).Access(gdunsafe.Int(n)))
+	return byte(gdunsafe.String(pointers.Get(pointers.Load[String](raw))[0]).Access(int64(n)))
 }
 func (proxy StringProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Unicode) {
 	if proxy.indirect != nil {
@@ -260,7 +260,7 @@ func (NodePathProxy) String(raw complex128) string {
 	return pointers.Load[NodePath](raw).String()
 }
 func (NodePathProxy) Index(raw complex128, n int) byte {
-	return byte(gdunsafe.String(pointers.Get(pointers.Load[NodePath](raw).InternalString())[0]).Access(gdunsafe.Int(n)))
+	return byte(gdunsafe.String(pointers.Get(pointers.Load[NodePath](raw).InternalString())[0]).Access(int64(n)))
 }
 func (NodePathProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Unicode) {
 	s := pointers.Load[NodePath](raw)
@@ -326,7 +326,7 @@ func (StringNameProxy) String(raw complex128) string {
 func (StringNameProxy) Index(raw complex128, n int) byte {
 	name := pointers.Load[StringName](raw)
 	s := name.Substr(0, name.Length())
-	return byte(gdunsafe.String(pointers.Get(s)[0]).Access(gdunsafe.Int(n)))
+	return byte(gdunsafe.String(pointers.Get(s)[0]).Access(int64(n)))
 }
 func (StringNameProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Unicode) {
 	s := pointers.Load[StringName](raw)

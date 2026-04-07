@@ -184,12 +184,12 @@ func (w *virtualFunctionWrapper) PointerCall(inst gdunsafe.ExtensionInstance, ar
 	gdreference.Barrier()
 }
 
-func (w *virtualFunctionWrapper) CheckedCall(gdunsafe.ExtensionInstance, gdunsafe.VariadicVariants) gdunsafe.Variant {
+func (w *virtualFunctionWrapper) CheckedCall(gdunsafe.ExtensionInstance, gdunsafe.Variants) gdunsafe.Variant {
 	return gdunsafe.Variant{}
 }
 
-func (w *virtualFunctionWrapper) DynamicCall(gdunsafe.ExtensionInstance, gdunsafe.VariadicVariants) (gdunsafe.Variant, gdunsafe.CallError) {
-	return gdunsafe.Variant{}, gdunsafe.CallError{Type: gdunsafe.CallInvalidMethod}
+func (w *virtualFunctionWrapper) DynamicCall(gdunsafe.ExtensionInstance, gdunsafe.Variants) (gdunsafe.Variant, gdunsafe.Error) {
+	panic("dynamic call not supported for virtual functions")
 }
 
 // methodFunctionWrapper implements gdunsafe.ExtensionFunction for registered methods.
@@ -206,14 +206,13 @@ func (w *methodFunctionWrapper) PointerCall(inst gdunsafe.ExtensionInstance, arg
 	gdreference.Barrier()
 }
 
-func (w *methodFunctionWrapper) CheckedCall(inst gdunsafe.ExtensionInstance, vargs gdunsafe.VariadicVariants) gdunsafe.Variant {
+func (w *methodFunctionWrapper) CheckedCall(inst gdunsafe.ExtensionInstance, vargs gdunsafe.Variants) gdunsafe.Variant {
 	defer gd.Recover()
 	defer gdreference.Barrier()
 	var receiver *instanceImplementation
 	if inst != nil {
 		receiver = inst.(*instanceWrapper).impl
 	}
-	vargs.Count = w.impl.arg_count
 	var variants = make([]gd.Variant, w.impl.arg_count)
 	for i := range w.impl.arg_count {
 		variants[i] = pointers.Let[gd.Variant](vargs.Index(i))
@@ -226,24 +225,24 @@ func (w *methodFunctionWrapper) CheckedCall(inst gdunsafe.ExtensionInstance, var
 	return pointers.Get(v)
 }
 
-func (w *methodFunctionWrapper) DynamicCall(inst gdunsafe.ExtensionInstance, vargs gdunsafe.VariadicVariants) (gdunsafe.Variant, gdunsafe.CallError) {
+func (w *methodFunctionWrapper) DynamicCall(inst gdunsafe.ExtensionInstance, vargs gdunsafe.Variants) (gdunsafe.Variant, gdunsafe.Error) {
 	defer gd.Recover()
 	defer gdreference.Barrier()
 	var receiver *instanceImplementation
 	if inst != nil {
 		receiver = inst.(*instanceWrapper).impl
 	}
-	var variants = make([]gd.Variant, vargs.Count)
-	for i := range vargs.Count {
+	var variants = make([]gd.Variant, vargs.Len())
+	for i := range vargs.Len() {
 		variants[i] = pointers.Let[gd.Variant](vargs.Index(i))
 	}
 	v, err := w.impl.dynamic(receiver, variants...)
 	if err != nil {
-		return gdunsafe.Variant{}, gdunsafe.CallError{Type: gdunsafe.CallInvalidMethod}
+		panic("TODO convert to gdunsafe.Error")
 	}
 	raw, ok := pointers.End(v)
 	if ok {
-		return raw, gdunsafe.CallError{}
+		return raw, gdunsafe.Error{}
 	}
-	return pointers.Get(v), gdunsafe.CallError{}
+	return pointers.Get(v), gdunsafe.Error{}
 }

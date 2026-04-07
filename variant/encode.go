@@ -98,81 +98,81 @@ func Marshal(value any) ([]byte, error) { //gd:var_to_bytes var_to_bytes_with_ob
 		}
 	case Vector2.XY:
 		buf = binary.LittleEndian.AppendUint32(buf, typeVector2)
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.X))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Y))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.X)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Y)))
 	case Rect2.PositionSize:
 		buf = binary.LittleEndian.AppendUint32(buf, typeRect2)
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Position.X))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Position.Y))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Size.X))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Size.Y))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Position.X)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Position.Y)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Size.X)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Size.Y)))
 	case Vector3.XYZ:
 		buf = binary.LittleEndian.AppendUint32(buf, typeVector3)
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.X))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Y))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Z))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.X)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Y)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Z)))
 	case Transform2D.OriginXY:
 		buf = binary.LittleEndian.AppendUint32(buf, typeTransform2D)
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.X.X))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.X.Y))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Y.X))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Y.Y))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Origin.X))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Origin.Y))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.X.X)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.X.Y)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Y.X)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Y.Y)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Origin.X)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Origin.Y)))
 	case Plane.NormalD:
 		buf = binary.LittleEndian.AppendUint32(buf, typePlane)
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Normal.X))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Normal.Y))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Normal.Z))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.D))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Normal.X)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Normal.Y)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Normal.Z)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.D)))
 	case Quaternion.IJKX:
 		buf = binary.LittleEndian.AppendUint32(buf, typeQuaternion)
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.I))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.J))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.K))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.X))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.I)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.J)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.K)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.X)))
 	case AABB.PositionSize:
 		buf = binary.LittleEndian.AppendUint32(buf, typeAABB)
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Position.X))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Position.Y))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Position.Z))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Size.X))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Size.Y))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Size.Z))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Position.X)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Position.Y)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Position.Z)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Size.X)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Size.Y)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Size.Z)))
 	case Basis.XYZ:
 		buf = binary.LittleEndian.AppendUint32(buf, typeBasis)
 		// Serialize in row-major order: X.X, Y.X, Z.X, X.Y, Y.Y, Z.Y, X.Z, Y.Z, Z.Z
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.X.X)) // m00
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Y.X)) // m01
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Z.X)) // m02
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.X.Y)) // m10
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Y.Y)) // m11
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Z.Y)) // m12
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.X.Z)) // m20
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Y.Z)) // m21
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Z.Z)) // m22
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.X.X))) // m00
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Y.X))) // m01
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Z.X))) // m02
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.X.Y))) // m10
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Y.Y))) // m11
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Z.Y))) // m12
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.X.Z))) // m20
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Y.Z))) // m21
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Z.Z))) // m22
 	case Transform3D.BasisOrigin:
 		buf = binary.LittleEndian.AppendUint32(buf, typeTransform3D)
 		// Serialize Basis in row-major order: X.X, Y.X, Z.X, X.Y, Y.Y, Z.Y, X.Z, Y.Z, Z.Z
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Basis.X.X)) // m00
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Basis.Y.X)) // m01
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Basis.Z.X)) // m02
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Basis.X.Y)) // m10
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Basis.Y.Y)) // m11
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Basis.Z.Y)) // m12
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Basis.X.Z)) // m20
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Basis.Y.Z)) // m21
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Basis.Z.Z)) // m22
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Basis.X.X))) // m00
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Basis.Y.X))) // m01
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Basis.Z.X))) // m02
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Basis.X.Y))) // m10
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Basis.Y.Y))) // m11
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Basis.Z.Y))) // m12
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Basis.X.Z))) // m20
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Basis.Y.Z))) // m21
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Basis.Z.Z))) // m22
 		// Serialize Origin
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Origin.X))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Origin.Y))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.Origin.Z))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Origin.X)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Origin.Y)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.Origin.Z)))
 	case Color.RGBA:
 		buf = binary.LittleEndian.AppendUint32(buf, typeColor)
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.R))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.G))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.B))
-		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(value.A))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.R)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.G)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.B)))
+		buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(value.A)))
 	case Path.ToNode:
 		buf = binary.LittleEndian.AppendUint32(buf, typeNodePath)
 		buf = binary.LittleEndian.AppendUint32(buf, uint32(String.Length(value)))
@@ -216,16 +216,16 @@ func Marshal(value any) ([]byte, error) { //gd:var_to_bytes var_to_bytes_with_ob
 		buf = binary.LittleEndian.AppendUint32(buf, typeVector2Array)
 		buf = binary.LittleEndian.AppendUint32(buf, uint32(len(value)))
 		for _, v := range value {
-			buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(v.X))
-			buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(v.Y))
+			buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(v.X)))
+			buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(v.Y)))
 		}
 	case []Vector3.XYZ:
 		buf = binary.LittleEndian.AppendUint32(buf, typeVector3Array)
 		buf = binary.LittleEndian.AppendUint32(buf, uint32(len(value)))
 		for _, v := range value {
-			buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(v.X))
-			buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(v.Y))
-			buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(v.Z))
+			buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(v.X)))
+			buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(v.Y)))
+			buf = binary.LittleEndian.AppendUint32(buf, math.Float32bits(float32(v.Z)))
 		}
 	case []Color.RGBA:
 		buf = binary.LittleEndian.AppendUint32(buf, typeColorArray)

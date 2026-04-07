@@ -410,18 +410,6 @@ const (
 	MethodFlagsDefault MethodFlags = MethodFlagNormal
 )
 
-type CallErrorType = gdunsafe.CallErrorType
-
-const (
-	CallOK               CallErrorType = iota
-	CallInvalidMethod    CallErrorType = 1
-	CallInvalidArguments CallErrorType = 2
-	CallTooManyArguments CallErrorType = 3
-	CallTooFewArguments  CallErrorType = 4
-	CallInstanceIsNull   CallErrorType = 5
-	CallMethodNotConst   CallErrorType = 6
-)
-
 // Shape is used to correctly transfer data for unsafe calls into the engine.
 type Shape = gdunsafe.Shape
 
@@ -647,7 +635,7 @@ func init() {
 	}
 }
 
-type CallError = gdunsafe.CallError
+type CallError = gdunsafe.Error
 
 type Packable interface {
 	byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String

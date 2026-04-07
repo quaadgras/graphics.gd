@@ -23,12 +23,12 @@ func IntsCollectAs[T, S ~int | ~int64 | ~int32](seq iter.Seq[S]) []T {
 }
 
 func (a Array) Index(index int64) Variant {
-	return pointers.Raw[Variant](gdunsafe.Array(pointers.Get(a)[0]).Get(gdunsafe.Int(index))).Copy()
+	return pointers.Raw[Variant](gdunsafe.Array(pointers.Get(a)[0]).Get(int64(index))).Copy()
 }
 
 func (a Array) SetIndex(index int64, value Variant) {
 	raw, _ := pointers.End(value.Copy())
-	gdunsafe.Array(pointers.Get(a)[0]).Set(gdunsafe.Int(index), raw)
+	gdunsafe.Array(pointers.Get(a)[0]).Set(int64(index), raw)
 }
 
 func (a Array) Free() {

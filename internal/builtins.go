@@ -555,7 +555,7 @@ func ObjectCall(o gdreference.Object, method StringName, args ...Variant) (Varia
 		result, err := gdunsafe.Object(self).ScriptCall(gdunsafe.StringName(name[0]),
 			converted...,
 		)
-		return pointers.New[Variant](result), err.Err()
+		return pointers.New[Variant](result), err
 	}
 	return NewVariant(o).Call(method, args...) // FIXME is this ok?
 }

@@ -13,16 +13,16 @@ import (
 // usually ranging from 0.0 to 1.0. In some cases, it may support values
 // greater than 1.0, for overbright or HDR (High Dynamic Range) colors.
 type RGBA = struct {
-	R Float.X
-	G Float.X
-	B Float.X
-	A Float.X
+	R float32
+	G float32
+	B float32
+	A float32
 }
 
 type RGB = struct {
-	R Float.X
-	G Float.X
-	B Float.X
+	R float32
+	G float32
+	B float32
 }
 
 // Less compares two colors by first checking if the R value of the left color is less than the R value of the right color.
@@ -39,10 +39,10 @@ func Less(a, b RGBA) bool { //gd:Color<Color
 // (g), blue (b), and alpha (a) bytes from 0 to 255.
 func Bytes(r, g, b, a byte) RGBA { //gd:Color.from_rgba8
 	return RGBA{
-		R: Float.X(r) / 255,
-		G: Float.X(g) / 255,
-		B: Float.X(b) / 255,
-		A: Float.X(a) / 255,
+		R: float32(r) / 255,
+		G: float32(g) / 255,
+		B: float32(b) / 255,
+		A: float32(a) / 255,
 	}
 }
 
@@ -83,7 +83,7 @@ func Clamp(c RGBA, minimum, maximum RGBA) RGBA { //gd:Color.clamp
 
 // Darkened returns a new color resulting from making this color darker by the specified amount
 // (ratio from 0.0 to 1.0). See also [Lightened].
-func Darkened(c RGBA, amount Float.X) RGBA { //gd:Color.darkened
+func Darkened(c RGBA, amount float32) RGBA { //gd:Color.darkened
 	return RGBA{
 		c.R * (1.0 - amount),
 		c.G * (1.0 - amount),
@@ -99,7 +99,7 @@ func Darkened(c RGBA, amount Float.X) RGBA { //gd:Color.darkened
 // Note: [Luminance] relies on the color being in the linear color space to return an accurate
 // relative luminance value. If the color is in the sRGB color space, use srgb_to_linear to convert
 // it to the linear color space first.
-func Luminance(c RGBA) Float.X { //gd:Color.get_luminance
+func Luminance(c RGBA) float32 { //gd:Color.get_luminance
 	return 0.2126*c.R + 0.7152*c.G + 0.0722*c.B
 }
 
@@ -116,7 +116,7 @@ func IsApproximatelyEqual(a, b RGBA) bool { //gd:Color.is_equal_approx
 
 // Lerp returns the linear interpolation between this color's components and to's components.
 // The interpolation factor weight should be between 0.0 and 1.0 (inclusive).
-func Lerp(a, b RGBA, weight Float.X) RGBA { //gd:Color.lerp
+func Lerp(a, b RGBA, weight float32) RGBA { //gd:Color.lerp
 	return RGBA{
 		Float.Lerp(a.R, b.R, weight),
 		Float.Lerp(a.G, b.G, weight),
@@ -127,7 +127,7 @@ func Lerp(a, b RGBA, weight Float.X) RGBA { //gd:Color.lerp
 
 // Lightened returns a new color resulting from making this color lighter by the specified amount
 // which should be a ratio from 0.0 to 1.0. See also [Darkened].
-func Lightened(c RGBA, amount Float.X) RGBA { //gd:Color.lightened
+func Lightened(c RGBA, amount float32) RGBA { //gd:Color.lightened
 	return RGBA{
 		c.R + (1.0-c.R)*amount,
 		c.G + (1.0-c.G)*amount,
@@ -284,14 +284,14 @@ func Neg(a RGBA) RGBA { //gd:-Color
 	return RGBA{-a.R, -a.G, -a.B, -a.A}
 }
 func AddX[X Float.Any | Int.Any](a RGBA, b X) RGBA { //gd:Color+float
-	return RGBA{a.R + Float.X(b), a.G + Float.X(b), a.B + Float.X(b), a.A + Float.X(b)}
+	return RGBA{a.R + float32(b), a.G + float32(b), a.B + float32(b), a.A + float32(b)}
 }
 func SubX[X Float.Any | Int.Any](a RGBA, b X) RGBA { //gd:Color-float
-	return RGBA{a.R - Float.X(b), a.G - Float.X(b), a.B - Float.X(b), a.A - Float.X(b)}
+	return RGBA{a.R - float32(b), a.G - float32(b), a.B - float32(b), a.A - float32(b)}
 }
 func MulX[X Float.Any | Int.Any](a RGBA, b X) RGBA { //gd:Color*float
-	return RGBA{a.R * Float.X(b), a.G * Float.X(b), a.B * Float.X(b), a.A * Float.X(b)}
+	return RGBA{a.R * float32(b), a.G * float32(b), a.B * float32(b), a.A * float32(b)}
 }
 func DivX[X Float.Any | Int.Any](a RGBA, b X) RGBA { //gd:Color/float
-	return RGBA{a.R / Float.X(b), a.G / Float.X(b), a.B / Float.X(b), a.A / Float.X(b)}
+	return RGBA{a.R / float32(b), a.G / float32(b), a.B / float32(b), a.A / float32(b)}
 }

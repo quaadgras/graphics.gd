@@ -7,10 +7,10 @@ import (
 // RGBE9995 decodes a Color from a RGBE9995 format integer where the three color components have
 // 9 bits of precision and all three share a single 5-bit exponent.
 func RGBE9995(rgbe uint32) RGBA { //gd:Color.from_rgbe9995
-	var r = Float.X(rgbe & 0x1ff)
-	var g = Float.X((rgbe >> 9) & 0x1ff)
-	var b = Float.X((rgbe >> 18) & 0x1ff)
-	var e = Float.X((rgbe >> 27))
+	var r = float32(rgbe & 0x1ff)
+	var g = float32((rgbe >> 9) & 0x1ff)
+	var b = float32((rgbe >> 18) & 0x1ff)
+	var e = float32((rgbe >> 27))
 	var m = Float.Pow(2.0, e-15.0-9.0)
 	var (
 		rd = r * m
@@ -22,10 +22,10 @@ func RGBE9995(rgbe uint32) RGBA { //gd:Color.from_rgbe9995
 
 // HSV constructs a color from an HSV profile. The hue (h), saturation (s), and value (v) are typically
 // between 0.0 and 1.0.
-func HSV(h, s, v Float.X) RGBA { //gd:Color.from_hsv
+func HSV(h, s, v float32) RGBA { //gd:Color.from_hsv
 	var (
-		i, f, p, q, t Float.X
-		a             Float.X = 1
+		i, f, p, q, t float32
+		a             float32 = 1
 	)
 	if s == 0.0 {
 		return RGBA{v, v, v, a} // Achromatic (gray)
@@ -55,7 +55,7 @@ func HSV(h, s, v Float.X) RGBA { //gd:Color.from_hsv
 
 // HSVA constructs a color from an HSV profile. The hue (h), saturation (s), and value (v) are typically
 // between 0.0 and 1.0. Includes alpha.
-func HSVA(h, s, v, a Float.X) RGBA {
+func HSVA(h, s, v, a float32) RGBA {
 	c := HSV(h, s, v)
 	c.A = a
 	return c
@@ -65,13 +65,13 @@ func HSVA(h, s, v, a Float.X) RGBA {
 //
 // The int is best visualized with hexadecimal notation ("0x" prefix, making it "0xRRGGBBAA").
 func Uint32(hex uint32) RGBA { //gd:Color.hex
-	var a = Float.X(hex&0xFF) / 255
+	var a = float32(hex&0xFF) / 255
 	hex >>= 8
-	var b = Float.X(hex&0xFF) / 255
+	var b = float32(hex&0xFF) / 255
 	hex >>= 8
-	var g = Float.X(hex&0xFF) / 255
+	var g = float32(hex&0xFF) / 255
 	hex >>= 8
-	var r = Float.X(hex&0xFF) / 255
+	var r = float32(hex&0xFF) / 255
 	return RGBA{r, g, b, a}
 }
 
@@ -88,13 +88,13 @@ func AsUint32(c RGBA) uint32 { //gd:Color.to_rgba32
 //
 // The int is best visualized with hexadecimal notation ("0x" prefix, making it "0xRRRRGGGGBBBBAAAA").
 func Uint64(hex int64) RGBA { //gd:Color.hex64
-	var a = Float.X(hex&0xFFFF) / 65535
+	var a = float32(hex&0xFFFF) / 65535
 	hex >>= 16
-	var b = Float.X(hex&0xFFFF) / 65535
+	var b = float32(hex&0xFFFF) / 65535
 	hex >>= 16
-	var g = Float.X(hex&0xFFFF) / 65535
+	var g = float32(hex&0xFFFF) / 65535
 	hex >>= 16
-	var r = Float.X(hex&0xFFFF) / 65535
+	var r = float32(hex&0xFFFF) / 65535
 	return RGBA{r, g, b, a}
 }
 
@@ -127,7 +127,7 @@ func Hex(rgba string) RGBA { //gd:Color.html
 	} else if len(color) == 3 {
 		alpha = false
 	}
-	var r, g, b, a Float.X = 1.0, 1.0, 1.0, 1.0
+	var r, g, b, a float32 = 1.0, 1.0, 1.0, 1.0
 	if is_shorthand {
 		r = _parse_col4(color, 0) / 15
 		g = _parse_col4(color, 1) / 15
@@ -146,19 +146,19 @@ func Hex(rgba string) RGBA { //gd:Color.html
 	return RGBA{r, g, b, a}
 }
 
-func _parse_col4(s string, ofs int) Float.X {
+func _parse_col4(s string, ofs int) float32 {
 	var character = s[ofs]
 	if character >= '0' && character <= '9' {
-		return Float.X(character - '0')
+		return float32(character - '0')
 	} else if character >= 'a' && character <= 'f' {
-		return Float.X(character) + Float.X(10-'a')
+		return float32(character) + float32(10-'a')
 	} else if character >= 'A' && character <= 'F' {
-		return Float.X(character) + Float.X(10-'A')
+		return float32(character) + float32(10-'A')
 	}
 	return -1
 }
 
-func _parse_col8(s string, ofs int) Float.X {
+func _parse_col8(s string, ofs int) float32 {
 	return _parse_col4(s, ofs)*16 + _parse_col4(s, ofs+1)
 }
 

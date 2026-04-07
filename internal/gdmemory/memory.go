@@ -96,7 +96,7 @@ func LoadResult[T ~unsafe.Pointer | *gdextension.Variant](shape gdextension.Shap
 	if size == 0 {
 		return
 	}
-	defer gdunsafe.Clear(gdunsafe.Pointer(from), gdunsafe.Int(shape.SizeResult()))
+	defer gdunsafe.Clear(gdunsafe.Pointer(from), int64(shape.SizeResult()))
 	for size > 0 {
 		switch {
 		case size >= 4:
@@ -134,7 +134,7 @@ func Int64frombits(bits uint64) int64 {
 }
 
 func CopyBufferToEngine(buf []byte) gdextension.Pointer {
-	ptr := gdunsafe.Malloc(gdunsafe.Int(len(buf)))
+	ptr := gdunsafe.Malloc(int64(len(buf)))
 	off := gdunsafe.Pointer(0)
 	for len(buf) > 0 {
 		switch {

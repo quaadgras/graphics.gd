@@ -11,6 +11,7 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/threadsafe"
+	"graphics.gd/variant"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	CallableType "graphics.gd/variant/Callable"
@@ -27,28 +28,25 @@ type comparableCallable struct {
 	id any // comparable
 }
 
-func (c comparableCallable) Call(args gdunsafe.VariadicVariants) (gdunsafe.Variant, gdunsafe.CallError) {
+func (c comparableCallable) Call(args gdunsafe.Variants) (gdunsafe.Variant, gdunsafe.Error) {
 	defer Recover()
 	switch cb := c.fn.(type) {
 	case func():
 		cb()
-		return gdunsafe.Variant{}, gdunsafe.CallError{}
+		return gdunsafe.Variant{}, gdunsafe.Error{}
 	case func() int:
 		raw, _ := pointers.End(CutVariant(cb(), true))
-		return raw, gdunsafe.CallError{}
+		return raw, gdunsafe.Error{}
 	}
-	vargs := make([]reflect.Value, min(args.Count, 16))
+	vargs := make([]reflect.Value, min(args.Len(), 16))
 	rtype := reflect.TypeOf(c.fn)
-	for i := range args.Count {
+	for i := range args.Len() {
 		var to_type reflect.Type
 		if rtype.IsVariadic() && i >= rtype.NumIn()-1 {
 			to_type = rtype.In(rtype.NumIn() - 1).Elem()
 		} else {
 			if i >= rtype.NumIn() {
-				return gdunsafe.Variant{}, gdunsafe.CallError{
-					Type:     gdextension.CallTooManyArguments,
-					Expected: int32(rtype.NumIn()),
-				}
+				return gdunsafe.Variant{}, args.ExpectedLen(rtype.NumIn())
 			}
 			to_type = rtype.In(i)
 		}
@@ -56,25 +54,18 @@ func (c comparableCallable) Call(args gdunsafe.VariadicVariants) (gdunsafe.Varia
 		vargs[i], err = ConvertToDesiredGoType(pointers.Let[Variant](args.Index(i)), to_type)
 		if err != nil {
 			vtype, _ := VariantTypeOf(rtype.In(i))
-			return gdunsafe.Variant{}, gdunsafe.CallError{
-				Type:     gdextension.CallInvalidArguments,
-				Argument: int32(i),
-				Expected: int32(vtype),
-			}
+			return args.ExpectedArg(i, variant.Type(vtype))
 		}
 	}
 	if len(vargs) < rtype.NumIn() && (!rtype.IsVariadic() && len(vargs) == rtype.NumIn()-1) {
-		return gdunsafe.Variant{}, gdunsafe.CallError{
-			Type:     gdextension.CallTooFewArguments,
-			Expected: int32(rtype.NumIn()),
-		}
+		return gdunsafe.Variant{}, args.ExpectedLen(rtype.NumIn())
 	}
 	results := reflect.ValueOf(c.fn).Call(vargs)
 	if len(results) > 0 {
 		raw, _ := pointers.End(CutVariant(results[0].Interface(), true))
-		return raw, gdunsafe.CallError{}
+		return raw, gdunsafe.Error{}
 	}
-	return gdunsafe.Variant{}, gdunsafe.CallError{}
+	return gdunsafe.Variant{}, gdunsafe.Error{}
 }
 
 func (c comparableCallable) IsValid() bool {

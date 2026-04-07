@@ -7,6 +7,7 @@ import "C"
 import (
 	"unsafe"
 
+	"graphics.gd/variant"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Vector2"
 	"graphics.gd/variant/Vector3"
@@ -39,23 +40,26 @@ type (
 func toVariant(v C.Variant) Variant {
 	return Variant{uint64(v.tag), uint64(v.payload[0]), uint64(v.payload[1])}
 }
-func toCallError(cerr C.CallError) CallError {
-	return CallError{Type: CallErrorType(cerr.error), Expected: int32(cerr.expected), Argument: int32(cerr.argument)}
+func toCallError(cerr C.CallError) error {
+	if cerr.error == 0 {
+		return nil
+	}
+	return Error{error: errorType(cerr.error), expected: int32(cerr.expected), argument: int32(cerr.argument)}
 }
 
-func (args VariadicVariants) Index(i int) Variant {
-	if i >= args.Count || i < 0 {
+func (args Variants) Index(i int) Variant {
+	if args.count > 0 && (i >= args.count || i < 0) {
 		panic("index out of range")
 	}
-	slot := unsafe.Pointer(uintptr(args.First) + unsafe.Sizeof(Pointer(0))*uintptr(i))
+	slot := unsafe.Pointer(uintptr(args.first) + unsafe.Sizeof(Pointer(0))*uintptr(i))
 	return *(*Variant)(*(*unsafe.Pointer)(slot))
 }
 
-func (array Array) Set(index Int, value Variant) {
+func (array Array) Set(index int64, value Variant) {
 	C.gd_array_set(C.Array(array), C.int64_t(index), C.uint64_t(value[0]), C.uint64_t(value[1]), C.uint64_t(value[2]))
 }
 
-func (array Array) Get(index Int) Variant {
+func (array Array) Get(index int64) Variant {
 	var r C.Variant
 	C.gd_array_get(C.Array(array), C.int64_t(index), &r)
 	return toVariant(r)
@@ -72,12 +76,12 @@ func VersionTimestamp() uint64 { return uint64(C.gd_version_timestamp()) }
 func VersionString() String    { return String(C.gd_version_string()) }
 func LibraryLocation() String  { return String(C.gd_library_location()) }
 
-func Malloc(size Int) Pointer    { return Pointer(C.gd_memory_malloc(C.int64_t(size))) }
-func Sizeof(name StringName) Int { return Int(C.gd_memory_sizeof(C.uintptr_t(name))) }
-func Resize(ptr Pointer, size Int) Pointer {
+func Malloc(size int64) Pointer    { return Pointer(C.gd_memory_malloc(C.int64_t(size))) }
+func Sizeof(name StringName) int64 { return int64(C.gd_memory_sizeof(C.uintptr_t(name))) }
+func Resize(ptr Pointer, size int64) Pointer {
 	return Pointer(C.gd_memory_resize(C.UnsafePointer(ptr), C.int64_t(size)))
 }
-func Clear(ptr Pointer, size Int) { C.gd_memory_clear(C.UnsafePointer(ptr), C.int64_t(size)) }
+func Clear(ptr Pointer, size int64) { C.gd_memory_clear(C.UnsafePointer(ptr), C.int64_t(size)) }
 
 func (ptr Pointer) Byte() byte     { return *(*byte)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) }
 func (ptr Pointer) Uint16() uint16 { return *(*uint16)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) }
@@ -106,10 +110,10 @@ func (ptr Pointer) Free() { C.gd_memory_free(C.UnsafePointer(ptr)) }
 
 // String operations
 
-func (s String) Access(idx Int) int32 {
+func (s String) Access(idx int64) int32 {
 	return int32(C.gd_string_access(C.uintptr_t(s), C.int64_t(idx)))
 }
-func (s String) Resize(size Int) String {
+func (s String) Resize(size int64) String {
 	return String(C.gd_string_resize(C.uintptr_t(s), C.int64_t(size)))
 }
 func (s String) UnsafePtr() Pointer {
@@ -127,8 +131,8 @@ func (enc StringEncoding) String(s string) String {
 		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
 }
 
-func (s String) Encode(enc StringEncoding, buf []byte) Int {
-	return Int(C.gd_string_encode(C.uint8_t(enc), C.uintptr_t(s),
+func (s String) Encode(enc StringEncoding, buf []byte) int64 {
+	return int64(C.gd_string_encode(C.uint8_t(enc), C.uintptr_t(s),
 		(*C.char)(unsafe.Pointer(unsafe.SliceData(buf))), C.int64_t(len(buf))))
 }
 
@@ -149,11 +153,11 @@ func Log(level LogLevel, text, code, fn, file string, line int32, notify_editor 
 func (ptr PointerTo[T]) Get() T  { return *(*T)(unsafe.Pointer(ptr)) }
 func (ptr PointerTo[T]) Set(v T) { *(*T)(unsafe.Pointer(ptr)) = v }
 
-func (p PackedArray[T]) Access(idx Int) PointerTo[T] {
+func (p PackedArray[T]) Access(idx int64) PointerTo[T] {
 	return PointerTo[T](C.gd_packed_array_access(C.uint32_t(p.Type()), C.uintptr_t(p[0]), C.uintptr_t(p[1]), C.int64_t(idx)))
 }
 
-func (p PackedArray[T]) Modify(idx Int) PointerTo[T] {
+func (p PackedArray[T]) Modify(idx int64) PointerTo[T] {
 	return PointerTo[T](C.gd_packed_array_modify(C.uint32_t(p.Type()), C.uintptr_t(p[0]), C.uintptr_t(p[1]), C.int64_t(idx)))
 }
 
@@ -161,14 +165,14 @@ func (t VariantType) Name() String {
 	return String(C.gd_variant_type_name(C.uint32_t(t)))
 }
 
-func (t VariantType) Make(args ...Variant) (Variant, CallError) {
+func (t VariantType) Make(args ...Variant) (Variant, error) {
 	var value C.Variant
 	var err C.CallError
 	C.gd_variant_type_make(C.uint32_t(t), &value, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
 	return toVariant(value), toCallError(err)
 }
 
-func (t VariantType) StaticCall(method StringName, args ...Variant) (Variant, CallError) {
+func (t VariantType) StaticCall(method StringName, args ...Variant) (Variant, error) {
 	var value C.Variant
 	var err C.CallError
 	C.gd_variant_type_call(C.uint32_t(t), C.uintptr_t(method), &value, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
@@ -199,7 +203,7 @@ func VariantTypeFetchConstant(vtype VariantType, constant StringName, result uns
 	C.gd_variant_type_fetch_constant(C.uint32_t(vtype), C.uintptr_t(constant), C.UnsafePointer(result))
 }
 
-func VariantTypeConstructor(vtype VariantType, n Int) FunctionID {
+func VariantTypeConstructor(vtype VariantType, n int64) FunctionID {
 	return FunctionID(C.gd_variant_type_unsafe_constructor(C.uint32_t(vtype), C.int64_t(n)))
 }
 
@@ -248,9 +252,9 @@ func MakeCallable(impl ExtensionCallable, obj ObjectID) Callable {
 
 //export gd_on_callable_called
 func gd_on_callable_called(c C.CallableID, ret *C.Variant, argc C.Int, args C.VariadicVariants, err *C.CallError) {
-	r, e := callables.Get(CallableID(c)).Call(VariadicVariants{First: PointerTo[PointerTo[Variant]](unsafe.Pointer(args)), Count: int(argc)})
+	r, e := callables.Get(CallableID(c)).Call(Variants{first: PointerTo[PointerTo[Variant]](unsafe.Pointer(args)), count: int(argc)})
 	*ret = C.Variant{C.uint64_t(r[0]), [2]C.uint64_t{C.uint64_t(r[1]), C.uint64_t(r[2])}}
-	*err = C.CallError{C.uint32_t(e.Type), C.int32_t(e.Argument), C.int32_t(e.Expected)}
+	*err = C.CallError{C.uint32_t(e.error), C.int32_t(e.argument), C.int32_t(e.expected)}
 }
 
 //export gd_on_callable_verify
@@ -399,8 +403,9 @@ func gd_on_extension_instance_variant_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C
 	if ExtensionInstanceID(p0) != 0 {
 		inst = instances.Get(ExtensionInstanceID(p0))
 	}
-	v := functions.Get(FunctionID(p1)).CheckedCall(inst, VariadicVariants{
-		First: PointerTo[PointerTo[Variant]](unsafe.Pointer(p3)),
+	v := functions.Get(FunctionID(p1)).CheckedCall(inst, Variants{
+		first: PointerTo[PointerTo[Variant]](unsafe.Pointer(p3)),
+		count: -1,
 	})
 	*p2 = C.Variant{C.uint64_t(v[0]), [2]C.uint64_t{C.uint64_t(v[1]), C.uint64_t(v[2])}}
 }
@@ -411,12 +416,12 @@ func gd_on_extension_instance_dynamic_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C
 	if ExtensionInstanceID(p0) != 0 {
 		inst = instances.Get(ExtensionInstanceID(p0))
 	}
-	v, err := functions.Get(FunctionID(p1)).DynamicCall(inst, VariadicVariants{
-		First: PointerTo[PointerTo[Variant]](unsafe.Pointer(p4)),
-		Count: int(p3),
+	v, err := functions.Get(FunctionID(p1)).DynamicCall(inst, Variants{
+		first: PointerTo[PointerTo[Variant]](unsafe.Pointer(p4)),
+		count: int(p3),
 	})
 	*p2 = C.Variant{C.uint64_t(v[0]), [2]C.uint64_t{C.uint64_t(v[1]), C.uint64_t(v[2])}}
-	*p5 = C.CallError{C.uint32_t(err.Type), C.int32_t(err.Argument), C.int32_t(err.Expected)}
+	*p5 = C.CallError{C.uint32_t(err.error), C.int32_t(err.argument), C.int32_t(err.expected)}
 }
 
 //export gd_on_extension_instance_free
@@ -443,7 +448,7 @@ func gd_on_extension_script_categorization(p0 C.uintptr_t, p1 C.uintptr_t) C.boo
 func gd_on_extension_script_get_property_type(p0 C.uintptr_t, name C.uintptr_t, p1 *C.CallError) C.uint32_t {
 	script, ok := instances.Get(ExtensionInstanceID(p0)).(ExtensionScript)
 	if !ok {
-		*p1 = C.CallError{C.uint32_t(CallInvalidMethod), 0, 0}
+		*p1 = C.CallError{C.uint32_t(errorInvalidMethod), 0, 0}
 		return 0
 	}
 	return C.uint32_t(script.PropertyType(StringName(name)))
@@ -593,7 +598,7 @@ func (obj Object) Free() {
 func MethodLookup(class, method StringName, hash int64) MethodForClass {
 	return MethodForClass(C.gd_object_method_lookup(C.StringName(class), C.StringName(method), C.int64_t(hash)))
 }
-func (obj Object) Call(method MethodForClass, args ...Variant) (Variant, CallError) {
+func (obj Object) Call(method MethodForClass, args ...Variant) (Variant, error) {
 	var ret C.Variant
 	var err C.CallError
 	C.gd_object_call(C.Object(obj), C.MethodForClass(method), &ret, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
@@ -620,7 +625,7 @@ func (obj Object) ExtensionClose() {
 func ScriptMake(fn ExtensionScript) ScriptInstance {
 	return ScriptInstance(C.gd_object_script_make(C.ExtensionInstanceID(instances.New(fn))))
 }
-func (obj Object) ScriptCall(name StringName, args ...Variant) (Variant, CallError) {
+func (obj Object) ScriptCall(name StringName, args ...Variant) (Variant, error) {
 	var ret C.Variant
 	var err C.CallError
 	C.gd_object_script_call(C.Object(obj), C.StringName(name), &ret, C.int64_t(len(args)), (*C.Variant)(C.UnsafePointer(unsafe.SliceData(args))), &err)
@@ -660,7 +665,7 @@ func (v Variant) Copy() Variant {
 	C.gd_variant_copy(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), &result)
 	return toVariant(result)
 }
-func (v Variant) VariantCall(method StringName, args ...Variant) (Variant, CallError) {
+func (v Variant) VariantCall(method StringName, args ...Variant) (Variant, error) {
 	var result C.Variant
 	var err C.CallError
 	C.gd_variant_call(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.StringName(method), &result, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
@@ -671,8 +676,8 @@ func VariantEval(op VariantOperator, a, b Variant) (Variant, bool) {
 	ok := bool(C.gd_variant_eval(C.uint32_t(op), C.uint64_t(a[0]), C.uint64_t(a[1]), C.uint64_t(a[2]), C.uint64_t(b[0]), C.uint64_t(b[1]), C.uint64_t(b[2]), &result))
 	return toVariant(result), ok
 }
-func (v Variant) Hash() Int {
-	return Int(C.gd_variant_hash(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+func (v Variant) Hash() int64 {
+	return int64(C.gd_variant_hash(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
 }
 func (v Variant) Bool() bool {
 	return bool(C.gd_variant_bool(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
@@ -680,8 +685,8 @@ func (v Variant) Bool() bool {
 func (v Variant) Text() String {
 	return String(C.gd_variant_text(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
 }
-func (v Variant) Type() VariantType {
-	return VariantType(C.gd_variant_type(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+func (v Variant) Type() variant.Type {
+	return variant.Type(C.gd_variant_type(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
 }
 
 // Deep variant operations
@@ -691,8 +696,8 @@ func (v Variant) DeepCopy() Variant {
 	C.gd_variant_deep_copy(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), &result)
 	return toVariant(result)
 }
-func (v Variant) DeepHash(recursion Int) Int {
-	return Int(C.gd_variant_deep_hash(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.int64_t(recursion)))
+func (v Variant) DeepHash(recursion int64) int64 {
+	return int64(C.gd_variant_deep_hash(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.int64_t(recursion)))
 }
 
 // Variant get/set/has
@@ -702,7 +707,7 @@ func (v Variant) GetIndex(key Variant) (Variant, bool) {
 	ok := bool(C.gd_variant_get_index(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(key[0]), C.uint64_t(key[1]), C.uint64_t(key[2]), &result))
 	return toVariant(result), ok
 }
-func (v Variant) GetArray(idx Int) (Variant, bool, CallError) {
+func (v Variant) GetArray(idx int64) (Variant, bool, error) {
 	var result C.Variant
 	var err C.CallError
 	ok := bool(C.gd_variant_get_array(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.int64_t(idx), &result, &err))
@@ -716,7 +721,7 @@ func (v Variant) GetField(field StringName) (Variant, bool) {
 func (v Variant) SetIndex(key, val Variant) bool {
 	return bool(C.gd_variant_set_index(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(key[0]), C.uint64_t(key[1]), C.uint64_t(key[2]), C.uint64_t(val[0]), C.uint64_t(val[1]), C.uint64_t(val[2])))
 }
-func (v Variant) SetArray(idx Int, val Variant, err unsafe.Pointer) bool {
+func (v Variant) SetArray(idx int64, val Variant, err unsafe.Pointer) bool {
 	return bool(C.gd_variant_set_array(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.int64_t(idx), C.uint64_t(val[0]), C.uint64_t(val[1]), C.uint64_t(val[2]), C.UnsafePointer(err)))
 }
 func (v Variant) SetField(field StringName, value Variant) bool {
@@ -754,7 +759,7 @@ func VariantUnsafeInternalPointer(vtype VariantType, v Variant) Pointer {
 func VariantUnsafeSetField(setter FunctionID, shape uint64, args unsafe.Pointer) {
 	C.gd_variant_unsafe_set_field(C.FunctionID(setter), C.uint64_t(shape), C.UnsafePointer(args))
 }
-func VariantUnsafeSetArray(vtype VariantType, idx Int, shape uint64, args unsafe.Pointer) {
+func VariantUnsafeSetArray(vtype VariantType, idx int64, shape uint64, args unsafe.Pointer) {
 	C.gd_variant_unsafe_set_array(C.uint32_t(vtype), C.int64_t(idx), C.uint64_t(shape), C.UnsafePointer(args))
 }
 func VariantUnsafeSetIndex(vtype VariantType, shape uint64, args unsafe.Pointer) {
@@ -763,7 +768,7 @@ func VariantUnsafeSetIndex(vtype VariantType, shape uint64, args unsafe.Pointer)
 func VariantUnsafeGetField(getter FunctionID, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
 	C.gd_variant_unsafe_get_field(C.FunctionID(getter), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
 }
-func VariantUnsafeGetArray(vtype VariantType, idx Int, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+func VariantUnsafeGetArray(vtype VariantType, idx int64, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
 	C.gd_variant_unsafe_get_array(C.uint32_t(vtype), C.int64_t(idx), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
 }
 func VariantUnsafeGetIndex(vtype VariantType, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
@@ -808,7 +813,7 @@ func EditorEndPlugin(name StringName) {
 
 // PropertyList operations
 
-func MakePropertyList(n Int) PropertyList {
+func MakePropertyList(n int64) PropertyList {
 	return PropertyList(C.gd_property_list_make(C.int64_t(n)))
 }
 
@@ -846,11 +851,11 @@ func (p PropertyList) InfoUsage() uint32 {
 
 // MethodList operations
 
-func MakeMethodList(n Int) MethodList {
+func MakeMethodList(n int64) MethodList {
 	return MethodList(C.gd_method_list_make(C.int64_t(n)))
 }
 
-func (m MethodList) Push(name StringName, call ExtensionFunction, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count Int, defaults unsafe.Pointer) {
+func (m MethodList) Push(name StringName, call ExtensionFunction, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count int64, defaults unsafe.Pointer) {
 	C.gd_method_list_push(C.uintptr_t(m), C.uintptr_t(name), C.uintptr_t(functions.New(call)), C.uint32_t(flags), C.uintptr_t(returnInfo), C.uintptr_t(argsInfo), C.int64_t(count), C.UnsafePointer(defaults))
 }
 
@@ -872,7 +877,7 @@ func ImageUnsafe(img Object) Pointer {
 	return Pointer(C.gd_classdb_Image_unsafe(C.uintptr_t(img)))
 }
 
-func ImageAccess(img Object, offset Int) byte {
+func ImageAccess(img Object, offset int64) byte {
 	return byte(C.gd_classdb_Image_access(C.uintptr_t(img), C.int64_t(offset)))
 }
 

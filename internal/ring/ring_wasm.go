@@ -18,7 +18,7 @@ func wasm_gd_bulk_copy(godot_dst gdunsafe.Pointer, go_src uint32, length uint32)
 
 func flush(entries unsafe.Pointer, tail, head uint32) {
 	if shadowRing == 0 {
-		shadowRing = gdunsafe.Malloc(gdunsafe.Int(Size * uint32(unsafe.Sizeof(Entry{}))))
+		shadowRing = gdunsafe.Malloc(int64(Size * uint32(unsafe.Sizeof(Entry{}))))
 	}
 	entrySize := uint32(unsafe.Sizeof(Entry{}))
 	start := tail & Mask
