@@ -12,6 +12,7 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	DictionaryType "graphics.gd/variant/Dictionary"
@@ -22,12 +23,12 @@ import (
 	"runtime.link/api/xray"
 )
 
-func (variant Variant) ConvertTo(rtype reflect.Type) (reflect.Value, error) {
-	return convertVariantToDesiredGoType(variant, rtype)
+func (v Variant) ConvertTo(rtype reflect.Type) (reflect.Value, error) {
+	return convertVariantToDesiredGoType(v, rtype)
 }
 
 func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.Value, error) {
-	if value.Type() == gdextension.TypeNil {
+	if value.Type() == variant.TypeNil {
 		return reflect.Zero(rtype), nil
 	}
 	switch rtype {
@@ -41,7 +42,7 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 		return reflect.ValueOf(gdunsafe.Variant(pointers.Get(value)).Bool()).Convert(rtype), nil
 	case reflect.Array:
 		if reflect.PointerTo(rtype).Implements(reflect.TypeFor[IsClassCastable]()) {
-			if value.Type() != gdextension.TypeObject {
+			if value.Type() != variant.TypeObject {
 				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %s to %s", value.Type(), rtype))
 			}
 			var result = reflect.New(rtype)
@@ -85,7 +86,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 	if rtype == reflect.TypeFor[reflect.Type]() {
 		switch value := value.(type) {
 		case int64:
-			return reflect.ValueOf(ConvieniantGoTypeOf(gdextension.VariantType(value))), nil
+			return reflect.ValueOf(ConvieniantGoTypeOf(variant.Type(value))), nil
 		default:
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}

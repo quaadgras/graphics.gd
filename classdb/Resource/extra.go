@@ -101,18 +101,18 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 	return result
 }
 
-var loader_sname gdextension.StringName
+var loader_sname gdunsafe.StringName
 var loader_methods struct {
 	load gdextension.MethodForClass `hash:"3358495409"`
 }
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		loader_sname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("ResourceLoader"))}
+		loader_sname = gdunsafe.UTF8.Intern("ResourceLoader")
 		gd.LinkMethods(loader_sname, &loader_methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		noescape.Free(gdextension.TypeStringName, &loader_sname)
+		gdunsafe.Free(loader_sname)
 	})
 }
 
@@ -120,7 +120,7 @@ var self [1]gdclass.ResourceLoader
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewResourceLoader(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(gdunsafe.StringName(loader_sname[0])))))
+	self[0] = gdclass.NewResourceLoader(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(loader_sname))))
 }
 
 func load(path String.Unicode, type_hint String.Unicode, cache_mode int) [1]gdclass.Resource { //gd:ResourceLoader.load

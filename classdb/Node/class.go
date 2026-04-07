@@ -143,7 +143,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 type Instance [1]gdclass.Node
 
 var otype gdunsafe.ObjectType
-var sname gdextension.StringName
+var sname gdunsafe.StringName
 var methods struct {
 	print_orphan_nodes                  gdextension.MethodForClass `hash:"3218959716"`
 	get_orphan_node_ids                 gdextension.MethodForClass `hash:"2915620761"`
@@ -270,12 +270,12 @@ var methods struct {
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("Node"))}
-		otype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))
+		sname = gdunsafe.UTF8.Intern("Node")
+		otype = gdunsafe.ObjectTypeTag(sname)
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		noescape.Free(gdextension.TypeStringName, &sname)
+		gdunsafe.Free(sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -2429,7 +2429,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Node{gdclass.NewNode(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(sname[0]))), gd.Free))})
+	casted := Instance([1]gdclass.Node{gdclass.NewNode(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(sname)), gd.Free))})
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

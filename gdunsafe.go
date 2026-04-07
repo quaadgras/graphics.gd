@@ -4,30 +4,73 @@
 package gdunsafe
 
 import (
-	"math/rand"
 	"reflect"
 	"structs"
-	"time"
-	"unsafe"
 
 	"graphics.gd/internal/threadsafe"
 	"graphics.gd/variant"
+	"graphics.gd/variant/AABB"
+	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Plane"
+	"graphics.gd/variant/Projection"
+	"graphics.gd/variant/Quaternion"
 	"graphics.gd/variant/RID"
+	"graphics.gd/variant/Rect2"
+	"graphics.gd/variant/Rect2i"
+	"graphics.gd/variant/Transform2D"
+	"graphics.gd/variant/Transform3D"
 	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector2i"
 	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector3i"
 	"graphics.gd/variant/Vector4"
+	"graphics.gd/variant/Vector4i"
 )
 
-// Variant is the raw representation for a variant value in the engine.
-// It should be destroyed with [Variant.Free] when no longer in use.
-type Variant [3]uint64
+type Iterator Variant
+
+type (
+	String struct{}
+	Object struct{}
+
+	Dictionary struct{}
+	StringName struct{}
+	NodePath   struct{}
+
+	Signal [2]uint64
+
+	Script         Object
+	ScriptLanguage Object
+)
+
+type Type struct {
+	vtype      variant.Type
+	shape      Shape
+	class_tag  uintptr
+	class_name StringName
+	script     Object
+}
+
+func (t Type) Shape() Shape { return t.shape }
+
+func (t Type) Free() {
+	Free(t.class_name)
+}
+
+type Packable interface {
+	byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String
+}
 
 type ObjectID uint64
 
 // PointerTo is a [Pointer] that points to a value of type T, it should
 // be treated as if it were an [unsafe.Pointer] from a different process.
-type PointerTo[T any] Pointer
+type PointerTo[T Any | Variant | PointerTo[Variant] | Packable] Pointer
+
+// MutablePointerTo is a [MutablePointer] that points to a value of type T, it should
+// be treated as if it were an [unsafe.Pointer] from a different process.
+type MutablePointerTo[T Any | Variant | Packable] MutablePointer
 
 // Variants accessor, used to represent zero or more arguments.
 type Variants struct {
@@ -72,9 +115,9 @@ func (args Variants) ExpectedArg(i int, vtype variant.Type) (Variant, Error) {
 var callables threadsafe.Handles[ExtensionCallable, CallableID]
 
 var (
-	classes   threadsafe.Handles[ExtensionClass, ExtensionClassID]
-	instances threadsafe.Handles[ExtensionInstance, ExtensionInstanceID]
-	functions threadsafe.Handles[ExtensionFunction, FunctionID]
+	classes   threadsafe.Handles[ExtensionClass, uintptr]
+	instances threadsafe.Handles[ExtensionInstance, uintptr]
+	functions threadsafe.Handles[ExtensionFunction, uintptr]
 )
 
 // ExtensionInstances is an iterator over each active [ExtensionInstance].
@@ -108,14 +151,6 @@ type ExtensionCallable interface {
 	// Compare is called to compare two different [CustomCallable] values. Return
 	// less than zero, if a < b, zero if a = b and more than zero if a > b.
 	Compare(ExtensionCallable) int
-}
-
-// SetInt16 writes a uint16 value to the underlying memory address of the [Pointer].
-func (ptr Pointer) SetInt16(v int16) { ptr.SetUint16(*(*uint16)(unsafe.Pointer(&v))) }
-
-// SetInt32 writes a uint32 value to the underlying memory address of the [Pointer].
-func (ptr Pointer) SetInt32(v int32) {
-	ptr.SetUint32(*(*uint32)(unsafe.Pointer(&v)))
 }
 
 // Shape is used to represent the shape (structure, size and alignment) for a value
@@ -178,6 +213,7 @@ const (
 	errorMethodNotConst      errorType = 6
 )
 
+// Error implements the [error] interface.
 func (err Error) Error() string {
 	switch err.error {
 	case errorInvalidMethod:
@@ -237,100 +273,122 @@ func (shape Shape) SizeArguments() (size int) {
 	return
 }
 
-const (
-	TypeNil                VariantType = 0
-	TypeBool               VariantType = 1
-	TypeInt                VariantType = 2
-	TypeFloat              VariantType = 3
-	TypeString             VariantType = 4
-	TypeVector2            VariantType = 5
-	TypeVector2i           VariantType = 6
-	TypeRect2              VariantType = 7
-	TypeRect2i             VariantType = 8
-	TypeVector3            VariantType = 9
-	TypeVector3i           VariantType = 10
-	TypeTransform2D        VariantType = 11
-	TypeVector4            VariantType = 12
-	TypeVector4i           VariantType = 13
-	TypePlane              VariantType = 14
-	TypeQuaternion         VariantType = 15
-	TypeAABB               VariantType = 16
-	TypeBasis              VariantType = 17
-	TypeTransform3D        VariantType = 18
-	TypeProjection         VariantType = 19
-	TypeColor              VariantType = 20
-	TypeStringName         VariantType = 21
-	TypeNodePath           VariantType = 22
-	TypeRID                VariantType = 23
-	TypeObject             VariantType = 24
-	TypeCallable           VariantType = 25
-	TypeSignal             VariantType = 26
-	TypeDictionary         VariantType = 27
-	TypeArray              VariantType = 28
-	TypePackedByteArray    VariantType = 29
-	TypePackedInt32Array   VariantType = 30
-	TypePackedInt64Array   VariantType = 31
-	TypePackedFloat32Array VariantType = 32
-	TypePackedFloat64Array VariantType = 33
-	TypePackedStringArray  VariantType = 34
-	TypePackedVector2Array VariantType = 35
-	TypePackedVector3Array VariantType = 36
-	TypePackedColorArray   VariantType = 37
-	TypePackedVector4Array VariantType = 38
-)
+type Any interface {
+	bool |
+		int64 |
+		float64 |
+		String |
+		~Vector2.XY |
+		~Vector2i.XY |
+		~Rect2.PositionSize |
+		~Rect2i.PositionSize |
+		~Vector3.XYZ |
+		~Vector3i.XYZ |
+		~Transform2D.OriginXY |
+		~Vector4.XYZW |
+		~Vector4i.XYZW |
+		~Plane.NormalD |
+		~Quaternion.IJKX |
+		~AABB.PositionSize |
+		~Basis.XYZ |
+		~Transform3D.BasisOrigin |
+		~Projection.XYZW |
+		~Color.RGBA |
+		StringName |
+		NodePath |
+		RID.Any |
+		Object |
+		Callable |
+		Signal |
+		Dictionary |
+		Array |
+		PackedArray[byte] |
+		PackedArray[int32] |
+		PackedArray[int64] |
+		PackedArray[float32] |
+		PackedArray[float64] |
+		PackedArray[Color.RGBA] |
+		PackedArray[Vector2.XY] |
+		PackedArray[Vector3.XYZ] |
+		PackedArray[Vector4.XYZW] |
+		PackedArray[String]
+}
 
-func (p PackedArray[T]) Type() VariantType {
+// Type returns the [variant.Type] of the packed array.
+func (p PackedArray[T]) Type() variant.Type {
 	switch reflect.TypeFor[T]() {
 	case reflect.TypeFor[byte]():
-		return TypePackedByteArray
+		return variant.TypePackedByteArray
 	case reflect.TypeFor[int32]():
-		return TypePackedInt32Array
+		return variant.TypePackedInt32Array
 	case reflect.TypeFor[int64]():
-		return TypePackedInt64Array
+		return variant.TypePackedInt64Array
 	case reflect.TypeFor[float32]():
-		return TypePackedFloat32Array
+		return variant.TypePackedFloat32Array
 	case reflect.TypeFor[float64]():
-		return TypePackedFloat64Array
+		return variant.TypePackedFloat64Array
 	case reflect.TypeFor[String]():
-		return TypePackedStringArray
+		return variant.TypePackedStringArray
 	case reflect.TypeFor[Vector2.XY]():
-		return TypePackedVector2Array
+		return variant.TypePackedVector2Array
 	case reflect.TypeFor[Vector3.XYZ]():
-		return TypePackedVector3Array
+		return variant.TypePackedVector3Array
 	case reflect.TypeFor[Color.RGBA]():
-		return TypePackedColorArray
+		return variant.TypePackedColorArray
 	case reflect.TypeFor[Vector4.XYZW]():
-		return TypePackedVector4Array
+		return variant.TypePackedVector4Array
 	default:
 		return 0
 	}
 }
 
+// ExtensionInstance is an interface that can be used to implement an instance
+// of an [ExtensionClass] in the engine.
 type ExtensionInstance interface {
-	Set(StringName, Variant) bool
-	Get(StringName) (Variant, bool)
-	HasDefault(StringName) bool
-	GetDefault(StringName) (Variant, bool)
+	Set(field StringName, value Variant) bool
+	Get(field StringName) (Variant, bool)
+	HasDefault(field StringName) bool
+	GetDefault(field StringName) (Variant, bool)
 	PropertyList() PropertyList
-	ValidateProperty(StringName) bool
+	ValidateProperty(Property) bool
 	Notification(what int32, reverse bool)
 	UnsafeString() String
-	Reference(bool) bool
+
 	RID() RID.Any
+
+	Reference(increment bool) bool
+
+	//ReferenceIncremented()
+	//ReferenceDecremented() bool
+}
+
+type Property struct {
+	Type       variant.Type
+	Name       StringName
+	ClassName  StringName
+	Hint       uint32
+	HintString String
+	Usage      uint32
 }
 
 type ExtensionFunction interface {
-	PointerCall(ExtensionInstance, Pointer, Pointer)
-	CheckedCall(ExtensionInstance, Variants) Variant
-	DynamicCall(ExtensionInstance, Variants) (Variant, Error)
+	PointerCall(instance ExtensionInstance, result Pointer, args Pointer)
+	CheckedCall(instance ExtensionInstance, args Variants) Variant
+	DynamicCall(instance ExtensionInstance, args Variants) (Variant, Error)
 }
 
+// ExtensionClass is an interface that can be implemented to create a new
+// class in the engine. Pass an implementation of this interface to the
+// [RegisterClass] function to register it with the engine.
 type ExtensionClass interface {
+
+	// Create should instantiate the underlying object with [New] and then
+	// call [SetupExtension] on it.
 	Create(notify_postinitialize bool) Object
+
+	// Method should return the [ExtensionFunction] for the given method.
 	Method(name StringName, hash uint32) ExtensionFunction
 }
-
-type PropertyInfo PropertyList
 
 // ExtensionScript is an interface that can be used to implement a script
 // in the engine. Useful when creating new scripting languages.
@@ -342,14 +400,14 @@ type ExtensionScript interface {
 	PropertyCategory() StringName
 
 	// PropertyType returns the variant type for the given Property.
-	PropertyType(StringName) VariantType
+	PropertyType(field StringName) variant.Type
 
 	// Owner should return the object that the script is attached to.
 	Owner() Object
 
 	// ExportedProperties iterator. Should call the given function
 	// for each exported property. Used when serializing the script.
-	ExportedProperties(func(StringName, Variant) bool)
+	ExportedProperties(func(field StringName, value Variant) bool)
 
 	// MethodList should return a [MethodList] that represents each
 	// of the script's defined methods.
@@ -357,11 +415,11 @@ type ExtensionScript interface {
 
 	// HasMethod returns true if the script has a method with the
 	// given name.
-	HasMethod(StringName) bool
+	HasMethod(name StringName) bool
 
 	// MethodArgumentCount returns the number of arguments that the
 	// given method expects. Use -1, if the method is variadic.
-	MethodArgumentCount(StringName) int
+	MethodArgumentCount(method_name StringName) int
 
 	// Script returns the underlying Script object.
 	Script() Object
@@ -374,6 +432,9 @@ type ExtensionScript interface {
 	ScriptLanguage() Object
 }
 
+// InitializationLevel values are documented in the [GDExtension] package.
+//
+// [GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension#InitializationLevel
 type InitializationLevel uint32
 
 var (
@@ -387,34 +448,194 @@ var (
 	onEditorClassDetection      func(PackedArray[String]) PackedArray[String]
 )
 
-func OnEngineInit(fn func(InitializationLevel)) { onEngineInit = fn }
-func OnEngineExit(fn func(InitializationLevel)) { onEngineExit = fn }
-func OnFirstFrame(fn func())                    { onFirstFrame = fn }
-func OnEveryFrame(fn func())                    { onEveryFrame = fn }
-func OnFinalFrame(fn func())                    { onFinalFrame = fn }
+// OnEngineInit registers a function to be called when the engine initializes,
+// this should be called early inside an init function.
+func OnEngineInit(fn func(level InitializationLevel)) { onEngineInit = fn }
+
+// OnEngineExit registers a function to be called when the engine exits,
+// this should be called early inside an init function.
+func OnEngineExit(fn func(level InitializationLevel)) { onEngineExit = fn }
+
+// OnFirstFrame registers a function to be called on the first frame,
+// this should be called early inside an init function.
+func OnFirstFrame(fn func()) { onFirstFrame = fn }
+
+// OnEveryFrame registers a function to be called on every frame. Can
+// be called at any time but cannot be removed after being added.
+func OnEveryFrame(fn func()) { onEveryFrame = fn }
+
+// OnFinalFrame registers a function to be called on the final frame,
+// this should be called before the engine shuts down.
+func OnFinalFrame(fn func()) { onFinalFrame = fn }
 
 type TaskID uintptr
 
+// variantTypeOf maps a Go type in the [Any] constraint to its [variant.Type].
+func variantTypeOf[T Any]() variant.Type {
+	switch reflect.TypeFor[T]() {
+	case reflect.TypeFor[bool]():
+		return variant.TypeBool
+	case reflect.TypeFor[int64]():
+		return variant.TypeInt
+	case reflect.TypeFor[float64]():
+		return variant.TypeFloat
+	case reflect.TypeFor[String]():
+		return variant.TypeString
+	case reflect.TypeFor[Vector2.XY]():
+		return variant.TypeVector2
+	case reflect.TypeFor[Vector2i.XY]():
+		return variant.TypeVector2i
+	case reflect.TypeFor[Rect2.PositionSize]():
+		return variant.TypeRect2
+	case reflect.TypeFor[Rect2i.PositionSize]():
+		return variant.TypeRect2i
+	case reflect.TypeFor[Vector3.XYZ]():
+		return variant.TypeVector3
+	case reflect.TypeFor[Vector3i.XYZ]():
+		return variant.TypeVector3i
+	case reflect.TypeFor[Transform2D.OriginXY]():
+		return variant.TypeTransform2D
+	case reflect.TypeFor[Vector4.XYZW]():
+		return variant.TypeVector4
+	case reflect.TypeFor[Vector4i.XYZW]():
+		return variant.TypeVector4i
+	case reflect.TypeFor[Plane.NormalD]():
+		return variant.TypePlane
+	case reflect.TypeFor[Quaternion.IJKX]():
+		return variant.TypeQuaternion
+	case reflect.TypeFor[AABB.PositionSize]():
+		return variant.TypeAABB
+	case reflect.TypeFor[Basis.XYZ]():
+		return variant.TypeBasis
+	case reflect.TypeFor[Transform3D.BasisOrigin]():
+		return variant.TypeTransform3D
+	case reflect.TypeFor[Projection.XYZW]():
+		return variant.TypeProjection
+	case reflect.TypeFor[Color.RGBA]():
+		return variant.TypeColor
+	case reflect.TypeFor[StringName]():
+		return variant.TypeStringName
+	case reflect.TypeFor[NodePath]():
+		return variant.TypeNodePath
+	case reflect.TypeFor[RID.Any]():
+		return variant.TypeRID
+	case reflect.TypeFor[Object]():
+		return variant.TypeObject
+	case reflect.TypeFor[Callable]():
+		return variant.TypeCallable
+	case reflect.TypeFor[Signal]():
+		return variant.TypeSignal
+	case reflect.TypeFor[Dictionary]():
+		return variant.TypeDictionary
+	case reflect.TypeFor[Array]():
+		return variant.TypeArray
+	case reflect.TypeFor[PackedArray[byte]]():
+		return variant.TypePackedByteArray
+	case reflect.TypeFor[PackedArray[int32]]():
+		return variant.TypePackedInt32Array
+	case reflect.TypeFor[PackedArray[int64]]():
+		return variant.TypePackedInt64Array
+	case reflect.TypeFor[PackedArray[float32]]():
+		return variant.TypePackedFloat32Array
+	case reflect.TypeFor[PackedArray[float64]]():
+		return variant.TypePackedFloat64Array
+	case reflect.TypeFor[PackedArray[String]]():
+		return variant.TypePackedStringArray
+	case reflect.TypeFor[PackedArray[Vector2.XY]]():
+		return variant.TypePackedVector2Array
+	case reflect.TypeFor[PackedArray[Vector3.XYZ]]():
+		return variant.TypePackedVector3Array
+	case reflect.TypeFor[PackedArray[Color.RGBA]]():
+		return variant.TypePackedColorArray
+	case reflect.TypeFor[PackedArray[Vector4.XYZW]]():
+		return variant.TypePackedVector4Array
+	default:
+		return variant.TypeNil
+	}
+}
+
+// shapeOf maps a Go type in the [Any] constraint to its [Shape].
+func shapeOf[T Any]() Shape {
+	switch reflect.TypeFor[T]() {
+	case reflect.TypeFor[bool]():
+		return ShapeBool
+	case reflect.TypeFor[int64]():
+		return ShapeInt
+	case reflect.TypeFor[float64]():
+		return ShapeFloat
+	case reflect.TypeFor[String]():
+		return ShapeString
+	case reflect.TypeFor[Vector2.XY]():
+		return ShapeVector2
+	case reflect.TypeFor[Vector2i.XY]():
+		return ShapeVector2i
+	case reflect.TypeFor[Rect2.PositionSize]():
+		return ShapeRect2
+	case reflect.TypeFor[Rect2i.PositionSize]():
+		return ShapeRect2i
+	case reflect.TypeFor[Vector3.XYZ]():
+		return ShapeVector3
+	case reflect.TypeFor[Vector3i.XYZ]():
+		return ShapeVector3i
+	case reflect.TypeFor[Transform2D.OriginXY]():
+		return ShapeTransform2D
+	case reflect.TypeFor[Vector4.XYZW]():
+		return ShapeVector4
+	case reflect.TypeFor[Vector4i.XYZW]():
+		return ShapeVector4i
+	case reflect.TypeFor[Plane.NormalD]():
+		return ShapePlane
+	case reflect.TypeFor[Quaternion.IJKX]():
+		return ShapeQuaternion
+	case reflect.TypeFor[AABB.PositionSize]():
+		return ShapeAABB
+	case reflect.TypeFor[Basis.XYZ]():
+		return ShapeBasis
+	case reflect.TypeFor[Transform3D.BasisOrigin]():
+		return ShapeTransform3D
+	case reflect.TypeFor[Projection.XYZW]():
+		return ShapeProjection
+	case reflect.TypeFor[Color.RGBA]():
+		return ShapeColor
+	case reflect.TypeFor[StringName]():
+		return ShapeStringName
+	case reflect.TypeFor[NodePath]():
+		return ShapeNodePath
+	case reflect.TypeFor[RID.Any]():
+		return ShapeRID
+	case reflect.TypeFor[Object]():
+		return ShapeObject
+	case reflect.TypeFor[Callable]():
+		return ShapeCallable
+	case reflect.TypeFor[Signal]():
+		return ShapeSignal
+	case reflect.TypeFor[Dictionary]():
+		return ShapeDictionary
+	case reflect.TypeFor[Array]():
+		return ShapeArray
+	case reflect.TypeFor[PackedArray[byte]](),
+		reflect.TypeFor[PackedArray[int32]](),
+		reflect.TypeFor[PackedArray[int64]](),
+		reflect.TypeFor[PackedArray[float32]](),
+		reflect.TypeFor[PackedArray[float64]](),
+		reflect.TypeFor[PackedArray[String]](),
+		reflect.TypeFor[PackedArray[Vector2.XY]](),
+		reflect.TypeFor[PackedArray[Vector3.XYZ]](),
+		reflect.TypeFor[PackedArray[Color.RGBA]](),
+		reflect.TypeFor[PackedArray[Vector4.XYZW]]():
+		return ShapePackedArray
+	case reflect.TypeFor[Variant]():
+		return ShapeVariant
+	default:
+		return 0
+	}
+}
+
+/*
 func OnWorkerThreadPoolTask(fn func(TaskID))             { onWorkerThreadPoolTask = fn }
 func OnWorkerThreadPoolGroupTask(fn func(TaskID, int32)) { onWorkerThreadPoolGroupTask = fn }
 
 func OnEditorClassDetection(fn func(PackedArray[String]) PackedArray[String]) {
 	onEditorClassDetection = fn
 }
-
-// just a placeholder for functions that don't need to be implemented
-// as they are already available in the Go standard library.
-
-func randomize() { //gd:randomize
-	rand.Seed(time.Now().UnixNano())
-}
-
-func seed(s int) { //gd:seed
-	rand.Seed(int64(s))
-}
-
-func rand_from_seed(seed int) *rand.Rand { //gd:rand_from_seed
-	return rand.New(rand.NewSource(int64(seed)))
-}
-
-func weakref(v any) any { return v } //gd:weakref
+*/

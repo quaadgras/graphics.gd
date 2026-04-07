@@ -10,7 +10,6 @@ import (
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
-	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Error"
 	"graphics.gd/variant/Signal"
@@ -78,9 +77,9 @@ var otype gdextension.ObjectType
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname := gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("Object"))}
-		otype = gdextension.ObjectType(gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0])))
-		noescape.Free(gdextension.TypeStringName, &sname)
+		sname := gdunsafe.UTF8.Intern("Object")
+		otype = gdextension.ObjectType(gdunsafe.ObjectTypeTag(sname))
+		gdunsafe.Free(sname)
 	})
 }
 

@@ -12,6 +12,7 @@ import (
 	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant"
 )
 
 var Linked bool = false
@@ -29,14 +30,14 @@ func Init(level gdextension.InitializationLevel) {
 		linkBuiltin()
 		linkTypeset()
 		linkTypesetCreation()
-		LinkMethods(pointers.Get(NewStringName("Object")), &object_methods, false)
+		LinkMethods(gdunsafe.StringName(pointers.Get(NewStringName("Object"))[0]), &object_methods, false)
 		if LinkStartup != nil {
 			LinkStartup()
 		}
 		LinkedCore = true
 	}
 	if !Linked && level == gdextension.InitializationLevelScene {
-		LinkMethods(pointers.Get(NewStringName("RefCounted")), &refcounted_methods, false)
+		LinkMethods(gdunsafe.StringName(pointers.Get(NewStringName("RefCounted"))[0]), &refcounted_methods, false)
 		for _, fn := range Links {
 			fn()
 		}
@@ -66,12 +67,12 @@ func linkBuiltin() {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 			}
 			vtype, _ := variantTypeFromName(class.Name)
-			*(direct.Interface().(*gdextension.MethodForBuiltinType)) = gdextension.MethodForBuiltinType(gdunsafe.VariantTypeMethod(gdunsafe.VariantType(vtype), gdunsafe.StringName(pointers.Get(methodName)[0]), int64(hash)))
+			*(direct.Interface().(*gdextension.MethodForBuiltinType)) = gdextension.MethodForBuiltinType(gdunsafe.VariantTypeMethod(variant.Type(vtype), gdunsafe.StringName(pointers.Get(methodName)[0]), int64(hash)))
 		}
 	}
 }
 
-func LinkMethods(className gdextension.StringName, methods any, editor bool) {
+func LinkMethods(className gdunsafe.StringName, methods any, editor bool) {
 	if editor {
 		EditorStartupFunctions = append(EditorStartupFunctions, func() {
 			LinkMethods(className, methods, false)
@@ -90,7 +91,7 @@ func LinkMethods(className gdextension.StringName, methods any, editor bool) {
 		if err != nil {
 			panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 		}
-		bind := gdextension.MethodForClass(gdunsafe.MethodLookup(gdunsafe.StringName(className[0]), gdunsafe.StringName(pointers.Get(methodName)[0]), hash))
+		bind := gdextension.MethodForClass(gdunsafe.MethodLookup(className, gdunsafe.StringName(pointers.Get(methodName)[0]), hash))
 		if bind == 0 {
 			fmt.Println("null bind ", method.Name)
 		}
@@ -114,7 +115,7 @@ func linkTypesetCreation() {
 		vtype, _ := variantTypeFromName(field.Name)
 		for i := 0; i < field.Type.Len(); i++ {
 			value := reflect.NewAt(field.Type.Elem(), unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset+uintptr(i)*esize))
-			*(value.Interface().(*gdextension.FunctionID)) = gdextension.FunctionID(gdunsafe.VariantTypeConstructor(gdunsafe.VariantType(vtype), int64(i)))
+			*(value.Interface().(*gdextension.FunctionID)) = gdextension.FunctionID(gdunsafe.VariantTypeConstructor(variant.Type(vtype), int64(i)))
 		}
 	}
 }

@@ -96,7 +96,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 type Instance [1]gdclass.XRServer
 
 var otype gdunsafe.ObjectType
-var sname gdextension.StringName
+var sname gdunsafe.StringName
 var methods struct {
 	get_world_scale             gdextension.MethodForClass `hash:"1740695150"`
 	set_world_scale             gdextension.MethodForClass `hash:"373806689"`
@@ -124,12 +124,12 @@ var methods struct {
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("XRServer"))}
-		otype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))
+		sname = gdunsafe.UTF8.Intern("XRServer")
+		otype = gdunsafe.ObjectTypeTag(sname)
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		noescape.Free(gdextension.TypeStringName, &sname)
+		gdunsafe.Free(sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -138,7 +138,7 @@ var self [1]gdclass.XRServer
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewXRServer(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(gdunsafe.StringName(sname[0])))))
+	self[0] = gdclass.NewXRServer(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(sname))))
 }
 
 /*

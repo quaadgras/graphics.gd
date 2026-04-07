@@ -24,7 +24,7 @@ func (d Dictionary) SetIndex(key Variant, value Variant) {
 
 func (d Dictionary) Free() {
 	if ptr, ok := pointers.End(d); ok {
-		noescape.Free(gdextension.TypeDictionary, &ptr)
+		gdunsafe.Free(gdunsafe.Dictionary(ptr[0]))
 	}
 }
 

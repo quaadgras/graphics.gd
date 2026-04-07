@@ -2,6 +2,10 @@
 
 package gdunsafe
 
+// Variant is the raw representation for a variant value in the engine.
+// It should be destroyed with [Variant.Free] when no longer in use.
+type Variant [3]uint64
+
 const (
 	bytes8x3  Shape = 9 + iota // shape for three 8-byte values
 	bytes4x6                   // shape for six 4-byte values

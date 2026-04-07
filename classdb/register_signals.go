@@ -9,6 +9,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant"
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
@@ -52,7 +53,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 						name = argNames[i-1]
 					}
 					args.Push(
-						gdunsafe.VariantType(vtype),
+						variant.Type(vtype),
 						gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
 						gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(ftype.In(i))))[0]),
 						0,
@@ -79,7 +80,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 							name = argNames[i]
 						}
 						args.Push(
-							gdunsafe.VariantType(vtype),
+							variant.Type(vtype),
 							gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
 							gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(arg)))[0]),
 							0,
@@ -100,7 +101,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 						name = argNames[0]
 					}
 					args.Push(
-						gdunsafe.VariantType(vtype),
+						variant.Type(vtype),
 						gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
 						gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(etype)))[0]),
 						0,

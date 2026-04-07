@@ -484,8 +484,8 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			class.Signals = append(class.Signals, signal)
 			return
 		}
-		var ptype = gdunsafe.MakePropertyList(1)
-		if propertyOf(className, field, ptype) {
+		var list = gdunsafe.MakePropertyList(1)
+		if ptype, ok := propertyOf(className, field, list); ok {
 			var exists bool
 			var member = new(docgen.Member)
 			for i := range class.Members {
@@ -505,13 +505,13 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			if docs, ok := docs[member.Name]; ok {
 				member.Description = extractDoc(docs)
 			}
-			member.Type = gdextension.VariantType(ptype.InfoType()).String()
+			member.Type = ptype.String()
 			if !exists {
 				class.Members = append(class.Members, *member)
 			}
-			gdunsafe.RegisterProperty(gdunsafe.StringName(pointers.Get(className)[0]), ptype, gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]), gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]))
+			gdunsafe.RegisterProperty(gdunsafe.StringName(pointers.Get(className)[0]), list, gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]), gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]))
 		}
-		ptype.Free()
+		list.Free()
 	}
 	for _, field := range ungroupedFields {
 		registerField(field)

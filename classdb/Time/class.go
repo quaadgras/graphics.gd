@@ -101,7 +101,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 type Instance [1]gdclass.Time
 
 var otype gdunsafe.ObjectType
-var sname gdextension.StringName
+var sname gdunsafe.StringName
 var methods struct {
 	get_datetime_dict_from_unix_time       gdextension.MethodForClass `hash:"3485342025"`
 	get_date_dict_from_unix_time           gdextension.MethodForClass `hash:"3485342025"`
@@ -128,12 +128,12 @@ var methods struct {
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("Time"))}
-		otype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))
+		sname = gdunsafe.UTF8.Intern("Time")
+		otype = gdunsafe.ObjectTypeTag(sname)
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		noescape.Free(gdextension.TypeStringName, &sname)
+		gdunsafe.Free(sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -142,7 +142,7 @@ var self [1]gdclass.Time
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewTime(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(gdunsafe.StringName(sname[0])))))
+	self[0] = gdclass.NewTime(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(sname))))
 }
 
 /*

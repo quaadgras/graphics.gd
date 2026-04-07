@@ -119,7 +119,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 type Instance [1]gdclass.JavaClassWrapper
 
 var otype gdunsafe.ObjectType
-var sname gdextension.StringName
+var sname gdunsafe.StringName
 var methods struct {
 	wrap          gdextension.MethodForClass `hash:"1124367868"`
 	get_exception gdextension.MethodForClass `hash:"3277089691"`
@@ -127,12 +127,12 @@ var methods struct {
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("JavaClassWrapper"))}
-		otype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))
+		sname = gdunsafe.UTF8.Intern("JavaClassWrapper")
+		otype = gdunsafe.ObjectTypeTag(sname)
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		noescape.Free(gdextension.TypeStringName, &sname)
+		gdunsafe.Free(sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -141,7 +141,7 @@ var self [1]gdclass.JavaClassWrapper
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewJavaClassWrapper(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(gdunsafe.StringName(sname[0])))))
+	self[0] = gdclass.NewJavaClassWrapper(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(sname))))
 }
 
 /*

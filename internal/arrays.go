@@ -33,7 +33,7 @@ func (a Array) SetIndex(index int64, value Variant) {
 
 func (a Array) Free() {
 	if ptr, ok := pointers.End(a); ok {
-		noescape.Free(gdextension.TypeArray, &ptr)
+		gdunsafe.Free(gdunsafe.Array(ptr[0]))
 	}
 }
 

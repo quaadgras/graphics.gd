@@ -445,58 +445,6 @@ func ShapeVariants(count int) Shape {
 	return shape
 }
 
-type VariantType uint32
-
-func (vtype VariantType) String() string {
-	name := String{Pointer(gdunsafe.VariantType(vtype).Name())}
-	var buf = make([]byte, 32)
-	n := int(gdunsafe.String(name[0]).Encode(gdunsafe.UTF8, buf))
-	return unsafe.String(&buf[0], min(n, len(buf)))
-}
-
-const (
-	TypeNil                VariantType = 0
-	TypeBool               VariantType = 1
-	TypeInt                VariantType = 2
-	TypeFloat              VariantType = 3
-	TypeString             VariantType = 4
-	TypeVector2            VariantType = 5
-	TypeVector2i           VariantType = 6
-	TypeRect2              VariantType = 7
-	TypeRect2i             VariantType = 8
-	TypeVector3            VariantType = 9
-	TypeVector3i           VariantType = 10
-	TypeTransform2D        VariantType = 11
-	TypeVector4            VariantType = 12
-	TypeVector4i           VariantType = 13
-	TypePlane              VariantType = 14
-	TypeQuaternion         VariantType = 15
-	TypeAABB               VariantType = 16
-	TypeBasis              VariantType = 17
-	TypeTransform3D        VariantType = 18
-	TypeProjection         VariantType = 19
-	TypeColor              VariantType = 20
-	TypeStringName         VariantType = 21
-	TypeNodePath           VariantType = 22
-	TypeRID                VariantType = 23
-	TypeObject             VariantType = 24
-	TypeCallable           VariantType = 25
-	TypeSignal             VariantType = 26
-	TypeDictionary         VariantType = 27
-	TypeArray              VariantType = 28
-	TypePackedByteArray    VariantType = 29
-	TypePackedInt32Array   VariantType = 30
-	TypePackedInt64Array   VariantType = 31
-	TypePackedFloat32Array VariantType = 32
-	TypePackedFloat64Array VariantType = 33
-	TypePackedStringArray  VariantType = 34
-	TypePackedVector2Array VariantType = 35
-	TypePackedVector3Array VariantType = 36
-	TypePackedColorArray   VariantType = 37
-	TypePackedVector4Array VariantType = 38
-	TypeMax                VariantType = 39
-)
-
 type AnyVariant interface {
 	Variant | ~byte | ~bool | ~int64 | ~float64 | ~float32 | ~int32 | String | ~Vector2i.XY | Vector2.XY | ~Rect2.PositionSize |
 		Rect2i.PositionSize | ~Vector3.XYZ | ~Vector3i.XYZ |

@@ -14,26 +14,15 @@ import (
 )
 
 type (
-	String     uint32
-	StringName uint32
-	Array      uint32
-	Dictionary uint32
-	Pointer    uint32
+	Pointer uint32
 
 	PackedArray[T byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String] [2]uint32
 
-	VariantType uint32
-
-	Object              uint32
-	ObjectType          uint32
-	MethodForClass      uint32
-	ScriptInstance      uint32
-	ExtensionInstanceID uint32
-	ExtensionClassID    uint32
-	ExtensionBindingID  uint32
-	FunctionID          uint32
-	PropertyList        uint32
-	MethodList          uint32
+	ObjectType     uint32
+	MethodForClass uint32
+	FunctionID     uint32
+	PropertyList   uint32
+	MethodList     uint32
 )
 
 //go:wasmimport gd array_set
@@ -353,44 +342,41 @@ func copyBufToEngine2(ptr Pointer, buf []byte) {
 	}
 }
 
-//go:wasmimport gd variant_type_name
-func (t VariantType) Name() String
-
 //go:wasmimport gd variant_type_make
-func gd_variant_type_make(t VariantType, result Pointer, arg_count int64, args, err Pointer)
+func gd_variant_type_make(t uint32, result Pointer, arg_count int64, args, err Pointer)
 
-func (t VariantType) Make(args ...Variant) (value Variant, err error) {
+func Make[T Any](args ...Variant) (value Variant, callErr Error) {
 	var param = copyVariants(unsafe.SliceData(args), len(args))
 	result := makeResult(ShapeVariant)
 	result_err := makeResult(ShapeError)
-	gd_variant_type_make(t, Pointer(result), int64(len(args)), Pointer(param), Pointer(result_err))
+	gd_variant_type_make(uint32(variantTypeOf[T]()), Pointer(result), int64(len(args)), Pointer(param), Pointer(result_err))
 	loadResult(ShapeVariant, &value, result)
-	loadResult(ShapeError, &value, result_err)
-	return value, err
+	loadResult(ShapeError, &callErr, result_err)
+	return value, callErr
 }
 
 //go:wasmimport gd variant_type_call
-func gd_variant_type_call_wasm(t VariantType, method StringName, result Pointer, argc int64, args Pointer, err Pointer)
+func gd_variant_type_call_wasm(t uint32, method StringName, result Pointer, argc int64, args Pointer, err Pointer)
 
-func (t VariantType) StaticCall(method StringName, args ...Variant) (value Variant, callErr Error) {
+func Call[T Any](method StringName, args ...Variant) (value Variant, callErr Error) {
 	param := copyVariants(unsafe.SliceData(args), len(args))
 	result := makeResult(ShapeVariant)
 	result_err := makeResult(ShapeError)
-	gd_variant_type_call_wasm(t, method, Pointer(result), int64(len(args)), Pointer(param), Pointer(result_err))
+	gd_variant_type_call_wasm(uint32(variantTypeOf[T]()), method, Pointer(result), int64(len(args)), Pointer(param), Pointer(result_err))
 	loadResult(ShapeVariant, &value, result)
 	loadResult(ShapeError, &callErr, result_err)
 	return value, callErr
 }
 
 //go:wasmimport gd variant_type_convertable
-func gd_variant_type_convertable_wasm(t VariantType, to VariantType, strict uint32) uint32
+func gd_variant_type_convertable_wasm(t uint32, to uint32, strict uint32) uint32
 
-func (t VariantType) Convertable(to VariantType, strict bool) bool {
+func Convertable[A, B Any](strict bool) bool {
 	var s uint32
 	if strict {
 		s = 1
 	}
-	return gd_variant_type_convertable_wasm(t, to, s) != 0
+	return gd_variant_type_convertable_wasm(uint32(variantTypeOf[A]()), uint32(variantTypeOf[B]()), s) != 0
 }
 
 //go:wasmimport gd builtin_name
@@ -411,68 +397,68 @@ func BuiltinCall(fn FunctionID, result unsafe.Pointer, shape uint64, args unsafe
 }
 
 //go:wasmimport gd variant_type_setup_array
-func gd_variant_type_setup_array_wasm(array Array, vtype VariantType, className StringName, v1, v2, v3 uint64)
+func gd_variant_type_setup_array_wasm(array Array, vtype uint32, className StringName, v1, v2, v3 uint64)
 
-func VariantTypeSetupArray(array Array, vtype VariantType, className StringName, script Variant) {
-	gd_variant_type_setup_array_wasm(array, vtype, className, script[0], script[1], script[2])
+func VariantTypeSetupArray(array Array, vtype variant.Type, className StringName, script Variant) {
+	gd_variant_type_setup_array_wasm(array, uint32(vtype), className, script[0], script[1], script[2])
 }
 
 //go:wasmimport gd variant_type_setup_dictionary
-func gd_variant_type_setup_dictionary_wasm(dict Dictionary, keyType VariantType, keyClassName StringName, ks1, ks2, ks3 uint64, valType VariantType, valClassName StringName, vs1, vs2, vs3 uint64)
+func gd_variant_type_setup_dictionary_wasm(dict Dictionary, keyType uint32, keyClassName StringName, ks1, ks2, ks3 uint64, valType uint32, valClassName StringName, vs1, vs2, vs3 uint64)
 
-func VariantTypeSetupDictionary(dict Dictionary, keyType VariantType, keyClassName StringName, keyScript Variant, valType VariantType, valClassName StringName, valScript Variant) {
-	gd_variant_type_setup_dictionary_wasm(dict, keyType, keyClassName, keyScript[0], keyScript[1], keyScript[2], valType, valClassName, valScript[0], valScript[1], valScript[2])
+func VariantTypeSetupDictionary(dict Dictionary, keyType variant.Type, keyClassName StringName, keyScript Variant, valType variant.Type, valClassName StringName, valScript Variant) {
+	gd_variant_type_setup_dictionary_wasm(dict, uint32(keyType), keyClassName, keyScript[0], keyScript[1], keyScript[2], uint32(valType), valClassName, valScript[0], valScript[1], valScript[2])
 }
 
 //go:wasmimport gd variant_type_fetch_constant
-func gd_variant_type_fetch_constant_wasm(vtype VariantType, constant StringName, result Pointer)
+func gd_variant_type_fetch_constant_wasm(vtype uint32, constant StringName, result Pointer)
 
-func VariantTypeFetchConstant(vtype VariantType, constant StringName, result unsafe.Pointer) {
+func VariantTypeFetchConstant(vtype variant.Type, constant StringName, result unsafe.Pointer) {
 	mem := makeResult(ShapeVariant)
-	gd_variant_type_fetch_constant_wasm(vtype, constant, Pointer(mem))
+	gd_variant_type_fetch_constant_wasm(uint32(vtype), constant, Pointer(mem))
 	loadResult(ShapeVariant, result, mem)
 }
 
 //go:wasmimport gd variant_type_unsafe_constructor
-func gd_variant_type_unsafe_constructor_wasm(vtype VariantType, n int64) FunctionID
+func gd_variant_type_unsafe_constructor_wasm(vtype uint32, n int64) FunctionID
 
-func VariantTypeConstructor(vtype VariantType, n int64) FunctionID {
-	return gd_variant_type_unsafe_constructor_wasm(vtype, n)
+func VariantTypeConstructor(vtype variant.Type, n int64) FunctionID {
+	return gd_variant_type_unsafe_constructor_wasm(uint32(vtype), n)
 }
 
 //go:wasmimport gd variant_type_evaluator
-func gd_variant_type_evaluator_wasm(op VariantOperator, a, b VariantType) FunctionID
+func gd_variant_type_evaluator_wasm(op VariantOperator, a, b uint32) FunctionID
 
-func VariantTypeEvaluator(op VariantOperator, a, b VariantType) FunctionID {
-	return gd_variant_type_evaluator_wasm(op, a, b)
+func VariantTypeEvaluator(op VariantOperator, a, b variant.Type) FunctionID {
+	return gd_variant_type_evaluator_wasm(op, uint32(a), uint32(b))
 }
 
 //go:wasmimport gd variant_type_setter
-func gd_variant_type_setter_wasm(vtype VariantType, property StringName) FunctionID
+func gd_variant_type_setter_wasm(vtype uint32, property StringName) FunctionID
 
-func VariantTypeSetter(vtype VariantType, property StringName) FunctionID {
-	return gd_variant_type_setter_wasm(vtype, property)
+func VariantTypeSetter(vtype variant.Type, property StringName) FunctionID {
+	return gd_variant_type_setter_wasm(uint32(vtype), property)
 }
 
 //go:wasmimport gd variant_type_getter
-func gd_variant_type_getter_wasm(vtype VariantType, property StringName) FunctionID
+func gd_variant_type_getter_wasm(vtype uint32, property StringName) FunctionID
 
-func VariantTypeGetter(vtype VariantType, property StringName) FunctionID {
-	return gd_variant_type_getter_wasm(vtype, property)
+func VariantTypeGetter(vtype variant.Type, property StringName) FunctionID {
+	return gd_variant_type_getter_wasm(uint32(vtype), property)
 }
 
 //go:wasmimport gd variant_type_has_property
-func gd_variant_type_has_property_wasm(vtype VariantType, property StringName) uint32
+func gd_variant_type_has_property_wasm(vtype uint32, property StringName) uint32
 
-func VariantTypeHasProperty(vtype VariantType, property StringName) bool {
-	return gd_variant_type_has_property_wasm(vtype, property) != 0
+func VariantTypeHasProperty(vtype variant.Type, property StringName) bool {
+	return gd_variant_type_has_property_wasm(uint32(vtype), property) != 0
 }
 
 //go:wasmimport gd variant_type_builtin_method
-func gd_variant_type_builtin_method_wasm(vtype VariantType, method StringName, hash int64) FunctionID
+func gd_variant_type_builtin_method_wasm(vtype uint32, method StringName, hash int64) FunctionID
 
-func VariantTypeMethod(vtype VariantType, method StringName, hash int64) FunctionID {
-	return gd_variant_type_builtin_method_wasm(vtype, method, hash)
+func VariantTypeMethod(vtype variant.Type, method StringName, hash int64) FunctionID {
+	return gd_variant_type_builtin_method_wasm(uint32(vtype), method, hash)
 }
 
 //go:wasmimport gd variant_type_unsafe_call
@@ -499,11 +485,13 @@ func VariantTypeUnsafeMake(constructor FunctionID, result unsafe.Pointer, shape 
 }
 
 //go:wasmimport gd variant_type_unsafe_free
-func gd_variant_type_unsafe_free_wasm(vtype VariantType, shape uint64, args Pointer)
+func gd_variant_type_unsafe_free_wasm(vtype uint32, shape uint64, args Pointer)
 
-func VariantTypeUnsafeFree(vtype VariantType, shape uint64, args unsafe.Pointer) {
-	mem_args := copyArguments(Shape(shape), args)
-	gd_variant_type_unsafe_free_wasm(vtype, shape, Pointer(mem_args))
+func Free[T Any](val T) {
+	vtype := variantTypeOf[T]()
+	shape := shapeOf[T]()
+	mem_args := copyArguments(shape, unsafe.Pointer(&val))
+	gd_variant_type_unsafe_free_wasm(uint32(vtype), uint64(shape), Pointer(mem_args))
 }
 
 func (args Variants) Index(i int) Variant {
@@ -915,9 +903,16 @@ func ZeroVariant() Variant {
 //go:wasmimport gd variant_copy
 func gd_variant_copy(v1, v2, v3 uint64, result Pointer)
 
-func (v Variant) Copy() Variant {
+//go:wasmimport gd variant_deep_copy
+func gd_variant_deep_copy(v1, v2, v3 uint64, result Pointer)
+
+func (v Variant) Copy(deep bool) Variant {
 	mem := makeResult(ShapeVariant)
-	gd_variant_copy(v[0], v[1], v[2], Pointer(mem))
+	if deep {
+		gd_variant_deep_copy(v[0], v[1], v[2], Pointer(mem))
+	} else {
+		gd_variant_copy(v[0], v[1], v[2], Pointer(mem))
+	}
 	var result Variant
 	loadResult(ShapeVariant, &result, mem)
 	return result
@@ -949,10 +944,10 @@ func VariantEval(op VariantOperator, a, b Variant) (Variant, bool) {
 	return result, r != 0
 }
 
-//go:wasmimport gd variant_hash
-func gd_variant_hash(v1, v2, v3 uint64) int64
+//go:wasmimport gd variant_deep_hash
+func gd_variant_deep_hash(v1, v2, v3 uint64, depth int64) int64
 
-func (v Variant) Hash() int64 { return gd_variant_hash(v[0], v[1], v[2]) }
+func (v Variant) Hash(depth int64) int64 { return gd_variant_deep_hash(v[0], v[1], v[2], depth) }
 
 //go:wasmimport gd variant_bool
 func gd_variant_bool(v1, v2, v3 uint64) uint32
@@ -969,30 +964,10 @@ func (v Variant) Text() String {
 }
 
 //go:wasmimport gd variant_type
-func gd_variant_type(v1, v2, v3 uint64) VariantType
+func gd_variant_type(v1, v2, v3 uint64) uint32
 
 func (v Variant) Type() variant.Type {
 	return variant.Type(gd_variant_type(v[0], v[1], v[2]))
-}
-
-// Deep variant operations
-
-//go:wasmimport gd variant_deep_copy
-func gd_variant_deep_copy(v1, v2, v3 uint64, result Pointer)
-
-func (v Variant) DeepCopy() Variant {
-	mem := makeResult(ShapeVariant)
-	gd_variant_deep_copy(v[0], v[1], v[2], Pointer(mem))
-	var result Variant
-	loadResult(ShapeVariant, &result, mem)
-	return result
-}
-
-//go:wasmimport gd variant_deep_hash
-func gd_variant_deep_hash(v1, v2, v3 uint64, recursion int64) int64
-
-func (v Variant) DeepHash(recursion int64) int64 {
-	return gd_variant_deep_hash(v[0], v[1], v[2], recursion)
 }
 
 // Variant get/set/has
@@ -1043,12 +1018,11 @@ func (v Variant) SetIndex(key, val Variant) bool {
 //go:wasmimport gd variant_set_array
 func gd_variant_set_array(v1, v2, v3 uint64, idx int64, val1, val2, val3 uint64, err Pointer) uint32
 
-func (v Variant) SetArray(idx int64, val Variant) (bool, Error) {
+func (v Variant) SetArray(idx int64, val Variant, err unsafe.Pointer) bool {
 	mem_err := makeResult(ShapeError)
 	r := gd_variant_set_array(v[0], v[1], v[2], idx, val[0], val[1], val[2], Pointer(mem_err))
-	var callErr Error
-	loadResult(ShapeError, &callErr, mem_err)
-	return r != 0, callErr
+	loadResult(ShapeError, err, mem_err)
+	return r != 0
 }
 
 //go:wasmimport gd variant_set_field
@@ -1102,31 +1076,38 @@ func (v Variant) UnsafeFree() {
 }
 
 //go:wasmimport gd variant_unsafe_make_native
-func gd_variant_unsafe_make_native(vtype VariantType, v1, v2, v3 uint64, shape uint64, result Pointer)
+func gd_variant_unsafe_make_native(vtype uint32, v1, v2, v3 uint64, shape uint64, result Pointer)
 
-func VariantUnsafeMakeNative(vtype VariantType, v Variant, shape uint64, result unsafe.Pointer) {
-	mem := makeResult(Shape(shape))
-	gd_variant_unsafe_make_native(vtype, v[0], v[1], v[2], shape, Pointer(mem))
-	loadResult(Shape(shape), result, mem)
+func VariantInto[T Any](v Variant) T {
+	vtype := variantTypeOf[T]()
+	shape := shapeOf[T]()
+	mem := makeResult(shape)
+	gd_variant_unsafe_make_native(uint32(vtype), v[0], v[1], v[2], uint64(shape), Pointer(mem))
+	var result T
+	loadResult(shape, unsafe.Pointer(&result), mem)
+	return result
 }
 
 //go:wasmimport gd variant_unsafe_from_native
-func gd_variant_unsafe_from_native(vtype VariantType, result Pointer, shape uint64, args Pointer)
+func gd_variant_unsafe_from_native(vtype uint32, result Pointer, shape uint64, args Pointer)
 
-func VariantUnsafeFromNative(vtype VariantType, shape uint64, args unsafe.Pointer) Variant {
+func VariantFrom[T Any](native T) Variant {
+	vtype := variantTypeOf[T]()
+	shape := shapeOf[T]()
 	mem_result := makeResult(ShapeVariant)
-	mem_args := copyArguments(Shape(shape), args)
-	gd_variant_unsafe_from_native(vtype, Pointer(mem_result), shape, Pointer(mem_args))
+	mem_args := copyArguments(shape, unsafe.Pointer(&native))
+	gd_variant_unsafe_from_native(uint32(vtype), Pointer(mem_result), uint64(shape), Pointer(mem_args))
 	var result Variant
 	loadResult(ShapeVariant, &result, mem_result)
 	return result
 }
 
 //go:wasmimport gd variant_unsafe_internal_pointer
-func gd_variant_unsafe_internal_pointer(vtype VariantType, v1, v2, v3 uint64) Pointer
+func gd_variant_unsafe_internal_pointer(vtype uint32, v1, v2, v3 uint64) Pointer
 
-func VariantUnsafeInternalPointer(vtype VariantType, v Variant) Pointer {
-	return gd_variant_unsafe_internal_pointer(vtype, v[0], v[1], v[2])
+func PointerFromVariant[T Any](v Variant) PointerTo[T] {
+	vtype := variantTypeOf[T]()
+	return PointerTo[T](gd_variant_unsafe_internal_pointer(uint32(vtype), v[0], v[1], v[2]))
 }
 
 //go:wasmimport gd variant_unsafe_set_field
@@ -1138,19 +1119,19 @@ func VariantUnsafeSetField(setter FunctionID, shape uint64, args unsafe.Pointer)
 }
 
 //go:wasmimport gd variant_unsafe_set_array
-func gd_variant_unsafe_set_array(vtype VariantType, idx int64, shape uint64, args Pointer)
+func gd_variant_unsafe_set_array(vtype uint32, idx int64, shape uint64, args Pointer)
 
-func VariantUnsafeSetArray(vtype VariantType, idx int64, shape uint64, args unsafe.Pointer) {
+func VariantUnsafeSetArray(vtype variant.Type, idx int64, shape uint64, args unsafe.Pointer) {
 	mem_args := copyArguments(Shape(shape), args)
-	gd_variant_unsafe_set_array(vtype, idx, shape, Pointer(mem_args))
+	gd_variant_unsafe_set_array(uint32(vtype), idx, shape, Pointer(mem_args))
 }
 
 //go:wasmimport gd variant_unsafe_set_index
-func gd_variant_unsafe_set_index(vtype VariantType, shape uint64, args Pointer)
+func gd_variant_unsafe_set_index(vtype uint32, shape uint64, args Pointer)
 
-func VariantUnsafeSetIndex(vtype VariantType, shape uint64, args unsafe.Pointer) {
+func VariantUnsafeSetIndex(vtype variant.Type, shape uint64, args unsafe.Pointer) {
 	mem_args := copyArguments(Shape(shape), args)
-	gd_variant_unsafe_set_index(vtype, shape, Pointer(mem_args))
+	gd_variant_unsafe_set_index(uint32(vtype), shape, Pointer(mem_args))
 }
 
 //go:wasmimport gd variant_unsafe_get_field
@@ -1164,22 +1145,22 @@ func VariantUnsafeGetField(getter FunctionID, result unsafe.Pointer, shape uint6
 }
 
 //go:wasmimport gd variant_unsafe_get_array
-func gd_variant_unsafe_get_array(vtype VariantType, idx int64, result Pointer, shape uint64, args Pointer)
+func gd_variant_unsafe_get_array(vtype uint32, idx int64, result Pointer, shape uint64, args Pointer)
 
-func VariantUnsafeGetArray(vtype VariantType, idx int64, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+func VariantUnsafeGetArray(vtype variant.Type, idx int64, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
 	mem_result := makeResult(Shape(shape))
 	mem_args := copyArguments(Shape(shape), args)
-	gd_variant_unsafe_get_array(vtype, idx, Pointer(mem_result), shape, Pointer(mem_args))
+	gd_variant_unsafe_get_array(uint32(vtype), idx, Pointer(mem_result), shape, Pointer(mem_args))
 	loadResult(Shape(shape), result, mem_result)
 }
 
 //go:wasmimport gd variant_unsafe_get_index
-func gd_variant_unsafe_get_index(vtype VariantType, result Pointer, shape uint64, args Pointer)
+func gd_variant_unsafe_get_index(vtype uint32, result Pointer, shape uint64, args Pointer)
 
-func VariantUnsafeGetIndex(vtype VariantType, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
+func VariantUnsafeGetIndex(vtype variant.Type, result unsafe.Pointer, shape uint64, args unsafe.Pointer) {
 	mem_result := makeResult(Shape(shape))
 	mem_args := copyArguments(Shape(shape), args)
-	gd_variant_unsafe_get_index(vtype, Pointer(mem_result), shape, Pointer(mem_args))
+	gd_variant_unsafe_get_index(uint32(vtype), Pointer(mem_result), shape, Pointer(mem_args))
 	loadResult(Shape(shape), result, mem_result)
 }
 
@@ -1271,46 +1252,16 @@ func EditorEndPlugin(name StringName)
 func MakePropertyList(n int64) PropertyList
 
 //go:wasmimport gd property_list_push
-func gd_property_list_push(list PropertyList, vtype VariantType, name StringName, className StringName, hint uint32, hintString String, usage uint32, meta uint32)
+func gd_property_list_push(list PropertyList, vtype uint32, name StringName, className StringName, hint uint32, hintString String, usage uint32, meta uint32)
 
-func (p PropertyList) Push(vtype VariantType, name StringName, className StringName, hint uint32, hintString String, usage uint32, meta uint32) {
-	gd_property_list_push(p, vtype, name, className, hint, hintString, usage, meta)
+func (p PropertyList) Push(vtype variant.Type, name StringName, className StringName, hint uint32, hintString String, usage uint32, meta uint32) {
+	gd_property_list_push(p, uint32(vtype), name, className, hint, hintString, usage, meta)
 }
 
 //go:wasmimport gd property_list_free
 func gd_property_list_free(list PropertyList)
 
 func (p PropertyList) Free() { gd_property_list_free(p) }
-
-//go:wasmimport gd property_info_type
-func gd_property_info_type(info PropertyList) VariantType
-
-func (p PropertyList) InfoType() VariantType { return gd_property_info_type(p) }
-
-//go:wasmimport gd property_info_name
-func gd_property_info_name(info PropertyList) StringName
-
-func (p PropertyList) InfoName() StringName { return gd_property_info_name(p) }
-
-//go:wasmimport gd property_info_class_name
-func gd_property_info_class_name(info PropertyList) StringName
-
-func (p PropertyList) InfoClassName() StringName { return gd_property_info_class_name(p) }
-
-//go:wasmimport gd property_info_hint
-func gd_property_info_hint(info PropertyList) uint32
-
-func (p PropertyList) InfoHint() uint32 { return gd_property_info_hint(p) }
-
-//go:wasmimport gd property_info_hint_string
-func gd_property_info_hint_string(info PropertyList) String
-
-func (p PropertyList) InfoHintString() String { return gd_property_info_hint_string(p) }
-
-//go:wasmimport gd property_info_usage
-func gd_property_info_usage(info PropertyList) uint32
-
-func (p PropertyList) InfoUsage() uint32 { return gd_property_info_usage(p) }
 
 // MethodList operations
 

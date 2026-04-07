@@ -260,7 +260,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "// Instance of the class with convieniently typed arguments and results.\n")
 		fmt.Fprintf(file, "type Instance [1]gdclass.%s\n", class.Name)
 		fmt.Fprintf(file, "var otype gdunsafe.ObjectType\n")
-		fmt.Fprintf(file, "var sname gdextension.StringName\n")
+		fmt.Fprintf(file, "var sname gdunsafe.StringName\n")
 		fmt.Fprintf(file, "var methods struct {\n")
 		for _, method := range class.Methods {
 			if method.IsVirtual {
@@ -272,13 +272,13 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "func init() {\n")
 		if class.Name != "Startup" {
 			fmt.Fprintf(file, "\tgd.Links = append(gd.Links, func() {\n")
-			fmt.Fprintf(file, "\t\tsname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern(%q))}\n", class.Name)
-			fmt.Fprintf(file, "\t\totype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))\n")
+			fmt.Fprintf(file, "\t\tsname = gdunsafe.UTF8.Intern(%q)\n", class.Name)
+			fmt.Fprintf(file, "\t\totype = gdunsafe.ObjectTypeTag(sname)\n")
 			fmt.Fprintf(file, "\t\tgd.LinkMethods(sname, &methods, %v)\n", class.APIType == "editor")
 			fmt.Fprintf(file, "\t\t})\n")
 		}
 		fmt.Fprintf(file, "\tgd.RegisterCleanup(func() {\n")
-		fmt.Fprintf(file, "\t\tnoescape.Free(gdextension.TypeStringName, &sname)\n")
+		fmt.Fprintf(file, "\t\tgdunsafe.Free(sname)\n")
 		fmt.Fprintf(file, "\t})\n")
 		fmt.Fprintf(file, "}\n")
 
@@ -289,7 +289,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "var self [1]gdclass.%s\n", class.Name)
 			fmt.Fprintf(file, "var once sync.Once\n")
 			fmt.Fprintf(file, "func singleton() {\n")
-			fmt.Fprintf(file, "\tself[0] = gdclass.New%[1]v(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(gdunsafe.StringName(sname[0])))))\n", class.Name)
+			fmt.Fprintf(file, "\tself[0] = gdclass.New%[1]v(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(sname))))\n", class.Name)
 			fmt.Fprintf(file, "}\n")
 		} else {
 			var hasDefaults bool

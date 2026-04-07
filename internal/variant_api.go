@@ -8,62 +8,63 @@ import (
 	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant"
 )
 
 // Copy returns a copy of the variant that will belong to the provided context.
-func (variant Variant) Copy() Variant {
-	return pointers.New[Variant](gdunsafe.Variant(pointers.Get(variant)).Copy())
+func (v Variant) Copy() Variant {
+	return pointers.New[Variant](gdunsafe.Variant(pointers.Get(v)).Copy(false))
 }
 
 // Type returns the variant's type, similar to [reflect.Kind] but for a variant
 // value.
-func (variant Variant) Type() gdextension.VariantType {
-	return gdextension.VariantType(gdunsafe.Variant(pointers.Get(variant)).Type())
+func (v Variant) Type() variant.Type {
+	return variant.Type(gdunsafe.Variant(pointers.Get(v)).Type())
 }
 
 // Get returns the value specified by the given key variant and a boolean
 // indiciating whether the get operation was valid.
-func (variant Variant) Get(key Variant) (val Variant, ok bool) {
-	raw, ok := gdunsafe.Variant(pointers.Get(variant)).GetIndex(gdunsafe.Variant(pointers.Get(key)))
+func (v Variant) Get(key Variant) (val Variant, ok bool) {
+	raw, ok := gdunsafe.Variant(pointers.Get(v)).GetIndex(gdunsafe.Variant(pointers.Get(key)))
 	return pointers.New[Variant](raw), ok
 }
 
 // Set sets the value specified by the given key variant to the given value
 // variant. Returns true if the set operation was valid.
-func (variant Variant) Set(key, val Variant) bool {
-	return gdunsafe.Variant(pointers.Get(variant)).SetIndex(gdunsafe.Variant(pointers.Get(key)), gdunsafe.Variant(pointers.Get(val)))
+func (v Variant) Set(key, val Variant) bool {
+	return gdunsafe.Variant(pointers.Get(v)).SetIndex(gdunsafe.Variant(pointers.Get(key)), gdunsafe.Variant(pointers.Get(val)))
 }
 
 // Call calls a method on the variant dynamically.
-func (variant Variant) Call(method StringName, args ...Variant) (Variant, error) {
+func (v Variant) Call(method StringName, args ...Variant) (Variant, error) {
 	var converted []gdunsafe.Variant
 	for i := range args {
 		converted = append(converted, gdunsafe.Variant(pointers.Get(args[i])))
 	}
-	raw, err := gdunsafe.Variant(pointers.Get(variant)).VariantCall(gdunsafe.StringName(pointers.Get(method)[0]), converted...)
+	raw, err := gdunsafe.Variant(pointers.Get(v)).VariantCall(gdunsafe.StringName(pointers.Get(method)[0]), converted...)
 	return pointers.New[Variant](raw), err
 }
 
 // Iterator returns an iterator for the variant.
-func (variant Variant) Iterator() Iterator {
+func (v Variant) Iterator() Iterator {
 	var err gdextension.CallError
 	var raw gdextension.Iterator
-	gdunsafe.Variant(pointers.Get(variant)).IteratorMake(unsafe.Pointer(&raw), unsafe.Pointer(&err))
+	gdunsafe.Variant(pointers.Get(v)).IteratorMake(unsafe.Pointer(&raw), unsafe.Pointer(&err))
 	if err != (gdextension.CallError{}) {
 		panic("failed to initialize iterator")
 	}
 	return Iterator{
-		self: variant,
+		self: v,
 		iter: pointers.New[iterator](raw),
 	}
 }
 
 // Hash returns the hash value of the variant.
-func (variant Variant) Hash() Int { return Int(gdunsafe.Variant(pointers.Get(variant)).Hash()) }
+func (v Variant) Hash() Int { return Int(gdunsafe.Variant(pointers.Get(v)).Hash(0)) }
 
 // RecursiveHash returns the hash value of the variant recursively.
-func (variant Variant) RecursiveHash(count Int) Int {
-	return Int(gdunsafe.Variant(pointers.Get(variant)).DeepHash(int64(count)))
+func (v Variant) RecursiveHash(count Int) Int {
+	return Int(gdunsafe.Variant(pointers.Get(v)).Hash(int64(count)))
 }
 
 // Eval evaluates a binary operator between two variants.

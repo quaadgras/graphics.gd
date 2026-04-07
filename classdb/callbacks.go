@@ -131,9 +131,8 @@ func (w *instanceWrapper) PropertyList() gdunsafe.PropertyList {
 	return gdunsafe.PropertyList(w.impl.GetPropertyList())
 }
 
-func (w *instanceWrapper) ValidateProperty(name gdunsafe.StringName) bool {
-	// The C callback actually passes a PropertyList pointer despite the StringName type.
-	return w.impl.ValidateProperty(gdextension.PropertyList(name))
+func (w *instanceWrapper) ValidateProperty(property gdunsafe.Property) bool {
+	return w.impl.ValidateProperty(property)
 }
 
 func (w *instanceWrapper) Notification(what int32, reverse bool) {

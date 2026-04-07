@@ -99,7 +99,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 type Instance [1]gdclass.OpenXRBindingModifierEditor
 
 var otype gdunsafe.ObjectType
-var sname gdextension.StringName
+var sname gdunsafe.StringName
 var methods struct {
 	get_binding_modifier gdextension.MethodForClass `hash:"2930765082"`
 	setup                gdextension.MethodForClass `hash:"1284787389"`
@@ -107,12 +107,12 @@ var methods struct {
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("OpenXRBindingModifierEditor"))}
-		otype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))
+		sname = gdunsafe.UTF8.Intern("OpenXRBindingModifierEditor")
+		otype = gdunsafe.ObjectTypeTag(sname)
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		noescape.Free(gdextension.TypeStringName, &sname)
+		gdunsafe.Free(sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -178,7 +178,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.OpenXRBindingModifierEditor{gdclass.NewOpenXRBindingModifierEditor(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(sname[0]))), gd.Free))})
+	casted := Instance([1]gdclass.OpenXRBindingModifierEditor{gdclass.NewOpenXRBindingModifierEditor(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(sname)), gd.Free))})
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

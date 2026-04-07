@@ -130,7 +130,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 type Instance [1]gdclass.CanvasItem
 
 var otype gdunsafe.ObjectType
-var sname gdextension.StringName
+var sname gdunsafe.StringName
 var methods struct {
 	get_canvas_item                         gdextension.MethodForClass `hash:"2944877500"`
 	set_visible                             gdextension.MethodForClass `hash:"2586408642"`
@@ -227,12 +227,12 @@ var methods struct {
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("CanvasItem"))}
-		otype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))
+		sname = gdunsafe.UTF8.Intern("CanvasItem")
+		otype = gdunsafe.ObjectTypeTag(sname)
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		noescape.Free(gdextension.TypeStringName, &sname)
+		gdunsafe.Free(sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -1422,7 +1422,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.CanvasItem{gdclass.NewCanvasItem(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(sname[0]))), gd.Free))})
+	casted := Instance([1]gdclass.CanvasItem{gdclass.NewCanvasItem(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(sname)), gd.Free))})
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

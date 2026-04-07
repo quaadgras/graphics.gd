@@ -84,7 +84,7 @@ func (p PackedInt32Array) SetIndex(idx Int, value int32) {
 
 func (p PackedInt32Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		noescape.Free(gdextension.TypePackedInt32Array, &ptr)
+		gdunsafe.Free(gdunsafe.PackedArray[int32](ptr))
 	}
 }
 
@@ -101,7 +101,7 @@ func (p PackedInt64Array) SetIndex(idx Int, value int64) {
 
 func (p PackedInt64Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		noescape.Free(gdextension.TypePackedInt64Array, &ptr)
+		gdunsafe.Free(gdunsafe.PackedArray[int64](ptr))
 	}
 }
 
@@ -118,7 +118,7 @@ func (p PackedFloat32Array) SetIndex(idx Int, value float32) {
 
 func (p PackedFloat32Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		noescape.Free(gdextension.TypePackedFloat32Array, &ptr)
+		gdunsafe.Free(gdunsafe.PackedArray[float32](ptr))
 	}
 }
 
@@ -135,7 +135,7 @@ func (p PackedFloat64Array) SetIndex(idx Int, value float64) {
 
 func (p PackedFloat64Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		noescape.Free(gdextension.TypePackedFloat64Array, &ptr)
+		gdunsafe.Free(gdunsafe.PackedArray[float64](ptr))
 	}
 }
 
@@ -176,7 +176,7 @@ func (p PackedStringArray) AsSlice() []String {
 
 func (p PackedStringArray) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		noescape.Free(gdextension.TypePackedStringArray, &ptr)
+		gdunsafe.Free(gdunsafe.PackedArray[gdunsafe.String](ptr))
 	}
 }
 
@@ -190,7 +190,7 @@ func (p PackedVector2Array) SetIndex(idx Int, value Vector2) {
 
 func (p PackedVector2Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		noescape.Free(gdextension.TypePackedVector2Array, &ptr)
+		gdunsafe.Free(gdunsafe.PackedArray[Vector2](ptr))
 	}
 }
 
@@ -207,7 +207,7 @@ func (p PackedVector3Array) SetIndex(idx Int, value Vector3) {
 
 func (p PackedVector3Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		noescape.Free(gdextension.TypePackedVector3Array, &ptr)
+		gdunsafe.Free(gdunsafe.PackedArray[Vector3](ptr))
 	}
 }
 
@@ -224,7 +224,7 @@ func (p PackedVector4Array) SetIndex(idx Int, value Vector4) {
 
 func (p PackedVector4Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		noescape.Free(gdextension.TypePackedVector4Array, &ptr)
+		gdunsafe.Free(gdunsafe.PackedArray[Vector4](ptr))
 	}
 }
 
@@ -241,7 +241,7 @@ func (p PackedColorArray) SetIndex(idx Int, value Color) {
 
 func (p PackedColorArray) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		noescape.Free(gdextension.TypePackedColorArray, &ptr)
+		gdunsafe.Free(gdunsafe.PackedArray[Color](ptr))
 	}
 }
 

@@ -6,6 +6,7 @@ import (
 	"iter"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/noescape"
@@ -21,7 +22,7 @@ import (
 
 func (s Signal) Free() {
 	if ptr, ok := pointers.End(s); ok {
-		noescape.Free(gdextension.TypeSignal, &ptr)
+		gdunsafe.Free(gdunsafe.Signal(ptr))
 	}
 }
 

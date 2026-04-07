@@ -97,7 +97,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 type Instance [1]gdclass.BoneConstraint3D
 
 var otype gdunsafe.ObjectType
-var sname gdextension.StringName
+var sname gdunsafe.StringName
 var methods struct {
 	set_amount              gdextension.MethodForClass `hash:"1602489585"`
 	get_amount              gdextension.MethodForClass `hash:"2339986948"`
@@ -120,12 +120,12 @@ var methods struct {
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname = gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern("BoneConstraint3D"))}
-		otype = gdunsafe.ObjectTypeTag(gdunsafe.StringName(sname[0]))
+		sname = gdunsafe.UTF8.Intern("BoneConstraint3D")
+		otype = gdunsafe.ObjectTypeTag(sname)
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		noescape.Free(gdextension.TypeStringName, &sname)
+		gdunsafe.Free(sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -330,7 +330,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.BoneConstraint3D{gdclass.NewBoneConstraint3D(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(sname[0]))), gd.Free))})
+	casted := Instance([1]gdclass.BoneConstraint3D{gdclass.NewBoneConstraint3D(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(sname)), gd.Free))})
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

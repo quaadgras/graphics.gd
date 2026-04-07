@@ -90,7 +90,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 type Instance [1]gdclass.Startup
 
 var otype gdunsafe.ObjectType
-var sname gdextension.StringName
+var sname gdunsafe.StringName
 var methods struct {
 	start      gdextension.MethodForClass `hash:"2240911060"`
 	is_started gdextension.MethodForClass `hash:"2240911060"`
@@ -103,7 +103,7 @@ var methods struct {
 
 func init() {
 	gd.RegisterCleanup(func() {
-		noescape.Free(gdextension.TypeStringName, &sname)
+		gdunsafe.Free(sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -202,7 +202,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.Startup{gdclass.NewStartup(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(sname[0]))), gd.Free))})
+	casted := Instance([1]gdclass.Startup{gdclass.NewStartup(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(sname)), gd.Free))})
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

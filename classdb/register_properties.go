@@ -12,6 +12,7 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Enum"
 	"graphics.gd/variant/Object"
@@ -20,26 +21,26 @@ import (
 	"graphics.gd/variant/String"
 )
 
-func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsafe.PropertyList) bool {
+func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsafe.PropertyList) (variant.Type, bool) {
 	var name = String.ToSnakeCase(field.Name)
 	tag, ok := field.Tag.Lookup("gd")
 	if ok {
 		name = tag
 	}
-	var vtype gdextension.VariantType
+	var vtype variant.Type
 	var hint PropertyHint
 	var hintString = nameOf(field.Type)
 	var enum = registerEnumsFor(class, field.Type)
 	var className = nameOf(field.Type)
 	if instance, ok := field.Type.MethodByName("Instance"); ok && instance.Type.NumOut() == 2 && field.Type.Name() == "ID" {
-		vtype = gdextension.TypeObject
+		vtype = variant.TypeObject
 		className = nameOf(instance.Type.Out(0))
 		hintString = className
 		field.Type = instance.Type.Out(0)
 	} else {
 		switch {
 		case enum != nil:
-			vtype = gdextension.TypeInt
+			vtype = variant.TypeInt
 			hint |= PropertyHintEnum
 			hintString = ""
 			var first = true
@@ -51,36 +52,36 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsa
 				first = false
 			}
 		case field.Type.Kind() == reflect.Pointer && field.Type.Implements(reflect.TypeFor[[0]interface{ Super() Resource.Instance }]().Elem()):
-			vtype = gdextension.TypeObject
+			vtype = variant.TypeObject
 			hint |= PropertyHintResourceType
 			hintString = nameOf(field.Type.Elem())
 		default:
 			vtype, ok = gd.VariantTypeOf(field.Type)
 			if !ok {
-				return false
+				return vtype, false
 			}
-			if vtype == gdextension.TypeObject {
+			if vtype == variant.TypeObject {
 				if field.Type.Implements(reflect.TypeFor[Resource.Any]()) {
-					hintString = fmt.Sprintf("%d/%d:%s", gdextension.TypeObject, PropertyHintResourceType, nameOf(field.Type)) // MAKE_RESOURCE_TYPE_HINT
+					hintString = fmt.Sprintf("%d/%d:%s", variant.TypeObject, PropertyHintResourceType, nameOf(field.Type)) // MAKE_RESOURCE_TYPE_HINT
 				} else {
 					hintString = nameOf(field.Type)
 				}
 			}
-			if vtype == gdextension.TypeArray {
+			if vtype == variant.TypeArray {
 				if field.Type.Implements(reflect.TypeFor[Array.Interface]()) {
 					elem := reflect.Zero(field.Type).Interface().(Array.Interface).ElemType()
 					etype, ok := gd.VariantTypeOf(elem)
 					if !ok {
-						return false
+						return vtype, false
 					}
-					if etype != gdextension.TypeNil {
+					if etype != variant.TypeNil {
 						hint |= PropertyHintArrayType
 						hintString = etype.String()
 					}
 				} else {
 					etype, ok := gd.VariantTypeOf(field.Type.Elem())
 					if !ok {
-						return false
+						return vtype, false
 					}
 					hint |= PropertyHintArrayType
 					hintString = etype.String()
@@ -95,7 +96,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsa
 		hint |= PropertyHintNodeType
 	}
 	var usage = PropertyUsageStorage | PropertyUsageEditor
-	if vtype == gdextension.TypeNil {
+	if vtype == variant.TypeNil {
 		usage |= PropertyUsageNilIsVariant
 	}
 	if rangeHint, ok := field.Tag.Lookup("range"); ok {
@@ -103,7 +104,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsa
 		hintString = rangeHint
 	}
 	push_into.Push(
-		gdunsafe.VariantType(vtype),
+		variant.Type(vtype),
 		gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
 		gdunsafe.StringName(pointers.Get(gd.NewStringName(className))[0]),
 		uint32(hint),
@@ -111,7 +112,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsa
 		uint32(usage),
 		0,
 	)
-	return true
+	return vtype, true
 }
 
 // Set needs to reference++ any resources that are sucessfully set.
@@ -161,12 +162,12 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	if !field.CanSet() {
 		return false
 	}
-	if value.Type() == gdextension.TypeNil {
+	if value.Type() == variant.TypeNil {
 		field.Set(reflect.Zero(field.Type()))
 		return true
 	}
 	if reflect.PointerTo(field.Type()).Implements(reflect.TypeFor[Enum.Pointer]()) {
-		if value.Type() != gdextension.TypeInt {
+		if value.Type() != variant.TypeInt {
 			return false
 		}
 		field.Addr().Interface().(Enum.Pointer).SetInt(int(value.Int()))
@@ -174,7 +175,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	}
 	var isExtensionClass bool
 	var converted reflect.Value
-	if value.Type() == gdextension.TypeObject && field.Kind() != reflect.Uint64 { // support setting Object.ID fields with Object
+	if value.Type() == variant.TypeObject && field.Kind() != reflect.Uint64 { // support setting Object.ID fields with Object
 		obj := gd.VariantAsObject(value)
 		ext := gd.ExtensionInstanceLookup(gdreference.GetObject(obj))
 		if ext != nil {
@@ -274,7 +275,7 @@ func (instance *instanceImplementation) GetPropertyList() gdextension.PropertyLi
 		for _, info := range list {
 			vtype, _ := gd.VariantTypeOf(info.Type)
 			results.Push(
-				gdunsafe.VariantType(vtype),
+				variant.Type(vtype),
 				gdunsafe.StringName(pointers.Get(gd.NewStringName(info.Name))[0]),
 				gdunsafe.StringName(pointers.Get(gd.NewStringName(info.ClassName))[0]),
 				uint32(info.Hint),
@@ -352,7 +353,7 @@ func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (g
 	return gd.NewVariant(value.Elem().Interface()), true
 }
 
-func (instance *instanceImplementation) ValidateProperty(list gdextension.PropertyList) bool {
+func (instance *instanceImplementation) ValidateProperty(list gdunsafe.Property) bool {
 	val, ok := instance.Interface()
 	if !ok {
 		return false
@@ -361,14 +362,13 @@ func (instance *instanceImplementation) ValidateProperty(list gdextension.Proper
 	case interface {
 		ValidateProperty(Object.PropertyInfo) bool
 	}:
-		pl := gdunsafe.PropertyList(list)
 		return bool(validate.ValidateProperty(Object.PropertyInfo{
-			ClassName:  pointers.Raw[gd.StringName](gdextension.StringName{gdextension.Pointer(pl.InfoClassName())}).String(),
-			Usage:      int(pl.InfoUsage()),
-			Type:       gd.ConvieniantGoTypeOf(gdextension.VariantType(pl.InfoType())),
-			HintString: pointers.Raw[gd.String](gdextension.String{gdextension.Pointer(pl.InfoHintString())}).String(),
-			Hint:       int(pl.InfoHint()),
-			Name:       pointers.Raw[gd.StringName](gdextension.StringName{gdextension.Pointer(pl.InfoName())}).String(),
+			ClassName:  pointers.Raw[gd.StringName](gdextension.StringName{gdextension.Pointer(list.ClassName)}).String(),
+			Usage:      int(list.Usage),
+			Type:       gd.ConvieniantGoTypeOf(list.Type),
+			HintString: pointers.Raw[gd.String](gdextension.String{gdextension.Pointer(list.HintString)}).String(),
+			Hint:       int(list.Hint),
+			Name:       pointers.Raw[gd.StringName](gdextension.StringName{gdextension.Pointer(list.Name)}).String(),
 		}))
 	}
 	return true

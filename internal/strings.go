@@ -17,21 +17,21 @@ import (
 )
 
 var (
-	static_string_names = make(map[string]gdextension.StringName)
-	static_strings      = make(map[string]gdextension.String)
-	static_nodepaths    = make(map[string]gdextension.NodePath)
+	static_string_names = make(map[string]gdunsafe.StringName)
+	static_strings      = make(map[string]gdunsafe.String)
+	static_nodepaths    = make(map[string]gdunsafe.NodePath)
 )
 
 func init() {
 	RegisterCleanup(func() {
 		for _, name := range static_string_names {
-			noescape.Free(gdextension.TypeStringName, &name)
+			gdunsafe.Free(name)
 		}
 		for _, name := range static_strings {
-			noescape.Free(gdextension.TypeString, &name)
+			gdunsafe.Free(name)
 		}
 		for _, name := range static_nodepaths {
-			noescape.Free(gdextension.TypeNodePath, &name)
+			gdunsafe.Free(name)
 		}
 	})
 }
@@ -52,7 +52,7 @@ func (s String) Free() {
 	if !ok {
 		return
 	}
-	noescape.Free(gdextension.TypeString, &ptr)
+	gdunsafe.Free(gdunsafe.String(ptr[0]))
 }
 
 func (s String) Len() int { return int(s.Length()) }
@@ -93,7 +93,7 @@ func (s StringName) Free() {
 	if ptr == (gdextension.StringName{}) {
 		return
 	}
-	noescape.Free(gdextension.TypeStringName, &ptr)
+	gdunsafe.Free(gdunsafe.StringName(ptr[0]))
 }
 
 func (s StringName) String() string {
@@ -123,17 +123,17 @@ func (n NodePath) Free() {
 	if !ok {
 		return
 	}
-	noescape.Free(gdextension.TypeNodePath, &ptr)
+	gdunsafe.Free(gdunsafe.NodePath(ptr[0]))
 }
 
 func InternalString(s StringType.Unicode) String {
 	if str := s.String(); rodatacheck.String(str) && threadcheck.Main() {
 		if name, ok := static_strings[str]; ok {
-			return pointers.Raw[String](name)
+			return pointers.Raw[String](gdextension.String{gdextension.Pointer(name)})
 		}
-		name := gdextension.String{gdextension.Pointer(gdunsafe.UTF8.String(str))}
+		name := gdunsafe.UTF8.String(str)
 		static_strings[str] = name
-		return pointers.Raw[String](name)
+		return pointers.Raw[String](gdextension.String{gdextension.Pointer(name)})
 	}
 	_, ptr := StringType.Proxy(s, StringCacheCheck, NewStringProxy)
 	return pointers.Load[String](ptr)
@@ -228,12 +228,12 @@ func (proxy StringProxy) CompareOther(raw complex128, other_api StringType.API, 
 func InternalNodePath(s Path.ToNode) NodePath {
 	if str := s.String(); rodatacheck.String(str) && threadcheck.Main() {
 		if name, ok := static_nodepaths[str]; ok {
-			return pointers.Raw[NodePath](name)
+			return pointers.Raw[NodePath](gdextension.NodePath{gdextension.Pointer(name)})
 		}
 		name := gdextension.String{gdextension.Pointer(gdunsafe.UTF8.String(str))}
 		path := noescape.Make[gdextension.NodePath](builtin.creation.NodePath[2], gdextension.SizeString<<4, unsafe.Pointer(&name))
 		static_nodepaths[str] = path
-		noescape.Free(gdextension.TypeString, &name)
+		gdunsafe.Free(gdunsafe.NodePath(path[0]))
 		return pointers.Raw[NodePath](path)
 	}
 	_, ptr := StringType.Proxy(s, NodePathCheck, NewNodePathProxy)
@@ -294,11 +294,11 @@ func (NodePathProxy) CompareOther(raw complex128, other_api StringType.API, raw2
 func InternalStringName(s StringType.Name) StringName {
 	if str := s.String(); rodatacheck.String(str) && threadcheck.Main() {
 		if name, ok := static_string_names[str]; ok {
-			return pointers.Raw[StringName](name)
+			return pointers.Raw[StringName](gdextension.StringName{gdextension.Pointer(name)})
 		}
-		name := gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern(str))}
+		name := gdunsafe.UTF8.Intern(str)
 		static_string_names[str] = name
-		return pointers.Raw[StringName](name)
+		return pointers.Raw[StringName](gdextension.StringName{gdextension.Pointer(name)})
 	}
 	_, ptr := StringType.Proxy(s, StringNameCheck, NewStringNameProxy)
 	return pointers.Load[StringName](ptr)
