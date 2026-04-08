@@ -85,7 +85,7 @@ func linkBuiltinType[T gdunsafe.Any](target any) {
 		}
 		fn := gdunsafe.BuiltinMethod[T](gdunsafe.StringName(pointers.Get(methodName)[0]), hash)
 		direct := reflect.NewAt(method.Type, unsafe.Add(rvalue.UnsafePointer(), method.Offset))
-		*direct.Interface().(*func(T, unsafe.Pointer, gdunsafe.Shape, unsafe.Pointer)) = fn
+		*direct.Interface().(*func(*T, unsafe.Pointer, gdunsafe.Shape, unsafe.Pointer)) = fn
 	}
 }
 

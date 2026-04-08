@@ -786,18 +786,18 @@ func gd_variant_type_builtin_method(vtype uint32, method uint32, hash int64) uin
 //go:wasmimport gd variant_type_unsafe_call
 func gd_variant_type_unsafe_call(self uint32, fn uint32, result uint32, shape Shape, args uint32)
 
-func BuiltinMethod[T Any](method StringName, hash int64) func(self T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
+func BuiltinMethod[T Any](method StringName, hash int64) func(self *T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
 	fn := gd_variant_type_builtin_method(uint32(variantTypeOf[T]()), uint32(method), hash)
-	return func(self T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
+	return func(self *T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
 		selfShape := Shape(shape) >> 4
-		mem_self := copySelf(selfShape, unsafe.Pointer(&self))
+		mem_self := copySelf(selfShape, unsafe.Pointer(self))
 		mem_result := makeResult(Shape(shape))
 		mem_args := copyArguments(selfShape, args)
 		gd_variant_type_unsafe_call(mem_self, fn, mem_result, shape, mem_args)
 		// copy self back (may have been mutated)
 		if mem_self != 0 {
 			size := selfShape.SizeResult()
-			buf := unsafe.Slice((*byte)(unsafe.Pointer(&self)), size)
+			buf := unsafe.Slice((*byte)(unsafe.Pointer(self)), size)
 			copyBufToGo2(mem_self, buf)
 		}
 		loadResult(Shape(shape), ret, mem_result)
@@ -1226,7 +1226,7 @@ func VariantInto[T Any](v Variant) T {
 	vtype := variantTypeOf[T]()
 	shape := shapeOf[T]()
 	mem := makeResult(shape)
-	gd_variant_unsafe_make_native(uint32(vtype), v[0], v[1], v[2], shape, mem)
+	gd_variant_unsafe_make_native(uint32(vtype), v[0], v[1], v[2], shape<<4, mem)
 	var result T
 	loadResult(shape, unsafe.Pointer(&result), mem)
 	return result
@@ -1239,8 +1239,8 @@ func VariantFrom[T Any](native T) Variant {
 	vtype := variantTypeOf[T]()
 	shape := shapeOf[T]()
 	mem_result := makeResult(ShapeVariant)
-	mem_args := copyArguments(shape, unsafe.Pointer(&native))
-	gd_variant_unsafe_from_native(uint32(vtype), mem_result, shape, mem_args)
+	mem_args := copyArguments(shape<<4, unsafe.Pointer(&native))
+	gd_variant_unsafe_from_native(uint32(vtype), mem_result, shape<<4, mem_args)
 	var result Variant
 	loadResult(ShapeVariant, &result, mem_result)
 	return result
@@ -1304,7 +1304,7 @@ func (ref RefCounted) Set(obj Object) {
 // Editor
 
 //go:wasmimport gd editor_add_documentation
-func EditorAddDocumentation(xml string)
+func EditorDocumentation(xml string)
 
 //go:wasmimport gd editor_add_plugin
 func gd_editor_add_plugin(name uint32)

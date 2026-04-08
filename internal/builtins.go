@@ -12,7 +12,7 @@ import (
 	"graphics.gd/internal/ring"
 )
 
-func callBuiltinMethod[T any, S any](self S, method func(self S, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer), shape gdextension.Shape, args unsafe.Pointer) T {
+func callBuiltinMethod[T any, S any](self *S, method func(self *S, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer), shape gdextension.Shape, args unsafe.Pointer) T {
 	ring.Main.Flush()
 	var result T
 	method(self, unsafe.Pointer(&result), shape, args)
@@ -24,120 +24,124 @@ var builtin struct {
 	typeset
 
 	Array struct {
-		size           func(self gdunsafe.Array, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
-		resize         func(self gdunsafe.Array, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
-		is_read_only   func(self gdunsafe.Array, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3918633141"`
-		make_read_only func(self gdunsafe.Array, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3218959716"`
+		size           func(self *gdunsafe.Array, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		resize         func(self *gdunsafe.Array, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
+		is_read_only   func(self *gdunsafe.Array, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3918633141"`
+		make_read_only func(self *gdunsafe.Array, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3218959716"`
 	}
 	Callable struct {
-		get_method          func(self gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"1825232092"`
-		get_bound_arguments func(self gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"4144163970"`
-		get_argument_count  func(self gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
-		callv               func(self gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"413578926"`
-		bindv               func(self gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3564560322"`
-		call_deferred       func(self gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3286317445"`
+		get_method          func(self *gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"1825232092"`
+		get_bound_arguments func(self *gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"4144163970"`
+		get_argument_count  func(self *gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		callv               func(self *gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"413578926"`
+		bindv               func(self *gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3564560322"`
+		call_deferred       func(self *gdunsafe.Callable, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3286317445"`
 	}
 	Dictionary struct {
-		keys           func(self gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"4144163970"`
-		has            func(self gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3680194679"`
-		clear          func(self gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3218959716"`
-		sort           func(self gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3218959716"`
-		erase          func(self gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"1776646889"`
-		hash           func(self gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
-		size           func(self gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
-		is_read_only   func(self gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3918633141"`
-		make_read_only func(self gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3218959716"`
+		keys           func(self *gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"4144163970"`
+		has            func(self *gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3680194679"`
+		clear          func(self *gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3218959716"`
+		sort           func(self *gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3218959716"`
+		erase          func(self *gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"1776646889"`
+		hash           func(self *gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		size           func(self *gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		is_read_only   func(self *gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3918633141"`
+		make_read_only func(self *gdunsafe.Dictionary, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3218959716"`
 	}
 	PackedByteArray struct {
-		resize    func(self gdunsafe.PackedArray[byte], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
-		size      func(self gdunsafe.PackedArray[byte], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
-		duplicate func(self gdunsafe.PackedArray[byte], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"851781288"`
+		resize    func(self *gdunsafe.PackedArray[byte], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
+		size      func(self *gdunsafe.PackedArray[byte], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		duplicate func(self *gdunsafe.PackedArray[byte], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"851781288"`
 	}
 	PackedColorArray struct {
-		resize func(self gdunsafe.PackedArray[Color], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
-		size   func(self gdunsafe.PackedArray[Color], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		resize func(self *gdunsafe.PackedArray[Color], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
+		size   func(self *gdunsafe.PackedArray[Color], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
 	}
 	PackedFloat32Array struct {
-		resize func(self gdunsafe.PackedArray[float32], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
-		size   func(self gdunsafe.PackedArray[float32], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		resize func(self *gdunsafe.PackedArray[float32], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
+		size   func(self *gdunsafe.PackedArray[float32], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
 	}
 	PackedFloat64Array struct {
-		resize func(self gdunsafe.PackedArray[float64], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
-		size   func(self gdunsafe.PackedArray[float64], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		resize func(self *gdunsafe.PackedArray[float64], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
+		size   func(self *gdunsafe.PackedArray[float64], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
 	}
 	PackedInt32Array struct {
-		resize func(self gdunsafe.PackedArray[int32], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
-		size   func(self gdunsafe.PackedArray[int32], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		resize func(self *gdunsafe.PackedArray[int32], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
+		size   func(self *gdunsafe.PackedArray[int32], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
 	}
 	PackedStringArray struct {
-		resize func(self gdunsafe.PackedArray[gdunsafe.String], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
-		size   func(self gdunsafe.PackedArray[gdunsafe.String], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		resize func(self *gdunsafe.PackedArray[gdunsafe.String], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
+		size   func(self *gdunsafe.PackedArray[gdunsafe.String], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
 	}
 	PackedVector2Array struct {
-		resize func(self gdunsafe.PackedArray[Vector2], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
-		size   func(self gdunsafe.PackedArray[Vector2], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		resize func(self *gdunsafe.PackedArray[Vector2], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
+		size   func(self *gdunsafe.PackedArray[Vector2], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
 	}
 	PackedVector3Array struct {
-		resize func(self gdunsafe.PackedArray[Vector3], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
-		size   func(self gdunsafe.PackedArray[Vector3], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		resize func(self *gdunsafe.PackedArray[Vector3], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
+		size   func(self *gdunsafe.PackedArray[Vector3], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
 	}
 	PackedVector4Array struct {
-		resize func(self gdunsafe.PackedArray[Vector4], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
-		size   func(self gdunsafe.PackedArray[Vector4], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		resize func(self *gdunsafe.PackedArray[Vector4], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
+		size   func(self *gdunsafe.PackedArray[Vector4], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
 	}
 	PackedInt64Array struct {
-		resize func(self gdunsafe.PackedArray[int64], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
-		size   func(self gdunsafe.PackedArray[int64], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		resize func(self *gdunsafe.PackedArray[int64], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"848867239"`
+		size   func(self *gdunsafe.PackedArray[int64], ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
 	}
 	Signal struct {
-		emit            func(self gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3286317445"`
-		connect         func(self gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"979702392"`
-		disconnect      func(self gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3470848906"`
-		get_name        func(self gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"1825232092"`
-		get_connections func(self gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"4144163970"`
-		get_object      func(self gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"4008621732"`
+		emit            func(self *gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3286317445"`
+		connect         func(self *gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"979702392"`
+		disconnect      func(self *gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3470848906"`
+		get_name        func(self *gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"1825232092"`
+		get_connections func(self *gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"4144163970"`
+		get_object      func(self *gdunsafe.Signal, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"4008621732"`
 	}
 	String struct {
-		length     func(self gdunsafe.String, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
-		substr     func(self gdunsafe.String, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"787537301"`
-		casecmp_to func(self gdunsafe.String, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"2920860731"`
+		length     func(self *gdunsafe.String, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		substr     func(self *gdunsafe.String, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"787537301"`
+		casecmp_to func(self *gdunsafe.String, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"2920860731"`
 	}
 	StringName struct {
-		length     func(self gdunsafe.StringName, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
-		substr     func(self gdunsafe.StringName, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"787537301"`
-		casecmp_to func(self gdunsafe.StringName, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"2920860731"`
+		length     func(self *gdunsafe.StringName, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"3173160232"`
+		substr     func(self *gdunsafe.StringName, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"787537301"`
+		casecmp_to func(self *gdunsafe.StringName, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer) `hash:"2920860731"`
 	}
 }
 
 func (a Array) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.Array(pointers.Get(a)[0]), builtin.Array.size, gdextension.SizeInt|gdextension.SizeArray<<4, nil)
+	self := gdunsafe.Array(pointers.Get(a)[0])
+	return callBuiltinMethod[int64](&self, builtin.Array.size, gdextension.SizeInt|gdextension.SizeArray<<4, nil)
 }
 
 func (a Array) Resize(size Int) Int {
-	return Int(callBuiltinMethod[int64](gdunsafe.Array(pointers.Get(a)[0]), builtin.Array.resize, 0|gdextension.SizeArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.Array(pointers.Get(a)[0])
+	return Int(callBuiltinMethod[int64](&self, builtin.Array.resize, 0|gdextension.SizeArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
 		int64(size),
 	})))
 }
 func (a Array) IsReadOnly() bool {
-	return callBuiltinMethod[bool](gdunsafe.Array(pointers.Get(a)[0]), builtin.Array.is_read_only, gdextension.SizeBool|gdextension.SizeArray<<4, nil)
+	self := gdunsafe.Array(pointers.Get(a)[0])
+	return callBuiltinMethod[bool](&self, builtin.Array.is_read_only, gdextension.SizeBool|gdextension.SizeArray<<4, nil)
 }
 func (a Array) MakeReadOnly() {
-	callBuiltinMethod[bool](gdunsafe.Array(pointers.Get(a)[0]), builtin.Array.make_read_only, 0|gdextension.SizeArray<<4, nil)
+	self := gdunsafe.Array(pointers.Get(a)[0])
+	callBuiltinMethod[bool](&self, builtin.Array.make_read_only, 0|gdextension.SizeArray<<4, nil)
 }
 
 func (c Callable) GetMethod() StringName {
 	var ptr = gdunsafe.Callable(pointers.Get(c))
-	return pointers.New[StringName](callBuiltinMethod[gdextension.StringName](ptr, builtin.Callable.get_method, gdextension.SizeStringName|gdextension.SizeCallable<<4, nil))
+	return pointers.New[StringName](callBuiltinMethod[gdextension.StringName](&ptr, builtin.Callable.get_method, gdextension.SizeStringName|gdextension.SizeCallable<<4, nil))
 }
 func (c Callable) GetBoundArguments() Array {
 	var ptr = gdunsafe.Callable(pointers.Get(c))
-	return pointers.New[Array](callBuiltinMethod[gdextension.Array](ptr, builtin.Callable.get_bound_arguments, gdextension.SizeArray|gdextension.SizeCallable<<4, nil))
+	return pointers.New[Array](callBuiltinMethod[gdextension.Array](&ptr, builtin.Callable.get_bound_arguments, gdextension.SizeArray|gdextension.SizeCallable<<4, nil))
 }
 func (c Callable) GetArgumentCount() int64 {
 	var ptr = gdunsafe.Callable(pointers.Get(c))
-	return callBuiltinMethod[int64](ptr, builtin.Callable.get_argument_count, gdextension.SizeInt|gdextension.SizeCallable<<4, nil)
+	return callBuiltinMethod[int64](&ptr, builtin.Callable.get_argument_count, gdextension.SizeInt|gdextension.SizeCallable<<4, nil)
 }
 func (c Callable) Call(args ...Variant) Variant {
 	var ptr = gdunsafe.Callable(pointers.Get(c))
@@ -147,7 +151,7 @@ func (c Callable) Call(args ...Variant) Variant {
 		array.SetIndex(int64(i), arg)
 	}
 	defer array.Free()
-	return pointers.New[Variant](callBuiltinMethod[gdextension.Variant](ptr, builtin.Callable.callv, gdextension.SizeVariant|gdextension.SizeCallable<<4|gdextension.SizeArray<<8, unsafe.Pointer(&struct {
+	return pointers.New[Variant](callBuiltinMethod[gdextension.Variant](&ptr, builtin.Callable.callv, gdextension.SizeVariant|gdextension.SizeCallable<<4|gdextension.SizeArray<<8, unsafe.Pointer(&struct {
 		gdextension.Array
 	}{
 		pointers.Get(array),
@@ -155,7 +159,7 @@ func (c Callable) Call(args ...Variant) Variant {
 }
 func (c Callable) CallDeferred() Variant {
 	var ptr = gdunsafe.Callable(pointers.Get(c))
-	return pointers.New[Variant](callBuiltinMethod[gdextension.Variant](ptr, builtin.Callable.call_deferred, gdextension.SizeVariant|gdextension.SizeCallable<<4, nil))
+	return pointers.New[Variant](callBuiltinMethod[gdextension.Variant](&ptr, builtin.Callable.call_deferred, gdextension.SizeVariant|gdextension.SizeCallable<<4, nil))
 }
 func (c Callable) Bind(args ...Variant) Callable {
 	var ptr = gdunsafe.Callable(pointers.Get(c))
@@ -165,7 +169,7 @@ func (c Callable) Bind(args ...Variant) Callable {
 		array.SetIndex(int64(i), arg)
 	}
 	defer array.Free()
-	return pointers.New[Callable](callBuiltinMethod[gdextension.Callable](ptr, builtin.Callable.bindv, gdextension.SizeCallable|gdextension.SizeCallable<<4|gdextension.SizeArray<<8, unsafe.Pointer(&struct {
+	return pointers.New[Callable](callBuiltinMethod[gdextension.Callable](&ptr, builtin.Callable.bindv, gdextension.SizeCallable|gdextension.SizeCallable<<4|gdextension.SizeArray<<8, unsafe.Pointer(&struct {
 		gdextension.Array
 	}{
 		pointers.Get(array),
@@ -173,143 +177,193 @@ func (c Callable) Bind(args ...Variant) Callable {
 }
 
 func (d Dictionary) Keys() Array {
-	return pointers.New[Array](callBuiltinMethod[gdextension.Array](gdunsafe.Dictionary(pointers.Get(d)[0]), builtin.Dictionary.keys, gdextension.SizeArray|gdextension.SizeDictionary<<4, nil))
+	self := gdunsafe.Dictionary(pointers.Get(d)[0])
+	return pointers.New[Array](callBuiltinMethod[gdextension.Array](&self, builtin.Dictionary.keys, gdextension.SizeArray|gdextension.SizeDictionary<<4, nil))
 }
 func (d Dictionary) Has(key Variant) bool {
-	return callBuiltinMethod[bool](gdunsafe.Dictionary(pointers.Get(d)[0]), builtin.Dictionary.has, gdextension.SizeBool|gdextension.SizeDictionary<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.Dictionary(pointers.Get(d)[0])
+	return callBuiltinMethod[bool](&self, builtin.Dictionary.has, gdextension.SizeBool|gdextension.SizeDictionary<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
 		gdextension.Variant
 	}{
 		gdextension.Variant(pointers.Get(key)),
 	}))
 }
 func (d Dictionary) Clear() {
-	callBuiltinMethod[bool](gdunsafe.Dictionary(pointers.Get(d)[0]), builtin.Dictionary.clear, 0|gdextension.SizeDictionary<<4, nil)
+	self := gdunsafe.Dictionary(pointers.Get(d)[0])
+	callBuiltinMethod[bool](&self, builtin.Dictionary.clear, 0|gdextension.SizeDictionary<<4, nil)
 }
 func (d Dictionary) Sort() {
-	callBuiltinMethod[bool](gdunsafe.Dictionary(pointers.Get(d)[0]), builtin.Dictionary.sort, 0|gdextension.SizeDictionary<<4, nil)
+	self := gdunsafe.Dictionary(pointers.Get(d)[0])
+	callBuiltinMethod[bool](&self, builtin.Dictionary.sort, 0|gdextension.SizeDictionary<<4, nil)
 }
 func (d Dictionary) Erase(key Variant) bool {
-	return callBuiltinMethod[bool](gdunsafe.Dictionary(pointers.Get(d)[0]), builtin.Dictionary.erase, gdextension.SizeBool|gdextension.SizeDictionary<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.Dictionary(pointers.Get(d)[0])
+	return callBuiltinMethod[bool](&self, builtin.Dictionary.erase, gdextension.SizeBool|gdextension.SizeDictionary<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
 		gdextension.Variant
 	}{
 		gdextension.Variant(pointers.Get(key)),
 	}))
 }
 func (d Dictionary) Hash() int64 {
-	return callBuiltinMethod[int64](gdunsafe.Dictionary(pointers.Get(d)[0]), builtin.Dictionary.hash, gdextension.SizeInt|gdextension.SizeDictionary<<4, nil)
+	self := gdunsafe.Dictionary(pointers.Get(d)[0])
+	return callBuiltinMethod[int64](&self, builtin.Dictionary.hash, gdextension.SizeInt|gdextension.SizeDictionary<<4, nil)
 }
 func (d Dictionary) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.Dictionary(pointers.Get(d)[0]), builtin.Dictionary.size, gdextension.SizeInt|gdextension.SizeDictionary<<4, nil)
+	self := gdunsafe.Dictionary(pointers.Get(d)[0])
+	return callBuiltinMethod[int64](&self, builtin.Dictionary.size, gdextension.SizeInt|gdextension.SizeDictionary<<4, nil)
 }
 func (d Dictionary) IsReadOnly() bool {
-	return callBuiltinMethod[bool](gdunsafe.Dictionary(pointers.Get(d)[0]), builtin.Dictionary.is_read_only, gdextension.SizeBool|gdextension.SizeDictionary<<4, nil)
+	self := gdunsafe.Dictionary(pointers.Get(d)[0])
+	return callBuiltinMethod[bool](&self, builtin.Dictionary.is_read_only, gdextension.SizeBool|gdextension.SizeDictionary<<4, nil)
 }
 func (d Dictionary) MakeReadOnly() {
-	callBuiltinMethod[bool](gdunsafe.Dictionary(pointers.Get(d)[0]), builtin.Dictionary.make_read_only, 0|gdextension.SizeDictionary<<4, nil)
+	self := gdunsafe.Dictionary(pointers.Get(d)[0])
+	callBuiltinMethod[bool](&self, builtin.Dictionary.make_read_only, 0|gdextension.SizeDictionary<<4, nil)
 }
 
 func (a PackedByteArray) Resize(size Int) Int {
-	return Int(callBuiltinMethod[int64](gdunsafe.PackedArray[byte](pointers.Get(a)), builtin.PackedByteArray.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.PackedArray[byte](pointers.Get(a))
+	result := Int(callBuiltinMethod[int64](&self, builtin.PackedByteArray.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
 		int64(size),
 	})))
+	pointers.Set(a, gdextension.PackedArray[byte](self))
+	return result
 }
 func (a PackedByteArray) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.PackedArray[byte](pointers.Get(a)), builtin.PackedByteArray.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
+	self := gdunsafe.PackedArray[byte](pointers.Get(a))
+	return callBuiltinMethod[int64](&self, builtin.PackedByteArray.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedByteArray) Duplicate() PackedByteArray {
-	return pointers.New[PackedByteArray](callBuiltinMethod[gdextension.PackedArray[byte]](gdunsafe.PackedArray[byte](pointers.Get(a)), builtin.PackedByteArray.duplicate, gdextension.SizePackedArray|gdextension.SizePackedArray<<4, nil))
+	self := gdunsafe.PackedArray[byte](pointers.Get(a))
+	return pointers.New[PackedByteArray](callBuiltinMethod[gdextension.PackedArray[byte]](&self, builtin.PackedByteArray.duplicate, gdextension.SizePackedArray|gdextension.SizePackedArray<<4, nil))
 }
 func (a PackedColorArray) Resize(size Int) Int {
-	return Int(callBuiltinMethod[int64](gdunsafe.PackedArray[Color](pointers.Get(a)), builtin.PackedColorArray.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.PackedArray[Color](pointers.Get(a))
+	result := Int(callBuiltinMethod[int64](&self, builtin.PackedColorArray.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
 		int64(size),
 	})))
+	pointers.Set(a, gdextension.PackedArray[Color](self))
+	return result
 }
 func (a PackedColorArray) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.PackedArray[Color](pointers.Get(a)), builtin.PackedColorArray.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
+	self := gdunsafe.PackedArray[Color](pointers.Get(a))
+	return callBuiltinMethod[int64](&self, builtin.PackedColorArray.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedFloat32Array) Resize(size Int) Int {
-	return Int(callBuiltinMethod[int64](gdunsafe.PackedArray[float32](pointers.Get(a)), builtin.PackedFloat32Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.PackedArray[float32](pointers.Get(a))
+	result := Int(callBuiltinMethod[int64](&self, builtin.PackedFloat32Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
 		int64(size),
 	})))
+	pointers.Set(a, gdextension.PackedArray[float32](self))
+	return result
 }
 func (a PackedFloat32Array) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.PackedArray[float32](pointers.Get(a)), builtin.PackedFloat32Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
+	self := gdunsafe.PackedArray[float32](pointers.Get(a))
+	return callBuiltinMethod[int64](&self, builtin.PackedFloat32Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedFloat64Array) Resize(size Int) Int {
-	return Int(callBuiltinMethod[int64](gdunsafe.PackedArray[float64](pointers.Get(a)), builtin.PackedFloat64Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.PackedArray[float64](pointers.Get(a))
+	result := Int(callBuiltinMethod[int64](&self, builtin.PackedFloat64Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
 		int64(size),
 	})))
+	pointers.Set(a, gdextension.PackedArray[float64](self))
+	return result
 }
 func (a PackedFloat64Array) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.PackedArray[float64](pointers.Get(a)), builtin.PackedFloat64Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
+	self := gdunsafe.PackedArray[float64](pointers.Get(a))
+	return callBuiltinMethod[int64](&self, builtin.PackedFloat64Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedInt32Array) Resize(size Int) Int {
-	return Int(callBuiltinMethod[int64](gdunsafe.PackedArray[int32](pointers.Get(a)), builtin.PackedInt32Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.PackedArray[int32](pointers.Get(a))
+	result := Int(callBuiltinMethod[int64](&self, builtin.PackedInt32Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
 		int64(size),
 	})))
+	pointers.Set(a, gdextension.PackedArray[int32](self))
+	return result
 }
 func (a PackedInt32Array) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.PackedArray[int32](pointers.Get(a)), builtin.PackedInt32Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
+	self := gdunsafe.PackedArray[int32](pointers.Get(a))
+	return callBuiltinMethod[int64](&self, builtin.PackedInt32Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedStringArray) Resize(size Int) Int {
-	return Int(callBuiltinMethod[int64](gdunsafe.PackedArray[gdunsafe.String](pointers.Get(a)), builtin.PackedStringArray.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.PackedArray[gdunsafe.String](pointers.Get(a))
+	result := Int(callBuiltinMethod[int64](&self, builtin.PackedStringArray.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
 		int64(size),
 	})))
+	pointers.Set(a, gdextension.PackedArray[gdextension.String](self))
+	return result
 }
 func (a PackedStringArray) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.PackedArray[gdunsafe.String](pointers.Get(a)), builtin.PackedStringArray.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
+	self := gdunsafe.PackedArray[gdunsafe.String](pointers.Get(a))
+	return callBuiltinMethod[int64](&self, builtin.PackedStringArray.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedVector2Array) Resize(size Int) Int {
-	return Int(callBuiltinMethod[int64](gdunsafe.PackedArray[Vector2](pointers.Get(a)), builtin.PackedVector2Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.PackedArray[Vector2](pointers.Get(a))
+	result := Int(callBuiltinMethod[int64](&self, builtin.PackedVector2Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
 		int64(size),
 	})))
+	pointers.Set(a, gdextension.PackedArray[Vector2](self))
+	return result
 }
 func (a PackedVector2Array) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.PackedArray[Vector2](pointers.Get(a)), builtin.PackedVector2Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
+	self := gdunsafe.PackedArray[Vector2](pointers.Get(a))
+	return callBuiltinMethod[int64](&self, builtin.PackedVector2Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedVector3Array) Resize(size Int) Int {
-	return Int(callBuiltinMethod[int64](gdunsafe.PackedArray[Vector3](pointers.Get(a)), builtin.PackedVector3Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.PackedArray[Vector3](pointers.Get(a))
+	result := Int(callBuiltinMethod[int64](&self, builtin.PackedVector3Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
 		int64(size),
 	})))
+	pointers.Set(a, gdextension.PackedArray[Vector3](self))
+	return result
 }
 func (a PackedVector3Array) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.PackedArray[Vector3](pointers.Get(a)), builtin.PackedVector3Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
+	self := gdunsafe.PackedArray[Vector3](pointers.Get(a))
+	return callBuiltinMethod[int64](&self, builtin.PackedVector3Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedVector4Array) Resize(size Int) Int {
-	return Int(callBuiltinMethod[int64](gdunsafe.PackedArray[Vector4](pointers.Get(a)), builtin.PackedVector4Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.PackedArray[Vector4](pointers.Get(a))
+	result := Int(callBuiltinMethod[int64](&self, builtin.PackedVector4Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
 		int64(size),
 	})))
+	pointers.Set(a, gdextension.PackedArray[Vector4](self))
+	return result
 }
 func (a PackedVector4Array) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.PackedArray[Vector4](pointers.Get(a)), builtin.PackedVector4Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
+	self := gdunsafe.PackedArray[Vector4](pointers.Get(a))
+	return callBuiltinMethod[int64](&self, builtin.PackedVector4Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedInt64Array) Resize(size Int) Int {
-	return Int(callBuiltinMethod[int64](gdunsafe.PackedArray[int64](pointers.Get(a)), builtin.PackedInt64Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.PackedArray[int64](pointers.Get(a))
+	result := Int(callBuiltinMethod[int64](&self, builtin.PackedInt64Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
 		int64(size),
 	})))
+	pointers.Set(a, gdextension.PackedArray[int64](self))
+	return result
 }
 func (a PackedInt64Array) Size() int64 {
-	return callBuiltinMethod[int64](gdunsafe.PackedArray[int64](pointers.Get(a)), builtin.PackedInt64Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
+	self := gdunsafe.PackedArray[int64](pointers.Get(a))
+	return callBuiltinMethod[int64](&self, builtin.PackedInt64Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 
 func (s Signal) Emit(args ...Variant) {
@@ -317,11 +371,13 @@ func (s Signal) Emit(args ...Variant) {
 	for i, arg := range args {
 		converted[i] = gdextension.Variant(pointers.Get(arg))
 	}
-	callBuiltinMethod[struct{}](gdunsafe.Signal(pointers.Get(s)), builtin.Signal.emit, gdextension.SizeSignal<<4|gdextension.ShapeVariants(len(args))<<4, unsafe.Pointer(unsafe.SliceData(converted)))
+	self := gdunsafe.Signal(pointers.Get(s))
+	callBuiltinMethod[struct{}](&self, builtin.Signal.emit, gdextension.SizeSignal<<4|gdextension.ShapeVariants(len(args))<<4, unsafe.Pointer(unsafe.SliceData(converted)))
 }
 
 func (s Signal) Connect(callable Callable, flags int64) int64 {
-	return callBuiltinMethod[int64](gdunsafe.Signal(pointers.Get(s)), builtin.Signal.connect, gdextension.SizeInt|gdextension.SizeSignal<<4|gdextension.SizeCallable<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
+	self := gdunsafe.Signal(pointers.Get(s))
+	return callBuiltinMethod[int64](&self, builtin.Signal.connect, gdextension.SizeInt|gdextension.SizeSignal<<4|gdextension.SizeCallable<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
 		gdextension.Callable
 		Flags int64
 	}{
@@ -329,26 +385,32 @@ func (s Signal) Connect(callable Callable, flags int64) int64 {
 	}))
 }
 func (s Signal) Disconnect(callable Callable) {
-	callBuiltinMethod[bool](gdunsafe.Signal(pointers.Get(s)), builtin.Signal.disconnect, 0|gdextension.SizeSignal<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.Signal(pointers.Get(s))
+	callBuiltinMethod[bool](&self, builtin.Signal.disconnect, 0|gdextension.SizeSignal<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
 		gdextension.Callable
 	}{
 		gdextension.Callable(pointers.Get(callable)),
 	}))
 }
 func (s Signal) GetName() StringName {
-	return pointers.New[StringName](callBuiltinMethod[gdextension.StringName](gdunsafe.Signal(pointers.Get(s)), builtin.Signal.get_name, gdextension.SizeStringName|gdextension.SizeSignal<<4, nil))
+	self := gdunsafe.Signal(pointers.Get(s))
+	return pointers.New[StringName](callBuiltinMethod[gdextension.StringName](&self, builtin.Signal.get_name, gdextension.SizeStringName|gdextension.SizeSignal<<4, nil))
 }
 func (s Signal) GetConnections() Array {
-	return pointers.New[Array](callBuiltinMethod[gdextension.Array](gdunsafe.Signal(pointers.Get(s)), builtin.Signal.get_connections, gdextension.SizeArray|gdextension.SizeSignal<<4, nil))
+	self := gdunsafe.Signal(pointers.Get(s))
+	return pointers.New[Array](callBuiltinMethod[gdextension.Array](&self, builtin.Signal.get_connections, gdextension.SizeArray|gdextension.SizeSignal<<4, nil))
 }
 func (s Signal) GetObject() gdreference.Object {
-	return gdreference.OwnObject(callBuiltinMethod[gdextension.Object](gdunsafe.Signal(pointers.Get(s)), builtin.Signal.get_object, gdextension.SizeObject|gdextension.SizeSignal<<4, nil), Free)
+	self := gdunsafe.Signal(pointers.Get(s))
+	return gdreference.OwnObject(callBuiltinMethod[gdextension.Object](&self, builtin.Signal.get_object, gdextension.SizeObject|gdextension.SizeSignal<<4, nil), Free)
 }
 func (s String) Length() int64 {
-	return callBuiltinMethod[int64](gdunsafe.String(pointers.Get(s)[0]), builtin.String.length, gdextension.SizeInt|gdextension.SizeString<<4, nil)
+	self := gdunsafe.String(pointers.Get(s)[0])
+	return callBuiltinMethod[int64](&self, builtin.String.length, gdextension.SizeInt|gdextension.SizeString<<4, nil)
 }
 func (s String) Substr(begin, end int64) String {
-	return pointers.New[String](callBuiltinMethod[gdextension.String](gdunsafe.String(pointers.Get(s)[0]), builtin.String.substr, gdextension.SizeString|gdextension.SizeString<<4|gdextension.SizeInt<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
+	self := gdunsafe.String(pointers.Get(s)[0])
+	return pointers.New[String](callBuiltinMethod[gdextension.String](&self, builtin.String.substr, gdextension.SizeString|gdextension.SizeString<<4|gdextension.SizeInt<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
 		Begin int64
 		End   int64
 	}{
@@ -356,17 +418,20 @@ func (s String) Substr(begin, end int64) String {
 	})))
 }
 func (s String) CasecmpTo(other String) int64 {
-	return callBuiltinMethod[int64](gdunsafe.String(pointers.Get(s)[0]), builtin.String.casecmp_to, gdextension.SizeInt|gdextension.SizeString<<4|gdextension.SizeString<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.String(pointers.Get(s)[0])
+	return callBuiltinMethod[int64](&self, builtin.String.casecmp_to, gdextension.SizeInt|gdextension.SizeString<<4|gdextension.SizeString<<8, unsafe.Pointer(&struct {
 		Other gdextension.String
 	}{
 		pointers.Get(other),
 	}))
 }
 func (s StringName) Length() int64 {
-	return callBuiltinMethod[int64](gdunsafe.StringName(pointers.Get(s)[0]), builtin.StringName.length, gdextension.SizeInt|gdextension.SizeStringName<<4, nil)
+	self := gdunsafe.StringName(pointers.Get(s)[0])
+	return callBuiltinMethod[int64](&self, builtin.StringName.length, gdextension.SizeInt|gdextension.SizeStringName<<4, nil)
 }
 func (s StringName) Substr(begin, end int64) String {
-	return pointers.New[String](callBuiltinMethod[gdextension.String](gdunsafe.StringName(pointers.Get(s)[0]), builtin.StringName.substr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeInt<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
+	self := gdunsafe.StringName(pointers.Get(s)[0])
+	return pointers.New[String](callBuiltinMethod[gdextension.String](&self, builtin.StringName.substr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeInt<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
 		Begin int64
 		End   int64
 	}{
@@ -374,7 +439,8 @@ func (s StringName) Substr(begin, end int64) String {
 	})))
 }
 func (s StringName) CasecmpTo(other String) int64 {
-	return callBuiltinMethod[int64](gdunsafe.StringName(pointers.Get(s)[0]), builtin.StringName.casecmp_to, gdextension.SizeInt|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
+	self := gdunsafe.StringName(pointers.Get(s)[0])
+	return callBuiltinMethod[int64](&self, builtin.StringName.casecmp_to, gdextension.SizeInt|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
 		Other gdextension.String
 	}{
 		pointers.Get(other),
@@ -491,7 +557,10 @@ func ObjectCall(o gdreference.Object, method StringName, args ...Variant) (Varia
 		result, err := gdunsafe.Script(self).Call(gdunsafe.StringName(name[0]),
 			converted...,
 		)
-		return pointers.New[Variant](result), err
+		if err != (gdunsafe.Error{}) {
+			return pointers.New[Variant](result), err
+		}
+		return pointers.New[Variant](result), nil
 	}
 	return NewVariant(o).Call(method, args...) // FIXME is this ok?
 }

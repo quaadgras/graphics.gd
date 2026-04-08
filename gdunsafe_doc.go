@@ -143,7 +143,7 @@ func PropertyExists[T Any](property StringName) bool {
 }
 
 // BuiltinMethod returns a function that can be used to call the given builtin method on a value of type T.
-func BuiltinMethod[T Any](method StringName, hash int64) func(self T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
+func BuiltinMethod[T Any](method StringName, hash int64) func(self *T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
 	panic(unavailable)
 }
 

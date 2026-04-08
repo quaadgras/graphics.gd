@@ -321,10 +321,10 @@ func PropertyExists[T Any](property StringName) bool {
 	return bool(C.gd_variant_type_has_property(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(property)))
 }
 
-func BuiltinMethod[T Any](method StringName, hash int64) func(self T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
+func BuiltinMethod[T Any](method StringName, hash int64) func(self *T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
 	fn := C.gd_variant_type_builtin_method(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(method), C.int64_t(hash))
-	return func(self T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
-		C.gd_variant_type_unsafe_call(C.UnsafePointer(unsafe.Pointer(&self)), fn, C.UnsafePointer(ret), C.uint64_t(shape), C.UnsafePointer(args))
+	return func(self *T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
+		C.gd_variant_type_unsafe_call(C.UnsafePointer(unsafe.Pointer(self)), fn, C.UnsafePointer(ret), C.uint64_t(shape), C.UnsafePointer(args))
 	}
 }
 

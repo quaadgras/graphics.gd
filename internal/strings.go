@@ -238,7 +238,7 @@ func InternalNodePath(s Path.ToNode) NodePath {
 		name := gdextension.String{gdextension.Pointer(gdunsafe.UTF8.String(str))}
 		path := builtin.creation.NodePath[2](gdunsafe.ShapeString<<4, unsafe.Pointer(&name))
 		static_nodepaths[str] = path
-		gdunsafe.Free(path)
+		gdunsafe.Free(gdunsafe.String(name[0]))
 		return pointers.Raw[NodePath](gdextension.NodePath{gdextension.Pointer(static_nodepaths[str])})
 	}
 	_, ptr := StringType.Proxy(s, NodePathCheck, NewNodePathProxy)

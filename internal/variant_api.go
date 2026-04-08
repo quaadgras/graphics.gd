@@ -40,7 +40,10 @@ func (v Variant) Call(method StringName, args ...Variant) (Variant, error) {
 		converted = append(converted, gdunsafe.Variant(pointers.Get(args[i])))
 	}
 	raw, err := gdunsafe.Variant(pointers.Get(v)).Call(gdunsafe.StringName(pointers.Get(method)[0]), converted...)
-	return pointers.New[Variant](raw), err
+	if err != (gdunsafe.Error{}) {
+		return pointers.New[Variant](raw), err
+	}
+	return pointers.New[Variant](raw), nil
 }
 
 // Iterator returns an iterator for the variant.
