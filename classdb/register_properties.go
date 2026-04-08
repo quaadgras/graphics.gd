@@ -21,7 +21,7 @@ import (
 	"graphics.gd/variant/String"
 )
 
-func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsafe.PropertyList) (variant.Type, bool) {
+func propertyOf(registry gdunsafe.Class, field reflect.StructField) (gdunsafe.Property, bool) {
 	var name = String.ToSnakeCase(field.Name)
 	tag, ok := field.Tag.Lookup("gd")
 	if ok {
@@ -30,7 +30,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsa
 	var vtype variant.Type
 	var hint PropertyHint
 	var hintString = nameOf(field.Type)
-	var enum = registerEnumsFor(class, field.Type)
+	var enum = registerEnumsFor(registry, field.Type)
 	var className = nameOf(field.Type)
 	if instance, ok := field.Type.MethodByName("Instance"); ok && instance.Type.NumOut() == 2 && field.Type.Name() == "ID" {
 		vtype = variant.TypeObject
@@ -58,7 +58,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsa
 		default:
 			vtype, ok = gd.VariantTypeOf(field.Type)
 			if !ok {
-				return vtype, false
+				return gdunsafe.Property{}, false
 			}
 			if vtype == variant.TypeObject {
 				if field.Type.Implements(reflect.TypeFor[Resource.Any]()) {
@@ -72,7 +72,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsa
 					elem := reflect.Zero(field.Type).Interface().(Array.Interface).ElemType()
 					etype, ok := gd.VariantTypeOf(elem)
 					if !ok {
-						return vtype, false
+						return gdunsafe.Property{}, false
 					}
 					if etype != variant.TypeNil {
 						hint |= PropertyHintArrayType
@@ -81,7 +81,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsa
 				} else {
 					etype, ok := gd.VariantTypeOf(field.Type.Elem())
 					if !ok {
-						return vtype, false
+						return gdunsafe.Property{}, false
 					}
 					hint |= PropertyHintArrayType
 					hintString = etype.String()
@@ -103,16 +103,14 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdunsa
 		hint |= PropertyHintRange
 		hintString = rangeHint
 	}
-	push_into.Push(
-		variant.Type(vtype),
-		gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
-		gdunsafe.StringName(pointers.Get(gd.NewStringName(className))[0]),
-		uint32(hint),
-		gdunsafe.String(pointers.Get(gd.NewString(hintString))[0]),
-		uint32(usage),
-		0,
-	)
-	return vtype, true
+	return gdunsafe.Property{
+		Type:       variant.Type(vtype),
+		Name:       gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
+		ClassName:  gdunsafe.StringName(pointers.Get(gd.NewStringName(className))[0]),
+		Hint:       uint32(hint),
+		HintString: gdunsafe.String(pointers.Get(gd.NewString(hintString))[0]),
+		Usage:      uint32(usage),
+	}, true
 }
 
 // Set needs to reference++ any resources that are sucessfully set.
@@ -274,15 +272,14 @@ func (instance *instanceImplementation) GetPropertyList() gdextension.PropertyLi
 		var results = gdunsafe.MakePropertyList(int64(len(list)))
 		for _, info := range list {
 			vtype, _ := gd.VariantTypeOf(info.Type)
-			results.Push(
-				variant.Type(vtype),
-				gdunsafe.StringName(pointers.Get(gd.NewStringName(info.Name))[0]),
-				gdunsafe.StringName(pointers.Get(gd.NewStringName(info.ClassName))[0]),
-				uint32(info.Hint),
-				gdunsafe.String(pointers.Get(gd.NewString(info.HintString))[0]),
-				uint32(info.Usage),
-				0,
-			)
+			results.Push(gdunsafe.Property{
+				Type:       variant.Type(vtype),
+				Name:       gdunsafe.StringName(pointers.Get(gd.NewStringName(info.Name))[0]),
+				ClassName:  gdunsafe.StringName(pointers.Get(gd.NewStringName(info.ClassName))[0]),
+				Hint:       uint32(info.Hint),
+				HintString: gdunsafe.String(pointers.Get(gd.NewString(info.HintString))[0]),
+				Usage:      uint32(info.Usage),
+			})
 		}
 		return gdextension.PropertyList(results)
 	}

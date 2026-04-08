@@ -3,8 +3,6 @@
 package gd
 
 import (
-	"unsafe"
-
 	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
@@ -25,14 +23,14 @@ func (v Variant) Type() variant.Type {
 // Get returns the value specified by the given key variant and a boolean
 // indiciating whether the get operation was valid.
 func (v Variant) Get(key Variant) (val Variant, ok bool) {
-	raw, ok := gdunsafe.Variant(pointers.Get(v)).GetIndex(gdunsafe.Variant(pointers.Get(key)))
+	raw, ok := gdunsafe.Variant(pointers.Get(v)).Lookup(gdunsafe.Variant(pointers.Get(key)))
 	return pointers.New[Variant](raw), ok
 }
 
 // Set sets the value specified by the given key variant to the given value
 // variant. Returns true if the set operation was valid.
 func (v Variant) Set(key, val Variant) bool {
-	return gdunsafe.Variant(pointers.Get(v)).SetIndex(gdunsafe.Variant(pointers.Get(key)), gdunsafe.Variant(pointers.Get(val)))
+	return gdunsafe.Variant(pointers.Get(v)).Insert(gdunsafe.Variant(pointers.Get(key)), gdunsafe.Variant(pointers.Get(val)))
 }
 
 // Call calls a method on the variant dynamically.
@@ -41,15 +39,13 @@ func (v Variant) Call(method StringName, args ...Variant) (Variant, error) {
 	for i := range args {
 		converted = append(converted, gdunsafe.Variant(pointers.Get(args[i])))
 	}
-	raw, err := gdunsafe.Variant(pointers.Get(v)).VariantCall(gdunsafe.StringName(pointers.Get(method)[0]), converted...)
+	raw, err := gdunsafe.Variant(pointers.Get(v)).Call(gdunsafe.StringName(pointers.Get(method)[0]), converted...)
 	return pointers.New[Variant](raw), err
 }
 
 // Iterator returns an iterator for the variant.
 func (v Variant) Iterator() Iterator {
-	var err gdextension.CallError
-	var raw gdextension.Iterator
-	gdunsafe.Variant(pointers.Get(v)).IteratorMake(unsafe.Pointer(&raw), unsafe.Pointer(&err))
+	raw, err := gdunsafe.Variant(pointers.Get(v)).Iterator()
 	if err != (gdextension.CallError{}) {
 		panic("failed to initialize iterator")
 	}
@@ -69,6 +65,6 @@ func (v Variant) RecursiveHash(count Int) Int {
 
 // Eval evaluates a binary operator between two variants.
 func VariantEval(op gdextension.VariantOperator, a, b gdextension.Variant) (gdextension.Variant, bool) {
-	raw, ok := gdunsafe.VariantEval(gdunsafe.VariantOperator(op), gdunsafe.Variant(a), gdunsafe.Variant(b))
+	raw, ok := gdunsafe.VariantOperator(op).Evaluate(a, b)
 	return raw, ok
 }

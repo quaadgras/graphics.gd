@@ -33,7 +33,7 @@ func call_noescape(object gdextension.Object, method gdextension.MethodForClass,
 
 //go:linkname call graphics.gd/internal/noescape.call_noescape
 func call(object gdextension.Object, method gdextension.MethodForClass, result unsafe.Pointer, shape gdextension.Shape, args unsafe.Pointer) {
-	gdunsafe.Object(object).ShapedCall(gdunsafe.MethodForClass(method), result, uint64(shape), args)
+	gdunsafe.Object(object).ShapedCall(method, result, shape, args)
 }
 
 func (method MethodForClass) Call(self gdextension.Object, args ...gdextension.Variant) (gdextension.Variant, error) {
@@ -48,5 +48,5 @@ func object_method_call_noescape(object gdextension.Object, method gdextension.M
 
 //go:linkname object_method_call graphics.gd/internal/noescape.object_method_call_noescape
 func object_method_call(object gdextension.Object, method gdextension.MethodForClass, result *gdextension.Variant, args []gdextension.Variant, err *gdextension.CallError) {
-	*result, *err = gdunsafe.Object(object).Call(gdunsafe.MethodForClass(method), args...)
+	*result, *err = gdunsafe.Object(object).Call(method, args...)
 }

@@ -23,7 +23,7 @@ func (id ID) Instance() Instance { //gd:instance_from_id is_instance_id_valid
 	if id == 0 {
 		return Nil
 	}
-	instance := gdextension.Object(gdunsafe.ObjectID(id).Lookup())
+	instance := gdextension.Object(gdunsafe.ObjectID(id).Object())
 	if instance == 0 {
 		return Nil
 	}
@@ -73,18 +73,23 @@ type Extension[T gdclass.Interface] struct {
 // that embeds this Extension.
 type Singleton[T gdclass.Interface] = Extension[T]
 
-var otype gdextension.ObjectType
+var sname gdunsafe.StringName
+var otype gdunsafe.ClassTag
 
 func init() {
 	gd.Links = append(gd.Links, func() {
-		sname := gdunsafe.UTF8.Intern("Object")
-		otype = gdextension.ObjectType(gdunsafe.ObjectTypeTag(sname))
-		gdunsafe.Free(sname)
+		sname = gdunsafe.UTF8.Intern("Object")
+		otype = gdunsafe.Class(sname).Tag()
+	})
+	gdunsafe.OnEngineExit(func(level gdunsafe.InitializationLevel) {
+		if level == 1 {
+			gdunsafe.Free(sname)
+		}
 	})
 }
 
 func (self *Instance) SetObject(obj [1]gdclass.Object) bool {
-	if gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(gdunsafe.ObjectType(otype)) != 0 {
+	if gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(otype) != 0 {
 		self[0] = *(*gdclass.Object)(unsafe.Pointer(&obj))
 		return true
 	}
@@ -132,7 +137,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	return Instance{gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(pointers.Get(gd.NewStringName("Object"))[0]))), gd.Free)}
+	return Instance{gdreference.OwnObject(gdextension.Object(gdunsafe.New(gdunsafe.Class(sname))), gd.Free)}
 }
 
 func (obj Instance) AsObject() [1]gdreference.Object { return obj }

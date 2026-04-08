@@ -95,7 +95,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 // Instance of the class with convieniently typed arguments and results.
 type Instance [1]gdclass.AudioStreamPlaybackInteractive
 
-var otype gdunsafe.ObjectType
+var otype gdunsafe.ClassTag
 var sname gdunsafe.StringName
 var methods struct {
 	switch_to_clip_by_name gdextension.MethodForClass `hash:"3304788590"`
@@ -106,7 +106,7 @@ var methods struct {
 func init() {
 	gd.Links = append(gd.Links, func() {
 		sname = gdunsafe.UTF8.Intern("AudioStreamPlaybackInteractive")
-		otype = gdunsafe.ObjectTypeTag(sname)
+		otype = gdunsafe.Class(sname).Tag()
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
@@ -189,7 +189,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.AudioStreamPlaybackInteractive{gdclass.NewAudioStreamPlaybackInteractive(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(sname)), gd.Free))})
+	casted := Instance([1]gdclass.AudioStreamPlaybackInteractive{gdclass.NewAudioStreamPlaybackInteractive(gdreference.OwnObject(gdextension.Object(gdunsafe.New(gdunsafe.Class(sname))), gd.Free))})
 	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted

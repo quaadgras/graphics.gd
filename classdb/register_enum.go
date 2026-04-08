@@ -12,7 +12,7 @@ import (
 
 var registered_enums = make(map[reflect.Type]iter.Seq2[string, int])
 
-func registerEnumsFor(class gd.StringName, rtype reflect.Type) iter.Seq2[string, int] {
+func registerEnumsFor(registry gdunsafe.Class, rtype reflect.Type) iter.Seq2[string, int] {
 	if class, ok := registered_enums[rtype]; ok {
 		return class
 	}
@@ -23,8 +23,7 @@ func registerEnumsFor(class gd.StringName, rtype reflect.Type) iter.Seq2[string,
 	defer enumName.Free()
 	var reference = reflect.New(rtype).Interface().(Enum.Any)
 	for name, value := range reference.Enum {
-		gdunsafe.RegisterConstant(
-			gdunsafe.StringName(pointers.Get(class)[0]),
+		registry.RegisterConstant(
 			gdunsafe.StringName(pointers.Get(enumName)[0]),
 			gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
 			int64(value),

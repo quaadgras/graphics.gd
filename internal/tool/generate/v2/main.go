@@ -259,7 +259,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 
 		fmt.Fprintf(file, "// Instance of the class with convieniently typed arguments and results.\n")
 		fmt.Fprintf(file, "type Instance [1]gdclass.%s\n", class.Name)
-		fmt.Fprintf(file, "var otype gdunsafe.ObjectType\n")
+		fmt.Fprintf(file, "var otype gdunsafe.ClassTag\n")
 		fmt.Fprintf(file, "var sname gdunsafe.StringName\n")
 		fmt.Fprintf(file, "var methods struct {\n")
 		for _, method := range class.Methods {
@@ -273,7 +273,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		if class.Name != "Startup" {
 			fmt.Fprintf(file, "\tgd.Links = append(gd.Links, func() {\n")
 			fmt.Fprintf(file, "\t\tsname = gdunsafe.UTF8.Intern(%q)\n", class.Name)
-			fmt.Fprintf(file, "\t\totype = gdunsafe.ObjectTypeTag(sname)\n")
+			fmt.Fprintf(file, "\t\totype = gdunsafe.Class(sname).Tag()\n")
 			fmt.Fprintf(file, "\t\tgd.LinkMethods(sname, &methods, %v)\n", class.APIType == "editor")
 			fmt.Fprintf(file, "\t\t})\n")
 		}
@@ -289,7 +289,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "var self [1]gdclass.%s\n", class.Name)
 			fmt.Fprintf(file, "var once sync.Once\n")
 			fmt.Fprintf(file, "func singleton() {\n")
-			fmt.Fprintf(file, "\tself[0] = gdclass.New%[1]v(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(sname))))\n", class.Name)
+			fmt.Fprintf(file, "\tself[0] = gdclass.New%[1]v(gdreference.RawObject(gdextension.Object(gdunsafe.Singleton(sname))))\n", class.Name)
 			fmt.Fprintf(file, "}\n")
 		} else {
 			var hasDefaults bool

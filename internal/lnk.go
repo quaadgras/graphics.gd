@@ -12,7 +12,6 @@ import (
 	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
-	"graphics.gd/variant"
 )
 
 var Linked bool = false
@@ -51,24 +50,42 @@ func Init(level gdextension.InitializationLevel) {
 	}
 }
 
-// linkBuiltin is very similar to [Godot.linkMethods], except it loads in methods for the
-// builtin Godot classes.
+// linkBuiltin loads in methods for the builtin Godot classes, using
+// [gdunsafe.BuiltinMethod] to create typed closures for each method.
 func linkBuiltin() {
-	rvalue := reflect.ValueOf(&builtin).Elem()
-	for i := 1; i < rvalue.NumField(); i++ {
-		class := rvalue.Type().Field(i)
-		value := reflect.NewAt(class.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), class.Offset))
-		for method := range class.Type.Fields() {
-			method.Name = strings.TrimSuffix(method.Name, "_")
-			direct := reflect.NewAt(method.Type, unsafe.Add(value.UnsafePointer(), method.Offset))
-			methodName := NewStringName(method.Name)
-			hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)
-			if err != nil {
-				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
-			}
-			vtype, _ := variantTypeFromName(class.Name)
-			*(direct.Interface().(*gdextension.MethodForBuiltinType)) = gdextension.MethodForBuiltinType(gdunsafe.VariantTypeMethod(variant.Type(vtype), gdunsafe.StringName(pointers.Get(methodName)[0]), int64(hash)))
+	linkBuiltinType[gdunsafe.Array](&builtin.Array)
+	linkBuiltinType[gdunsafe.Callable](&builtin.Callable)
+	linkBuiltinType[gdunsafe.Dictionary](&builtin.Dictionary)
+	linkBuiltinType[gdunsafe.PackedArray[byte]](&builtin.PackedByteArray)
+	linkBuiltinType[gdunsafe.PackedArray[Color]](&builtin.PackedColorArray)
+	linkBuiltinType[gdunsafe.PackedArray[float32]](&builtin.PackedFloat32Array)
+	linkBuiltinType[gdunsafe.PackedArray[float64]](&builtin.PackedFloat64Array)
+	linkBuiltinType[gdunsafe.PackedArray[int32]](&builtin.PackedInt32Array)
+	linkBuiltinType[gdunsafe.PackedArray[gdunsafe.String]](&builtin.PackedStringArray)
+	linkBuiltinType[gdunsafe.PackedArray[Vector2]](&builtin.PackedVector2Array)
+	linkBuiltinType[gdunsafe.PackedArray[Vector3]](&builtin.PackedVector3Array)
+	linkBuiltinType[gdunsafe.PackedArray[Vector4]](&builtin.PackedVector4Array)
+	linkBuiltinType[gdunsafe.PackedArray[int64]](&builtin.PackedInt64Array)
+	linkBuiltinType[gdunsafe.Signal](&builtin.Signal)
+	linkBuiltinType[gdunsafe.String](&builtin.String)
+	linkBuiltinType[gdunsafe.StringName](&builtin.StringName)
+}
+
+// linkBuiltinType uses reflection to iterate over the struct fields of target,
+// reads the hash from each field's struct tag, and sets the field to the closure
+// returned by [gdunsafe.BuiltinMethod].
+func linkBuiltinType[T gdunsafe.Any](target any) {
+	rvalue := reflect.ValueOf(target)
+	for method := range rvalue.Elem().Type().Fields() {
+		name := strings.TrimSuffix(method.Name, "_")
+		methodName := NewStringName(name)
+		hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)
+		if err != nil {
+			panic("linkBuiltinType: invalid hash for " + name + ": " + err.Error())
 		}
+		fn := gdunsafe.BuiltinMethod[T](gdunsafe.StringName(pointers.Get(methodName)[0]), hash)
+		direct := reflect.NewAt(method.Type, unsafe.Add(rvalue.UnsafePointer(), method.Offset))
+		*direct.Interface().(*func(T, unsafe.Pointer, gdunsafe.Shape, unsafe.Pointer)) = fn
 	}
 }
 
@@ -91,7 +108,7 @@ func LinkMethods(className gdunsafe.StringName, methods any, editor bool) {
 		if err != nil {
 			panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 		}
-		bind := gdextension.MethodForClass(gdunsafe.MethodLookup(className, gdunsafe.StringName(pointers.Get(methodName)[0]), hash))
+		bind := gdunsafe.Method(className, gdunsafe.StringName(pointers.Get(methodName)[0]), hash)
 		if bind == 0 {
 			fmt.Println("null bind ", method.Name)
 		}
@@ -101,21 +118,8 @@ func LinkMethods(className gdunsafe.StringName, methods any, editor bool) {
 	}
 }
 
-var refCountedClassTag gdunsafe.ObjectType
+var refCountedClassTag gdunsafe.ClassTag
 
 func linkTypeset() {
-	refCountedClassTag = gdunsafe.ObjectTypeTag(gdunsafe.StringName(pointers.Get(NewStringName("RefCounted"))[0]))
-}
-
-// linkTypesetCreation, each field is an array of constructors.
-func linkTypesetCreation() {
-	rvalue := reflect.ValueOf(&builtin.creation).Elem()
-	for field := range rvalue.Type().Fields() {
-		esize := field.Type.Elem().Size()
-		vtype, _ := variantTypeFromName(field.Name)
-		for i := 0; i < field.Type.Len(); i++ {
-			value := reflect.NewAt(field.Type.Elem(), unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset+uintptr(i)*esize))
-			*(value.Interface().(*gdextension.FunctionID)) = gdextension.FunctionID(gdunsafe.VariantTypeConstructor(variant.Type(vtype), int64(i)))
-		}
-	}
+	refCountedClassTag = gdunsafe.Class(pointers.Get(NewStringName("RefCounted"))[0]).Tag()
 }

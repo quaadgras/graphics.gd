@@ -26,7 +26,7 @@ func GC(free func(gdextension.Object)) {
 			}
 			if obj.inEngine == 0 {
 				if obj.objectID != 0 {
-					raw := gdextension.Object(gdunsafe.ObjectID(obj.objectID).Lookup())
+					raw := gdextension.Object(gdunsafe.ObjectID(obj.objectID).Object())
 					*obj = object{}
 					free(raw)
 				}

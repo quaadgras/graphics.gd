@@ -370,7 +370,7 @@ func newArray(val reflect.Value) Array {
 		panic("gd.Variant: unsupported array element type " + val.Type().Elem().String())
 	}
 	var array = NewArray()
-	gdunsafe.VariantTypeSetupArray(gdunsafe.Array(pointers.Get(array)[0]), variant.Type(vtype), 0, gdunsafe.Variant{})
+	gdunsafe.Array(pointers.Get(array)[0]).SetType(gdunsafe.TypeFrom(vtype))
 	array.Resize(Int(val.Len()))
 	for i := 0; i < val.Len(); i++ {
 		array.SetIndex(Int(i), NewVariant(val.Index(i).Interface()))

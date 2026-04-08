@@ -108,7 +108,7 @@ func (self *RefCounted) SetObject(obj [1]gdreference.Object) bool {
 }
 
 func ObjectIsAlive(raw [3]uint64) bool {
-	return raw[1] == 0 || gdunsafe.ObjectID(raw[1]).Lookup() != 0
+	return raw[1] == 0 || gdunsafe.ObjectID(raw[1]).Object() != 0
 }
 
 var debugFree = strings.Contains(os.Getenv("GDDEBUG"), "free")

@@ -19,7 +19,7 @@ var debugOwnership = strings.Contains(os.Getenv("GDDEBUG"), "ownership")
 
 func init() {
 	gd.ExtensionInstanceLookup = func(obj gdextension.Object) any {
-		inst := gdunsafe.Object(obj).ExtensionFetch()
+		inst := gdunsafe.Object(obj).ExtensionInstance()
 		if inst == nil {
 			return nil
 		}
@@ -31,7 +31,7 @@ func init() {
 		return ptr
 	}
 	gd.ExtensionInstanceGoOnly = func(obj gdextension.Object, goOnly bool) (gdreference.Object, bool) {
-		inst := gdunsafe.Object(obj).ExtensionFetch()
+		inst := gdunsafe.Object(obj).ExtensionInstance()
 		if inst == nil {
 			return gdreference.Object{}, false
 		}
@@ -75,6 +75,16 @@ type classWrapper struct {
 
 func (w *classWrapper) Create(notify bool) gdunsafe.Object {
 	return gdunsafe.Object(gdreference.GetObject(w.impl.CreateInstance(notify)[0]))
+}
+
+func (w *classWrapper) Virtual() bool         { return false }
+func (w *classWrapper) Abstract() bool        { return false }
+func (w *classWrapper) Exposed() bool         { return true }
+func (w *classWrapper) Runtime() bool         { return false }
+func (w *classWrapper) Icon() gdunsafe.String { return gdunsafe.String(pointers.Get(w.impl.Icon)[0]) }
+
+func (w *classWrapper) Parent() gdunsafe.Class {
+	return gdunsafe.Class(pointers.Get(w.impl.Super)[0])
 }
 
 func (w *classWrapper) Method(name gdunsafe.StringName, hash uint32) gdunsafe.ExtensionFunction {
@@ -173,7 +183,7 @@ type virtualFunctionWrapper struct {
 	fn gd.ExtensionClassCallVirtualFunc
 }
 
-func (w *virtualFunctionWrapper) PointerCall(inst gdunsafe.ExtensionInstance, args, result gdunsafe.Pointer) {
+func (w *virtualFunctionWrapper) PointerCall(inst gdunsafe.ExtensionInstance, args gdunsafe.MutablePointer, result gdunsafe.PointerTo[gdunsafe.Pointer]) {
 	receiver := inst.(*instanceWrapper).impl
 	ptr, ok := receiver.Interface()
 	if !ok {
@@ -196,7 +206,7 @@ type methodFunctionWrapper struct {
 	impl *methodImplementation
 }
 
-func (w *methodFunctionWrapper) PointerCall(inst gdunsafe.ExtensionInstance, args, result gdunsafe.Pointer) {
+func (w *methodFunctionWrapper) PointerCall(inst gdunsafe.ExtensionInstance, args gdunsafe.MutablePointer, result gdunsafe.PointerTo[gdunsafe.Pointer]) {
 	var receiver *instanceImplementation
 	if inst != nil {
 		receiver = inst.(*instanceWrapper).impl

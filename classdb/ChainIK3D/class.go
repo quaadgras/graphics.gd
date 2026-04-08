@@ -95,7 +95,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 // Instance of the class with convieniently typed arguments and results.
 type Instance [1]gdclass.ChainIK3D
 
-var otype gdunsafe.ObjectType
+var otype gdunsafe.ClassTag
 var sname gdunsafe.StringName
 var methods struct {
 	set_root_bone_name     gdextension.MethodForClass `hash:"501894301"`
@@ -120,7 +120,7 @@ var methods struct {
 func init() {
 	gd.Links = append(gd.Links, func() {
 		sname = gdunsafe.UTF8.Intern("ChainIK3D")
-		otype = gdunsafe.ObjectTypeTag(sname)
+		otype = gdunsafe.Class(sname).Tag()
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
@@ -328,7 +328,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.ChainIK3D{gdclass.NewChainIK3D(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(sname)), gd.Free))})
+	casted := Instance([1]gdclass.ChainIK3D{gdclass.NewChainIK3D(gdreference.OwnObject(gdextension.Object(gdunsafe.New(gdunsafe.Class(sname))), gd.Free))})
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

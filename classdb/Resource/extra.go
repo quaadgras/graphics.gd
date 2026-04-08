@@ -26,9 +26,9 @@ type ID = gd.RID
 type UID int
 
 var (
-	rid_allocate_id       gdextension.FunctionID
+	rid_allocate_id       func(result unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer)
 	rid_allocate_id_setup = sync.OnceFunc(func() {
-		rid_allocate_id = gdextension.FunctionID(gdunsafe.BuiltinName(gdunsafe.StringName(pointers.Get(gd.NewStringName("rid_allocate_id"))[0]), 701202648))
+		rid_allocate_id = gdunsafe.Utility(gdunsafe.StringName(pointers.Get(gd.NewStringName("rid_allocate_id"))[0]), 701202648)
 	})
 )
 
@@ -37,7 +37,7 @@ var (
 func AllocateID() ID { //gd:rid_allocate_id
 	rid_allocate_id_setup()
 	var id int64
-	gdunsafe.BuiltinCall(gdunsafe.FunctionID(rid_allocate_id), unsafe.Pointer(&id), uint64(gdextension.SizeInt), nil)
+	rid_allocate_id(unsafe.Pointer(&id), gdunsafe.ShapeInt, nil)
 	return Int64(id)
 }
 
@@ -120,7 +120,7 @@ var self [1]gdclass.ResourceLoader
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewResourceLoader(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(loader_sname))))
+	self[0] = gdclass.NewResourceLoader(gdreference.RawObject(gdextension.Object(gdunsafe.Singleton(loader_sname))))
 }
 
 func load(path String.Unicode, type_hint String.Unicode, cache_mode int) [1]gdclass.Resource { //gd:ResourceLoader.load

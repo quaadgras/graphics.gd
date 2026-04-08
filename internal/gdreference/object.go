@@ -162,12 +162,12 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 		if obj.revision == now {
 			return obj.assigned.inEngine, TypeBorrow
 		}
-		return gdextension.Object(gdunsafe.ObjectID(obj.assigned.objectID).Lookup()), TypeBorrow
+		return gdextension.Object(gdunsafe.ObjectID(obj.assigned.objectID).Object()), TypeBorrow
 	}
 	if obj.assigned.objectID == 0 {
 		if obj.assigned.inEngine == 0 {
 			if obj.sentinel.inEngine == 0 {
-				return gdextension.Object(gdunsafe.ObjectID(obj.sentinel.objectID).Lookup()), TypeStatic
+				return gdextension.Object(gdunsafe.ObjectID(obj.sentinel.objectID).Object()), TypeStatic
 			}
 			return obj.sentinel.inEngine, TypeStatic
 		}
@@ -182,7 +182,7 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 		}
 		return obj.assigned.inEngine, TypePooled
 	}
-	return gdextension.Object(gdunsafe.ObjectID(obj.assigned.objectID).Lookup()), TypeBorrow
+	return gdextension.Object(gdunsafe.ObjectID(obj.assigned.objectID).Object()), TypeBorrow
 }
 
 // EndObject leaks the object, releasing ownership to the engine.

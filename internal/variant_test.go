@@ -12,7 +12,7 @@ import (
 
 func TestZero(t *testing.T) {
 	runOnMain(t, func(t testing.TB) {
-		var raw gdunsafe.Variant = gdunsafe.ZeroVariant()
+		var raw gdunsafe.Variant = gdunsafe.Nil()
 		if raw[0] != 0 || raw[1] != 0 || raw[2] != 0 {
 			t.Fatal("Zero variant should be [0, 0, 0], got", raw)
 		}

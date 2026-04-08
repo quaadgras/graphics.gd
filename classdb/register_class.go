@@ -213,9 +213,15 @@ func Register[T Class](exports ...any) {
 		// parent extension classes are registered before their children.
 		engineClass := findEngineClass(superType)
 
+		var iconString gd.String
+		if icon, ok := tags.Lookup("icon"); ok {
+			iconString = gd.NewString(icon)
+		}
+
 		var impl = &classImplementation{
 			Name:           className,
 			Super:          superName,
+			Icon:           iconString,
 			SuperType:      superType,
 			EngineClass:    engineClass,
 			Type:           classType,
@@ -238,14 +244,10 @@ func Register[T Class](exports ...any) {
 		}
 		gdclass.Registered.Store(classType, impl)
 
-		var iconString gd.String
-		if icon, ok := tags.Lookup("icon"); ok {
-			iconString = gd.NewString(icon)
-		}
-		gdunsafe.RegisterClass(gdunsafe.StringName(pointers.Get(className)[0]), gdunsafe.StringName(pointers.Get(superName)[0]), &classWrapper{impl: impl}, false, false, true, false, gdunsafe.String(pointers.Get(iconString)[0]))
+		registration := gdunsafe.RegisterClass(rename, &classWrapper{impl: impl})
 
 		gd.RegisterCleanup(func() {
-			gdunsafe.RegisterRemoval(gdunsafe.StringName(pointers.Get(className)[0]))
+			registration.Free()
 			gdclass.Registered.Delete(classType)
 			className.Free()
 			superName.Free()
@@ -263,8 +265,7 @@ func Register[T Class](exports ...any) {
 				maps.Copy(documentation, export)
 			case map[string]int:
 				for name, value := range export {
-					gdunsafe.RegisterConstant(
-						gdunsafe.StringName(pointers.Get(className)[0]),
+					registration.RegisterConstant(
 						gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]),
 						gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
 						int64(value),
@@ -282,7 +283,7 @@ func Register[T Class](exports ...any) {
 					if strings.Count(path.Base(fname), ".") > 1 {
 						method_renames[pc] = name
 					} else {
-						registerStaticMethod(className, name, reflect.ValueOf(fn))
+						registerStaticMethod(registration, name, reflect.ValueOf(fn))
 					}
 				}
 			default:
@@ -301,7 +302,7 @@ func Register[T Class](exports ...any) {
 					} else if strings.Count(path.Base(fname), ".") > 1 {
 						method_renames[pc] = name
 					} else {
-						registerStaticMethod(className, String.ToSnakeCase(name), rvalue)
+						registerStaticMethod(registration, String.ToSnakeCase(name), rvalue)
 					}
 				default:
 					panic(fmt.Sprintf("gdextension.RegisterClass: invalid argument type %T (expected function or map)", export))
@@ -313,9 +314,9 @@ func Register[T Class](exports ...any) {
 			AsShaderMaterial() ShaderMaterial.Instance
 		}:
 		default:
-			registerClassInformation(className, rename, nameOf(superType), classType, documentation, method_renames)
-			registerSignals(className, classType)
-			registerMethods(className, classType, method_renames)
+			registerClassInformation(registration, rename, nameOf(superType), classType, documentation, method_renames)
+			registerSignals(registration, classType)
+			registerMethods(registration, classType, method_renames)
 		}
 		if registrator, ok := any(reference).(interface{ OnRegister() }); ok {
 			registrator.OnRegister()
@@ -323,7 +324,7 @@ func Register[T Class](exports ...any) {
 		if Engine.IsEditorHint() {
 			switch super.(type) {
 			case EditorPlugin.Any:
-				gdunsafe.EditorAddPlugin(gdunsafe.StringName(pointers.Get(className)[0]))
+				gdunsafe.EnableEditorPlugin(registration)
 			}
 		}
 		if embedded_name == "Singleton" {
@@ -424,7 +425,7 @@ func init() {
 	})
 }
 
-func registerClassInformation(className gd.StringName, classNameString string, inherits string, rtype reflect.Type, docs map[string]string, method_renames map[uintptr]string) {
+func registerClassInformation(registration gdunsafe.Class, classNameString string, inherits string, rtype reflect.Type, docs map[string]string, method_renames map[uintptr]string) {
 	var class = preloaded_documentation[classNameString]
 	class.Name = classNameString
 	class.Inherits = inherits
@@ -484,8 +485,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			class.Signals = append(class.Signals, signal)
 			return
 		}
-		var list = gdunsafe.MakePropertyList(1)
-		if ptype, ok := propertyOf(className, field, list); ok {
+		if prop, ok := propertyOf(registration, field); ok {
 			var exists bool
 			var member = new(docgen.Member)
 			for i := range class.Members {
@@ -505,20 +505,18 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			if docs, ok := docs[member.Name]; ok {
 				member.Description = extractDoc(docs)
 			}
-			member.Type = ptype.String()
+			member.Type = prop.Type.String()
 			if !exists {
 				class.Members = append(class.Members, *member)
 			}
-			gdunsafe.RegisterProperty(gdunsafe.StringName(pointers.Get(className)[0]), list, gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]), gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]))
+			registration.RegisterProperty(prop, gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]), gdunsafe.StringName(pointers.Get(gd.NewStringName(""))[0]))
 		}
-		list.Free()
 	}
 	for _, field := range ungroupedFields {
 		registerField(field)
 	}
 	for groupName, fields := range groupedFields {
-		gdunsafe.RegisterPropertyGroup(
-			gdunsafe.StringName(pointers.Get(className)[0]),
+		registration.RegisterPropertyGroup(
 			gdunsafe.String(pointers.Get(gd.NewString(groupName))[0]),
 			gdunsafe.String(pointers.Get(gd.NewString(""))[0]),
 		)
@@ -555,7 +553,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 	gd.NewCallable(func() {
 		if Engine.IsEditorHint() {
 			docs, _ := xml.Marshal(class)
-			gdunsafe.EditorAddDocumentation(string(docs))
+			gdunsafe.EditorDocumentation(string(docs))
 		}
 	}).CallDeferred()
 }
@@ -563,6 +561,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 type classImplementation struct {
 	Name        gd.StringName
 	Super       gd.StringName
+	Icon        gd.String
 	SuperType   reflect.Type
 	EngineClass gd.StringName // The first non-extension ancestor class, cached at registration time
 
@@ -622,12 +621,12 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	// This prevents the issue where extension classes inheriting from other extension
 	// classes would trigger multiple calls to set_instance_binding on the same object.
 	var super *gdreference.Object = (*gdreference.Object)(value.UnsafePointer())
-	gdreference.PinObject(super, gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(pointers.Get(class.EngineClass)[0]))))
+	gdreference.PinObject(super, gdextension.Object(gdunsafe.New(gdunsafe.Class(pointers.Get(class.EngineClass)[0]))))
 	if class.RefCounted {
 		gd.RefCounted(*super).InitRef()
 	}
 	instance := class.reloadInstance(value, super)
-	gdunsafe.Object(gdreference.GetObject(*super)).ExtensionSetup(gdunsafe.StringName(pointers.Get(class.Name)[0]), &instanceWrapper{impl: instance})
+	gdunsafe.Object(gdreference.GetObject(*super)).SetupExtension(gdunsafe.StringName(pointers.Get(class.Name)[0]), &instanceWrapper{impl: instance})
 	if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
 		roots.Insert(value, keepalive)
 	}
@@ -1069,7 +1068,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	path := Path.ToNode(String.New(name))
 	if !Node.Advanced(parent).HasNode(path) {
 		if not_initialised {
-			child := [1]gdreference.Object{gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(field.Type)))[0]))), gd.Free)}
+			child := [1]gdreference.Object{gdreference.OwnObject(gdextension.Object(gdunsafe.New(gdunsafe.Class(pointers.Get(gd.NewStringName(nameOf(field.Type)))[0]))), gd.Free)}
 			gd.ObjectNotification(child[0], 0, false)
 			defer gdreference.EndObject(child[0])
 			native := gd.ExtensionInstanceLookup(gdreference.GetObject(child[0]))
@@ -1110,7 +1109,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	Engine.RaiseWarning("graphics.gd DeclarativeChildren[" + nameOf(instance.Type) + "]: converting " + string(Node.Advanced(parent).GetPath().String()) + "/" + field.Name +
 		" into " + nameOf(field.Type) + " (previously " + Object.Instance(node.AsObject()).ClassName() + ")")
 	if not_initialised {
-		child := [1]gdreference.Object{gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(field.Type)))[0]))), gd.Free)}
+		child := [1]gdreference.Object{gdreference.OwnObject(gdextension.Object(gdunsafe.New(gdunsafe.Class(pointers.Get(gd.NewStringName(nameOf(field.Type)))[0]))), gd.Free)}
 		gd.ObjectNotification(child[0], 0, false)
 		defer gdreference.EndObject(child[0])
 		native := gd.ExtensionInstanceLookup(gdreference.GetObject(child[0]))

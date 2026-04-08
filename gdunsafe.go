@@ -31,46 +31,92 @@ import (
 type Iterator Variant
 
 type (
-	String struct{}
-	Object struct{}
+	String     Pointer // String is a UTF-32 encoded string.
+	Object     Pointer // Object is a reference to a Godot object.
+	Array      Pointer // Array is a sequentially-indexed list of variant values.
+	Dictionary Pointer // Dictionary is a key-value map of variant values.
+	StringName Pointer // StringName is a string that is used as a unique identifier for a Godot object.
+	NodePath   Pointer // NodePath is a path to a Node.
 
-	Dictionary struct{}
-	StringName struct{}
-	NodePath   struct{}
+	Signal   [2]uint64 // Signal is a broadcast queue.
+	Callable [2]uint64 // Callable is a closure or function.
 
-	Signal [2]uint64
+	RefCounted     Object // RefCounted is a reference-counted [Object].
+	Script         Object // Script is a reference to a [Script] object.
+	ScriptLanguage Object // ScriptLanguage is a reference to a [ScriptLanguage] object.
 
-	Script         Object
-	ScriptLanguage Object
+	MethodPointer Pointer // MethodPointer is a pointer to a method on an [Class].
+
+	PropertyList Pointer // PropertyList is a container for a list of [Property] values.
+	MethodList   Pointer // MethodList is a container for a list of [Method] values.
+
+	Class    StringName // Class is a [StringName] that is used as a unique identifier for a class.
+	ClassTag Pointer    // ClassTag is an opaque identifier used for a class.
 )
 
 type Type struct {
-	vtype      variant.Type
-	shape      Shape
-	class_tag  uintptr
-	class_name StringName
-	script     Object
+	vtype     variant.Type
+	shape     Shape
+	class     Class
+	class_tag ClassTag
+	script    Script
+}
+
+func TypeFrom(vtype variant.Type) Type {
+	return Type{
+		vtype: vtype,
+	}
+}
+
+func TypeByName(name string) Type {
+	return Type{
+		vtype: variant.TypeObject,
+		shape: ShapeObject,
+	}
+}
+
+func TypeFor[T Any | Class]() Type {
+	return Type{}
+}
+
+// ClassWithScript returns a [Type] with the given [Class] and [Script].
+func ClassWithScript(class Class, script Script) Type {
+	return Type{
+		vtype:     variant.TypeObject,
+		shape:     ShapeObject,
+		class:     class,
+		class_tag: class.Tag(),
+		script:    script,
+	}
 }
 
 func (t Type) Shape() Shape { return t.shape }
 
 func (t Type) Free() {
-	Free(t.class_name)
+	if t.class != (Class(0)) {
+		Free(StringName(t.class))
+	}
 }
 
+// Packable types that can be packed into a [PackedArray].
 type Packable interface {
 	byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String
+}
+
+// Addressable types that can be used as a [Pointer] or [MutablePointer].
+type Addressable interface {
+	Any | Packable | Variant | PointerTo[Variant] | Pointer | uint64 | uint32 | uint16 | [2]uint64
 }
 
 type ObjectID uint64
 
 // PointerTo is a [Pointer] that points to a value of type T, it should
 // be treated as if it were an [unsafe.Pointer] from a different process.
-type PointerTo[T Any | Variant | PointerTo[Variant] | Packable] Pointer
+type PointerTo[T Addressable] Pointer
 
 // MutablePointerTo is a [MutablePointer] that points to a value of type T, it should
 // be treated as if it were an [unsafe.Pointer] from a different process.
-type MutablePointerTo[T Any | Variant | Packable] MutablePointer
+type MutablePointerTo[T Addressable] MutablePointer
 
 // Variants accessor, used to represent zero or more arguments.
 type Variants struct {
@@ -112,7 +158,7 @@ func (args Variants) ExpectedArg(i int, vtype variant.Type) (Variant, Error) {
 	return arg, Error{}
 }
 
-var callables threadsafe.Handles[ExtensionCallable, CallableID]
+var callables threadsafe.Handles[ExtensionCallable, uintptr]
 
 var (
 	classes   threadsafe.Handles[ExtensionClass, uintptr]
@@ -241,17 +287,38 @@ const (
 	LogWarning LogLevel = 1
 )
 
-// StringEncoding identifies a string encoding for Decode, Encode, and Intern operations.
-type StringEncoding uint8
+// Encoding interface for supported string encodings, [Latin1], [UTF8], [UTF16], [UTF32] and [Wide].
+type Encoding interface {
+	Decode(s String, buf []byte) int // Decode the string into the buffer. Returns bytes written.
+	String(s string) String          // String returns a new [String] from the given string.
+	Intern(s string) StringName      // Intern returns a [StringName] for the given string.
+}
 
-const (
-	Latin1  StringEncoding = iota // ISO 8859-1
-	UTF8                          // UTF-8
-	UTF16LE                       // UTF-16 little-endian
-	UTF16BE                       // UTF-16 big-endian
-	UTF32                         // UTF-32
-	Wide                          // platform-native wide characters (wchar_t)
-)
+// Latin1 implements [Encoding].
+var Latin1 latin1
+
+type latin1 struct{}
+
+// UTF8 implements [Encoding] via UTF-8.
+var UTF8 utf8
+
+type utf8 struct{}
+
+// UTF16 implements [Encoding], can be set to true for
+// little-endian UTF-16 encoding, or false for big-endian.
+type UTF16 = utf16
+
+type utf16 struct{}
+
+// UTF32 implements [Encoding] via UTF-32.
+var UTF32 utf32
+
+type utf32 struct{}
+
+// Wide implements [Encoding] via platform-native wide characters (wchar_t).
+var Wide wide
+
+type wide struct{}
 
 // ALIGN_UP aligns a value to the next multiple of align.
 func alignUp(value, align uint32) uint32 {
@@ -273,27 +340,28 @@ func (shape Shape) SizeArguments() (size int) {
 	return
 }
 
+// Any is a constraint that matches any Variant type.
 type Any interface {
 	bool |
 		int64 |
 		float64 |
 		String |
-		~Vector2.XY |
-		~Vector2i.XY |
-		~Rect2.PositionSize |
-		~Rect2i.PositionSize |
-		~Vector3.XYZ |
-		~Vector3i.XYZ |
-		~Transform2D.OriginXY |
-		~Vector4.XYZW |
-		~Vector4i.XYZW |
-		~Plane.NormalD |
-		~Quaternion.IJKX |
-		~AABB.PositionSize |
-		~Basis.XYZ |
-		~Transform3D.BasisOrigin |
-		~Projection.XYZW |
-		~Color.RGBA |
+		Vector2.XY |
+		Vector2i.XY |
+		Rect2.PositionSize |
+		Rect2i.PositionSize |
+		Vector3.XYZ |
+		Vector3i.XYZ |
+		Transform2D.OriginXY |
+		Vector4.XYZW |
+		Vector4i.XYZW |
+		Plane.NormalD |
+		Quaternion.IJKX |
+		AABB.PositionSize |
+		Basis.XYZ |
+		Transform3D.BasisOrigin |
+		Projection.XYZW |
+		Color.RGBA |
 		StringName |
 		NodePath |
 		RID.Any |
@@ -345,35 +413,74 @@ func (p PackedArray[T]) Type() variant.Type {
 // ExtensionInstance is an interface that can be used to implement an instance
 // of an [ExtensionClass] in the engine.
 type ExtensionInstance interface {
+
+	// Set is called when the engine attempts to set a value for
+	// the given field/property in the extension instance.
 	Set(field StringName, value Variant) bool
+
+	// Get is called when the engine attempts to get the value of
+	// the given field/property in the extension instance.
 	Get(field StringName) (Variant, bool)
+
+	// HasDefault is called when the engine attempts to check if
+	// the given field/property has a default value.
 	HasDefault(field StringName) bool
+
+	// GetDefault is called when the engine attempts to get the
+	// default value of the given field/property.
 	GetDefault(field StringName) (Variant, bool)
+
+	// PropertyList is called when the engine attempts to get the
+	// list of properties for the extension instance.
 	PropertyList() PropertyList
+
+	// ValidateProperty is called when the engine attempts to validate
+	// a property for the extension instance.
 	ValidateProperty(Property) bool
+
+	// Notification is called when the engine sends an Object
+	// notification to the extension instance.
 	Notification(what int32, reverse bool)
+
+	// UnsafeString is called when the engine attempts to get a
+	// string representation of the extension instance.
 	UnsafeString() String
 
+	// RID is called when the engine attempts to get the RID of
+	// the extension instance.
 	RID() RID.Any
 
+	// Reference is called when the engine attempts to increment
+	// or decrement the reference count of the extension instance.
 	Reference(increment bool) bool
 
 	//ReferenceIncremented()
 	//ReferenceDecremented() bool
 }
 
+// Property description.
 type Property struct {
-	Type       variant.Type
-	Name       StringName
-	ClassName  StringName
-	Hint       uint32
-	HintString String
-	Usage      uint32
+	Type       variant.Type // Type of the property.
+	Name       StringName   // Name of the property.
+	ClassName  StringName   // Class name of the property (if it's an [Object] property).
+	Hint       uint32       // Hint for the property.
+	HintString String       // Hint-specific string for the property.
+	Usage      uint32       // Usage flags.
 }
 
+// ExtensionFunction can be implemented by an [Object] to provide a mechanism for the
+// engine to call methods on an [ExtensionInstance].
 type ExtensionFunction interface {
-	PointerCall(instance ExtensionInstance, result Pointer, args Pointer)
+	// PointerCall expects the return value to be written into the result [Pointer]
+	// and arguments are passed as an array of [Pointer] values.
+	PointerCall(instance ExtensionInstance, result MutablePointer, args PointerTo[Pointer])
+
+	// CheckedCall is called in the engine in rare cases where it knows the number of
+	// arguments in advance and can avoid the overhead of dynamic calling.
 	CheckedCall(instance ExtensionInstance, args Variants) Variant
+
+	// DynamicCall is called when the engine needs to call a method on an
+	// [ExtensionInstance] from a [Script], or a [Signal] attached in the editor.
 	DynamicCall(instance ExtensionInstance, args Variants) (Variant, Error)
 }
 
@@ -386,8 +493,18 @@ type ExtensionClass interface {
 	// call [SetupExtension] on it.
 	Create(notify_postinitialize bool) Object
 
+	// Parent returns the parent class for this extension class.
+	Parent() Class
+
 	// Method should return the [ExtensionFunction] for the given method.
 	Method(name StringName, hash uint32) ExtensionFunction
+
+	Virtual() bool  // Virtual class.
+	Abstract() bool // Abstract class.
+	Exposed() bool  // Exposed to scripts and the editor.
+	Runtime() bool  // Runtime classes only run outside the editor.
+
+	Icon() String // Icon to display in the editor for this class.
 }
 
 // ExtensionScript is an interface that can be used to implement a script
@@ -438,37 +555,32 @@ type ExtensionScript interface {
 type InitializationLevel uint32
 
 var (
-	onEngineInit                func(InitializationLevel)
-	onEngineExit                func(InitializationLevel)
-	onFirstFrame                func()
-	onEveryFrame                func()
-	onFinalFrame                func()
-	onWorkerThreadPoolTask      func(TaskID)
-	onWorkerThreadPoolGroupTask func(TaskID, int32)
-	onEditorClassDetection      func(PackedArray[String]) PackedArray[String]
+	onEngineInit []func(InitializationLevel)
+	onEngineExit []func(InitializationLevel)
+	onFirstFrame []func()
+	onEveryFrame []func()
+	onFinalFrame []func()
 )
 
 // OnEngineInit registers a function to be called when the engine initializes,
 // this should be called early inside an init function.
-func OnEngineInit(fn func(level InitializationLevel)) { onEngineInit = fn }
+func OnEngineInit(fn func(level InitializationLevel)) { onEngineInit = append(onEngineInit, fn) }
 
 // OnEngineExit registers a function to be called when the engine exits,
 // this should be called early inside an init function.
-func OnEngineExit(fn func(level InitializationLevel)) { onEngineExit = fn }
+func OnEngineExit(fn func(level InitializationLevel)) { onEngineExit = append(onEngineExit, fn) }
 
 // OnFirstFrame registers a function to be called on the first frame,
 // this should be called early inside an init function.
-func OnFirstFrame(fn func()) { onFirstFrame = fn }
+func OnFirstFrame(fn func()) { onFirstFrame = append(onFirstFrame, fn) }
 
 // OnEveryFrame registers a function to be called on every frame. Can
 // be called at any time but cannot be removed after being added.
-func OnEveryFrame(fn func()) { onEveryFrame = fn }
+func OnEveryFrame(fn func()) { onEveryFrame = append(onEveryFrame, fn) }
 
 // OnFinalFrame registers a function to be called on the final frame,
 // this should be called before the engine shuts down.
-func OnFinalFrame(fn func()) { onFinalFrame = fn }
-
-type TaskID uintptr
+func OnFinalFrame(fn func()) { onFinalFrame = append(onFinalFrame, fn) }
 
 // variantTypeOf maps a Go type in the [Any] constraint to its [variant.Type].
 func variantTypeOf[T Any]() variant.Type {
@@ -631,11 +743,33 @@ func shapeOf[T Any]() Shape {
 	}
 }
 
-/*
-func OnWorkerThreadPoolTask(fn func(TaskID))             { onWorkerThreadPoolTask = fn }
-func OnWorkerThreadPoolGroupTask(fn func(TaskID, int32)) { onWorkerThreadPoolGroupTask = fn }
+// VariantOperator is an enumeration of the supported variant operators.
+type VariantOperator uint32
 
-func OnEditorClassDetection(fn func(PackedArray[String]) PackedArray[String]) {
-	onEditorClassDetection = fn
-}
-*/
+const (
+	OpEqual         VariantOperator = iota // ==
+	OpNotEqual                             // !=
+	OpLess                                 // <
+	OpLessEqual                            // <=
+	OpGreater                              // >
+	OpGreaterEqual                         // >=
+	OpAdd                                  // +
+	OpSubtract                             // -
+	OpMultiply                             // *
+	OpDivide                               // /
+	OpNegate                               // -
+	OpPositive                             // +
+	OpModule                               // %
+	OpPower                                // ^
+	OpShiftLeft                            // <<
+	OpShiftRight                           // >>
+	OpBitwiseAnd                           // &
+	OpBitwiseOr                            // |
+	OpBitwiseXor                           // ^
+	OpBitwiseNegate                        // ~
+	OpLogicalAnd                           // &&
+	OpLogicalOr                            // ||
+	OpLogicalXor                           // !=
+	OpLogicalNegate                        // !
+	OpIn                                   // in
+)

@@ -2,6 +2,8 @@
 
 package gdunsafe
 
+type PackedArray[T Packable] [2]uint32
+
 const (
 	ShapeString      Shape = bytes4   // shape of a [String]
 	ShapeObject      Shape = bytes4   // shape of an [Object]

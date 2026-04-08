@@ -101,7 +101,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 // Instance of the class with convieniently typed arguments and results.
 type Instance [1]gdclass.ThemeDB
 
-var otype gdunsafe.ObjectType
+var otype gdunsafe.ClassTag
 var sname gdunsafe.StringName
 var methods struct {
 	get_default_theme       gdextension.MethodForClass `hash:"754276358"`
@@ -121,7 +121,7 @@ var methods struct {
 func init() {
 	gd.Links = append(gd.Links, func() {
 		sname = gdunsafe.UTF8.Intern("ThemeDB")
-		otype = gdunsafe.ObjectTypeTag(sname)
+		otype = gdunsafe.Class(sname).Tag()
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
@@ -134,7 +134,7 @@ var self [1]gdclass.ThemeDB
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewThemeDB(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(sname))))
+	self[0] = gdclass.NewThemeDB(gdreference.RawObject(gdextension.Object(gdunsafe.Singleton(sname))))
 }
 
 /*

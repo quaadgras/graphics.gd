@@ -26,7 +26,7 @@ func (classDB ClassDB) new(file io.Writer, class gdjson.Class) {
 		return placeholder
 	}
 `, class.Name)
-	fmt.Fprintf(file, "\tcasted := Instance([1]gdclass.%[1]s{gdclass.New%[1]s(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(sname)), gd.Free))})\n", class.Name)
+	fmt.Fprintf(file, "\tcasted := Instance([1]gdclass.%[1]s{gdclass.New%[1]s(gdreference.OwnObject(gdextension.Object(gdunsafe.New(gdunsafe.Class(sname))), gd.Free))})\n", class.Name)
 	if class.IsRefcounted {
 		fmt.Fprintf(file, "\tcasted.AsRefCounted()[0].InitRef()\n")
 	}

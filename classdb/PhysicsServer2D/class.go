@@ -112,7 +112,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 // Instance of the class with convieniently typed arguments and results.
 type Instance [1]gdclass.PhysicsServer2D
 
-var otype gdunsafe.ObjectType
+var otype gdunsafe.ClassTag
 var sname gdunsafe.StringName
 var methods struct {
 	world_boundary_shape_create                  gdextension.MethodForClass `hash:"529393457"`
@@ -239,7 +239,7 @@ var methods struct {
 func init() {
 	gd.Links = append(gd.Links, func() {
 		sname = gdunsafe.UTF8.Intern("PhysicsServer2D")
-		otype = gdunsafe.ObjectTypeTag(sname)
+		otype = gdunsafe.Class(sname).Tag()
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
@@ -252,7 +252,7 @@ var self [1]gdclass.PhysicsServer2D
 var once sync.Once
 
 func singleton() {
-	self[0] = gdclass.NewPhysicsServer2D(gdreference.RawObject(gdextension.Object(gdunsafe.ObjectGlobal(sname))))
+	self[0] = gdclass.NewPhysicsServer2D(gdreference.RawObject(gdextension.Object(gdunsafe.Singleton(sname))))
 }
 
 /*

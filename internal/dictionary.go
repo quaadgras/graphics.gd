@@ -7,19 +7,18 @@ import (
 
 	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	DictionaryType "graphics.gd/variant/Dictionary"
 )
 
 func (d Dictionary) Index(key Variant) Variant {
-	raw := gdunsafe.Dictionary(pointers.Get(d)[0]).Access(pointers.Get(key))
+	raw := gdunsafe.Dictionary(pointers.Get(d)[0]).Lookup(pointers.Get(key))
 	return pointers.Raw[Variant](raw).Copy()
 }
 
 func (d Dictionary) SetIndex(key Variant, value Variant) {
-	gdunsafe.Dictionary(pointers.Get(d)[0]).Modify(pointers.Get(key), pointers.Cut(value.Copy(), true))
+	gdunsafe.Dictionary(pointers.Get(d)[0]).Insert(pointers.Get(key), pointers.Cut(value.Copy(), true))
 }
 
 func (d Dictionary) Free() {
@@ -29,7 +28,7 @@ func (d Dictionary) Free() {
 }
 
 func NewDictionary() Dictionary {
-	return pointers.New[Dictionary](noescape.Make[gdextension.Dictionary](builtin.creation.Dictionary[0], 0, nil))
+	return pointers.New[Dictionary](gdextension.Dictionary{gdextension.Pointer(builtin.creation.Dictionary[0](0, nil))})
 }
 
 func InternalDictionary[K comparable, V any](dict DictionaryType.Map[K, V]) Dictionary {

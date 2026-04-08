@@ -317,19 +317,18 @@ type Dictionary [1]Pointer
 type Callable [2]uint64
 type Signal [2]uint64
 
-type MethodForClass Pointer
+type MethodForClass = gdunsafe.MethodPointer
 
 type MethodForBuiltinType Pointer
 
 type Object = gdunsafe.Object
-type ObjectType = gdunsafe.ObjectType
 type ObjectID gdunsafe.ObjectID
 type RefCounted Pointer
 
 type Variant = gdunsafe.Variant
 type VariantOperator uint32
 
-type Iterator Variant
+type Iterator = gdunsafe.Iterator
 
 type ClassLibrary Pointer
 

@@ -4,7 +4,6 @@ package gd
 
 import (
 	"reflect"
-	"unsafe"
 
 	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
@@ -70,7 +69,7 @@ func (v Variant) Free() {
 	if !ok {
 		return
 	}
-	gdunsafe.Variant(ptr).UnsafeFree()
+	gdunsafe.Variant(ptr).Free()
 }
 
 type Iterator struct {
@@ -82,22 +81,20 @@ type iterator pointers.Type[iterator, gdextension.Iterator]
 
 func (iter iterator) Free() {
 	if ptr, ok := pointers.End(iter); ok {
-		gdunsafe.Variant(ptr).UnsafeFree()
+		gdunsafe.Variant(ptr).Free()
 	}
 }
 
 func (iter Iterator) Next() bool {
-	var err gdextension.CallError
-	var raw = pointers.Get(iter.iter)
-	next := gdunsafe.Variant(pointers.Get(iter.self)).IteratorNext(unsafe.Pointer(&raw), unsafe.Pointer(&err))
+	var raw = gdunsafe.Iterator(pointers.Get(iter.iter))
+	next, _ := raw.Next()
 	pointers.Set(iter.iter, raw)
 	return next
 }
 
 func (iter Iterator) Value() Variant {
-	var err gdextension.CallError
 	var raw gdextension.Variant
-	gdunsafe.Variant(pointers.Get(iter.self)).IteratorLoad(gdunsafe.Variant(pointers.Get(iter.iter)), unsafe.Pointer(&raw), unsafe.Pointer(&err))
+	raw, err := gdunsafe.Iterator(pointers.Get(iter.self)).Value()
 	if err != (gdextension.CallError{}) {
 		panic("failed to get iterator value")
 	}

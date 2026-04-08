@@ -11,7 +11,6 @@ import (
 	"graphics.gd/classdb/AudioEffectInstance"
 	"graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/threadcheck"
 
 	_ "graphics.gd/startup"
@@ -43,7 +42,7 @@ func TestGetGodotVersion(t *testing.T) {
 		if gdunsafe.VersionMajor() < 3 {
 			t.Fail()
 		}
-		if gdunsafe.VersionString() == (gdunsafe.String(0)) {
+		if gdunsafe.Version() == (gdunsafe.String(0)) {
 			t.Fail()
 		}
 	})
@@ -76,7 +75,7 @@ func TestNativeStructSize(t *testing.T) {
 			"PhysicsServer3DExtensionMotionCollision": unsafe.Sizeof(gd.PhysicsServer3DExtensionMotionCollision{}),
 			"PhysicsServer3DExtensionMotionResult":    unsafe.Sizeof(gd.PhysicsServer3DExtensionMotionResult{}),
 		} {
-			if size := gdunsafe.Sizeof(gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0])); uintptr(size) != expectation {
+			if size := gdunsafe.TypeByName(name).Size(); uintptr(size) != expectation {
 				t.Fatalf("Our size of %v is %v, but Godot's is %v", name, expectation, size)
 			}
 		}

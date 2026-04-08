@@ -114,7 +114,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 // Instance of the class with convieniently typed arguments and results.
 type Instance [1]gdclass.TileMap
 
-var otype gdunsafe.ObjectType
+var otype gdunsafe.ClassTag
 var sname gdunsafe.StringName
 var methods struct {
 	set_navigation_map              gdextension.MethodForClass `hash:"4040184819"`
@@ -183,7 +183,7 @@ var methods struct {
 func init() {
 	gd.Links = append(gd.Links, func() {
 		sname = gdunsafe.UTF8.Intern("TileMap")
-		otype = gdunsafe.ObjectTypeTag(sname)
+		otype = gdunsafe.Class(sname).Tag()
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
@@ -1086,7 +1086,7 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	casted := Instance([1]gdclass.TileMap{gdclass.NewTileMap(gdreference.OwnObject(gdextension.Object(gdunsafe.MakeObject(sname)), gd.Free))})
+	casted := Instance([1]gdclass.TileMap{gdclass.NewTileMap(gdreference.OwnObject(gdextension.Object(gdunsafe.New(gdunsafe.Class(sname))), gd.Free))})
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

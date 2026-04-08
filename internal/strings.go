@@ -8,7 +8,6 @@ import (
 
 	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/rodatacheck"
 	"graphics.gd/internal/threadcheck"
@@ -38,13 +37,13 @@ func init() {
 
 func (s String) StringName() StringName {
 	var arg = pointers.Get(s)
-	return pointers.New[StringName](noescape.Make[gdextension.StringName](builtin.creation.StringName[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[StringName](gdextension.StringName{gdextension.Pointer(builtin.creation.StringName[2](gdunsafe.ShapeString<<4, unsafe.Pointer(&arg)))})
 }
 
 // Copy returns a copy of the string that is owned by the provided context.
 func (s String) Copy() String {
 	var arg = pointers.Get(s)
-	return pointers.New[String](noescape.Make[gdextension.String](builtin.creation.String[1], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[String](gdextension.String{gdextension.Pointer(builtin.creation.String[1](gdunsafe.ShapeString<<4, unsafe.Pointer(&arg)))})
 }
 
 func (s String) Free() {
@@ -66,23 +65,23 @@ func (s String) String() string {
 		return ""
 	}
 	var buf = make([]byte, s.Length())
-	gdunsafe.String(pointers.Get(s)[0]).Encode(gdunsafe.UTF8, buf)
+	gdunsafe.UTF8.Decode(gdunsafe.String(pointers.Get(s)[0]), buf)
 	return unsafe.String(&buf[0], len(buf))
 }
 
 func StringFromStringName(s StringName) String {
 	var arg = pointers.Get(s)
-	return pointers.New[String](noescape.Make[gdextension.String](builtin.creation.String[2], gdextension.SizeStringName<<4, unsafe.Pointer(&arg)))
+	return pointers.New[String](gdextension.String{gdextension.Pointer(builtin.creation.String[2](gdunsafe.ShapeString<<4, unsafe.Pointer(&arg)))})
 }
 
 func StringFromNodePath(s NodePath) String {
 	var arg = pointers.Get(s)
-	return pointers.New[String](noescape.Make[gdextension.String](builtin.creation.String[3], gdextension.SizeNodePath<<4, unsafe.Pointer(&arg)))
+	return pointers.New[String](gdextension.String{gdextension.Pointer(builtin.creation.String[3](gdunsafe.ShapeString<<4, unsafe.Pointer(&arg)))})
 }
 
 func NewStringNameFromString(s String) StringName {
 	var arg = pointers.Get(s)
-	return pointers.New[StringName](noescape.Make[gdextension.StringName](builtin.creation.StringName[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[StringName](gdextension.StringName{gdextension.Pointer(builtin.creation.StringName[2](gdunsafe.ShapeString<<4, unsafe.Pointer(&arg)))})
 }
 
 func (s StringName) Free() {
@@ -106,12 +105,12 @@ func (s StringName) String() string {
 
 func (s String) NodePath() NodePath {
 	var arg = pointers.Get(s)
-	return pointers.New[NodePath](noescape.Make[gdextension.NodePath](builtin.creation.NodePath[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[NodePath](gdextension.NodePath{gdextension.Pointer(builtin.creation.NodePath[2](gdunsafe.ShapeString<<4, unsafe.Pointer(&arg)))})
 }
 
 func (n NodePath) InternalString() String {
 	var ptr = pointers.Get(n)
-	return pointers.New[String](noescape.Make[gdextension.String](builtin.creation.String[2], gdextension.SizeNodePath<<4, unsafe.Pointer(&ptr)))
+	return pointers.New[String](gdextension.String{gdextension.Pointer(builtin.creation.String[2](gdunsafe.ShapeString<<4, unsafe.Pointer(&ptr)))})
 }
 
 func (n NodePath) String() string {
@@ -180,7 +179,7 @@ func (proxy StringProxy) Index(raw complex128, n int) byte {
 	if proxy.indirect != nil {
 		return StringProxy{}.Index(pointers.Pack(*proxy.indirect), n)
 	}
-	return byte(gdunsafe.String(pointers.Get(pointers.Load[String](raw))[0]).Access(int64(n)))
+	return byte(gdunsafe.String(pointers.Get(pointers.Load[String](raw))[0]).Index(n))
 }
 func (proxy StringProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Unicode) {
 	if proxy.indirect != nil {
@@ -188,7 +187,7 @@ func (proxy StringProxy) DecodeRune(raw complex128) (StringType.Rune, int, Strin
 	}
 	s := pointers.Load[String](raw)
 	next := s.Substr(0, s.Length())
-	return StringType.Rune(gdunsafe.String(pointers.Get(pointers.Load[String](raw))[0]).Access(0)), 0, StringType.Via(StringProxy{}, pointers.Pack(next))
+	return StringType.Rune(gdunsafe.String(pointers.Get(pointers.Load[String](raw))[0]).Index(0)), 0, StringType.Via(StringProxy{}, pointers.Pack(next))
 }
 func (proxy StringProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Unicode {
 	if proxy.indirect != nil {
@@ -196,7 +195,9 @@ func (proxy StringProxy) AppendRune(raw complex128, r StringType.Rune) StringTyp
 	}
 	s := pointers.Load[String](raw)
 	str := s.Substr(0, s.Length())
-	pointers.Set(str, gdextension.String{gdextension.Pointer(gdunsafe.String(pointers.Get(str)[0]).AppendRune(int32(r)))})
+	rawstr := gdunsafe.String(pointers.Get(str)[0])
+	rawstr.AppendRune(int32(r))
+	pointers.Set(str, gdextension.String{gdextension.Pointer(rawstr)})
 	return StringType.Via(StringProxy{}, pointers.Pack(str))
 }
 func (proxy StringProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Unicode {
@@ -206,7 +207,9 @@ func (proxy StringProxy) AppendOther(raw complex128, api StringType.API, raw2 co
 	s := pointers.Load[String](raw)
 	s2 := pointers.Load[String](raw2)
 	sub := s.Substr(0, s.Length())
-	pointers.Set(sub, gdextension.String{gdextension.Pointer(gdunsafe.String(pointers.Get(sub)[0]).Append(gdunsafe.String(pointers.Get(s2)[0])))})
+	rawstr := gdunsafe.String(pointers.Get(sub)[0])
+	rawstr.Append(gdunsafe.String(pointers.Get(s2)[0]))
+	pointers.Set(sub, gdextension.String{gdextension.Pointer(rawstr)})
 	return StringType.Via(StringProxy{}, pointers.Pack(sub))
 }
 func (proxy StringProxy) AppendString(raw complex128, str string) StringType.Unicode {
@@ -215,7 +218,9 @@ func (proxy StringProxy) AppendString(raw complex128, str string) StringType.Uni
 	}
 	s := pointers.Load[String](raw)
 	sub := s.Substr(0, s.Length())
-	pointers.Set(sub, gdextension.String{gdextension.Pointer(gdunsafe.String(pointers.Get(sub)[0]).Append(gdunsafe.String(pointers.Get(NewString(str))[0])))})
+	rawstr := gdunsafe.String(pointers.Get(sub)[0])
+	rawstr.Append(gdunsafe.String(pointers.Get(NewString(str))[0]))
+	pointers.Set(sub, gdextension.String{gdextension.Pointer(rawstr)})
 	return StringType.Via(StringProxy{}, pointers.Pack(sub))
 }
 func (proxy StringProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
@@ -231,10 +236,10 @@ func InternalNodePath(s Path.ToNode) NodePath {
 			return pointers.Raw[NodePath](gdextension.NodePath{gdextension.Pointer(name)})
 		}
 		name := gdextension.String{gdextension.Pointer(gdunsafe.UTF8.String(str))}
-		path := noescape.Make[gdextension.NodePath](builtin.creation.NodePath[2], gdextension.SizeString<<4, unsafe.Pointer(&name))
+		path := builtin.creation.NodePath[2](gdunsafe.ShapeString<<4, unsafe.Pointer(&name))
 		static_nodepaths[str] = path
-		gdunsafe.Free(gdunsafe.NodePath(path[0]))
-		return pointers.Raw[NodePath](path)
+		gdunsafe.Free(path)
+		return pointers.Raw[NodePath](gdextension.NodePath{gdextension.Pointer(static_nodepaths[str])})
 	}
 	_, ptr := StringType.Proxy(s, NodePathCheck, NewNodePathProxy)
 	return pointers.Load[NodePath](ptr)
@@ -260,31 +265,37 @@ func (NodePathProxy) String(raw complex128) string {
 	return pointers.Load[NodePath](raw).String()
 }
 func (NodePathProxy) Index(raw complex128, n int) byte {
-	return byte(gdunsafe.String(pointers.Get(pointers.Load[NodePath](raw).InternalString())[0]).Access(int64(n)))
+	return byte(gdunsafe.String(pointers.Get(pointers.Load[NodePath](raw).InternalString())[0]).Index(n))
 }
 func (NodePathProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Unicode) {
 	s := pointers.Load[NodePath](raw)
 	str := s.InternalString()
 	next := str.Substr(0, 1).NodePath()
-	return StringType.Rune(gdunsafe.String(pointers.Get(str)[0]).Access(0)), 0, StringType.Via(StringProxy{}, pointers.Pack(next))
+	return StringType.Rune(gdunsafe.String(pointers.Get(str)[0]).Index(0)), 0, StringType.Via(StringProxy{}, pointers.Pack(next))
 }
 func (NodePathProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Unicode {
 	s := pointers.Load[NodePath](raw)
 	str := s.InternalString()
-	pointers.Set(str, gdextension.String{gdextension.Pointer(gdunsafe.String(pointers.Get(str)[0]).AppendRune(int32(r)))})
+	rawstr := gdunsafe.String(pointers.Get(str)[0])
+	rawstr.AppendRune(int32(r))
+	pointers.Set(str, gdextension.String{gdextension.Pointer(rawstr)})
 	return StringType.Via(NodePathProxy{}, pointers.Pack(str.NodePath()))
 }
 func (NodePathProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Unicode {
 	s := pointers.Load[NodePath](raw)
 	s2 := pointers.Load[NodePath](raw2)
 	sub := s.InternalString()
-	pointers.Set(sub, gdextension.String{gdextension.Pointer(gdunsafe.String(pointers.Get(sub)[0]).Append(gdunsafe.String(pointers.Get(s2.InternalString())[0])))})
+	rawstr := gdunsafe.String(pointers.Get(sub)[0])
+	rawstr.Append(gdunsafe.String(pointers.Get(s2.InternalString())[0]))
+	pointers.Set(sub, gdextension.String{gdextension.Pointer(rawstr)})
 	return StringType.Via(StringNameProxy{}, pointers.Pack(sub.NodePath()))
 }
 func (NodePathProxy) AppendString(raw complex128, str string) StringType.Unicode {
 	s := pointers.Load[NodePath](raw)
 	sub := s.InternalString()
-	pointers.Set(sub, gdextension.String{gdextension.Pointer(gdunsafe.String(pointers.Get(sub)[0]).Append(gdunsafe.String(pointers.Get(NewString(str))[0])))})
+	rawstr := gdunsafe.String(pointers.Get(sub)[0])
+	rawstr.Append(gdunsafe.String(pointers.Get(NewString(str))[0]))
+	pointers.Set(sub, gdextension.String{gdextension.Pointer(rawstr)})
 	return StringType.Via(NodePathProxy{}, pointers.Pack(sub.NodePath()))
 }
 func (NodePathProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
@@ -326,30 +337,36 @@ func (StringNameProxy) String(raw complex128) string {
 func (StringNameProxy) Index(raw complex128, n int) byte {
 	name := pointers.Load[StringName](raw)
 	s := name.Substr(0, name.Length())
-	return byte(gdunsafe.String(pointers.Get(s)[0]).Access(int64(n)))
+	return byte(gdunsafe.String(pointers.Get(s)[0]).Index(n))
 }
 func (StringNameProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.Unicode) {
 	s := pointers.Load[StringName](raw)
 	next := s.Substr(0, 1).StringName()
-	return StringType.Rune(gdunsafe.String(pointers.Get(s.Substr(0, s.Length()))[0]).Access(0)), 0, StringType.Via(StringNameProxy{}, pointers.Pack(next))
+	return StringType.Rune(gdunsafe.String(pointers.Get(s.Substr(0, s.Length()))[0]).Index(0)), 0, StringType.Via(StringNameProxy{}, pointers.Pack(next))
 }
 func (StringNameProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Unicode {
 	s := pointers.Load[StringName](raw)
 	str := s.Substr(0, s.Length())
-	pointers.Set(str, gdextension.String{gdextension.Pointer(gdunsafe.String(pointers.Get(str)[0]).AppendRune(int32(r)))})
+	rawstr := gdunsafe.String(pointers.Get(str)[0])
+	rawstr.AppendRune(int32(r))
+	pointers.Set(str, gdextension.String{gdextension.Pointer(rawstr)})
 	return StringType.Via(StringNameProxy{}, pointers.Pack(str.StringName()))
 }
 func (StringNameProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Unicode {
 	s := pointers.Load[StringName](raw)
 	s2 := pointers.Load[StringName](raw2).String()
 	sub := s.Substr(0, s.Length())
-	pointers.Set(sub, gdextension.String{gdextension.Pointer(gdunsafe.String(pointers.Get(sub)[0]).Append(gdunsafe.String(pointers.Get(NewString(s2))[0])))})
+	rawstr := gdunsafe.String(pointers.Get(sub)[0])
+	rawstr.Append(gdunsafe.String(pointers.Get(NewString(s2))[0]))
+	pointers.Set(sub, gdextension.String{gdextension.Pointer(rawstr)})
 	return StringType.Via(StringNameProxy{}, pointers.Pack(sub.StringName()))
 }
 func (StringNameProxy) AppendString(raw complex128, str string) StringType.Unicode {
 	s := pointers.Load[StringName](raw)
 	sub := s.Substr(0, s.Length())
-	pointers.Set(sub, gdextension.String{gdextension.Pointer(gdunsafe.String(pointers.Get(sub)[0]).Append(gdunsafe.String(pointers.Get(NewString(str))[0])))})
+	rawstr := gdunsafe.String(pointers.Get(sub)[0])
+	rawstr.Append(gdunsafe.String(pointers.Get(NewString(str))[0]))
+	pointers.Set(sub, gdextension.String{gdextension.Pointer(rawstr)})
 	return StringType.Via(StringNameProxy{}, pointers.Pack(sub.StringName()))
 }
 func (StringNameProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {

@@ -8,7 +8,6 @@ import (
 	gdunsafe "graphics.gd"
 
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayVariant "graphics.gd/variant/Array"
@@ -23,12 +22,12 @@ func IntsCollectAs[T, S ~int | ~int64 | ~int32](seq iter.Seq[S]) []T {
 }
 
 func (a Array) Index(index int64) Variant {
-	return pointers.Raw[Variant](gdunsafe.Array(pointers.Get(a)[0]).Get(int64(index))).Copy()
+	return pointers.Raw[Variant](gdunsafe.Array(pointers.Get(a)[0]).Index(int(index))).Copy()
 }
 
 func (a Array) SetIndex(index int64, value Variant) {
 	raw, _ := pointers.End(value.Copy())
-	gdunsafe.Array(pointers.Get(a)[0]).Set(int64(index), raw)
+	gdunsafe.Array(pointers.Get(a)[0]).SetIndex(int(index), raw)
 }
 
 func (a Array) Free() {
@@ -48,7 +47,7 @@ func (a Array) Iter() iter.Seq2[int64, Variant] {
 }
 
 func NewArray() Array {
-	return pointers.New[Array](noescape.Make[gdextension.Array](builtin.creation.Array[0], 0, nil))
+	return pointers.New[Array](gdextension.Array{gdextension.Pointer(builtin.creation.Array[0](0, nil))})
 }
 
 func ArrayAs[S []T, T any](array Array) []T {

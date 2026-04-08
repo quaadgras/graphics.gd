@@ -401,14 +401,6 @@ func generate() error {
 		}
 	}
 
-	fmt.Fprintf(out, "type typeset struct{\n")
-	fmt.Fprintf(out, "\tcreation struct{\n")
-	for _, class := range spec.BuiltinClasses {
-		fmt.Fprintf(out, "\t\t%v [%d]gdextension.FunctionID\n", class.Name, len(class.Constructors))
-	}
-	fmt.Fprintf(out, "\t}\n")
-	fmt.Fprintf(out, "}\n")
-
 	for _, class := range spec.Classes {
 		if class.IsEphemeral {
 			continue

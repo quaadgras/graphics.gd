@@ -18,7 +18,9 @@ func TestStrings(t *testing.T) {
 		if str.String() != "Hello, World!" {
 			t.Fail()
 		}
-		pointers.Set(str, gdextension.String{gdextension.Pointer(gdunsafe.String(pointers.Get(str)[0]).Append(gdunsafe.String(pointers.Get(gd.NewString(" from Go!"))[0])))})
+		raw := gdunsafe.String(pointers.Get(str)[0])
+		raw.Append(gdunsafe.String(pointers.Get(gd.NewString(" from Go!"))[0]))
+		pointers.Set(str, gdextension.String{gdextension.Pointer(raw)})
 		if str.String() != "Hello, World! from Go!" {
 			t.Fail()
 		}

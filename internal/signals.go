@@ -9,7 +9,6 @@ import (
 	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
-	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/threadcheck"
 	VariantPkg "graphics.gd/variant"
@@ -27,13 +26,13 @@ func (s Signal) Free() {
 }
 
 func NewSignalOf(object [1]gdreference.Object, signal StringName) Signal {
-	return pointers.New[Signal](noescape.Make[gdextension.Signal](builtin.creation.Signal[2], gdextension.SizeObject<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
+	return pointers.New[Signal](gdextension.Signal(builtin.creation.Signal[2](gdunsafe.ShapeObject<<4|gdunsafe.ShapeStringName<<8, unsafe.Pointer(&struct {
 		object gdextension.Object
 		signal gdextension.StringName
 	}{
 		object: gdreference.GetObject(gdreference.Object(object[0])),
 		signal: pointers.Get(signal),
-	})))
+	}))))
 }
 
 func InternalSignal(signal SignalType.Any) Signal {

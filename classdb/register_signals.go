@@ -18,7 +18,7 @@ import (
 // registerSignals registers [Signal.Any], [Signal.Pair], [Signal.Trio] and [Signal.Quad] fields as signals
 // emittable by the class, when the class is instantiated, the signal field needs to injected into the field
 // so that it can be used and emitted.
-func registerSignals(class gd.StringName, rtype reflect.Type) {
+func registerSignals(registration gdunsafe.Class, rtype reflect.Type) {
 	for _, field := range reflect.VisibleFields(rtype) {
 		name := String.ToSnakeCase(field.Name)
 		if !field.IsExported() {
@@ -52,18 +52,16 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 					if i-1 < len(argNames) {
 						name = argNames[i-1]
 					}
-					args.Push(
-						variant.Type(vtype),
-						gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
-						gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(ftype.In(i))))[0]),
-						0,
-						gdunsafe.String(pointers.Get(gd.NewString(""))[0]),
-						0,
-						0,
-					)
+					args.Push(gdunsafe.Property{
+						Type:       variant.Type(vtype),
+						Name:       gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
+						ClassName:  gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(ftype.In(i))))[0]),
+						Hint:       0,
+						HintString: gdunsafe.String(pointers.Get(gd.NewString(""))[0]),
+					})
 				}
 			}
-			gdunsafe.RegisterSignal(gdunsafe.StringName(pointers.Get(class)[0]), gdunsafe.StringName(pointers.Get(signalName)[0]), args)
+			registration.RegisterSignal(gdunsafe.StringName(pointers.Get(signalName)[0]), args)
 			args.Free()
 		}
 		if field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir {
@@ -79,18 +77,16 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 						if i < len(argNames) {
 							name = argNames[i]
 						}
-						args.Push(
-							variant.Type(vtype),
-							gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
-							gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(arg)))[0]),
-							0,
-							gdunsafe.String(pointers.Get(gd.NewString(""))[0]),
-							0,
-							0,
-						)
+						args.Push(gdunsafe.Property{
+							Type:       variant.Type(vtype),
+							Name:       gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
+							ClassName:  gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(arg)))[0]),
+							Hint:       0,
+							HintString: gdunsafe.String(pointers.Get(gd.NewString(""))[0]),
+						})
 					}
 				}
-				gdunsafe.RegisterSignal(gdunsafe.StringName(pointers.Get(class)[0]), gdunsafe.StringName(pointers.Get(signalName)[0]), args)
+				registration.RegisterSignal(gdunsafe.StringName(pointers.Get(signalName)[0]), args)
 				args.Free()
 			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
 				var args = gdunsafe.MakePropertyList(1)
@@ -100,21 +96,19 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 					if len(argNames) > 0 {
 						name = argNames[0]
 					}
-					args.Push(
-						variant.Type(vtype),
-						gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
-						gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(etype)))[0]),
-						0,
-						gdunsafe.String(pointers.Get(gd.NewString(""))[0]),
-						0,
-						0,
-					)
+					args.Push(gdunsafe.Property{
+						Type:       variant.Type(vtype),
+						Name:       gdunsafe.StringName(pointers.Get(gd.NewStringName(name))[0]),
+						ClassName:  gdunsafe.StringName(pointers.Get(gd.NewStringName(nameOf(etype)))[0]),
+						Hint:       0,
+						HintString: gdunsafe.String(pointers.Get(gd.NewString(""))[0]),
+					})
 				}
-				gdunsafe.RegisterSignal(gdunsafe.StringName(pointers.Get(class)[0]), gdunsafe.StringName(pointers.Get(signalName)[0]), args)
+				registration.RegisterSignal(gdunsafe.StringName(pointers.Get(signalName)[0]), args)
 				args.Free()
 			} else {
 				var args = gdunsafe.MakePropertyList(0)
-				gdunsafe.RegisterSignal(gdunsafe.StringName(pointers.Get(class)[0]), gdunsafe.StringName(pointers.Get(signalName)[0]), args)
+				registration.RegisterSignal(gdunsafe.StringName(pointers.Get(signalName)[0]), args)
 				args.Free()
 			}
 		}

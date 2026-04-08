@@ -23,7 +23,7 @@ import (
 	"graphics.gd/classdb/Engine"
 )
 
-func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintptr]string) {
+func registerMethods(registration gdunsafe.Class, rtype reflect.Type, renames map[uintptr]string) {
 	classTypePtr := reflect.PointerTo(rtype)
 	var elligible []reflect.Method
 	for method := range classTypePtr.Methods() {
@@ -57,15 +57,19 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 		var offset = 0
 		var arguments = gdunsafe.MakePropertyList(int64(method.Type.NumIn() - 1 - offset))
 		for i := 1 + offset; i < method.Type.NumIn(); i++ {
-			if _, ok := propertyOf(class, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: method.Type.In(i)}, arguments); !ok {
+			prop, ok := propertyOf(registration, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: method.Type.In(i)})
+			if !ok {
 				panic(fmt.Sprintf("gdextension: method %s has an argument of unsupported type %v", method.Name, method.Type.In(i)))
 			}
+			arguments.Push(prop)
 		}
 		var returns = gdunsafe.MakePropertyList(int64(method.Type.NumOut()))
 		if method.Type.NumOut() > 0 {
-			if _, ok := propertyOf(class, reflect.StructField{Name: "result", Type: method.Type.Out(0)}, returns); !ok {
+			prop, ok := propertyOf(registration, reflect.StructField{Name: "result", Type: method.Type.Out(0)})
+			if !ok {
 				panic(fmt.Sprintf("gdextension: method %s has a return value of unsupported type %v", method.Name, method.Type.Out(0)))
 			}
+			returns.Push(prop)
 		}
 		call := variantCall(method)
 		minfo.Push(
@@ -94,23 +98,27 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 		defer arguments.Free()
 		defer returns.Free()
 	}
-	gdunsafe.RegisterMethods(gdunsafe.StringName(pointers.Get(class)[0]), minfo)
+	registration.RegisterMethods(minfo)
 	minfo.Free()
 }
 
-func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
+func registerStaticMethod(registration gdunsafe.Class, name string, fn reflect.Value) {
 	ftype := fn.Type()
 	var arguments = gdunsafe.MakePropertyList(int64(ftype.NumIn()))
 	for i := 0; i < ftype.NumIn(); i++ {
-		if _, ok := propertyOf(class, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: ftype.In(i)}, arguments); !ok {
+		prop, ok := propertyOf(registration, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: ftype.In(i)})
+		if !ok {
 			panic(fmt.Sprintf("gdextension: method %s has an argument of unsupported type %v", name, ftype.In(i)))
 		}
+		arguments.Push(prop)
 	}
 	var returns = gdunsafe.MakePropertyList(int64(ftype.NumOut()))
 	if ftype.NumOut() > 0 {
-		if _, ok := propertyOf(class, reflect.StructField{Name: "result", Type: ftype.Out(0)}, returns); !ok {
+		prop, ok := propertyOf(registration, reflect.StructField{Name: "result", Type: ftype.Out(0)})
+		if !ok {
 			panic(fmt.Sprintf("gdextension: method %s has a return value of unsupported type %v", name, ftype.Out(0)))
 		}
+		returns.Push(prop)
 	}
 	var method = gdunsafe.MakeMethodList(1)
 	var call = variantCallStatic(fn)
@@ -133,7 +141,7 @@ func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
 		0,
 		unsafe.Pointer(nil),
 	)
-	gdunsafe.RegisterMethods(gdunsafe.StringName(pointers.Get(class)[0]), method)
+	registration.RegisterMethods(method)
 	method.Free()
 	arguments.Free()
 	returns.Free()

@@ -8,7 +8,7 @@ import (
 func init() {
 	gd.LinkStartup = func() {
 		sname = gdunsafe.UTF8.Intern("GodotInstance")
-		otype = gdunsafe.ObjectTypeTag(sname)
+		otype = gdunsafe.Class(sname).Tag()
 		gd.LinkMethods(sname, &methods, false)
 	}
 }
