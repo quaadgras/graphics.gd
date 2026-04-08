@@ -40,6 +40,10 @@ graphics.gd v0.0.0-20260329032833-91435ad6f99f h1:RbR4JiEbQxunMMd8qHWOVqXz7fcUxx
 graphics.gd v0.0.0-20260329032833-91435ad6f99f/go.mod h1:sV9M/U+BeFPrDjccEj9m0X/8paTXswF/kK1SUrJeeBs=
 graphics.gd v0.0.0-20260403005007-a871ea187187 h1:ke2PGjgAuf7jZIQtWXX7+8nHk1+SIh6VxyP9eqvKlL8=
 graphics.gd v0.0.0-20260403005007-a871ea187187/go.mod h1:bkI2/jbCP1fxX5GGKqIIAsR2/2JFtyVZMwhj8YiVZCE=
+graphics.gd v0.0.0-20260404014153-e2a964851523 h1:ebuDE5CVmBuc1c8vEfZiXBWTedryuwggVgsmFCTz90A=
+graphics.gd v0.0.0-20260404014153-e2a964851523/go.mod h1:bkI2/jbCP1fxX5GGKqIIAsR2/2JFtyVZMwhj8YiVZCE=
+graphics.gd v0.0.0-20260406073435-9f5c73ae7efc h1:o15Uk/bjS0ZyJroJG/2EJGZyVBM49tpEaH8iLtLqsX8=
+graphics.gd v0.0.0-20260406073435-9f5c73ae7efc/go.mod h1:bkI2/jbCP1fxX5GGKqIIAsR2/2JFtyVZMwhj8YiVZCE=
 rsc.io/qr v0.2.0 h1:6vBLea5/NRMVTz8V66gipeLycZMl/+UlFmk8DvqQ6WY=
 rsc.io/qr v0.2.0/go.mod h1:IF+uZjkb9fqyeF/4tlBoynqmQxUoPfWEKh921coOuXs=
 runtime.link v0.0.0-20250814043127-466c6970c4a5 h1:e1oLgkoXIW0pOIc+9OMnQO6Q0uyTGOQ1favaVg2S2lI=
