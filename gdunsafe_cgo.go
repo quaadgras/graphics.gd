@@ -7,7 +7,14 @@ import "C"
 import (
 	"unsafe"
 
+	"graphics.gd/internal/pointers"
 	"graphics.gd/variant"
+)
+
+type (
+	gdCallableID      = C.CallableID
+	gdObjectID        = C.ObjectID
+	gdCallablePointer = *C.Callable
 )
 
 type Pointer uintptr
@@ -280,9 +287,9 @@ func Constructor[T Any](n int) func(shape Shape, args unsafe.Pointer) T {
 
 func Evaluator[A, B, R Any](op VariantOperator) func(a A, b B) R {
 	fn := C.gd_variant_type_evaluator(C.uint32_t(op), C.uint32_t(uint32(variantTypeOf[A]())), C.uint32_t(uint32(variantTypeOf[B]())))
-	shapeA := shapeOf[A]()
-	shapeB := shapeOf[B]()
-	shape := uint64(shapeOf[R]()) | uint64(shapeA)<<4 | uint64(shapeB)<<8
+	shapeA := shapeFor[A]()
+	shapeB := shapeFor[B]()
+	shape := uint64(shapeFor[R]()) | uint64(shapeA)<<4 | uint64(shapeB)<<8
 	return func(a A, b B) R {
 		var result R
 		C.gd_variant_unsafe_eval(fn, C.UnsafePointer(unsafe.Pointer(&result)), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&struct {
@@ -295,8 +302,8 @@ func Evaluator[A, B, R Any](op VariantOperator) func(a A, b B) R {
 
 func Setter[T Any, E Any](field StringName) func(v T, val E) {
 	fn := C.gd_variant_type_setter(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(field))
-	shapeT := shapeOf[T]()
-	shapeE := shapeOf[E]()
+	shapeT := shapeFor[T]()
+	shapeE := shapeFor[E]()
 	shape := uint64(shapeT)<<4 | uint64(shapeE)<<8
 	return func(v T, val E) {
 		C.gd_variant_unsafe_set_field(fn, C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&struct {
@@ -308,8 +315,8 @@ func Setter[T Any, E Any](field StringName) func(v T, val E) {
 
 func Getter[T Any, E Any](field StringName) func(v T) E {
 	fn := C.gd_variant_type_getter(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(field))
-	shapeT := shapeOf[T]()
-	shape := uint64(shapeOf[E]()) | uint64(shapeT)<<4
+	shapeT := shapeFor[T]()
+	shape := uint64(shapeFor[E]()) | uint64(shapeT)<<4
 	return func(v T) E {
 		var result E
 		C.gd_variant_unsafe_get_field(fn, C.UnsafePointer(unsafe.Pointer(&result)), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&v)))
@@ -328,9 +335,28 @@ func BuiltinMethod[T Any](method StringName, hash int64) func(self *T, ret unsaf
 	}
 }
 
+// BuiltinMethod returns a function that can be used to call the given builtin method on a value of type T.
+func BuiltinMethodNew[T Any, Args any, Result Returnable](method string, hash int64) BuiltinMethodPointer[T, Args, Result] {
+	method_name := UTF8.Intern(method)
+	defer Free(method_name)
+	return BuiltinMethodPointer[T, Args, Result]{
+		entry: Pointer(C.gd_variant_type_builtin_method(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(method_name), C.int64_t(hash))),
+		shape: builtinMethodShapeFor[T, Args, Result](),
+	}
+}
+
+// BuiltinMethodWithArguments returns a function that can be used to call the given builtin method on a value of type T with arguments.
+func (builtin BuiltinMethodPointer[T, Args, Result]) Call(self T, args Args) Result {
+	var result Result
+	self_ptr, args_ptr, result_ptr := pointers.NoEscape3(unsafe.Pointer(&self), unsafe.Pointer(&args), unsafe.Pointer(&result))
+	C.gd_variant_type_unsafe_call(C.UnsafePointer(self_ptr), C.FunctionID(builtin.entry),
+		C.UnsafePointer(result_ptr), C.uint64_t(builtin.shape), C.UnsafePointer(args_ptr))
+	return result
+}
+
 func SetIndex[T, V Any](self T, index int64, value V) {
-	shapeT := shapeOf[T]()
-	shapeV := shapeOf[V]()
+	shapeT := shapeFor[T]()
+	shapeV := shapeFor[V]()
 	shape := uint64(shapeT)<<4 | uint64(shapeV)<<8
 	C.gd_variant_unsafe_set_array(C.uint32_t(uint32(variantTypeOf[T]())), C.int64_t(index), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&struct {
 		T T
@@ -339,15 +365,15 @@ func SetIndex[T, V Any](self T, index int64, value V) {
 }
 
 func Index[T, V Any](self T, index int64) V {
-	shapeT := shapeOf[T]()
-	shape := uint64(shapeOf[V]()) | uint64(shapeT)<<4
+	shapeT := shapeFor[T]()
+	shape := uint64(shapeFor[V]()) | uint64(shapeT)<<4
 	var result V
 	C.gd_variant_unsafe_get_array(C.uint32_t(uint32(variantTypeOf[T]())), C.int64_t(index), C.UnsafePointer(unsafe.Pointer(&result)), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&self)))
 	return result
 }
 
 func Insert[T Any](self T, index, value Variant) {
-	shapeT := shapeOf[T]()
+	shapeT := shapeFor[T]()
 	shape := uint64(shapeT)<<4 | uint64(ShapeVariant)<<8 | uint64(ShapeVariant)<<12
 	C.gd_variant_unsafe_set_index(C.uint32_t(uint32(variantTypeOf[T]())), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&struct {
 		T     T
@@ -357,7 +383,7 @@ func Insert[T Any](self T, index, value Variant) {
 }
 
 func Lookup[T Any](self T, key Variant) Variant {
-	shapeT := shapeOf[T]()
+	shapeT := shapeFor[T]()
 	shape := uint64(ShapeVariant) | uint64(shapeT)<<4 | uint64(ShapeVariant)<<8
 	var result Variant
 	C.gd_variant_unsafe_get_index(C.uint32_t(uint32(variantTypeOf[T]())), C.UnsafePointer(unsafe.Pointer(&result)), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&struct {
@@ -371,7 +397,7 @@ func Lookup[T Any](self T, key Variant) Variant {
 }
 
 func Free[T Any](val T) {
-	C.gd_variant_type_unsafe_free(C.uint32_t(uint32(variantTypeOf[T]())), C.uint64_t(uint64(shapeOf[T]())<<4), C.UnsafePointer(unsafe.Pointer(&val)))
+	C.gd_variant_type_unsafe_free(C.uint32_t(uint32(variantTypeOf[T]())), C.uint64_t(uint64(shapeFor[T]())<<4), C.UnsafePointer(unsafe.Pointer(&val)))
 }
 
 // Callable
@@ -570,13 +596,13 @@ func (op VariantOperator) Evaluate(a, b Variant) (Variant, bool) {
 
 func VariantInto[T Any](v Variant) T {
 	var result T
-	C.gd_variant_unsafe_make_native(C.uint32_t(uint32(variantTypeOf[T]())), C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(uint64(shapeOf[T]())<<4), C.UnsafePointer(unsafe.Pointer(&result)))
+	C.gd_variant_unsafe_make_native(C.uint32_t(uint32(variantTypeOf[T]())), C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(uint64(shapeFor[T]())<<4), C.UnsafePointer(unsafe.Pointer(&result)))
 	return result
 }
 
 func VariantFrom[T Any](native T) Variant {
 	var result C.Variant
-	C.gd_variant_unsafe_from_native(C.uint32_t(uint32(variantTypeOf[T]())), &result, C.uint64_t(uint64(shapeOf[T]())<<4), C.UnsafePointer(unsafe.Pointer(&native)))
+	C.gd_variant_unsafe_from_native(C.uint32_t(uint32(variantTypeOf[T]())), &result, C.uint64_t(uint64(shapeFor[T]())<<4), C.UnsafePointer(unsafe.Pointer(&native)))
 	return toVariant(result)
 }
 

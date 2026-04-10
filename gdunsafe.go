@@ -105,7 +105,11 @@ type Packable interface {
 
 // Addressable types that can be used as a [Pointer] or [MutablePointer].
 type Addressable interface {
-	Any | Packable | Variant | PointerTo[Variant] | Pointer | uint64 | uint32 | uint16 | [2]uint64
+	Any | Packable | Variant | PointerTo[Variant] | Pointer | uint64 | uint32 | uint16 | [2]uint64 | struct{}
+}
+
+type Returnable interface {
+	Any | struct{}
 }
 
 type ObjectID uint64
@@ -666,9 +670,15 @@ func variantTypeOf[T Any]() variant.Type {
 	}
 }
 
-// shapeOf maps a Go type in the [Any] constraint to its [Shape].
-func shapeOf[T Any]() Shape {
-	switch reflect.TypeFor[T]() {
+// shapeFor maps a Go type in the [Any] constraint to its [Shape].
+func shapeFor[T Any | struct{}]() Shape {
+	return shapeOf(reflect.TypeFor[T]())
+}
+
+func shapeOf(rtype reflect.Type) Shape {
+	switch rtype {
+	case reflect.TypeFor[struct{}]():
+		return empty
 	case reflect.TypeFor[bool]():
 		return ShapeBool
 	case reflect.TypeFor[int64]():
@@ -739,7 +749,7 @@ func shapeOf[T Any]() Shape {
 	case reflect.TypeFor[Variant]():
 		return ShapeVariant
 	default:
-		return 0
+		panic("shapeOf: invalid type " + rtype.String())
 	}
 }
 
@@ -773,3 +783,24 @@ const (
 	OpLogicalNegate                        // !
 	OpIn                                   // in
 )
+
+func builtinMethodShapeFor[T Any, Args any, Result Any | struct{}]() Shape {
+	var shape = shapeFor[Result]()
+	var shift = 4
+	shape |= shapeFor[T]() << shift
+	shift += 4
+	for field := range reflect.TypeFor[Args]().Fields() {
+		shape |= shapeOf(field.Type) << shift
+		shift += 4
+	}
+	return shape
+}
+
+type BuiltinMethodPointer[T Any, Args any, Result Addressable] struct {
+	_ [0]*T
+	_ [0]*Args
+	_ [0]*Result
+
+	entry Pointer
+	shape Shape
+}

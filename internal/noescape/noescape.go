@@ -22,3 +22,7 @@ func Pointer(ptr unsafe.Pointer) unsafe.Pointer
 func pointer(ptr unsafe.Pointer) unsafe.Pointer {
 	return ptr
 }
+
+func PointerTo[T any](ptr *T) *T {
+	return (*T)(pointer(unsafe.Pointer(ptr)))
+}

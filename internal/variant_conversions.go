@@ -154,13 +154,13 @@ func CutVariant(v any, cut bool) Variant {
 	case reflect.String:
 		switch rtype {
 		case reflect.TypeFor[Path.ToNode]():
-			ret = gdunsafe.VariantFrom(gdunsafe.NodePath(pointers.Cut(NewString(value.String()).NodePath(), true)[0]))
+			ret = gdunsafe.VariantFrom(gdunsafe.NodePath(pointers.Cut(NewString(value.String()).NodePath(), cut)[0]))
 		case reflect.TypeFor[StringType.Name]():
-			ret = gdunsafe.VariantFrom(gdunsafe.StringName(pointers.Cut(NewStringName(value.String()), true)[0]))
+			ret = gdunsafe.VariantFrom(gdunsafe.StringName(pointers.Cut(NewStringName(value.String()), cut)[0]))
 		case reflect.TypeFor[StringType.Unicode]():
-			ret = gdunsafe.VariantFrom(gdunsafe.String(pointers.Cut(NewString(value.String()), true)[0]))
+			ret = gdunsafe.VariantFrom(gdunsafe.String(pointers.Cut(NewString(value.String()), cut)[0]))
 		default:
-			ret = gdunsafe.VariantFrom(gdunsafe.String(pointers.Cut(NewString(value.String()), true)[0]))
+			ret = gdunsafe.VariantFrom(gdunsafe.String(pointers.Cut(NewString(value.String()), cut)[0]))
 		}
 	case reflect.Struct:
 		switch val := v.(type) {

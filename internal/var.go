@@ -15,6 +15,7 @@ import (
 )
 
 type (
+	Void     = struct{}
 	Int      = int64
 	Float    = float64
 	Vector2  = struct{ X, Y float.X }

@@ -69,6 +69,7 @@ func linkBuiltin() {
 	linkBuiltinType[gdunsafe.Signal](&builtin.Signal)
 	linkBuiltinType[gdunsafe.String](&builtin.String)
 	linkBuiltinType[gdunsafe.StringName](&builtin.StringName)
+	linkBuiltinTypes()
 }
 
 // linkBuiltinType uses reflection to iterate over the struct fields of target,
@@ -85,7 +86,10 @@ func linkBuiltinType[T gdunsafe.Any](target any) {
 		}
 		fn := gdunsafe.BuiltinMethod[T](gdunsafe.StringName(pointers.Get(methodName)[0]), hash)
 		direct := reflect.NewAt(method.Type, unsafe.Add(rvalue.UnsafePointer(), method.Offset))
-		*direct.Interface().(*func(*T, unsafe.Pointer, gdunsafe.Shape, unsafe.Pointer)) = fn
+		function, ok := direct.Interface().(*func(*T, unsafe.Pointer, gdunsafe.Shape, unsafe.Pointer))
+		if ok {
+			*function = fn
+		}
 	}
 }
 

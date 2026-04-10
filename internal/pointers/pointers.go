@@ -313,7 +313,7 @@ func end(rev revision, s int, p uint64) bool {
 func Cut[T Generic[T, P], P Size](ptr T, end bool) P {
 	if end {
 		raw, ok := End(ptr)
-		if !ok {
+		if !ok && raw != [1]P{}[0] {
 			panic(panicMessage)
 		}
 		return raw

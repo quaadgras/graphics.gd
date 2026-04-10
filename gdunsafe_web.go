@@ -36,7 +36,7 @@ func gd_memory_malloc(int64) uint32
 //go:wasmimport gd memory_free
 func gd_memory_free(uint32)
 
-//go:wasmimport gd memory_memset
+//go:wasmimport gd memory_clear
 func gd_memory_memset(uint32, int64)
 
 //go:wasmimport gd memory_load_byte
@@ -687,7 +687,7 @@ func Constant[T, E Any](name StringName) E {
 	mem := makeResult(ShapeVariant)
 	gd_variant_type_fetch_constant(uint32(variantTypeOf[T]()), uint32(name), mem)
 	var result E
-	loadResult(shapeOf[E](), unsafe.Pointer(&result), mem)
+	loadResult(shapeFor[E](), unsafe.Pointer(&result), mem)
 	return result
 }
 
@@ -699,12 +699,13 @@ func gd_variant_type_unsafe_make(constructor uint32, result uint32, shape Shape,
 
 func Constructor[T Any](n int) func(shape Shape, args unsafe.Pointer) T {
 	fn := gd_variant_type_unsafe_constructor(uint32(variantTypeOf[T]()), int64(n))
+	resultShape := shapeFor[T]()
 	return func(shape Shape, args unsafe.Pointer) T {
-		mem_result := makeResult(shape)
+		mem_result := makeResult(resultShape)
 		mem_args := copyArguments(shape, args)
 		gd_variant_type_unsafe_make(fn, mem_result, shape, mem_args)
 		var result T
-		loadResult(Shape(shape), unsafe.Pointer(&result), mem_result)
+		loadResult(resultShape, unsafe.Pointer(&result), mem_result)
 		return result
 	}
 }
@@ -717,9 +718,9 @@ func gd_variant_unsafe_eval(fn uint32, result uint32, shape Shape, args uint32)
 
 func Evaluator[A, B, R Any](op VariantOperator) func(a A, b B) R {
 	fn := gd_variant_type_evaluator(uint32(op), uint32(variantTypeOf[A]()), uint32(variantTypeOf[B]()))
-	shapeA := shapeOf[A]()
-	shapeB := shapeOf[B]()
-	shape := shapeOf[R]() | shapeA<<4 | shapeB<<8
+	shapeA := shapeFor[A]()
+	shapeB := shapeFor[B]()
+	shape := shapeFor[R]() | shapeA<<4 | shapeB<<8
 	return func(a A, b B) R {
 		mem_result := makeResult(Shape(shape))
 		mem_args := copyArguments(Shape(shape), unsafe.Pointer(&struct {
@@ -741,8 +742,8 @@ func gd_variant_unsafe_set_field(setter uint32, shape Shape, args uint32)
 
 func Setter[T Any, E Any](field StringName) func(v T, val E) {
 	fn := gd_variant_type_setter(uint32(variantTypeOf[T]()), uint32(field))
-	shapeT := shapeOf[T]()
-	shapeE := shapeOf[E]()
+	shapeT := shapeFor[T]()
+	shapeE := shapeFor[E]()
 	shape := shapeT<<4 | shapeE<<8
 	return func(v T, val E) {
 		mem_args := copyArguments(Shape(shape), unsafe.Pointer(&struct {
@@ -761,11 +762,11 @@ func gd_variant_unsafe_get_field(getter uint32, result uint32, shape Shape, args
 
 func Getter[T Any, E Any](field StringName) func(v T) E {
 	fn := gd_variant_type_getter(uint32(variantTypeOf[T]()), uint32(field))
-	shapeT := shapeOf[T]()
-	shape := shapeOf[E]() | shapeT<<4
+	shapeT := shapeFor[T]()
+	shape := shapeFor[E]() | shapeT<<4
 	return func(v T) E {
 		mem_result := makeResult(Shape(shape))
-		mem_args := copyArguments(shapeT, unsafe.Pointer(&v))
+		mem_args := copySelf(shapeT, unsafe.Pointer(&v))
 		gd_variant_unsafe_get_field(fn, mem_result, shape, mem_args)
 		var result E
 		loadResult(Shape(shape), unsafe.Pointer(&result), mem_result)
@@ -804,12 +805,41 @@ func BuiltinMethod[T Any](method StringName, hash int64) func(self *T, ret unsaf
 	}
 }
 
+// BuiltinMethodNew returns a BuiltinMethodPointer that can be used to call the given builtin method on a value of type T.
+func BuiltinMethodNew[T Any, Args any, Result Returnable](method string, hash int64) BuiltinMethodPointer[T, Args, Result] {
+	method_name := UTF8.Intern(method)
+	defer Free(method_name)
+	return BuiltinMethodPointer[T, Args, Result]{
+		entry: Pointer(gd_variant_type_builtin_method(uint32(variantTypeOf[T]()), uint32(method_name), hash)),
+		shape: builtinMethodShapeFor[T, Args, Result](),
+	}
+}
+
+func (builtin BuiltinMethodPointer[T, Args, Result]) Call(self T, args Args) Result {
+	selfShape := builtin.shape >> 4
+	mem_self := copySelf(selfShape, unsafe.Pointer(&self))
+	mem_result := makeResult(builtin.shape)
+	var mem_args uint32
+	if unsafe.Sizeof(args) > 0 {
+		mem_args = copyArguments(selfShape, unsafe.Pointer(&args))
+	}
+	gd_variant_type_unsafe_call(mem_self, uint32(builtin.entry), mem_result, builtin.shape, mem_args)
+	if mem_self != 0 {
+		size := selfShape.SizeResult()
+		buf := unsafe.Slice((*byte)(unsafe.Pointer(&self)), size)
+		copyBufToGo2(mem_self, buf)
+	}
+	var result Result
+	loadResult(builtin.shape, unsafe.Pointer(&result), mem_result)
+	return result
+}
+
 //go:wasmimport gd variant_unsafe_set_array
 func gd_variant_unsafe_set_array(vtype uint32, idx int64, shape Shape, args uint32)
 
 func SetIndex[T, V Any](self T, index int64, value V) {
-	shapeT := shapeOf[T]()
-	shapeV := shapeOf[V]()
+	shapeT := shapeFor[T]()
+	shapeV := shapeFor[V]()
 	shape := shapeT<<4 | shapeV<<8
 	mem_args := copyArguments(Shape(shape), unsafe.Pointer(&struct {
 		T T
@@ -822,10 +852,10 @@ func SetIndex[T, V Any](self T, index int64, value V) {
 func gd_variant_unsafe_get_array(vtype uint32, idx int64, result uint32, shape Shape, args uint32)
 
 func Index[T, V Any](self T, index int64) V {
-	shapeT := shapeOf[T]()
-	shape := shapeOf[V]() | shapeT<<4
+	shapeT := shapeFor[T]()
+	shape := shapeFor[V]() | shapeT<<4
 	mem_result := makeResult(Shape(shape))
-	mem_args := copyArguments(shapeT, unsafe.Pointer(&self))
+	mem_args := copySelf(shapeT, unsafe.Pointer(&self))
 	gd_variant_unsafe_get_array(uint32(variantTypeOf[T]()), index, mem_result, shape, mem_args)
 	var result V
 	loadResult(Shape(shape), unsafe.Pointer(&result), mem_result)
@@ -836,7 +866,7 @@ func Index[T, V Any](self T, index int64) V {
 func gd_variant_unsafe_set_index(vtype uint32, shape Shape, args uint32)
 
 func Insert[T Any](self T, index, value Variant) {
-	shapeT := shapeOf[T]()
+	shapeT := shapeFor[T]()
 	shape := shapeT<<4 | ShapeVariant<<8 | ShapeVariant<<12
 	mem_args := copyArguments(Shape(shape), unsafe.Pointer(&struct {
 		T T
@@ -850,7 +880,7 @@ func Insert[T Any](self T, index, value Variant) {
 func gd_variant_unsafe_get_index(vtype uint32, result uint32, shape Shape, args uint32)
 
 func Lookup[T Any](self T, key Variant) Variant {
-	shapeT := shapeOf[T]()
+	shapeT := shapeFor[T]()
 	shape := ShapeVariant | shapeT<<4 | ShapeVariant<<8
 	mem_result := makeResult(Shape(shape))
 	mem_args := copyArguments(Shape(shape), unsafe.Pointer(&struct {
@@ -868,9 +898,9 @@ func gd_variant_type_unsafe_free(vtype uint32, shape Shape, args uint32)
 
 func Free[T Any](val T) {
 	vtype := variantTypeOf[T]()
-	shape := shapeOf[T]()
-	mem_args := copyArguments(shape, unsafe.Pointer(&val))
-	gd_variant_type_unsafe_free(uint32(vtype), shape<<4, mem_args)
+	shape := shapeFor[T]()
+	mem := copySelf(shape, unsafe.Pointer(&val))
+	gd_variant_type_unsafe_free(uint32(vtype), shape<<4, mem)
 }
 
 // Callable
@@ -1224,7 +1254,7 @@ func gd_variant_unsafe_make_native(vtype uint32, v1, v2, v3 uint64, shape Shape,
 
 func VariantInto[T Any](v Variant) T {
 	vtype := variantTypeOf[T]()
-	shape := shapeOf[T]()
+	shape := shapeFor[T]()
 	mem := makeResult(shape)
 	gd_variant_unsafe_make_native(uint32(vtype), v[0], v[1], v[2], shape<<4, mem)
 	var result T
@@ -1237,7 +1267,7 @@ func gd_variant_unsafe_from_native(vtype uint32, result uint32, shape Shape, arg
 
 func VariantFrom[T Any](native T) Variant {
 	vtype := variantTypeOf[T]()
-	shape := shapeOf[T]()
+	shape := shapeFor[T]()
 	mem_result := makeResult(ShapeVariant)
 	mem_args := copyArguments(shape<<4, unsafe.Pointer(&native))
 	gd_variant_unsafe_from_native(uint32(vtype), mem_result, shape<<4, mem_args)

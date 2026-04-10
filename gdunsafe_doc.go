@@ -39,9 +39,9 @@ func Malloc(size uintptr) MutablePointer                     { panic(unavailable
 func Resize(ptr MutablePointer, size uintptr) MutablePointer { panic(unavailable) } // Resize resizes optionally 8-byte aligned memory.
 func Memset(ptr MutablePointer, size uintptr, value byte)    { panic(unavailable) } // Memset sets a block of memory to a given value.
 
-type Pointer struct{ _ [0]*Pointer }
+type Pointer uintptr
 
-type MutablePointer struct{ _ [0]*MutablePointer }
+type MutablePointer uintptr
 
 func (ptr MutablePointer) Free() { panic(unavailable) } // Free releases memory allocated by [Malloc] or [Resize].
 
@@ -143,7 +143,12 @@ func PropertyExists[T Any](property StringName) bool {
 }
 
 // BuiltinMethod returns a function that can be used to call the given builtin method on a value of type T.
-func BuiltinMethod[T Any](method StringName, hash int64) func(self *T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
+func BuiltinMethod[T Any, R Addressable](method StringName, hash int64) func(self T) R {
+	panic(unavailable)
+}
+
+// BuiltinMethodWithArguments returns a function that can be used to call the given builtin method on a value of type T with arguments.
+func BuiltinMethodArgs[T Any, A Any, R Addressable](method StringName, hash int64) func(self T, args A) R {
 	panic(unavailable)
 }
 

@@ -58,20 +58,23 @@ func (s String) Len() int { return int(s.Length()) }
 func (s String) Cap() int { return int(s.Length()) }
 
 func (s String) String() string {
-	if pointers.Get(s) == (gdextension.String{}) {
+	raw := pointers.Get(s)
+	if raw == (gdextension.String{}) {
 		return ""
 	}
-	if s.Length() == 0 {
+	length := s.Length()
+	if length == 0 {
 		return ""
 	}
-	var buf = make([]byte, s.Length())
-	gdunsafe.UTF8.Decode(gdunsafe.String(pointers.Get(s)[0]), buf)
+	var buf = make([]byte, length)
+	gdunsafe.UTF8.Decode(gdunsafe.String(raw[0]), buf)
 	return unsafe.String(&buf[0], len(buf))
 }
 
 func StringFromStringName(s StringName) String {
 	var arg = pointers.Get(s)
-	return pointers.New[String](gdextension.String{gdextension.Pointer(builtin.creation.String[2](gdunsafe.ShapeString<<4, unsafe.Pointer(&arg)))})
+	result := builtin.creation.String[2](gdunsafe.ShapeString<<4, unsafe.Pointer(&arg))
+	return pointers.New[String](gdextension.String{gdextension.Pointer(result)})
 }
 
 func StringFromNodePath(s NodePath) String {
@@ -96,7 +99,8 @@ func (s StringName) Free() {
 }
 
 func (s StringName) String() string {
-	if pointers.Get(s) == (gdextension.StringName{}) {
+	raw := pointers.Get(s)
+	if raw == (gdextension.StringName{}) {
 		return ""
 	}
 	var tmp = StringFromStringName(s)
