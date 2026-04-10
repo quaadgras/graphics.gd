@@ -59,7 +59,7 @@ type Type struct {
 	shape     Shape
 	class     Class
 	class_tag ClassTag
-	script    Script
+	script    Variant
 }
 
 func TypeFrom(vtype variant.Type) Type {
@@ -86,7 +86,7 @@ func ClassWithScript(class Class, script Script) Type {
 		shape:     ShapeObject,
 		class:     class,
 		class_tag: class.Tag(),
-		script:    script,
+		script:    VariantFrom[Object](Object(script)),
 	}
 }
 

@@ -366,11 +366,11 @@ func (t Type) String() string { //gd:type_string
 	case TypeNil:
 		return "Nil"
 	case TypeBool:
-		return "Bool"
+		return "bool"
 	case TypeInt:
-		return "Int"
+		return "int"
 	case TypeFloat:
-		return "Float"
+		return "float"
 	case TypeString:
 		return "String"
 	case TypeVector2:

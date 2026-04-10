@@ -15,7 +15,7 @@ import (
 func callBuiltinMethod[T any, S any](self *S, method func(self *S, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer), shape gdextension.Shape, args unsafe.Pointer) T {
 	ring.Main.Flush()
 	var result T
-	method(self, unsafe.Pointer(&result), shape, args)
+	method((*S)(noescape.Pointer(unsafe.Pointer(self))), noescape.Pointer(unsafe.Pointer(&result)), shape, args)
 	return result
 }
 

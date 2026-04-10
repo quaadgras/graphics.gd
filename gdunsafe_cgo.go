@@ -51,7 +51,7 @@ func (array Array) SetIndex(index int, value Variant) {
 }
 
 func (array Array) SetType(t Type) {
-	var script Variant
+	var script Variant = t.script
 	C.gd_variant_type_setup_array(C.uintptr_t(array), C.uint32_t(uint32(t.vtype)), C.uintptr_t(t.class),
 		C.uint64_t(script[0]), C.uint64_t(script[1]), C.uint64_t(script[2]))
 }
@@ -597,7 +597,7 @@ func (d Dictionary) Insert(key, val Variant) {
 }
 
 func (dict Dictionary) SetType(key, val Type) {
-	var keyScript, valScript Variant
+	var keyScript, valScript = key.script, val.script
 	C.gd_variant_type_setup_dictionary(C.uintptr_t(dict),
 		C.uint32_t(uint32(key.vtype)), C.uintptr_t(key.class),
 		C.uint64_t(keyScript[0]), C.uint64_t(keyScript[1]), C.uint64_t(keyScript[2]),
