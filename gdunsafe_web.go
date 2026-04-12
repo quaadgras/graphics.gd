@@ -6,8 +6,40 @@ import (
 	"sync"
 	"unsafe"
 
+	"graphics.gd/internal/pointers"
 	"graphics.gd/variant"
 )
+
+type (
+	gdString uint32
+)
+
+//go:wasmimport gd version
+func gd_version() gdString
+
+//go:wasmimport gd version_major
+func gd_version_major() uint32
+
+//go:wasmimport gd version_minor
+func gd_version_minor() uint32
+
+//go:wasmimport gd version_patch
+func gd_version_patch() uint32
+
+//go:wasmimport gd version_hexed
+func gd_version_hexed() uint32
+
+//go:wasmimport gd version_state
+func gd_version_state() uint32
+
+//go:wasmimport gd version_build
+func gd_version_build() uint32
+
+//go:wasmimport gd version_stamp
+func gd_version_stamp() uint32
+
+//go:wasmimport gd gd_version_nanos
+func gd_version_nanos() int64
 
 type Pointer uint32
 
@@ -284,12 +316,8 @@ func readVariant(addr uint32) Variant {
 	return v
 }
 
-// LibraryLocation returns a string representing the location of the current extension.
-
-//go:wasmimport gd library_location
-func gd_library_location() uint32
-
-func LibraryLocation() String { return String(gd_library_location()) }
+//go:wasmimport gd library_path
+func gd_library_path() gdString
 
 func (args Variants) Index(i int) Variant {
 	if args.count > 0 && (i >= args.count || i < 0) {
@@ -331,45 +359,6 @@ func (array Array) SetType(t Type) {
 }
 
 func (t Type) Size() uintptr { return uintptr(t.shape.SizeResult()) }
-
-// Version
-
-//go:wasmimport gd version_string
-func gd_version_string() uint32
-
-func Version() String { return String(gd_version_string()) }
-
-//go:wasmimport gd version_major
-func VersionMajor() uint32
-
-//go:wasmimport gd version_minor
-func VersionMinor() uint32
-
-//go:wasmimport gd version_patch
-func VersionPatch() uint32
-
-//go:wasmimport gd version_hex
-func gd_version_hex() uint32
-
-func VersionHexed() uint32 { return gd_version_hex() }
-
-//go:wasmimport gd version_status
-func gd_version_status() uint32
-
-func VersionState() String { return String(gd_version_status()) }
-
-//go:wasmimport gd version_build
-func gd_version_build() uint32
-
-func VersionBuild() String { return String(gd_version_build()) }
-
-//go:wasmimport gd version_hash
-func gd_version_hash() uint32
-
-func VersionCommit() String { return String(gd_version_hash()) }
-
-//go:wasmimport gd gd_version_timestamp
-func VersionTimestamp() uint64
 
 // Memory
 
@@ -787,50 +776,63 @@ func gd_variant_type_builtin_method(vtype uint32, method uint32, hash int64) uin
 //go:wasmimport gd variant_type_unsafe_call
 func gd_variant_type_unsafe_call(self uint32, fn uint32, result uint32, shape Shape, args uint32)
 
-func BuiltinMethod[T Any](method StringName, hash int64) func(self *T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
-	fn := gd_variant_type_builtin_method(uint32(variantTypeOf[T]()), uint32(method), hash)
-	return func(self *T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
-		selfShape := Shape(shape) >> 4
-		mem_self := copySelf(selfShape, unsafe.Pointer(self))
-		mem_result := makeResult(Shape(shape))
-		mem_args := copyArguments(selfShape, args)
-		gd_variant_type_unsafe_call(mem_self, fn, mem_result, shape, mem_args)
-		// copy self back (may have been mutated)
-		if mem_self != 0 {
-			size := selfShape.SizeResult()
-			buf := unsafe.Slice((*byte)(unsafe.Pointer(self)), size)
-			copyBufToGo2(mem_self, buf)
-		}
-		loadResult(Shape(shape), ret, mem_result)
-	}
-}
-
-// BuiltinMethodNew returns a BuiltinMethodPointer that can be used to call the given builtin method on a value of type T.
-func BuiltinMethodNew[T Any, Args any, Result Returnable](method string, hash int64) BuiltinMethodPointer[T, Args, Result] {
+// BuiltinMethodByName returns a BuiltinMethodPointer that can be used to call the given builtin method on a value of type T.
+func (builtin *BuiltinMethod[T, Args, Result]) link(method string, hash int64) {
 	method_name := UTF8.Intern(method)
 	defer Free(method_name)
-	return BuiltinMethodPointer[T, Args, Result]{
+	shape, vargs := builtinMethodShapeFor[T, Args, Result]()
+	*builtin = BuiltinMethod[T, Args, Result]{
 		entry: Pointer(gd_variant_type_builtin_method(uint32(variantTypeOf[T]()), uint32(method_name), hash)),
-		shape: builtinMethodShapeFor[T, Args, Result](),
+		shape: shape,
+		vargs: vargs,
 	}
 }
 
-func (builtin BuiltinMethodPointer[T, Args, Result]) Call(self T, args Args) Result {
-	selfShape := builtin.shape >> 4
-	mem_self := copySelf(selfShape, unsafe.Pointer(&self))
-	mem_result := makeResult(builtin.shape)
+func (builtin BuiltinMethod[T, Args, Result]) Call(self T, args Args) Result {
+	var result Result
+	self_ptr, args_ptr, result_ptr := pointers.NoEscape3(unsafe.Pointer(&self), unsafe.Pointer(&args), unsafe.Pointer(&result))
+	var shape = builtin.shape
+	if builtin.vargs {
+		vargs := *(*[]Variant)(args_ptr)
+		args_ptr = unsafe.Pointer(unsafe.SliceData(vargs))
+		shape |= shapeVariants(true, len(vargs))
+	}
+	selfShape := shape >> 4
+	mem_self := copySelf(selfShape, self_ptr)
+	mem_result := makeResult(shape)
 	var mem_args uint32
 	if unsafe.Sizeof(args) > 0 {
-		mem_args = copyArguments(selfShape, unsafe.Pointer(&args))
+		mem_args = copyArguments(selfShape, args_ptr)
 	}
-	gd_variant_type_unsafe_call(mem_self, uint32(builtin.entry), mem_result, builtin.shape, mem_args)
-	if mem_self != 0 {
-		size := selfShape.SizeResult()
-		buf := unsafe.Slice((*byte)(unsafe.Pointer(&self)), size)
-		copyBufToGo2(mem_self, buf)
-	}
+	gd_variant_type_unsafe_call(mem_self, uint32(builtin.entry), mem_result, shape, mem_args)
+	loadResult(shape, result_ptr, mem_result)
+	return result
+}
+
+func (builtin BuiltinMethodMutable[T, Args, Result]) Call(self *T, self_unsafe unsafe.Pointer, args Args) Result {
 	var result Result
-	loadResult(builtin.shape, unsafe.Pointer(&result), mem_result)
+	self_ptr, args_ptr, result_ptr := pointers.NoEscape3(unsafe.Pointer(self), unsafe.Pointer(&args), unsafe.Pointer(&result))
+	if self_ptr != self_unsafe {
+		panic("unsafe pointer mismatch")
+	}
+	var shape = builtin.shape
+	if builtin.vargs {
+		vargs := *(*[]Variant)(args_ptr)
+		args_ptr = unsafe.Pointer(unsafe.SliceData(vargs))
+		shape |= shapeVariants(true, len(vargs))
+	}
+	selfShape := shape >> 4
+	mem_self := copySelf(selfShape, self_ptr)
+	mem_result := makeResult(shape)
+	var mem_args uint32
+	if unsafe.Sizeof(args) > 0 {
+		mem_args = copyArguments(selfShape, args_ptr)
+	}
+	gd_variant_type_unsafe_call(mem_self, uint32(builtin.entry), mem_result, shape, mem_args)
+	size := selfShape.SizeResult()
+	buf := unsafe.Slice((*byte)(self_ptr), size)
+	copyBufToGo2(mem_self, buf)
+	loadResult(shape, result_ptr, mem_result)
 	return result
 }
 

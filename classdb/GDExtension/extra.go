@@ -9,5 +9,5 @@ import (
 
 // LibraryPath is the path to the shared library that contains the current GD extension.
 func LibraryPath() string {
-	return pointers.New[gd.String](gdextension.String{gdextension.Pointer(gdunsafe.LibraryLocation())}).String()
+	return pointers.New[gd.String](gdextension.String{gdextension.Pointer(gdunsafe.LibraryPath())}).String()
 }

@@ -2,6 +2,8 @@
 
 package gdunsafe
 
+type Pointer uintptr
+type MutablePointer uintptr
 type PackedArray[T Packable] [2]uint64
 
 const (

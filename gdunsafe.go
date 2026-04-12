@@ -5,7 +5,9 @@ package gdunsafe
 
 import (
 	"reflect"
+	"strconv"
 	"structs"
+	"unsafe"
 
 	"graphics.gd/internal/threadsafe"
 	"graphics.gd/variant"
@@ -31,27 +33,73 @@ import (
 type Iterator Variant
 
 type (
-	String     Pointer // String is a UTF-32 encoded string.
-	Object     Pointer // Object is a reference to a Godot object.
-	Array      Pointer // Array is a sequentially-indexed list of variant values.
-	Dictionary Pointer // Dictionary is a key-value map of variant values.
-	StringName Pointer // StringName is a string that is used as a unique identifier for a Godot object.
-	NodePath   Pointer // NodePath is a path to a Node.
+	// String is a UTF-32 encoded string.
+	String struct {
+		_   [0]*String
+		raw gdString
+	}
+	// Object is a reference to a Godot object.
+	Object struct {
+		_   [0]*Object
+		raw gdObject
+	}
+	// Array is a sequentially-indexed list of variant values.
+	Array struct {
+		_   [0]*Array
+		raw gdArray
+	}
+	// Dictionary is a key-value map of variant values.
+	Dictionary struct {
+		_   [0]*Dictionary
+		raw gdDictionary
+	}
+	// StringName is a string that is used as a unique identifier for a Godot object.
+	StringName struct {
+		_   [0]*StringName
+		raw gdStringName
+	}
+	// NodePath is a path to a Node.
+	NodePath struct {
+		_   [0]*NodePath
+		raw gdNodePath
+	}
+	// Signal is a broadcast queue.
+	Signal struct {
+		_   [0]*Signal
+		raw gdSignal
+	}
+	// Callable is a closure or function.
+	Callable struct {
+		_   [0]*Callable
+		raw gdCallable
+	}
 
-	Signal   [2]uint64 // Signal is a broadcast queue.
-	Callable [2]uint64 // Callable is a closure or function.
-
-	RefCounted     Object // RefCounted is a reference-counted [Object].
-	Script         Object // Script is a reference to a [Script] object.
-	ScriptLanguage Object // ScriptLanguage is a reference to a [ScriptLanguage] object.
-
-	MethodPointer Pointer // MethodPointer is a pointer to a method on an [Class].
+	// RefCounted is a reference-counted [Object].
+	RefCounted struct {
+		_   [0]*RefCounted
+		raw gdObject
+	}
+	// Script is a reference to a [Script] object.
+	Script struct {
+		_   [0]*Script
+		raw gdObject
+	}
+	// ScriptLanguage is a reference to a [ScriptLanguage] object.
+	ScriptLanguage struct {
+		_   [0]*ScriptLanguage
+		raw gdObject
+	}
 
 	PropertyList Pointer // PropertyList is a container for a list of [Property] values.
 	MethodList   Pointer // MethodList is a container for a list of [Method] values.
 
-	Class    StringName // Class is a [StringName] that is used as a unique identifier for a class.
-	ClassTag Pointer    // ClassTag is an opaque identifier used for a class.
+	Class StringName // Class is a [StringName] that is used as a unique identifier for a class.
+
+	// ClassTag is an opaque identifier used for a class.
+	ClassTag struct {
+		_   [0]*ClassTag
+		raw gdClassTag
+	}
 )
 
 type Type struct {
@@ -86,7 +134,7 @@ func ClassWithScript(class Class, script Script) Type {
 		shape:     ShapeObject,
 		class:     class,
 		class_tag: class.Tag(),
-		script:    VariantFrom[Object](Object(script)),
+		script:    VariantFrom[Object](Object{raw: script.raw}),
 	}
 }
 
@@ -109,7 +157,7 @@ type Addressable interface {
 }
 
 type Returnable interface {
-	Any | struct{}
+	Any | Variant | struct{}
 }
 
 type ObjectID uint64
@@ -558,6 +606,13 @@ type ExtensionScript interface {
 // [GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension#InitializationLevel
 type InitializationLevel uint32
 
+const (
+	InitializationLevelCore    InitializationLevel = 0
+	InitializationLevelServers InitializationLevel = 1
+	InitializationLevelScene   InitializationLevel = 2
+	InitializationLevelEditor  InitializationLevel = 3
+)
+
 var (
 	onEngineInit []func(InitializationLevel)
 	onEngineExit []func(InitializationLevel)
@@ -671,7 +726,7 @@ func variantTypeOf[T Any]() variant.Type {
 }
 
 // shapeFor maps a Go type in the [Any] constraint to its [Shape].
-func shapeFor[T Any | struct{}]() Shape {
+func shapeFor[T Returnable]() Shape {
 	return shapeOf(reflect.TypeFor[T]())
 }
 
@@ -784,23 +839,100 @@ const (
 	OpIn                                   // in
 )
 
-func builtinMethodShapeFor[T Any, Args any, Result Any | struct{}]() Shape {
+func builtinMethodShapeFor[T Any, Args any, Result Returnable]() (Shape, bool) {
 	var shape = shapeFor[Result]()
 	var shift = 4
 	shape |= shapeFor[T]() << shift
 	shift += 4
-	for field := range reflect.TypeFor[Args]().Fields() {
+	rtype := reflect.TypeFor[Args]()
+	if rtype == reflect.TypeFor[[]Variant]() {
+		return shape, true
+	}
+	for field := range rtype.Fields() {
 		shape |= shapeOf(field.Type) << shift
 		shift += 4
+	}
+	return shape, false
+}
+
+func shapeVariants(receiver bool, length int) Shape {
+	var start = 1
+	if receiver {
+		start = 2
+	}
+	var shape Shape
+	for i := range length {
+		shape |= ShapeVariant << ((i + start) * 4) // +2 to leave room for T and Result
 	}
 	return shape
 }
 
-type BuiltinMethodPointer[T Any, Args any, Result Addressable] struct {
+type BuiltinMethod[T Any, Args any, Result Returnable] struct {
 	_ [0]*T
 	_ [0]*Args
 	_ [0]*Result
 
 	entry Pointer
 	shape Shape
+	vargs bool
+}
+
+type BuiltinMethodMutable[T Any, Args any, Result Returnable] struct {
+	_   [0]*T
+	_   [0]*Args
+	_   [0]*Result
+	mut struct{}
+
+	entry Pointer
+	shape Shape
+	vargs bool
+}
+
+func Import[T any]() *T {
+	var spec = new(T)
+	OnEngineInit(func(level InitializationLevel) {
+		if level == InitializationLevelCore {
+			link(reflect.ValueOf(spec).Elem())
+		}
+	})
+	return spec
+}
+
+func link(spec reflect.Value) {
+	for method := range spec.Fields() {
+		value := reflect.NewAt(method.Type, unsafe.Add(spec.Addr().UnsafePointer(), method.Offset))
+		mb, ok := reflect.TypeAssert[linkable](value)
+		if ok {
+			hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)
+			if err == nil {
+				mb.link(method.Name, hash)
+			}
+		} else if method.Type.Kind() == reflect.Struct {
+			link(value.Elem())
+		}
+	}
+}
+
+type linkable interface {
+	link(string, int64)
+}
+
+func (m *BuiltinMethodMutable[T, Args, Result]) link(method string, hash int64) {
+	var builtin BuiltinMethod[T, Args, Result]
+	builtin.link(method, hash)
+	m.entry = builtin.entry
+	m.shape = builtin.shape
+	m.vargs = builtin.vargs
+}
+
+// BuiltinMethodByName returns a BuiltinMethodPointer that can be used to call the given builtin method on a value of type T.
+func (builtin *BuiltinMethod[T, Args, Result]) link(method string, hash int64) {
+	method_name := UTF8.Intern(method)
+	defer Free(method_name)
+	shape, vargs := builtinMethodShapeFor[T, Args, Result]()
+	*builtin = BuiltinMethod[T, Args, Result]{
+		entry: Pointer(gd_builtin_method(uint32(variantTypeOf[T]()), gdStringName(method_name), hash)),
+		shape: shape,
+		vargs: vargs,
+	}
 }

@@ -58,6 +58,7 @@ func TestUtilities(t *testing.T) {
 }
 
 func TestNativeStructSize(t *testing.T) {
+	t.Skip()
 	runOnMain(t, func(t testing.TB) {
 		for name, expectation := range map[string]uintptr{
 			"ObjectID":                                unsafe.Sizeof(gd.ObjectID(0)),

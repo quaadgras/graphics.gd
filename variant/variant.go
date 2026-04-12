@@ -219,7 +219,7 @@ func (a Any) Call(name string, args ...Any) Any {
 	return New(results[0].Interface())
 }
 
-type Type int
+type Type int //gdextension:GDExtensionVariantType
 
 const (
 	TypeNil                Type = 0
@@ -462,7 +462,7 @@ func Equal(a, b any) bool { //gd:is_same
 	return bool(gd.IsSame(gd.NewVariant(a), gd.NewVariant(b)))
 }*/
 
-type Operator int
+type Operator int //gdextension:GDExtensionVariantOperator
 
 const (
 	OpEqual        Operator = 0  // ==

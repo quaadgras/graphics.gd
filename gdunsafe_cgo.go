@@ -3,1101 +3,554 @@
 package gdunsafe
 
 // #include "gd.h"
+//
+// GD_EXTENSION(go)
 import "C"
-import (
-	"unsafe"
-
-	"graphics.gd/internal/pointers"
-	"graphics.gd/variant"
-)
+import "unsafe"
 
 type (
-	gdCallableID      = C.CallableID
-	gdObjectID        = C.ObjectID
-	gdCallablePointer = *C.Callable
+	gd_addr                 = C.gd_addr
+	gd_shape                = C.gd_shape
+	gd_float                = C.gd_float
+	gd_initialization_level = C.gd_initialization_level
+	gd_error                = C.gd_error
+
+	gdVariant            = C.struct_Variant
+	gdString             = C.struct_String
+	gdVector2            = C.struct_Vector2
+	gdVector2i           = C.struct_Vector2i
+	gdRect2              = C.struct_Rect2
+	gdRect2i             = C.struct_Rect2i
+	gdVector3            = C.struct_Vector3
+	gdVector3i           = C.struct_Vector3i
+	gdTransform2D        = C.struct_Transform2D
+	gdVector4            = C.struct_Vector4
+	gdVector4i           = C.struct_Vector4i
+	gdPlane              = C.struct_Plane
+	gdQuaternion         = C.struct_Quaternion
+	gdAABB               = C.struct_AABB
+	gdBasis              = C.struct_Basis
+	gdTransform3D        = C.struct_Transform3D
+	gdProjection         = C.struct_Projection
+	gdColor              = C.struct_Color
+	gdCallable           = C.struct_Callable
+	gdStringName         = C.struct_StringName
+	gdNodePath           = C.struct_NodePath
+	gdRID                = C.RID
+	gdObject             = C.struct_Object
+	gdSignal             = C.struct_Signal
+	gdDictionary         = C.struct_Dictionary
+	gdArray              = C.struct_Array
+	gdPackedArray        = C.struct_PackedArray
+	gdPackedByteArray    = C.struct_PackedByteArray
+	gdPackedInt32Array   = C.struct_PackedInt32Array
+	gdPackedInt64Array   = C.struct_PackedInt64Array
+	gdPackedFloat32Array = C.struct_PackedFloat32Array
+	gdPackedFloat64Array = C.struct_PackedFloat64Array
+	gdPackedStringArray  = C.struct_PackedStringArray
+	gdPackedVector2Array = C.struct_PackedVector2Array
+	gdPackedVector3Array = C.struct_PackedVector3Array
+	gdPackedColorArray   = C.struct_PackedColorArray
+	gdPackedVector4Array = C.struct_PackedVector4Array
+
+	gdRefCounted = C.struct_RefCounted
+	gdScript     = C.struct_Script
+	gdClassTag   = C.struct_ClassTag
+
+	gd_constructor_id = C.gd_constructor_id
+	gd_evaluator_id   = C.gd_evaluator_id
+	gd_method_id      = C.gd_method_id
+	gd_getter_id      = C.gd_getter_id
+	gd_setter_id      = C.gd_setter_id
+	gd_caller_id      = C.gd_caller_id
+	gd_function_t     = C.gd_function_t
+
+	gd_extension_object_id  = C.gd_extension_object_id
+	gd_extension_method_id  = C.gd_extension_method_id
+	gd_extension_class_id   = C.gd_extension_class_id
+	gd_extension_task_id    = C.gd_extension_task_id
+	gd_extension_script_id  = C.gd_extension_script_id
+	gd_extension_binding_id = C.gd_extension_binding_id
+	gd_extension_callable_t = C.gd_extension_callable_t
+
+	gd_property_list_t     = C.gd_property_list_t
+	gd_method_list_t       = C.gd_method_list_t
+	gd_property_iterator_t = C.gd_property_iterator_t
+
+	gd_encoding  = C.gd_encoding
+	gd_log_level = C.gd_log_level
+
+	gdVariantType      = C.VariantType
+	gdVariantOperator  = C.VariantOperator
+	gdMethodFlags      = C.MethodFlags
+	gdArgumentMetadata = C.ArgumentMetadata
+	gdObjectID         = C.ObjectID
 )
 
-type Pointer uintptr
-
-type MutablePointer uintptr
-
-type taskID = uintptr
-
-var (
-	onWorkerThreadPoolTask      func(taskID)
-	onWorkerThreadPoolGroupTask func(taskID, int32)
-	onEditorClassDetection      func(PackedArray[String]) PackedArray[String]
-)
-
-func toVariant(v C.Variant) Variant {
-	return Variant{uint64(v.tag), uint64(v.payload[0]), uint64(v.payload[1])}
-}
-func toCallError(cerr C.CallError) Error {
-	return Error{error: errorType(cerr.error), expected: int32(cerr.expected), argument: int32(cerr.argument)}
-}
-
-// LibraryLocation returns a string representing the location of the current extension.
-func LibraryLocation() String { return String(C.gd_library_location()) }
-
-func (args Variants) Index(i int) Variant {
-	if args.count > 0 && (i >= args.count || i < 0) {
-		panic("index out of range")
-	}
-	slot := unsafe.Pointer(uintptr(args.first) + unsafe.Sizeof(Pointer(0))*uintptr(i))
-	return *(*Variant)(*(*unsafe.Pointer)(slot))
-}
-
-func (array Array) Index(index int) Variant {
-	var r C.Variant
-	C.gd_array_get(C.Array(array), C.int64_t(index), &r)
-	return toVariant(r)
-}
-
-func (array Array) SetIndex(index int, value Variant) {
-	C.gd_array_set(C.Array(array), C.int64_t(index), C.uint64_t(value[0]), C.uint64_t(value[1]), C.uint64_t(value[2]))
-}
-
-func (array Array) SetType(t Type) {
-	var script Variant = t.script
-	C.gd_variant_type_setup_array(C.uintptr_t(array), C.uint32_t(uint32(t.vtype)), C.uintptr_t(t.class),
-		C.uint64_t(script[0]), C.uint64_t(script[1]), C.uint64_t(script[2]))
-}
-
-func (t Type) Size() uintptr { return uintptr(t.shape.SizeResult()) }
-
-// Version
-
-func Version() String          { return String(C.gd_version_string()) }
-func VersionMajor() uint32     { return uint32(C.gd_version_major()) }
-func VersionMinor() uint32     { return uint32(C.gd_version_minor()) }
-func VersionPatch() uint32     { return uint32(C.gd_version_patch()) }
-func VersionHexed() uint32     { return uint32(C.gd_version_hex()) }
-func VersionState() String     { return String(C.gd_version_status()) }
-func VersionBuild() String     { return String(C.gd_version_build()) }
-func VersionCommit() String    { return String(C.gd_version_hash()) }
-func VersionTimestamp() uint64 { return uint64(C.gd_version_timestamp()) }
-
-// Memory
-
-func Malloc(size uintptr) MutablePointer {
-	return MutablePointer(C.gd_memory_malloc(C.int64_t(size)))
-}
-
-func Resize(ptr MutablePointer, size uintptr) MutablePointer {
-	return MutablePointer(C.gd_memory_resize(C.UnsafePointer(ptr), C.int64_t(size)))
-}
-
-func Memset(ptr MutablePointer, size uintptr, value byte) {
-	C.gd_memory_clear(C.UnsafePointer(ptr), C.int64_t(size))
-}
-
-func (ptr MutablePointer) Free() { C.gd_memory_free(C.UnsafePointer(ptr)) }
-
-func (ptr PointerTo[T]) Get() T         { return *(*T)(unsafe.Pointer(ptr)) }
-func (ptr MutablePointerTo[T]) Set(v T) { *(*T)(unsafe.Pointer(ptr)) = v }
-
-// String operations
-
-func (s String) Index(idx int) rune {
-	return rune(C.gd_string_access(C.uintptr_t(s), C.int64_t(idx)))
-}
-
-func (s String) SetIndex(idx int, char rune) {
-	ptr := unsafe.Pointer(C.gd_string_unsafe(C.uintptr_t(s)))
-	*(*int32)(unsafe.Add(ptr, uintptr(idx)*4)) = int32(char)
-}
-
-func (s String) Resize(size int) String {
-	return String(C.gd_string_resize(C.uintptr_t(s), C.int64_t(size)))
-}
-
-func (s String) Pointer() PointerTo[rune] {
-	return PointerTo[rune](C.gd_string_unsafe(C.uintptr_t(s)))
-}
-
-func (s String) MutablePointer() MutablePointerTo[rune] {
-	return MutablePointerTo[rune](C.gd_string_unsafe(C.uintptr_t(s)))
-}
-
-func (s *String) Append(other String) {
-	*s = String(C.gd_string_append(C.uintptr_t(*s), C.uintptr_t(other)))
-}
-
-func (s *String) AppendRune(ch rune) {
-	*s = String(C.gd_string_append_rune(C.uintptr_t(*s), C.int32_t(ch)))
-}
-
-// Encoding — Latin1
-
-func (enc latin1) Decode(s String, buf []byte) int {
-	return int(C.gd_string_encode(C.uint8_t(0), C.uintptr_t(s),
-		(*C.char)(unsafe.Pointer(unsafe.SliceData(buf))), C.int64_t(len(buf))))
-}
-
-func (enc latin1) String(s string) String {
-	return String(C.gd_string_decode(C.uint8_t(0),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
+func gd_addrOf(shape Shape, ptr unsafe.Pointer) gd_addr {
+	return gd_addr(ptr)
 }
 
-func (enc latin1) Intern(s string) StringName {
-	return StringName(C.gd_string_intern(C.uint8_t(0),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
-}
+//
+// Version Information
+//
 
-// Encoding — UTF8
+func gd_version() gdString       { return C.gd_version() }
+func gd_version_major() uint32   { return uint32(C.gd_version_major()) }
+func gd_version_minor() uint32   { return uint32(C.gd_version_minor()) }
+func gd_version_patch() uint32   { return uint32(C.gd_version_patch()) }
+func gd_version_hexed() uint32   { return uint32(C.gd_version_hexed()) }
+func gd_version_state() gdString { return C.gd_version_state() }
+func gd_version_build() gdString { return C.gd_version_build() }
+func gd_version_nanos() int64    { return int64(C.gd_version_nanos()) }
+func gd_version_stamp() gdString { return C.gd_version_stamp() }
 
-func (enc utf8) Decode(s String, buf []byte) int {
-	return int(C.gd_string_encode(C.uint8_t(1), C.uintptr_t(s),
-		(*C.char)(unsafe.Pointer(unsafe.SliceData(buf))), C.int64_t(len(buf))))
-}
+//
+// Unsafe Engine Memory
+//
 
-func (enc utf8) String(s string) String {
-	return String(C.gd_string_decode(C.uint8_t(1),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
+func gd_sizeof(type_name gdStringName) int64  { return int64(C.gd_sizeof(type_name)) }
+func gd_malloc(size int64, pad8 bool) gd_addr { return C.gd_malloc(C.int64_t(size), C.bool(pad8)) }
+func gd_resize(addr gd_addr, size int64, pad8 bool) gd_addr {
+	return C.gd_resize(addr, C.int64_t(size), C.bool(pad8))
 }
-
-func (enc utf8) Intern(s string) StringName {
-	return StringName(C.gd_string_intern(C.uint8_t(1),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
+func gd_memset(addr gd_addr, value byte, size int64) {
+	C.gd_memset(addr, C.uint8_t(value), C.int64_t(size))
 }
 
-// Encoding — UTF16
+func gd_memory_bytes1(addr gd_addr) byte   { return byte(C.gd_memory_bytes1(addr)) }
+func gd_memory_bytes2(addr gd_addr) uint16 { return uint16(C.gd_memory_bytes2(addr)) }
+func gd_memory_bytes4(addr gd_addr) uint32 { return uint32(C.gd_memory_bytes4(addr)) }
+func gd_memory_bytes8(addr gd_addr) uint64 { return uint64(C.gd_memory_bytes8(addr)) }
 
-func (enc utf16) Decode(s String, buf []byte) int {
-	return int(C.gd_string_encode(C.uint8_t(2), C.uintptr_t(s),
-		(*C.char)(unsafe.Pointer(unsafe.SliceData(buf))), C.int64_t(len(buf))))
+func gd_store_bytes1(addr gd_addr, v byte)   { C.gd_store_bytes1(addr, C.uint8_t(v)) }
+func gd_store_bytes2(addr gd_addr, v uint16) { C.gd_store_bytes2(addr, C.uint16_t(v)) }
+func gd_store_bytes4(addr gd_addr, v uint32) { C.gd_store_bytes4(addr, C.uint32_t(v)) }
+func gd_store_bytes8(addr gd_addr, v uint64) { C.gd_store_bytes8(addr, C.uint64_t(v)) }
+func gd_store_pair64(addr gd_addr, a, b uint64) {
+	C.gd_store_pair64(addr, C.uint64_t(a), C.uint64_t(b))
 }
-
-func (enc utf16) String(s string) String {
-	return String(C.gd_string_decode(C.uint8_t(2),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
+func gd_store_quad64(addr gd_addr, a, b, c, d uint64) {
+	C.gd_store_quad64(addr, C.uint64_t(a), C.uint64_t(b), C.uint64_t(c), C.uint64_t(d))
 }
-
-func (enc utf16) Intern(s string) StringName {
-	return StringName(C.gd_string_intern(C.uint8_t(2),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
+func gd_store_octo64(addr gd_addr, a, b, c, d, e, f, g, h uint64) {
+	C.gd_store_octo64(addr, C.uint64_t(a), C.uint64_t(b), C.uint64_t(c), C.uint64_t(d), C.uint64_t(e), C.uint64_t(f), C.uint64_t(g), C.uint64_t(h))
 }
 
-// Encoding — UTF32
+func gd_free(addr gd_addr) { C.gd_free(addr) }
 
-func (enc utf32) Decode(s String, buf []byte) int {
-	return int(C.gd_string_encode(C.uint8_t(4), C.uintptr_t(s),
-		(*C.char)(unsafe.Pointer(unsafe.SliceData(buf))), C.int64_t(len(buf))))
-}
+//
+// Variants
+//
 
-func (enc utf32) String(s string) String {
-	return String(C.gd_string_decode(C.uint8_t(4),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
+func gd_variant_zero(result *gdVariant) { C.gd_variant_zero(result) }
+func gd_variant_copy(v_1, v_2, v_3 uint64, result *gdVariant, deep bool) {
+	C.gd_variant_copy(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), result, C.bool(deep))
 }
-
-func (enc utf32) Intern(s string) StringName {
-	return StringName(C.gd_string_intern(C.uint8_t(4),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
+func gd_variant_hash(v_1, v_2, v_3 uint64, recursion_count int64) int64 {
+	return int64(C.gd_variant_hash(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.int64_t(recursion_count)))
 }
-
-// Encoding — Wide
-
-func (enc wide) Decode(s String, buf []byte) int {
-	return int(C.gd_string_encode(C.uint8_t(5), C.uintptr_t(s),
-		(*C.char)(unsafe.Pointer(unsafe.SliceData(buf))), C.int64_t(len(buf))))
+func gd_variant_bool(v_1, v_2, v_3 uint64) bool {
+	return bool(C.gd_variant_bool(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3)))
 }
-
-func (enc wide) String(s string) String {
-	return String(C.gd_string_decode(C.uint8_t(5),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
+func gd_variant_text(v_1, v_2, v_3 uint64) gdString {
+	return C.gd_variant_text(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3))
 }
-
-func (enc wide) Intern(s string) StringName {
-	return StringName(C.gd_string_intern(C.uint8_t(5),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(s))), C.int64_t(len(s))))
+func gd_variant_type(v_1, v_2, v_3 uint64) uint32 {
+	return uint32(C.gd_variant_type(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3)))
 }
-
-// Log
-
-func Log(level LogLevel, text, code, fn, file string, line int32, notify_editor bool) {
-	C.gd_log(C.uint32_t(level),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(text))), C.uint32_t(len(text)),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(code))), C.uint32_t(len(code)),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(fn))), C.uint32_t(len(fn)),
-		(*C.char)(unsafe.Pointer(unsafe.StringData(file))), C.uint32_t(len(file)),
-		C.int32_t(line), C._Bool(notify_editor))
+func gd_variant_free(v_1, v_2, v_3 uint64) {
+	C.gd_variant_free(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3))
 }
-
-// PackedArray
-
-func (p PackedArray[T]) Index(idx int64) T {
-	ptr := PointerTo[T](C.gd_packed_array_access(C.uint32_t(p.Type()), C.uintptr_t(p[0]), C.uintptr_t(p[1]), C.int64_t(idx)))
-	return ptr.Get()
+func gd_variant_from(vtype uint32, result *gdVariant, shape gd_shape, args gd_addr) {
+	C.gd_variant_from(C.VariantType(vtype), result, shape, args)
 }
-
-func (p PackedArray[T]) SetIndex(idx int64, val T) {
-	ptr := MutablePointerTo[T](C.gd_packed_array_modify(C.uint32_t(p.Type()), C.uintptr_t(p[0]), C.uintptr_t(p[1]), C.int64_t(idx)))
-	ptr.Set(val)
+func gd_variant_make(t uint32, result *gdVariant, arg_count int64, args *gdVariant, err *gd_error) {
+	C.gd_variant_make(C.VariantType(t), result, C.int64_t(arg_count), args, err)
 }
-
-func (p PackedArray[T]) Pointer() PointerTo[T] {
-	return PointerTo[T](C.gd_packed_array_access(C.uint32_t(p.Type()), C.uintptr_t(p[0]), C.uintptr_t(p[1]), 0))
+func gd_variant_data(vtype uint32, v_1, v_2, v_3 uint64) gd_addr {
+	return C.gd_variant_data(C.VariantType(vtype), C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3))
 }
-
-func (p PackedArray[T]) MutablePointer() MutablePointerTo[T] {
-	return MutablePointerTo[T](C.gd_packed_array_modify(C.uint32_t(p.Type()), C.uintptr_t(p[0]), C.uintptr_t(p[1]), 0))
+func gd_variant_call(v_1, v_2, v_3 uint64, method gdStringName, result *gdVariant, arg_count int64, args *gdVariant, err *gd_error) {
+	C.gd_variant_call(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), method, result, C.int64_t(arg_count), args, err)
 }
-
-// Variant constructors
-
-func MakeVariant(vtype variant.Type, args ...Variant) (Variant, Error) {
-	var value C.Variant
-	var err C.CallError
-	C.gd_variant_type_make(C.uint32_t(uint32(vtype)), &value, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
-	return toVariant(value), toCallError(err)
+func gd_variant_eval(op uint32, a_1, a_2, a_3, b_1, b_2, b_3 uint64, result *gdVariant) bool {
+	return bool(C.gd_variant_eval(C.VariantOperator(op), C.uint64_t(a_1), C.uint64_t(a_2), C.uint64_t(a_3), C.uint64_t(b_1), C.uint64_t(b_2), C.uint64_t(b_3), result))
 }
-
-func Call[T Any](method StringName, args ...Variant) (Variant, Error) {
-	var value C.Variant
-	var err C.CallError
-	C.gd_variant_type_call(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(method), &value, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
-	return toVariant(value), toCallError(err)
+func gd_variant_get_keyed(v_1, v_2, v_3, key_1, key_2, key_3 uint64, result *gdVariant) bool {
+	return bool(C.gd_variant_get_keyed(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.uint64_t(key_1), C.uint64_t(key_2), C.uint64_t(key_3), result))
 }
-
-func Convertable[A, B Any](strict bool) bool {
-	return bool(C.gd_variant_type_convertable(C.uint32_t(uint32(variantTypeOf[A]())), C.uint32_t(uint32(variantTypeOf[B]())), C.bool(strict)))
+func gd_variant_get_index(v_1, v_2, v_3 uint64, idx int64, result *gdVariant, err *gd_error) bool {
+	return bool(C.gd_variant_get_index(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.int64_t(idx), result, err))
 }
-
-func Utility(utility StringName, hash int64) func(result unsafe.Pointer, shape Shape, args unsafe.Pointer) {
-	fn := C.gd_builtin_name(C.uintptr_t(utility), C.int64_t(hash))
-	return func(result unsafe.Pointer, shape Shape, args unsafe.Pointer) {
-		C.gd_builtin_call(fn, C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
-	}
+func gd_variant_get_field(v_1, v_2, v_3 uint64, field gdStringName, result *gdVariant) bool {
+	return bool(C.gd_variant_get_field(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), field, result))
 }
-
-func Constant[T, E Any](name StringName) E {
-	var result E
-	C.gd_variant_type_fetch_constant(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(name), C.UnsafePointer(unsafe.Pointer(&result)))
-	return result
+func gd_variant_has_key(v_1, v_2, v_3, idx_1, idx_2, idx_3 uint64) bool {
+	return bool(C.gd_variant_has_key(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.uint64_t(idx_1), C.uint64_t(idx_2), C.uint64_t(idx_3)))
 }
-
-func Constructor[T Any](n int) func(shape Shape, args unsafe.Pointer) T {
-	fn := C.gd_variant_type_unsafe_constructor(C.uint32_t(uint32(variantTypeOf[T]())), C.int64_t(n))
-	return func(shape Shape, args unsafe.Pointer) T {
-		var result T
-		C.gd_variant_type_unsafe_make(fn, C.UnsafePointer(unsafe.Pointer(&result)), C.uint64_t(shape), C.UnsafePointer(args))
-		return result
-	}
+func gd_variant_has_method(v_1, v_2, v_3 uint64, method gdStringName) bool {
+	return bool(C.gd_variant_has_method(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), method))
 }
-
-func Evaluator[A, B, R Any](op VariantOperator) func(a A, b B) R {
-	fn := C.gd_variant_type_evaluator(C.uint32_t(op), C.uint32_t(uint32(variantTypeOf[A]())), C.uint32_t(uint32(variantTypeOf[B]())))
-	shapeA := shapeFor[A]()
-	shapeB := shapeFor[B]()
-	shape := uint64(shapeFor[R]()) | uint64(shapeA)<<4 | uint64(shapeB)<<8
-	return func(a A, b B) R {
-		var result R
-		C.gd_variant_unsafe_eval(fn, C.UnsafePointer(unsafe.Pointer(&result)), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&struct {
-			A A
-			B B
-		}{A: a, B: b})))
-		return result
-	}
+func gd_variant_set_keyed(v_1, v_2, v_3, key_1, key_2, key_3, val_1, val_2, val_3 uint64) bool {
+	return bool(C.gd_variant_set_keyed(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.uint64_t(key_1), C.uint64_t(key_2), C.uint64_t(key_3), C.uint64_t(val_1), C.uint64_t(val_2), C.uint64_t(val_3)))
 }
-
-func Setter[T Any, E Any](field StringName) func(v T, val E) {
-	fn := C.gd_variant_type_setter(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(field))
-	shapeT := shapeFor[T]()
-	shapeE := shapeFor[E]()
-	shape := uint64(shapeT)<<4 | uint64(shapeE)<<8
-	return func(v T, val E) {
-		C.gd_variant_unsafe_set_field(fn, C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&struct {
-			T T
-			E E
-		}{T: v, E: val})))
-	}
+func gd_variant_set_index(v_1, v_2, v_3 uint64, idx int64, val_1, val_2, val_3 uint64, err gd_addr) bool {
+	return bool(C.gd_variant_set_index(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.int64_t(idx), C.uint64_t(val_1), C.uint64_t(val_2), C.uint64_t(val_3), err))
 }
-
-func Getter[T Any, E Any](field StringName) func(v T) E {
-	fn := C.gd_variant_type_getter(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(field))
-	shapeT := shapeFor[T]()
-	shape := uint64(shapeFor[E]()) | uint64(shapeT)<<4
-	return func(v T) E {
-		var result E
-		C.gd_variant_unsafe_get_field(fn, C.UnsafePointer(unsafe.Pointer(&result)), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&v)))
-		return result
-	}
+func gd_variant_set_field(v_1, v_2, v_3 uint64, field gdStringName, val_1, val_2, val_3 uint64) bool {
+	return bool(C.gd_variant_set_field(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), field, C.uint64_t(val_1), C.uint64_t(val_2), C.uint64_t(val_3)))
 }
 
-func PropertyExists[T Any](property StringName) bool {
-	return bool(C.gd_variant_type_has_property(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(property)))
-}
+//
+// Builtin Types
+//
 
-func BuiltinMethod[T Any](method StringName, hash int64) func(self *T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
-	fn := C.gd_variant_type_builtin_method(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(method), C.int64_t(hash))
-	return func(self *T, ret unsafe.Pointer, shape Shape, args unsafe.Pointer) {
-		C.gd_variant_type_unsafe_call(C.UnsafePointer(unsafe.Pointer(self)), fn, C.UnsafePointer(ret), C.uint64_t(shape), C.UnsafePointer(args))
-	}
+func gd_evaluator(op uint32, a, b uint32) gd_evaluator_id {
+	return C.gd_evaluator(C.VariantOperator(op), C.VariantType(a), C.VariantType(b))
 }
-
-// BuiltinMethod returns a function that can be used to call the given builtin method on a value of type T.
-func BuiltinMethodNew[T Any, Args any, Result Returnable](method string, hash int64) BuiltinMethodPointer[T, Args, Result] {
-	method_name := UTF8.Intern(method)
-	defer Free(method_name)
-	return BuiltinMethodPointer[T, Args, Result]{
-		entry: Pointer(C.gd_variant_type_builtin_method(C.uint32_t(uint32(variantTypeOf[T]())), C.uintptr_t(method_name), C.int64_t(hash))),
-		shape: builtinMethodShapeFor[T, Args, Result](),
-	}
+func gd_setter(t uint32, property gdStringName) gd_setter_id {
+	return C.gd_setter(C.VariantType(t), property)
 }
-
-// BuiltinMethodWithArguments returns a function that can be used to call the given builtin method on a value of type T with arguments.
-func (builtin BuiltinMethodPointer[T, Args, Result]) Call(self T, args Args) Result {
-	var result Result
-	self_ptr, args_ptr, result_ptr := pointers.NoEscape3(unsafe.Pointer(&self), unsafe.Pointer(&args), unsafe.Pointer(&result))
-	C.gd_variant_type_unsafe_call(C.UnsafePointer(self_ptr), C.FunctionID(builtin.entry),
-		C.UnsafePointer(result_ptr), C.uint64_t(builtin.shape), C.UnsafePointer(args_ptr))
-	return result
+func gd_getter(t uint32, property gdStringName) gd_getter_id {
+	return C.gd_getter(C.VariantType(t), property)
 }
-
-func SetIndex[T, V Any](self T, index int64, value V) {
-	shapeT := shapeFor[T]()
-	shapeV := shapeFor[V]()
-	shape := uint64(shapeT)<<4 | uint64(shapeV)<<8
-	C.gd_variant_unsafe_set_array(C.uint32_t(uint32(variantTypeOf[T]())), C.int64_t(index), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&struct {
-		T T
-		V V
-	}{T: self, V: value})))
+func gd_constructor(t uint32, n int64) gd_constructor_id {
+	return C.gd_constructor(C.VariantType(t), C.int64_t(n))
 }
-
-func Index[T, V Any](self T, index int64) V {
-	shapeT := shapeFor[T]()
-	shape := uint64(shapeFor[V]()) | uint64(shapeT)<<4
-	var result V
-	C.gd_variant_unsafe_get_array(C.uint32_t(uint32(variantTypeOf[T]())), C.int64_t(index), C.UnsafePointer(unsafe.Pointer(&result)), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&self)))
-	return result
+func gd_builtin_method(t uint32, method gdStringName, hash int64) gd_caller_id {
+	return C.gd_builtin_method(C.VariantType(t), method, C.int64_t(hash))
 }
 
-func Insert[T Any](self T, index, value Variant) {
-	shapeT := shapeFor[T]()
-	shape := uint64(shapeT)<<4 | uint64(ShapeVariant)<<8 | uint64(ShapeVariant)<<12
-	C.gd_variant_unsafe_set_index(C.uint32_t(uint32(variantTypeOf[T]())), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&struct {
-		T     T
-		Index Variant
-		Value Variant
-	}{T: self, Index: index, Value: value})))
+func gd_builtin_call(self gd_addr, fn gd_caller_id, result gd_addr, shape gd_shape, args gd_addr) {
+	C.gd_builtin_call(self, fn, result, shape, args)
 }
-
-func Lookup[T Any](self T, key Variant) Variant {
-	shapeT := shapeFor[T]()
-	shape := uint64(ShapeVariant) | uint64(shapeT)<<4 | uint64(ShapeVariant)<<8
-	var result Variant
-	C.gd_variant_unsafe_get_index(C.uint32_t(uint32(variantTypeOf[T]())), C.UnsafePointer(unsafe.Pointer(&result)), C.uint64_t(shape), C.UnsafePointer(unsafe.Pointer(&struct {
-		T   T
-		Key Variant
-	}{
-		T:   self,
-		Key: key,
-	})))
-	return result
+func gd_builtin_make(constructor gd_constructor_id, result gd_addr, shape gd_shape, args gd_addr) {
+	C.gd_builtin_make(constructor, result, shape, args)
 }
-
-func Free[T Any](val T) {
-	C.gd_variant_type_unsafe_free(C.uint32_t(uint32(variantTypeOf[T]())), C.uint64_t(uint64(shapeFor[T]())<<4), C.UnsafePointer(unsafe.Pointer(&val)))
+func gd_builtin_free(t uint32, value gd_addr) {
+	C.gd_builtin_free(C.VariantType(t), value)
 }
-
-// Callable
-
-func MakeCallable(impl ExtensionCallable, obj ObjectID) Callable {
-	var c C.Callable
-	C.gd_callable_create(C.CallableID(callables.New(impl)), C.ObjectID(obj), &c)
-	return Callable{uint64(c.opaque[0]), uint64(c.opaque[1])}
+func gd_builtin_from(vtype uint32, v_1, v_2, v_3 uint64, result gd_addr) {
+	C.gd_builtin_from(C.VariantType(vtype), C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), result)
 }
-
-// Object
-
-func (class Class) Tag() ClassTag {
-	return ClassTag(C.gd_object_type(C.StringName(class)))
+func gd_builtin_eval(op gd_evaluator_id, result gd_addr, shape gd_shape, args gd_addr) {
+	C.gd_builtin_eval(op, result, shape, args)
 }
-
-func New(name Class) Object {
-	return Object(C.gd_object_make(C.StringName(name)))
+func gd_builtin_get_field(getter gd_getter_id, result gd_addr, shape gd_shape, args gd_addr) {
+	C.gd_builtin_get_field(getter, result, shape, args)
 }
-
-func (obj Object) Class() Class {
-	return Class(C.gd_object_name(C.Object(obj)))
+func gd_builtin_get_array(vtype uint32, idx int64, result gd_addr, shape gd_shape, args gd_addr) {
+	C.gd_builtin_get_array(C.VariantType(vtype), C.int64_t(idx), result, shape, args)
 }
-
-func (obj Object) Cast(to ClassTag) Object {
-	return Object(C.gd_object_cast(C.Object(obj), C.ObjectType(to)))
+func gd_builtin_get_keyed(vtype uint32, result gd_addr, shape gd_shape, args gd_addr) {
+	C.gd_builtin_get_keyed(C.VariantType(vtype), result, shape, args)
 }
-
-func (obj Object) Script(lang ScriptLanguage) Script {
-	return Script(Object(C.gd_object_script_fetch(C.Object(obj), C.Object(Object(lang)))))
+func gd_builtin_set_field(setter gd_setter_id, shape gd_shape, args gd_addr) {
+	C.gd_builtin_set_field(setter, shape, args)
 }
-
-func (obj Object) AttachScript(script Script) {
-	C.gd_object_script_setup(C.Object(obj), C.ScriptInstance(Object(script)))
+func gd_builtin_set_array(vtype uint32, idx int64, shape gd_shape, args gd_addr) {
+	C.gd_builtin_set_array(C.VariantType(vtype), C.int64_t(idx), shape, args)
 }
-
-func (obj Object) ID() ObjectID {
-	return ObjectID(C.gd_object_id(C.Object(obj)))
+func gd_builtin_set_keyed(vtype uint32, shape gd_shape, args gd_addr) {
+	C.gd_builtin_set_keyed(C.VariantType(vtype), shape, args)
 }
 
-func (obj Object) Free() {
-	C.gd_object_unsafe_free(C.Object(obj))
-}
+//
+// Variant Type Operations
+//
 
-func (id ObjectID) Object() Object {
-	return Object(C.gd_object_lookup(C.ObjectID(id)))
+func gd_variant_type_name(t uint32) gdString {
+	return C.gd_variant_type_name(C.VariantType(t))
 }
-
-func Singleton(name StringName) Object {
-	return Object(C.gd_object_global(C.StringName(name)))
+func gd_variant_type_call(t uint32, static_method gdStringName, result *gdVariant, arg_count int64, args *gdVariant, err *gd_error) {
+	C.gd_variant_type_call(C.VariantType(t), static_method, result, C.int64_t(arg_count), args, err)
 }
-
-func Method(class, method StringName, hash int64) MethodPointer {
-	return MethodPointer(C.gd_object_method_lookup(C.StringName(class), C.StringName(method), C.int64_t(hash)))
+func gd_variant_type_convertable(t, to uint32, strict bool) bool {
+	return bool(C.gd_variant_type_convertable(C.VariantType(t), C.VariantType(to), C.bool(strict)))
 }
-
-func (obj Object) Call(method MethodPointer, args ...Variant) (Variant, Error) {
-	var ret C.Variant
-	var err C.CallError
-	C.gd_object_call(C.Object(obj), C.MethodForClass(method), &ret, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
-	return toVariant(ret), toCallError(err)
+func gd_variant_type_has_property(t uint32, property gdStringName) bool {
+	return bool(C.gd_variant_type_has_property(C.VariantType(t), property))
 }
-
-func (obj Object) ShapedCall(method MethodPointer, result unsafe.Pointer, shape Shape, args unsafe.Pointer) {
-	C.gd_object_shaped_call(C.Object(obj), C.MethodForClass(method), C.UnsafePointer(result), C.uint64_t(shape), C.UnsafePointer(args))
+func gd_variant_type_setup_array(a gdArray, elem uint32, class_name gdStringName, v_1, v_2, v_3 uint64) {
+	C.gd_variant_type_setup_array(a, C.VariantType(elem), class_name, C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3))
 }
-
-func (obj Object) SetupExtension(name StringName, inst ExtensionInstance) {
-	C.gd_object_extension_setup(C.Object(obj), C.StringName(name), C.ExtensionInstanceID(instances.New(inst)))
+func gd_variant_type_setup_dictionary(d gdDictionary, key uint32, key_class gdStringName, ks_1, ks_2, ks_3 uint64, val uint32, val_class gdStringName, vs_1, vs_2, vs_3 uint64) {
+	C.gd_variant_type_setup_dictionary(d, C.VariantType(key), key_class, C.uint64_t(ks_1), C.uint64_t(ks_2), C.uint64_t(ks_3), C.VariantType(val), val_class, C.uint64_t(vs_1), C.uint64_t(vs_2), C.uint64_t(vs_3))
 }
-
-func (obj Object) ExtensionInstance() ExtensionInstance {
-	return instances.Get(uintptr(C.gd_object_extension_fetch(C.Object(obj))))
+func gd_variant_type_constant(t uint32, constant gdStringName, result gd_addr) {
+	C.gd_variant_type_constant(C.VariantType(t), constant, result)
 }
-
-// Script
 
-func MakeScript(fn ExtensionScript) Script {
-	return Script(Object(C.gd_object_script_make(C.ExtensionInstanceID(instances.New(fn)))))
-}
+//
+// Packed Arrays
+//
 
-func (obj Script) Call(name StringName, args ...Variant) (Variant, Error) {
-	var ret C.Variant
-	var err C.CallError
-	C.gd_object_script_call(C.Object(Object(obj)), C.StringName(name), &ret, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
-	return toVariant(ret), toCallError(err)
+func gd_packed_array_access(vtype uint32, pa_1, pa_2 uintptr, idx int64) gd_addr {
+	return C.gd_packed_array_access(C.VariantType(vtype), C.uintptr_t(pa_1), C.uintptr_t(pa_2), C.int64_t(idx))
 }
-
-func (obj Script) HasMethod(method StringName) bool {
-	return bool(C.gd_object_script_defines_method(C.Object(Object(obj)), C.StringName(method)))
+func gd_packed_array_modify(vtype uint32, pa_1, pa_2 uintptr, idx int64) gd_addr {
+	return C.gd_packed_array_modify(C.VariantType(vtype), C.uintptr_t(pa_1), C.uintptr_t(pa_2), C.int64_t(idx))
 }
 
-func MakePlaceholderScript(language ScriptLanguage, script Script, owner Object) Script {
-	return Script(Object(C.gd_object_script_placeholder_create(C.Object(Object(language)), C.Object(Object(script)), C.Object(owner))))
-}
+//
+// Arrays
+//
 
-func (s Script) UpdatePlaceholder(array Array, dict Dictionary) {
-	C.gd_object_script_placeholder_update(C.ScriptInstance(Object(s)), C.Array(array), C.Dictionary(dict))
+func gd_array_get_index(a gdArray, i int64, result *gdVariant) {
+	C.gd_array_get_index(a, C.int64_t(i), result)
 }
-
-// Variant operations
-
-func Nil() Variant {
-	var zero C.Variant
-	C.gd_variant_zero(&zero)
-	return toVariant(zero)
+func gd_array_set_index(a gdArray, i int64, v_1, v_2, v_3 uint64) {
+	C.gd_array_set_index(a, C.int64_t(i), C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3))
 }
 
-func (v Variant) Copy(deep bool) Variant {
-	var result C.Variant
-	if deep {
-		C.gd_variant_deep_copy(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), &result)
-	} else {
-		C.gd_variant_copy(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), &result)
-	}
-	return toVariant(result)
-}
+//
+// GlobalScope Functions
+//
 
-func (v Variant) Call(method StringName, args ...Variant) (Variant, Error) {
-	var result C.Variant
-	var err C.CallError
-	C.gd_variant_call(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.StringName(method), &result, C.int64_t(len(args)), (*C.Variant)(unsafe.Pointer(unsafe.SliceData(args))), &err)
-	return toVariant(result), toCallError(err)
+func gd_function(utility gdStringName, hash int64) gd_function_t {
+	return C.gd_function(utility, C.int64_t(hash))
 }
-
-func (v Variant) Hash(depth int64) int64 {
-	return int64(C.gd_variant_deep_hash(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.int64_t(depth)))
+func gd_call(fn gd_function_t, result gd_addr, shape gd_shape, args gd_addr) {
+	C.gd_call(fn, result, shape, args)
 }
 
-func (v Variant) Bool() bool {
-	return bool(C.gd_variant_bool(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
-}
+//
+// ClassDB
+//
 
-func (v Variant) UnsafeString() String {
-	return String(C.gd_variant_text(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+func gd_method_list_make(count int64) gd_method_list_t {
+	return C.gd_method_list_make(C.int64_t(count))
 }
-
-func (v Variant) Type() variant.Type {
-	return variant.Type(C.gd_variant_type(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+func gd_method_list_free(list gd_method_list_t) { C.gd_method_list_free(list) }
+func gd_method_list_push(list gd_method_list_t, name gdStringName, call gd_extension_method_id, flags uint32, return_info gd_property_list_t, args_info gd_property_list_t, count int64, defaults gd_addr) {
+	C.gd_method_list_push(list, name, call, C.MethodFlags(flags), return_info, args_info, C.int64_t(count), defaults)
 }
 
-func (v Variant) ObjectID() ObjectID {
-	return ObjectID(C.gd_object_id_inside_variant(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+func gd_property_list_make(count int64) gd_property_list_t {
+	return C.gd_property_list_make(C.int64_t(count))
 }
-
-func (v Variant) Lookup(key Variant) (Variant, bool) {
-	var result C.Variant
-	ok := bool(C.gd_variant_get_index(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(key[0]), C.uint64_t(key[1]), C.uint64_t(key[2]), &result))
-	return toVariant(result), ok
+func gd_property_list_push(list gd_property_list_t, t uint32, name gdStringName, class_name gdStringName, hint uint32, hint_string gdString, usage uint32, meta uint32) {
+	C.gd_property_list_push(list, C.VariantType(t), name, class_name, C.uint32_t(hint), hint_string, C.uint32_t(usage), C.ArgumentMetadata(meta))
 }
+func gd_property_list_free(list gd_property_list_t) { C.gd_property_list_free(list) }
 
-func (v Variant) Index(idx int) (Variant, bool, Error) {
-	var result C.Variant
-	var err C.CallError
-	ok := bool(C.gd_variant_get_array(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.int64_t(idx), &result, &err))
-	return toVariant(result), ok, toCallError(err)
+func gd_classdb_register(class_name, parent gdStringName, id gd_extension_class_id, is_virtual, is_abstract, is_exposed, is_runtime bool, icon_path gdString) {
+	C.gd_classdb_register(class_name, parent, id, C.bool(is_virtual), C.bool(is_abstract), C.bool(is_exposed), C.bool(is_runtime), icon_path)
 }
-
-func (v Variant) Field(field StringName) (Variant, bool) {
-	var result C.Variant
-	ok := bool(C.gd_variant_get_field(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.StringName(field), &result))
-	return toVariant(result), ok
+func gd_classdb_register_methods(class_name gdStringName, methods gd_method_list_t) {
+	C.gd_classdb_register_methods(class_name, methods)
 }
-
-func (v Variant) Insert(key, val Variant) bool {
-	return bool(C.gd_variant_set_index(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(key[0]), C.uint64_t(key[1]), C.uint64_t(key[2]), C.uint64_t(val[0]), C.uint64_t(val[1]), C.uint64_t(val[2])))
+func gd_classdb_register_constant(class_name, enum_name, constant_name gdStringName, value int64, bitfield bool) {
+	C.gd_classdb_register_constant(class_name, enum_name, constant_name, C.int64_t(value), C.bool(bitfield))
 }
-
-func (v Variant) SetIndex(idx int, val Variant) (bool, Error) {
-	var err Error
-	ok := bool(C.gd_variant_set_array(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.int64_t(idx), C.uint64_t(val[0]), C.uint64_t(val[1]), C.uint64_t(val[2]), C.UnsafePointer(unsafe.Pointer(&err))))
-	return ok, err
+func gd_classdb_register_property(class_name gdStringName, property gd_property_list_t, setter, getter gdStringName) {
+	C.gd_classdb_register_property(class_name, property, setter, getter)
 }
-
-func (v Variant) SetField(field StringName, value Variant) bool {
-	return bool(C.gd_variant_set_field(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.StringName(field), C.uint64_t(value[0]), C.uint64_t(value[1]), C.uint64_t(value[2])))
+func gd_classdb_register_property_indexed(class_name gdStringName, property gd_property_list_t, setter, getter gdStringName, index int64) {
+	C.gd_classdb_register_property_indexed(class_name, property, setter, getter, C.int64_t(index))
 }
-
-func (v Variant) Has(index Variant) bool {
-	return bool(C.gd_variant_has_index(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(index[0]), C.uint64_t(index[1]), C.uint64_t(index[2])))
+func gd_classdb_register_property_group(class_name gdStringName, group, prefix gdString) {
+	C.gd_classdb_register_property_group(class_name, group, prefix)
 }
-
-func (v Variant) HasMethod(method StringName) bool {
-	return bool(C.gd_variant_has_method(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.StringName(method)))
+func gd_classdb_register_property_sub_group(class_name gdStringName, subgroup, prefix gdString) {
+	C.gd_classdb_register_property_sub_group(class_name, subgroup, prefix)
 }
-
-func (v Variant) Free() {
-	C.gd_variant_unsafe_free(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]))
+func gd_classdb_register_signal(class_name, signal gdStringName, args gd_property_list_t) {
+	C.gd_classdb_register_signal(class_name, signal, args)
 }
-
-func (op VariantOperator) Evaluate(a, b Variant) (Variant, bool) {
-	var result C.Variant
-	ok := bool(C.gd_variant_eval(C.uint32_t(op), C.uint64_t(a[0]), C.uint64_t(a[1]), C.uint64_t(a[2]), C.uint64_t(b[0]), C.uint64_t(b[1]), C.uint64_t(b[2]), &result))
-	return toVariant(result), ok
+func gd_classdb_register_removal(class_name gdStringName) {
+	C.gd_classdb_register_removal(class_name)
 }
 
-func VariantInto[T Any](v Variant) T {
-	var result T
-	C.gd_variant_unsafe_make_native(C.uint32_t(uint32(variantTypeOf[T]())), C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]), C.uint64_t(uint64(shapeFor[T]())<<4), C.UnsafePointer(unsafe.Pointer(&result)))
-	return result
+func gd_classdb_FileAccess_write(file gdObject, buf *byte, length int64) {
+	C.gd_classdb_FileAccess_write(file, (*C.char)(unsafe.Pointer(buf)), C.int64_t(length))
 }
-
-func VariantFrom[T Any](native T) Variant {
-	var result C.Variant
-	C.gd_variant_unsafe_from_native(C.uint32_t(uint32(variantTypeOf[T]())), &result, C.uint64_t(uint64(shapeFor[T]())<<4), C.UnsafePointer(unsafe.Pointer(&native)))
-	return toVariant(result)
+func gd_classdb_FileAccess_read(file gdObject, buf *byte, cap_ int64) int64 {
+	return int64(C.gd_classdb_FileAccess_read(file, (*C.char)(unsafe.Pointer(buf)), C.int64_t(cap_)))
 }
 
-func PointerIntoVariant[T Any](v Variant) PointerTo[T] {
-	return PointerTo[T](C.gd_variant_unsafe_internal_pointer(C.uint32_t(uint32(variantTypeOf[T]())), C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2])))
+func gd_classdb_Image_memory(img gdObject) gd_addr { return C.gd_classdb_Image_memory(img) }
+func gd_classdb_Image_access(img gdObject, offset int64) byte {
+	return byte(C.gd_classdb_Image_access(img, C.int64_t(offset)))
 }
-
-// Dictionary
 
-func (d Dictionary) Lookup(key Variant) Variant {
-	var result C.Variant
-	C.gd_packed_dictionary_access(C.uintptr_t(d), C.uint64_t(key[0]), C.uint64_t(key[1]), C.uint64_t(key[2]), &result)
-	return toVariant(result)
+func gd_classdb_WorkerThreadPool_add_task(pool gdObject, task gd_extension_task_id, priority bool, description gdString) {
+	C.gd_classdb_WorkerThreadPool_add_task(pool, task, C.bool(priority), description)
 }
-
-func (d Dictionary) Insert(key, val Variant) {
-	C.gd_packed_dictionary_modify(C.uintptr_t(d), C.uint64_t(key[0]), C.uint64_t(key[1]), C.uint64_t(key[2]), C.uint64_t(val[0]), C.uint64_t(val[1]), C.uint64_t(val[2]))
+func gd_classdb_WorkerThreadPool_add_group_task(pool gdObject, task gd_extension_task_id, elements, arg int32, priority bool, description gdString) {
+	C.gd_classdb_WorkerThreadPool_add_group_task(pool, task, C.int32_t(elements), C.int32_t(arg), C.bool(priority), description)
 }
 
-func (dict Dictionary) SetType(key, val Type) {
-	var keyScript, valScript = key.script, val.script
-	C.gd_variant_type_setup_dictionary(C.uintptr_t(dict),
-		C.uint32_t(uint32(key.vtype)), C.uintptr_t(key.class),
-		C.uint64_t(keyScript[0]), C.uint64_t(keyScript[1]), C.uint64_t(keyScript[2]),
-		C.uint32_t(uint32(val.vtype)), C.uintptr_t(val.class),
-		C.uint64_t(valScript[0]), C.uint64_t(valScript[1]), C.uint64_t(valScript[2]))
+func gd_classdb_XMLParser_load(parser gdObject, buf *byte, cap_ int64) int64 {
+	return int64(C.gd_classdb_XMLParser_load(parser, (*C.char)(unsafe.Pointer(buf)), C.int64_t(cap_)))
 }
 
-// RefCounted
+//
+// Dictionaries
+//
 
-func (ref RefCounted) Get() Object {
-	return Object(C.gd_ref_get_object(C.uintptr_t(ref)))
+func gd_packed_dictionary_access(d gdDictionary, key_1, key_2, key_3 uint64, result *gdVariant) {
+	C.gd_packed_dictionary_access(d, C.uint64_t(key_1), C.uint64_t(key_2), C.uint64_t(key_3), result)
 }
-
-func (ref RefCounted) Set(obj Object) {
-	C.gd_ref_set_object(C.uintptr_t(ref), C.uintptr_t(obj))
+func gd_packed_dictionary_modify(d gdDictionary, key_1, key_2, key_3, val_1, val_2, val_3 uint64) {
+	C.gd_packed_dictionary_modify(d, C.uint64_t(key_1), C.uint64_t(key_2), C.uint64_t(key_3), C.uint64_t(val_1), C.uint64_t(val_2), C.uint64_t(val_3))
 }
 
+//
 // Editor
+//
 
-func EditorDocumentation(xml string) {
-	C.gd_editor_add_documentation((*C.char)(unsafe.Pointer(unsafe.StringData(xml))), C.uint32_t(len(xml)))
+func gd_editor_add_documentation(xml *byte, length uint32) {
+	C.gd_editor_add_documentation((*C.char)(unsafe.Pointer(xml)), C.uint32_t(length))
+}
+func gd_editor_add_plugin(class_name gdStringName) { C.gd_editor_add_plugin(class_name) }
+func gd_editor_end_plugin(class_name gdStringName) { C.gd_editor_end_plugin(class_name) }
+
+//
+// Iterators
+//
+
+func gd_iterator_make(v_1, v_2, v_3 uint64, result *gdVariant, err *gd_error) {
+	C.gd_iterator_make(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), result, err)
+}
+func gd_iterator_next(v_1, v_2, v_3 uint64, iter *gdVariant, err *gd_error) bool {
+	return bool(C.gd_iterator_next(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), iter, err))
+}
+func gd_iterator_load(v_1, v_2, v_3, i_1, i_2, i_3 uint64, result *gdVariant, err *gd_error) {
+	C.gd_iterator_load(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.uint64_t(i_1), C.uint64_t(i_2), C.uint64_t(i_3), result, err)
 }
 
-func EnableEditorPlugin(name Class) {
-	C.gd_editor_add_plugin(C.uintptr_t(name))
+//
+// Logging
+//
+
+func gd_log(level gd_log_level, text *byte, text_len uint32, code *byte, code_len uint32, fn *byte, fn_len uint32, file *byte, file_len uint32, line int32, notify_editor bool) {
+	C.gd_log(level,
+		(*C.char)(unsafe.Pointer(text)), C.uint32_t(text_len),
+		(*C.char)(unsafe.Pointer(code)), C.uint32_t(code_len),
+		(*C.char)(unsafe.Pointer(fn)), C.uint32_t(fn_len),
+		(*C.char)(unsafe.Pointer(file)), C.uint32_t(file_len),
+		C.int32_t(line), C.bool(notify_editor),
+	)
 }
 
-func RemoveEditorPlugin(name Class) {
-	C.gd_editor_end_plugin(C.uintptr_t(name))
+//
+// Objects
+//
+
+func gd_object_make(name gdStringName) gdObject           { return C.gd_object_make(name) }
+func gd_object_name(obj gdObject) gdStringName            { return C.gd_object_name(obj) }
+func gd_object_type(name gdStringName) gdClassTag         { return C.gd_object_type(name) }
+func gd_object_cast(obj gdObject, to gdClassTag) gdObject { return C.gd_object_cast(obj, to) }
+func gd_object_lookup(id uint64) gdObject                 { return C.gd_object_lookup(C.ObjectID(id)) }
+func gd_object_global(name gdStringName) gdObject         { return C.gd_object_global(name) }
+func gd_object_call(obj gdObject, method gd_method_id, result *gdVariant, arg_count int64, args *gdVariant, err *gd_error) {
+	C.gd_object_call(obj, method, result, C.int64_t(arg_count), args, err)
+}
+func gd_object_id(obj gdObject) uint64 { return uint64(C.gd_object_id(obj)) }
+func gd_object_id_inside_variant(v_1, v_2, v_3 uint64) uint64 {
+	return uint64(C.gd_object_id_inside_variant(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3)))
+}
+func gd_object_free(obj gdObject) { C.gd_object_free(obj) }
+
+func gd_method(class_name, method gdStringName, hash int64) gd_method_id {
+	return C.gd_method(class_name, method, C.int64_t(hash))
+}
+func gd_method_call(obj gdObject, fn gd_method_id, result gd_addr, shape gd_shape, args gd_addr) {
+	C.gd_method_call(obj, fn, result, shape, args)
 }
 
-// PropertyList
+//
+// Extension Scripts
+//
 
-func MakePropertyList(n int64) PropertyList {
-	return PropertyList(C.gd_property_list_make(C.int64_t(n)))
+func gd_script(obj gdObject, language gdObject) gd_extension_script_id {
+	return C.gd_script(obj, language)
+}
+func gd_script_call(obj gdObject, name gdStringName, result *gdVariant, arg_count int64, args *gdVariant, err *gd_error) {
+	C.gd_script_call(obj, name, result, C.int64_t(arg_count), args, err)
+}
+func gd_script_setup(obj gdObject, script gd_extension_script_id) {
+	C.gd_script_setup(obj, script)
+}
+func gd_script_defines_method(obj gdObject, method gdStringName) bool {
+	return bool(C.gd_script_defines_method(obj, method))
+}
+func gd_object_script_placeholder_create(language, script, owner gdObject) gd_extension_script_id {
+	return C.gd_object_script_placeholder_create(language, script, owner)
+}
+func gd_object_script_placeholder_update(script gd_extension_script_id, array gdArray, dict gdDictionary) {
+	C.gd_object_script_placeholder_update(script, array, dict)
+}
+func gd_script_yield_property(fn gd_property_iterator_t, arg uintptr, name gdStringName, state_1, state_2, state_3 uint64) {
+	C.gd_script_yield_property(fn, C.uintptr_t(arg), name, C.uint64_t(state_1), C.uint64_t(state_2), C.uint64_t(state_3))
 }
 
-func (p PropertyList) Push(prop Property) {
-	C.gd_property_list_push(C.uintptr_t(p), C.uint32_t(uint32(prop.Type)), C.uintptr_t(prop.Name), C.uintptr_t(prop.ClassName), C.uint32_t(prop.Hint), C.uintptr_t(prop.HintString), C.uint32_t(prop.Usage), 0)
+//
+// Extension Instances
+//
+
+func gd_extension_object_setup(obj gdObject, name gdStringName, inst gd_extension_object_id) {
+	C.gd_extension_object_setup(obj, name, inst)
 }
 
-func (p PropertyList) Free() {
-	C.gd_property_list_free(C.uintptr_t(p))
+//
+// Extension Bindings
+//
+
+func gd_object_attach_extension_binding(obj gdObject, binding gd_extension_binding_id) {
+	C.gd_object_attach_extension_binding(obj, binding)
+}
+func gd_object_detach_extension_binding(obj gdObject) {
+	C.gd_object_detach_extension_binding(obj)
 }
 
-// MethodList
+//
+// RefCounted
+//
 
-func MakeMethodList(n int64) MethodList {
-	return MethodList(C.gd_method_list_make(C.int64_t(n)))
+func gd_ref_get_object(ref gdRefCounted) gdObject      { return C.gd_ref_get_object(ref) }
+func gd_ref_set_object(ref gdRefCounted, obj gdObject) { C.gd_ref_set_object(ref, obj) }
+
+//
+// Strings
+//
+
+func gd_string_access(s gdString, idx int64) int32 {
+	return int32(C.gd_string_access(s, C.int64_t(idx)))
+}
+func gd_string_memory(s gdString) gd_addr { return C.gd_string_memory(s) }
+func gd_string_decode(enc gd_encoding, s *byte, length int64) gdString {
+	return C.gd_string_decode(enc, (*C.char)(unsafe.Pointer(s)), C.int64_t(length))
+}
+func gd_string_encode(enc gd_encoding, s gdString, buf *byte, cap_ int64) int64 {
+	return int64(C.gd_string_encode(enc, s, (*C.char)(unsafe.Pointer(buf)), C.int64_t(cap_)))
+}
+func gd_string_intern(enc gd_encoding, s *byte, length int64) gdStringName {
+	return C.gd_string_intern(enc, (*C.char)(unsafe.Pointer(s)), C.int64_t(length))
+}
+func gd_string_resize(s gdString, size int64) gdString {
+	return C.gd_string_resize(s, C.int64_t(size))
+}
+func gd_string_append(s gdString, other gdString) gdString { return C.gd_string_append(s, other) }
+func gd_string_append_rune(s gdString, ch int32) gdString {
+	return C.gd_string_append_rune(s, C.int32_t(ch))
 }
 
-func (m MethodList) Push(name StringName, call ExtensionFunction, flags uint32, returnInfo PropertyList, argsInfo PropertyList, count int64, defaults unsafe.Pointer) {
-	C.gd_method_list_push(C.uintptr_t(m), C.uintptr_t(name), C.uintptr_t(functions.New(call)), C.uint32_t(flags), C.uintptr_t(returnInfo), C.uintptr_t(argsInfo), C.int64_t(count), C.UnsafePointer(defaults))
+//
+// Callables
+//
+
+func gd_callable_create(id gd_extension_callable_t, owner uint64, result *gdCallable) {
+	C.gd_callable_create(id, C.ObjectID(owner), result)
+}
+func gd_callable_lookup(c_1, c_2 uint64) gd_extension_callable_t {
+	return C.gd_callable_lookup(C.uint64_t(c_1), C.uint64_t(c_2))
 }
 
-func (m MethodList) Free() {
-	C.gd_method_list_free(C.uintptr_t(m))
-}
-
-// ClassDB registration
-
-func RegisterClass(class string, id ExtensionClass) Class {
-	class_name := UTF8.Intern(class)
-	parent := id.Parent()
-	C.gd_classdb_register(C.StringName(class_name), C.StringName(parent),
-		C.ExtensionClassID(classes.New(id)),
-		C.bool(id.Virtual()), C.bool(id.Abstract()), C.bool(id.Exposed()), C.bool(id.Runtime()),
-		C.String(id.Icon()))
-	return Class(class_name)
-}
-
-func (class Class) RegisterMethods(methods MethodList) {
-	C.gd_classdb_register_methods(C.uintptr_t(class), C.uintptr_t(methods))
-}
-
-func (class Class) RegisterConstant(enum, name StringName, value int64, bitfield bool) {
-	C.gd_classdb_register_constant(C.uintptr_t(class), C.uintptr_t(enum), C.uintptr_t(name), C.int64_t(value), C.bool(bitfield))
-}
-
-func (class Class) RegisterProperty(property Property, setter, getter StringName) {
-	pl := MakePropertyList(1)
-	pl.Push(property)
-	C.gd_classdb_register_property(C.uintptr_t(class), C.uintptr_t(pl), C.uintptr_t(setter), C.uintptr_t(getter))
-}
-
-func (class Class) RegisterPropertyIndexed(property Property, setter, getter StringName, index int) {
-	pl := MakePropertyList(1)
-	pl.Push(property)
-	C.gd_classdb_register_property_indexed(C.uintptr_t(class), C.uintptr_t(pl), C.uintptr_t(setter), C.uintptr_t(getter), C.int64_t(index))
-}
-
-func (class Class) RegisterPropertyGroup(group, prefix String) {
-	C.gd_classdb_register_property_group(C.uintptr_t(class), C.uintptr_t(group), C.uintptr_t(prefix))
-}
-
-func (class Class) RegisterPropertySubgroup(subgroup, prefix String) {
-	C.gd_classdb_register_property_sub_group(C.uintptr_t(class), C.uintptr_t(subgroup), C.uintptr_t(prefix))
-}
-
-func (class Class) RegisterSignal(signal StringName, args PropertyList) {
-	C.gd_classdb_register_signal(C.uintptr_t(class), C.uintptr_t(signal), C.uintptr_t(args))
-}
-
-func (class Class) Free() {
-	C.gd_classdb_register_removal(C.uintptr_t(class))
-}
-
-// Iterator
-
-func (v Variant) Iterator() (Iterator, Error) {
-	var iter Variant
-	var callErr Error
-	C.gd_iterator_make(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]),
-		C.UnsafePointer(unsafe.Pointer(&iter)), C.UnsafePointer(unsafe.Pointer(&callErr)))
-	return Iterator(iter), callErr
-}
-
-func (iter *Iterator) Next() (bool, Error) {
-	v := Variant(*iter)
-	var callErr Error
-	ok := bool(C.gd_iterator_next(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]),
-		C.UnsafePointer(unsafe.Pointer(iter)), C.UnsafePointer(unsafe.Pointer(&callErr))))
-	return ok, callErr
-}
-
-func (iter Iterator) Value() (Variant, Error) {
-	v := Variant(iter)
-	var result Variant
-	var callErr Error
-	C.gd_iterator_load(C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]),
-		C.uint64_t(v[0]), C.uint64_t(v[1]), C.uint64_t(v[2]),
-		C.UnsafePointer(unsafe.Pointer(&result)), C.UnsafePointer(unsafe.Pointer(&callErr)))
-	return result, callErr
-}
-
-// Callable callbacks
-
-//export gd_on_callable_called
-func gd_on_callable_called(c C.CallableID, ret *C.Variant, argc C.Int, args C.VariadicVariants, err *C.CallError) {
-	r, e := callables.Get(uintptr(c)).Call(Variants{first: PointerTo[PointerTo[Variant]](unsafe.Pointer(args)), count: int(argc)})
-	*ret = C.Variant{C.uint64_t(r[0]), [2]C.uint64_t{C.uint64_t(r[1]), C.uint64_t(r[2])}}
-	*err = C.CallError{C.uint32_t(e.error), C.int32_t(e.argument), C.int32_t(e.expected)}
-}
-
-//export gd_on_callable_verify
-func gd_on_callable_verify(c C.CallableID) C.bool {
-	return C.bool(callables.Get(uintptr(c)).IsValid())
-}
-
-//export gd_on_callable_delete
-func gd_on_callable_delete(c C.CallableID) { callables.Del(uintptr(c)) }
-
-//export gd_on_callable_hashed
-func gd_on_callable_hashed(c C.CallableID) C.uint32_t {
-	return C.uint32_t(callables.Get(uintptr(c)).Hash())
-}
-
-//export gd_on_callable_sorted
-func gd_on_callable_sorted(a, b C.CallableID) C.Int {
-	return C.Int(callables.Get(uintptr(a)).Compare(callables.Get(uintptr(b))))
-}
-
-//export gd_on_callable_string
-func gd_on_callable_string(c C.CallableID) C.String {
-	return C.String(callables.Get(uintptr(c)).UnsafeString())
-}
-
-//export gd_on_callable_length
-func gd_on_callable_length(c C.CallableID) C.Int {
-	return C.Int(callables.Get(uintptr(c)).ArgumentCount())
-}
-
-// Extension binding callbacks
-
-//export gd_on_extension_binding_created
-func gd_on_extension_binding_created(p0 C.uintptr_t) C.uintptr_t { return 0 }
-
-//export gd_on_extension_binding_removed
-func gd_on_extension_binding_removed(p0, p1 C.uintptr_t) {}
-
-//export gd_on_extension_binding_reference
-func gd_on_extension_binding_reference(p0 C.uintptr_t, p1 C.bool) C.bool { return false }
-
-// Extension class callbacks
-
-//export gd_on_extension_class_create
-func gd_on_extension_class_create(p0 C.uintptr_t, p1 C.bool) C.uintptr_t {
-	return C.uintptr_t(classes.Get(uintptr(p0)).Create(bool(p1)))
-}
-
-//export gd_on_extension_class_method
-func gd_on_extension_class_method(p0 C.uintptr_t, p1 C.uintptr_t, p2 C.uint32_t) C.uintptr_t {
-	fn := classes.Get(uintptr(p0)).Method(StringName(p1), uint32(p2))
-	if fn == nil {
-		return 0
-	}
-	return C.uintptr_t(functions.New(fn))
-}
-
-//export gd_on_extension_class_caller
-func gd_on_extension_class_caller(p0 C.uintptr_t, p1 C.uintptr_t, p2 C.uint32_t) C.uintptr_t {
-	fn := classes.Get(uintptr(p0)).Method(StringName(p1), uint32(p2))
-	if fn == nil {
-		return 0
-	}
-	return C.uintptr_t(functions.New(fn))
-}
-
-// Extension instance callbacks
-
-//export gd_on_extension_instance_set
-func gd_on_extension_instance_set(p0 C.uintptr_t, p1 C.uintptr_t, p2, p3, p4 C.uint64_t) C.bool {
-	return C.bool(instances.Get(uintptr(p0)).Set(
-		StringName(p1), Variant{uint64(p2), uint64(p3), uint64(p4)}))
-}
-
-//export gd_on_extension_instance_get
-func gd_on_extension_instance_get(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant) C.bool {
-	v, ok := instances.Get(uintptr(p0)).Get(StringName(p1))
-	if ok {
-		*p2 = C.Variant{C.uint64_t(v[0]), [2]C.uint64_t{C.uint64_t(v[1]), C.uint64_t(v[2])}}
-	}
-	return C.bool(ok)
-}
-
-//export gd_on_extension_instance_property_list
-func gd_on_extension_instance_property_list(p0 C.uintptr_t) C.uintptr_t {
-	return C.uintptr_t(instances.Get(uintptr(p0)).PropertyList())
-}
-
-//export gd_on_extension_instance_property_has_default
-func gd_on_extension_instance_property_has_default(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
-	return C.bool(instances.Get(uintptr(p0)).HasDefault(StringName(p1)))
-}
-
-//export gd_on_extension_instance_property_get_default
-func gd_on_extension_instance_property_get_default(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant) C.bool {
-	v, ok := instances.Get(uintptr(p0)).GetDefault(StringName(p1))
-	if ok {
-		*p2 = C.Variant{C.uint64_t(v[0]), [2]C.uint64_t{C.uint64_t(v[1]), C.uint64_t(v[2])}}
-	}
-	return C.bool(ok)
-}
-
-//export gd_on_extension_instance_property_validation
-func gd_on_extension_instance_property_validation(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
-	return C.bool(instances.Get(uintptr(p0)).ValidateProperty(Property{Name: StringName(p1)}))
-}
-
-//export gd_on_extension_instance_notification
-func gd_on_extension_instance_notification(p0 C.uintptr_t, p1 C.int32_t, p2 C.bool) {
-	instances.Get(uintptr(p0)).Notification(int32(p1), bool(p2))
-}
-
-//export gd_on_extension_instance_stringify
-func gd_on_extension_instance_stringify(p0 C.uintptr_t) C.uintptr_t {
-	return C.uintptr_t(instances.Get(uintptr(p0)).UnsafeString())
-}
-
-//export gd_on_extension_instance_reference
-func gd_on_extension_instance_reference(p0 C.uintptr_t, p1 C.bool) C.bool {
-	return C.bool(instances.Get(uintptr(p0)).Reference(bool(p1)))
-}
-
-//export gd_on_extension_instance_rid
-func gd_on_extension_instance_rid(p0 C.uintptr_t) C.uint64_t {
-	return C.uint64_t(instances.Get(uintptr(p0)).RID())
-}
-
-//export gd_on_extension_instance_checked_call
-func gd_on_extension_instance_checked_call(p0, p1 C.uintptr_t, p2, p3 C.UnsafePointer) {
-	var inst ExtensionInstance
-	if uintptr(p0) != 0 {
-		inst = instances.Get(uintptr(p0))
-	}
-	functions.Get(uintptr(p1)).PointerCall(inst, MutablePointer(uintptr(p3)), PointerTo[Pointer](uintptr(p2)))
-}
-
-//export gd_on_extension_instance_called
-func gd_on_extension_instance_called(p0, p1 C.uintptr_t, p2, p3 C.UnsafePointer) {
-	inst := instances.Get(uintptr(p0))
-	functions.Get(uintptr(p1)).PointerCall(inst, MutablePointer(uintptr(p3)), PointerTo[Pointer](uintptr(p2)))
-}
-
-//export gd_on_extension_instance_variant_call
-func gd_on_extension_instance_variant_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant, p3 C.VariadicVariants) {
-	var inst ExtensionInstance
-	if uintptr(p0) != 0 {
-		inst = instances.Get(uintptr(p0))
-	}
-	v := functions.Get(uintptr(p1)).CheckedCall(inst, Variants{
-		first: PointerTo[PointerTo[Variant]](unsafe.Pointer(p3)),
-		count: -1,
-	})
-	*p2 = C.Variant{C.uint64_t(v[0]), [2]C.uint64_t{C.uint64_t(v[1]), C.uint64_t(v[2])}}
-}
-
-//export gd_on_extension_instance_dynamic_call
-func gd_on_extension_instance_dynamic_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.Variant, p3 C.int64_t, p4 C.VariadicVariants, p5 *C.CallError) {
-	var inst ExtensionInstance
-	if uintptr(p0) != 0 {
-		inst = instances.Get(uintptr(p0))
-	}
-	v, err := functions.Get(uintptr(p1)).DynamicCall(inst, Variants{
-		first: PointerTo[PointerTo[Variant]](unsafe.Pointer(p4)),
-		count: int(p3),
-	})
-	*p2 = C.Variant{C.uint64_t(v[0]), [2]C.uint64_t{C.uint64_t(v[1]), C.uint64_t(v[2])}}
-	*p5 = C.CallError{C.uint32_t(err.error), C.int32_t(err.argument), C.int32_t(err.expected)}
-}
-
-//export gd_on_extension_instance_free
-func gd_on_extension_instance_free(p0 C.uintptr_t) {
-	inst := instances.Get(uintptr(p0))
-	if f, ok := inst.(interface{ Free() }); ok {
-		f.Free()
-	}
-	instances.Del(uintptr(p0))
-}
-
-// Extension script callbacks
-
-//export gd_on_extension_script_categorization
-func gd_on_extension_script_categorization(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
-	script, ok := instances.Get(uintptr(p0)).(ExtensionScript)
-	if !ok {
-		return false
-	}
-	return C.bool(script.PropertyCategory() != 0)
-}
-
-//export gd_on_extension_script_get_property_type
-func gd_on_extension_script_get_property_type(p0 C.uintptr_t, name C.uintptr_t, p1 *C.CallError) C.uint32_t {
-	script, ok := instances.Get(uintptr(p0)).(ExtensionScript)
-	if !ok {
-		*p1 = C.CallError{C.uint32_t(errorInvalidMethod), 0, 0}
-		return 0
-	}
-	return C.uint32_t(script.PropertyType(StringName(name)))
-}
-
-//export gd_on_extension_script_get_owner
-func gd_on_extension_script_get_owner(p0 C.uintptr_t) C.uintptr_t {
-	script, ok := instances.Get(uintptr(p0)).(ExtensionScript)
-	if !ok {
-		return 0
-	}
-	return C.uintptr_t(script.Owner())
-}
-
-//export gd_on_extension_script_get_property_state
-func gd_on_extension_script_get_property_state(p0 C.uintptr_t, p1 C.uintptr_t, p2 C.uintptr_t) {
-	script, ok := instances.Get(uintptr(p0)).(ExtensionScript)
-	if !ok {
-		return
-	}
-	script.ExportedProperties(func(name StringName, value Variant) bool {
-		C.gd_object_script_property_state_add(C.FunctionID(p1), C.uintptr_t(p2), C.StringName(name), C.uint64_t(value[0]), C.uint64_t(value[1]), C.uint64_t(value[2]))
-		return true
-	})
-}
-
-//export gd_on_extension_script_get_methods
-func gd_on_extension_script_get_methods(p0 C.uintptr_t) C.uintptr_t {
-	script, ok := instances.Get(uintptr(p0)).(ExtensionScript)
-	if !ok {
-		return 0
-	}
-	return C.uintptr_t(script.MethodList())
-}
-
-//export gd_on_extension_script_has_method
-func gd_on_extension_script_has_method(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
-	script, ok := instances.Get(uintptr(p0)).(ExtensionScript)
-	if !ok {
-		return false
-	}
-	return C.bool(script.HasMethod(StringName(p1)))
-}
-
-//export gd_on_extension_script_get_method_argument_count
-func gd_on_extension_script_get_method_argument_count(p0 C.uintptr_t, p1 C.uintptr_t) C.int64_t {
-	script, ok := instances.Get(uintptr(p0)).(ExtensionScript)
-	if !ok {
-		return 0
-	}
-	return C.int64_t(script.MethodArgumentCount(StringName(p1)))
-}
-
-//export gd_on_extension_script_get
-func gd_on_extension_script_get(p0 C.uintptr_t) C.uintptr_t {
-	script, ok := instances.Get(uintptr(p0)).(ExtensionScript)
-	if !ok {
-		return 0
-	}
-	return C.uintptr_t(script.Script())
-}
-
-//export gd_on_extension_script_is_placeholder
-func gd_on_extension_script_is_placeholder(p0 C.uintptr_t) C.bool {
-	script, ok := instances.Get(uintptr(p0)).(ExtensionScript)
-	if !ok {
-		return false
-	}
-	return C.bool(script.IsPlaceholder())
-}
-
-//export gd_on_extension_script_get_language
-func gd_on_extension_script_get_language(p0 C.uintptr_t) C.uintptr_t {
-	script, ok := instances.Get(uintptr(p0)).(ExtensionScript)
-	if !ok {
-		return 0
-	}
-	return C.uintptr_t(script.ScriptLanguage())
-}
-
-// Lifecycle callbacks
-
-//export gd_on_engine_init
-func gd_on_engine_init(p0 C.uint32_t) {
-	level := InitializationLevel(p0)
-	for _, fn := range onEngineInit {
-		fn(level)
-	}
-}
-
-//export gd_on_engine_exit
-func gd_on_engine_exit(p0 C.uint32_t) {
-	level := InitializationLevel(p0)
-	for _, fn := range onEngineExit {
-		fn(level)
-	}
-}
-
-//export gd_on_first_frame
-func gd_on_first_frame() {
-	for _, fn := range onFirstFrame {
-		fn()
-	}
-}
-
-//export gd_on_every_frame
-func gd_on_every_frame() {
-	for _, fn := range onEveryFrame {
-		fn()
-	}
-}
-
-//export gd_on_final_frame
-func gd_on_final_frame() {
-	for _, fn := range onFinalFrame {
-		fn()
-	}
-}
-
-//export gd_on_worker_thread_pool_task
-func gd_on_worker_thread_pool_task(p0 C.uintptr_t) {
-	if onWorkerThreadPoolTask != nil {
-		onWorkerThreadPoolTask(taskID(p0))
-	}
-}
-
-//export gd_on_worker_thread_pool_group_task
-func gd_on_worker_thread_pool_group_task(p0 C.uintptr_t, p1 C.uint32_t) {
-	if onWorkerThreadPoolGroupTask != nil {
-		onWorkerThreadPoolGroupTask(taskID(p0), int32(p1))
-	}
-}
-
-//export gd_on_editor_class_in_use_detection
-func gd_on_editor_class_in_use_detection(p0, p1 C.uintptr_t, p2 *C.PackedStringArray) {
-	if onEditorClassDetection != nil {
-		result := onEditorClassDetection(PackedArray[String]{uint64(p0), uint64(p1)})
-		p2.array = C.uint64_t(result[0])
-		p2.length = C.uint64_t(result[1])
-	}
-}
+//
+// Extension Lifecycle
+//
+
+func gd_extension_library_location() gdString { return C.gd_extension_library_location() }
