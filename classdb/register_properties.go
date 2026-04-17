@@ -233,10 +233,7 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 			}
 			tag, hasTag := rfield.Tag.Lookup("gd")
 			if tag == "-" {
-				if hasGetter {
-					return gd.NewVariant(getter.Get(name.String())), true
-				}
-				return gd.Variant{}, false
+				break
 			}
 			if hasTag && !rfield.Anonymous && tag == sname {
 				field = rvalue.FieldByIndex(rfield.Index)
@@ -250,7 +247,11 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	}
 	if !field.IsValid() {
 		if hasGetter {
-			return gd.NewVariant(getter.Get(name.String())), true
+			value := getter.Get(name.String())
+			if value == nil {
+				return gd.Variant{}, false
+			}
+			return gd.NewVariant(value), true
 		}
 		return gd.Variant{}, false
 	}
