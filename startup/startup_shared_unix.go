@@ -61,7 +61,8 @@ func (engine *engineAsSharedLibrary) Start() {
 	if ptr == nil {
 		return
 	}
-	engine.Library = Startup.Instance([1]gdclass.Startup{gdclass.NewStartup(gdreference.RawObject(gdextension.Object(uintptr(ptr))))})
+	obj := (*gdextension.Object)(unsafe.Pointer(ptr))
+	engine.Library = Startup.Instance([1]gdclass.Startup{gdclass.NewStartup(gdreference.RawObject(*obj))})
 	engine.destroy = func() {
 		C.call_libgodot_destroy_godot_instance(libgodot_destroy_godot_instance, ptr)
 	}

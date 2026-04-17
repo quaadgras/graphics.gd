@@ -19,9 +19,10 @@ import (
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/SceneTree"
+	gd "graphics.gd/internal"
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/threadcheck"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
@@ -72,8 +73,7 @@ func init() {
 			for _, cleanup := range slices.Backward(internal.Cleanups()) {
 				cleanup()
 			}
-			pointers.Cycle()
-			pointers.Cycle()
+			gdreference.GC(gd.Free)
 			if theMainFunctionIsWaitingForTheEngineToShutDown {
 				resume_main()
 			}
@@ -182,7 +182,7 @@ func (loop goMain) PhysicsProcess(delta Float.X) bool {
 func (loop goMain) Process(delta Float.X) bool {
 	defer Callable.Cycle()
 	defer keep_reachable_instances_alive()
-	defer pointers.Cycle()
+	defer gdreference.GC(gd.Free)
 	dt = delta
 	close, _ := resume_main()
 	return close

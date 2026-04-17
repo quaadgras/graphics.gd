@@ -4,7 +4,6 @@ import (
 	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdreference"
-	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/ring"
 	"graphics.gd/variant/Callable"
 
@@ -20,7 +19,6 @@ func init() {
 		ring.Main.Flush()
 		keep_reachable_instances_alive()
 		gdreference.GC(gd.Free)
-		pointers.Cycle()
 	})
 	gdunsafe.OnFinalFrame(func() {
 	})

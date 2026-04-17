@@ -24,7 +24,7 @@ func (id ID) Instance() Instance { //gd:instance_from_id is_instance_id_valid
 		return Nil
 	}
 	instance := gdextension.Object(gdunsafe.ObjectID(id).Object())
-	if instance == 0 {
+	if instance == (gdextension.Object{}) {
 		return Nil
 	}
 	return Instance([1]gdreference.Object{gdreference.LetObject(instance)})
@@ -89,7 +89,7 @@ func init() {
 }
 
 func (self *Instance) SetObject(obj [1]gdclass.Object) bool {
-	if gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(otype) != 0 {
+	if gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(otype) != (gdextension.Object{}) {
 		self[0] = *(*gdclass.Object)(unsafe.Pointer(&obj))
 		return true
 	}

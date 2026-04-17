@@ -10,7 +10,8 @@ import (
 	MainLoopClass "graphics.gd/classdb/MainLoop"
 	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/classdb/Startup"
-	"graphics.gd/internal/pointers"
+	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Dictionary"
 	"graphics.gd/variant/Float"
@@ -85,7 +86,7 @@ var frame_ready = make(chan bool)
 func (loop goMainLoop) Process(delta Float.X) bool {
 	defer Callable.Cycle()
 	defer keep_reachable_instances_alive()
-	defer pointers.Cycle()
+	defer gdreference.GC(gd.Free)
 	return mainloop.Process(delta)
 }
 

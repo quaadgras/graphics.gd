@@ -90,8 +90,9 @@ type (
 		raw gdObject
 	}
 
-	PropertyList Pointer // PropertyList is a container for a list of [Property] values.
-	MethodList   Pointer // MethodList is a container for a list of [Method] values.
+	PropertyList  Pointer // PropertyList is a container for a list of [Property] values.
+	MethodList    Pointer // MethodList is a container for a list of [Method] values.
+	MethodPointer Pointer // MethodPointer is a pointer to a method on an [Class].
 
 	Class StringName // Class is a [StringName] that is used as a unique identifier for a class.
 
@@ -141,7 +142,7 @@ func ClassWithScript(class Class, script Script) Type {
 func (t Type) Shape() Shape { return t.shape }
 
 func (t Type) Free() {
-	if t.class != (Class(0)) {
+	if t.class != (Class{}) {
 		Free(StringName(t.class))
 	}
 }
@@ -153,7 +154,7 @@ type Packable interface {
 
 // Addressable types that can be used as a [Pointer] or [MutablePointer].
 type Addressable interface {
-	Any | Packable | Variant | PointerTo[Variant] | Pointer | uint64 | uint32 | uint16 | [2]uint64 | struct{}
+	Any | Packable | Variant | PointerTo[Variant] | Pointer | uint64 | uint32 | uint16 | [2]uint64 | struct{} | Error
 }
 
 type Returnable interface {
@@ -931,7 +932,7 @@ func (builtin *BuiltinMethod[T, Args, Result]) link(method string, hash int64) {
 	defer Free(method_name)
 	shape, vargs := builtinMethodShapeFor[T, Args, Result]()
 	*builtin = BuiltinMethod[T, Args, Result]{
-		entry: Pointer(gd_builtin_method(uint32(variantTypeOf[T]()), gdStringName(method_name), hash)),
+		entry: Pointer(gd_builtin_method(uint32(variantTypeOf[T]()), method_name.raw, hash)),
 		shape: shape,
 		vargs: vargs,
 	}

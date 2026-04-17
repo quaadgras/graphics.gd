@@ -12,7 +12,7 @@ import (
 	gd "graphics.gd/internal"
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
 )
@@ -70,8 +70,7 @@ func init() {
 			for _, cleanup := range slices.Backward(gd.Cleanups()) {
 				cleanup()
 			}
-			pointers.Cycle()
-			pointers.Cycle()
+			gdreference.GC(gd.Free)
 			close(shutdown)
 			internal.Linked = false
 		}
@@ -103,7 +102,7 @@ func (loop goMain) PhysicsProcess(delta Float.X) bool {
 func (loop goMain) Process(delta Float.X) bool {
 	defer Callable.Cycle()
 	defer keep_reachable_instances_alive()
-	defer pointers.Cycle()
+	defer gdreference.GC(gd.Free)
 	dt = delta
 	frame_ready <- false
 	return <-frame_ready

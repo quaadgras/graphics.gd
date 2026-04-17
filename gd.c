@@ -688,13 +688,13 @@ EXPORT struct Object gd_object_global(struct StringName name) {
 EXPORT void gd_extension_object_setup(struct Object obj, struct StringName name, gd_extension_object_id instance) {
     gdextension_object_set_instance((GDExtensionObjectPtr)(obj.opaque), (GDExtensionConstStringNamePtr)&name, (GDExtensionClassInstancePtr)instance);
 };
-EXPORT gd_extension_binding_id gd_object_lookup_extension_binding(gd_extension* extension, uintptr_t obj) {
+EXPORT gd_extension_binding_id gd_object_lookup_extension_binding(gd_extension* extension, struct Object obj) {
     GDExtensionInstanceBindingCallbacks instance_binding_callbacks = {
         .create_callback = extension->on_extension_binding_created,
         .reference_callback = extension->on_extension_binding_reference,
         .free_callback = extension->on_extension_binding_removed,
     };
-    return (uintptr_t)gdextension_object_get_instance_binding((GDExtensionObjectPtr)obj, gd_library, &instance_binding_callbacks);
+    return (uintptr_t)gdextension_object_get_instance_binding((GDExtensionObjectPtr)(obj.opaque), gd_library, &instance_binding_callbacks);
 };
 EXPORT void gd_object_attach_extension_binding(gd_extension* extension, struct Object obj, gd_extension_binding_id binding) {
     GDExtensionInstanceBindingCallbacks instance_binding_callbacks = {
@@ -951,9 +951,8 @@ EXPORT void gd_builtin_from(VariantType vtype, VARIANT_ARG(v), gd_addr result) {
     uint64_t self[4] = {v_1, v_2, v_3};
     type_from_variant_constructors[vtype]((GDExtensionTypePtr)result, &self[0]);
 };
-EXPORT void gd_variant_from(VariantType vtype, struct Variant* result, gd_shape shape, gd_addr args) {
-    void *points[16]; prepare_callframe(1, &points[0], shape, args);
-    variant_from_type_constructors[vtype]((GDExtensionUninitializedVariantPtr)result, points[0]);
+EXPORT void gd_variant_from(VariantType vtype, struct Variant* result, gd_addr args) {
+    variant_from_type_constructors[vtype]((GDExtensionUninitializedVariantPtr)result, &args);
 };
 EXPORT void gd_variant_type_call(VariantType vtype, struct StringName static_method_name, struct Variant* result, int64_t argc, struct Variant args[], gd_error* err) {
     void *points[16]; prepare_variants(&points[0], argc, (gd_addr)args);
@@ -978,9 +977,8 @@ EXPORT void gd_variant_type_setup_dictionary(struct Dictionary d,
     uint64_t v_script[3] = {val_script_1, val_script_2, val_script_3};
     gdextension_dictionary_set_typed(&d, (GDExtensionVariantType)key, &key_class_name, &k_script[0], (GDExtensionVariantType)val, &val_class_name, &v_script[0]);
 };
-EXPORT void gd_variant_type_constant(VariantType t, struct StringName constant, gd_addr result) {
-    void *points[16]; prepare_variants(&points[0], 1, result);
-    gdextension_variant_get_constant_value((GDExtensionVariantType)t, (GDExtensionConstStringNamePtr)&constant, (GDExtensionTypePtr)points[0]);
+EXPORT void gd_variant_type_constant(VariantType t, struct StringName constant, struct Variant* result) {
+    gdextension_variant_get_constant_value((GDExtensionVariantType)t, (GDExtensionConstStringNamePtr)&constant, &result);
 };
 EXPORT gd_caller_id gd_builtin_method(VariantType t, struct StringName method, int64_t hash) {
     return (gd_caller_id)gdextension_variant_get_ptr_builtin_method((GDExtensionVariantType)t, (GDExtensionConstStringNamePtr)&method, hash);
@@ -1079,7 +1077,7 @@ EXPORT bool gd_variant_set_keyed(VARIANT_ARG(v), VARIANT_ARG(key), VARIANT_ARG(v
     gdextension_variant_set_keyed(&self, &index, &value, &valid);
     return valid;
 };
-EXPORT bool gd_variant_set_index(VARIANT_ARG(v), int64_t i, VARIANT_ARG(val), gd_addr err) {
+EXPORT bool gd_variant_set_index(VARIANT_ARG(v), int64_t i, VARIANT_ARG(val), gd_error* err) {
     struct Variant self = VARIANT_ARG_GET(v);
     struct Variant value = VARIANT_ARG_GET(val);
     GDExtensionBool valid = false;

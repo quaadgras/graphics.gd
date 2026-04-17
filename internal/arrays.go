@@ -1,14 +1,9 @@
 package gd
 
 import (
-	"fmt"
 	"iter"
-	"reflect"
 
 	gdunsafe "graphics.gd"
-
-	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayVariant "graphics.gd/variant/Array"
 )
@@ -21,50 +16,21 @@ func IntsCollectAs[T, S ~int | ~int64 | ~int32](seq iter.Seq[S]) []T {
 	return result
 }
 
-func (a Array) Index(index int64) Variant {
-	return pointers.Raw[Variant](gdunsafe.Array(pointers.Get(a)[0]).Index(int(index))).Copy()
+func NewArray() gdunsafe.Array {
+	return builtin.creation.Array[0](0, nil)
 }
 
-func (a Array) SetIndex(index int64, value Variant) {
-	raw, _ := pointers.End(value.Copy())
-	gdunsafe.Array(pointers.Get(a)[0]).SetIndex(int(index), raw)
-}
-
-func (a Array) Free() {
-	if ptr, ok := pointers.End(a); ok {
-		gdunsafe.Free(gdunsafe.Array(ptr[0]))
-	}
-}
-
-func (a Array) Iter() iter.Seq2[int64, Variant] {
-	return func(yield func(int64, Variant) bool) {
-		for i := int64(0); i < a.Size(); i++ {
-			if !yield(i, a.Index(i)) {
-				break
-			}
-		}
-	}
-}
-
-func NewArray() Array {
-	return pointers.New[Array](gdextension.Array{gdextension.Pointer(builtin.creation.Array[0](0, nil))})
-}
-
-func ArrayAs[S []T, T any](array Array) []T {
-	var result = make([]T, array.Size())
-	for i := 0; i < int(array.Size()); i++ {
-		result[i] = VariantAs[T](array.Index(int64(i)))
+func ArrayAs[S []T, T any](array gdunsafe.Array) []T {
+	var size = builtin.Array.size.Call(array, struct{}{})
+	var result = make([]T, size)
+	for i := 0; i < int(size); i++ {
+		result[i] = VariantAs[T](array.Index(i))
 	}
 	return result
 }
 
-func InternalArray[T any](array ArrayVariant.Contains[T]) Array {
-	_, state := ArrayVariant.As(array, NewArrayProxy[T])
-	return pointers.Load[Array](state)
-}
-
 func ArrayFromSlice[T ArrayVariant.Contains[A], A, B any](slice []B) T {
-	var array = ArrayVariant.Through(NewArrayProxy[A]())
+	var array = NewArray()
 	array.Resize(len(slice))
 	for i, value := range slice {
 		array.SetIndex(i, VariantAs[A](NewVariant(VariantPkg.New(value))))
@@ -79,39 +45,4 @@ func EngineArrayFromSlice[T any](slice []T) ArrayVariant.Any {
 		array.SetIndex(i, VariantPkg.New(value))
 	}
 	return array
-}
-
-func NewArrayProxy[T any]() (ArrayProxy[T], complex128) {
-	var array = NewArray()
-	var pack = pointers.Pack(array)
-	return ArrayProxy[T]{}, pack
-}
-
-type ArrayProxy[T any] struct{}
-
-func (ArrayProxy[T]) Any(state complex128) ArrayVariant.Any {
-	return ArrayVariant.Through(ArrayProxy[VariantPkg.Any]{}, state)
-}
-
-func (ArrayProxy[T]) Resize(state complex128, i int) {
-	pointers.Load[Array](state).Resize(int64(i))
-}
-func (ArrayProxy[T]) Index(state complex128, i int) T {
-	value, err := convertVariantToDesiredGoType(pointers.Load[Array](state).Index(int64(i)), reflect.TypeFor[T]())
-	if err != nil {
-		panic(fmt.Sprintf("could not convert variant to desired go type: %v", err))
-	}
-	return value.Interface().(T)
-}
-func (ArrayProxy[T]) SetIndex(state complex128, i int, val T) {
-	pointers.Load[Array](state).SetIndex(int64(i), NewVariant(val))
-}
-func (ArrayProxy[T]) Len(state complex128) int {
-	return int(pointers.Load[Array](state).Size())
-}
-func (ArrayProxy[T]) IsReadOnly(state complex128) bool {
-	return bool(pointers.Load[Array](state).IsReadOnly())
-}
-func (ArrayProxy[T]) MakeReadOnly(state complex128) {
-	pointers.Load[Array](state).MakeReadOnly()
 }

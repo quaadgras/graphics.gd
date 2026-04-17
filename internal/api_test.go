@@ -42,7 +42,7 @@ func TestGetGodotVersion(t *testing.T) {
 		if gdunsafe.VersionMajor() < 3 {
 			t.Fail()
 		}
-		if gdunsafe.Version() == (gdunsafe.String(0)) {
+		if gdunsafe.Version() == (gdunsafe.String{}) {
 			t.Fail()
 		}
 	})

@@ -4,109 +4,104 @@ import (
 	"graphics.gd/variant"
 )
 
-// Proxy can be implemented to provide a foreign-managed array representation. This can be useful
-// when you want to access an array with its implementation hosted in another programming language.
-type Proxy[T any] interface {
-	Any(complex128) Any
-	Resize(complex128, int)
-	Index(complex128, int) T
-	SetIndex(complex128, int, T)
-	Len(complex128) int
-	IsReadOnly(complex128) bool
-	MakeReadOnly(complex128)
-}
-
-// Through returns a new array that accesses the underlying data of the array through the given
-// [Proxy].
-func Through[T any](proxy Proxy[T], state complex128) Contains[T] {
-	return Contains[T]{proxy: proxy, state: state}
+type Implementation[T any] interface {
+	AsArrayAny() Any
+	Resize(int)
+	Index(int) T
+	SetIndex(int, T)
+	Len() int
+	IsReadOnly() bool
+	MakeReadOnly()
+	Free()
 }
 
 // As converts the array into a foreign array representation, by reconstructing the array via the
 // available proxy methods. Panics if the array is already being proxied through a different
 // implementation, as reference semantics would no longer be preserved. The allocation function is
-// required so that a new proxy can be constructed if necessary, otherwise the existing proxy and
-// state is returned.
-func As[P Proxy[T], T any](array Contains[T], alloc func() (P, complex128)) (P, complex128) {
-	if array.proxy == nil {
+// required so that a new proxy can be constructed if necessary, otherwise the existing proxy is used.
+func As[P Implementation[T], T any](array Contains[T], alloc func() P) P {
+	if array.Implementation == nil {
 		return alloc()
 	}
-	existing, ok := array.proxy.(P)
+	existing, ok := array.Implementation.(P)
 	if ok {
-		return existing, array.state
+		return existing
 	}
-	local, ok := array.proxy.(*localFirst[T])
+	local, ok := array.Implementation.(*localFirst[T])
 	if !ok {
-		view, ok := any(array.proxy).(anyView)
+		view, ok := any(array.Implementation).(anyView)
 		if ok {
-			proxy, state := alloc()
-			proxy.Resize(state, view.Len(array.state))
-			for i := 0; i < view.Len(array.state); i++ {
-				proxy.SetIndex(state, i, variant.As[T](view.Index(array.state, i)))
+			proxy := alloc()
+			proxy.Resize(view.Len())
+			for i := 0; i < view.Len(); i++ {
+				proxy.SetIndex(i, variant.As[T](view.Index(i)))
 			}
-			if view.IsReadOnly(array.state) {
-				proxy.MakeReadOnly(state)
+			if view.IsReadOnly() {
+				proxy.MakeReadOnly()
 			}
-			view.pass(any(proxy).(Proxy[variant.Any]), state)
-			return proxy, state
+			view.pass(any(proxy).(Implementation[variant.Any]))
+			return proxy
 		}
 		panic("array is already proxied")
 	}
-	proxy, state := alloc()
-	proxy.Resize(state, local.Len(array.state))
-	for i := 0; i < local.Len(array.state); i++ {
-		proxy.SetIndex(state, i, local.Index(array.state, i))
+	proxy := alloc()
+	proxy.Resize(local.Len())
+	for i := 0; i < local.Len(); i++ {
+		proxy.SetIndex(i, local.Index(i))
 	}
-	if local.IsReadOnly(array.state) {
-		proxy.MakeReadOnly(state)
+	if local.IsReadOnly() {
+		proxy.MakeReadOnly()
 	}
-	local.slice = nil
-	local.proxy = proxy
-	local.state = state
-	return proxy, state
+	return proxy
 }
 
 // arrays are always backed by a local Go slice by default but can be proxied on-demand to a foreign
 // array representation.
 type localFirst[T any] struct {
 	slice []T
-	state complex128
-	proxy Proxy[T]
+	write bool
+	proxy Implementation[T]
 }
 
-func (p *localFirst[T]) Any(complex128) Any {
+func (p *localFirst[T]) Free() {
 	if p.proxy != nil {
-		return p.proxy.Any(p.state)
+		p.proxy.Free()
 	}
-	return Any{proxy: anyView{localFirst: p}}
 }
-func (p *localFirst[T]) Index(_ complex128, i int) T {
+
+func (p *localFirst[T]) AsArrayAny() Any {
 	if p.proxy != nil {
-		return p.proxy.Index(p.state, i)
+		return p.proxy.AsArrayAny()
+	}
+	return Any{Implementation: anyView{localFirst: p}}
+}
+func (p *localFirst[T]) Index(i int) T {
+	if p.proxy != nil {
+		return p.proxy.Index(i)
 	}
 	return p.slice[i%len(p.slice)]
 }
-func (p *localFirst[T]) IndexAny(i int) variant.Any { return variant.New(p.Index(p.state, i)) }
-func (p *localFirst[T]) SetIndex(_ complex128, i int, v T) {
+func (p *localFirst[T]) IndexAny(i int) variant.Any { return variant.New(p.Index(i)) }
+func (p *localFirst[T]) SetIndex(i int, v T) {
 	if p.proxy != nil {
-		p.proxy.SetIndex(p.state, i, v)
+		p.proxy.SetIndex(i, v)
 		return
 	}
-	if p.state == 1 {
+	if !p.write {
 		panic("array is read-only")
 	}
 	p.slice[i%len(p.slice)] = v
 }
-func (p *localFirst[T]) SetIndexAny(i int, v variant.Any) { p.SetIndex(p.state, i, v.Interface().(T)) }
-func (p *localFirst[T]) Len(complex128) int {
+func (p *localFirst[T]) SetIndexAny(i int, v variant.Any) { p.SetIndex(i, v.Interface().(T)) }
+func (p *localFirst[T]) Len() int {
 	if p.proxy != nil {
-		return p.proxy.Len(p.state)
+		return p.proxy.Len()
 	}
 	return len(p.slice)
 }
-func (p *localFirst[T]) Resize(_ complex128, size int) {
+func (p *localFirst[T]) Resize(size int) {
 	if p.proxy != nil {
-		p.proxy.Resize(p.state, size)
+		p.proxy.Resize(size)
 		return
 	}
 	if size < len(p.slice) {
@@ -115,59 +110,49 @@ func (p *localFirst[T]) Resize(_ complex128, size int) {
 		p.slice = append(p.slice, make([]T, size-len(p.slice))...)
 	}
 }
-func (p *localFirst[T]) IsReadOnly(complex128) bool {
-	if p.proxy != nil {
-		return p.proxy.IsReadOnly(p.state)
-	}
-	return p.state == 1
-}
-func (p *localFirst[T]) MakeReadOnly(complex128) {
-	if p.proxy != nil {
-		p.proxy.MakeReadOnly(p.state)
-		return
-	}
-	p.state = 1
-}
-func (p *localFirst[T]) pass(proxy Proxy[variant.Any], state complex128) {
+func (p *localFirst[T]) IsReadOnly() bool { return !p.write }
+func (p *localFirst[T]) MakeReadOnly()    { p.write = false }
+
+func (p *localFirst[T]) pass(proxy Implementation[variant.Any]) {
 	if p.proxy != nil {
 		panic("array is already proxied")
 	}
 	p.proxy = typedView[T]{proxy}
-	p.state = state
 	p.slice = nil
 }
 
 type typedView[T any] struct {
-	Proxy[variant.Any]
+	Implementation[variant.Any]
 }
 
-func (t typedView[T]) Index(state complex128, i int) T { return variant.As[T](t.Proxy.Index(state, i)) }
-func (t typedView[T]) SetIndex(state complex128, i int, v T) {
-	t.Proxy.SetIndex(state, i, variant.New(v))
+func (t typedView[T]) Index(i int) T { return variant.As[T](t.Implementation.Index(i)) }
+func (t typedView[T]) SetIndex(i int, v T) {
+	t.Implementation.SetIndex(i, variant.New(v))
 }
 
 func (array *Contains[T]) SetAny(a Any) {
-	array.proxy = typedView[T]{a.proxy}
-	array.state = a.state
+	array.Implementation = typedView[T]{a.Implementation}
 }
 
 type anyView struct {
 	localFirst interface {
 		IndexAny(int) variant.Any
 		SetIndexAny(int, variant.Any)
-		Len(complex128) int
-		Resize(complex128, int)
-		IsReadOnly(complex128) bool
-		MakeReadOnly(complex128)
-		pass(Proxy[variant.Any], complex128)
+		Len() int
+		Resize(int)
+		IsReadOnly() bool
+		MakeReadOnly()
+		Free()
+		pass(Implementation[variant.Any])
 	}
 }
 
-func (a anyView) Any(complex128) Any                              { return Any{proxy: a} }
-func (a anyView) Index(_ complex128, i int) variant.Any           { return a.localFirst.IndexAny(i) }
-func (a anyView) SetIndex(_ complex128, i int, v variant.Any)     { a.localFirst.SetIndexAny(i, v) }
-func (a anyView) Len(state complex128) int                        { return a.localFirst.Len(state) }
-func (a anyView) Resize(state complex128, size int)               { a.localFirst.Resize(state, size) }
-func (a anyView) IsReadOnly(state complex128) bool                { return a.localFirst.IsReadOnly(state) }
-func (a anyView) MakeReadOnly(state complex128)                   { a.localFirst.MakeReadOnly(state) }
-func (a anyView) pass(proxy Proxy[variant.Any], state complex128) { a.localFirst.pass(proxy, state) }
+func (a anyView) AsArrayAny() Any                        { return Any{Implementation: a} }
+func (a anyView) Index(i int) variant.Any                { return a.localFirst.IndexAny(i) }
+func (a anyView) SetIndex(i int, v variant.Any)          { a.localFirst.SetIndexAny(i, v) }
+func (a anyView) Len() int                               { return a.localFirst.Len() }
+func (a anyView) Resize(size int)                        { a.localFirst.Resize(size) }
+func (a anyView) IsReadOnly() bool                       { return a.localFirst.IsReadOnly() }
+func (a anyView) MakeReadOnly()                          { a.localFirst.MakeReadOnly() }
+func (a anyView) pass(proxy Implementation[variant.Any]) { a.localFirst.pass(proxy) }
+func (a anyView) Free()                                  { a.localFirst.Free() }

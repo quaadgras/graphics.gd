@@ -168,7 +168,7 @@ bool          gd_variant_bool(VARIANT_ARG(v)); /// gd_variant_text returns the v
 struct String gd_variant_text(VARIANT_ARG(v)); /// gd_variant_type returns the variant's type.
 VariantType   gd_variant_type(VARIANT_ARG(v)); /// gd_variant_free frees any underlying memory used by the variant.
 void          gd_variant_free(VARIANT_ARG(v)); /// gd_variant_from initializes the variant from the given type, shape, and arguments.
-void          gd_variant_from(VariantType vtype, struct Variant* result, gd_shape shape, const gd_addr args); /// gd_variant_make initializes the variant from the given type and arguments.
+void          gd_variant_from(VariantType vtype, struct Variant* result, const gd_addr args); /// gd_variant_make initializes the variant from the given type and arguments.
 void          gd_variant_make(VariantType t, struct Variant* result, int64_t arg_count, struct Variant args[], gd_error* err); /// gd_variant_data returns a pointer to the variant's underlying data.
 gd_addr       gd_variant_data(VariantType vtype, VARIANT_ARG(v)); /// gd_variant_call calls the variant's method with the given arguments.
 void          gd_variant_call(VARIANT_ARG(v), struct StringName method, struct Variant* result, int64_t arg_count, struct Variant args[], gd_error* err); /// gd_variant_eval evaluates the variant with the given operator and arguments.
@@ -179,7 +179,7 @@ bool          gd_variant_get_field(VARIANT_ARG(v), struct StringName field, stru
 bool          gd_variant_has_key(VARIANT_ARG(v), VARIANT_ARG(idx)); /// gd_variant_has_method checks if the variant has a method with the given name.
 bool          gd_variant_has_method(VARIANT_ARG(v), struct StringName method); /// gd_variant_set_keyed sets the value of the variant at the given key.
 bool          gd_variant_set_keyed(VARIANT_ARG(v), VARIANT_ARG(key), VARIANT_ARG(val)); /// gd_variant_set_index sets the value of the variant at the given index.
-bool          gd_variant_set_index(VARIANT_ARG(v), int64_t idx, VARIANT_ARG(val), gd_addr err); /// gd_variant_set_field sets the value of the variant at the given field.
+bool          gd_variant_set_index(VARIANT_ARG(v), int64_t idx, VARIANT_ARG(val), gd_error* err); /// gd_variant_set_field sets the value of the variant at the given field.
 bool          gd_variant_set_field(VARIANT_ARG(v), struct StringName field, VARIANT_ARG(val));
 
 //
@@ -224,7 +224,7 @@ void          gd_variant_type_setup_dictionary(struct Dictionary d,
     VariantType key, struct StringName key_class_name, VARIANT_ARG(key_script),
     VariantType val, struct StringName val_class_name, VARIANT_ARG(val_script)
 ); /// gd_variant_type_constant returns the value of the given constant for the given variant type.
-void          gd_variant_type_constant(VariantType t, struct StringName constant, gd_addr result);
+void          gd_variant_type_constant(VariantType t, struct StringName constant, struct Variant* result);
 
 //
 // Packed Arrays
@@ -530,6 +530,8 @@ void gd_extension_object_setup(struct Object obj, struct StringName name, gd_ext
 // Extension Bindings
 //
 
+/// gd_object_lookup_extension_binding looks up the extension binding for the given object.
+gd_extension_binding_id gd_object_lookup_extension_binding(gd_extension* extension, struct Object obj);
 /// gd_object_attach_extension_binding attaches an extension binding to the given object.
 void gd_object_attach_extension_binding(gd_extension* extension, struct Object obj, gd_extension_binding_id binding); /// gd_object_detach_extension_binding detaches the extension binding from the given object.
 void gd_object_detach_extension_binding(struct Object obj);

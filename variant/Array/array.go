@@ -19,8 +19,7 @@ import (
 // Note: Arrays are always passed by reference. To get a copy of an array that can be modified
 // independently of the original array, use duplicate.
 type Contains[T any] struct {
-	state complex128
-	proxy Proxy[T]
+	Implementation[T]
 }
 
 // Interface that is implemented by all [Contains[T]] types.
@@ -45,7 +44,7 @@ var Nil Any
 // New creates a new array with the given elements.
 func New[T any](elements ...T) Contains[T] {
 	return Contains[T]{
-		proxy: &localFirst[T]{
+		Implementation: &localFirst[T]{
 			slice: elements,
 		},
 	}
@@ -55,7 +54,7 @@ func (a Contains[T]) ElemType() reflect.Type { return reflect.TypeFor[T]() }
 
 // Slice returns the array as a slice.
 func (a Contains[T]) Slice() []T {
-	switch val := a.proxy.(type) {
+	switch val := a.Implementation.(type) {
 	case *localFirst[T]:
 		if val.proxy == nil {
 			return val.slice
@@ -68,38 +67,38 @@ func (a Contains[T]) Slice() []T {
 	return copy
 }
 
-// Any returns an [Any] array with a shared view on the elements in the array.
-func (a Contains[T]) Any() Any {
-	if a.proxy == nil {
+// AsArrayAny returns an [Any] array with a shared view on the elements in the array.
+func (a Contains[T]) AsArrayAny() Any {
+	if a.Implementation == nil {
 		return Any{}
 	}
-	return a.proxy.Any(a.state)
+	return a.Implementation.AsArrayAny()
 }
 
 // Len returns the number of elements in the array.
 func (a Contains[T]) Len() int { //gd:Array.size
-	if a.proxy == nil {
+	if a.Implementation == nil {
 		return 0
 	}
-	return a.proxy.Len(a.state)
+	return a.Implementation.Len()
 }
 
 // Index returns the value at the given index. If the index is negative,
 // it counts from the end of the array.
 func (a Contains[T]) Index(i int) T { //gd:Array.get
-	if a.proxy == nil {
+	if a.Implementation == nil {
 		panic("index out of range")
 	}
-	return a.proxy.Index(a.state, i)
+	return a.Implementation.Index(i)
 }
 
 // SetIndex sets the value at the given index. If the index is negative,
 // it counts from the end of the array.
 func (a *Contains[T]) SetIndex(i int, value T) { //gd:Array.set
-	if a.proxy == nil {
+	if a.Implementation == nil {
 		panic("index out of range")
 	}
-	a.proxy.SetIndex(a.state, i, value)
+	a.Implementation.SetIndex(i, value)
 }
 
 // All calls the given function on each element in the array and returns true if the fn returns
@@ -128,8 +127,8 @@ func IfAny[T any](fn func(T) bool, array Contains[T]) bool { //gd:Array.any
 
 // Append appends value at the end of the array (alias of PushBack).
 func (a *Contains[T]) Append(value T) { //gd:Array.append
-	if a.proxy == nil {
-		a.proxy = new(localFirst[T])
+	if a.Implementation == nil {
+		a.Implementation = new(localFirst[T])
 	}
 	l := a.Len()
 	a.Resize(l + 1)
@@ -324,10 +323,10 @@ func IsEmpty[T any](array Contains[T]) bool { return array.Len() == 0 } //gd:Arr
 
 // IsReadOnly returns true if the array is read-only.
 func IsReadOnly[T any](array Contains[T]) bool { //gd:Array.is_read_only
-	if array.proxy == nil {
+	if array.Implementation == nil {
 		return false
 	}
-	return array.proxy.IsReadOnly(array.state)
+	return array.Implementation.IsReadOnly()
 }
 
 // IsTyped returns true if the array is typed. Typed arrays can only
@@ -338,10 +337,10 @@ func IsTyped[T any](array Contains[T]) bool { return Type(array).Kind() != refle
 // different values, and their order cannot change. Does not apply to nested elements,
 // such as dictionaries.
 func (a *Contains[T]) MakeReadOnly() { //gd:Array.make_read_only
-	if a.proxy == nil {
-		a.proxy = new(localFirst[T])
+	if a.Implementation == nil {
+		a.Implementation = new(localFirst[T])
 	}
-	a.proxy.MakeReadOnly(a.state)
+	a.Implementation.MakeReadOnly()
 }
 
 // Map calls the given function for each element in the array and returns a new array
@@ -475,10 +474,10 @@ func Remove[T any](array Contains[T], position int) { //gd:Array.remove_at
 // the array is truncated. If the new size is larger, the array is padded with the zero
 // value for T.
 func (array *Contains[T]) Resize(size int) { //gd:Array.resize
-	if array.proxy == nil && size != 0 {
-		array.proxy = new(localFirst[T])
+	if array.Implementation == nil && size != 0 {
+		array.Implementation = new(localFirst[T])
 	}
-	array.proxy.Resize(array.state, size)
+	array.Implementation.Resize(size)
 }
 
 // Reverse reverses the order of elements in the array.

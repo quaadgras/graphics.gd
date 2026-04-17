@@ -8,12 +8,20 @@ package gdunsafe
 import "C"
 import "unsafe"
 
+func (ptr PointerTo[T]) Get() T {
+	return *(*T)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr)))
+}
+func (ptr MutablePointerTo[T]) Set(v T) {
+	*(*T)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr))) = v
+}
+
 type (
 	gd_addr                 = C.gd_addr
 	gd_shape                = C.gd_shape
 	gd_float                = C.gd_float
 	gd_initialization_level = C.gd_initialization_level
 	gd_error                = C.gd_error
+	gd_bool                 = C.bool
 
 	gdVariant            = C.struct_Variant
 	gdString             = C.struct_String
@@ -85,10 +93,51 @@ type (
 	gdMethodFlags      = C.MethodFlags
 	gdArgumentMetadata = C.ArgumentMetadata
 	gdObjectID         = C.ObjectID
+
+	gdPointerToVariant   = *gdVariant
+	gdPointerToBuffer    = *C.uint8_t
+	gdPointerToString    = *C.char
+	gdPointerToError     = *gd_error
+	gdPointerToCallable  = *gdCallable
+	gdPointerToVariants  = *gdVariant
+	gdPointerToArguments = *C.void
 )
 
-func gd_addrOf(shape Shape, ptr unsafe.Pointer) gd_addr {
-	return gd_addr(ptr)
+func gdMakePointer(size int, args unsafe.Pointer) gd_addr {
+	return (gd_addr)(args)
+}
+
+func gdMakePointerToBuffer(buf []byte) (gdPointerToBuffer, func([]byte, gdPointerToBuffer)) {
+	return (*C.uint8_t)(unsafe.SliceData(buf)), func([]byte, gdPointerToBuffer) {}
+}
+func gdMakePointerToString(s string) (gdPointerToString, func(gdPointerToString)) {
+	return (*C.char)(unsafe.Pointer(unsafe.StringData(s))), func(gdPointerToString) {}
+}
+func gdMakePointerToCallable(ptr *Callable) gdPointerToCallable {
+	return (gdPointerToCallable)(unsafe.Pointer(ptr))
+}
+func gdMakePointerToVariant(ptr *Variant) gdPointerToVariant {
+	return (gdPointerToVariant)(unsafe.Pointer(ptr))
+}
+func gdMakePointerToVariants(args ...Variant) gdPointerToVariants {
+	return (gdPointerToVariants)(unsafe.Pointer(unsafe.SliceData(args)))
+}
+func gdMakePointerToError(ptr *Error) gdPointerToError {
+	return (gdPointerToError)(unsafe.Pointer(ptr))
+}
+
+func gdFreePointerToVariant(ptr *Variant, raw gdPointerToVariant)    {}
+func gdFreePointerToError(ptr *Error, raw gdPointerToError)          {}
+func gdFreePointerToCallable(ptr *Callable, raw gdPointerToCallable) {}
+func gdFreePointerToVariants(raw gdPointerToVariants)                {}
+func gdFreePointer(raw gd_addr)                                      {}
+
+func gdMakeBool(b bool) gd_bool {
+	return gd_bool(b)
+}
+
+func gdLoadBool(b gd_bool) bool {
+	return bool(b)
 }
 
 //
@@ -109,10 +158,10 @@ func gd_version_stamp() gdString { return C.gd_version_stamp() }
 // Unsafe Engine Memory
 //
 
-func gd_sizeof(type_name gdStringName) int64  { return int64(C.gd_sizeof(type_name)) }
-func gd_malloc(size int64, pad8 bool) gd_addr { return C.gd_malloc(C.int64_t(size), C.bool(pad8)) }
-func gd_resize(addr gd_addr, size int64, pad8 bool) gd_addr {
-	return C.gd_resize(addr, C.int64_t(size), C.bool(pad8))
+func gd_sizeof(type_name gdStringName) int64     { return int64(C.gd_sizeof(type_name)) }
+func gd_malloc(size int64, pad8 gd_bool) gd_addr { return C.gd_malloc(C.int64_t(size), pad8) }
+func gd_resize(addr gd_addr, size int64, pad8 gd_bool) gd_addr {
+	return C.gd_resize(addr, C.int64_t(size), pad8)
 }
 func gd_memset(addr gd_addr, value byte, size int64) {
 	C.gd_memset(addr, C.uint8_t(value), C.int64_t(size))
@@ -144,14 +193,14 @@ func gd_free(addr gd_addr) { C.gd_free(addr) }
 //
 
 func gd_variant_zero(result *gdVariant) { C.gd_variant_zero(result) }
-func gd_variant_copy(v_1, v_2, v_3 uint64, result *gdVariant, deep bool) {
+func gd_variant_copy(v_1, v_2, v_3 uint64, result gdPointerToVariant, deep gd_bool) {
 	C.gd_variant_copy(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), result, C.bool(deep))
 }
 func gd_variant_hash(v_1, v_2, v_3 uint64, recursion_count int64) int64 {
 	return int64(C.gd_variant_hash(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.int64_t(recursion_count)))
 }
-func gd_variant_bool(v_1, v_2, v_3 uint64) bool {
-	return bool(C.gd_variant_bool(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3)))
+func gd_variant_bool(v_1, v_2, v_3 uint64) gd_bool {
+	return C.gd_variant_bool(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3))
 }
 func gd_variant_text(v_1, v_2, v_3 uint64) gdString {
 	return C.gd_variant_text(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3))
@@ -162,8 +211,8 @@ func gd_variant_type(v_1, v_2, v_3 uint64) uint32 {
 func gd_variant_free(v_1, v_2, v_3 uint64) {
 	C.gd_variant_free(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3))
 }
-func gd_variant_from(vtype uint32, result *gdVariant, shape gd_shape, args gd_addr) {
-	C.gd_variant_from(C.VariantType(vtype), result, shape, args)
+func gd_variant_from(vtype uint32, result *gdVariant, args gd_addr) {
+	C.gd_variant_from(C.VariantType(vtype), result, args)
 }
 func gd_variant_make(t uint32, result *gdVariant, arg_count int64, args *gdVariant, err *gd_error) {
 	C.gd_variant_make(C.VariantType(t), result, C.int64_t(arg_count), args, err)
@@ -174,32 +223,32 @@ func gd_variant_data(vtype uint32, v_1, v_2, v_3 uint64) gd_addr {
 func gd_variant_call(v_1, v_2, v_3 uint64, method gdStringName, result *gdVariant, arg_count int64, args *gdVariant, err *gd_error) {
 	C.gd_variant_call(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), method, result, C.int64_t(arg_count), args, err)
 }
-func gd_variant_eval(op uint32, a_1, a_2, a_3, b_1, b_2, b_3 uint64, result *gdVariant) bool {
-	return bool(C.gd_variant_eval(C.VariantOperator(op), C.uint64_t(a_1), C.uint64_t(a_2), C.uint64_t(a_3), C.uint64_t(b_1), C.uint64_t(b_2), C.uint64_t(b_3), result))
+func gd_variant_eval(op uint32, a_1, a_2, a_3, b_1, b_2, b_3 uint64, result *gdVariant) gd_bool {
+	return C.gd_variant_eval(C.VariantOperator(op), C.uint64_t(a_1), C.uint64_t(a_2), C.uint64_t(a_3), C.uint64_t(b_1), C.uint64_t(b_2), C.uint64_t(b_3), result)
 }
-func gd_variant_get_keyed(v_1, v_2, v_3, key_1, key_2, key_3 uint64, result *gdVariant) bool {
-	return bool(C.gd_variant_get_keyed(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.uint64_t(key_1), C.uint64_t(key_2), C.uint64_t(key_3), result))
+func gd_variant_get_keyed(v_1, v_2, v_3, key_1, key_2, key_3 uint64, result *gdVariant) gd_bool {
+	return C.gd_variant_get_keyed(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.uint64_t(key_1), C.uint64_t(key_2), C.uint64_t(key_3), result)
 }
-func gd_variant_get_index(v_1, v_2, v_3 uint64, idx int64, result *gdVariant, err *gd_error) bool {
-	return bool(C.gd_variant_get_index(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.int64_t(idx), result, err))
+func gd_variant_get_index(v_1, v_2, v_3 uint64, idx int64, result *gdVariant, err *gd_error) gd_bool {
+	return C.gd_variant_get_index(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.int64_t(idx), result, err)
 }
-func gd_variant_get_field(v_1, v_2, v_3 uint64, field gdStringName, result *gdVariant) bool {
-	return bool(C.gd_variant_get_field(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), field, result))
+func gd_variant_get_field(v_1, v_2, v_3 uint64, field gdStringName, result *gdVariant) gd_bool {
+	return C.gd_variant_get_field(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), field, result)
 }
-func gd_variant_has_key(v_1, v_2, v_3, idx_1, idx_2, idx_3 uint64) bool {
-	return bool(C.gd_variant_has_key(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.uint64_t(idx_1), C.uint64_t(idx_2), C.uint64_t(idx_3)))
+func gd_variant_has_key(v_1, v_2, v_3, idx_1, idx_2, idx_3 uint64) gd_bool {
+	return C.gd_variant_has_key(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.uint64_t(idx_1), C.uint64_t(idx_2), C.uint64_t(idx_3))
 }
-func gd_variant_has_method(v_1, v_2, v_3 uint64, method gdStringName) bool {
-	return bool(C.gd_variant_has_method(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), method))
+func gd_variant_has_method(v_1, v_2, v_3 uint64, method gdStringName) gd_bool {
+	return C.gd_variant_has_method(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), method)
 }
-func gd_variant_set_keyed(v_1, v_2, v_3, key_1, key_2, key_3, val_1, val_2, val_3 uint64) bool {
-	return bool(C.gd_variant_set_keyed(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.uint64_t(key_1), C.uint64_t(key_2), C.uint64_t(key_3), C.uint64_t(val_1), C.uint64_t(val_2), C.uint64_t(val_3)))
+func gd_variant_set_keyed(v_1, v_2, v_3, key_1, key_2, key_3, val_1, val_2, val_3 uint64) gd_bool {
+	return C.gd_variant_set_keyed(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.uint64_t(key_1), C.uint64_t(key_2), C.uint64_t(key_3), C.uint64_t(val_1), C.uint64_t(val_2), C.uint64_t(val_3))
 }
-func gd_variant_set_index(v_1, v_2, v_3 uint64, idx int64, val_1, val_2, val_3 uint64, err gd_addr) bool {
-	return bool(C.gd_variant_set_index(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.int64_t(idx), C.uint64_t(val_1), C.uint64_t(val_2), C.uint64_t(val_3), err))
+func gd_variant_set_index(v_1, v_2, v_3 uint64, idx int64, val_1, val_2, val_3 uint64, err gdPointerToError) gd_bool {
+	return C.gd_variant_set_index(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.int64_t(idx), C.uint64_t(val_1), C.uint64_t(val_2), C.uint64_t(val_3), err)
 }
-func gd_variant_set_field(v_1, v_2, v_3 uint64, field gdStringName, val_1, val_2, val_3 uint64) bool {
-	return bool(C.gd_variant_set_field(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), field, C.uint64_t(val_1), C.uint64_t(val_2), C.uint64_t(val_3)))
+func gd_variant_set_field(v_1, v_2, v_3 uint64, field gdStringName, val_1, val_2, val_3 uint64) gd_bool {
+	return C.gd_variant_set_field(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), field, C.uint64_t(val_1), C.uint64_t(val_2), C.uint64_t(val_3))
 }
 
 //
@@ -266,11 +315,11 @@ func gd_variant_type_name(t uint32) gdString {
 func gd_variant_type_call(t uint32, static_method gdStringName, result *gdVariant, arg_count int64, args *gdVariant, err *gd_error) {
 	C.gd_variant_type_call(C.VariantType(t), static_method, result, C.int64_t(arg_count), args, err)
 }
-func gd_variant_type_convertable(t, to uint32, strict bool) bool {
-	return bool(C.gd_variant_type_convertable(C.VariantType(t), C.VariantType(to), C.bool(strict)))
+func gd_variant_type_convertable(t, to uint32, strict gd_bool) gd_bool {
+	return C.gd_variant_type_convertable(C.VariantType(t), C.VariantType(to), C.bool(strict))
 }
-func gd_variant_type_has_property(t uint32, property gdStringName) bool {
-	return bool(C.gd_variant_type_has_property(C.VariantType(t), property))
+func gd_variant_type_has_property(t uint32, property gdStringName) gd_bool {
+	return C.gd_variant_type_has_property(C.VariantType(t), property)
 }
 func gd_variant_type_setup_array(a gdArray, elem uint32, class_name gdStringName, v_1, v_2, v_3 uint64) {
 	C.gd_variant_type_setup_array(a, C.VariantType(elem), class_name, C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3))
@@ -278,7 +327,7 @@ func gd_variant_type_setup_array(a gdArray, elem uint32, class_name gdStringName
 func gd_variant_type_setup_dictionary(d gdDictionary, key uint32, key_class gdStringName, ks_1, ks_2, ks_3 uint64, val uint32, val_class gdStringName, vs_1, vs_2, vs_3 uint64) {
 	C.gd_variant_type_setup_dictionary(d, C.VariantType(key), key_class, C.uint64_t(ks_1), C.uint64_t(ks_2), C.uint64_t(ks_3), C.VariantType(val), val_class, C.uint64_t(vs_1), C.uint64_t(vs_2), C.uint64_t(vs_3))
 }
-func gd_variant_type_constant(t uint32, constant gdStringName, result gd_addr) {
+func gd_variant_type_constant(t uint32, constant gdStringName, result gdPointerToVariant) {
 	C.gd_variant_type_constant(C.VariantType(t), constant, result)
 }
 
@@ -286,10 +335,10 @@ func gd_variant_type_constant(t uint32, constant gdStringName, result gd_addr) {
 // Packed Arrays
 //
 
-func gd_packed_array_access(vtype uint32, pa_1, pa_2 uintptr, idx int64) gd_addr {
+func gd_packed_array_access(vtype uint32, pa_1, pa_2 uint64, idx int64) gd_addr {
 	return C.gd_packed_array_access(C.VariantType(vtype), C.uintptr_t(pa_1), C.uintptr_t(pa_2), C.int64_t(idx))
 }
-func gd_packed_array_modify(vtype uint32, pa_1, pa_2 uintptr, idx int64) gd_addr {
+func gd_packed_array_modify(vtype uint32, pa_1, pa_2 uint64, idx int64) gd_addr {
 	return C.gd_packed_array_modify(C.VariantType(vtype), C.uintptr_t(pa_1), C.uintptr_t(pa_2), C.int64_t(idx))
 }
 
@@ -320,7 +369,7 @@ func gd_call(fn gd_function_t, result gd_addr, shape gd_shape, args gd_addr) {
 //
 
 func gd_method_list_make(count int64) gd_method_list_t {
-	return C.gd_method_list_make(C.int64_t(count))
+	return C.gd_method_list_make(&C.go_gd_extension, C.int64_t(count))
 }
 func gd_method_list_free(list gd_method_list_t) { C.gd_method_list_free(list) }
 func gd_method_list_push(list gd_method_list_t, name gdStringName, call gd_extension_method_id, flags uint32, return_info gd_property_list_t, args_info gd_property_list_t, count int64, defaults gd_addr) {
@@ -335,13 +384,13 @@ func gd_property_list_push(list gd_property_list_t, t uint32, name gdStringName,
 }
 func gd_property_list_free(list gd_property_list_t) { C.gd_property_list_free(list) }
 
-func gd_classdb_register(class_name, parent gdStringName, id gd_extension_class_id, is_virtual, is_abstract, is_exposed, is_runtime bool, icon_path gdString) {
-	C.gd_classdb_register(class_name, parent, id, C.bool(is_virtual), C.bool(is_abstract), C.bool(is_exposed), C.bool(is_runtime), icon_path)
+func gd_classdb_register(class_name, parent gdStringName, id gd_extension_class_id, is_virtual, is_abstract, is_exposed, is_runtime gd_bool, icon_path gdString) {
+	C.gd_classdb_register(&C.go_gd_extension, class_name, parent, id, is_virtual, is_abstract, is_exposed, is_runtime, icon_path)
 }
 func gd_classdb_register_methods(class_name gdStringName, methods gd_method_list_t) {
 	C.gd_classdb_register_methods(class_name, methods)
 }
-func gd_classdb_register_constant(class_name, enum_name, constant_name gdStringName, value int64, bitfield bool) {
+func gd_classdb_register_constant(class_name, enum_name, constant_name gdStringName, value int64, bitfield gd_bool) {
 	C.gd_classdb_register_constant(class_name, enum_name, constant_name, C.int64_t(value), C.bool(bitfield))
 }
 func gd_classdb_register_property(class_name gdStringName, property gd_property_list_t, setter, getter gdStringName) {
@@ -376,10 +425,10 @@ func gd_classdb_Image_access(img gdObject, offset int64) byte {
 }
 
 func gd_classdb_WorkerThreadPool_add_task(pool gdObject, task gd_extension_task_id, priority bool, description gdString) {
-	C.gd_classdb_WorkerThreadPool_add_task(pool, task, C.bool(priority), description)
+	C.gd_classdb_WorkerThreadPool_add_task(&C.go_gd_extension, pool, task, C.bool(priority), description)
 }
 func gd_classdb_WorkerThreadPool_add_group_task(pool gdObject, task gd_extension_task_id, elements, arg int32, priority bool, description gdString) {
-	C.gd_classdb_WorkerThreadPool_add_group_task(pool, task, C.int32_t(elements), C.int32_t(arg), C.bool(priority), description)
+	C.gd_classdb_WorkerThreadPool_add_group_task(&C.go_gd_extension, pool, task, C.int32_t(elements), C.int32_t(arg), C.bool(priority), description)
 }
 
 func gd_classdb_XMLParser_load(parser gdObject, buf *byte, cap_ int64) int64 {
@@ -414,8 +463,8 @@ func gd_editor_end_plugin(class_name gdStringName) { C.gd_editor_end_plugin(clas
 func gd_iterator_make(v_1, v_2, v_3 uint64, result *gdVariant, err *gd_error) {
 	C.gd_iterator_make(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), result, err)
 }
-func gd_iterator_next(v_1, v_2, v_3 uint64, iter *gdVariant, err *gd_error) bool {
-	return bool(C.gd_iterator_next(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), iter, err))
+func gd_iterator_next(v_1, v_2, v_3 uint64, iter *gdVariant, err *gd_error) gd_bool {
+	return C.gd_iterator_next(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), iter, err)
 }
 func gd_iterator_load(v_1, v_2, v_3, i_1, i_2, i_3 uint64, result *gdVariant, err *gd_error) {
 	C.gd_iterator_load(C.uint64_t(v_1), C.uint64_t(v_2), C.uint64_t(v_3), C.uint64_t(i_1), C.uint64_t(i_2), C.uint64_t(i_3), result, err)
@@ -425,13 +474,13 @@ func gd_iterator_load(v_1, v_2, v_3, i_1, i_2, i_3 uint64, result *gdVariant, er
 // Logging
 //
 
-func gd_log(level gd_log_level, text *byte, text_len uint32, code *byte, code_len uint32, fn *byte, fn_len uint32, file *byte, file_len uint32, line int32, notify_editor bool) {
+func gd_log(level gd_log_level, text string, code string, fn string, file string, line int32, notify_editor gd_bool) {
 	C.gd_log(level,
-		(*C.char)(unsafe.Pointer(text)), C.uint32_t(text_len),
-		(*C.char)(unsafe.Pointer(code)), C.uint32_t(code_len),
-		(*C.char)(unsafe.Pointer(fn)), C.uint32_t(fn_len),
-		(*C.char)(unsafe.Pointer(file)), C.uint32_t(file_len),
-		C.int32_t(line), C.bool(notify_editor),
+		(*C.char)(unsafe.Pointer(unsafe.StringData(text))), C.uint32_t(len(text)),
+		(*C.char)(unsafe.Pointer(unsafe.StringData(code))), C.uint32_t(len(code)),
+		(*C.char)(unsafe.Pointer(unsafe.StringData(fn))), C.uint32_t(len(fn)),
+		(*C.char)(unsafe.Pointer(unsafe.StringData(file))), C.uint32_t(len(file)),
+		C.int32_t(line), notify_editor,
 	)
 }
 
@@ -468,14 +517,17 @@ func gd_method_call(obj gdObject, fn gd_method_id, result gd_addr, shape gd_shap
 func gd_script(obj gdObject, language gdObject) gd_extension_script_id {
 	return C.gd_script(obj, language)
 }
+func gd_script_make(script gd_extension_script_id) gdScript {
+	return C.gd_script_make(&C.go_gd_extension, script)
+}
 func gd_script_call(obj gdObject, name gdStringName, result *gdVariant, arg_count int64, args *gdVariant, err *gd_error) {
 	C.gd_script_call(obj, name, result, C.int64_t(arg_count), args, err)
 }
 func gd_script_setup(obj gdObject, script gd_extension_script_id) {
 	C.gd_script_setup(obj, script)
 }
-func gd_script_defines_method(obj gdObject, method gdStringName) bool {
-	return bool(C.gd_script_defines_method(obj, method))
+func gd_script_defines_method(obj gdObject, method gdStringName) gd_bool {
+	return C.gd_script_defines_method(obj, method)
 }
 func gd_object_script_placeholder_create(language, script, owner gdObject) gd_extension_script_id {
 	return C.gd_object_script_placeholder_create(language, script, owner)
@@ -499,8 +551,11 @@ func gd_extension_object_setup(obj gdObject, name gdStringName, inst gd_extensio
 // Extension Bindings
 //
 
+func gd_object_lookup_extension_binding(obj gdObject) gd_extension_binding_id {
+	return C.gd_object_lookup_extension_binding(&C.go_gd_extension, obj)
+}
 func gd_object_attach_extension_binding(obj gdObject, binding gd_extension_binding_id) {
-	C.gd_object_attach_extension_binding(obj, binding)
+	C.gd_object_attach_extension_binding(&C.go_gd_extension, obj, binding)
 }
 func gd_object_detach_extension_binding(obj gdObject) {
 	C.gd_object_detach_extension_binding(obj)
@@ -521,13 +576,13 @@ func gd_string_access(s gdString, idx int64) int32 {
 	return int32(C.gd_string_access(s, C.int64_t(idx)))
 }
 func gd_string_memory(s gdString) gd_addr { return C.gd_string_memory(s) }
-func gd_string_decode(enc gd_encoding, s *byte, length int64) gdString {
+func gd_string_decode(enc gd_encoding, s gdPointerToString, length int64) gdString {
 	return C.gd_string_decode(enc, (*C.char)(unsafe.Pointer(s)), C.int64_t(length))
 }
-func gd_string_encode(enc gd_encoding, s gdString, buf *byte, cap_ int64) int64 {
+func gd_string_encode(enc gd_encoding, s gdString, buf gdPointerToBuffer, cap_ int64) int64 {
 	return int64(C.gd_string_encode(enc, s, (*C.char)(unsafe.Pointer(buf)), C.int64_t(cap_)))
 }
-func gd_string_intern(enc gd_encoding, s *byte, length int64) gdStringName {
+func gd_string_intern(enc gd_encoding, s gdPointerToString, length int64) gdStringName {
 	return C.gd_string_intern(enc, (*C.char)(unsafe.Pointer(s)), C.int64_t(length))
 }
 func gd_string_resize(s gdString, size int64) gdString {
@@ -543,7 +598,7 @@ func gd_string_append_rune(s gdString, ch int32) gdString {
 //
 
 func gd_callable_create(id gd_extension_callable_t, owner uint64, result *gdCallable) {
-	C.gd_callable_create(id, C.ObjectID(owner), result)
+	C.gd_callable_create(&C.go_gd_extension, id, C.ObjectID(owner), result)
 }
 func gd_callable_lookup(c_1, c_2 uint64) gd_extension_callable_t {
 	return C.gd_callable_lookup(C.uint64_t(c_1), C.uint64_t(c_2))

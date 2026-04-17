@@ -24,7 +24,7 @@ func GC(free func(gdextension.Object)) {
 			if obj.objectID == 0 {
 				continue
 			}
-			if obj.inEngine == 0 {
+			if obj.inEngine == (gdunsafe.Object{}) {
 				if obj.objectID != 0 {
 					raw := gdextension.Object(gdunsafe.ObjectID(obj.objectID).Object())
 					*obj = object{}
@@ -32,7 +32,7 @@ func GC(free func(gdextension.Object)) {
 				}
 				pool_free = append(pool_free, obj)
 			} else if obj.objectID != 0 {
-				obj.inEngine = 0
+				obj.inEngine = (gdunsafe.Object{})
 			}
 		}
 	}

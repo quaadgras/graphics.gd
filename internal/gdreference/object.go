@@ -38,26 +38,24 @@ type Object struct {
 // RawObject returns an unsafe [Object] reference from a raw
 // [gdextension.Object] pointer, no memory safety protections
 // will apply to the result.
-func RawObject(obj gdextension.Object) Object {
-	if obj == 0 {
+func RawObject(obj gdunsafe.Object) Object {
+	if obj == (gdunsafe.Object{}) {
 		return Object{}
 	}
-	id := gdextension.ObjectID(gdunsafe.Object(obj).ID())
-	return Object{assigned: object{inEngine: obj, objectID: id}}
+	return Object{assigned: object{inEngine: obj, objectID: obj.ID()}}
 }
 
 // LetObject creates an engine-owned [Object] reference.
 func LetObject(obj gdextension.Object) Object {
-	if obj == 0 {
+	if obj == (gdunsafe.Object{}) {
 		return Object{}
 	}
-	id := gdextension.ObjectID(gdunsafe.Object(obj).ID())
 	var revision uint64
 	if threadcheck.Main() {
 		revision = now
 	}
 	return Object{
-		assigned: object{objectID: id, inEngine: obj},
+		assigned: object{objectID: gdunsafe.Object(obj).ID(), inEngine: obj},
 		sentinel: &borrowSentinel,
 		revision: revision,
 	}
@@ -66,7 +64,7 @@ func LetObject(obj gdextension.Object) Object {
 // PinObject writes a [gdextension.Object] into an existing [Object] pointer on the heap.
 // Useful for extension classes, object is not automatically freed.
 func PinObject(obj *Object, raw gdextension.Object) {
-	if raw == 0 {
+	if raw == (gdunsafe.Object{}) {
 		*obj = Object{}
 		return
 	}
@@ -74,17 +72,16 @@ func PinObject(obj *Object, raw gdextension.Object) {
 		obj.revision = 0
 		return
 	}
-	id := gdextension.ObjectID(gdunsafe.Object(raw).ID())
 	obj.sentinel = &obj.assigned
-	obj.assigned = object{objectID: id, inEngine: raw}
+	obj.assigned = object{objectID: gdunsafe.Object(raw).ID(), inEngine: raw}
 }
 
 // OwnObject creates a Go-owned [Object] reference.
 func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
-	if obj == 0 {
+	if obj == (gdunsafe.Object{}) {
 		return Object{}
 	}
-	id := gdextension.ObjectID(gdunsafe.Object(obj).ID())
+	id := gdunsafe.Object(obj).ID()
 	var sentinel *object
 	var revision uint64
 	var result Object
@@ -128,7 +125,7 @@ func NewObject() Object {
 }
 
 // GetObject returns the underlying engine pointer for an [Object].
-func GetObject(obj Object) gdextension.Object {
+func GetObject(obj Object) gdunsafe.Object {
 	if obj.sentinel == nil || (threadcheck.Main() && obj.revision == now) {
 		return obj.assigned.inEngine
 	}
@@ -138,17 +135,16 @@ func GetObject(obj Object) gdextension.Object {
 
 // SetObject sets the underlying engine pointer for a [TypeStatic]
 // [Object] created with [NewObject].
-func SetObject(obj Object, val gdextension.Object) {
+func SetObject(obj Object, val gdunsafe.Object) {
 	if obj.assigned != (object{}) {
 		panic("SetObject can only be used with objects created by NewObject")
 	}
-	if val == 0 {
+	if val == (gdunsafe.Object{}) {
 		*obj.sentinel = object{}
 		return
 	}
-	id := gdextension.ObjectID(gdunsafe.Object(val).ID())
 	obj.sentinel.inEngine = val
-	obj.sentinel.objectID = id
+	obj.sentinel.objectID = gdunsafe.Object(val).ID()
 }
 
 var borrowSentinel object
@@ -165,14 +161,14 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 		return gdextension.Object(gdunsafe.ObjectID(obj.assigned.objectID).Object()), TypeBorrow
 	}
 	if obj.assigned.objectID == 0 {
-		if obj.assigned.inEngine == 0 {
-			if obj.sentinel.inEngine == 0 {
+		if obj.assigned.inEngine == (gdunsafe.Object{}) {
+			if obj.sentinel.inEngine == (gdunsafe.Object{}) {
 				return gdextension.Object(gdunsafe.ObjectID(obj.sentinel.objectID).Object()), TypeStatic
 			}
 			return obj.sentinel.inEngine, TypeStatic
 		}
 		if *obj.sentinel == obj.assigned {
-			return 0, TypeThread
+			return gdunsafe.Object{}, TypeThread
 		}
 		return obj.assigned.inEngine, TypeThread
 	}
@@ -199,7 +195,7 @@ func EndObject(obj Object) (gdextension.Object, bool) {
 		*obj.sentinel = obj.assigned
 	case TypeUnsafe, TypePinned:
 	case TypeStatic:
-		obj.sentinel.inEngine = 0
+		obj.sentinel.inEngine = (gdunsafe.Object{})
 	case TypeBorrow:
 		return raw, false
 	}
@@ -229,12 +225,12 @@ func UseObject(obj *Object) {
 
 // BadObject returns true if the reference has been invalidated.
 func BadObject(obj Object) bool {
-	return obj == Object{} || obj == Object{revision: 1} || GetObject(obj) == 0
+	return obj == Object{} || obj == Object{revision: 1} || GetObject(obj) == (gdunsafe.Object{})
 }
 
 type object struct {
-	objectID gdextension.ObjectID
-	inEngine gdextension.Object
+	objectID gdunsafe.ObjectID
+	inEngine gdunsafe.Object
 }
 
 var tail int
