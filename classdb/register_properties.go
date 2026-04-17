@@ -120,19 +120,9 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		return false
 	}
 	sname := name.String()
-	if impl, ok := val.(interface {
+	setter, hasSetter := val.(interface {
 		Set(string, any) bool
-	}); ok {
-		ok := bool(impl.Set(sname, value.Interface()))
-		if ok {
-			if impl, ok := val.(interface {
-				OnSet(string, any)
-			}); ok {
-				impl.OnSet(sname, value.Interface())
-			}
-		}
-		return ok
-	}
+	})
 	rvalue := reflect.ValueOf(val).Elem()
 	field := rvalue.FieldByName(sname)
 	if !field.IsValid() {
@@ -142,6 +132,9 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 			}
 			tag, hasTag := rfield.Tag.Lookup("gd")
 			if tag == "-" {
+				if hasSetter {
+					return setter.Set(sname, value.Interface())
+				}
 				return false
 			}
 			if hasTag && !rfield.Anonymous && tag == sname {
@@ -154,6 +147,9 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 			}
 		}
 		if !field.IsValid() {
+			if hasSetter {
+				return setter.Set(sname, value.Interface())
+			}
 			return false
 		}
 	}
@@ -224,11 +220,9 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	if !ok {
 		return gd.Variant{}, false
 	}
-	if impl, ok := val.(interface {
+	getter, hasGetter := val.(interface {
 		Get(string) any
-	}); ok {
-		return gd.NewVariant(impl.Get(name.String())), true
-	}
+	})
 	sname := name.String()
 	rvalue := reflect.ValueOf(val).Elem()
 	field := rvalue.FieldByName(String.ToPascalCase(sname))
@@ -239,6 +233,9 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 			}
 			tag, hasTag := rfield.Tag.Lookup("gd")
 			if tag == "-" {
+				if hasGetter {
+					return gd.NewVariant(getter.Get(name.String())), true
+				}
 				return gd.Variant{}, false
 			}
 			if hasTag && !rfield.Anonymous && tag == sname {
@@ -252,6 +249,9 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 		}
 	}
 	if !field.IsValid() {
+		if hasGetter {
+			return gd.NewVariant(getter.Get(name.String())), true
+		}
 		return gd.Variant{}, false
 	}
 	if field.Type().Kind() == reflect.Chan || reflect.PointerTo(field.Type()).Implements(reflect.TypeFor[Signal.Pointer]()) {
