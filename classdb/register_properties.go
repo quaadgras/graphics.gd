@@ -59,30 +59,29 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 				return false
 			}
 			if vtype == gdextension.TypeObject {
-				if field.Type.Implements(reflect.TypeFor[Resource.Any]()) {
-					hintString = fmt.Sprintf("%d/%d:%s", gdextension.TypeObject, PropertyHintResourceType, nameOf(field.Type)) // MAKE_RESOURCE_TYPE_HINT
-				} else {
-					hintString = nameOf(field.Type)
-				}
+				hintString = nameOf(field.Type)
 			}
 			if vtype == gdextension.TypeArray {
+				var ok bool
+				var elem reflect.Type
+				var etype gdextension.VariantType
 				if field.Type.Implements(reflect.TypeFor[Array.Interface]()) {
-					elem := reflect.Zero(field.Type).Interface().(Array.Interface).ElemType()
-					etype, ok := gd.VariantTypeOf(elem)
-					if !ok {
-						return false
-					}
-					if etype != gdextension.TypeNil {
-						hint |= PropertyHintArrayType
+					elem = reflect.Zero(field.Type).Interface().(Array.Interface).ElemType()
+					etype, ok = gd.VariantTypeOf(elem)
+				} else {
+					elem = field.Type.Elem()
+					etype, ok = gd.VariantTypeOf(elem)
+				}
+				if !ok {
+					return false
+				}
+				if etype != gdextension.TypeNil {
+					hint |= PropertyHintArrayType
+					if elem.Implements(reflect.TypeFor[Resource.Any]()) {
+						hintString = fmt.Sprintf("%d/%d:%s", gdextension.TypeObject, PropertyHintResourceType, nameOf(elem)) // MAKE_RESOURCE_TYPE_HINT
+					} else {
 						hintString = etype.String()
 					}
-				} else {
-					etype, ok := gd.VariantTypeOf(field.Type.Elem())
-					if !ok {
-						return false
-					}
-					hint |= PropertyHintArrayType
-					hintString = etype.String()
 				}
 			}
 		}
