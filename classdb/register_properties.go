@@ -145,15 +145,12 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 				break
 			}
 		}
-		if !field.IsValid() {
+		if !field.IsValid() || !field.CanSet() {
 			if hasSetter {
 				return setter.Set(sname, value.Interface())
 			}
 			return false
 		}
-	}
-	if !field.CanSet() {
-		return false
 	}
 	if value.Type() == gdextension.TypeNil {
 		field.Set(reflect.Zero(field.Type()))
