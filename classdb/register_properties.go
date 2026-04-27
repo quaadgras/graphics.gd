@@ -124,7 +124,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	})
 	rvalue := reflect.ValueOf(val).Elem()
 	field := rvalue.FieldByName(sname)
-	if !field.IsValid() {
+	if !field.IsValid() || !field.CanSet() {
 		for _, rfield := range reflect.VisibleFields(rvalue.Type()) {
 			if !rfield.IsExported() {
 				continue
