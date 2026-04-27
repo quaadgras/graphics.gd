@@ -272,25 +272,36 @@ func (android Android) Run(args ...string) error {
 		fmt.Println("Also make sure to unlock your device and accept any USB debugging prompts!")
 		return xray.New(err)
 	}
-	cmd = exec.Command(adb, "shell", "monkey", "-p", "com.example."+project.AndroidSafePackageName(path.Base(project.Directory)), "-c", "android.intent.category.LAUNCHER", "1")
+	packageName := "com.example." + project.AndroidSafePackageName(path.Base(project.Directory))
+	// Clear the log buffer so any post-launch dump only shows this run's output.
+	_ = exec.Command(adb, "logcat", "-c").Run()
+	cmd = exec.Command(adb, "shell", "monkey", "-p", packageName, "-c", "android.intent.category.LAUNCHER", "1")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
 		return xray.New(err)
 	}
 	var pid []byte
-	for range 3 {
-		pid, err = exec.Command(adb, "shell", "pidof", "com.example."+project.AndroidSafePackageName(path.Base(project.Directory))).Output()
-		if err != nil {
-			continue
+	for range 10 {
+		out, err := exec.Command(adb, "shell", "pidof", packageName).Output()
+		if err == nil {
+			if trimmed := bytes.TrimSpace(out); len(trimmed) > 0 {
+				pid = trimmed
+				break
+			}
 		}
 		time.Sleep(time.Second / 3)
 	}
-	if pid == nil {
-		return nil
+	if len(pid) == 0 {
+		fmt.Fprintf(os.Stderr, "%s did not start. Recent device error logs:\n", packageName)
+		dump := exec.Command(adb, "logcat", "-d", "-t", "200", "*:E")
+		dump.Stdout = os.Stderr
+		dump.Stderr = os.Stderr
+		_ = dump.Run()
+		return fmt.Errorf("gd run: %s failed to launch", packageName)
 	}
 	fmt.Println("PID=", string(pid))
-	cmd = exec.Command(adb, "logcat", "--pid="+string(pid[:len(pid)-1]))
+	cmd = exec.Command(adb, "logcat", "--pid="+string(pid))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
