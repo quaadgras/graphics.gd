@@ -135,7 +135,7 @@ func (ios IOS) BuildMain(args ...string) error {
 
 	if existing_project {
 		// Subsequent build: only export .pck, preserve Xcode project
-		tooling.Godot.Exec("--headless", "--export-pack", "iOS", filepath.Join(project.ReleasesDirectory, "ios", "arm64", "shader.pck"))
+		tooling.Godot.Exec("--headless", "--export-pack", "iOS", filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name+".pck"))
 	} else {
 		// First build: full export
 		tooling.Godot.Exec("--headless", "--export-release", "iOS")
