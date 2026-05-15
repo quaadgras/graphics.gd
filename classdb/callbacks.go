@@ -12,6 +12,8 @@ import (
 	"graphics.gd/internal/gdmemory"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/ring"
+	"graphics.gd/internal/threadcheck"
 	"graphics.gd/variant/Object"
 )
 
@@ -218,7 +220,11 @@ func init() {
 		},
 		Class: gdextension.CallbacksForExtensionClass{
 			Create: func(class gdextension.ExtensionClassID, notify_postinitialize bool) gdextension.Object {
-				return gdreference.GetObject(classes.Get(class).CreateInstance(notify_postinitialize)[0])
+				obj := gdreference.GetObject(classes.Get(class).CreateInstance(notify_postinitialize)[0])
+				if threadcheck.Main() && ring.Main.Pending() {
+					ring.Main.Flush()
+				}
+				return obj
 			},
 			Method: func(class gdextension.ExtensionClassID, method gdextension.StringName, hash uint32) gdextension.FunctionID {
 				virtual, ok := classes.Get(class).GetVirtual(pointers.Let[gd.StringName](method)).(gd.ExtensionClassCallVirtualFunc)
