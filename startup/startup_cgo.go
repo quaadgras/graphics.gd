@@ -70,14 +70,14 @@ func init() {
 		},
 		Exit: func(level gdextension.InitializationLevel) {
 			if !exitDone && level == 2 {
+				if theMainFunctionIsWaitingForTheEngineToShutDown {
+					resume_main()
+				}
 				for _, cleanup := range slices.Backward(internal.Cleanups()) {
 					cleanup()
 				}
 				pointers.Cycle()
 				pointers.Cycle()
-				if theMainFunctionIsWaitingForTheEngineToShutDown {
-					resume_main()
-				}
 				internal.Linked = false
 				exitDone = true
 			}

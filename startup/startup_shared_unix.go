@@ -6,6 +6,7 @@ package startup
 #cgo linux LDFLAGS: -Wl,-rpath=$ORIGIN
 #include "../gdextension_interface.h"
 #include <dlfcn.h>
+#include <stdlib.h>
 GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization);
 
 
@@ -20,6 +21,29 @@ GDExtensionObjectPtr call_libgodot_create_godot_instance(void *p_func, int p_arg
 void call_libgodot_destroy_godot_instance(void *p_func, GDExtensionObjectPtr p_godot_instance) {
 	libgodot_destroy_godot_instance_func_t func = (libgodot_destroy_godot_instance_func_t)p_func;
 	func(p_godot_instance);
+}
+
+static void *g_libgodot_destroy_func = 0;
+static GDExtensionObjectPtr g_godot_instance = 0;
+
+static void destroy_at_exit(void) {
+	void *func = g_libgodot_destroy_func;
+	GDExtensionObjectPtr inst = g_godot_instance;
+	g_libgodot_destroy_func = 0;
+	g_godot_instance = 0;
+	if (func && inst) {
+		((libgodot_destroy_godot_instance_func_t)func)(inst);
+	}
+}
+
+void register_destroy_atexit(void *p_destroy_func, GDExtensionObjectPtr p_godot_instance) {
+	static int registered = 0;
+	g_libgodot_destroy_func = p_destroy_func;
+	g_godot_instance = p_godot_instance;
+	if (!registered) {
+		registered = 1;
+		atexit(destroy_at_exit);
+	}
 }
 */
 import "C"
@@ -62,8 +86,9 @@ func (engine *engineAsSharedLibrary) Start() {
 		return
 	}
 	engine.Library = Startup.Instance([1]gdclass.Startup{gdclass.NewStartup(gdreference.RawObject(gdextension.Object(uintptr(ptr))))})
-	engine.destroy = func() {
-		C.call_libgodot_destroy_godot_instance(libgodot_destroy_godot_instance, ptr)
-	}
+	// Defer destroy to libc atexit: see the C preamble for rationale.
+	// engine.destroy stays nil so engineAsLibrary.Scene's synchronous destroy
+	// branch is skipped — the atexit handler owns teardown now.
+	C.register_destroy_atexit(libgodot_destroy_godot_instance, ptr)
 	engine.Library.Start()
 }

@@ -8,9 +8,11 @@ package startup
 // GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization);
 //
 // extern void go_main();
+// extern void go_destroy_engine();
 //
 // int main(int argc, char *argv[]) {
 //		go_main();
+//		go_destroy_engine();
 // 		return 0;
 // }
 import "C"
@@ -48,4 +50,9 @@ type engineAsStaticLibrary struct {
 
 func (engine *engineAsStaticLibrary) Start() {
 	engine.Library.Start()
+}
+
+func (engine *engineAsStaticLibrary) Scene() {
+	for !engine.Library.Iteration() {
+	}
 }
