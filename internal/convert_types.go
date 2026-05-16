@@ -63,7 +63,18 @@ func VariantAs[T any](value Variant) T {
 	case reflect.TypeFor[VariantPkg.Any]():
 		return any(VariantPkg.New(value.Interface())).(T)
 	case reflect.TypeFor[any]():
-		return value.Interface().(T)
+		// A NIL Godot Variant produces a Go nil interface, which cannot
+		// be type-asserted to any (even though T == any); the assertion
+		// would panic with "interface conversion: interface is nil, not
+		// interface {}". Return the zero value of T (== nil for any)
+		// instead, which is how callers like ArrayAs naturally treat
+		// missing slots in e.g. Mesh.SurfaceGetArrays.
+		iface := value.Interface()
+		if iface == nil {
+			var zero T
+			return zero
+		}
+		return iface.(T)
 	}
 	result, err := ConvertToDesiredGoType(value, reflect.TypeFor[T]())
 	if err != nil {
