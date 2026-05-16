@@ -1,7 +1,10 @@
 package classdb
 
 import (
+	"fmt"
+	"os"
 	"reflect"
+	"strings"
 	"unsafe"
 
 	"graphics.gd/classdb/Node"
@@ -9,6 +12,17 @@ import (
 	"graphics.gd/internal/threadsafe"
 	"graphics.gd/variant/Object"
 )
+
+// debugKeepalive enables verbose tracing of compile_keepalive's recursion.
+// Toggle with GDDEBUG=keepalive.
+var debugKeepalive = strings.Contains(os.Getenv("GDDEBUG"), "keepalive")
+
+func keepaliveLog(depth int, format string, args ...any) {
+	if !debugKeepalive {
+		return
+	}
+	fmt.Fprintf(os.Stderr, "[keepalive] %s%s\n", strings.Repeat("  ", depth), fmt.Sprintf(format, args...))
+}
 
 // roots passed to the engine.
 var roots threadsafe.Map[reflect.Value, func(reflect.Value)]
@@ -18,6 +32,14 @@ var skips = make(map[reflect.Value]struct{}) // only accessed from [keep_reachab
 //go:linkname keep_reachable_instances_alive
 func keep_reachable_instances_alive() {
 	clear(skips)
+	if debugKeepalive {
+		var count int
+		for ptr, keepalive := range roots.Iter() {
+			count++
+			fmt.Fprintf(os.Stderr, "[keepalive] root: %v keepalive=%v\n", ptr.Type(), keepalive != nil)
+		}
+		fmt.Fprintf(os.Stderr, "[keepalive] === frame: %d roots ===\n", count)
+	}
 	for ptr, keepalive := range roots.Iter() {
 		if keepalive != nil {
 			keepalive(ptr)
@@ -27,8 +49,17 @@ func keep_reachable_instances_alive() {
 
 var compiled_keepalives = make(map[reflect.Type]func(reflect.Value))
 
+var keepaliveDepth int
+
 func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
+	if cached, ok := compiled_keepalives[rtype]; ok {
+		return cached
+	}
+	keepaliveDepth++
+	defer func() { keepaliveDepth-- }()
+	keepaliveLog(keepaliveDepth, "compile_keepalive %v (kind=%v name=%q)", rtype, rtype.Kind(), rtype.Name())
 	if rtype.Name() == "Instance" && rtype.Implements(reflect.TypeFor[Object.Any]()) && rtype.Kind() == reflect.Array && rtype.Len() == 1 { // FIXME
+		keepaliveLog(keepaliveDepth, "  → MATCHED Instance, returning Object.Use closure")
 		return func(ptr reflect.Value) {
 			if ptr.CanAddr() {
 				Object.Use((*Object.Instance)(ptr.Addr().UnsafePointer()))
@@ -37,16 +68,9 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 			}
 		}
 	}
-	if cached, ok := compiled_keepalives[rtype]; ok {
-		return cached
-	}
 	compiled_keepalives[rtype] = nil // TBD - to support circular references
 	defer func() {
-		if keepalive != nil {
-			compiled_keepalives[rtype] = keepalive
-		} else {
-			delete(compiled_keepalives, rtype)
-		}
+		compiled_keepalives[rtype] = keepalive
 	}()
 	switch rtype.Kind() {
 	case reflect.Struct:
