@@ -83,3 +83,23 @@ func TestKeepAlive_FullCitizenShape(t *testing.T) {
 	val := reflect.New(reflect.TypeFor[Editor]()).Elem()
 	fn(val)
 }
+
+// TestKeepAlive_ValueTypedBody — matches the current citizen editor
+// after the user reverted body to a value type instead of a pointer.
+// Verifies compile_keepalive still threads through the nested struct.
+func TestKeepAlive_ValueTypedBody(t *testing.T) {
+	type Body struct {
+		mesh MeshInstance3D.Instance
+	}
+	type Editor struct {
+		Node3D.Extension[Editor]
+		scene Node3D.Instance
+		body  Body
+	}
+	fn := compile_keepalive(reflect.TypeFor[Editor]())
+	if fn == nil {
+		t.Fatal("compile_keepalive returned nil for editor with value-typed body field")
+	}
+	val := reflect.New(reflect.TypeFor[Editor]()).Elem()
+	fn(val)
+}

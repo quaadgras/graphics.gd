@@ -98,7 +98,7 @@ func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
 		} else {
 			var bucket, i = tail / 128, tail % 128
 			if bucket >= len(pool) {
-				pool = append(pool, [128]object{})
+				pool = append(pool, new([128]object))
 			}
 			sentinel = &pool[bucket][i]
 			tail++
@@ -242,5 +242,5 @@ type object struct {
 }
 
 var tail int
-var pool = [][128]object{{}}
+var pool = []*[128]object{{}}
 var pool_free []*object
