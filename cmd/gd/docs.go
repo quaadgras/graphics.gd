@@ -108,7 +108,7 @@ func findGdDocMatches(query string) ([]gdDocMatch, error) {
 			methodName := parts[1]
 
 			// Check if this matches our query (case-insensitive substring match)
-			if methodName != query {
+			if methodName != query && gdTag != query {
 				continue
 			}
 
