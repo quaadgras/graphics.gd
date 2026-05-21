@@ -135,7 +135,9 @@ func gd(args ...string) error {
 			}
 			fmt.Println("gd version", version)
 			return tooling.Go.Exec(args...)
-		case "doc", "build", "run", "test":
+		case "doc":
+			return doc(args[1:]...)
+		case "build", "run", "test":
 		default:
 			return tooling.Go.Exec(args...)
 		}
@@ -257,8 +259,6 @@ func gd(args ...string) error {
 		return tooling.Godot.Exec(append([]string{"-e"}, editorArgs...)...)
 	default:
 		switch args[0] {
-		case "doc":
-			return doc(args[1:]...)
 		case "build":
 			if err := os.Chdir(project.Directory); err != nil {
 				return xray.New(err)
