@@ -157,3 +157,50 @@ var ListDynamicDependencies = toolchain{
 	Name:        "ldd",
 	RequiredFor: "musl detection",
 }
+
+// Java is required at build time only for GOOS=metaquest, to run the R8
+// dex compiler against the OpenXR vendor AAR. Auto-download is not
+// attempted — distributions vary too much. Users on systems without
+// Java will see the install hint instead of a download progress bar.
+var Java = toolchain{
+	Name:          "java",
+	VersionFlags:  []string{"-version"},
+	VersionPrefix: "openjdk version ",
+	DownloadHint:  "https://adoptium.net/temurin/releases/?version=17",
+	RequiredFor:   "running the R8 dex compiler when packaging GOOS=metaquest APKs",
+}
+
+// R8 is Google's APK shrinker; we use its bundled D8 entry point as a
+// pure-Java jar to compile the OpenXR vendor classes.jar to a dex file
+// for injection into the Meta Quest APK. BSD-3-Clause. Pulled directly
+// from Maven Central.
+var R8 = toolchain{
+	Name:        "r8-$(VERSION).jar",
+	Version:     "8.5.35",
+	DownloadURL: "https://repo1.maven.org/maven2/com/android/tools/r8/$(VERSION)/r8-$(VERSION).jar",
+	RequiredFor: "compiling Meta Quest OpenXR vendor classes to dex (GOOS=metaquest)",
+	IsLibrary:   true,
+}
+
+// OpenXRLoaderAAR ships the Khronos libopenxr_loader.so for arm64-v8a
+// plus the standard manifest entries every OpenXR app needs on Android.
+// Apache-2.0. Pulled directly from Maven Central.
+var OpenXRLoaderAAR = toolchain{
+	Name:        "openxr_loader_for_android-$(VERSION).aar",
+	Version:     "1.1.53",
+	DownloadURL: "https://repo1.maven.org/maven2/org/khronos/openxr/openxr_loader_for_android/$(VERSION)/openxr_loader_for_android-$(VERSION).aar",
+	RequiredFor: "providing the Khronos OpenXR loader to Meta Quest builds (GOOS=metaquest)",
+	IsLibrary:   true,
+}
+
+// OpenXRVendorsMetaAAR is the GodotVR community's plugin AAR that
+// registers Meta's OpenXR runtime with the engine at startup. Without
+// the classes inside, the OpenXR loader has no path to talk to Horizon
+// OS. Apache-2.0. Pulled directly from Maven Central.
+var OpenXRVendorsMetaAAR = toolchain{
+	Name:        "godot-openxr-vendors-meta-$(VERSION).aar",
+	Version:     "4.2.2-stable",
+	DownloadURL: "https://repo1.maven.org/maven2/org/godotengine/godot-openxr-vendors-meta/$(VERSION)/godot-openxr-vendors-meta-$(VERSION).aar",
+	RequiredFor: "registering Meta's OpenXR runtime with the engine (GOOS=metaquest)",
+	IsLibrary:   true,
+}

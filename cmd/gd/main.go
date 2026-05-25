@@ -87,6 +87,16 @@ func builderFor(goos string) Builder {
 			os.Setenv("GOARCH", "arm64")
 		}
 		return builder.Android{}
+	case "metaquest", "quest", "meta":
+		// Pseudo-GOOS: builds an android/arm64 APK, then post-
+		// processes it to inject the Khronos OpenXR Android loader
+		// and the GodotVR Meta vendor plugin (both Apache-2.0,
+		// fetched from Maven Central at build time). No gradle, no
+		// Android SDK required beyond what graphics.gd already
+		// manages.
+		os.Setenv("GOOS", "android")
+		os.Setenv("GOARCH", "arm64")
+		return builder.MetaQuest{}
 	case "browser", "js", "web", "wasm":
 		os.Setenv("GOOS", "js")
 		return builder.Browser{}
