@@ -242,7 +242,7 @@ return Projection{
 func Mul(a, b BasisOrigin) BasisOrigin { //gd:Transform3D*BasisOrigin
 	return BasisOrigin{
 		Basis:  Basis.Mul(a.Basis, b.Basis),
-		Origin: Transform(a.Origin, b),
+		Origin: Transform(b.Origin, a),
 	}
 }
 
