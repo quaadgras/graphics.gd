@@ -21,10 +21,12 @@
 package builder
 
 import (
+	"archive/zip"
 	"bytes"
 	_ "embed"
 	"encoding/xml"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path"
@@ -249,10 +251,103 @@ func injectMetaQuest(apkPath string) error {
 	if err := tooling.AndroidPackageKitTool.Exec("b", decompiled, "--aapt", aapt2, "-o", repacked); err != nil {
 		return xray.New(err)
 	}
-	if err := os.Rename(repacked, apkPath); err != nil {
+	// Android R+ (API 30+) refuses to install APKs whose
+	// resources.arsc is compressed or not 4-byte aligned within
+	// the zip, and historically wants .so files page-aligned for
+	// mmap. apktool's output is Deflate-compressed and unaligned,
+	// so re-pack with the alignment fixed before signing.
+	aligned := apkPath + ".meta-aligned.apk"
+	if err := zipalignAPK(repacked, aligned); err != nil {
+		return xray.New(err)
+	}
+	_ = os.Remove(repacked)
+	if err := os.Rename(aligned, apkPath); err != nil {
 		return xray.New(err)
 	}
 	return nil
+}
+
+// zipalignAPK rewrites src to dst with two adjustments that
+// Android's installer demands for R+ targets:
+//
+//   - resources.arsc is re-stored uncompressed (Method = Store)
+//     and placed at a 4-byte aligned data offset.
+//   - .so files (already typically Stored so they can be mmap'd
+//     at runtime) are aligned to 4096-byte (one-page) boundaries.
+//
+// Other entries pass through with their original method intact;
+// Deflate-compressed entries don't need alignment because the
+// runtime doesn't mmap them, so we leave them alone.
+func zipalignAPK(src, dst string) error {
+	in, err := zip.OpenReader(src)
+	if err != nil {
+		return fmt.Errorf("zipalign: open %s: %w", src, err)
+	}
+	defer in.Close()
+	out, err := os.Create(dst)
+	if err != nil {
+		return fmt.Errorf("zipalign: create %s: %w", dst, err)
+	}
+	defer out.Close()
+	// Wrap with a counter so we know the current write offset when
+	// computing per-entry alignment padding.
+	counter := &countingWriter{w: out}
+	zw := zip.NewWriter(counter)
+	for _, f := range in.File {
+		var align int
+		method := f.Method
+		switch {
+		case f.Name == "resources.arsc":
+			method = zip.Store
+			align = 4
+		case strings.HasSuffix(f.Name, ".so") && method == zip.Store:
+			align = 4096
+		}
+		fh := &zip.FileHeader{
+			Name:               f.Name,
+			Method:             method,
+			Modified:           f.Modified,
+			CreatorVersion:     f.CreatorVersion,
+			ExternalAttrs:      f.ExternalAttrs,
+			NonUTF8:            f.NonUTF8,
+			Flags:              f.Flags &^ 0x8, // clear data-descriptor bit; we know sizes upfront
+			ReaderVersion:      f.ReaderVersion,
+			Comment:            f.Comment,
+		}
+		if align > 0 {
+			// Local file header is fixed 30 bytes, then name, then extra,
+			// then data. Pad Extra so the data offset lands on `align`.
+			dataOffset := counter.n + 30 + int64(len(f.Name))
+			if r := dataOffset % int64(align); r != 0 {
+				fh.Extra = make([]byte, int64(align)-r)
+			}
+		}
+		w, err := zw.CreateHeader(fh)
+		if err != nil {
+			return fmt.Errorf("zipalign: header %s: %w", f.Name, err)
+		}
+		rc, err := f.Open()
+		if err != nil {
+			return fmt.Errorf("zipalign: open entry %s: %w", f.Name, err)
+		}
+		if _, err := io.Copy(w, rc); err != nil {
+			rc.Close()
+			return fmt.Errorf("zipalign: copy %s: %w", f.Name, err)
+		}
+		rc.Close()
+	}
+	return zw.Close()
+}
+
+type countingWriter struct {
+	w io.Writer
+	n int64
+}
+
+func (cw *countingWriter) Write(p []byte) (int, error) {
+	n, err := cw.w.Write(p)
+	cw.n += int64(n)
+	return n, err
 }
 
 // patchManifestForQuest rewrites the decompiled AndroidManifest.xml
