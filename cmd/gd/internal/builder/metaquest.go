@@ -304,15 +304,20 @@ func zipalignAPK(src, dst string) error {
 			align = 4096
 		}
 		fh := &zip.FileHeader{
-			Name:               f.Name,
-			Method:             method,
-			Modified:           f.Modified,
-			CreatorVersion:     f.CreatorVersion,
-			ExternalAttrs:      f.ExternalAttrs,
-			NonUTF8:            f.NonUTF8,
-			Flags:              f.Flags &^ 0x8, // clear data-descriptor bit; we know sizes upfront
-			ReaderVersion:      f.ReaderVersion,
-			Comment:            f.Comment,
+			Name:           f.Name,
+			Method:         method,
+			CreatorVersion: f.CreatorVersion,
+			ExternalAttrs:  f.ExternalAttrs,
+			NonUTF8:        f.NonUTF8,
+			Flags:          f.Flags &^ 0x8, // clear data-descriptor bit; we know sizes upfront
+			ReaderVersion:  f.ReaderVersion,
+			Comment:        f.Comment,
+			// Deliberately NOT setting Modified — archive/zip's
+			// Writer appends a 9-byte "Extended Timestamp" Extra
+			// (tag 0x5455 "UT") whenever Modified is non-zero,
+			// which silently shifts the data offset past whatever
+			// alignment padding we computed. APKs don't use entry
+			// modtimes for anything user-visible, so we drop them.
 		}
 		if align > 0 {
 			// Local file header is fixed 30 bytes, then name, then extra,
