@@ -189,11 +189,25 @@ func injectMetaQuest(apkPath string) error {
 		}
 	}
 
+	// apktool 2.12 emits a literal `\1` placeholder for some integer
+	// manifest attributes it couldn't decode, and the decompiled
+	// manifest also carries the placeholder package "com.godot.game"
+	// instead of the project's real one. aapt2's link rejects both
+	// when re-packing. Resolve the original via `aapt2 dump
+	// packagename` (same fixups BuildMain does for the AAB path).
+	originalPackageName, err := tooling.AndroidAssetPackagingTool.Output("dump", "packagename", apkPath)
+	if err != nil {
+		return xray.New(err)
+	}
+
 	manifestPath := filepath.Join(decompiled, "AndroidManifest.xml")
 	patched, err := patchManifestForQuest(manifestPath)
 	if err != nil {
 		return xray.New(err)
 	}
+	patched = bytes.Replace(patched, []byte(`package="com.godot.game"`), []byte(`package="`+originalPackageName+`"`), 1)
+	patched = bytes.Replace(patched, []byte(`android:name="com.godot.game"`), []byte(`android:name="`+originalPackageName+`"`), 1)
+	patched = bytes.Replace(patched, []byte(`android:version="\1"`), []byte(`android:version="1"`), 1)
 	if err := os.WriteFile(manifestPath, patched, 0644); err != nil {
 		return xray.New(err)
 	}
