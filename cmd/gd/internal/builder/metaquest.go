@@ -216,7 +216,7 @@ func injectMetaQuest(apkPath string) error {
 		return xray.New(err)
 	}
 	repacked := apkPath + ".meta-unsigned.apk"
-	if err := tooling.AndroidPackageKitTool.Exec("b", decompiled, "-a", aapt2, "-o", repacked); err != nil {
+	if err := tooling.AndroidPackageKitTool.Exec("b", decompiled, "--aapt", aapt2, "-o", repacked); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Rename(repacked, apkPath); err != nil {
