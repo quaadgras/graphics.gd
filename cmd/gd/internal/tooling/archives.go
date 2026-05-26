@@ -141,8 +141,15 @@ func extractZip(src, dest, targetFile, topDir string) error {
 		}
 
 		if f.FileInfo().IsDir() {
-			// Create directory
-			if err := os.MkdirAll(target, f.Mode()); err != nil {
+			// Always use 0755 for extracted directories — the
+			// zip-stored mode is often nonsense (some toolchains
+			// pack directories as 0444 or 0555), which would then
+			// make subsequent file writes into that directory fail
+			// with "permission denied". The AAR packaging for the
+			// OpenXR loader is one well-known case: its META-INF/
+			// entry is marked read-only and trips up the next
+			// MANIFEST.MF write.
+			if err := os.MkdirAll(target, 0755); err != nil {
 				return fmt.Errorf("failed to create directory %s: %w", target, err)
 			}
 			continue
