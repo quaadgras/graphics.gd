@@ -173,11 +173,12 @@ var Java = toolchain{
 // R8 is Google's APK shrinker; we use its bundled D8 entry point as a
 // pure-Java jar to compile the OpenXR vendor classes.jar to a dex file
 // for injection into the Meta Quest APK. BSD-3-Clause. Pulled directly
-// from Maven Central.
+// from Google's Maven repository (dl.google.com) — note: R8 is NOT
+// mirrored on Maven Central, the only canonical host is Google's repo.
 var R8 = toolchain{
 	Name:        "r8-$(VERSION).jar",
 	Version:     "8.5.35",
-	DownloadURL: "https://repo1.maven.org/maven2/com/android/tools/r8/$(VERSION)/r8-$(VERSION).jar",
+	DownloadURL: "https://dl.google.com/dl/android/maven2/com/android/tools/r8/$(VERSION)/r8-$(VERSION).jar",
 	RequiredFor: "compiling Meta Quest OpenXR vendor classes to dex (GOOS=metaquest)",
 	IsLibrary:   true,
 }
