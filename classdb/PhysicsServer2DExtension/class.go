@@ -2586,7 +2586,7 @@ func (Instance) _body_get_collision_exceptions(impl func(ptr gdclass.Receiver, b
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -4109,7 +4109,7 @@ func (class) _body_get_collision_exceptions(impl func(ptr gdclass.Receiver, body
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _body_set_max_contacts_reported(impl func(ptr gdclass.Receiver, body RID.Any, amount int64)) (cb gd.ExtensionClassCallVirtualFunc) {

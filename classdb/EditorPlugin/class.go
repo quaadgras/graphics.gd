@@ -1156,7 +1156,7 @@ func (Instance) _get_state(impl func(ptr gdclass.Receiver) map[any]any) (cb gd.E
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -2156,7 +2156,7 @@ func (class) _get_state(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.E
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _set_state(impl func(ptr gdclass.Receiver, state Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {

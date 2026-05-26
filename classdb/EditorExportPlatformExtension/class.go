@@ -437,7 +437,7 @@ func (Instance) _get_export_options(impl func(ptr gdclass.Receiver) [][]struct {
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -1074,7 +1074,7 @@ func (class) _get_export_options(impl func(ptr gdclass.Receiver) Array.Contains[
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _should_update_export_options(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {

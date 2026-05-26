@@ -508,7 +508,17 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 			fmt.Fprintf(w, "\n\t\tif !ok {\n")
 			fmt.Fprintf(w, "\t\t\treturn\n")
 			fmt.Fprintf(w, "\t\t}\n")
-			fmt.Fprintf(w, "\t\tgd.UnsafeSet(p_back, ptr)\n")
+			// Godot pre-initialises Array/Dictionary return slots; assign over
+			// them via UnsafeReplace* so the pre-allocated value is destroyed
+			// rather than leaked (godotengine/godot#119440).
+			switch {
+			case resultExpert == "Dictionary.Any":
+				fmt.Fprintf(w, "\t\tgd.UnsafeReplaceDictionary(p_back, ptr)\n")
+			case resultExpert == "Array.Any" || strings.HasPrefix(resultExpert, "Array.Contains["):
+				fmt.Fprintf(w, "\t\tgd.UnsafeReplaceArray(p_back, ptr)\n")
+			default:
+				fmt.Fprintf(w, "\t\tgd.UnsafeSet(p_back, ptr)\n")
+			}
 		} else {
 			fmt.Fprintf(w, "\t\tgd.UnsafeSet(p_back, %s)\n", ret)
 		}

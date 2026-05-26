@@ -263,7 +263,7 @@ func (Instance) _get_data(impl func(ptr gdclass.Receiver) []Image.Instance) (cb 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -416,7 +416,7 @@ func (class) _get_data(impl func(ptr gdclass.Receiver) Array.Contains[[1]gdclass
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 

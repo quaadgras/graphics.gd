@@ -166,7 +166,7 @@ func (Instance) _create_mesh_array(impl func(ptr gdclass.Receiver) [][]any) (cb 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -322,7 +322,7 @@ func (class) _create_mesh_array(impl func(ptr gdclass.Receiver) Array.Any) (cb g
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 

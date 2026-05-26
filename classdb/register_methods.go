@@ -393,10 +393,10 @@ func slowCall(hasContext bool, method reflect.Value, p_args, p_ret gdextension.P
 			gd.UnsafeSet[[2]uint64](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Dictionary:
-			gd.UnsafeSet[gdextension.Dictionary](p_ret, pointers.Get(val))
+			gd.UnsafeReplaceDictionary(p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Array:
-			gd.UnsafeSet[gdextension.Array](p_ret, pointers.Get(val))
+			gd.UnsafeReplaceArray(p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.PackedByteArray:
 			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
@@ -452,17 +452,17 @@ func slowCall(hasContext bool, method reflect.Value, p_args, p_ret gdextension.P
 			in := gd.InternalDictionary(val)
 			raw, ok := pointers.End(in)
 			if ok {
-				gd.UnsafeSet[gdextension.Dictionary](p_ret, raw)
+				gd.UnsafeReplaceDictionary(p_ret, raw)
 			} else {
-				gd.UnsafeSet[gdextension.Dictionary](p_ret, pointers.Get(in))
+				gd.UnsafeReplaceDictionary(p_ret, pointers.Get(in))
 			}
 		case Array.Any:
 			in := gd.InternalArray(val)
 			raw, ok := pointers.End(in)
 			if ok {
-				gd.UnsafeSet[gdextension.Array](p_ret, raw)
+				gd.UnsafeReplaceArray(p_ret, raw)
 			} else {
-				gd.UnsafeSet[gdextension.Array](p_ret, pointers.Get(in))
+				gd.UnsafeReplaceArray(p_ret, pointers.Get(in))
 			}
 		case Packed.Bytes:
 			in := gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](val.Array))

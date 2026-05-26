@@ -170,7 +170,7 @@ func (Instance) _get_line_syntax_highlighting(impl func(ptr gdclass.Receiver, li
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -307,7 +307,7 @@ func (class) _get_line_syntax_highlighting(impl func(ptr gdclass.Receiver, line 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _clear_highlighting_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {

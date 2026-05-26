@@ -311,7 +311,7 @@ func (Instance) _get_tags(impl func(ptr gdclass.Receiver) map[string]any) (cb gd
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -329,7 +329,7 @@ func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) [][]struct{}
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -511,7 +511,7 @@ func (class) _get_tags(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.Ex
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -523,7 +523,7 @@ func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Contains[
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _has_loop(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {

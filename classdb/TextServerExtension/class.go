@@ -1647,7 +1647,7 @@ func (Instance) _font_get_ot_name_strings(impl func(ptr gdclass.Receiver, font_r
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -2199,7 +2199,7 @@ func (Instance) _font_get_variation_coordinates(impl func(ptr gdclass.Receiver, 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -2246,7 +2246,7 @@ func (Instance) _font_get_size_cache_list(impl func(ptr gdclass.Receiver, font_r
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -2286,7 +2286,7 @@ func (Instance) _font_get_size_cache_info(impl func(ptr gdclass.Receiver, font_r
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -2753,7 +2753,7 @@ func (Instance) _font_get_glyph_contours(impl func(ptr gdclass.Receiver, font_ri
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -2771,7 +2771,7 @@ func (Instance) _font_get_kerning_list(impl func(ptr gdclass.Receiver, font_rid 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -3144,7 +3144,7 @@ func (Instance) _font_get_opentype_feature_overrides(impl func(ptr gdclass.Recei
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -3161,7 +3161,7 @@ func (Instance) _font_supported_feature_list(impl func(ptr gdclass.Receiver, fon
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -3182,7 +3182,7 @@ func (Instance) _font_supported_variation_list(impl func(ptr gdclass.Receiver, f
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -4095,7 +4095,7 @@ func (Instance) _shaped_text_get_objects(impl func(ptr gdclass.Receiver, shaped 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -4663,7 +4663,7 @@ func (Instance) _parse_structured_text(impl func(ptr gdclass.Receiver, parser_ty
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -4961,7 +4961,7 @@ func (class) _font_get_ot_name_strings(impl func(ptr gdclass.Receiver, font_rid 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _font_set_style_name(impl func(ptr gdclass.Receiver, font_rid RID.Any, name_style String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -5333,7 +5333,7 @@ func (class) _font_get_variation_coordinates(impl func(ptr gdclass.Receiver, fon
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _font_set_oversampling(impl func(ptr gdclass.Receiver, font_rid RID.Any, oversampling float64)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -5362,7 +5362,7 @@ func (class) _font_get_size_cache_list(impl func(ptr gdclass.Receiver, font_rid 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _font_clear_size_cache(impl func(ptr gdclass.Receiver, font_rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -5390,7 +5390,7 @@ func (class) _font_get_size_cache_info(impl func(ptr gdclass.Receiver, font_rid 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _font_set_ascent(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, ascent float64)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -5725,7 +5725,7 @@ func (class) _font_get_glyph_contours(impl func(ptr gdclass.Receiver, font_rid R
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _font_get_kerning_list(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64) Array.Contains[Vector2i.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -5739,7 +5739,7 @@ func (class) _font_get_kerning_list(impl func(ptr gdclass.Receiver, font_rid RID
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _font_clear_kerning_map(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -6004,7 +6004,7 @@ func (class) _font_get_opentype_feature_overrides(impl func(ptr gdclass.Receiver
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _font_supported_feature_list(impl func(ptr gdclass.Receiver, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -6017,7 +6017,7 @@ func (class) _font_supported_feature_list(impl func(ptr gdclass.Receiver, font_r
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _font_supported_variation_list(impl func(ptr gdclass.Receiver, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -6030,7 +6030,7 @@ func (class) _font_supported_variation_list(impl func(ptr gdclass.Receiver, font
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _font_get_global_oversampling(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -6676,7 +6676,7 @@ func (class) _shaped_text_get_objects(impl func(ptr gdclass.Receiver, shaped RID
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _shaped_text_get_object_rect(impl func(ptr gdclass.Receiver, shaped RID.Any, key variant.Any) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -7096,7 +7096,7 @@ func (class) _parse_structured_text(impl func(ptr gdclass.Receiver, parser_type 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _cleanup(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {

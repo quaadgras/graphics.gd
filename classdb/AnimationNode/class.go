@@ -259,7 +259,7 @@ func (Instance) _get_child_nodes(impl func(ptr gdclass.Receiver) map[string]stru
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -278,7 +278,7 @@ func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) []struct{}) 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -615,7 +615,7 @@ func (class) _get_child_nodes(impl func(ptr gdclass.Receiver) Dictionary.Any) (c
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -627,7 +627,7 @@ func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Any) (cb 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_child_by_name(impl func(ptr gdclass.Receiver, name String.Name) [1]gdclass.AnimationNode) (cb gd.ExtensionClassCallVirtualFunc) {

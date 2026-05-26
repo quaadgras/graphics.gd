@@ -665,7 +665,7 @@ func (Instance) _get_export_options(impl func(ptr gdclass.Receiver, platform Edi
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -709,7 +709,7 @@ func (Instance) _get_export_options_overrides(impl func(ptr gdclass.Receiver, pl
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -1338,7 +1338,7 @@ func (class) _get_export_options(impl func(ptr gdclass.Receiver, platform [1]gdc
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_export_options_overrides(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1353,7 +1353,7 @@ func (class) _get_export_options_overrides(impl func(ptr gdclass.Receiver, platf
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _should_update_export_options(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform) bool) (cb gd.ExtensionClassCallVirtualFunc) {

@@ -231,7 +231,7 @@ func (Instance) _parse_file(impl func(ptr gdclass.Receiver, path string) [][]str
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -304,7 +304,7 @@ func (class) _parse_file(impl func(ptr gdclass.Receiver, path String.Readable) A
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {

@@ -433,7 +433,7 @@ func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string,
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -700,7 +700,7 @@ func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Rea
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_save_extension(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {

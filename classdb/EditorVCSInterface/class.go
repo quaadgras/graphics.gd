@@ -295,7 +295,7 @@ func (Instance) _get_modified_files_data(impl func(ptr gdclass.Receiver) [][]Sta
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -368,7 +368,7 @@ func (Instance) _get_diff(impl func(ptr gdclass.Receiver, identifier string, are
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -414,7 +414,7 @@ func (Instance) _get_previous_commits(impl func(ptr gdclass.Receiver, max_commit
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -430,7 +430,7 @@ func (Instance) _get_branch_list(impl func(ptr gdclass.Receiver) []string) (cb g
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -446,7 +446,7 @@ func (Instance) _get_remotes(impl func(ptr gdclass.Receiver) []string) (cb gd.Ex
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -584,7 +584,7 @@ func (Instance) _get_line_diff(impl func(ptr gdclass.Receiver, file_path string,
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -719,7 +719,7 @@ func (class) _get_modified_files_data(impl func(ptr gdclass.Receiver) Array.Cont
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _stage_file(impl func(ptr gdclass.Receiver, file_path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -766,7 +766,7 @@ func (class) _get_diff(impl func(ptr gdclass.Receiver, identifier String.Readabl
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _shut_down(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -798,7 +798,7 @@ func (class) _get_previous_commits(impl func(ptr gdclass.Receiver, max_commits i
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_branch_list(impl func(ptr gdclass.Receiver) Array.Contains[String.Readable]) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -810,7 +810,7 @@ func (class) _get_branch_list(impl func(ptr gdclass.Receiver) Array.Contains[Str
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_remotes(impl func(ptr gdclass.Receiver) Array.Contains[String.Readable]) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -822,7 +822,7 @@ func (class) _get_remotes(impl func(ptr gdclass.Receiver) Array.Contains[String.
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _create_branch(impl func(ptr gdclass.Receiver, branch_name String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -918,7 +918,7 @@ func (class) _get_line_diff(impl func(ptr gdclass.Receiver, file_path String.Rea
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 

@@ -1668,7 +1668,7 @@ func (Instance) _body_get_collision_exceptions(impl func(ptr gdclass.Receiver, b
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (Instance) _body_set_max_contacts_reported(impl func(ptr gdclass.Receiver, body RID.Body3D, amount int)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1875,7 +1875,7 @@ func (Instance) _soft_body_get_collision_exceptions(impl func(ptr gdclass.Receiv
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (Instance) _soft_body_set_state(impl func(ptr gdclass.Receiver, body RID.SoftBody3D, state PhysicsServer3D.BodyState, v any)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -3378,7 +3378,7 @@ func (class) _body_get_collision_exceptions(impl func(ptr gdclass.Receiver, body
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _body_set_max_contacts_reported(impl func(ptr gdclass.Receiver, body RID.Any, amount int64)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -3585,7 +3585,7 @@ func (class) _soft_body_get_collision_exceptions(impl func(ptr gdclass.Receiver,
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _soft_body_set_state(impl func(ptr gdclass.Receiver, body RID.Any, state PhysicsServer3D.BodyState, v variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {

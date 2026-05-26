@@ -734,7 +734,7 @@ func (Instance) _structured_text_parser(impl func(ptr gdclass.Receiver, args []a
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -3117,7 +3117,7 @@ func (class) _structured_text_parser(impl func(ptr gdclass.Receiver, args Array.
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {

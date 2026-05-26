@@ -485,7 +485,7 @@ func (Instance) _get_built_in_templates(impl func(ptr gdclass.Receiver, obj stri
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (Instance) _is_using_templates(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -512,7 +512,7 @@ func (Instance) _validate(impl func(ptr gdclass.Receiver, script string, path st
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (Instance) _validate_path(impl func(ptr gdclass.Receiver, path string) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -655,7 +655,7 @@ func (Instance) _complete_code(impl func(ptr gdclass.Receiver, code string, path
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (Instance) _lookup_code(impl func(ptr gdclass.Receiver, code string, symbol string, path string, owner Object.Instance) Code) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -675,7 +675,7 @@ func (Instance) _lookup_code(impl func(ptr gdclass.Receiver, code string, symbol
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (Instance) _auto_indent_code(impl func(ptr gdclass.Receiver, code string, from_line int, to_line int) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -803,7 +803,7 @@ func (Instance) _debug_get_stack_level_locals(impl func(ptr gdclass.Receiver, le
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (Instance) _debug_get_stack_level_members(impl func(ptr gdclass.Receiver, level int, max_subitems int, max_depth int) StackLevelMembers) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -818,7 +818,7 @@ func (Instance) _debug_get_stack_level_members(impl func(ptr gdclass.Receiver, l
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (Instance) _debug_get_stack_level_instance(impl func(ptr gdclass.Receiver, level int) uintptr) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -845,7 +845,7 @@ func (Instance) _debug_get_globals(impl func(ptr gdclass.Receiver, max_subitems 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (Instance) _debug_parse_stack_level_expression(impl func(ptr gdclass.Receiver, level int, expression string, max_subitems int, max_depth int) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -874,7 +874,7 @@ func (Instance) _debug_get_current_stack_info(impl func(ptr gdclass.Receiver) []
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (Instance) _reload_all_scripts(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -923,7 +923,7 @@ func (Instance) _get_public_functions(impl func(ptr gdclass.Receiver) [][]struct
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (Instance) _get_public_constants(impl func(ptr gdclass.Receiver) []Constant) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -935,7 +935,7 @@ func (Instance) _get_public_constants(impl func(ptr gdclass.Receiver) []Constant
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (Instance) _get_public_annotations(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -947,7 +947,7 @@ func (Instance) _get_public_annotations(impl func(ptr gdclass.Receiver) [][]stru
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (Instance) _profiling_start(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1015,7 +1015,7 @@ func (Instance) _get_global_class_name(impl func(ptr gdclass.Receiver, path stri
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -1194,7 +1194,7 @@ func (class) _get_built_in_templates(impl func(ptr gdclass.Receiver, obj String.
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _is_using_templates(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1221,7 +1221,7 @@ func (class) _validate(impl func(ptr gdclass.Receiver, script String.Readable, p
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _validate_path(impl func(ptr gdclass.Receiver, path String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1360,7 +1360,7 @@ func (class) _complete_code(impl func(ptr gdclass.Receiver, code String.Readable
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _lookup_code(impl func(ptr gdclass.Receiver, code String.Readable, symbol String.Readable, path String.Readable, owner [1]gdreference.Object) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1380,7 +1380,7 @@ func (class) _lookup_code(impl func(ptr gdclass.Receiver, code String.Readable, 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _auto_indent_code(impl func(ptr gdclass.Receiver, code String.Readable, from_line int64, to_line int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1504,7 +1504,7 @@ func (class) _debug_get_stack_level_locals(impl func(ptr gdclass.Receiver, level
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _debug_get_stack_level_members(impl func(ptr gdclass.Receiver, level int64, max_subitems int64, max_depth int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1519,7 +1519,7 @@ func (class) _debug_get_stack_level_members(impl func(ptr gdclass.Receiver, leve
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _debug_get_stack_level_instance(impl func(ptr gdclass.Receiver, level int64) uintptr) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1546,7 +1546,7 @@ func (class) _debug_get_globals(impl func(ptr gdclass.Receiver, max_subitems int
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _debug_parse_stack_level_expression(impl func(ptr gdclass.Receiver, level int64, expression String.Readable, max_subitems int64, max_depth int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1575,7 +1575,7 @@ func (class) _debug_get_current_stack_info(impl func(ptr gdclass.Receiver) Array
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _reload_all_scripts(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1624,7 +1624,7 @@ func (class) _get_public_functions(impl func(ptr gdclass.Receiver) Array.Contain
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_public_constants(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1636,7 +1636,7 @@ func (class) _get_public_constants(impl func(ptr gdclass.Receiver) Dictionary.An
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _get_public_annotations(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1648,7 +1648,7 @@ func (class) _get_public_annotations(impl func(ptr gdclass.Receiver) Array.Conta
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _profiling_start(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1716,7 +1716,7 @@ func (class) _get_global_class_name(impl func(ptr gdclass.Receiver, path String.
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 

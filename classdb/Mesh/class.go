@@ -309,7 +309,7 @@ func (Instance) _surface_get_arrays(impl func(ptr gdclass.Receiver, index int) [
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -328,7 +328,7 @@ func (Instance) _surface_get_blend_shape_arrays(impl func(ptr gdclass.Receiver, 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -347,7 +347,7 @@ func (Instance) _surface_get_lods(impl func(ptr gdclass.Receiver, index int) map
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -699,7 +699,7 @@ func (class) _surface_get_arrays(impl func(ptr gdclass.Receiver, index int64) Ar
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _surface_get_blend_shape_arrays(impl func(ptr gdclass.Receiver, index int64) Array.Contains[Array.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -712,7 +712,7 @@ func (class) _surface_get_blend_shape_arrays(impl func(ptr gdclass.Receiver, ind
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _surface_get_lods(impl func(ptr gdclass.Receiver, index int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -725,7 +725,7 @@ func (class) _surface_get_lods(impl func(ptr gdclass.Receiver, index int64) Dict
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _surface_get_format(impl func(ptr gdclass.Receiver, index int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {

@@ -435,7 +435,7 @@ func (Instance) _get_documentation(impl func(ptr gdclass.Receiver) [][]ClassDoc)
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (Instance) _get_class_icon_path(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -497,7 +497,7 @@ func (Instance) _get_method_info(impl func(ptr gdclass.Receiver, method string) 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (Instance) _is_tool(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -555,7 +555,7 @@ func (Instance) _get_script_signal_list(impl func(ptr gdclass.Receiver) [][]stru
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (Instance) _has_property_default_value(impl func(ptr gdclass.Receiver, property string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -596,7 +596,7 @@ func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) [][]stru
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (Instance) _get_script_property_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -608,7 +608,7 @@ func (Instance) _get_script_property_list(impl func(ptr gdclass.Receiver) [][]st
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (Instance) _get_member_line(impl func(ptr gdclass.Receiver, member string) int) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -629,7 +629,7 @@ func (Instance) _get_constants(impl func(ptr gdclass.Receiver) map[string]any) (
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (Instance) _get_members(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -641,7 +641,7 @@ func (Instance) _get_members(impl func(ptr gdclass.Receiver) []string) (cb gd.Ex
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (Instance) _is_placeholder_fallback_enabled(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -872,7 +872,7 @@ func (class) _get_documentation(impl func(ptr gdclass.Receiver) Array.Contains[D
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_class_icon_path(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -930,7 +930,7 @@ func (class) _get_method_info(impl func(ptr gdclass.Receiver, method String.Name
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _is_tool(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -984,7 +984,7 @@ func (class) _get_script_signal_list(impl func(ptr gdclass.Receiver) Array.Conta
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _has_property_default_value(impl func(ptr gdclass.Receiver, property String.Name) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1025,7 +1025,7 @@ func (class) _get_script_method_list(impl func(ptr gdclass.Receiver) Array.Conta
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_script_property_list(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1037,7 +1037,7 @@ func (class) _get_script_property_list(impl func(ptr gdclass.Receiver) Array.Con
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_member_line(impl func(ptr gdclass.Receiver, member String.Name) int64) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1058,7 +1058,7 @@ func (class) _get_constants(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _get_members(impl func(ptr gdclass.Receiver) Array.Contains[String.Name]) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1070,7 +1070,7 @@ func (class) _get_members(impl func(ptr gdclass.Receiver) Array.Contains[String.
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _is_placeholder_fallback_enabled(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {

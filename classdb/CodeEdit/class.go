@@ -314,7 +314,7 @@ func (Instance) _filter_code_completion_candidates(impl func(ptr gdclass.Receive
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -1395,7 +1395,7 @@ func (class) _filter_code_completion_candidates(impl func(ptr gdclass.Receiver, 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 

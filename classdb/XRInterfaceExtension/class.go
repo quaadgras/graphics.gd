@@ -381,7 +381,7 @@ func (Instance) _get_system_info(impl func(ptr gdclass.Receiver) map[string]any)
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -842,7 +842,7 @@ func (class) _get_system_info(impl func(ptr gdclass.Receiver) Dictionary.Any) (c
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _supports_play_area_mode(impl func(ptr gdclass.Receiver, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {

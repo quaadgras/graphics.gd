@@ -463,7 +463,7 @@ func (Instance) _get_requested_extensions(impl func(ptr gdclass.Receiver, xr_ver
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -1020,7 +1020,7 @@ func (Instance) _get_viewport_composition_layer_extension_properties(impl func(p
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -1038,7 +1038,7 @@ func (Instance) _get_viewport_composition_layer_extension_property_defaults(impl
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 
@@ -1140,7 +1140,7 @@ func (class) _get_requested_extensions(impl func(ptr gdclass.Receiver, xr_versio
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _set_system_properties_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1450,7 +1450,7 @@ func (class) _get_viewport_composition_layer_extension_properties(impl func(ptr 
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 func (class) _get_viewport_composition_layer_extension_property_defaults(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1462,7 +1462,7 @@ func (class) _get_viewport_composition_layer_extension_property_defaults(impl fu
 		if !ok {
 			return
 		}
-		gd.UnsafeSet(p_back, ptr)
+		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
 func (class) _on_viewport_composition_layer_destroyed(impl func(ptr gdclass.Receiver, layer Engine.Pointer[OpenXR.CompositionLayer])) (cb gd.ExtensionClassCallVirtualFunc) {
