@@ -8,25 +8,23 @@
 // requires no gradle build and no Android SDK on the user's machine
 // beyond what graphics.gd already manages.
 //
-// Dependencies are all Apache-2.0 / BSD-3-Clause and fetched at build
-// time from Maven Central:
+// Dependencies (all Apache-2.0) are PRE-BUILT and embedded into the
+// gd binary via cmd/gd/internal/builder/bundled/metaquest/:
 //
-//   - org.khronos.openxr:openxr_loader_for_android   — the OpenXR loader .so
-//   - org.godotengine:godot-openxr-vendors-meta      — the Meta runtime adapter
-//   - com.android.tools.r8:r8                        — used as `D8` to compile
-//     the vendor plugin's
-//     classes.jar → dex
+//   - libopenxr_loader.so       (from org.khronos.openxr:openxr_loader_for_android)
+//   - libgodotopenxrvendors.so  (from org.godotengine:godot-openxr-vendors-meta)
+//   - classes2.dex              (vendor classes.jar D8-compiled offline)
 //
-// `java` must be on PATH at build time to run the R8 jar; this is the
-// only non-graphics.gd-managed prerequisite. We do not auto-install a
-// JDK (distributions vary too much) — users see an install hint instead.
+// The user build needs no Maven access, no JDK, and no R8 — every
+// asset ships inside the gd binary. Bumping the vendor version is
+// a one-time regen of the bundled assets on a dev machine.
 package builder
 
 import (
 	"bytes"
+	_ "embed"
 	"encoding/xml"
 	"fmt"
-	"io"
 	"os"
 	"os/exec"
 	"path"
@@ -126,11 +124,41 @@ func (mq MetaQuest) Run(args ...string) error {
 	return tail.Run()
 }
 
+// Pre-compiled Meta Quest assets. We could fetch the AARs from
+// Maven Central and run R8/D8 at user-build time, but R8 8.x needs
+// Java 11+ and dragging a JDK into the toolchain just to dex a few
+// hundred classes for each user build was a lot. Instead we ship
+// the artifacts pre-built:
+//
+//   - classes2.dex: vendor/classes.jar from
+//     org.godotengine:godot-openxr-vendors-meta compiled with
+//     `d8 --release --min-api 29` (any version of d8 / Java works
+//     since the input was Java 8 bytecode).
+//   - lib/arm64-v8a/libopenxr_loader.so: from
+//     org.khronos.openxr:openxr_loader_for_android.
+//   - lib/arm64-v8a/libgodotopenxrvendors.so: Meta vendor native
+//     hook, from the same vendor AAR.
+//
+// All three are Apache-2.0. Regenerate by running the script at
+// cmd/gd/internal/builder/bundled/metaquest/README.md (TODO add it)
+// when the vendor releases a new version.
+//
+//go:embed bundled/metaquest/classes2.dex
+var metaQuestDex []byte
+
+//go:embed bundled/metaquest/lib/arm64-v8a/libopenxr_loader.so
+var metaQuestLoaderSo []byte
+
+//go:embed bundled/metaquest/lib/arm64-v8a/libgodotopenxrvendors.so
+var metaQuestVendorSo []byte
+
 // injectMetaQuest is the keystone: take the APK Godot just exported,
-// drop in the Meta plugin classes (as a second dex), drop in the
-// libopenxr_loader.so + vendor .so files, rewrite the manifest with
-// the Quest features / permissions / intent filters, and zip it back
-// up. After this returns the APK still needs to be re-signed.
+// patch its manifest with the Quest features / permissions / intent
+// filters via apktool, drop in the pre-built native libs + dex, zip
+// it back up. After this returns the APK still needs to be re-signed.
+//
+// No external downloads, no Java invocation — every Quest-specific
+// asset is embedded directly in the gd binary.
 func injectMetaQuest(apkPath string) error {
 	work, err := os.MkdirTemp("", "metaquest-")
 	if err != nil {
@@ -138,66 +166,8 @@ func injectMetaQuest(apkPath string) error {
 	}
 	defer os.RemoveAll(work)
 
-	loaderAAR, err := tooling.OpenXRLoaderAAR.Lookup()
-	if err != nil {
-		return xray.New(err)
-	}
-	vendorAAR, err := tooling.OpenXRVendorsMetaAAR.Lookup()
-	if err != nil {
-		return xray.New(err)
-	}
-	r8jar, err := tooling.R8.Lookup()
-	if err != nil {
-		return xray.New(err)
-	}
-	javaBin, err := tooling.Java.Lookup()
-	if err != nil {
-		return xray.New(err)
-	}
-
-	// Materialize the AAR contents we care about: classes.jar from
-	// each, native libs from each. AARs are plain zip files.
-	loaderDir := filepath.Join(work, "loader")
-	vendorDir := filepath.Join(work, "vendor")
-	if err := tooling.ExtractArchive(loaderAAR, loaderDir, "zip", "", false); err != nil {
-		return xray.New(err)
-	}
-	if err := tooling.ExtractArchive(vendorAAR, vendorDir, "zip", "", false); err != nil {
-		return xray.New(err)
-	}
-
-	// Use R8/D8 to compile the vendor plugin's classes.jar into a dex.
-	// We pass --release so D8 strips debug info and uses smaller refs.
-	// The loader AAR's classes.jar is small (mostly stubs) — bundle it
-	// into the same D8 invocation so we end up with a single classes2.dex
-	// to slot into the APK alongside Godot's existing classes.dex.
-	dexOut := filepath.Join(work, "dex")
-	if err := os.MkdirAll(dexOut, 0755); err != nil {
-		return xray.New(err)
-	}
-	d8Args := []string{"-cp", r8jar, "com.android.tools.r8.D8", "--release",
-		"--min-api", "29", // Quest 2 is API 29; Quest 3 is higher
-		"--output", dexOut,
-	}
-	for _, dir := range []string{vendorDir, loaderDir} {
-		jar := filepath.Join(dir, "classes.jar")
-		if _, err := os.Stat(jar); err == nil {
-			d8Args = append(d8Args, jar)
-		}
-	}
-	d8 := exec.Command(javaBin, d8Args...)
-	d8.Stdout, d8.Stderr = os.Stdout, os.Stderr
-	if err := d8.Run(); err != nil {
-		return xray.New(fmt.Errorf("d8 dex compile failed: %w", err))
-	}
-	// D8 writes classes.dex by default; rename to classes2.dex so it
-	// merges with Godot's classes.dex as a secondary multidex slot.
-	if err := os.Rename(filepath.Join(dexOut, "classes.dex"), filepath.Join(dexOut, "classes2.dex")); err != nil {
-		return xray.New(err)
-	}
-
-	// Now decompile the APK so we can rewrite the binary AndroidManifest.xml
-	// through apktool's smali/xml-tools, then repack. We don't touch the
+	// Decompile the APK so we can rewrite the binary AndroidManifest.xml
+	// through apktool's xml-tools, then repack. We don't touch the
 	// existing dex — apktool will re-bundle it as-is.
 	decompiled := filepath.Join(work, "decompiled")
 	if err := tooling.AndroidPackageKitTool.Exec("d", apkPath, "-s", "-o", decompiled, "-f"); err != nil {
@@ -212,44 +182,24 @@ func injectMetaQuest(apkPath string) error {
 		return xray.New(err)
 	}
 
-	// Copy the OpenXR loader .so plus any vendor .so into the lib tree.
-	for _, src := range []string{
-		filepath.Join(loaderDir, "jni", "arm64-v8a", "libopenxr_loader.so"),
-	} {
-		if _, err := os.Stat(src); err != nil {
-			continue
-		}
-		dst := filepath.Join(decompiled, "lib", "arm64-v8a", filepath.Base(src))
-		if err := copyFile(src, dst); err != nil {
-			return xray.New(err)
-		}
+	// Write embedded native libs into the lib tree.
+	if err := os.MkdirAll(filepath.Join(decompiled, "lib", "arm64-v8a"), 0755); err != nil {
+		return xray.New(err)
 	}
-	// Vendor AAR may carry additional .so files (Meta runtime hooks).
-	vendorLibs := filepath.Join(vendorDir, "jni", "arm64-v8a")
-	if entries, err := os.ReadDir(vendorLibs); err == nil {
-		for _, e := range entries {
-			if e.IsDir() || !strings.HasSuffix(e.Name(), ".so") {
-				continue
-			}
-			// The app gradle build (godot/platform/android/java/app/build.gradle:313)
-			// explicitly deletes the vendor's bundled libopenxr_loader.so in favour
-			// of the one from the openxr_loader_for_android dependency. Mirror that
-			// — we already injected the loader above.
-			if e.Name() == "libopenxr_loader.so" {
-				continue
-			}
-			if err := copyFile(filepath.Join(vendorLibs, e.Name()),
-				filepath.Join(decompiled, "lib", "arm64-v8a", e.Name())); err != nil {
-				return xray.New(err)
-			}
+	for name, data := range map[string][]byte{
+		"libopenxr_loader.so":      metaQuestLoaderSo,
+		"libgodotopenxrvendors.so": metaQuestVendorSo,
+	} {
+		dst := filepath.Join(decompiled, "lib", "arm64-v8a", name)
+		if err := os.WriteFile(dst, data, 0644); err != nil {
+			return xray.New(err)
 		}
 	}
 
 	// Apktool puts secondary dex files at the top level. Slot in our
-	// freshly-compiled classes2.dex so the Meta plugin gets loaded by
-	// the Android runtime alongside Godot's classes.dex.
-	if err := copyFile(filepath.Join(dexOut, "classes2.dex"),
-		filepath.Join(decompiled, "classes2.dex")); err != nil {
+	// pre-built classes2.dex so the Meta plugin gets loaded by the
+	// Android runtime alongside Godot's classes.dex.
+	if err := os.WriteFile(filepath.Join(decompiled, "classes2.dex"), metaQuestDex, 0644); err != nil {
 		return xray.New(err)
 	}
 
@@ -394,24 +344,6 @@ func findTagEnd(src []byte, start int) int {
 		}
 	}
 	return -1
-}
-
-func copyFile(src, dst string) error {
-	if err := os.MkdirAll(filepath.Dir(dst), 0755); err != nil {
-		return err
-	}
-	in, err := os.Open(src)
-	if err != nil {
-		return err
-	}
-	defer in.Close()
-	out, err := os.Create(dst)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-	_, err = io.Copy(out, in)
-	return err
 }
 
 // signAPK runs apksigner with the given keystore. apksigner is one of
