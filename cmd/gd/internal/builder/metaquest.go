@@ -173,6 +173,22 @@ func injectMetaQuest(apkPath string) error {
 	if err := tooling.AndroidPackageKitTool.Exec("d", apkPath, "-s", "-o", decompiled, "-f"); err != nil {
 		return xray.New(err)
 	}
+	// Godot's APK ships a themed_icon mipmap entry that aapt2 can't
+	// recompile (it decodes as a non-reference value). Drop the
+	// auto-generated mipmaps.xml + the matching public.xml row so
+	// the resource recompile during `apktool b` succeeds. Same
+	// cleanup BuildMain does for the AAB path in android.go.
+	if err := os.Remove(filepath.Join(decompiled, "res", "values-anydpi-v26", "mipmaps.xml")); err != nil && !os.IsNotExist(err) {
+		return xray.New(err)
+	}
+	publicPath := filepath.Join(decompiled, "res", "values", "public.xml")
+	if public, err := os.ReadFile(publicPath); err == nil {
+		public = bytes.Replace(public, []byte(`<public type="mipmap" name="themed_icon" id="0x7f0a0004" />`), nil, 1)
+		if err := os.WriteFile(publicPath, public, 0644); err != nil {
+			return xray.New(err)
+		}
+	}
+
 	manifestPath := filepath.Join(decompiled, "AndroidManifest.xml")
 	patched, err := patchManifestForQuest(manifestPath)
 	if err != nil {
