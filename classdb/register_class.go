@@ -992,6 +992,92 @@ func (instance *instanceImplementation) ready() {
 	}
 }
 
+// compositeEmbed reports whether t is a struct type with an
+// anonymous embedded pointer to a Godot-class wrapper. Returns the
+// embedded field on success. See [assertCompositeChild] for the
+// pattern this enables.
+func compositeEmbed(t, nodeType reflect.Type) (reflect.StructField, bool) {
+	if t.Kind() != reflect.Struct {
+		return reflect.StructField{}, false
+	}
+	for i := 0; i < t.NumField(); i++ {
+		f := t.Field(i)
+		if !f.Anonymous {
+			continue
+		}
+		// Anonymous Extension[T] embeds (which is how every
+		// graphics.gd-registered class declares its parent) live
+		// inside Struct, not Pointer — they're stamped values, not
+		// pointers. Only treat anonymous *Pointer* embeds as the
+		// composite marker, so we don't mistakenly route every
+		// graphics.gd class through the composite path.
+		if f.Type.Kind() == reflect.Pointer && f.Type.Implements(nodeType) {
+			return f, true
+		}
+	}
+	return reflect.StructField{}, false
+}
+
+// assertCompositeChild handles the composite-node-binding case
+// flagged by [compositeEmbed]: the scene node identified by
+// field.Name (or its `gd:"..."` tag) is bound to the anonymous
+// embedded pointer of value's struct type, and the struct's
+// remaining named fields are then resolved recursively as children
+// of that node.
+//
+// Tag handling and the "create if missing" fallback mirror the
+// non-composite path below — we just route the assignment to the
+// embedded pointer field instead of the struct as a whole.
+func (instance *instanceImplementation) assertCompositeChild(value any, field, embed reflect.StructField, parent, owner [1]gdclass.Node) {
+	type isNode interface {
+		AsNode() Node.Instance
+	}
+	rvalue := reflect.ValueOf(value)
+	name := field.Name
+	if tag := field.Tag.Get("gd"); tag != "" {
+		if tag == "-" {
+			return
+		}
+		name = tag
+	}
+	path := Path.ToNode(String.New(name))
+	if !Node.Advanced(parent).HasNode(path) {
+		Engine.RaiseWarning("classdb: composite-binding field " + field.Name +
+			" expects scene child " + name + " but none was found; skipping")
+		return
+	}
+	node := Node.Instance(Node.Advanced(parent).GetNode(path))
+	native := gd.ExtensionInstanceLookup(gdreference.GetObject(gdclass.GetNode(node[0])[0]))
+	if native == nil {
+		return
+	}
+	nativeValue := reflect.ValueOf(native)
+	embedField := rvalue.Elem().FieldByIndex(embed.Index)
+	if nativeValue.Type() != embedField.Type() {
+		Engine.RaiseWarning("classdb: composite-binding field " + field.Name +
+			" has embedded " + embedField.Type().String() +
+			" but scene node " + name + " is " + nativeValue.Type().String())
+		return
+	}
+	embedField.Set(nativeValue)
+	// Recurse into the struct's remaining named fields, treating
+	// them as children of the just-bound node. We deliberately skip
+	// other anonymous embeds — they're either the one we just bound
+	// or aren't part of this binding pattern.
+	for i := 0; i < field.Type.NumField(); i++ {
+		sf := field.Type.Field(i)
+		if sf.Anonymous {
+			continue
+		}
+		if _, hasTag := sf.Tag.Lookup("gd"); !hasTag && !sf.IsExported() {
+			continue
+		}
+		ptr := rvalue.Elem().FieldByIndex(sf.Index).Addr().Interface()
+		instance.assertChild(ptr, sf, node, owner, Node.InternalModeDisabled)
+	}
+	gdreference.EndObject(gdclass.GetNode(node[0])[0])
+}
+
 func (instance *instanceImplementation) assertChild(value any, field reflect.StructField, parent, owner [1]gdclass.Node, internal Node.InternalMode) {
 	type isNode interface {
 		AsNode() Node.Instance
@@ -1000,6 +1086,27 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		rvalue = reflect.ValueOf(value)
 	)
 	nodeType := reflect.TypeFor[isNode]()
+
+	// "Composite" node binding: a struct field whose type contains
+	// an anonymous embedded pointer to a Godot class. Lets users
+	// write declarations like
+	//
+	//     Toolbar struct {
+	//         *Triangle           // bound to the scene node
+	//         Settings TextureButton.Instance  // child of Triangle
+	//         Undo     TextureButton.Instance
+	//     }
+	//
+	// where the scene tree has a Triangle named "Toolbar" with
+	// TextureButton children. Without this branch the field would
+	// trip the standard assignment path below — node's *Triangle
+	// type vs the wrapper struct type don't match — and panic with
+	// "reflect.Set: value of type *Triangle is not assignable to
+	// type struct {...}".
+	if embed, ok := compositeEmbed(field.Type, nodeType); ok {
+		instance.assertCompositeChild(value, field, embed, parent, owner)
+		return
+	}
 	if !field.Type.Implements(nodeType) && !reflect.PointerTo(field.Type).Implements(nodeType) {
 		if field.Type.Kind() == reflect.Struct {
 			var front = true
