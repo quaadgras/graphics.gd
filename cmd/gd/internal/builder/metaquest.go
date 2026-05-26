@@ -205,8 +205,18 @@ func injectMetaQuest(apkPath string) error {
 
 	// Rebuild. Apktool's `b` re-encodes the manifest to binary AXML
 	// and bundles everything in decompiled/ back into an APK.
+	//
+	// apktool ships its own aapt2 baked into the jar but only as a
+	// glibc x86_64 binary; on musl (Void, Alpine, …) the extract +
+	// exec fails and it falls back to $PATH, which doesn't have one
+	// either. Point it at the aapt2 graphics.gd already manages so
+	// the apktool roundtrip works on every platform we support.
+	aapt2, err := tooling.AndroidAssetPackagingTool.Lookup()
+	if err != nil {
+		return xray.New(err)
+	}
 	repacked := apkPath + ".meta-unsigned.apk"
-	if err := tooling.AndroidPackageKitTool.Exec("b", decompiled, "-o", repacked); err != nil {
+	if err := tooling.AndroidPackageKitTool.Exec("b", decompiled, "-a", aapt2, "-o", repacked); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Rename(repacked, apkPath); err != nil {
