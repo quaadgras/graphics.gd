@@ -68,10 +68,10 @@ func (mq MetaQuest) BuildMain(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-release", "Android"); err != nil {
+	if err := tooling.Godot.Exec("--headless", "--export-release", "Meta Quest"); err != nil {
 		return xray.New(err)
 	}
-	apk := filepath.Join(project.ReleasesDirectory, "android", "arm64", project.Name+".apk")
+	apk := filepath.Join(project.ReleasesDirectory, "metaquest", project.Name+".apk")
 	if err := injectMetaQuest(apk); err != nil {
 		return xray.New(err)
 	}
@@ -89,16 +89,16 @@ func (mq MetaQuest) Run(args ...string) error {
 	if _, err := tooling.AndroidPackageSigner.Lookup(); err != nil {
 		return xray.New(err)
 	}
-	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, "android", "arm64"), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, "metaquest"), 0755); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-debug", "Android"); err != nil {
+	if err := tooling.Godot.Exec("--headless", "--export-debug", "Meta Quest"); err != nil {
 		return xray.New(err)
 	}
-	apk := filepath.Join(project.ReleasesDirectory, "android", "arm64", project.Name+".apk")
+	apk := filepath.Join(project.ReleasesDirectory, "metaquest", project.Name+".apk")
 	if err := injectMetaQuest(apk); err != nil {
 		return xray.New(err)
 	}
