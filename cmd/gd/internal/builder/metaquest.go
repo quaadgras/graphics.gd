@@ -294,6 +294,15 @@ func zipalignAPK(src, dst string) error {
 	counter := &countingWriter{w: out}
 	zw := zip.NewWriter(counter)
 	for _, f := range in.File {
+		// archive/zip's Writer wraps the supplied io.Writer in a
+		// bufio.Writer, so counter.n only reflects bytes that have
+		// already been flushed from that buffer. Flush before
+		// computing each entry's LFH start offset, otherwise our
+		// padding math is based on a stale offset and the data
+		// lands at the wrong alignment.
+		if err := zw.Flush(); err != nil {
+			return fmt.Errorf("zipalign: flush: %w", err)
+		}
 		var align int
 		method := f.Method
 		switch {
