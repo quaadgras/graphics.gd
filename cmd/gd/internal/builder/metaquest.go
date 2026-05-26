@@ -26,6 +26,7 @@ import (
 	_ "embed"
 	"encoding/xml"
 	"fmt"
+	"hash/crc32"
 	"io"
 	"os"
 	"os/exec"
@@ -68,6 +69,11 @@ func (mq MetaQuest) BuildMain(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
+	cleanupAddon, err := stageMetaQuestAddon()
+	defer cleanupAddon()
+	if err != nil {
+		return xray.New(err)
+	}
 	if err := tooling.Godot.Exec("--headless", "--export-release", "Meta Quest"); err != nil {
 		return xray.New(err)
 	}
@@ -93,6 +99,11 @@ func (mq MetaQuest) Run(args ...string) error {
 		return xray.New(err)
 	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
+		return xray.New(err)
+	}
+	cleanupAddon, err := stageMetaQuestAddon()
+	defer cleanupAddon()
+	if err != nil {
 		return xray.New(err)
 	}
 	if err := tooling.Godot.Exec("--headless", "--export-debug", "Meta Quest"); err != nil {
@@ -153,6 +164,62 @@ var metaQuestLoaderSo []byte
 
 //go:embed bundled/metaquest/lib/arm64-v8a/libgodotopenxrvendors.so
 var metaQuestVendorSo []byte
+
+// metaQuestGDExtension is the godot-openxr-vendors plugin.gdextension
+// config. With `android_aar_plugin = true` Godot loads the actual .so
+// via Android's native library loader (so the binary path strings are
+// informational), but the config file itself MUST be packaged in the
+// .pck or Godot's GodotPlugin registration fails to wire the plugin
+// up, with:
+//   ERROR: Error loading GDExtension configuration file:
+//     'res://addons/godotopenxrvendors/plugin.gdextension'.
+// Drop this file into res://addons/godotopenxrvendors/ just before
+// `godot --export-release`, then clean up after.
+//
+//go:embed bundled/metaquest/plugin.gdextension
+var metaQuestGDExtension []byte
+
+// stageMetaQuestAddon writes the bundled plugin.gdextension into
+// `<graphics-dir>/addons/godotopenxrvendors/` so Godot's exporter
+// packs it into the .pck. Returns a cleanup function the caller
+// MUST defer — the directory is project-internal scaffolding, not
+// something the user should see survive between builds.
+//
+// We also write a minimal plugin.cfg next to it. Without this
+// file, Godot's exporter knows about the addon (it lands in
+// .godot/extension_list.cfg on the next import scan) but still
+// skips packing the addons/<plugin>/ subtree into the .pck — its
+// addon-discovery logic uses plugin.cfg as the marker for "this
+// directory is a real plugin", and addons without it get dropped
+// from the export filter even when xr_features/xr_mode=openxr has
+// already convinced the launcher to start in immersive mode.
+//
+// After staging, we ask Godot to do an import scan so the newly-
+// staged files actually make it into the resource cache that the
+// subsequent --export-release call consults.
+func stageMetaQuestAddon() (cleanup func(), err error) {
+	dir := filepath.Join(project.GraphicsDirectory, "addons", "godotopenxrvendors")
+	cleanup = func() { _ = os.RemoveAll(dir) }
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		cleanup()
+		return cleanup, err
+	}
+	if err := os.WriteFile(filepath.Join(dir, "plugin.gdextension"), metaQuestGDExtension, 0644); err != nil {
+		cleanup()
+		return cleanup, err
+	}
+	pluginCfg := `[plugin]
+name="Godot OpenXR Vendors"
+description="OpenXR vendor extensions (Meta runtime)"
+author="GodotVR community"
+version="4.2.2-stable"
+`
+	if err := os.WriteFile(filepath.Join(dir, "plugin.cfg"), []byte(pluginCfg), 0644); err != nil {
+		cleanup()
+		return cleanup, err
+	}
+	return cleanup, nil
+}
 
 // injectMetaQuest is the keystone: take the APK Godot just exported,
 // patch its manifest with the Quest features / permissions / intent
@@ -228,10 +295,25 @@ func injectMetaQuest(apkPath string) error {
 		}
 	}
 
-	// Apktool puts secondary dex files at the top level. Slot in our
-	// pre-built classes2.dex so the Meta plugin gets loaded by the
-	// Android runtime alongside Godot's classes.dex.
-	if err := os.WriteFile(filepath.Join(decompiled, "classes2.dex"), metaQuestDex, 0644); err != nil {
+	// Apktool puts secondary dex files at the top level. Find the
+	// next free classesN.dex slot — the Godot Android template ships
+	// classes.dex through classes14.dex pre-populated (mostly the
+	// engine runtime + AndroidX dependencies), and Android's multi-
+	// dex loader requires CONSECUTIVE numbering, so overwriting an
+	// existing slot is bad (we'd lose whatever classes lived there;
+	// in particular classes2.dex hosts XRMode, whose absence makes
+	// Godot.kt fail with NoClassDefFoundError before the engine
+	// even initializes).
+	nextDex := 2
+	for {
+		name := fmt.Sprintf("classes%d.dex", nextDex)
+		if _, err := os.Stat(filepath.Join(decompiled, name)); os.IsNotExist(err) {
+			break
+		}
+		nextDex++
+	}
+	dexName := fmt.Sprintf("classes%d.dex", nextDex)
+	if err := os.WriteFile(filepath.Join(decompiled, dexName), metaQuestDex, 0644); err != nil {
 		return xray.New(err)
 	}
 
@@ -273,11 +355,27 @@ func injectMetaQuest(apkPath string) error {
 //   - resources.arsc is re-stored uncompressed (Method = Store)
 //     and placed at a 4-byte aligned data offset.
 //   - .so files (already typically Stored so they can be mmap'd
-//     at runtime) are aligned to 4096-byte (one-page) boundaries.
+//     at runtime) are aligned to 16384-byte (16 KiB) page
+//     boundaries — a superset of the older 4 KiB requirement, and
+//     what Android 15+ / Quest 3+ devices with 16 KiB pages
+//     actually require (`zipalign -P 16`).
 //
 // Other entries pass through with their original method intact;
 // Deflate-compressed entries don't need alignment because the
 // runtime doesn't mmap them, so we leave them alone.
+//
+// Implementation uses CreateRaw/OpenRaw so we skip
+// compression/decompression entirely (each entry's data is
+// memcpy'd through), and so that no data descriptor is emitted
+// after the entry — that would push the next LFH past our
+// computed alignment. We also explicitly drop Modified to keep
+// archive/zip from appending a 9-byte UT timestamp Extra.
+//
+// resources.arsc is the one entry where we DO need to read +
+// re-store: apktool emits it Deflate-compressed, but Android R+
+// requires it stored uncompressed. We Open it (decompressing),
+// hash the result, and write it back via CreateRaw with
+// Method=Store.
 func zipalignAPK(src, dst string) error {
 	in, err := zip.OpenReader(src)
 	if err != nil {
@@ -289,66 +387,92 @@ func zipalignAPK(src, dst string) error {
 		return fmt.Errorf("zipalign: create %s: %w", dst, err)
 	}
 	defer out.Close()
-	// Wrap with a counter so we know the current write offset when
-	// computing per-entry alignment padding.
 	counter := &countingWriter{w: out}
 	zw := zip.NewWriter(counter)
 	for _, f := range in.File {
 		// archive/zip's Writer wraps the supplied io.Writer in a
-		// bufio.Writer, so counter.n only reflects bytes that have
-		// already been flushed from that buffer. Flush before
-		// computing each entry's LFH start offset, otherwise our
-		// padding math is based on a stale offset and the data
-		// lands at the wrong alignment.
+		// bufio.Writer; flush so counter.n actually reflects the
+		// real on-disk position before computing alignment padding.
 		if err := zw.Flush(); err != nil {
 			return fmt.Errorf("zipalign: flush: %w", err)
 		}
+
 		var align int
 		method := f.Method
+		needReStore := false
 		switch {
 		case f.Name == "resources.arsc":
 			method = zip.Store
 			align = 4
+			if f.Method == zip.Deflate {
+				needReStore = true
+			}
 		case strings.HasSuffix(f.Name, ".so") && method == zip.Store:
-			align = 4096
+			align = 16384
 		}
+
+		var data []byte
+		var compSize, uncompSize uint64
+		var crc uint32
+		if needReStore {
+			// Decompress the entry into memory; we'll re-emit it
+			// as Method=Store.
+			rc, err := f.Open()
+			if err != nil {
+				return fmt.Errorf("zipalign: open %s: %w", f.Name, err)
+			}
+			data, err = io.ReadAll(rc)
+			rc.Close()
+			if err != nil {
+				return fmt.Errorf("zipalign: read %s: %w", f.Name, err)
+			}
+			compSize = uint64(len(data))
+			uncompSize = compSize
+			crc = crc32.ChecksumIEEE(data)
+		} else {
+			// Copy the entry's stored bytes verbatim — no
+			// compress/decompress, no CRC recompute.
+			rc, err := f.OpenRaw()
+			if err != nil {
+				return fmt.Errorf("zipalign: open raw %s: %w", f.Name, err)
+			}
+			buf := &bytes.Buffer{}
+			if _, err := io.Copy(buf, rc); err != nil {
+				return fmt.Errorf("zipalign: copy raw %s: %w", f.Name, err)
+			}
+			data = buf.Bytes()
+			compSize = f.CompressedSize64
+			uncompSize = f.UncompressedSize64
+			crc = f.CRC32
+		}
+
 		fh := &zip.FileHeader{
-			Name:           f.Name,
-			Method:         method,
-			CreatorVersion: f.CreatorVersion,
-			ExternalAttrs:  f.ExternalAttrs,
-			NonUTF8:        f.NonUTF8,
-			Flags:          f.Flags &^ 0x8, // clear data-descriptor bit; we know sizes upfront
-			ReaderVersion:  f.ReaderVersion,
-			Comment:        f.Comment,
-			// Deliberately NOT setting Modified — archive/zip's
-			// Writer appends a 9-byte "Extended Timestamp" Extra
-			// (tag 0x5455 "UT") whenever Modified is non-zero,
-			// which silently shifts the data offset past whatever
-			// alignment padding we computed. APKs don't use entry
-			// modtimes for anything user-visible, so we drop them.
+			Name:               f.Name,
+			Method:             method,
+			CreatorVersion:     f.CreatorVersion,
+			ExternalAttrs:      f.ExternalAttrs,
+			NonUTF8:            f.NonUTF8,
+			Flags:              f.Flags &^ 0x8, // no data descriptor — we know sizes upfront
+			ReaderVersion:      f.ReaderVersion,
+			Comment:            f.Comment,
+			CRC32:              crc,
+			CompressedSize64:   compSize,
+			UncompressedSize64: uncompSize,
+			// Modified deliberately left zero — see note above.
 		}
 		if align > 0 {
-			// Local file header is fixed 30 bytes, then name, then extra,
-			// then data. Pad Extra so the data offset lands on `align`.
 			dataOffset := counter.n + 30 + int64(len(f.Name))
 			if r := dataOffset % int64(align); r != 0 {
 				fh.Extra = make([]byte, int64(align)-r)
 			}
 		}
-		w, err := zw.CreateHeader(fh)
+		w, err := zw.CreateRaw(fh)
 		if err != nil {
 			return fmt.Errorf("zipalign: header %s: %w", f.Name, err)
 		}
-		rc, err := f.Open()
-		if err != nil {
-			return fmt.Errorf("zipalign: open entry %s: %w", f.Name, err)
+		if _, err := w.Write(data); err != nil {
+			return fmt.Errorf("zipalign: write %s: %w", f.Name, err)
 		}
-		if _, err := io.Copy(w, rc); err != nil {
-			rc.Close()
-			return fmt.Errorf("zipalign: copy %s: %w", f.Name, err)
-		}
-		rc.Close()
 	}
 	return zw.Close()
 }
