@@ -519,7 +519,7 @@ func (Instance) _commit_handle(impl func(ptr gdclass.Receiver, gizmo EditorNode3
 		defer gdreference.EndObject(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 3))))
+		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 3)))))
 		defer pointers.End(gd.InternalVariant(restore))
 		var cancel = gd.UnsafeGet[bool](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -563,7 +563,7 @@ func (Instance) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, giz
 		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetCamera3D(camera[0])[0])
-		var frustum_planes = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2))))
+		var frustum_planes = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2)))))
 		defer pointers.End(gd.InternalArray(frustum_planes))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, gizmo, camera, gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(frustum_planes)))
@@ -627,7 +627,7 @@ func (Instance) _commit_subgizmos(impl func(ptr gdclass.Receiver, gizmo EditorNo
 		defer gdreference.EndObject(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var ids = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ids))
-		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2))))
+		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2)))))
 		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -923,7 +923,7 @@ func (class) _commit_handle(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.Edi
 		defer gdreference.EndObject(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 3))))
+		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 3)))))
 		defer pointers.End(gd.InternalVariant(restore))
 		var cancel = gd.UnsafeGet[bool](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -952,7 +952,7 @@ func (class) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, gizmo 
 		var camera = [1]gdclass.Camera3D{gdclass.NewCamera3D(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetCamera3D(camera[0])[0])
-		var frustum_planes = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2))))
+		var frustum_planes = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2)))))
 		defer pointers.End(gd.InternalArray(frustum_planes))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, gizmo, camera, frustum_planes)
@@ -993,7 +993,7 @@ func (class) _commit_subgizmos(impl func(ptr gdclass.Receiver, gizmo [1]gdclass.
 		defer gdreference.EndObject(gdclass.GetEditorNode3DGizmo(gizmo[0])[0])
 		var ids = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ids))
-		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2))))
+		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 2)))))
 		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

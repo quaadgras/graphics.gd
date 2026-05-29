@@ -993,7 +993,7 @@ func (Instance) _set_viewport_composition_layer_and_get_next_pointer(impl func(p
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var layer = gdmemory.WrapPointer[OpenXR.CompositionLayer](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
 		defer gdmemory.Barrier()
-		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
+		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1)))))
 		defer pointers.End(gd.InternalDictionary(property_values))
 		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
 		defer gdmemory.Barrier()
@@ -1070,7 +1070,7 @@ Note: This virtual method will be called on the render thread.
 */
 func (Instance) _set_android_surface_swapchain_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, property_values Object.PropertyInfo, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0))))
+		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0)))))
 		defer pointers.End(gd.InternalDictionary(property_values))
 		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
 		defer gdmemory.Barrier()
@@ -1433,7 +1433,7 @@ func (class) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var layer = gdmemory.WrapPointer[OpenXR.CompositionLayer](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
 		defer gdmemory.Barrier()
-		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
+		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1)))))
 		defer pointers.End(gd.InternalDictionary(property_values))
 		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1475,7 +1475,7 @@ func (class) _on_viewport_composition_layer_destroyed(impl func(ptr gdclass.Rece
 }
 func (class) _set_android_surface_swapchain_create_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, property_values Dictionary.Any, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0))))
+		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0)))))
 		defer pointers.End(gd.InternalDictionary(property_values))
 		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
 		defer gdmemory.Barrier()

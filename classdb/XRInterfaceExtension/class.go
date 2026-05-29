@@ -616,7 +616,7 @@ Returns a []string with pose names configured by this interface. Note that user 
 */
 func (Instance) _get_suggested_pose_names(impl func(ptr gdclass.Receiver, tracker_name string) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
+		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0))))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, tracker_name.String())
@@ -645,9 +645,9 @@ Triggers a haptic pulse to be emitted on the specified tracker.
 */
 func (Instance) _trigger_haptic_pulse(impl func(ptr gdclass.Receiver, action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var action_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		var action_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(action_name))
-		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
+		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1))))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
 		var frequency = gd.UnsafeGet[float64](p_args, 2)
 		var amplitude = gd.UnsafeGet[float64](p_args, 3)
@@ -988,7 +988,7 @@ func (class) _get_suggested_tracker_names(impl func(ptr gdclass.Receiver) Packed
 }
 func (class) _get_suggested_pose_names(impl func(ptr gdclass.Receiver, tracker_name String.Name) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
+		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0))))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, tracker_name)
@@ -1009,9 +1009,9 @@ func (class) _get_tracking_status(impl func(ptr gdclass.Receiver) XRInterface.Tr
 }
 func (class) _trigger_haptic_pulse(impl func(ptr gdclass.Receiver, action_name String.Readable, tracker_name String.Name, frequency float64, amplitude float64, duration_sec float64, delay_sec float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var action_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		var action_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(action_name))
-		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
+		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1))))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
 		var frequency = gd.UnsafeGet[float64](p_args, 2)
 		var amplitude = gd.UnsafeGet[float64](p_args, 3)

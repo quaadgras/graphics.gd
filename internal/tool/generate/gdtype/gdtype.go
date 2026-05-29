@@ -195,7 +195,36 @@ func (name Name) ConvertToGo(val string, simple string) string {
 	}
 }
 
+// LoadFromRawPointerValue emits the expression that wraps a raw engine
+// pointer value into the corresponding high-level Go type. Used for both
+// return values (consumed on the calling thread) and callback arguments.
 func (name Name) LoadFromRawPointerValue(val string) string {
+	return name.loadFromRawPointerValue(val, false)
+}
+
+// LoadFromRawPointerValuePinned is like [LoadFromRawPointerValue] but the
+// underlying managed pointer is pinned with pointers.Pin, so the
+// main-thread per-frame Cycle cannot reclaim it while the value is live.
+// Use this for Godot→Go callback arguments, which are borrowed for the
+// duration of the callback and released with EndPointer on return: the
+// callback may run off the main thread (and may block), so an unpinned
+// handle could be freed mid-call by a concurrent Cycle. EndPointer still
+// frees the pinned handle (End ignores the pin bit), so there is no leak.
+func (name Name) LoadFromRawPointerValuePinned(val string) string {
+	return name.loadFromRawPointerValue(val, true)
+}
+
+func (name Name) loadFromRawPointerValue(val string, pin bool) string {
+	// newFunc emits the managed-pointer constructor for the element type.
+	// For callback arguments we wrap it in pointers.Pin so a concurrent
+	// main-thread Cycle can't free the handle mid-call; everything else
+	// uses the plain Cycle-managed New.
+	newFunc := func(elem, arg string) string {
+		if pin {
+			return fmt.Sprintf("pointers.Pin(pointers.New[%s](%s))", elem, arg)
+		}
+		return fmt.Sprintf("pointers.New[%s](%s)", elem, arg)
+	}
 	if strings.HasPrefix(string(name), "Engine.Pointer[") {
 		elem := strings.TrimPrefix(string(name), "Engine.Pointer[")
 		elem = strings.TrimSuffix(elem, "]")
@@ -207,25 +236,25 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 	if strings.HasPrefix(string(name), "Array.Contains[") {
 		_, elem, _ := strings.Cut(string(name), "Array.Contains[")
 		elem = strings.TrimSuffix(elem, "]")
-		return fmt.Sprintf("Array.Through(gd.ArrayProxy[%s]{}, pointers.Pack(pointers.New[gd.Array](%s)))", elem, val)
+		return fmt.Sprintf("Array.Through(gd.ArrayProxy[%s]{}, pointers.Pack(%s))", elem, newFunc("gd.Array", val))
 	}
 	switch name {
 	case "Signal.Any":
-		return fmt.Sprintf("Signal.Via(gd.SignalProxy{}, pointers.Pack(pointers.New[gd.Signal](%s)))", val)
+		return fmt.Sprintf("Signal.Via(gd.SignalProxy{}, pointers.Pack(%s))", newFunc("gd.Signal", val))
 	case "Array.Any":
-		return fmt.Sprintf("Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](%s)))", val)
+		return fmt.Sprintf("Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(%s))", newFunc("gd.Array", val))
 	case "String.Readable":
-		return fmt.Sprintf("String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](%s)))", val)
+		return fmt.Sprintf("String.Via(gd.StringProxy{}, pointers.Pack(%s))", newFunc("gd.String", val))
 	case "Dictionary.Any":
-		return fmt.Sprintf("Dictionary.Through(gd.DictionaryProxy[variant.Any,variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](%s)))", val)
+		return fmt.Sprintf("Dictionary.Through(gd.DictionaryProxy[variant.Any,variant.Any]{}, pointers.Pack(%s))", newFunc("gd.Dictionary", val))
 	case "[1]gdreference.Object":
 		return fmt.Sprintf("[1]gdreference.Object{gdreference.OwnObject(%s, gd.Free)}", val)
 	case "Callable.Function":
-		return fmt.Sprintf("Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](%s)))", val)
+		return fmt.Sprintf("Callable.Through(gd.CallableProxy{}, pointers.Pack(%s))", newFunc("gd.Callable", val))
 	case "Path.ToNode":
-		return fmt.Sprintf("Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](%s))))", val)
+		return fmt.Sprintf("Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(%s)))", newFunc("gd.NodePath", val))
 	case "String.Name":
-		return fmt.Sprintf("String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](%s))))", val)
+		return fmt.Sprintf("String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(%s)))", newFunc("gd.StringName", val))
 	case "Packed.Bytes":
 		return fmt.Sprintf("Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](%s))))}", val)
 	case "Packed.Strings":
@@ -239,7 +268,7 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 		return fmt.Sprintf("Packed.Array[%s](Array.Through(gd.PackedProxy[gd.Packed%sArray, %s]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](%s))))",
 			elem, title, elem, val)
 	case "variant.Any":
-		return fmt.Sprintf("variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](%s)))", val)
+		return fmt.Sprintf("variant.Implementation(gd.VariantProxy{}, pointers.Pack(%s))", newFunc("gd.Variant", val))
 	case "Error.Code":
 		return fmt.Sprintf("Error.Code(%s)", val)
 	case "Basis.XYZ":
@@ -257,7 +286,7 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 			return fmt.Sprintf("%s{gdclass.New%s(gdreference.OwnObject(%v, gd.Free))}\n", name, class_name, val)
 		}
 		if argIsPtr {
-			return fmt.Sprintf("pointers.New[%v](%v)", name, val)
+			return newFunc(string(name), val)
 		} else {
 			return fmt.Sprintf("%v", val)
 		}

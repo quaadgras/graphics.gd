@@ -458,7 +458,11 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 		if !argIsPtr {
 			pointerKind = expert
 		}
-		fmt.Fprintf(w, "\t\tvar %v = %v\n", fixReserved(arg.Name), gdtype.Name(expert).LoadFromRawPointerValue(
+		// Callback arguments are borrowed engine references, released by
+		// the deferred EndPointer below. Pin them so a concurrent
+		// main-thread Cycle can't free them mid-callback (the callback may
+		// run off-thread and block); EndPointer still frees the pin.
+		fmt.Fprintf(w, "\t\tvar %v = %v\n", fixReserved(arg.Name), gdtype.Name(expert).LoadFromRawPointerValuePinned(
 			fmt.Sprintf("gd.UnsafeGet[%v](p_args,%d)", pointerKind, i),
 		))
 		if argIsPtr {

@@ -584,9 +584,9 @@ Defining this method is required.
 */
 func (Instance) _get_code(impl func(ptr gdclass.Receiver, input_vars []string, output_vars []string, mode Shader.Mode, atype VisualShader.Type) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var input_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
+		var input_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0)))))
 		defer pointers.End(gd.InternalArray(input_vars))
-		var output_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
+		var output_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1)))))
 		defer pointers.End(gd.InternalArray(output_vars))
 		var mode = gd.UnsafeGet[Shader.Mode](p_args, 2)
 		var atype = gd.UnsafeGet[VisualShader.Type](p_args, 3)
@@ -891,9 +891,9 @@ func (class) _get_property_options(impl func(ptr gdclass.Receiver, index int64) 
 }
 func (class) _get_code(impl func(ptr gdclass.Receiver, input_vars Array.Contains[String.Readable], output_vars Array.Contains[String.Readable], mode Shader.Mode, atype VisualShader.Type) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var input_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
+		var input_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0)))))
 		defer pointers.End(gd.InternalArray(input_vars))
-		var output_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
+		var output_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1)))))
 		defer pointers.End(gd.InternalArray(output_vars))
 		var mode = gd.UnsafeGet[Shader.Mode](p_args, 2)
 		var atype = gd.UnsafeGet[VisualShader.Type](p_args, 3)

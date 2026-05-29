@@ -180,18 +180,18 @@ Note: Logging errors from this method using functions like [@GlobalScope.PushErr
 */
 func (Instance) _log_error(impl func(ptr gdclass.Receiver, function string, file string, line int, code string, rationale string, editor_notify bool, error_type int, script_backtraces []ScriptBacktrace.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var function = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		var function = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(function))
-		var file = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var file = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(file))
 		var line = gd.UnsafeGet[int64](p_args, 2)
-		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 3))))
+		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 3)))))
 		defer pointers.End(gd.InternalString(code))
-		var rationale = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 4))))
+		var rationale = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 4)))))
 		defer pointers.End(gd.InternalString(rationale))
 		var editor_notify = gd.UnsafeGet[bool](p_args, 5)
 		var error_type = gd.UnsafeGet[int64](p_args, 6)
-		var script_backtraces = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptBacktrace]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 7))))
+		var script_backtraces = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptBacktrace]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 7)))))
 		defer pointers.End(gd.InternalArray(script_backtraces))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, function.String(), file.String(), int(line), code.String(), rationale.String(), editor_notify, int(error_type), gd.ArrayAs[[]ScriptBacktrace.Instance](gd.InternalArray(script_backtraces)))
@@ -210,7 +210,7 @@ Note: Logging another message from this method using functions like [@GlobalScop
 */
 func (Instance) _log_message(impl func(ptr gdclass.Receiver, message string, error bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var message = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		var message = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(message))
 		var error = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -262,18 +262,18 @@ func New() Instance {
 }
 func (class) _log_error(impl func(ptr gdclass.Receiver, function String.Readable, file String.Readable, line int64, code String.Readable, rationale String.Readable, editor_notify bool, error_type int64, script_backtraces Array.Contains[[1]gdclass.ScriptBacktrace])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var function = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		var function = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(function))
-		var file = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var file = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(file))
 		var line = gd.UnsafeGet[int64](p_args, 2)
-		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 3))))
+		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 3)))))
 		defer pointers.End(gd.InternalString(code))
-		var rationale = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 4))))
+		var rationale = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 4)))))
 		defer pointers.End(gd.InternalString(rationale))
 		var editor_notify = gd.UnsafeGet[bool](p_args, 5)
 		var error_type = gd.UnsafeGet[int64](p_args, 6)
-		var script_backtraces = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptBacktrace]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 7))))
+		var script_backtraces = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptBacktrace]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 7)))))
 		defer pointers.End(gd.InternalArray(script_backtraces))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, function, file, line, code, rationale, editor_notify, error_type, script_backtraces)
@@ -281,7 +281,7 @@ func (class) _log_error(impl func(ptr gdclass.Receiver, function String.Readable
 }
 func (class) _log_message(impl func(ptr gdclass.Receiver, message String.Readable, error bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var message = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		var message = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(message))
 		var error = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

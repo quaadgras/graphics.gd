@@ -387,7 +387,7 @@ Returns true if specified file is a valid executable (native executable or scrip
 */
 func (Instance) _is_executable(impl func(ptr gdclass.Receiver, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String())
@@ -460,7 +460,7 @@ func (Instance) _get_export_option_visibility(impl func(ptr gdclass.Receiver, pr
 		var preset = [1]gdclass.EditorExportPreset{gdclass.NewEditorExportPreset(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
-		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(option))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, option.String())
@@ -476,7 +476,7 @@ func (Instance) _get_export_option_warning(impl func(ptr gdclass.Receiver, prese
 		var preset = [1]gdclass.EditorExportPreset{gdclass.NewEditorExportPreset(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
-		var option = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
+		var option = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1))))))
 		defer pointers.End(gd.InternalStringName(option))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, option.String())
@@ -785,7 +785,7 @@ func (Instance) _export_project(impl func(ptr gdclass.Receiver, preset EditorExp
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -810,7 +810,7 @@ func (Instance) _export_pack(impl func(ptr gdclass.Receiver, preset EditorExport
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -835,7 +835,7 @@ func (Instance) _export_zip(impl func(ptr gdclass.Receiver, preset EditorExportP
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -862,7 +862,7 @@ func (Instance) _export_pack_patch(impl func(ptr gdclass.Receiver, preset Editor
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
@@ -891,7 +891,7 @@ func (Instance) _export_zip_patch(impl func(ptr gdclass.Receiver, preset EditorE
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
@@ -1058,7 +1058,7 @@ func (class) _get_preset_features(impl func(ptr gdclass.Receiver, preset [1]gdcl
 }
 func (class) _is_executable(impl func(ptr gdclass.Receiver, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path)
@@ -1089,7 +1089,7 @@ func (class) _get_export_option_visibility(impl func(ptr gdclass.Receiver, prese
 		var preset = [1]gdclass.EditorExportPreset{gdclass.NewEditorExportPreset(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
-		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(option))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, option)
@@ -1101,7 +1101,7 @@ func (class) _get_export_option_warning(impl func(ptr gdclass.Receiver, preset [
 		var preset = [1]gdclass.EditorExportPreset{gdclass.NewEditorExportPreset(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
-		var option = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
+		var option = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1))))))
 		defer pointers.End(gd.InternalStringName(option))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset, option)
@@ -1315,7 +1315,7 @@ func (class) _export_project(impl func(ptr gdclass.Receiver, preset [1]gdclass.E
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1334,7 +1334,7 @@ func (class) _export_pack(impl func(ptr gdclass.Receiver, preset [1]gdclass.Edit
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1353,7 +1353,7 @@ func (class) _export_zip(impl func(ptr gdclass.Receiver, preset [1]gdclass.Edito
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1372,7 +1372,7 @@ func (class) _export_pack_patch(impl func(ptr gdclass.Receiver, preset [1]gdclas
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
@@ -1393,7 +1393,7 @@ func (class) _export_zip_patch(impl func(ptr gdclass.Receiver, preset [1]gdclass
 
 		defer gdreference.EndObject(gdclass.GetEditorExportPreset(preset[0])[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))

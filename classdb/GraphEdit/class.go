@@ -408,10 +408,10 @@ In this example a connection to same node is suppressed:
 */
 func (Instance) _is_node_hover_valid(impl func(ptr gdclass.Receiver, from_node string, from_port int, to_node string, to_port int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
+		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0))))))
 		defer pointers.End(gd.InternalStringName(from_node))
 		var from_port = gd.UnsafeGet[int64](p_args, 1)
-		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2)))))
+		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2))))))
 		defer pointers.End(gd.InternalStringName(to_node))
 		var to_port = gd.UnsafeGet[int64](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1138,10 +1138,10 @@ func (class) _get_connection_line(impl func(ptr gdclass.Receiver, from_position 
 }
 func (class) _is_node_hover_valid(impl func(ptr gdclass.Receiver, from_node String.Name, from_port int64, to_node String.Name, to_port int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
+		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0))))))
 		defer pointers.End(gd.InternalStringName(from_node))
 		var from_port = gd.UnsafeGet[int64](p_args, 1)
-		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2)))))
+		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2))))))
 		defer pointers.End(gd.InternalStringName(to_node))
 		var to_port = gd.UnsafeGet[int64](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

@@ -876,7 +876,7 @@ func (Instance) _custom_shape_create(impl func(ptr gdclass.Receiver) RID.Shape3D
 func (Instance) _shape_set_data(impl func(ptr gdclass.Receiver, shape RID.Shape3D, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
-		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
+		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1)))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.Shape3D(shape), data.Interface())
@@ -1139,7 +1139,7 @@ func (Instance) _area_set_param(impl func(ptr gdclass.Receiver, area RID.Area3D,
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer3D.AreaParameter](p_args, 1)
-		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.Area3D(area), param, value.Interface())
@@ -1226,7 +1226,7 @@ func (Instance) _area_set_ray_pickable(impl func(ptr gdclass.Receiver, area RID.
 func (Instance) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int))) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
-		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
+		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1)))))
 		defer pointers.End(gd.InternalCallable(callback))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.Area3D(area), gd.CallableAs[func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)](gd.InternalCallable(callback)))
@@ -1235,7 +1235,7 @@ func (Instance) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area 
 func (Instance) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int))) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
-		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
+		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1)))))
 		defer pointers.End(gd.InternalCallable(callback))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.Area3D(area), gd.CallableAs[func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)](gd.InternalCallable(callback)))
@@ -1458,7 +1458,7 @@ func (Instance) _body_set_param(impl func(ptr gdclass.Receiver, body RID.Body3D,
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer3D.BodyParameter](p_args, 1)
-		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.Body3D(body), param, value.Interface())
@@ -1489,7 +1489,7 @@ func (Instance) _body_set_state(impl func(ptr gdclass.Receiver, body RID.Body3D,
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var state = gd.UnsafeGet[PhysicsServer3D.BodyState](p_args, 1)
-		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.Body3D(body), state, value.Interface())
@@ -1722,7 +1722,7 @@ func (Instance) _body_is_omitting_force_integration(impl func(ptr gdclass.Receiv
 func (Instance) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance))) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
-		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
+		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1)))))
 		defer pointers.End(gd.InternalCallable(callable))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.Body3D(body), gd.CallableAs[func(state PhysicsDirectBodyState3D.Instance)](gd.InternalCallable(callable)))
@@ -1731,9 +1731,9 @@ func (Instance) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, bo
 func (Instance) _body_set_force_integration_callback(impl func(ptr gdclass.Receiver, body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
-		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
+		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1)))))
 		defer pointers.End(gd.InternalCallable(callable))
-		var userdata = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var userdata = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(userdata))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.Body3D(body), gd.CallableAs[func(state PhysicsDirectBodyState3D.Instance, userdata any)](gd.InternalCallable(callable)), userdata.Interface())
@@ -1882,7 +1882,7 @@ func (Instance) _soft_body_set_state(impl func(ptr gdclass.Receiver, body RID.So
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var state = gd.UnsafeGet[PhysicsServer3D.BodyState](p_args, 1)
-		var v = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var v = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(v))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, RID.SoftBody3D(body), state, v.Interface())
@@ -2586,7 +2586,7 @@ func (class) _custom_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb g
 func (class) _shape_set_data(impl func(ptr gdclass.Receiver, shape RID.Any, data variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
-		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
+		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1)))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shape, data)
@@ -2849,7 +2849,7 @@ func (class) _area_set_param(impl func(ptr gdclass.Receiver, area RID.Any, param
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer3D.AreaParameter](p_args, 1)
-		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, area, param, value)
@@ -2936,7 +2936,7 @@ func (class) _area_set_ray_pickable(impl func(ptr gdclass.Receiver, area RID.Any
 func (class) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Any, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
-		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
+		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1)))))
 		defer pointers.End(gd.InternalCallable(callback))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, area, callback)
@@ -2945,7 +2945,7 @@ func (class) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID
 func (class) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Any, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
-		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
+		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1)))))
 		defer pointers.End(gd.InternalCallable(callback))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, area, callback)
@@ -3168,7 +3168,7 @@ func (class) _body_set_param(impl func(ptr gdclass.Receiver, body RID.Any, param
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer3D.BodyParameter](p_args, 1)
-		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, body, param, value)
@@ -3199,7 +3199,7 @@ func (class) _body_set_state(impl func(ptr gdclass.Receiver, body RID.Any, state
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var state = gd.UnsafeGet[PhysicsServer3D.BodyState](p_args, 1)
-		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, body, state, value)
@@ -3432,7 +3432,7 @@ func (class) _body_is_omitting_force_integration(impl func(ptr gdclass.Receiver,
 func (class) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, body RID.Any, callable Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
-		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
+		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1)))))
 		defer pointers.End(gd.InternalCallable(callable))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, body, callable)
@@ -3441,9 +3441,9 @@ func (class) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, body 
 func (class) _body_set_force_integration_callback(impl func(ptr gdclass.Receiver, body RID.Any, callable Callable.Function, userdata variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
-		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
+		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1)))))
 		defer pointers.End(gd.InternalCallable(callable))
-		var userdata = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var userdata = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(userdata))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, body, callable, userdata)
@@ -3592,7 +3592,7 @@ func (class) _soft_body_set_state(impl func(ptr gdclass.Receiver, body RID.Any, 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var state = gd.UnsafeGet[PhysicsServer3D.BodyState](p_args, 1)
-		var v = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var v = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(v))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, body, state, v)

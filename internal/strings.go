@@ -99,8 +99,19 @@ func (s StringName) String() string {
 	if pointers.Get(s) == (gdextension.StringName{}) {
 		return ""
 	}
-	var tmp = StringFromStringName(s)
-	return tmp.String()
+	// Build the temporary conversion String as an UNTRACKED (Raw) handle
+	// and free it explicitly. A tracked pointers.New here would be
+	// reclaimable by the main thread's per-frame Cycle, which — when this
+	// runs off the loader thread — races our read and crashes (this was
+	// the original SIGSEGV). A Raw handle is invisible to Cycle, so it
+	// can't be freed out from under us; we own its lifetime and free it
+	// once we've copied the bytes out.
+	arg := pointers.Get(s)
+	tmp := pointers.Raw[String](noescape.Make[gdextension.String](builtin.creation.String[2], gdextension.SizeStringName<<4, unsafe.Pointer(&arg)))
+	out := tmp.String()
+	raw := pointers.Get(tmp)
+	noescape.Free(gdextension.TypeString, &raw)
+	return out
 }
 
 func (s String) NodePath() NodePath {
@@ -114,7 +125,15 @@ func (n NodePath) InternalString() String {
 }
 
 func (n NodePath) String() string {
-	return StringFromNodePath(n).String()
+	// Untracked temporary conversion String, freed explicitly — same
+	// rationale as StringName.String: a tracked temp here races the
+	// main-thread Cycle when called off-thread.
+	arg := pointers.Get(n)
+	tmp := pointers.Raw[String](noescape.Make[gdextension.String](builtin.creation.String[3], gdextension.SizeNodePath<<4, unsafe.Pointer(&arg)))
+	out := tmp.String()
+	raw := pointers.Get(tmp)
+	noescape.Free(gdextension.TypeString, &raw)
+	return out
 }
 
 func (n NodePath) Free() {

@@ -247,7 +247,7 @@ func (Instance) _save_layout_to_config(impl func(ptr gdclass.Receiver, config Co
 		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetConfigFile(config[0])[0])
-		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(section))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, config, section.String())
@@ -265,7 +265,7 @@ func (Instance) _load_layout_from_config(impl func(ptr gdclass.Receiver, config 
 		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetConfigFile(config[0])[0])
-		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(section))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, config, section.String())
@@ -526,7 +526,7 @@ func (class) _save_layout_to_config(impl func(ptr gdclass.Receiver, config [1]gd
 		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetConfigFile(config[0])[0])
-		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(section))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, config, section)
@@ -537,7 +537,7 @@ func (class) _load_layout_from_config(impl func(ptr gdclass.Receiver, config [1]
 		var config = [1]gdclass.ConfigFile{gdclass.NewConfigFile(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
 		defer gdreference.EndObject(gdclass.GetConfigFile(config[0])[0])
-		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var section = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(section))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, config, section)

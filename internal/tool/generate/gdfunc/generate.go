@@ -95,7 +95,11 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 			if !argIsPtr {
 				pointerKind = argType
 			}
-			fmt.Fprintf(w, "\t\tvar %v = %v\n", fixReserved(arg.Name), gdtype.Name(argType).LoadFromRawPointerValue(
+			// Callback arguments are borrowed engine references, released
+			// by the deferred EndPointer below. Pin them so a concurrent
+			// main-thread Cycle can't free them mid-callback (the callback
+			// may run off-thread); EndPointer still frees the pin.
+			fmt.Fprintf(w, "\t\tvar %v = %v\n", fixReserved(arg.Name), gdtype.Name(argType).LoadFromRawPointerValuePinned(
 				fmt.Sprintf("gd.UnsafeGet[%v](p_args,%d)", pointerKind, i),
 			))
 			if argIsPtr {
@@ -127,7 +131,18 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 				fmt.Fprintf(w, "\n\t\tif !ok {\n")
 				fmt.Fprintf(w, "\t\t\treturn\n")
 				fmt.Fprintf(w, "\t\t}\n")
-				fmt.Fprintf(w, "\t\t%sUnsafeSet(p_back, ptr)\n", prefix)
+				// Godot pre-initialises Array/Dictionary return slots; assign
+				// over them via UnsafeReplace* so the pre-allocated value is
+				// destroyed rather than leaked (godotengine/godot#119440).
+				// Mirrors the v2 generator's simpleVirtualCall.
+				switch {
+				case result == "Dictionary.Any":
+					fmt.Fprintf(w, "\t\t%sUnsafeReplaceDictionary(p_back, ptr)\n", prefix)
+				case result == "Array.Any" || strings.HasPrefix(result, "Array.Contains["):
+					fmt.Fprintf(w, "\t\t%sUnsafeReplaceArray(p_back, ptr)\n", prefix)
+				default:
+					fmt.Fprintf(w, "\t\t%sUnsafeSet(p_back, ptr)\n", prefix)
+				}
 			} else {
 				fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet(p_back, %s)\n", ret)
 			}

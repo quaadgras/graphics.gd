@@ -198,7 +198,7 @@ func (Instance) _post_process_key_value(impl func(ptr gdclass.Receiver, animatio
 
 		defer gdreference.EndObject(gdclass.GetAnimation(animation[0])[0])
 		var track = gd.UnsafeGet[int64](p_args, 1)
-		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(value))
 		var object_id = gd.UnsafeGet[int64](p_args, 3)
 		var object_sub_idx = gd.UnsafeGet[int64](p_args, 4)
@@ -741,7 +741,7 @@ func (class) _post_process_key_value(impl func(ptr gdclass.Receiver, animation [
 
 		defer gdreference.EndObject(gdclass.GetAnimation(animation[0])[0])
 		var track = gd.UnsafeGet[int64](p_args, 1)
-		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
+		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2)))))
 		defer pointers.End(gd.InternalVariant(value))
 		var object_id = gd.UnsafeGet[int64](p_args, 3)
 		var object_sub_idx = gd.UnsafeGet[int64](p_args, 4)

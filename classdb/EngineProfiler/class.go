@@ -148,7 +148,7 @@ Called when the profiler is enabled/disabled, along with a set of 'options'.
 func (Instance) _toggle(impl func(ptr gdclass.Receiver, enable bool, options []any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
-		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
+		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1)))))
 		defer pointers.End(gd.InternalArray(options))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, enable, gd.ArrayAs[[]any](gd.InternalArray(options)))
@@ -162,7 +162,7 @@ Called when data is added to profiler using [EngineDebugger.ProfilerAddFrameData
 */
 func (Instance) _add_frame(impl func(ptr gdclass.Receiver, data []any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
+		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0)))))
 		defer pointers.End(gd.InternalArray(data))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, gd.ArrayAs[[]any](gd.InternalArray(data)))
@@ -228,7 +228,7 @@ func New() Instance {
 func (class) _toggle(impl func(ptr gdclass.Receiver, enable bool, options Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
-		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
+		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1)))))
 		defer pointers.End(gd.InternalArray(options))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, enable, options)
@@ -236,7 +236,7 @@ func (class) _toggle(impl func(ptr gdclass.Receiver, enable bool, options Array.
 }
 func (class) _add_frame(impl func(ptr gdclass.Receiver, data Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
+		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0)))))
 		defer pointers.End(gd.InternalArray(data))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, data)

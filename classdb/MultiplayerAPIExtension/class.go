@@ -370,9 +370,9 @@ func (Instance) _rpc(impl func(ptr gdclass.Receiver, peer int, obj Object.Instan
 		var peer = gd.UnsafeGet[int64](p_args, 0)
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free)}
 		defer gdreference.EndObject(obj[0])
-		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2)))))
+		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2))))))
 		defer pointers.End(gd.InternalStringName(method))
-		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 3))))
+		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 3)))))
 		defer pointers.End(gd.InternalArray(args))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(peer), obj, method.String(), gd.ArrayAs[[]any](gd.InternalArray(args)))
@@ -407,7 +407,7 @@ func (Instance) _object_configuration_add(impl func(ptr gdclass.Receiver, obj Ob
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(obj[0])
-		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
+		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1)))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj, configuration.Interface())
@@ -429,7 +429,7 @@ func (Instance) _object_configuration_remove(impl func(ptr gdclass.Receiver, obj
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(obj[0])
-		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
+		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1)))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj, configuration.Interface())
@@ -541,9 +541,9 @@ func (class) _rpc(impl func(ptr gdclass.Receiver, peer int64, obj [1]gdreference
 		var peer = gd.UnsafeGet[int64](p_args, 0)
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 1), gd.Free)}
 		defer gdreference.EndObject(obj[0])
-		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2)))))
+		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2))))))
 		defer pointers.End(gd.InternalStringName(method))
-		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 3))))
+		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 3)))))
 		defer pointers.End(gd.InternalArray(args))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, peer, obj, method, args)
@@ -566,7 +566,7 @@ func (class) _object_configuration_add(impl func(ptr gdclass.Receiver, obj [1]gd
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(obj[0])
-		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
+		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1)))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj, configuration)
@@ -582,7 +582,7 @@ func (class) _object_configuration_remove(impl func(ptr gdclass.Receiver, obj [1
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(obj[0])
-		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
+		var configuration = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1)))))
 		defer pointers.End(gd.InternalVariant(configuration))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj, configuration)

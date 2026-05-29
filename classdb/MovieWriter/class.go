@@ -249,7 +249,7 @@ Called when the engine determines whether this [MovieWriter] is able to handle t
 */
 func (Instance) _handles_file(impl func(ptr gdclass.Receiver, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String())
@@ -266,7 +266,7 @@ func (Instance) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var movie_size = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var fps = gd.UnsafeGet[int64](p_args, 1)
-		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(base_path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, movie_size, int(fps), base_path.String())
@@ -384,7 +384,7 @@ func (class) _get_audio_speaker_mode(impl func(ptr gdclass.Receiver) AudioServer
 }
 func (class) _handles_file(impl func(ptr gdclass.Receiver, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path)
@@ -395,7 +395,7 @@ func (class) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i.XY
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var movie_size = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var fps = gd.UnsafeGet[int64](p_args, 1)
-		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(base_path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, movie_size, fps, base_path)

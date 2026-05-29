@@ -216,7 +216,7 @@ func (Instance) _parse_category(impl func(ptr gdclass.Receiver, obj Object.Insta
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(obj[0])
-		var category = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var category = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(category))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj, category.String())
@@ -230,7 +230,7 @@ func (Instance) _parse_group(impl func(ptr gdclass.Receiver, obj Object.Instance
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(obj[0])
-		var group = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var group = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(group))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj, group.String())
@@ -247,10 +247,10 @@ func (Instance) _parse_property(impl func(ptr gdclass.Receiver, obj Object.Insta
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(obj[0])
 		var atype = gd.UnsafeGet[variant.Type](p_args, 1)
-		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(name))
 		var hint_type = gd.UnsafeGet[ClassDB.PropertyHint](p_args, 3)
-		var hint_string = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 4))))
+		var hint_string = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 4)))))
 		defer pointers.End(gd.InternalString(hint_string))
 		var usage_flags = gd.UnsafeGet[ClassDB.PropertyUsageFlags](p_args, 5)
 		var wide = gd.UnsafeGet[bool](p_args, 6)
@@ -381,7 +381,7 @@ func (class) _parse_category(impl func(ptr gdclass.Receiver, obj [1]gdreference.
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(obj[0])
-		var category = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var category = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(category))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj, category)
@@ -391,7 +391,7 @@ func (class) _parse_group(impl func(ptr gdclass.Receiver, obj [1]gdreference.Obj
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(obj[0])
-		var group = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
+		var group = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1)))))
 		defer pointers.End(gd.InternalString(group))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj, group)
@@ -402,10 +402,10 @@ func (class) _parse_property(impl func(ptr gdclass.Receiver, obj [1]gdreference.
 		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
 		defer gdreference.EndObject(obj[0])
 		var atype = gd.UnsafeGet[variant.Type](p_args, 1)
-		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
+		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2)))))
 		defer pointers.End(gd.InternalString(name))
 		var hint_type = gd.UnsafeGet[ClassDB.PropertyHint](p_args, 3)
-		var hint_string = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 4))))
+		var hint_string = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 4)))))
 		defer pointers.End(gd.InternalString(hint_string))
 		var usage_flags = gd.UnsafeGet[ClassDB.PropertyUsageFlags](p_args, 5)
 		var wide = gd.UnsafeGet[bool](p_args, 6)
