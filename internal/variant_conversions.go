@@ -28,7 +28,7 @@ import (
 
 // Variant returns a variant from the given value, which must be one of the
 // basic godot types defined in the gd package.
-func NewVariant(v any) Variant {
+func NewVariant(v any) gdunsafe.Variant {
 	return CutVariant(v, false)
 }
 
@@ -36,9 +36,9 @@ func NewVariant(v any) Variant {
 // of the given value. Use it on return values passed back to the engine.
 //
 // used to fix cases of https://github.com/quaadgras/graphics.gd/issues/147
-func CutVariant(v any, cut bool) Variant {
+func CutVariant(v any, cut bool) gdunsafe.Variant {
 	if v == nil {
-		return Variant{}
+		return gdunsafe.Variant{}
 	}
 	var ret gdunsafe.Variant
 	if enum, ok := v.(Enum.Any); ok {
@@ -57,11 +57,11 @@ func CutVariant(v any, cut bool) Variant {
 		if instance := value.MethodByName("Instance"); instance.IsValid() && instance.Type().NumOut() == 2 && instance.Type().NumIn() == 0 {
 			result := instance.Call(nil)
 			if !result[1].Bool() {
-				return Variant{}
+				return gdunsafe.Variant{}
 			}
 			obj := result[0].Interface().(IsClass).AsObject()
-			if gdreference.GetObject(gdreference.Object(obj[0])) == 0 {
-				return Variant{}
+			if gdreference.GetObject(gdreference.Object(obj[0])) == (gdunsafe.Object{}) {
+				return gdunsafe.Variant{}
 			}
 			var arg = gdreference.CutObject(gdreference.Object(obj[0]), cut)
 			if cut {
@@ -80,12 +80,12 @@ func CutVariant(v any, cut bool) Variant {
 		})
 	case reflect.Pointer:
 		if value.IsNil() {
-			return Variant{}
+			return gdunsafe.Variant{}
 		}
 		if rtype.Implements(reflect.TypeFor[[0]IsClass]().Elem()) {
 			obj := value.Interface().(IsClass).AsObject()
-			if gdreference.GetObject(obj[0]) == 0 {
-				return Variant{}
+			if gdreference.GetObject(obj[0]) == (gdunsafe.Object{}) {
+				return gdunsafe.Variant{}
 			}
 			var arg = gdreference.GetObject(obj[0])
 			if cut {
@@ -103,8 +103,8 @@ func CutVariant(v any, cut bool) Variant {
 		if rtype.Implements(reflect.TypeFor[ObjectAny]()) {
 			anyobj, _ := reflect.TypeAssert[ObjectAny](value)
 			obj := anyobj.AsObject()
-			if gdreference.GetObject(obj[0]) == 0 {
-				return Variant{}
+			if gdreference.GetObject(obj[0]) == (gdunsafe.Object{}) {
+				return gdunsafe.Variant{}
 			}
 			var arg = gdreference.CutObject(obj[0], cut)
 			if cut {

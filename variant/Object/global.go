@@ -3,6 +3,7 @@ package Object
 import (
 	"iter"
 
+	gdunsafe "graphics.gd"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdreference"
 )
@@ -18,7 +19,9 @@ type Any interface {
 //
 // Note: property must be in snake_case when referring to built-in Godot properties.
 func Set(object Any, property string, value any) { //gd:Object.set
-	gd.ObjectSet(object.AsObject()[0], gd.NewStringName(property), gd.NewVariant(value))
+	property_name := gdunsafe.UTF8.Intern(property)
+	defer gdunsafe.Free(property_name)
+	gd.ObjectSet(object.AsObject()[0], property_name, gd.NewVariant(value))
 }
 
 // Get returns the Variant value of the given property. If the property does not exist,
@@ -26,23 +29,29 @@ func Set(object Any, property string, value any) { //gd:Object.set
 //
 // Note: property must be in snake_case when referring to built-in Godot properties.
 func Get(object Any, property string) any { //gd:Object.get
-	return gd.ObjectGet(object.AsObject()[0], gd.NewStringName(property)).Interface()
+	property_name := gdunsafe.UTF8.Intern(property)
+	defer gdunsafe.Free(property_name)
+	return gd.ObjectGet(object.AsObject()[0], property_name).Interface()
 }
 
 // HasMethod returns true if the given method name exists in the object.
 //
 // Note: In C#, method must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the MethodName class to avoid allocating a new StringName on each call.
 func HasMethod(object Any, method string) bool {
-	return gd.ObjectHasMethod(object.AsObject()[0], gd.NewStringName(method))
+	method_name := gdunsafe.UTF8.Intern(method)
+	defer gdunsafe.Free(method_name)
+	return gd.ObjectHasMethod(object.AsObject()[0], method_name)
 }
 
 // Call calls the method on the object and returns the result.
 func Call(object Any, method string, args ...any) any { //gd:Object.call Object.callv
-	var converted []gd.Variant
+	var converted []gdunsafe.Variant
 	for _, arg := range args {
 		converted = append(converted, gd.NewVariant(arg))
 	}
-	result, err := gd.ObjectCall(object.AsObject()[0], gd.NewStringName(method), converted...)
+	method_name := gdunsafe.UTF8.Intern(method)
+	defer gdunsafe.Free(method_name)
+	result, err := gd.ObjectCall(object.AsObject()[0], method_name, converted...)
 	if err != nil {
 		panic(err)
 	}
@@ -76,7 +85,10 @@ func Index(object Any, index int) any { //gd:Object[]
 
 // Iter returns an iterator over the elements of an Object that implements Iterable.
 func Iter(object Any) iter.Seq[any] {
-	iter := gd.NewVariant(object).Iterator()
+	iter, err := gd.NewVariant(object).Iterator()
+	if err != (gdunsafe.Error{}) {
+		panic("not an iterator")
+	}
 	return func(yield func(any) bool) {
 		for iter.Next() {
 			if !yield(iter.Value()) {

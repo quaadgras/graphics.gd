@@ -10,6 +10,10 @@ import (
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/ring"
+	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector4"
 )
 
 func callBuiltinMethod[T any, S any](self *S, method func(self *S, ret unsafe.Pointer, shape gdunsafe.Shape, args unsafe.Pointer), shape gdextension.Shape, args unsafe.Pointer) T {
@@ -25,6 +29,9 @@ func call[T gdunsafe.Any, Args any, Result gdunsafe.Returnable](builtin gdunsafe
 	ring.Main.Flush()
 	return builtin.Call(self, args)
 }
+
+type Int = int64
+type Void = struct{}
 
 // builtin methods that are strictly required for graphics.gd to function.
 var builtin = gdunsafe.Import[struct {
@@ -61,8 +68,8 @@ var builtin = gdunsafe.Import[struct {
 		duplicate gdunsafe.BuiltinMethod[gdunsafe.PackedArray[byte], struct{}, gdunsafe.PackedArray[byte]] `hash:"851781288"`
 	}
 	PackedColorArray struct {
-		resize gdunsafe.BuiltinMethodMutable[gdunsafe.PackedArray[Color], struct{ size Int }, Int] `hash:"848867239"`
-		size   gdunsafe.BuiltinMethod[gdunsafe.PackedArray[Color], struct{}, Int]                  `hash:"3173160232"`
+		resize gdunsafe.BuiltinMethodMutable[gdunsafe.PackedArray[Color.RGBA], struct{ size Int }, Int] `hash:"848867239"`
+		size   gdunsafe.BuiltinMethod[gdunsafe.PackedArray[Color.RGBA], struct{}, Int]                  `hash:"3173160232"`
 	}
 	PackedFloat32Array struct {
 		resize gdunsafe.BuiltinMethodMutable[gdunsafe.PackedArray[float32], struct{ size Int }, Int] `hash:"848867239"`
@@ -81,16 +88,16 @@ var builtin = gdunsafe.Import[struct {
 		size   gdunsafe.BuiltinMethod[gdunsafe.PackedArray[gdunsafe.String], struct{}, Int]                  `hash:"3173160232"`
 	}
 	PackedVector2Array struct {
-		resize gdunsafe.BuiltinMethodMutable[gdunsafe.PackedArray[Vector2], struct{ size Int }, Int] `hash:"848867239"`
-		size   gdunsafe.BuiltinMethod[gdunsafe.PackedArray[Vector2], struct{}, Int]                  `hash:"3173160232"`
+		resize gdunsafe.BuiltinMethodMutable[gdunsafe.PackedArray[Vector2.XY], struct{ size Int }, Int] `hash:"848867239"`
+		size   gdunsafe.BuiltinMethod[gdunsafe.PackedArray[Vector2.XY], struct{}, Int]                  `hash:"3173160232"`
 	}
 	PackedVector3Array struct {
-		resize gdunsafe.BuiltinMethodMutable[gdunsafe.PackedArray[Vector3], struct{ size Int }, Int] `hash:"848867239"`
-		size   gdunsafe.BuiltinMethod[gdunsafe.PackedArray[Vector3], struct{}, Int]                  `hash:"3173160232"`
+		resize gdunsafe.BuiltinMethodMutable[gdunsafe.PackedArray[Vector3.XYZ], struct{ size Int }, Int] `hash:"848867239"`
+		size   gdunsafe.BuiltinMethod[gdunsafe.PackedArray[Vector3.XYZ], struct{}, Int]                  `hash:"3173160232"`
 	}
 	PackedVector4Array struct {
-		resize gdunsafe.BuiltinMethodMutable[gdunsafe.PackedArray[Vector4], struct{ size Int }, Int] `hash:"848867239"`
-		size   gdunsafe.BuiltinMethod[gdunsafe.PackedArray[Vector4], struct{}, Int]                  `hash:"3173160232"`
+		resize gdunsafe.BuiltinMethodMutable[gdunsafe.PackedArray[Vector4.XYZW], struct{ size Int }, Int] `hash:"848867239"`
+		size   gdunsafe.BuiltinMethod[gdunsafe.PackedArray[Vector4.XYZW], struct{}, Int]                  `hash:"3173160232"`
 	}
 	PackedInt64Array struct {
 		resize gdunsafe.BuiltinMethodMutable[gdunsafe.PackedArray[int64], struct{ size Int }, Int] `hash:"848867239"`
@@ -402,61 +409,60 @@ var refcounted_methods struct {
 	get_reference_count gdextension.MethodForClass `hash:"3905245786"`
 }
 
-func ObjectGet(o gdreference.Object, name StringName) Variant {
-	return pointers.New[Variant](noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
-		Name gdextension.StringName
+func ObjectGet(o gdreference.Object, name gdunsafe.StringName) gdunsafe.Variant {
+	return noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
+		Name gdunsafe.StringName
 	}{
-		pointers.Get(name),
-	})))
+		name,
+	}))
 }
-func ObjectSet(o gdreference.Object, name StringName, value Variant) {
+func ObjectSet(o gdreference.Object, name gdunsafe.StringName, value gdunsafe.Variant) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.set, 0|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
-		Name  gdextension.StringName
-		Value gdextension.Variant
+		Name  gdunsafe.StringName
+		Value gdunsafe.Variant
 	}{
-		pointers.Get(name), gdextension.Variant(pointers.Get(value)),
+		name, gdextension.Variant(pointers.Get(value)),
 	}))
 }
 
-func ObjectGetMeta(o gdreference.Object, name StringName) Variant {
-	return pointers.New[Variant](noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_meta, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
-		Name gdextension.StringName
+func ObjectGetMeta(o gdreference.Object, name gdunsafe.StringName) gdunsafe.Variant {
+	return noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_meta, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
+		Name gdunsafe.StringName
 	}{
-		pointers.Get(name),
-	})))
+		name,
+	}))
 }
-func ObjectSetMeta(o gdreference.Object, name StringName, value Variant) {
+func ObjectSetMeta(o gdreference.Object, name gdunsafe.StringName, value gdunsafe.Variant) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.set_meta, 0|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
-		Name  gdextension.StringName
-		Value gdextension.Variant
+		Name  gdunsafe.StringName
+		Value gdunsafe.Variant
 	}{
-		pointers.Get(name), gdextension.Variant(pointers.Get(value)),
+		name, value,
 	}))
 }
 
-func ObjectHasMethod(o gdreference.Object, name StringName) bool {
+func ObjectHasMethod(o gdreference.Object, name gdunsafe.StringName) bool {
 	return noescape.Call[bool](gdreference.GetObject(o), object_methods.has_method, gdextension.SizeBool|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
-		Name gdextension.StringName
+		Name gdunsafe.StringName
 	}{
-		pointers.Get(name),
+		name,
 	}))
 }
-func ObjectCall(o gdreference.Object, method StringName, args ...Variant) (Variant, error) {
+func ObjectCall(o gdreference.Object, method gdunsafe.StringName, args ...gdunsafe.Variant) (gdunsafe.Variant, error) {
 	ring.Main.Flush()
 	self := gdreference.GetObject(o)
-	name := pointers.Get(method)
-	if gdunsafe.Script(self).HasMethod(gdunsafe.StringName(name[0])) {
+	if gdunsafe.Script(self).HasMethod(method) {
 		var converted []gdunsafe.Variant
 		for _, arg := range args {
-			converted = append(converted, gdunsafe.Variant(pointers.Get(arg)))
+			converted = append(converted, arg)
 		}
-		result, err := gdunsafe.Script(self).Call(gdunsafe.StringName(name[0]),
+		result, err := gdunsafe.Script(self).Call(method,
 			converted...,
 		)
 		if err != (gdunsafe.Error{}) {
-			return pointers.New[Variant](result), err
+			return result, err
 		}
-		return pointers.New[Variant](result), nil
+		return result, nil
 	}
 	return NewVariant(o).Call(method, args...) // FIXME is this ok?
 }
@@ -464,8 +470,8 @@ func ObjectCall(o gdreference.Object, method StringName, args ...Variant) (Varia
 func ObjectCanTranslateMessages(o gdreference.Object) bool {
 	return jumponly.Call[bool](gdreference.GetObject(o), object_methods.can_translate_messages, gdextension.SizeBool, nil)
 }
-func ObjectGetScript(o gdreference.Object) Variant {
-	return pointers.New[Variant](noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_script, gdextension.SizeVariant, nil))
+func ObjectGetScript(o gdreference.Object) gdunsafe.Variant {
+	return noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_script, gdextension.SizeVariant, nil)
 }
 func ObjectNotifyPropertyListChanged(o gdreference.Object) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.notify_property_list_changed, 0, nil)
@@ -477,33 +483,33 @@ func ObjectSetBlockSignals(o gdreference.Object, blocking bool) {
 		blocking,
 	}))
 }
-func ObjectSetScript(o gdreference.Object, script Variant) {
+func ObjectSetScript(o gdreference.Object, script gdunsafe.Variant) {
 	noescape.Call[struct{}](gdreference.GetObject(o), object_methods.set_script, 0|gdextension.SizeVariant<<4, unsafe.Pointer(&struct {
-		Script gdextension.Variant
+		Script gdunsafe.Variant
 	}{
-		gdextension.Variant(pointers.Get(script)),
+		script,
 	}))
 }
-func ObjectToString(o gdreference.Object) String {
-	return pointers.New[String](noescape.Call[gdextension.String](gdreference.GetObject(o), object_methods.to_string, gdextension.SizeString, nil))
+func ObjectToString(o gdreference.Object) gdunsafe.String {
+	return noescape.Call[gdunsafe.String](gdreference.GetObject(o), object_methods.to_string, gdextension.SizeString, nil)
 }
-func ObjectTr(o gdreference.Object, message StringName, context StringName) String {
-	return pointers.New[String](noescape.Call[gdextension.String](gdreference.GetObject(o), object_methods.tr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
-		Message gdextension.StringName
-		Context gdextension.StringName
+func ObjectTr(o gdreference.Object, message gdunsafe.StringName, context gdunsafe.StringName) gdunsafe.String {
+	return noescape.Call[gdunsafe.String](gdreference.GetObject(o), object_methods.tr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
+		Message gdunsafe.StringName
+		Context gdunsafe.StringName
 	}{
-		pointers.Get(message), pointers.Get(context),
-	})))
+		message, context,
+	}))
 }
-func ObjectTrN(o gdreference.Object, message StringName, plural StringName, n int64, context StringName) String {
-	return pointers.New[String](noescape.Call[gdextension.String](gdreference.GetObject(o), object_methods.tr_n, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8|gdextension.SizeInt<<12|gdextension.SizeStringName<<16, unsafe.Pointer(&struct {
-		Message gdextension.StringName
-		Plural  gdextension.StringName
+func ObjectTrN(o gdreference.Object, message gdunsafe.StringName, plural gdunsafe.StringName, n int64, context gdunsafe.StringName) gdunsafe.String {
+	return noescape.Call[gdunsafe.String](gdreference.GetObject(o), object_methods.tr_n, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8|gdextension.SizeInt<<12|gdextension.SizeStringName<<16, unsafe.Pointer(&struct {
+		Message gdunsafe.StringName
+		Plural  gdunsafe.StringName
 		N       int64
-		Context gdextension.StringName
+		Context gdunsafe.StringName
 	}{
-		pointers.Get(message), pointers.Get(plural), n, pointers.Get(context),
-	})))
+		message, plural, n, context,
+	}))
 }
 func ObjectSetMessageTranslation(o gdreference.Object, enable bool) {
 	jumponly.Call[struct{}](gdreference.GetObject(o), object_methods.set_message_translation, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
@@ -515,7 +521,7 @@ func ObjectSetMessageTranslation(o gdreference.Object, enable bool) {
 func ObjectIsBlockingSignals(o gdreference.Object) bool {
 	return jumponly.Call[bool](gdreference.GetObject(o), object_methods.is_blocking_signals, gdextension.SizeBool, nil)
 }
-func ObjectGetClass(o gdreference.Object) String {
+func ObjectGetClass(o gdreference.Object) gdunsafe.String {
 	return pointers.New[String](noescape.Call[gdextension.String](gdreference.GetObject(o), object_methods.get_class, gdextension.SizeString, nil))
 }
 func ObjectConnect(o gdreference.Object, signal StringName, callable Callable, flags int64) int64 {

@@ -27,11 +27,11 @@ func (d Dictionary) Free() {
 	}
 }
 
-func NewDictionary() Dictionary {
-	return pointers.New[Dictionary](gdextension.Dictionary{gdextension.Pointer(builtin.creation.Dictionary[0](0, nil))})
+func NewDictionary() gdunsafe.Dictionary {
+	return builtin.creation.Dictionary[0](0, nil)
 }
 
-func InternalDictionary[K comparable, V any](dict DictionaryType.Map[K, V]) Dictionary {
+func InternalDictionary[K comparable, V any](dict DictionaryType.Map[K, V]) gdunsafe.Dictionary {
 	_, state := DictionaryType.As(dict, NewDictionaryProxy[K, V])
 	return pointers.Load[Dictionary](state)
 }

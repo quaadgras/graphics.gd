@@ -7,6 +7,7 @@ import (
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdmemory"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Color"
 	StringType "graphics.gd/variant/String"
 )
 
@@ -247,26 +248,26 @@ func (p PackedColorArray) Free() {
 func (p PackedColorArray) Len() int { return int(p.Size()) }
 func (p PackedColorArray) Cap() int { return int(p.Size()) }
 
-func NewPackedByteArray() PackedByteArray {
-	return pointers.New[PackedByteArray](gdextension.PackedArray[byte](builtin.creation.PackedByteArray[0](0, nil)))
+func NewPackedByteArray() gdunsafe.PackedArray[byte] {
+	return builtin.creation.PackedByteArray[0](0, nil)
 }
 
 // PackedByteSlice returns a [PackedByteArray] from a byte slice.
-func NewPackedByteSlice(data []byte) PackedByteArray {
+func NewPackedByteSlice(data []byte) gdunsafe.PackedArray[byte] {
 	var array = NewPackedByteArray()
 	array.Resize(Int(len(data)))
-	gdmemory.LoadSlice[byte](gdunsafe.PackedArray[byte](pointers.Get(array)).MutablePointer(), data)
+	gdmemory.LoadSlice[byte](array.MutablePointer(), data)
 	return array
 }
 
-func NewPackedColorArray() PackedColorArray {
-	return pointers.New[PackedColorArray](gdextension.PackedArray[Color](builtin.creation.PackedColorArray[0](0, nil)))
+func NewPackedColorArray() gdunsafe.PackedArray[Color.RGBA] {
+	return builtin.creation.PackedColorArray[0](0, nil)
 }
 
-func NewPackedColorSlice(data []Color) PackedColorArray {
+func NewPackedColorSlice(data []Color.RGBA) gdunsafe.PackedArray[Color.RGBA] {
 	var array = NewPackedColorArray()
 	array.Resize(Int(len(data)))
-	gdmemory.LoadSlice[Color](gdunsafe.PackedArray[Color](pointers.Get(array)).MutablePointer(), data)
+	gdmemory.LoadSlice[Color.RGBA](array.MutablePointer(), data)
 	return array
 }
 

@@ -5,6 +5,7 @@ package gd_test
 import (
 	"testing"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/classdb/Node2D"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
@@ -56,7 +57,10 @@ type CustomStringSignals struct {
 func TestSignalDisconnect(t *testing.T) {
 	runOnMain(t, func(t testing.TB) {
 		custom := new(CustomStringSignals)
-		signal := gd.NewSignalOf(custom.AsObject(), gd.NewStringName("on_string"))
+		on_string_name := gdunsafe.UTF8.Intern("on_string")
+		defer gdunsafe.Free(on_string_name)
+
+		signal := gd.NewSignalOf(custom.AsObject(), on_string_name)
 
 		var callCount int
 		do := func(s string) {
@@ -91,7 +95,11 @@ func TestSignalDisconnect(t *testing.T) {
 func TestSignalString(t *testing.T) {
 	runOnMain(t, func(t testing.TB) {
 		custom := new(CustomStringSignals)
-		signal := gd.NewSignalOf(custom.AsObject(), gd.NewStringName("on_string"))
+
+		on_string_name := gdunsafe.UTF8.Intern("on_string")
+		defer gdunsafe.Free(on_string_name)
+
+		signal := gd.NewSignalOf(custom.AsObject(), on_string_name)
 		var triggered int
 		if err := signal.Connect(gd.NewCallable(func(s string) {
 			if s != "Hello World" {

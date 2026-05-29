@@ -11,7 +11,7 @@ type MethodForClass gdextension.MethodForClass
 type Variant = gdunsafe.Variant
 
 func CallStatic[T any](method gdextension.MethodForClass, shape gdextension.Shape, args any) T {
-	return Call[T](0, method, shape, args)
+	return Call[T](gdunsafe.Object{}, method, shape, args)
 }
 
 //go:noescape

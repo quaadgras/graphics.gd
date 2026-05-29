@@ -14,7 +14,6 @@ import (
 	"graphics.gd/classdb/Node3D"
 	"graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Object"
 )
@@ -26,10 +25,16 @@ func TestRegister(t *testing.T) {
 		}
 		classdb.Register[TestingSimpleClass]()
 
-		if tag := gdunsafe.Class(pointers.Get(gd.NewStringName("Node2D"))[0]).Tag(); tag == 0 {
+		Node2D_name := gdunsafe.UTF8.Intern("Node2D")
+		defer gdunsafe.Free(Node2D_name)
+
+		TestingSimpleClass_name := gdunsafe.UTF8.Intern("TestingSimpleClass")
+		defer gdunsafe.Free(TestingSimpleClass_name)
+
+		if tag := gdunsafe.Class(Node2D_name).Tag(); tag == (gdunsafe.ClassTag{}) {
 			t.Fail()
 		}
-		if tag := gdunsafe.Class(pointers.Get(gd.NewStringName("TestingSimpleClass"))[0]).Tag(); tag == 0 {
+		if tag := gdunsafe.Class(TestingSimpleClass_name).Tag(); tag == (gdunsafe.ClassTag{}) {
 			t.Fail()
 		}
 
@@ -127,11 +132,17 @@ func TestExtensionInherits(t *testing.T) {
 		classdb.Register[ParentExtension]()
 		classdb.Register[ChildExtension]()
 
+		ParentExtension_name := gdunsafe.UTF8.Intern("ParentExtension")
+		defer gdunsafe.Free(ParentExtension_name)
+
+		ChildExtension_name := gdunsafe.UTF8.Intern("ChildExtension")
+		defer gdunsafe.Free(ChildExtension_name)
+
 		// Verify both classes are registered
-		if tag := gdunsafe.Class(pointers.Get(gd.NewStringName("ParentExtension"))[0]).Tag(); tag == 0 {
+		if tag := gdunsafe.Class(ParentExtension_name).Tag(); tag == (gdunsafe.ClassTag{}) {
 			t.Fatal("ParentExtension not registered")
 		}
-		if tag := gdunsafe.Class(pointers.Get(gd.NewStringName("ChildExtension"))[0]).Tag(); tag == 0 {
+		if tag := gdunsafe.Class(ChildExtension_name).Tag(); tag == (gdunsafe.ClassTag{}) {
 			t.Fatal("ChildExtension not registered")
 		}
 

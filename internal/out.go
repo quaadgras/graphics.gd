@@ -11,7 +11,7 @@ import (
 
 type typeset struct {
 	creation struct {
-		Nil                [2]func(shape gdunsafe.Shape, args unsafe.Pointer) Variant
+		Nil                [2]func(shape gdunsafe.Shape, args unsafe.Pointer) gdunsafe.Variant
 		bool               [4]func(shape gdunsafe.Shape, args unsafe.Pointer) bool
 		int                [5]func(shape gdunsafe.Shape, args unsafe.Pointer) Int
 		float              [5]func(shape gdunsafe.Shape, args unsafe.Pointer) Float

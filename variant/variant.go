@@ -4,7 +4,6 @@ import (
 	"reflect"
 	"unsafe"
 
-	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/AABB"
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Color"
@@ -492,10 +491,8 @@ const (
 	OpIn           Operator = 24 // []
 )
 
-func Use[T pointers.Generic[T, S], S pointers.Size](ptr T) {
-	pointers.Get(ptr)
+func Use[T any](ptr T) {
 }
 
-func Debug[T pointers.Generic[T, S], S pointers.Size](ptr T) {
-	pointers.Debug(ptr)
+func Debug[T any](ptr T) {
 }

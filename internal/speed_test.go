@@ -6,6 +6,7 @@ import (
 	"sync"
 	"testing"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/Control"
 	"graphics.gd/classdb/Engine"
@@ -20,7 +21,8 @@ import (
 func BenchmarkBuiltinPointerCall(B *testing.B) {
 	benchOnMain(B, func(B *channelB) {
 		B.ReportAllocs()
-		s := gd.NewString("Hello, World!")
+		s := gdunsafe.UTF8.String("Hello, World!")
+		defer gdunsafe.Free(s)
 		var sum int64
 		for B.Loop() {
 			sum += s.Length()
@@ -67,8 +69,13 @@ func bench():
 		script.Reload()
 		obj := Object.New()
 		obj.SetScript(script)
-		gd.ObjectSet(obj[0], gd.NewStringName("n"), gd.NewVariant(B.N))
-		bench := gd.NewStringName("bench")
+
+		n_name := gdunsafe.UTF8.Intern("n")
+		defer gdunsafe.Free(n_name)
+		bench := gdunsafe.UTF8.Intern("bench")
+		defer gdunsafe.Free(bench)
+
+		gd.ObjectSet(obj[0], n_name, gd.NewVariant(B.N))
 
 		B.ResetTimer()
 		gd.ObjectCall(obj[0], bench)
@@ -117,13 +124,18 @@ func bench(c):
 		script.Reload()
 		obj := Object.New()
 		obj.SetScript(script)
-		gd.ObjectSet(obj[0], gd.NewStringName("n"), gd.NewVariant(B.N))
-		bench := gd.NewStringName("bench")
-		var array []gd.Variant
+
+		n_name := gdunsafe.UTF8.Intern("n")
+		defer gdunsafe.Free(n_name)
+		bench := gdunsafe.UTF8.Intern("bench")
+		defer gdunsafe.Free(bench)
+
+		gd.ObjectSet(obj[0], n_name, gd.NewVariant(B.N))
+		var array []gdunsafe.Variant
 		array = append(array, gd.NewVariant(gd.NewCallable(func() int {
 			return 1
 		})))
-		var result gd.Variant
+		var result gdunsafe.Variant
 		B.Cleanup(func() {
 			if result.Interface().(int64) != int64(B.N) {
 				B.Fail()

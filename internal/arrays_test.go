@@ -6,7 +6,6 @@ import (
 
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/Time"
-	"graphics.gd/internal/pointers"
 	"graphics.gd/variant"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Packed"
@@ -57,8 +56,6 @@ func TestArrayConversions(t *testing.T) {
 		if array.Index(0).Int() != 1 {
 			t.Error("expected 1")
 		}
-		pointers.Cycle()
-		pointers.Cycle()
 	})
 }
 

@@ -11,7 +11,6 @@ import (
 
 	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/pointers"
 )
 
 var Linked bool = false
@@ -28,14 +27,18 @@ func Init(level gdextension.InitializationLevel) {
 	if !LinkedCore && level == gdextension.InitializationLevelCore {
 		linkTypeset()
 		linkTypesetCreation()
-		LinkMethods(gdunsafe.StringName(pointers.Get(NewStringName("Object"))[0]), &object_methods, false)
+		Object_name := gdunsafe.UTF8.Intern("Object")
+		defer gdunsafe.Free(Object_name)
+		LinkMethods(Object_name, &object_methods, false)
 		if LinkStartup != nil {
 			LinkStartup()
 		}
 		LinkedCore = true
 	}
 	if !Linked && level == gdextension.InitializationLevelScene {
-		LinkMethods(gdunsafe.StringName(pointers.Get(NewStringName("RefCounted"))[0]), &refcounted_methods, false)
+		RefCounted_name := gdunsafe.UTF8.Intern("RefCounted")
+		defer gdunsafe.Free(RefCounted_name)
+		LinkMethods(RefCounted_name, &refcounted_methods, false)
 		for _, fn := range Links {
 			fn()
 		}
@@ -62,24 +65,26 @@ func LinkMethods(className gdunsafe.StringName, methods any, editor bool) {
 
 		method.Name = strings.TrimSuffix(method.Name, "_")
 
-		methodName := NewStringName(method.Name)
+		methodName := gdunsafe.UTF8.Intern(method.Name)
 
 		hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)
 		if err != nil {
 			panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 		}
-		bind := gdunsafe.Method(className, gdunsafe.StringName(pointers.Get(methodName)[0]), hash)
+		bind := gdunsafe.Method(className, methodName, hash)
 		if bind == 0 {
 			fmt.Println("null bind ", method.Name)
 		}
 		*(direct.Interface().(*gdextension.MethodForClass)) = bind
 
-		methodName.Free()
+		gdunsafe.Free(methodName)
 	}
 }
 
 var refCountedClassTag gdunsafe.ClassTag
 
 func linkTypeset() {
-	refCountedClassTag = gdunsafe.Class(pointers.Get(NewStringName("RefCounted"))[0]).Tag()
+	RefCounted_name := gdunsafe.UTF8.Intern("RefCounted")
+	defer gdunsafe.Free(RefCounted_name)
+	refCountedClassTag = gdunsafe.Class(RefCounted_name).Tag()
 }

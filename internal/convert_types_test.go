@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/classdb/GDScript"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/Resource"
@@ -118,7 +119,9 @@ func (c Converter) Callable() Callable.Function {
 	})
 }
 func (c Converter) Signal() Signal.Any {
-	sig := gd.NewSignalOf(c.AsObject(), gd.NewStringName("property_list_changed"))
+	property_list_changed := gdunsafe.UTF8.Intern("property_list_changed")
+	defer gdunsafe.Free(property_list_changed)
+	sig := gd.NewSignalOf(c.AsObject(), property_list_changed)
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(sig))
 }
 func (c Converter) Dictionary() Dictionary.Any {

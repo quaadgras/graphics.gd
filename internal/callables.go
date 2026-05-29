@@ -35,8 +35,7 @@ func (c comparableCallable) Call(args gdunsafe.Variants) (gdunsafe.Variant, gdun
 		cb()
 		return gdunsafe.Variant{}, gdunsafe.Error{}
 	case func() int:
-		raw, _ := pointers.End(CutVariant(cb(), true))
-		return raw, gdunsafe.Error{}
+		return CutVariant(cb(), true), gdunsafe.Error{}
 	}
 	vargs := make([]reflect.Value, min(args.Len(), 16))
 	rtype := reflect.TypeOf(c.fn)
@@ -51,7 +50,7 @@ func (c comparableCallable) Call(args gdunsafe.Variants) (gdunsafe.Variant, gdun
 			to_type = rtype.In(i)
 		}
 		var err error
-		vargs[i], err = ConvertToDesiredGoType(pointers.Let[Variant](args.Index(i)), to_type)
+		vargs[i], err = ConvertToDesiredGoType(args.Index(i), to_type)
 		if err != nil {
 			vtype, _ := VariantTypeOf(rtype.In(i))
 			return args.ExpectedArg(i, variant.Type(vtype))
@@ -62,8 +61,7 @@ func (c comparableCallable) Call(args gdunsafe.Variants) (gdunsafe.Variant, gdun
 	}
 	results := reflect.ValueOf(c.fn).Call(vargs)
 	if len(results) > 0 {
-		raw, _ := pointers.End(CutVariant(results[0].Interface(), true))
-		return raw, gdunsafe.Error{}
+		return CutVariant(results[0].Interface(), true), gdunsafe.Error{}
 	}
 	return gdunsafe.Variant{}, gdunsafe.Error{}
 }
@@ -77,9 +75,7 @@ func (c comparableCallable) Hash() uint32 {
 }
 
 func (c comparableCallable) UnsafeString() gdunsafe.String {
-	s := NewString(reflect.ValueOf(c.fn).String())
-	raw, _ := pointers.End(s)
-	return gdunsafe.String(raw[0])
+	return gdunsafe.UTF8.String(reflect.ValueOf(c.fn).String())
 }
 
 func (c comparableCallable) ArgumentCount() int {
@@ -100,21 +96,21 @@ func (c comparableCallable) Compare(other gdunsafe.ExtensionCallable) int {
 
 // NewCallable creates a new callable out of the given function which must only accept
 // godot-compatible types and return up to one godot-compatible type.
-func NewCallable(fn any) Callable {
+func NewCallable(fn any) gdunsafe.Callable {
 	var result = gdextension.Callable(gdunsafe.MakeCallable(comparableCallable{fn: fn}, 0))
 	return pointers.New[Callable](result)
 }
 
 // NewComparableCallable creates a new comparable callable from the given function which must only accept
 // godot-compatible types and return up to one godot-compatible type.
-func NewComparableCallable[T comparable](fn any, id T) Callable {
+func NewComparableCallable[T comparable](fn any, id T) gdunsafe.Callable {
 	var result = gdextension.Callable(gdunsafe.MakeCallable(comparableCallable{fn: fn, id: id}, 0))
 	return pointers.New[Callable](result)
 }
 
-func InternalCallable(fn CallableType.Function) Callable {
+func InternalCallable(fn CallableType.Function) gdunsafe.Callable {
 	if fn == (CallableType.Function{}) {
-		return Callable{}
+		return gdunsafe.Callable{}
 	}
 	return NewComparableCallable(fn.Call, fn)
 }

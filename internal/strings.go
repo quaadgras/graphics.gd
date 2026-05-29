@@ -35,13 +35,13 @@ func init() {
 	})
 }
 
-func (s String) StringName() StringName {
+func (s String) StringName() gdunsafe.StringName {
 	var arg = pointers.Get(s)
 	return pointers.New[StringName](gdextension.StringName{gdextension.Pointer(builtin.creation.StringName[2](gdunsafe.ShapeString<<4, unsafe.Pointer(&arg)))})
 }
 
 // Copy returns a copy of the string that is owned by the provided context.
-func (s String) Copy() String {
+func (s String) Copy() gdunsafe.String {
 	var arg = pointers.Get(s)
 	return pointers.New[String](gdextension.String{gdextension.Pointer(builtin.creation.String[1](gdunsafe.ShapeString<<4, unsafe.Pointer(&arg)))})
 }

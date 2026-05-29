@@ -214,7 +214,11 @@ func (obj Instance) String() string { //gd:Object.to_string
 // If [Instance.CanTranslateMessages] is false, or no translation is available, this method returns the
 // message without changes. See [Instance.SetMessageTranslation].
 func (obj Instance) Translate(message string) string { //gd:Object.tr
-	return gd.ObjectTr(obj[0], gd.NewStringName(message), gd.NewStringName("")).String()
+	message_name := gdunsafe.UTF8.Intern(message)
+	defer gdunsafe.Free(message_name)
+	empty_name := gdunsafe.UTF8.Intern("")
+	defer gdunsafe.Free(empty_name)
+	return gd.ObjectTr(obj[0], message_name, empty_name).String()
 }
 
 // Translation translates a message or plural_message, using the translation catalogs configured in the Project Settings.

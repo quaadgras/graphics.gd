@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	gdunsafe "graphics.gd"
-	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/threadcheck"
@@ -25,17 +24,17 @@ func (s Signal) Free() {
 	}
 }
 
-func NewSignalOf(object [1]gdreference.Object, signal StringName) Signal {
-	return pointers.New[Signal](gdextension.Signal(builtin.creation.Signal[2](gdunsafe.ShapeObject<<4|gdunsafe.ShapeStringName<<8, unsafe.Pointer(&struct {
-		object gdextension.Object
-		signal gdextension.StringName
+func NewSignalOf(object [1]gdreference.Object, signal gdunsafe.StringName) gdunsafe.Signal {
+	return builtin.creation.Signal[2](gdunsafe.ShapeObject<<4|gdunsafe.ShapeStringName<<8, unsafe.Pointer(&struct {
+		object gdunsafe.Object
+		signal gdunsafe.StringName
 	}{
 		object: gdreference.GetObject(gdreference.Object(object[0])),
-		signal: pointers.Get(signal),
-	}))))
+		signal: signal,
+	}))
 }
 
-func InternalSignal(signal SignalType.Any) Signal {
+func InternalSignal(signal SignalType.Any) gdunsafe.Signal {
 	_, state := SignalType.Proxy(signal, NewSignalCheck, NewSignalProxy)
 	return pointers.Load[Signal](state)
 }

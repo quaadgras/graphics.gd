@@ -4,17 +4,21 @@ import (
 	"reflect"
 	"unsafe"
 
+	gdunsafe "graphics.gd"
 	"graphics.gd/internal/gdreference"
 	"graphics.gd/variant"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	CallableType "graphics.gd/variant/Callable"
+	"graphics.gd/variant/Color"
 	DictionaryType "graphics.gd/variant/Dictionary"
 	FloatType "graphics.gd/variant/Float"
 	PackedType "graphics.gd/variant/Packed"
 	"graphics.gd/variant/Path"
 	SignalType "graphics.gd/variant/Signal"
 	StringType "graphics.gd/variant/String"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector3"
 )
 
 func ConvieniantGoTypeOf(vtype variant.Type) reflect.Type {
@@ -205,7 +209,7 @@ func VariantTypeOf(rtype reflect.Type) (vtype variant.Type, ok bool) {
 			return variant.TypeDictionary, true
 		case reflect.TypeFor[SignalType.Any]():
 			return variant.TypeSignal, true
-		case reflect.TypeFor[[0]Variant]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.Variant]().Elem():
 			vtype = variant.TypeNil
 		case reflect.TypeFor[[0]bool]().Elem():
 			vtype = variant.TypeBool
@@ -213,9 +217,9 @@ func VariantTypeOf(rtype reflect.Type) (vtype variant.Type, ok bool) {
 			vtype = variant.TypeInt
 		case reflect.TypeFor[[0]Float]().Elem():
 			vtype = variant.TypeFloat
-		case reflect.TypeFor[[0]String]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.String]().Elem():
 			vtype = variant.TypeString
-		case reflect.TypeFor[[0]Vector2]().Elem():
+		case reflect.TypeFor[[0]Vector2.XY]().Elem():
 			vtype = variant.TypeVector2
 		case reflect.TypeFor[[0]Vector2i]().Elem():
 			vtype = variant.TypeVector2i
@@ -223,7 +227,7 @@ func VariantTypeOf(rtype reflect.Type) (vtype variant.Type, ok bool) {
 			vtype = variant.TypeRect2
 		case reflect.TypeFor[[0]Rect2i]().Elem():
 			vtype = variant.TypeRect2i
-		case reflect.TypeFor[[0]Vector3]().Elem():
+		case reflect.TypeFor[[0]Vector3.XYZ]().Elem():
 			vtype = variant.TypeVector3
 		case reflect.TypeFor[[0]Vector3i]().Elem():
 			vtype = variant.TypeVector3i
@@ -245,39 +249,39 @@ func VariantTypeOf(rtype reflect.Type) (vtype variant.Type, ok bool) {
 			vtype = variant.TypeTransform3D
 		case reflect.TypeFor[[0]Projection]().Elem():
 			vtype = variant.TypeProjection
-		case reflect.TypeFor[[0]Color]().Elem():
+		case reflect.TypeFor[[0]Color.RGBA]().Elem():
 			vtype = variant.TypeColor
-		case reflect.TypeFor[[0]StringName]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.StringName]().Elem():
 			vtype = variant.TypeStringName
-		case reflect.TypeFor[[0]NodePath]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.NodePath]().Elem():
 			vtype = variant.TypeNodePath
 		case reflect.TypeFor[[0]RID]().Elem():
 			vtype = variant.TypeRID
 		case reflect.TypeFor[[0]gdreference.Object]().Elem():
 			vtype = variant.TypeObject
-		case reflect.TypeFor[Callable](), reflect.TypeFor[CallableType.Function]():
+		case reflect.TypeFor[gdunsafe.Callable](), reflect.TypeFor[CallableType.Function]():
 			vtype = variant.TypeCallable
-		case reflect.TypeFor[[0]Dictionary]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.Dictionary]().Elem():
 			vtype = variant.TypeDictionary
-		case reflect.TypeFor[[0]Array]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.Array]().Elem():
 			vtype = variant.TypeArray
-		case reflect.TypeFor[[0]PackedByteArray]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.PackedArray[byte]]().Elem():
 			vtype = variant.TypePackedByteArray
-		case reflect.TypeFor[[0]PackedInt32Array]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.PackedArray[int32]]().Elem():
 			vtype = variant.TypePackedInt32Array
-		case reflect.TypeFor[[0]PackedInt64Array]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.PackedArray[int64]]().Elem():
 			vtype = variant.TypePackedInt64Array
-		case reflect.TypeFor[[0]PackedFloat32Array]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.PackedArray[float32]]().Elem():
 			vtype = variant.TypePackedFloat32Array
-		case reflect.TypeFor[[0]PackedFloat64Array]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.PackedArray[float64]]().Elem():
 			vtype = variant.TypePackedFloat64Array
-		case reflect.TypeFor[[0]PackedStringArray]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.PackedArray[gdunsafe.String]]().Elem():
 			vtype = variant.TypePackedStringArray
-		case reflect.TypeFor[[0]PackedVector2Array]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.PackedArray[Vector2.XY]]().Elem():
 			vtype = variant.TypePackedVector2Array
-		case reflect.TypeFor[[0]PackedVector3Array]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.PackedArray[Vector3.XYZ]]().Elem():
 			vtype = variant.TypePackedVector3Array
-		case reflect.TypeFor[[0]PackedColorArray]().Elem():
+		case reflect.TypeFor[[0]gdunsafe.PackedArray[Color.RGBA]]().Elem():
 			vtype = variant.TypePackedColorArray
 		case reflect.TypeFor[VariantPkg.Any]():
 			vtype = variant.TypeNil

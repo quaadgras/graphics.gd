@@ -10,19 +10,7 @@ import (
 	"strings"
 
 	gdunsafe "graphics.gd"
-	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/pointers"
 )
-
-// String returns a [String] from a standard UTF8 Go string.
-func NewString(s string) String {
-	return pointers.New[String](gdextension.String{gdextension.Pointer(gdunsafe.UTF8.String(s))})
-}
-
-// StringName returns a [StringName] from a standard UTF8 Go string.
-func NewStringName(s string) StringName {
-	return pointers.New[StringName](gdextension.StringName{gdextension.Pointer(gdunsafe.UTF8.Intern(s))})
-}
 
 var traceALL = os.Getenv("GOTRACEBACK") == "all" || os.Getenv("GOTRACEBACK") == "1"
 var traceSystem = os.Getenv("GOTRACEBACK") == "system"

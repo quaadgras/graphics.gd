@@ -25,7 +25,7 @@ var ExtensionInstanceGoOnly func(gdextension.Object, bool) (gdreference.Object, 
 type NotificationType int32
 
 func PointerWithOwnershipTransferredToGo(ptr gdextension.Object) gdreference.Object {
-	if ptr == 0 {
+	if ptr == (gdunsafe.Object{}) {
 		return gdreference.Object{}
 	}
 	if obj, ok := ExtensionInstanceGoOnly(ptr, true); ok {
@@ -35,23 +35,23 @@ func PointerWithOwnershipTransferredToGo(ptr gdextension.Object) gdreference.Obj
 }
 
 func PointerBorrowedTemporarily(ptr gdextension.Object) gdreference.Object {
-	if ptr == 0 {
+	if ptr == (gdunsafe.Object{}) {
 		return gdreference.Object{}
 	}
 	return gdreference.LetObject(ptr)
 }
 
-func PointerWithOwnershipTransferredToGodot(obj gdreference.Object) EnginePointer {
+func PointerWithOwnershipTransferredToGodot(obj gdreference.Object) gdunsafe.Object {
 	raw, ok := gdreference.EndObject(obj)
 	if !ok {
 		panic("illegal transfer of ownership from Go -> Godot")
 	}
-	if raw == 0 {
-		return 0
+	if raw == (gdunsafe.Object{}) {
+		return raw
 	}
 	gdunsafe.Object(raw).ID()
 	ExtensionInstanceGoOnly(raw, false)
-	return EnginePointer(raw)
+	return raw
 }
 
 func PointerQueueFree(ptr gdreference.Object) {
@@ -67,7 +67,7 @@ func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uint64]](ptr gdextensi
 }
 
 func PointerLifetimeBoundTo(obj [1]gdreference.Object, ptr gdextension.Object) gdreference.Object {
-	if ptr == 0 {
+	if ptr == (gdunsafe.Object{}) {
 		return gdreference.Object{}
 	}
 	return gdreference.LetObject(ptr)
@@ -80,7 +80,7 @@ func CallerIncrements(obj [1]gdreference.Object) gdextension.Object {
 
 func ObjectChecked(obj [1]gdreference.Object) gdextension.Object {
 	raw := gdreference.GetObject(obj[0])
-	if raw == 0 {
+	if raw == (gdunsafe.Object{}) {
 		panic("use of an invalid reference (please read https://the.graphics.gd/guide/memory)")
 	}
 	return raw
@@ -100,7 +100,7 @@ func (self RefCounted) Free() {
 
 func (self *RefCounted) SetObject(obj [1]gdreference.Object) bool {
 	ref := gdunsafe.Object(gdreference.GetObject(obj[0])).Cast(refCountedClassTag)
-	if ref != 0 {
+	if ref != (gdunsafe.Object{}) {
 		*self = RefCounted(obj[0])
 		return true
 	}
@@ -108,17 +108,17 @@ func (self *RefCounted) SetObject(obj [1]gdreference.Object) bool {
 }
 
 func ObjectIsAlive(raw [3]uint64) bool {
-	return raw[1] == 0 || gdunsafe.ObjectID(raw[1]).Object() != 0
+	return raw[1] == 0 || gdunsafe.ObjectID(raw[1]).Object() != (gdunsafe.Object{})
 }
 
 var debugFree = strings.Contains(os.Getenv("GDDEBUG"), "free")
 
 func Free(raw gdextension.Object) {
-	if raw == 0 {
+	if raw == (gdunsafe.Object{}) {
 		return
 	}
 	ref := gdextension.Object(gdunsafe.Object(raw).Cast(refCountedClassTag))
-	if ref != 0 {
+	if ref != (gdunsafe.Object{}) {
 		// Important that we don't destroy RefCounted objects, instead
 		// they should be unreferenced instead.
 		if last := RefCounted(gdreference.RawObject(ref)).Unreference(); !last {

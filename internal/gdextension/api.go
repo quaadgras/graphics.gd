@@ -562,7 +562,7 @@ func init() {
 	if SizeRID.SizeResult() != int(unsafe.Sizeof([1]uint64{})) || SizeRID.Alignment() != int(unsafe.Alignof([1]uint64{})) {
 		panic("Size of RID does not match expected size")
 	}
-	if SizeObject.SizeResult() != int(unsafe.Sizeof(Object(0))) || SizeObject.Alignment() != int(unsafe.Alignof(Object(0))) {
+	if SizeObject.SizeResult() != int(unsafe.Sizeof(Object{})) || SizeObject.Alignment() != int(unsafe.Alignof(Object{})) {
 		panic("Size of Object does not match expected size")
 	}
 	if SizeCallable.SizeResult() != int(unsafe.Sizeof(Callable{})) || SizeCallable.Alignment() != int(unsafe.Alignof(Callable{})) {

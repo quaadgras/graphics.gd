@@ -27,7 +27,7 @@ func (v Variant) ConvertTo(rtype reflect.Type) (reflect.Value, error) {
 	return convertVariantToDesiredGoType(v, rtype)
 }
 
-func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.Value, error) {
+func convertVariantToDesiredGoType(value gdunsafe.Variant, rtype reflect.Type) (reflect.Value, error) {
 	if value.Type() == variant.TypeNil {
 		return reflect.Zero(rtype), nil
 	}
@@ -39,7 +39,7 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 	}
 	switch rtype.Kind() {
 	case reflect.Bool:
-		return reflect.ValueOf(gdunsafe.Variant(pointers.Get(value)).Bool()).Convert(rtype), nil
+		return reflect.ValueOf(value.Bool()).Convert(rtype), nil
 	case reflect.Array:
 		if reflect.PointerTo(rtype).Implements(reflect.TypeFor[IsClassCastable]()) {
 			if value.Type() != variant.TypeObject {
@@ -59,7 +59,7 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 	}
 }
 
-func VariantAs[T any](value Variant) T {
+func VariantAs[T any](value gdunsafe.Variant) T {
 	switch reflect.TypeFor[T]() {
 	case reflect.TypeFor[VariantPkg.Any]():
 		return any(VariantPkg.New(value.Interface())).(T)
@@ -91,7 +91,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
 	}
-	variant, ok := value.(Variant)
+	variant, ok := value.(gdunsafe.Variant)
 	if ok {
 		val, err := convertVariantToDesiredGoType(variant, rtype)
 		if err != nil {
@@ -210,11 +210,11 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			return reflect.Zero(rtype), nil
 		}
 		switch value := value.(type) {
-		case String:
+		case gdunsafe.String:
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
-		case StringName:
+		case gdunsafe.StringName:
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
-		case NodePath:
+		case gdunsafe.NodePath:
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
 		case Path.ToNode:
 			return reflect.ValueOf(value.String()).Convert(rtype), nil
@@ -252,7 +252,7 @@ func convertToGoMap(rtype reflect.Type, value any) (reflect.Value, error) {
 			mapValue.SetMapIndex(keyValue, valueValue)
 		}
 		return mapValue, nil
-	case Dictionary:
+	case gdunsafe.Dictionary:
 		var mapValue = reflect.MakeMap(rtype)
 		for _, key := range dictionary.Keys().Iter() {
 			keyValue, err := convertVariantToDesiredGoType(NewVariant(key), rtype.Key())
@@ -293,14 +293,14 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag
 			}
-			fieldValue, err := convertVariantToDesiredGoType(ObjectGet(value, NewStringName(name)), field.Type)
+			fieldValue, err := convertVariantToDesiredGoType(ObjectGet(value, gdunsafe.UTF8.Intern(name)), field.Type)
 			if err != nil {
 				return reflect.Value{}, xray.New(err)
 			}
 			rvalue.Set(fieldValue)
 		}
 		return structure, nil
-	case Dictionary:
+	case gdunsafe.Dictionary:
 		var structure = reflect.New(rtype).Elem()
 		var dictionary = value
 		for field, rvalue := range structure.Fields() {
@@ -340,17 +340,17 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 			return reflect.ValueOf(value.String()), nil
 		}
 		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
-	case String:
+	case gdunsafe.String:
 		if rtype.ConvertibleTo(reflect.TypeFor[StringType.Unicode]()) {
 			return reflect.ValueOf(StringType.New(value.String())).Convert(rtype), nil
 		}
 		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
-	case StringName:
+	case gdunsafe.StringName:
 		if reflect.TypeFor[StringType.Unicode]().ConvertibleTo(rtype) {
 			return reflect.ValueOf(StringType.Via(StringNameProxy{}, pointers.Pack(value))).Convert(rtype), nil
 		}
 		return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
-	case NodePath:
+	case gdunsafe.NodePath:
 		if reflect.TypeFor[StringType.Unicode]().ConvertibleTo(rtype) {
 			return reflect.ValueOf(StringType.Via(NodePathProxy{}, pointers.Pack(value))).Convert(rtype), nil
 		}
@@ -382,10 +382,10 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 
 func convertToGoFunc(rtype reflect.Type, value any) (reflect.Value, error) {
 	switch value := value.(type) {
-	case Callable:
+	case gdunsafe.Callable:
 		callable := value
 		return reflect.MakeFunc(rtype, func(args []reflect.Value) []reflect.Value {
-			variants := make([]Variant, len(args))
+			variants := make([]gdunsafe.Variant, len(args))
 			for i, arg := range args {
 				variants[i] = NewVariant(arg.Interface())
 			}
@@ -401,10 +401,10 @@ func convertToGoFunc(rtype reflect.Type, value any) (reflect.Value, error) {
 				val,
 			}
 		}), nil
-	case Signal:
+	case gdunsafe.Signal:
 		signal := value
 		return reflect.MakeFunc(rtype, func(args []reflect.Value) []reflect.Value {
-			variants := make([]Variant, len(args))
+			variants := make([]gdunsafe.Variant, len(args))
 			for i, arg := range args {
 				variants[i] = NewVariant(arg.Interface())
 			}
@@ -431,25 +431,25 @@ func convertToGoArrayOf(rtype reflect.Type, length int, value any) (reflect.Valu
 	}
 	switch rtype.Kind() {
 	case reflect.Uint8:
-		packed, ok := value.(PackedByteArray)
+		packed, ok := value.(gdunsafe.PackedArray[byte])
 		if !ok {
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
 		return reflect.ValueOf(packed.Bytes()).Convert(rtype), nil
 	case reflect.Int32:
-		packed, ok := value.(PackedInt32Array)
+		packed, ok := value.(gdunsafe.PackedArray[int32])
 		if !ok {
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
 		return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 	case reflect.Float32:
-		packed, ok := value.(PackedFloat32Array)
+		packed, ok := value.(gdunsafe.PackedArray[float32])
 		if !ok {
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
 		return reflect.ValueOf(packed.AsSlice()).Convert(rtype), nil
 	case reflect.Float64:
-		packed, ok := value.(PackedFloat64Array)
+		packed, ok := value.(gdunsafe.PackedArray[float64])
 		if !ok {
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
@@ -472,7 +472,7 @@ func convertToGoSliceOf(rtype reflect.Type, value any) (reflect.Value, error) {
 		}
 		return slice, nil
 	}
-	if value, ok := value.(Array); ok {
+	if value, ok := value.(gdunsafe.Array); ok {
 		var slice = reflect.MakeSlice(reflect.SliceOf(rtype), int(value.Size()), int(value.Size()))
 		for i := 0; i < int(value.Size()); i++ {
 			elem, err := convertVariantToDesiredGoType(value.Index(Int(i)), rtype)
