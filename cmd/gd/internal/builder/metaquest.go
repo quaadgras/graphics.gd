@@ -30,10 +30,10 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"graphics.gd/cmd/gd/internal/project"
 	"graphics.gd/cmd/gd/internal/tooling"
@@ -123,7 +123,16 @@ func (mq MetaQuest) Run(args ...string) error {
 		fmt.Println("Quest not recognized? Enable Developer Mode in the Meta Horizon app and accept USB debugging on the headset.")
 		return xray.New(err)
 	}
-	pkg := "com.example." + project.AndroidSafePackageName(path.Base(project.Directory))
+	// Resolve the APK's real package name from its manifest rather
+	// than reconstructing it from the project directory — the user
+	// may have set their own `package/unique_name` in the export
+	// preset, and "com.example.<dir>" would only be right by
+	// accident.
+	pkgOut, err := tooling.AndroidAssetPackagingTool.Output("dump", "packagename", apk)
+	if err != nil {
+		return xray.New(err)
+	}
+	pkg := strings.TrimSpace(pkgOut)
 	_ = exec.Command(adb, "logcat", "-c").Run()
 	launch := exec.Command(adb, "shell", "am", "start", "-a", "android.intent.action.MAIN",
 		"-c", "org.khronos.openxr.intent.category.IMMERSIVE_HMD",
@@ -132,7 +141,31 @@ func (mq MetaQuest) Run(args ...string) error {
 	if err := launch.Run(); err != nil {
 		return xray.New(err)
 	}
-	tail := exec.Command(adb, "logcat", "*:W")
+	// Filter logcat to just this app's process. The desktop-Android
+	// path does the same in android.go; without it the user gets the
+	// entire device's system log, which on a Quest is a firehose of
+	// Horizon-OS / OpenXR runtime chatter.
+	var pid []byte
+	for range 10 {
+		out, err := exec.Command(adb, "shell", "pidof", pkg).Output()
+		if err == nil {
+			if trimmed := bytes.TrimSpace(out); len(trimmed) > 0 {
+				pid = trimmed
+				break
+			}
+		}
+		time.Sleep(time.Second / 3)
+	}
+	if len(pid) == 0 {
+		fmt.Fprintf(os.Stderr, "%s did not start. Recent device error logs:\n", pkg)
+		dump := exec.Command(adb, "logcat", "-d", "-t", "200", "*:E")
+		dump.Stdout = os.Stderr
+		dump.Stderr = os.Stderr
+		_ = dump.Run()
+		return fmt.Errorf("gd run: %s failed to launch", pkg)
+	}
+	fmt.Println("PID=", string(pid))
+	tail := exec.Command(adb, "logcat", "--pid="+string(pid))
 	tail.Stdout, tail.Stderr = os.Stdout, os.Stderr
 	return tail.Run()
 }

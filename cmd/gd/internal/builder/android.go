@@ -16,10 +16,10 @@ import (
 	"os"
 	"os/exec"
 	"os/user"
-	"path"
 	"path/filepath"
 	"runtime"
 	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
@@ -272,7 +272,15 @@ func (android Android) Run(args ...string) error {
 		fmt.Println("Also make sure to unlock your device and accept any USB debugging prompts!")
 		return xray.New(err)
 	}
-	packageName := "com.example." + project.AndroidSafePackageName(path.Base(project.Directory))
+	// Resolve the real package name from the APK manifest instead of
+	// reconstructing "com.example.<dir>" — the user may have set a
+	// custom package/unique_name in the export preset and the
+	// hardcoded form would only match by accident.
+	pkgOut, err := tooling.AndroidAssetPackagingTool.Output("dump", "packagename", apkPath)
+	if err != nil {
+		return xray.New(err)
+	}
+	packageName := strings.TrimSpace(pkgOut)
 	// Clear the log buffer so any post-launch dump only shows this run's output.
 	_ = exec.Command(adb, "logcat", "-c").Run()
 	cmd = exec.Command(adb, "shell", "monkey", "-p", packageName, "-c", "android.intent.category.LAUNCHER", "1")
@@ -489,7 +497,7 @@ func (android Android) BuildMain(...string) error {
 		return xray.New(err)
 	}
 	for _, dex := range decompiled {
-		if path.Ext(dex.Name()) == ".dex" {
+		if filepath.Ext(dex.Name()) == ".dex" {
 			if err := os.Rename(
 				filepath.Join(project.ReleasesDirectory, "android", "decompiled", dex.Name()),
 				filepath.Join(project.ReleasesDirectory, "android", "recompiled", "dex", dex.Name()),
