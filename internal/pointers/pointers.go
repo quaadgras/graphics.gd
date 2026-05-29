@@ -45,6 +45,8 @@ import (
 	"sync"
 	"sync/atomic"
 	"unsafe"
+
+	"graphics.gd/internal/threadcheck"
 )
 
 const panicMessage = "use of an invalid reference (please read https://the.graphics.gd/guide/memory)"
@@ -126,7 +128,7 @@ func (r revision) pinned() revision {
 
 // unpinned returns an unpinned revision.
 func (r revision) unpinned() revision {
-	return r &^ 1 << 63
+	return r &^ (1 << 63)
 }
 
 // writes stores a small ring of write indicies for each global, the garbage
@@ -257,7 +259,22 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 		if wat.CompareAndSwap(idx, nxt) && rev != revisionLocked && rev.isClosed() && arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
 			var current Structure[T, P]
 			current.sentinal = idx
-			rev := (max(rev, 2) + 1).active().reset()
+			// .unpinned() clears any pin bit inherited from a previous
+			// allocation in this reused slot — reset() only clears the
+			// closed bit, so without this a slot pinned for an off-thread
+			// allocation (below) would stay pinned forever once reused by
+			// a main-thread allocation, leaking it past every Cycle.
+			rev := (max(rev, 2) + 1).active().reset().unpinned()
+			// References allocated off the main thread must survive the
+			// main thread's per-frame Cycle() GC, which would otherwise
+			// free them mid-use (e.g. while a ResourceFormatLoader
+			// callback blocks on a download). Pin them so Cycle skips
+			// them; they are released either by explicit End (which closes
+			// the slot regardless of the pin bit) or by the caller's own
+			// cleanup. See the off-thread branch of NewStringProxy.
+			if !threadcheck.Main() {
+				rev = rev.pinned()
+			}
 			arr[addr+offsetRevision].Store(uint64(rev))
 			//
 			// NOTE the below function extraction is somewhat unsafe and
