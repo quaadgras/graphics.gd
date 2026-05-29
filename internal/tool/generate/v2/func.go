@@ -10,6 +10,55 @@ import (
 	"graphics.gd/internal/tool/generate/gdtype"
 )
 
+// defaultArgValue returns the Go expression for a simple-API argument: the
+// fixed parameter name, or — when this overload applies defaults and the
+// argument carries a default — the Go literal translated from the engine's
+// default value string. Shared by simpleCall and simpleRelocatedCall.
+func (classDB ClassDB) defaultArgValue(class gdjson.Class, method gdjson.Method, arg gdjson.Argument, defaults, singleton bool) string {
+	val := fixReserved(arg.Name)
+	if arg.DefaultValue != nil && defaults && !((singleton || method.IsStatic) && gdjson.IsTheDefaultValueZero(*arg.DefaultValue)) {
+		switch arg.Type {
+		case "Array":
+			val = "Array.Nil"
+		case "Callable":
+			val = "Callable.Nil"
+		case "Dictionary":
+			val = "Dictionary.Nil"
+		default:
+			val = *arg.DefaultValue
+			val = strings.TrimPrefix(val, "&")
+			if val == "null" || val == "[]" || val == "{}" || strings.HasSuffix(val, "()") || strings.HasSuffix(val, "[])") {
+				if arg.Type == "Callable" {
+					val = "nil"
+				} else {
+					val = "([1]" + classDB.convertTypeSimple(class, "", arg.Meta, arg.Type) + "{}[0])"
+				}
+			} else {
+				if strings.Contains(val, "(") {
+					switch {
+					case strings.HasPrefix(val, "Rect2("), strings.HasPrefix(val, "Rect2i("), strings.HasPrefix(val, "Transform2D("),
+						strings.HasPrefix(val, "Transform3D("):
+						val = "gd.New" + val
+					case strings.HasPrefix(val, "StringName(\""):
+						val = strings.TrimSuffix(strings.TrimPrefix(val, "StringName(\""), "\")")
+					case strings.HasPrefix(val, "NodePath(\""):
+						val = strings.TrimSuffix(strings.TrimPrefix(val, "NodePath(\""), "\")")
+						if val == "" {
+							val = `""`
+						}
+					default:
+						val = "gd." + strings.ReplaceAll(strings.ReplaceAll(val, "(", "{"), ")", "}")
+					}
+				}
+			}
+		}
+		if gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)) == "gd.Variant" {
+			val = `gd.NewVariant(` + val + `)`
+		}
+	}
+	return val
+}
+
 func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson.Signal, singleton bool) {
 	if signal.Description != "" {
 		fmt.Fprintln(w, "\n/*")
@@ -197,47 +246,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 			fmt.Fprint(&call, "returns_"+arg.Name)
 			continue
 		}
-		val := fixReserved(arg.Name)
-		if arg.DefaultValue != nil && defaults && !((singleton || method.IsStatic) && gdjson.IsTheDefaultValueZero(*arg.DefaultValue)) {
-			switch arg.Type {
-			case "Array":
-				val = "Array.Nil"
-			case "Callable":
-				val = "Callable.Nil"
-			case "Dictionary":
-				val = "Dictionary.Nil"
-			default:
-				val = *arg.DefaultValue
-				val = strings.TrimPrefix(val, "&")
-				if val == "null" || val == "[]" || val == "{}" || strings.HasSuffix(val, "()") || strings.HasSuffix(val, "[])") {
-					if arg.Type == "Callable" {
-						val = "nil"
-					} else {
-						val = "([1]" + classDB.convertTypeSimple(class, "", arg.Meta, arg.Type) + "{}[0])"
-					}
-				} else {
-					if strings.Contains(val, "(") {
-						switch {
-						case strings.HasPrefix(val, "Rect2("), strings.HasPrefix(val, "Rect2i("), strings.HasPrefix(val, "Transform2D("),
-							strings.HasPrefix(val, "Transform3D("):
-							val = "gd.New" + val
-						case strings.HasPrefix(val, "StringName(\""):
-							val = strings.TrimSuffix(strings.TrimPrefix(val, "StringName(\""), "\")")
-						case strings.HasPrefix(val, "NodePath(\""):
-							val = strings.TrimSuffix(strings.TrimPrefix(val, "NodePath(\""), "\")")
-							if val == "" {
-								val = `""`
-							}
-						default:
-							val = "gd." + strings.ReplaceAll(strings.ReplaceAll(val, "(", "{"), ")", "}")
-						}
-					}
-				}
-			}
-			if gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)) == "gd.Variant" {
-				val = `gd.NewVariant(` + val + `)`
-			}
-		}
+		val := classDB.defaultArgValue(class, method, arg, defaults, singleton)
 		simple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type)
 		fmt.Fprint(&call, gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToSimple(val, simple))
 	}
@@ -363,47 +372,7 @@ func (classDB ClassDB) simpleRelocatedCall(w io.Writer, class gdjson.Class, meth
 		if i > 0 {
 			fmt.Fprint(&call, ", ")
 		}
-		val := fixReserved(arg.Name)
-		if arg.DefaultValue != nil && defaults && !((method.IsStatic) && gdjson.IsTheDefaultValueZero(*arg.DefaultValue)) {
-			switch arg.Type {
-			case "Array":
-				val = "Array.Nil"
-			case "Callable":
-				val = "Callable.Nil"
-			case "Dictionary":
-				val = "Dictionary.Nil"
-			default:
-				val = *arg.DefaultValue
-				val = strings.TrimPrefix(val, "&")
-				if val == "null" || val == "[]" || val == "{}" || strings.HasSuffix(val, "()") || strings.HasSuffix(val, "[])") {
-					if arg.Type == "Callable" {
-						val = "nil"
-					} else {
-						val = "([1]" + classDB.convertTypeSimple(class, "", arg.Meta, arg.Type) + "{}[0])"
-					}
-				} else {
-					if strings.Contains(val, "(") {
-						switch {
-						case strings.HasPrefix(val, "Rect2("), strings.HasPrefix(val, "Rect2i("), strings.HasPrefix(val, "Transform2D("),
-							strings.HasPrefix(val, "Transform3D("):
-							val = "gd.New" + val
-						case strings.HasPrefix(val, "StringName(\""):
-							val = strings.TrimSuffix(strings.TrimPrefix(val, "StringName(\""), "\")")
-						case strings.HasPrefix(val, "NodePath(\""):
-							val = strings.TrimSuffix(strings.TrimPrefix(val, "NodePath(\""), "\")")
-							if val == "" {
-								val = `""`
-							}
-						default:
-							val = "gd." + strings.ReplaceAll(strings.ReplaceAll(val, "(", "{"), ")", "}")
-						}
-					}
-				}
-			}
-			if gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)) == "gd.Variant" {
-				val = `gd.NewVariant(` + val + `)`
-			}
-		}
+		val := classDB.defaultArgValue(class, method, arg, defaults, false)
 		simple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type)
 		fmt.Fprint(&call, gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToSimple(val, simple))
 	}
@@ -532,13 +501,4 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	}
 	fmt.Fprintf(w, "\t}\n")
 	fmt.Fprintf(w, "}\n")
-}
-
-func argIndexByName(args []gdjson.Argument, name string) int {
-	for i, a := range args {
-		if a.Name == name {
-			return i
-		}
-	}
-	return -1
 }

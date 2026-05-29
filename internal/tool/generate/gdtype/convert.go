@@ -199,8 +199,6 @@ func EngineTypeAsGoType(pkg, meta string, gdType string) string {
 			}
 		}
 		gdType = strings.Replace(gdType, ".", "", -1)
-		gdType = strings.Replace(gdType, ".", "", -1)
-		gdType = strings.Replace(gdType, ".", "", -1)
 		if gdType == "Object" {
 			return "[1]gdreference.Object"
 		}

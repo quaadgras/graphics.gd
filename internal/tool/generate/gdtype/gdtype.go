@@ -41,6 +41,22 @@ func (s Name) IsBuiltin() bool {
 
 type Name string
 
+// packedArrayElem splits a "Packed.Array[ELEM]" type name into its element
+// type and the PascalCase title used in the gd.Packed<Title>Array engine type.
+func packedArrayElem(name Name) (elem, title string) {
+	elem = strings.TrimPrefix(string(name), "Packed.Array[")
+	elem = strings.TrimSuffix(elem, "]")
+	title, _, _ = strings.Cut(elem, ".")
+	title = strings.Title(title)
+	return elem, title
+}
+
+// enginePointerElem returns the ELEM of an "Engine.Pointer[ELEM]" type name.
+func enginePointerElem(name Name) string {
+	elem := strings.TrimPrefix(string(name), "Engine.Pointer[")
+	return strings.TrimSuffix(elem, "]")
+}
+
 func (name Name) Let(ctx string, val string) string {
 	prefix := ""
 	if strings.HasPrefix(string(name), "gd.") {
@@ -124,8 +140,7 @@ func (name Name) ConvertToSimple(val, simple string) string {
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]":
 		return fmt.Sprintf("Packed.New(%v...)", val)
 	case "Packed.Array[Vector2.XY]", "Packed.Array[Vector3.XYZ]", "Packed.Array[Vector4.XYZW]", "Packed.Array[Color.RGBA]":
-		elem := strings.TrimPrefix(string(name), "Packed.Array[")
-		elem = strings.TrimSuffix(elem, "]")
+		elem, _ := packedArrayElem(name)
 		if val == "[1][]Vector2.XY{}[0]" {
 			return fmt.Sprintf("Packed.New[%s]()", elem)
 		}
@@ -226,8 +241,7 @@ func (name Name) loadFromRawPointerValue(val string, pin bool) string {
 		return fmt.Sprintf("pointers.New[%s](%s)", elem, arg)
 	}
 	if strings.HasPrefix(string(name), "Engine.Pointer[") {
-		elem := strings.TrimPrefix(string(name), "Engine.Pointer[")
-		elem = strings.TrimSuffix(elem, "]")
+		elem := enginePointerElem(name)
 		return fmt.Sprintf("gdmemory.WrapPointer[%s](%s)", elem, val)
 	}
 	if name == "uintptr" {
@@ -261,10 +275,7 @@ func (name Name) loadFromRawPointerValue(val string, pin bool) string {
 		return fmt.Sprintf("Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](%s))))", val)
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
 		"Packed.Array[Vector2.XY]", "Packed.Array[Vector3.XYZ]", "Packed.Array[Vector4.XYZW]", "Packed.Array[Color.RGBA]":
-		elem := strings.TrimPrefix(string(name), "Packed.Array[")
-		elem = strings.TrimSuffix(elem, "]")
-		title, _, _ := strings.Cut(elem, ".")
-		title = strings.Title(title)
+		elem, title := packedArrayElem(name)
 		return fmt.Sprintf("Packed.Array[%s](Array.Through(gd.PackedProxy[gd.Packed%sArray, %s]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](%s))))",
 			elem, title, elem, val)
 	case "variant.Any":
@@ -328,10 +339,7 @@ func (name Name) EndPointer(val string) string {
 		return fmt.Sprintf("func(e Error.Code)(int64,bool){return int64(e),true}(%s)", val)
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
 		"Packed.Array[Vector2.XY]", "Packed.Array[Vector3.XYZ]", "Packed.Array[Vector4.XYZW]", "Packed.Array[Color.RGBA]":
-		elem := strings.TrimPrefix(string(name), "Packed.Array[")
-		elem = strings.TrimSuffix(elem, "]")
-		title, _, _ := strings.Cut(elem, ".")
-		title = strings.Title(title)
+		elem, title := packedArrayElem(name)
 		return fmt.Sprintf("pointers.End(gd.InternalPacked[gd.Packed%sArray,%s](%v))", title, elem, val)
 	default:
 		name := strings.TrimPrefix(string(name), "classdb.")
@@ -349,8 +357,7 @@ func (name Name) EndPointer(val string) string {
 
 func (name Name) LoadOntoCallFrame(val string) string {
 	if strings.HasPrefix(string(name), "Engine.Pointer[") {
-		elem := strings.TrimPrefix(string(name), "Engine.Pointer[")
-		elem = strings.TrimSuffix(elem, "]")
+		elem := enginePointerElem(name)
 		return fmt.Sprintf("\tcallframe.Arg(frame, gdmemory.UnwrapPointer[%s](%s))\n", elem, val)
 	}
 	if name == "uintptr" {
@@ -388,10 +395,7 @@ func (name Name) LoadOntoCallFrame(val string) string {
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(%v)))\n", val)
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
 		"Packed.Array[Vector2.XY]", "Packed.Array[Vector3.XYZ]", "Packed.Array[Vector4.XYZW]", "Packed.Array[Color.RGBA]":
-		elem := strings.TrimPrefix(string(name), "Packed.Array[")
-		elem = strings.TrimSuffix(elem, "]")
-		title, _, _ := strings.Cut(elem, ".")
-		title = strings.Title(title)
+		elem, title := packedArrayElem(name)
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.Packed%sArray, %s](%v)))\n", title, elem, val)
 	}
 	_, argIsPtr := name.IsPointer()
@@ -528,8 +532,7 @@ func (name Name) CallframeType() string {
 
 func (name Name) CallframeValue(val string) string {
 	if strings.HasPrefix(string(name), "Engine.Pointer[") {
-		elem := strings.TrimPrefix(string(name), "Engine.Pointer[")
-		elem = strings.TrimSuffix(elem, "]")
+		elem := enginePointerElem(name)
 		return fmt.Sprintf("gdmemory.UnwrapPointer[%s](%s)", elem, val)
 	}
 	if name == "uintptr" {
@@ -567,10 +570,7 @@ func (name Name) CallframeValue(val string) string {
 		return fmt.Sprintf("pointers.Get(gd.InternalPackedStrings(%v))", val)
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
 		"Packed.Array[Vector2.XY]", "Packed.Array[Vector3.XYZ]", "Packed.Array[Vector4.XYZW]", "Packed.Array[Color.RGBA]":
-		elem := strings.TrimPrefix(string(name), "Packed.Array[")
-		elem = strings.TrimSuffix(elem, "]")
-		title, _, _ := strings.Cut(elem, ".")
-		title = strings.Title(title)
+		elem, title := packedArrayElem(name)
 		return fmt.Sprintf("pointers.Get(gd.InternalPacked[gd.Packed%sArray, %s](%v))", title, elem, val)
 	}
 	_, argIsPtr := name.IsPointer()

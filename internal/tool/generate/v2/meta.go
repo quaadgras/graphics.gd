@@ -11,25 +11,6 @@ import (
 
 type ClassDB map[string]gdjson.Class
 
-func (db ClassDB) nameOf(pkg, original string) string {
-	class := db[original]
-	if pkg == class.Package {
-		return class.Name
-	}
-	if class.Package == "internal" {
-		return "gd." + class.Name
-	}
-	return class.Package + "." + class.Name
-}
-
-func pascal(name string) string {
-	words := strings.Split(name, "_")
-	for i := range words {
-		words[i] = strings.Title(words[i])
-	}
-	return strings.Join(words, "")
-}
-
 func fixReserved(name string) string {
 	switch name {
 	case "bool":
@@ -268,61 +249,6 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 			return object.Name + ".Instance"
 		}
 		return gdtype.EngineTypeAsGoType(class.Name, meta, gdType)
-	}
-}
-
-func mapOperator(name string) string {
-	switch name {
-	case "==":
-		return "Equals"
-	case "!=":
-		return "NotEqual"
-	case "<":
-		return "Less"
-	case "<=":
-		return "LessEqual"
-	case ">":
-		return "Greater"
-	case ">=":
-		return "GreaterEqual"
-	case "+":
-		return "Add"
-	case "-":
-		return "Subtract"
-	case "*":
-		return "Multiply"
-	case "/":
-		return "Divide"
-	case "unary-":
-		return "Negate"
-	case "%":
-		return "Module"
-	case "**":
-		return "Power"
-	case "<<":
-		return "ShiftLeft"
-	case ">>":
-		return "ShiftRight"
-	case "&":
-		return "BitAnd"
-	case "|":
-		return "BitOr"
-	case "^":
-		return "BitXor"
-	case "~":
-		return "BitNegate"
-	case "and":
-		return "And"
-	case "or":
-		return "Or"
-	case "xor":
-		return "Xor"
-	case "not":
-		return "Not"
-	case "in":
-		return "In"
-	default:
-		panic("unknown operator: " + name)
 	}
 }
 
