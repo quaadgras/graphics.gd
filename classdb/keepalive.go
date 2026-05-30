@@ -89,6 +89,7 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 					index:  field.Index[0],
 					offset: field.Offset,
 					handle: keepalive,
+					public: field.IsExported(),
 				})
 			}
 		}
@@ -115,7 +116,9 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 				}
 			} else {
 				for _, keepalive := range keepalives {
-					keepalive.handle(val.Field(keepalive.index))
+					if keepalive.public {
+						keepalive.handle(val.Field(keepalive.index))
+					}
 				}
 			}
 		}
@@ -188,4 +191,5 @@ type keep_struct_field_alive struct {
 
 	offset uintptr
 	handle func(reflect.Value)
+	public bool
 }
