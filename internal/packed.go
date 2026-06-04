@@ -262,6 +262,40 @@ func NewPackedByteSlice(data []byte) PackedByteArray {
 	return array
 }
 
+// CopyFromSlice bulk-copies a contiguous Go slice into the (already correctly
+// sized) packed array in a single host memcpy, instead of one host round-trip
+// per element. The array must already be Resize'd to len(data); the generic
+// [Array.As] conversion path calls these after Resize, so building a packed
+// array from a Go slice (e.g. a function argument like Image.CreateFromData's
+// bytes) no longer costs one cgo call per element. Mirrors the New*Slice helpers.
+func (p PackedByteArray) CopyFromSlice(data []byte) {
+	gdmemory.LoadSlice[byte](gdextension.Host.Packed.Bytes.Unsafe(pointers.Get(p)), data)
+}
+func (p PackedColorArray) CopyFromSlice(data []Color) {
+	gdmemory.LoadSlice[Color](gdextension.Host.Packed.Colors.Unsafe(pointers.Get(p)), data)
+}
+func (p PackedFloat32Array) CopyFromSlice(data []float32) {
+	gdmemory.LoadSlice[float32](gdextension.Host.Packed.Float32s.Unsafe(pointers.Get(p)), data)
+}
+func (p PackedFloat64Array) CopyFromSlice(data []float64) {
+	gdmemory.LoadSlice[float64](gdextension.Host.Packed.Float64s.Unsafe(pointers.Get(p)), data)
+}
+func (p PackedInt32Array) CopyFromSlice(data []int32) {
+	gdmemory.LoadSlice[int32](gdextension.Host.Packed.Int32s.Unsafe(pointers.Get(p)), data)
+}
+func (p PackedInt64Array) CopyFromSlice(data []int64) {
+	gdmemory.LoadSlice[int64](gdextension.Host.Packed.Int64s.Unsafe(pointers.Get(p)), data)
+}
+func (p PackedVector2Array) CopyFromSlice(data []Vector2) {
+	gdmemory.LoadSlice[Vector2](gdextension.Host.Packed.Vector2s.Unsafe(pointers.Get(p)), data)
+}
+func (p PackedVector3Array) CopyFromSlice(data []Vector3) {
+	gdmemory.LoadSlice[Vector3](gdextension.Host.Packed.Vector3s.Unsafe(pointers.Get(p)), data)
+}
+func (p PackedVector4Array) CopyFromSlice(data []Vector4) {
+	gdmemory.LoadSlice[Vector4](gdextension.Host.Packed.Vector4s.Unsafe(pointers.Get(p)), data)
+}
+
 func NewPackedColorArray() PackedColorArray {
 	return pointers.New[PackedColorArray](noescape.Make[gdextension.PackedArray[Color]](builtin.creation.PackedColorArray[0], 0, nil))
 }

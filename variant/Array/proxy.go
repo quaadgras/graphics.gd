@@ -53,9 +53,18 @@ func As[P Proxy[T], T any](array Contains[T], alloc func() (P, complex128)) (P, 
 		panic("array is already proxied")
 	}
 	proxy, state := alloc()
-	proxy.Resize(state, local.Len(array.state))
-	for i := 0; i < local.Len(array.state); i++ {
-		proxy.SetIndex(state, i, local.Index(array.state, i))
+	if bulk, ok := any(proxy).(bulkProxy[T]); ok && local.proxy == nil {
+		// Fast path: the array is still backed by its contiguous Go slice (not yet
+		// proxied), so hand the whole slice to the proxy for a single bulk copy
+		// instead of Resize + one SetIndex per element. For host-backed proxies
+		// (e.g. Godot packed arrays) the element-by-element path costs one host
+		// round-trip per element — catastrophic for large buffers like image data.
+		bulk.SetSlice(state, local.slice)
+	} else {
+		proxy.Resize(state, local.Len(array.state))
+		for i := 0; i < local.Len(array.state); i++ {
+			proxy.SetIndex(state, i, local.Index(array.state, i))
+		}
 	}
 	if local.IsReadOnly(array.state) {
 		proxy.MakeReadOnly(state)
@@ -64,6 +73,14 @@ func As[P Proxy[T], T any](array Contains[T], alloc func() (P, complex128)) (P, 
 	local.proxy = proxy
 	local.state = state
 	return proxy, state
+}
+
+// bulkProxy is an optional [Proxy] capability: replace the entire contents from a
+// contiguous Go slice in a single call, instead of the element-by-element
+// SetIndex loop. The packed-array proxies implement it (one host memcpy); any
+// proxy lacking it simply doesn't match this assertion and uses the loop.
+type bulkProxy[T any] interface {
+	SetSlice(state complex128, src []T)
 }
 
 // arrays are always backed by a local Go slice by default but can be proxied on-demand to a foreign

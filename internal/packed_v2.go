@@ -63,6 +63,23 @@ func (PackedProxy[P, V]) Index(raw complex128, i int) V {
 func (PackedProxy[P, V]) SetIndex(raw complex128, i int, v V) {
 	pointers.Load[P, PackedPointers](raw).SetIndex(Int(i), v)
 }
+
+// SetSlice replaces the array's contents with src in a single bulk host copy
+// (the [Array.As] bulk fast path). The packed types implement CopyFromSlice via
+// LoadSlice (one memcpy); anything that doesn't falls back to a per-element loop,
+// so this is always correct even if a type lacks the bulk method.
+func (PackedProxy[P, V]) SetSlice(raw complex128, src []V) {
+	// Re-Load raw for each operation (matching the per-element path); a handle is
+	// not necessarily valid to reuse across a Resize that reallocates the buffer.
+	pointers.Load[P, PackedPointers](raw).Resize(Int(len(src)))
+	if bulk, ok := any(pointers.Load[P, PackedPointers](raw)).(interface{ CopyFromSlice([]V) }); ok {
+		bulk.CopyFromSlice(src)
+		return
+	}
+	for i := range src {
+		pointers.Load[P, PackedPointers](raw).SetIndex(Int(i), src[i])
+	}
+}
 func (PackedProxy[P, V]) Len(raw complex128) int {
 	return int(pointers.Load[P, PackedPointers](raw).Len())
 }
