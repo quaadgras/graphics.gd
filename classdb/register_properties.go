@@ -294,6 +294,15 @@ func (instance *instanceImplementation) PropertyCanRevert(name gd.StringName) bo
 	}); ok {
 		return bool(impl.PropertyCanRevert(name.String()))
 	}
+	// When only PropertyGetRevert is implemented, a non-nil revert value implies the
+	// property can be reverted (Godot calls _property_can_revert before _property_get_revert).
+	if impl, ok := val.(interface {
+		PropertyGetRevert(string) any
+	}); ok {
+		if impl.PropertyGetRevert(name.String()) != nil {
+			return true
+		}
+	}
 	sname := name.String()
 	rtype := reflect.TypeOf(val).Elem()
 	field, ok := rtype.FieldByName(sname)
@@ -318,10 +327,11 @@ func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (g
 		return gd.Variant{}, false
 	}
 	if impl, ok := val.(interface {
-		PropertyGetRevert(string) (any, bool)
+		PropertyGetRevert(string) any
 	}); ok {
-		val, ok := impl.PropertyGetRevert(name.String())
-		return gd.NewVariant(val), ok
+		if v := impl.PropertyGetRevert(name.String()); v != nil {
+			return gd.NewVariant(v), true
+		}
 	}
 	sname := name.String()
 	rtype := reflect.TypeOf(val).Elem()
