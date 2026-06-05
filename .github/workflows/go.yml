@@ -38,7 +38,15 @@ jobs:
           go build -o gd.exe
 
       - name: Test
+        env:
+          # Go 1.26's Green Tea GC emits an AVX-512 span-scan (scanSpanPackedAVX512) that
+          # faults with SIGILL on the subset of GitHub windows-latest runners whose CPU
+          # lacks AVX-512 (the gate avx512ScanPackedReqsMet doesn't check AVX512DQ, used
+          # by kmovb). Disable the experiment on Windows until upstream fixes the gate.
+          # See golang/go#77674.
+          GOEXPERIMENT: ${{ matrix.os == 'windows-latest' && 'nogreenteagc' || '' }}
         run: |
           cd ./internal
+          echo "GOEXPERIMENT=$(go env GOEXPERIMENT)"
           DEBUG_CMD=1 ../cmd/gd/gd.exe test -v
         shell: bash
