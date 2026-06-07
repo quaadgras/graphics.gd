@@ -9,10 +9,16 @@ import (
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/ring"
+	"graphics.gd/internal/threadcheck"
 )
 
 func callBuiltinMethod[T any](self unsafe.Pointer, method gdextension.MethodForBuiltinType, shape gdextension.Shape, args unsafe.Pointer) T {
-	ring.Main.Flush()
+	// ring.Main is a main-thread-only batch buffer; a non-main caller (e.g. the
+	// dedicated resource-loading thread, via a ResourceFormatLoader callback that
+	// performs String operations) must not touch it, or it races the main thread.
+	if threadcheck.Main() {
+		ring.Main.Flush()
+	}
 	var result T
 	call_builtin_noescape(self, method, unsafe.Pointer(&result), shape, args)
 	return result
@@ -543,7 +549,9 @@ func ObjectHasMethod(o gdreference.Object, name StringName) bool {
 	}))
 }
 func ObjectCall(o gdreference.Object, method StringName, args ...Variant) (Variant, error) {
-	ring.Main.Flush()
+	if threadcheck.Main() {
+		ring.Main.Flush()
+	}
 	self := gdreference.GetObject(o)
 	name := pointers.Get(method)
 	if gdextension.Host.Objects.Script.DefinesMethod(self, name) {

@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"graphics.gd/internal/ring"
+	"graphics.gd/internal/threadcheck"
 )
 
 var cleanups []func()
@@ -28,7 +29,12 @@ var PostStartupFunctions []func()
 
 var EditorStartupFunctions []func()
 
-// Flush the ring buffer.
+// Flush the ring buffer. ring.Main is a main-thread-only batch buffer, so this
+// is a no-op off the main thread (e.g. when a generated binding is reached from
+// a ResourceFormatLoader callback running on a dedicated resource-loading
+// thread) — flushing it there would race the main thread and corrupt the ring.
 func Flush() {
-	ring.Main.Flush()
+	if threadcheck.Main() {
+		ring.Main.Flush()
+	}
 }

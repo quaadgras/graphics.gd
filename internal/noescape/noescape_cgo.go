@@ -44,7 +44,7 @@ func Call[T any](object gdextension.Object, method gdextension.MethodForClass, s
 		call_noescape(object, method, unsafe.Pointer(&result), shape, argptr)
 		return result
 	}
-	if ring.Main.Pending() && threadcheck.Main() {
+	if threadcheck.Main() && ring.Main.Pending() {
 		ring.Main.Flush()
 	}
 	switch {
