@@ -823,7 +823,7 @@ func (self class) SetRootNode(path Path.ToNode) { //gd:AnimationMixer.set_root_n
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_node, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetRootNode() Path.ToNode { //gd:AnimationMixer.get_root_node
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -863,7 +863,7 @@ func (self class) SetRootMotionTrack(path Path.ToNode) { //gd:AnimationMixer.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_motion_track, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetRootMotionTrack() Path.ToNode { //gd:AnimationMixer.get_root_motion_track
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_track, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_track, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

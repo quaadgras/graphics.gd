@@ -420,7 +420,7 @@ func (self class) SetOkButtonText(text String.Readable) { //gd:AcceptDialog.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ok_button_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetOkButtonText() String.Readable { //gd:AcceptDialog.get_ok_button_text
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ok_button_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ok_button_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

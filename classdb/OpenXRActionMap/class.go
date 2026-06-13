@@ -290,7 +290,7 @@ func (self class) SetActionSets(action_sets Array.Any) { //gd:OpenXRActionMap.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_sets, 0|(gdextension.SizeArray<<4), &struct{ action_sets gdextension.Array }{pointers.Get(gd.InternalArray(action_sets))})
 }
 func (self class) GetActionSets() Array.Any { //gd:OpenXRActionMap.get_action_sets
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_action_sets, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_action_sets, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -319,7 +319,7 @@ func (self class) SetInteractionProfiles(interaction_profiles Array.Any) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interaction_profiles, 0|(gdextension.SizeArray<<4), &struct{ interaction_profiles gdextension.Array }{pointers.Get(gd.InternalArray(interaction_profiles))})
 }
 func (self class) GetInteractionProfiles() Array.Any { //gd:OpenXRActionMap.get_interaction_profiles
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profiles, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profiles, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

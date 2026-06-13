@@ -557,7 +557,7 @@ func (self class) SetTitle(title String.Readable) { //gd:EditorDock.set_title
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), &struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))})
 }
 func (self class) GetTitle() String.Readable { //gd:EditorDock.get_title
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -565,7 +565,7 @@ func (self class) SetLayoutKey(layout_key String.Readable) { //gd:EditorDock.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layout_key, 0|(gdextension.SizeString<<4), &struct{ layout_key gdextension.String }{pointers.Get(gd.InternalString(layout_key))})
 }
 func (self class) GetLayoutKey() String.Readable { //gd:EditorDock.get_layout_key
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_layout_key, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_layout_key, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -597,7 +597,7 @@ func (self class) SetIconName(icon_name String.Name) { //gd:EditorDock.set_icon_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon_name, 0|(gdextension.SizeStringName<<4), &struct{ icon_name gdextension.StringName }{pointers.Get(gd.InternalStringName(icon_name))})
 }
 func (self class) GetIconName() String.Name { //gd:EditorDock.get_icon_name
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_icon_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_icon_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

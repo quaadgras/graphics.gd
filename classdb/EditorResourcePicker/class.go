@@ -334,7 +334,7 @@ func (self class) SetBaseType(base_type String.Readable) { //gd:EditorResourcePi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_type, 0|(gdextension.SizeString<<4), &struct{ base_type gdextension.String }{pointers.Get(gd.InternalString(base_type))})
 }
 func (self class) GetBaseType() String.Readable { //gd:EditorResourcePicker.get_base_type
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_type, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

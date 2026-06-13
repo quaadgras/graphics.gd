@@ -219,7 +219,7 @@ func (self class) SetBodyTracker(tracker_name String.Name) { //gd:XRBodyModifier
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_tracker, 0|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
 }
 func (self class) GetBodyTracker() String.Name { //gd:XRBodyModifier3D.get_body_tracker
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_body_tracker, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_body_tracker, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

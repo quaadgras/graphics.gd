@@ -289,7 +289,7 @@ func (self class) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
 	return ret
 }
 func (self class) GetErrorText() String.Readable { //gd:Expression.get_error_text
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_error_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_error_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

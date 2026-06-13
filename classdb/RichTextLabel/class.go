@@ -1954,7 +1954,7 @@ func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:Ri
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), &struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))})
 }
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:RichTextLabel.get_structured_text_bidi_override_options
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1970,7 +1970,7 @@ func (self class) SetLanguage(language String.Readable) { //gd:RichTextLabel.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 }
 func (self class) GetLanguage() String.Readable { //gd:RichTextLabel.get_language
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2167,7 +2167,7 @@ func (self class) AppendText(bbcode String.Readable) { //gd:RichTextLabel.append
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_text, 0|(gdextension.SizeString<<4), &struct{ bbcode gdextension.String }{pointers.Get(gd.InternalString(bbcode))})
 }
 func (self class) GetText() String.Readable { //gd:RichTextLabel.get_text
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2317,7 +2317,7 @@ func (self class) SetEffects(effects Array.Any) { //gd:RichTextLabel.set_effects
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_effects, 0|(gdextension.SizeArray<<4), &struct{ effects gdextension.Array }{pointers.Get(gd.InternalArray(effects))})
 }
 func (self class) GetEffects() Array.Any { //gd:RichTextLabel.get_effects
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_effects, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_effects, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

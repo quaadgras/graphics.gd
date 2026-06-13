@@ -278,7 +278,7 @@ func (self class) SetBoneName(bone_name String.Readable) { //gd:BoneAttachment3D
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_name, 0|(gdextension.SizeString<<4), &struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))})
 }
 func (self class) GetBoneName() String.Readable { //gd:BoneAttachment3D.get_bone_name
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_bone_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_bone_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -313,7 +313,7 @@ func (self class) SetExternalSkeleton(external_skeleton Path.ToNode) { //gd:Bone
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external_skeleton, 0|(gdextension.SizeNodePath<<4), &struct{ external_skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(external_skeleton))})
 }
 func (self class) GetExternalSkeleton() Path.ToNode { //gd:BoneAttachment3D.get_external_skeleton
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_external_skeleton, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_external_skeleton, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

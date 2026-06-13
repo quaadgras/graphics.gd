@@ -254,7 +254,7 @@ func (self class) SetBaseError(error String.Readable) { //gd:RDShaderFile.set_ba
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_error, 0|(gdextension.SizeString<<4), &struct{ error gdextension.String }{pointers.Get(gd.InternalString(error))})
 }
 func (self class) GetBaseError() String.Readable { //gd:RDShaderFile.get_base_error
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_error, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_error, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

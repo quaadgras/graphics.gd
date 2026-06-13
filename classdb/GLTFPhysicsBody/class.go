@@ -357,7 +357,7 @@ func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsBody.to_dictio
 	return ret
 }
 func (self class) GetBodyType() String.Readable { //gd:GLTFPhysicsBody.get_body_type
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_body_type, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_body_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

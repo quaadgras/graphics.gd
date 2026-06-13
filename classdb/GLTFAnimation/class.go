@@ -212,7 +212,7 @@ func (self Instance) SetLoop(value bool) Instance { //gd:GLTFAnimation.loop
 }
 
 func (self class) GetOriginalName() String.Readable { //gd:GLTFAnimation.get_original_name
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

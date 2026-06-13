@@ -236,7 +236,7 @@ func (self class) SetTooltip(tooltip String.Readable) { //gd:StatusIndicator.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip, 0|(gdextension.SizeString<<4), &struct{ tooltip gdextension.String }{pointers.Get(gd.InternalString(tooltip))})
 }
 func (self class) GetTooltip() String.Readable { //gd:StatusIndicator.get_tooltip
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -260,7 +260,7 @@ func (self class) SetMenu(menu Path.ToNode) { //gd:StatusIndicator.set_menu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_menu, 0|(gdextension.SizeNodePath<<4), &struct{ menu gdextension.NodePath }{pointers.Get(gd.InternalNodePath(menu))})
 }
 func (self class) GetMenu() Path.ToNode { //gd:StatusIndicator.get_menu
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

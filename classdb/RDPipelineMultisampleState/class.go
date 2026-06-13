@@ -308,7 +308,7 @@ func (self class) SetSampleMasks(masks Array.Contains[int64]) { //gd:RDPipelineM
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_masks, 0|(gdextension.SizeArray<<4), &struct{ masks gdextension.Array }{pointers.Get(gd.InternalArray(masks))})
 }
 func (self class) GetSampleMasks() Array.Contains[int64] { //gd:RDPipelineMultisampleState.get_sample_masks
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_sample_masks, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_sample_masks, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

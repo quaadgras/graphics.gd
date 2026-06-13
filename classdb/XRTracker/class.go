@@ -232,7 +232,7 @@ func (self class) SetTrackerType(atype Type) { //gd:XRTracker.set_tracker_type
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_type, 0|(gdextension.SizeInt<<4), &struct{ atype Type }{atype})
 }
 func (self class) GetTrackerName() String.Name { //gd:XRTracker.get_tracker_name
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -240,7 +240,7 @@ func (self class) SetTrackerName(name String.Name) { //gd:XRTracker.set_tracker_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) GetTrackerDesc() String.Readable { //gd:XRTracker.get_tracker_desc
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracker_desc, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracker_desc, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

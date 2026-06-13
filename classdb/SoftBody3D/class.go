@@ -592,7 +592,7 @@ func (self class) SetParentCollisionIgnore(parent_collision_ignore Path.ToNode) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parent_collision_ignore, 0|(gdextension.SizeNodePath<<4), &struct{ parent_collision_ignore gdextension.NodePath }{pointers.Get(gd.InternalNodePath(parent_collision_ignore))})
 }
 func (self class) GetParentCollisionIgnore() Path.ToNode { //gd:SoftBody3D.get_parent_collision_ignore
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_parent_collision_ignore, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_parent_collision_ignore, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

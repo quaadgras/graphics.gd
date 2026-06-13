@@ -234,7 +234,7 @@ func (self class) SetLocalizedName(localized_name String.Readable) { //gd:OpenXR
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_localized_name, 0|(gdextension.SizeString<<4), &struct{ localized_name gdextension.String }{pointers.Get(gd.InternalString(localized_name))})
 }
 func (self class) GetLocalizedName() String.Readable { //gd:OpenXRActionSet.get_localized_name
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_localized_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_localized_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

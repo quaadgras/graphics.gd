@@ -260,7 +260,7 @@ func (self class) SetMarkerData(marker_data variant.Any) { //gd:OpenXRMarkerTrac
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_marker_data, 0|(gdextension.SizeVariant<<4), &struct{ marker_data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(marker_data)))})
 }
 func (self class) GetMarkerData() variant.Any { //gd:OpenXRMarkerTracker.get_marker_data
-	var r_ret = jumponly.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_marker_data, gdextension.SizeVariant, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_marker_data, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

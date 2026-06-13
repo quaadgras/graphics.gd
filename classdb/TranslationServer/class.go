@@ -450,7 +450,7 @@ func (self class) SetLocale(locale String.Readable) { //gd:TranslationServer.set
 }
 func (self class) GetLocale() String.Readable { //gd:TranslationServer.get_locale
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_locale, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gdreference.GetObject(self.AsObject()[0]), methods.get_locale, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

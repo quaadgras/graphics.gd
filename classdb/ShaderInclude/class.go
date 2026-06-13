@@ -179,7 +179,7 @@ func (self class) SetCode(code String.Readable) { //gd:ShaderInclude.set_code
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_code, 0|(gdextension.SizeString<<4), &struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))})
 }
 func (self class) GetCode() String.Readable { //gd:ShaderInclude.get_code
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

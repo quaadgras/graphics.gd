@@ -362,7 +362,7 @@ func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), &struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))})
 }
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DCCDIK.get_target_node
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -370,7 +370,7 @@ func (self class) SetTipNode(tip_nodepath Path.ToNode) { //gd:SkeletonModificati
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tip_node, 0|(gdextension.SizeNodePath<<4), &struct{ tip_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(tip_nodepath))})
 }
 func (self class) GetTipNode() Path.ToNode { //gd:SkeletonModification2DCCDIK.get_tip_node
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_tip_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_tip_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

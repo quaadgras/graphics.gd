@@ -250,7 +250,7 @@ func (self class) CreateInstance(replace bool, custom_scene [1]gdclass.PackedSce
 	return ret
 }
 func (self class) GetInstancePath() String.Readable { //gd:InstancePlaceholder.get_instance_path
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_instance_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_instance_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

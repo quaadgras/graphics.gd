@@ -188,7 +188,7 @@ func (self class) SetInputName(name String.Readable) { //gd:VisualShaderNodeInpu
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) GetInputName() String.Readable { //gd:VisualShaderNodeInput.get_input_name
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_input_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_input_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

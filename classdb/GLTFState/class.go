@@ -751,7 +751,7 @@ func (self class) AppendGltfNode(gltf_node [1]gdclass.GLTFNode, godot_scene_node
 	return ret
 }
 func (self class) GetJson() Dictionary.Any { //gd:GLTFState.get_json
-	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_json, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_json, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -775,7 +775,7 @@ func (self class) SetMinorVersion(minor_version int64) { //gd:GLTFState.set_mino
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_minor_version, 0|(gdextension.SizeInt<<4), &struct{ minor_version int64 }{minor_version})
 }
 func (self class) GetCopyright() String.Readable { //gd:GLTFState.get_copyright
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_copyright, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_copyright, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -799,7 +799,7 @@ func (self class) SetUseNamedSkinBinds(use_named_skin_binds bool) { //gd:GLTFSta
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_named_skin_binds, 0|(gdextension.SizeBool<<4), &struct{ use_named_skin_binds bool }{use_named_skin_binds})
 }
 func (self class) GetNodes() Array.Contains[[1]gdclass.GLTFNode] { //gd:GLTFState.get_nodes
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_nodes, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_nodes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -807,7 +807,7 @@ func (self class) SetNodes(nodes Array.Contains[[1]gdclass.GLTFNode]) { //gd:GLT
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_nodes, 0|(gdextension.SizeArray<<4), &struct{ nodes gdextension.Array }{pointers.Get(gd.InternalArray(nodes))})
 }
 func (self class) GetBuffers() Array.Contains[Packed.Bytes] { //gd:GLTFState.get_buffers
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_buffers, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_buffers, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Bytes]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -815,7 +815,7 @@ func (self class) SetBuffers(buffers Array.Contains[Packed.Bytes]) { //gd:GLTFSt
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffers, 0|(gdextension.SizeArray<<4), &struct{ buffers gdextension.Array }{pointers.Get(gd.InternalArray(buffers))})
 }
 func (self class) GetBufferViews() Array.Contains[[1]gdclass.GLTFBufferView] { //gd:GLTFState.get_buffer_views
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_buffer_views, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_buffer_views, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFBufferView]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -823,7 +823,7 @@ func (self class) SetBufferViews(buffer_views Array.Contains[[1]gdclass.GLTFBuff
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_views, 0|(gdextension.SizeArray<<4), &struct{ buffer_views gdextension.Array }{pointers.Get(gd.InternalArray(buffer_views))})
 }
 func (self class) GetAccessors() Array.Contains[[1]gdclass.GLTFAccessor] { //gd:GLTFState.get_accessors
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessors, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessors, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFAccessor]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -831,7 +831,7 @@ func (self class) SetAccessors(accessors Array.Contains[[1]gdclass.GLTFAccessor]
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessors, 0|(gdextension.SizeArray<<4), &struct{ accessors gdextension.Array }{pointers.Get(gd.InternalArray(accessors))})
 }
 func (self class) GetMeshes() Array.Contains[[1]gdclass.GLTFMesh] { //gd:GLTFState.get_meshes
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_meshes, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_meshes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFMesh]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -849,7 +849,7 @@ func (self class) GetAnimationPlayer(anim_player_index int64) [1]gdclass.Animati
 	return ret
 }
 func (self class) GetMaterials() Array.Contains[[1]gdclass.Material] { //gd:GLTFState.get_materials
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_materials, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_materials, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Material]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -857,7 +857,7 @@ func (self class) SetMaterials(materials Array.Contains[[1]gdclass.Material]) { 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_materials, 0|(gdextension.SizeArray<<4), &struct{ materials gdextension.Array }{pointers.Get(gd.InternalArray(materials))})
 }
 func (self class) GetSceneName() String.Readable { //gd:GLTFState.get_scene_name
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -865,7 +865,7 @@ func (self class) SetSceneName(scene_name String.Readable) { //gd:GLTFState.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_name, 0|(gdextension.SizeString<<4), &struct{ scene_name gdextension.String }{pointers.Get(gd.InternalString(scene_name))})
 }
 func (self class) GetBasePath() String.Readable { //gd:GLTFState.get_base_path
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -873,7 +873,7 @@ func (self class) SetBasePath(base_path String.Readable) { //gd:GLTFState.set_ba
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_path, 0|(gdextension.SizeString<<4), &struct{ base_path gdextension.String }{pointers.Get(gd.InternalString(base_path))})
 }
 func (self class) GetFilename() String.Readable { //gd:GLTFState.get_filename
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_filename, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_filename, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -891,7 +891,7 @@ func (self class) SetRootNodes(root_nodes Packed.Array[int32]) { //gd:GLTFState.
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](root_nodes))})
 }
 func (self class) GetTextures() Array.Contains[[1]gdclass.GLTFTexture] { //gd:GLTFState.get_textures
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_textures, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_textures, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFTexture]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -899,7 +899,7 @@ func (self class) SetTextures(textures Array.Contains[[1]gdclass.GLTFTexture]) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_textures, 0|(gdextension.SizeArray<<4), &struct{ textures gdextension.Array }{pointers.Get(gd.InternalArray(textures))})
 }
 func (self class) GetTextureSamplers() Array.Contains[[1]gdclass.GLTFTextureSampler] { //gd:GLTFState.get_texture_samplers
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_texture_samplers, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_texture_samplers, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFTextureSampler]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -907,7 +907,7 @@ func (self class) SetTextureSamplers(texture_samplers Array.Contains[[1]gdclass.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_samplers, 0|(gdextension.SizeArray<<4), &struct{ texture_samplers gdextension.Array }{pointers.Get(gd.InternalArray(texture_samplers))})
 }
 func (self class) GetImages() Array.Contains[[1]gdclass.Texture2D] { //gd:GLTFState.get_images
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_images, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_images, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Texture2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -915,7 +915,7 @@ func (self class) SetImages(images Array.Contains[[1]gdclass.Texture2D]) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_images, 0|(gdextension.SizeArray<<4), &struct{ images gdextension.Array }{pointers.Get(gd.InternalArray(images))})
 }
 func (self class) GetSkins() Array.Contains[[1]gdclass.GLTFSkin] { //gd:GLTFState.get_skins
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_skins, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_skins, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFSkin]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -923,7 +923,7 @@ func (self class) SetSkins(skins Array.Contains[[1]gdclass.GLTFSkin]) { //gd:GLT
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skins, 0|(gdextension.SizeArray<<4), &struct{ skins gdextension.Array }{pointers.Get(gd.InternalArray(skins))})
 }
 func (self class) GetCameras() Array.Contains[[1]gdclass.GLTFCamera] { //gd:GLTFState.get_cameras
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_cameras, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_cameras, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFCamera]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -931,7 +931,7 @@ func (self class) SetCameras(cameras Array.Contains[[1]gdclass.GLTFCamera]) { //
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cameras, 0|(gdextension.SizeArray<<4), &struct{ cameras gdextension.Array }{pointers.Get(gd.InternalArray(cameras))})
 }
 func (self class) GetLights() Array.Contains[[1]gdclass.GLTFLight] { //gd:GLTFState.get_lights
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_lights, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_lights, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFLight]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -939,7 +939,7 @@ func (self class) SetLights(lights Array.Contains[[1]gdclass.GLTFLight]) { //gd:
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lights, 0|(gdextension.SizeArray<<4), &struct{ lights gdextension.Array }{pointers.Get(gd.InternalArray(lights))})
 }
 func (self class) GetUniqueNames() Array.Contains[String.Readable] { //gd:GLTFState.get_unique_names
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_unique_names, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_unique_names, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -947,7 +947,7 @@ func (self class) SetUniqueNames(unique_names Array.Contains[String.Readable]) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unique_names, 0|(gdextension.SizeArray<<4), &struct{ unique_names gdextension.Array }{pointers.Get(gd.InternalArray(unique_names))})
 }
 func (self class) GetUniqueAnimationNames() Array.Contains[String.Readable] { //gd:GLTFState.get_unique_animation_names
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_unique_animation_names, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_unique_animation_names, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -955,7 +955,7 @@ func (self class) SetUniqueAnimationNames(unique_animation_names Array.Contains[
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unique_animation_names, 0|(gdextension.SizeArray<<4), &struct{ unique_animation_names gdextension.Array }{pointers.Get(gd.InternalArray(unique_animation_names))})
 }
 func (self class) GetSkeletons() Array.Contains[[1]gdclass.GLTFSkeleton] { //gd:GLTFState.get_skeletons
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_skeletons, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_skeletons, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFSkeleton]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -979,7 +979,7 @@ func (self class) SetImportAsSkeletonBones(import_as_skeleton_bones bool) { //gd
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_import_as_skeleton_bones, 0|(gdextension.SizeBool<<4), &struct{ import_as_skeleton_bones bool }{import_as_skeleton_bones})
 }
 func (self class) GetAnimations() Array.Contains[[1]gdclass.GLTFAnimation] { //gd:GLTFState.get_animations
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_animations, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_animations, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFAnimation]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

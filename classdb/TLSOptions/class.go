@@ -309,7 +309,7 @@ func (self class) IsUnsafeClient() bool { //gd:TLSOptions.is_unsafe_client
 	return ret
 }
 func (self class) GetCommonNameOverride() String.Readable { //gd:TLSOptions.get_common_name_override
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_common_name_override, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_common_name_override, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -351,7 +351,7 @@ func (self class) SetIntensity(intensity float64) { //gd:GLTFLight.set_intensity
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_intensity, 0|(gdextension.SizeFloat<<4), &struct{ intensity float64 }{intensity})
 }
 func (self class) GetLightType() String.Readable { //gd:GLTFLight.get_light_type
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_light_type, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_light_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

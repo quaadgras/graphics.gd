@@ -1475,7 +1475,7 @@ func (self class) SetTypeNames(type_names Dictionary.Any) { //gd:GraphEdit.set_t
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_type_names, 0|(gdextension.SizeDictionary<<4), &struct{ type_names gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(type_names))})
 }
 func (self class) GetTypeNames() Dictionary.Any { //gd:GraphEdit.get_type_names
-	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_type_names, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_type_names, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

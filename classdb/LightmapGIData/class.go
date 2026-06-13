@@ -262,7 +262,7 @@ func (self class) SetLightmapTextures(light_textures Array.Contains[[1]gdclass.T
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lightmap_textures, 0|(gdextension.SizeArray<<4), &struct{ light_textures gdextension.Array }{pointers.Get(gd.InternalArray(light_textures))})
 }
 func (self class) GetLightmapTextures() Array.Contains[[1]gdclass.TextureLayered] { //gd:LightmapGIData.get_lightmap_textures
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_textures, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_textures, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.TextureLayered]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -270,7 +270,7 @@ func (self class) SetShadowmaskTextures(shadowmask_textures Array.Contains[[1]gd
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadowmask_textures, 0|(gdextension.SizeArray<<4), &struct{ shadowmask_textures gdextension.Array }{pointers.Get(gd.InternalArray(shadowmask_textures))})
 }
 func (self class) GetShadowmaskTextures() Array.Contains[[1]gdclass.TextureLayered] { //gd:LightmapGIData.get_shadowmask_textures
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_shadowmask_textures, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_shadowmask_textures, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.TextureLayered]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

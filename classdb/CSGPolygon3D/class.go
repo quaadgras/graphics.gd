@@ -514,7 +514,7 @@ func (self class) SetPathNode(path Path.ToNode) { //gd:CSGPolygon3D.set_path_nod
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_node, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetPathNode() Path.ToNode { //gd:CSGPolygon3D.get_path_node
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_path_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_path_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

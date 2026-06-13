@@ -194,7 +194,7 @@ func (self class) SetVaryingName(name String.Readable) { //gd:VisualShaderNodeVa
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_varying_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) GetVaryingName() String.Readable { //gd:VisualShaderNodeVarying.get_varying_name
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_varying_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_varying_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

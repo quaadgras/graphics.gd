@@ -232,7 +232,7 @@ func (self class) SetAction(action String.Name) { //gd:InputEventAction.set_acti
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 }
 func (self class) GetAction() String.Name { //gd:InputEventAction.get_action
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_action, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_action, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

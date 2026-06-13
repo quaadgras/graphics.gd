@@ -341,7 +341,7 @@ func (self class) SetAdvanceCondition(name String.Name) { //gd:AnimationNodeStat
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_advance_condition, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) GetAdvanceCondition() String.Name { //gd:AnimationNodeStateMachineTransition.get_advance_condition
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_advance_condition, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_advance_condition, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -389,7 +389,7 @@ func (self class) SetAdvanceExpression(text String.Readable) { //gd:AnimationNod
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_advance_expression, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetAdvanceExpression() String.Readable { //gd:AnimationNodeStateMachineTransition.get_advance_expression
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_advance_expression, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_advance_expression, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

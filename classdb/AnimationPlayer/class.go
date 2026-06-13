@@ -1037,7 +1037,7 @@ func (self class) SetAssignedAnimation(animation String.Name) { //gd:AnimationPl
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_assigned_animation, 0|(gdextension.SizeStringName<<4), &struct{ animation gdextension.StringName }{pointers.Get(gd.InternalStringName(animation))})
 }
 func (self class) GetAssignedAnimation() String.Name { //gd:AnimationPlayer.get_assigned_animation
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_assigned_animation, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_assigned_animation, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1069,7 +1069,7 @@ func (self class) SetAutoplay(name String.Name) { //gd:AnimationPlayer.set_autop
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) GetAutoplay() String.Name { //gd:AnimationPlayer.get_autoplay
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

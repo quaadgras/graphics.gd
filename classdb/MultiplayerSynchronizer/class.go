@@ -343,7 +343,7 @@ func (self class) SetRootPath(path Path.ToNode) { //gd:MultiplayerSynchronizer.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_path, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetRootPath() Path.ToNode { //gd:MultiplayerSynchronizer.get_root_path
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_path, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

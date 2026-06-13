@@ -709,6 +709,7 @@ func (Instance) _import_post(impl func(ptr gdclass.Receiver, state GLTFState.Ins
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
+		gd.Flush()
 	}
 }
 

@@ -375,7 +375,7 @@ func (self class) SetGodotToGltfExpression(godot_to_gltf_expr [1]gdclass.Express
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), &struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetExpression(godot_to_gltf_expr[0])[0]))})
 }
 func (self class) GetNodePaths() Array.Contains[Path.ToNode] { //gd:GLTFObjectModelProperty.get_node_paths
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_paths, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_paths, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -396,7 +396,7 @@ func (self class) SetObjectModelType(atype GLTFObjectModelType) { //gd:GLTFObjec
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_model_type, 0|(gdextension.SizeInt<<4), &struct{ atype GLTFObjectModelType }{atype})
 }
 func (self class) GetJsonPointers() Array.Contains[Packed.Strings] { //gd:GLTFObjectModelProperty.get_json_pointers
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_json_pointers, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_json_pointers, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Strings]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

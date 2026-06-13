@@ -258,7 +258,7 @@ func (self Instance) Strings() []string { //gd:RegExMatch.strings
 }
 
 func (self class) GetSubject() String.Readable { //gd:RegExMatch.get_subject
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_subject, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_subject, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

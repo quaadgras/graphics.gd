@@ -252,7 +252,7 @@ func (self class) SetUniqueNames(unique_names Array.Contains[String.Readable]) {
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unique_names, 0|(gdextension.SizeArray<<4), &struct{ unique_names gdextension.Array }{pointers.Get(gd.InternalArray(unique_names))})
 }
 func (self class) GetGodotBoneNode() Dictionary.Any { //gd:GLTFSkeleton.get_godot_bone_node
-	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_godot_bone_node, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_godot_bone_node, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

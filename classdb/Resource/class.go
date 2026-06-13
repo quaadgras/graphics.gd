@@ -626,7 +626,7 @@ func (self class) TakeOverPath(path String.Readable) { //gd:Resource.take_over_p
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.take_over_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 func (self class) GetPath() String.Readable { //gd:Resource.get_path
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -637,7 +637,7 @@ func (self class) SetName(name String.Readable) { //gd:Resource.set_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) GetName() String.Readable { //gd:Resource.get_name
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -690,7 +690,7 @@ func (self class) SetSceneUniqueId(id String.Readable) { //gd:Resource.set_scene
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_unique_id, 0|(gdextension.SizeString<<4), &struct{ id gdextension.String }{pointers.Get(gd.InternalString(id))})
 }
 func (self class) GetSceneUniqueId() String.Readable { //gd:Resource.get_scene_unique_id
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_unique_id, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_unique_id, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

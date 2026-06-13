@@ -311,7 +311,7 @@ func (self class) Spawn(data variant.Any) [1]gdclass.Node { //gd:MultiplayerSpaw
 	return ret
 }
 func (self class) GetSpawnPath() Path.ToNode { //gd:MultiplayerSpawner.get_spawn_path
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_spawn_path, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_spawn_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

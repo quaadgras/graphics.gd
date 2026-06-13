@@ -273,7 +273,7 @@ func (self class) SetPathRids(path_rids Array.Contains[RID.Any]) { //gd:Navigati
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_rids, 0|(gdextension.SizeArray<<4), &struct{ path_rids gdextension.Array }{pointers.Get(gd.InternalArray(path_rids))})
 }
 func (self class) GetPathRids() Array.Contains[RID.Any] { //gd:NavigationPathQueryResult3D.get_path_rids
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_path_rids, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_path_rids, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

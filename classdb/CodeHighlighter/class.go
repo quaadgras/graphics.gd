@@ -449,7 +449,7 @@ func (self class) ClearKeywordColors() { //gd:CodeHighlighter.clear_keyword_colo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_keyword_colors, 0, &struct{}{})
 }
 func (self class) GetKeywordColors() Dictionary.Any { //gd:CodeHighlighter.get_keyword_colors
-	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_keyword_colors, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_keyword_colors, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -479,7 +479,7 @@ func (self class) ClearMemberKeywordColors() { //gd:CodeHighlighter.clear_member
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_member_keyword_colors, 0, &struct{}{})
 }
 func (self class) GetMemberKeywordColors() Dictionary.Any { //gd:CodeHighlighter.get_member_keyword_colors
-	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_member_keyword_colors, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_member_keyword_colors, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

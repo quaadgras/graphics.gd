@@ -383,7 +383,7 @@ func (self class) SetSuffix(suffix String.Readable) { //gd:SpinBox.set_suffix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suffix, 0|(gdextension.SizeString<<4), &struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))})
 }
 func (self class) GetSuffix() String.Readable { //gd:SpinBox.get_suffix
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -391,7 +391,7 @@ func (self class) SetPrefix(prefix String.Readable) { //gd:SpinBox.set_prefix
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_prefix, 0|(gdextension.SizeString<<4), &struct{ prefix gdextension.String }{pointers.Get(gd.InternalString(prefix))})
 }
 func (self class) GetPrefix() String.Readable { //gd:SpinBox.get_prefix
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_prefix, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_prefix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

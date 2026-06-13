@@ -260,7 +260,7 @@ func (self class) SetEvents(events Array.Any) { //gd:Shortcut.set_events
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_events, 0|(gdextension.SizeArray<<4), &struct{ events gdextension.Array }{pointers.Get(gd.InternalArray(events))})
 }
 func (self class) GetEvents() Array.Any { //gd:Shortcut.get_events
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_events, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_events, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

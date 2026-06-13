@@ -319,7 +319,7 @@ func (self class) SetInputPath(input_path String.Readable) { //gd:OpenXRDpadBind
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_path, 0|(gdextension.SizeString<<4), &struct{ input_path gdextension.String }{pointers.Get(gd.InternalString(input_path))})
 }
 func (self class) GetInputPath() String.Readable { //gd:OpenXRDpadBindingModifier.get_input_path
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_input_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_input_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -515,7 +515,7 @@ func (self class) SetPolygons(polygons Array.Any) { //gd:Polygon2D.set_polygons
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_polygons, 0|(gdextension.SizeArray<<4), &struct{ polygons gdextension.Array }{pointers.Get(gd.InternalArray(polygons))})
 }
 func (self class) GetPolygons() Array.Any { //gd:Polygon2D.get_polygons
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_polygons, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_polygons, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -636,7 +636,7 @@ func (self class) SetSkeleton(skeleton Path.ToNode) { //gd:Polygon2D.set_skeleto
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton, 0|(gdextension.SizeNodePath<<4), &struct{ skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(skeleton))})
 }
 func (self class) GetSkeleton() Path.ToNode { //gd:Polygon2D.get_skeleton
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

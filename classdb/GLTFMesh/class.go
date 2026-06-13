@@ -252,7 +252,7 @@ func (self Instance) SetInstanceMaterials(value []Material.Instance) Instance { 
 }
 
 func (self class) GetOriginalName() String.Readable { //gd:GLTFMesh.get_original_name
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -278,7 +278,7 @@ func (self class) SetBlendWeights(blend_weights Packed.Array[float32]) { //gd:GL
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](blend_weights))})
 }
 func (self class) GetInstanceMaterials() Array.Contains[[1]gdclass.Material] { //gd:GLTFMesh.get_instance_materials
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_instance_materials, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_instance_materials, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Material]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

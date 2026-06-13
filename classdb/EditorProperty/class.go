@@ -526,7 +526,7 @@ func (self class) SetLabel(text String.Readable) { //gd:EditorProperty.set_label
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetLabel() String.Readable { //gd:EditorProperty.get_label
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -595,7 +595,7 @@ func (self class) IsDeletable() bool { //gd:EditorProperty.is_deletable
 	return ret
 }
 func (self class) GetEditedProperty() String.Name { //gd:EditorProperty.get_edited_property
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_edited_property, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_edited_property, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

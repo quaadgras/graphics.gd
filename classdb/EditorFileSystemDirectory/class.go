@@ -314,7 +314,7 @@ func (self class) GetFileImportIsValid(idx int64) bool { //gd:EditorFileSystemDi
 	return ret
 }
 func (self class) GetName() String.Readable { //gd:EditorFileSystemDirectory.get_name
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

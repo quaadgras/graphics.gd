@@ -14,6 +14,34 @@ import (
 // for these methods instead of noescape.Call.
 var TrivialMethods map[string]map[string]bool
 
+// allocatingResults are engine return types whose value is *constructed* into
+// the ptrcall return buffer and may heap-allocate (CoW containers, Strings,
+// Variant). jumponly runs the C++ method on the goroutine stack without the cgo
+// stack switch, so returning one of these can corrupt the musl allocator even
+// when the method body looks call-free to the trivial-methods analyzer — the
+// allocation happens in the binder's return-value construction, not the body
+// (e.g. GLTFState.get_nodes is a "trivial" accessor but get_nodes_bind builds a
+// TypedArray<GLTFNode>). Object/value-type returns are a plain store and stay on
+// the fast path; these never do.
+var allocatingResults = map[string]bool{
+	"gdextension.String":             true,
+	"gdextension.StringName":         true,
+	"gdextension.NodePath":           true,
+	"gdextension.Array":              true,
+	"gdextension.Dictionary":         true,
+	"gdextension.Variant":            true,
+	"gdextension.PackedByteArray":    true,
+	"gdextension.PackedInt32Array":   true,
+	"gdextension.PackedInt64Array":   true,
+	"gdextension.PackedFloat32Array": true,
+	"gdextension.PackedFloat64Array": true,
+	"gdextension.PackedStringArray":  true,
+	"gdextension.PackedVector2Array": true,
+	"gdextension.PackedVector3Array": true,
+	"gdextension.PackedColorArray":   true,
+	"gdextension.PackedVector4Array": true,
+}
+
 type Type int
 
 const (
@@ -226,7 +254,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		callResult = "struct{}"
 	}
 	callPkg := "noescape"
-	if TrivialMethods != nil && TrivialMethods[class.Name][method.Name] {
+	if TrivialMethods != nil && TrivialMethods[class.Name][method.Name] && !allocatingResults[callResult] {
 		callPkg = "jumponly"
 	}
 	fmt.Fprintf(w, "%s.Call%s[%s](%s methods.%v, %v, &struct{", callPkg, static, callResult, self, method.Name, shapeOf(class, method))

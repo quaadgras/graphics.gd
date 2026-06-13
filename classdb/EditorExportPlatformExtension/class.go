@@ -1443,7 +1443,7 @@ func (self class) SetConfigError(error_text String.Readable) { //gd:EditorExport
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_config_error, 0|(gdextension.SizeString<<4), &struct{ error_text gdextension.String }{pointers.Get(gd.InternalString(error_text))})
 }
 func (self class) GetConfigError() String.Readable { //gd:EditorExportPlatformExtension.get_config_error
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_config_error, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_config_error, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

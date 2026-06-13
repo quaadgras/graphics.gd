@@ -192,7 +192,7 @@ func (self class) SetUuid(uuid String.Readable) { //gd:OpenXRAnchorTracker.set_u
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uuid, 0|(gdextension.SizeString<<4), &struct{ uuid gdextension.String }{pointers.Get(gd.InternalString(uuid))})
 }
 func (self class) GetUuid() String.Readable { //gd:OpenXRAnchorTracker.get_uuid
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_uuid, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_uuid, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

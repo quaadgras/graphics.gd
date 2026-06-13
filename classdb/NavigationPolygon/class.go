@@ -670,7 +670,7 @@ func (self class) SetSourceGeometryGroupName(group_name String.Name) { //gd:Navi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source_geometry_group_name, 0|(gdextension.SizeStringName<<4), &struct{ group_name gdextension.StringName }{pointers.Get(gd.InternalStringName(group_name))})
 }
 func (self class) GetSourceGeometryGroupName() String.Name { //gd:NavigationPolygon.get_source_geometry_group_name
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_source_geometry_group_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_source_geometry_group_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

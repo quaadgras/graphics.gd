@@ -412,7 +412,7 @@ func (self class) SetValueLabel(text String.Readable) { //gd:AnimationNodeBlendS
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_value_label, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetValueLabel() String.Readable { //gd:AnimationNodeBlendSpace1D.get_value_label
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_value_label, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_value_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

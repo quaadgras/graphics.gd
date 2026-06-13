@@ -466,7 +466,7 @@ func (self class) IsValid() bool { //gd:RegEx.is_valid
 	return ret
 }
 func (self class) GetPattern() String.Readable { //gd:RegEx.get_pattern
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pattern, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pattern, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -258,7 +258,7 @@ func (self class) SetHandSkeleton(hand_skeleton Path.ToNode) { //gd:OpenXRHand.s
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_skeleton, 0|(gdextension.SizeNodePath<<4), &struct{ hand_skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(hand_skeleton))})
 }
 func (self class) GetHandSkeleton() Path.ToNode { //gd:OpenXRHand.get_hand_skeleton
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_hand_skeleton, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_hand_skeleton, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

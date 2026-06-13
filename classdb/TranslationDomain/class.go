@@ -497,7 +497,7 @@ func (self class) Clear() { //gd:TranslationDomain.clear
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 func (self class) GetTranslations() Array.Contains[[1]gdclass.Translation] { //gd:TranslationDomain.get_translations
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_translations, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_translations, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Translation]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -541,7 +541,7 @@ func (self class) TranslatePlural(message String.Name, message_plural String.Nam
 	return ret
 }
 func (self class) GetLocaleOverride() String.Readable { //gd:TranslationDomain.get_locale_override
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale_override, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale_override, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -613,7 +613,7 @@ func (self class) SetPseudolocalizationExpansionRatio(ratio float64) { //gd:Tran
 	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_expansion_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 func (self class) GetPseudolocalizationPrefix() String.Readable { //gd:TranslationDomain.get_pseudolocalization_prefix
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_prefix, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_prefix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -621,7 +621,7 @@ func (self class) SetPseudolocalizationPrefix(prefix String.Readable) { //gd:Tra
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pseudolocalization_prefix, 0|(gdextension.SizeString<<4), &struct{ prefix gdextension.String }{pointers.Get(gd.InternalString(prefix))})
 }
 func (self class) GetPseudolocalizationSuffix() String.Readable { //gd:TranslationDomain.get_pseudolocalization_suffix
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_suffix, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_pseudolocalization_suffix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

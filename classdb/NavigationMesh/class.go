@@ -705,7 +705,7 @@ func (self class) SetSourceGroupName(mask String.Name) { //gd:NavigationMesh.set
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source_group_name, 0|(gdextension.SizeStringName<<4), &struct{ mask gdextension.StringName }{pointers.Get(gd.InternalStringName(mask))})
 }
 func (self class) GetSourceGroupName() String.Name { //gd:NavigationMesh.get_source_group_name
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_source_group_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_source_group_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

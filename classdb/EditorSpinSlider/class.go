@@ -282,7 +282,7 @@ func (self class) SetLabel(label String.Readable) { //gd:EditorSpinSlider.set_la
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label, 0|(gdextension.SizeString<<4), &struct{ label gdextension.String }{pointers.Get(gd.InternalString(label))})
 }
 func (self class) GetLabel() String.Readable { //gd:EditorSpinSlider.get_label
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -290,7 +290,7 @@ func (self class) SetSuffix(suffix String.Readable) { //gd:EditorSpinSlider.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suffix, 0|(gdextension.SizeString<<4), &struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))})
 }
 func (self class) GetSuffix() String.Readable { //gd:EditorSpinSlider.get_suffix
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

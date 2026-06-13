@@ -197,7 +197,7 @@ func (self class) SetValue(value variant.Any) { //gd:RDPipelineSpecializationCon
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_value, 0|(gdextension.SizeVariant<<4), &struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
 func (self class) GetValue() variant.Any { //gd:RDPipelineSpecializationConstant.get_value
-	var r_ret = jumponly.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_value, gdextension.SizeVariant, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_value, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

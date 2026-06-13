@@ -219,7 +219,7 @@ func (self class) SetResultValue(result_value variant.Any) { //gd:OpenXRFutureRe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_result_value, 0|(gdextension.SizeVariant<<4), &struct{ result_value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(result_value)))})
 }
 func (self class) GetResultValue() variant.Any { //gd:OpenXRFutureResult.get_result_value
-	var r_ret = jumponly.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_result_value, gdextension.SizeVariant, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_result_value, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

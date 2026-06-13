@@ -732,7 +732,7 @@ func (self class) SetWindSourcePath(wind_source_path Path.ToNode) { //gd:Area3D.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wind_source_path, 0|(gdextension.SizeNodePath<<4), &struct{ wind_source_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(wind_source_path))})
 }
 func (self class) GetWindSourcePath() Path.ToNode { //gd:Area3D.get_wind_source_path
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_wind_source_path, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_wind_source_path, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

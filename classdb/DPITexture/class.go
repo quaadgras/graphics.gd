@@ -348,7 +348,7 @@ func (self class) SetSource(source String.Readable) { //gd:DPITexture.set_source
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeString<<4), &struct{ source gdextension.String }{pointers.Get(gd.InternalString(source))})
 }
 func (self class) GetSource() String.Readable { //gd:DPITexture.get_source
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -372,7 +372,7 @@ func (self class) SetColorMap(color_map Dictionary.Any) { //gd:DPITexture.set_co
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_map, 0|(gdextension.SizeDictionary<<4), &struct{ color_map gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(color_map))})
 }
 func (self class) GetColorMap() Dictionary.Any { //gd:DPITexture.get_color_map
-	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_color_map, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_color_map, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

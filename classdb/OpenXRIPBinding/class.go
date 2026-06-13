@@ -291,7 +291,7 @@ func (self class) SetBindingPath(binding_path String.Readable) { //gd:OpenXRIPBi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding_path, 0|(gdextension.SizeString<<4), &struct{ binding_path gdextension.String }{pointers.Get(gd.InternalString(binding_path))})
 }
 func (self class) GetBindingPath() String.Readable { //gd:OpenXRIPBinding.get_binding_path
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_binding_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_binding_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

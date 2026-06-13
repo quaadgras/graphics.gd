@@ -264,7 +264,7 @@ func (self Instance) SetHand(value TrackerHand) Instance { //gd:XRPositionalTrac
 }
 
 func (self class) GetTrackerProfile() String.Readable { //gd:XRPositionalTracker.get_tracker_profile
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracker_profile, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracker_profile, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

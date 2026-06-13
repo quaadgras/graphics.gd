@@ -1649,12 +1649,12 @@ func (self class) CreateCodeRegion() { //gd:CodeEdit.create_code_region
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_code_region, 0, &struct{}{})
 }
 func (self class) GetCodeRegionStartTag() String.Readable { //gd:CodeEdit.get_code_region_start_tag
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code_region_start_tag, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code_region_start_tag, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetCodeRegionEndTag() String.Readable { //gd:CodeEdit.get_code_region_end_tag
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code_region_end_tag, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code_region_end_tag, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1840,7 +1840,7 @@ func (self class) SetLineLengthGuidelines(guideline_columns Array.Contains[int64
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_length_guidelines, 0|(gdextension.SizeArray<<4), &struct{ guideline_columns gdextension.Array }{pointers.Get(gd.InternalArray(guideline_columns))})
 }
 func (self class) GetLineLengthGuidelines() Array.Contains[int64] { //gd:CodeEdit.get_line_length_guidelines
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_line_length_guidelines, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_line_length_guidelines, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

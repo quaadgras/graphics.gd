@@ -460,7 +460,7 @@ func (self class) SetImageFormat(image_format String.Readable) { //gd:GLTFDocume
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_image_format, 0|(gdextension.SizeString<<4), &struct{ image_format gdextension.String }{pointers.Get(gd.InternalString(image_format))})
 }
 func (self class) GetImageFormat() String.Readable { //gd:GLTFDocument.get_image_format
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_image_format, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_image_format, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -476,7 +476,7 @@ func (self class) SetFallbackImageFormat(fallback_image_format String.Readable) 
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_image_format, 0|(gdextension.SizeString<<4), &struct{ fallback_image_format gdextension.String }{pointers.Get(gd.InternalString(fallback_image_format))})
 }
 func (self class) GetFallbackImageFormat() String.Readable { //gd:GLTFDocument.get_fallback_image_format
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_fallback_image_format, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_fallback_image_format, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

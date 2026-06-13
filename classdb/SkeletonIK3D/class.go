@@ -417,7 +417,7 @@ func (self class) SetRootBone(root_bone String.Name) { //gd:SkeletonIK3D.set_roo
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_bone, 0|(gdextension.SizeStringName<<4), &struct{ root_bone gdextension.StringName }{pointers.Get(gd.InternalStringName(root_bone))})
 }
 func (self class) GetRootBone() String.Name { //gd:SkeletonIK3D.get_root_bone
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_root_bone, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_root_bone, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -425,7 +425,7 @@ func (self class) SetTipBone(tip_bone String.Name) { //gd:SkeletonIK3D.set_tip_b
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tip_bone, 0|(gdextension.SizeStringName<<4), &struct{ tip_bone gdextension.StringName }{pointers.Get(gd.InternalStringName(tip_bone))})
 }
 func (self class) GetTipBone() String.Name { //gd:SkeletonIK3D.get_tip_bone
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tip_bone, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tip_bone, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -441,7 +441,7 @@ func (self class) SetTargetNode(node Path.ToNode) { //gd:SkeletonIK3D.set_target
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), &struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))})
 }
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonIK3D.get_target_node
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

@@ -198,7 +198,7 @@ func (self class) SetOriginalClass(name String.Readable) { //gd:MissingResource.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_class, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 func (self class) GetOriginalClass() String.Readable { //gd:MissingResource.get_original_class
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_class, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_class, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

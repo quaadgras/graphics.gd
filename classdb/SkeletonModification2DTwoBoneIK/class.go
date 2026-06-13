@@ -322,7 +322,7 @@ func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModi
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), &struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))})
 }
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DTwoBoneIK.get_target_node
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -354,7 +354,7 @@ func (self class) SetJointOneBone2dNode(bone2d_node Path.ToNode) { //gd:Skeleton
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_one_bone2d_node, 0|(gdextension.SizeNodePath<<4), &struct{ bone2d_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(bone2d_node))})
 }
 func (self class) GetJointOneBone2dNode() Path.ToNode { //gd:SkeletonModification2DTwoBoneIK.get_joint_one_bone2d_node
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_joint_one_bone2d_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_joint_one_bone2d_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -370,7 +370,7 @@ func (self class) SetJointTwoBone2dNode(bone2d_node Path.ToNode) { //gd:Skeleton
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_two_bone2d_node, 0|(gdextension.SizeNodePath<<4), &struct{ bone2d_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(bone2d_node))})
 }
 func (self class) GetJointTwoBone2dNode() Path.ToNode { //gd:SkeletonModification2DTwoBoneIK.get_joint_two_bone2d_node
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_joint_two_bone2d_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_joint_two_bone2d_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

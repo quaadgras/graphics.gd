@@ -234,7 +234,7 @@ func (self class) SetFile(file String.Readable) { //gd:VideoStream.set_file
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_file, 0|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 }
 func (self class) GetFile() String.Readable { //gd:VideoStream.get_file
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

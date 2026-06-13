@@ -246,7 +246,7 @@ func (class) _post_import(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)
 }
 
 func (self class) GetSourceFile() String.Readable { //gd:EditorScenePostImport.get_source_file
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source_file, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -277,7 +277,7 @@ func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObj
 
 func (self class) Eval(code String.Readable, use_global_execution_context bool) variant.Any { //gd:JavaScriptBridge.eval
 	once.Do(singleton)
-	var r_ret = jumponly.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.eval, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.eval, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		code                         gdextension.String
 		use_global_execution_context bool
 	}{pointers.Get(gd.InternalString(code)), use_global_execution_context})

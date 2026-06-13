@@ -2791,7 +2791,7 @@ func (self class) SetName(name String.Name) { //gd:Node.set_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) GetName() String.Name { //gd:Node.get_name
-	var r_ret = jumponly.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -2975,7 +2975,7 @@ func (self class) SetSceneFilePath(scene_file_path String.Readable) { //gd:Node.
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_file_path, 0|(gdextension.SizeString<<4), &struct{ scene_file_path gdextension.String }{pointers.Get(gd.InternalString(scene_file_path))})
 }
 func (self class) GetSceneFilePath() String.Readable { //gd:Node.get_scene_file_path
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_file_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_file_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3264,7 +3264,7 @@ func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.
 	}{pointers.Get(gd.InternalStringName(method)), gdextension.Variant(pointers.Get(gd.InternalVariant(config)))})
 }
 func (self class) GetNodeRpcConfig() variant.Any { //gd:Node.get_node_rpc_config
-	var r_ret = jumponly.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_node_rpc_config, gdextension.SizeVariant, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_node_rpc_config, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -3272,7 +3272,7 @@ func (self class) SetEditorDescription(editor_description String.Readable) { //g
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_description, 0|(gdextension.SizeString<<4), &struct{ editor_description gdextension.String }{pointers.Get(gd.InternalString(editor_description))})
 }
 func (self class) GetEditorDescription() String.Readable { //gd:Node.get_editor_description
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_editor_description, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_editor_description, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

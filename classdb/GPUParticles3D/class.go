@@ -965,7 +965,7 @@ func (self class) SetSubEmitter(path Path.ToNode) { //gd:GPUParticles3D.set_sub_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sub_emitter, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetSubEmitter() Path.ToNode { //gd:GPUParticles3D.get_sub_emitter
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

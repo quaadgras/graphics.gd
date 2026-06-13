@@ -203,7 +203,7 @@ func (self class) SetTracker(tracker RenderModelTracker) { //gd:OpenXRRenderMode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker, 0|(gdextension.SizeInt<<4), &struct{ tracker RenderModelTracker }{tracker})
 }
 func (self class) GetMakeLocalToPose() String.Readable { //gd:OpenXRRenderModelManager.get_make_local_to_pose
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_make_local_to_pose, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_make_local_to_pose, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

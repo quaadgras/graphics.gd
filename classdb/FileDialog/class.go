@@ -858,7 +858,7 @@ func (self class) SetFilenameFilter(filter String.Readable) { //gd:FileDialog.se
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filename_filter, 0|(gdextension.SizeString<<4), &struct{ filter gdextension.String }{pointers.Get(gd.InternalString(filter))})
 }
 func (self class) GetFilenameFilter() String.Readable { //gd:FileDialog.get_filename_filter
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_filename_filter, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_filename_filter, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -911,12 +911,12 @@ func (self class) AddOption(name String.Readable, values Packed.Strings, default
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalPackedStrings(values)), default_value_index})
 }
 func (self class) GetSelectedOptions() Dictionary.Any { //gd:FileDialog.get_selected_options
-	var r_ret = jumponly.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_selected_options, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_selected_options, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) GetCurrentDir() String.Readable { //gd:FileDialog.get_current_dir
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_dir, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -985,7 +985,7 @@ func (self class) SetRootSubfolder(dir String.Readable) { //gd:FileDialog.set_ro
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_subfolder, 0|(gdextension.SizeString<<4), &struct{ dir gdextension.String }{pointers.Get(gd.InternalString(dir))})
 }
 func (self class) GetRootSubfolder() String.Readable { //gd:FileDialog.get_root_subfolder
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_root_subfolder, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_root_subfolder, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

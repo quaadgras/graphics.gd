@@ -250,7 +250,7 @@ func (self class) SetAdvanceExpressionBaseNode(path Path.ToNode) { //gd:Animatio
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_advance_expression_base_node, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetAdvanceExpressionBaseNode() Path.ToNode { //gd:AnimationTree.get_advance_expression_base_node
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_advance_expression_base_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_advance_expression_base_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -258,7 +258,7 @@ func (self class) SetAnimationPlayer(path Path.ToNode) { //gd:AnimationTree.set_
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation_player, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 func (self class) GetAnimationPlayer() Path.ToNode { //gd:AnimationTree.get_animation_player
-	var r_ret = jumponly.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_animation_player, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_animation_player, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

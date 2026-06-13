@@ -256,7 +256,7 @@ func (self class) SetAttachments(attachments Array.Contains[[1]gdclass.RDPipelin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attachments, 0|(gdextension.SizeArray<<4), &struct{ attachments gdextension.Array }{pointers.Get(gd.InternalArray(attachments))})
 }
 func (self class) GetAttachments() Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment] { //gd:RDPipelineColorBlendState.get_attachments
-	var r_ret = jumponly.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_attachments, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_attachments, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.RDPipelineColorBlendStateAttachment]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

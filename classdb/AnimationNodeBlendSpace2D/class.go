@@ -511,7 +511,7 @@ func (self class) SetXLabel(text String.Readable) { //gd:AnimationNodeBlendSpace
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_x_label, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetXLabel() String.Readable { //gd:AnimationNodeBlendSpace2D.get_x_label
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_x_label, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_x_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -519,7 +519,7 @@ func (self class) SetYLabel(text String.Readable) { //gd:AnimationNodeBlendSpace
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_y_label, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 func (self class) GetYLabel() String.Readable { //gd:AnimationNodeBlendSpace2D.get_y_label
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_y_label, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_y_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

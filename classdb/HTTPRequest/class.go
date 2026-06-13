@@ -600,7 +600,7 @@ func (self class) SetDownloadFile(path String.Readable) { //gd:HTTPRequest.set_d
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_download_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 func (self class) GetDownloadFile() String.Readable { //gd:HTTPRequest.get_download_file
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_download_file, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_download_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

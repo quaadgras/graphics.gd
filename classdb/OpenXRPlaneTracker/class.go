@@ -299,7 +299,7 @@ func (self class) SetPlaneLabel(plane_label String.Readable) { //gd:OpenXRPlaneT
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plane_label, 0|(gdextension.SizeString<<4), &struct{ plane_label gdextension.String }{pointers.Get(gd.InternalString(plane_label))})
 }
 func (self class) GetPlaneLabel() String.Readable { //gd:OpenXRPlaneTracker.get_plane_label
-	var r_ret = jumponly.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_plane_label, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_plane_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
