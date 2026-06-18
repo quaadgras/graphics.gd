@@ -59,10 +59,16 @@ func (exe toolchain) PathToCommand() string {
 func (exe toolchain) Exec(args ...string) error {
 	var converted []string
 	for _, arg := range args {
-		if strings.Contains(arg, "=") {
-			arg, _, _ = strings.Cut(arg, "=")
+		// Only the key portion (before "=") participates in the
+		// ConvertArguments lookup; the full original arg is what
+		// reaches the command. Truncating unconditionally would
+		// strip the value half of long-form flags like
+		// "--output=/path/to/file" before exec.
+		key := arg
+		if i := strings.Index(arg, "="); i >= 0 {
+			key = arg[:i]
 		}
-		if newarg, ok := exe.ConvertArguments[arg]; ok {
+		if newarg, ok := exe.ConvertArguments[key]; ok {
 			if newarg == "" {
 				continue
 			}

@@ -216,6 +216,26 @@ func (Android) Build(args ...string) error {
 			if err := os.Setenv("GOARCH", "arm64"); err != nil {
 				return xray.New(err)
 			}
+		case "amd64":
+			// The bundled liblog.so stub is aarch64; for x86_64 we
+			// compile the same set of no-op shims from liblog.c into
+			// a fresh stub the linker can resolve `-llog` against.
+			// The dynamic linker substitutes the device's real
+			// liblog.so at runtime. -nostdlib is required because
+			// zig 0.15 doesn't ship a bundled libc for the
+			// x86_64-linux-android target.
+			liblog := filepath.Join(ANDROID_SDK, "usr", "lib", "liblog.so")
+			liblogSrc := filepath.Join(ANDROID_SDK, "usr", "lib", "liblog.c")
+			if err := exec.Command(zig, "cc", "-target", "x86_64-linux-android", "-shared", "-nostdlib",
+				"-Wl,-soname,liblog.so", "-o", liblog, liblogSrc).Run(); err != nil {
+				return xray.New(fmt.Errorf("build liblog stub for amd64: %w", err))
+			}
+			if err := os.Setenv("CC", zig+" cc -target x86_64-linux-android -nostdlib -I"+ANDROID_SDK+"/usr/include -L"+ANDROID_SDK+"/usr/lib"); err != nil {
+				return xray.New(err)
+			}
+			if err := os.Setenv("GOARCH", "amd64"); err != nil {
+				return xray.New(err)
+			}
 		default:
 			return fmt.Errorf("gd build: cannot cross-compile android/%v on %v", GOARCH, runtime.GOOS)
 		}
@@ -238,6 +258,10 @@ func (android Android) Run(args ...string) error {
 	if err := android.Build(args...); err != nil {
 		return xray.New(err)
 	}
+	GOARCH := "arm64"
+	if env := os.Getenv("GOARCH"); env != "" {
+		GOARCH = env
+	}
 	adb, err := tooling.AndroidDebugBridge.Lookup()
 	if err != nil {
 		return xray.New(err)
@@ -245,16 +269,20 @@ func (android Android) Run(args ...string) error {
 	if _, err := tooling.AndroidPackageSigner.Lookup(); err != nil {
 		return xray.New(err)
 	}
-	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, "android", "arm64"), 0755); err != nil {
+	presetName, exportPath, err := pickAndroidPreset(GOARCH)
+	if err != nil {
+		return xray.New(err)
+	}
+	apkPath := filepath.Join(project.GraphicsDirectory, exportPath)
+	if err := os.MkdirAll(filepath.Dir(apkPath), 0755); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-debug", "Android"); err != nil {
+	if err := tooling.Godot.Exec("--headless", "--export-debug", presetName); err != nil {
 		return xray.New(err)
 	}
-	apkPath := filepath.Join(project.ReleasesDirectory, "android", "arm64", filepath.Base(project.Directory)+".apk")
 	if err := tooling.AndroidPackageSigner.Exec(
 		"sign", "--ks", debug_keystore,
 		"--ks-key-alias", "androiddebugkey", "--ks-pass", "pass:android",
@@ -326,6 +354,10 @@ func (android Android) BuildMain(...string) error {
 	if err := android.Build(); err != nil {
 		return xray.New(err)
 	}
+	GOARCH := "arm64"
+	if env := os.Getenv("GOARCH"); env != "" {
+		GOARCH = env
+	}
 	_, err := tooling.AndroidDebugBridge.Lookup()
 	if err != nil {
 		return xray.New(err)
@@ -349,10 +381,18 @@ func (android Android) BuildMain(...string) error {
 	if err := os.WriteFile(filepath.Join(GDPATH, "bin", "java"+exe), []byte("java stub"), 0755); err != nil {
 		return xray.New(err)
 	}
+	presetName, exportPath, err := pickAndroidPreset(GOARCH)
+	if err != nil {
+		return xray.New(err)
+	}
+	apkPath := filepath.Join(project.GraphicsDirectory, exportPath)
+	if err := os.MkdirAll(filepath.Dir(apkPath), 0755); err != nil {
+		return xray.New(err)
+	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-release", "Android"); err != nil {
+	if err := tooling.Godot.Exec("--headless", "--export-release", presetName); err != nil {
 		return xray.New(err)
 	}
 	// Now that we have the .apk, we also want an .aab that can be uploaded to the Play Store.
@@ -367,7 +407,7 @@ func (android Android) BuildMain(...string) error {
 		return xray.New(err)
 	}
 	if err := tooling.AndroidPackageKitTool.Exec("d",
-		filepath.Join(project.ReleasesDirectory, "android", "arm64", project.Name+".apk"),
+		apkPath,
 		"-s", "-o",
 		filepath.Join(project.ReleasesDirectory, "android", "decompiled"),
 		"-f",
@@ -394,7 +434,7 @@ func (android Android) BuildMain(...string) error {
 		return xray.New(err)
 	}
 	originalPackageName, err := tooling.AndroidAssetPackagingTool.Output("dump", "packagename",
-		filepath.Join(project.ReleasesDirectory, "android", "arm64", project.Name+".apk"),
+		apkPath,
 	)
 	if err != nil {
 		return xray.New(err)
@@ -582,3 +622,93 @@ func (android Android) BuildMain(...string) error {
 	}
 	return nil
 }
+
+// pickAndroidPreset chooses the Godot export preset for the current
+// Android target architecture. Selection order:
+//
+//  1. GD_ANDROID_PRESET env var (explicit override).
+//  2. The default preset for this arch: "Android arm64-v8a" or
+//     "Android x86_64".
+//  3. The first preset whose platform="Android" has the matching
+//     architectures/<abi>=true. Lets users rename or hand-craft.
+//
+// Returns the preset name (passed to godot --export-*) and the
+// project-relative export_path declared by that preset.
+func pickAndroidPreset(GOARCH string) (name, exportPath string, err error) {
+	abi := "arm64-v8a"
+	if GOARCH == "amd64" {
+		abi = "x86_64"
+	}
+	presets, err := loadAndroidPresets()
+	if err != nil {
+		return "", "", xray.New(err)
+	}
+	if want := os.Getenv("GD_ANDROID_PRESET"); want != "" {
+		for _, p := range presets {
+			if p.name == want {
+				return p.name, p.exportPath, nil
+			}
+		}
+		return "", "", fmt.Errorf("gd build: GD_ANDROID_PRESET=%q not found in graphics/export_presets.cfg", want)
+	}
+	want := "Android " + abi
+	for _, p := range presets {
+		if p.name == want {
+			return p.name, p.exportPath, nil
+		}
+	}
+	for _, p := range presets {
+		if p.platform == "Android" && p.archs[abi] {
+			return p.name, p.exportPath, nil
+		}
+	}
+	return "", "", fmt.Errorf("gd build: no Android preset for %s in graphics/export_presets.cfg", abi)
+}
+
+type androidPreset struct {
+	name, platform, exportPath string
+	archs                      map[string]bool
+}
+
+func loadAndroidPresets() ([]androidPreset, error) {
+	raw, err := os.ReadFile(filepath.Join(project.GraphicsDirectory, "export_presets.cfg"))
+	if err != nil {
+		return nil, err
+	}
+	var (
+		out []androidPreset
+		cur *androidPreset
+	)
+	for _, line := range bytes.Split(raw, []byte("\n")) {
+		s := strings.TrimSpace(string(line))
+		if strings.HasPrefix(s, "[") && strings.HasSuffix(s, "]") {
+			if strings.HasPrefix(s, "[preset.") && !strings.HasSuffix(s, ".options]") {
+				out = append(out, androidPreset{archs: map[string]bool{}})
+				cur = &out[len(out)-1]
+			}
+			continue
+		}
+		if cur == nil {
+			continue
+		}
+		key, val, ok := strings.Cut(s, "=")
+		if !ok {
+			continue
+		}
+		val = strings.Trim(val, `"`)
+		switch key {
+		case "name":
+			cur.name = val
+		case "platform":
+			cur.platform = val
+		case "export_path":
+			cur.exportPath = val
+		default:
+			if abi, ok := strings.CutPrefix(key, "architectures/"); ok && val == "true" {
+				cur.archs[abi] = true
+			}
+		}
+	}
+	return out, nil
+}
+
