@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/auxv.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -35,6 +36,27 @@
 #define RTLD_LAZY  1
 #define RTLD_NOW   2
 #define RTLD_GLOBAL 256
+
+/* Auxiliary vector keys we copy through from the host to the helper's glibc
+ * ld.so/libc. Not all are defined in every <elf.h>, so guard them. */
+#ifndef AT_PLATFORM
+#define AT_PLATFORM 15
+#endif
+#ifndef AT_HWCAP
+#define AT_HWCAP 16
+#endif
+#ifndef AT_HWCAP2
+#define AT_HWCAP2 26
+#endif
+#ifndef AT_EXECFN
+#define AT_EXECFN 31
+#endif
+#ifndef AT_SYSINFO_EHDR
+#define AT_SYSINFO_EHDR 33
+#endif
+#ifndef AT_MINSIGSTKSZ
+#define AT_MINSIGSTKSZ 51
+#endif
 
 /* Uncomment to enable TLS debug tracing */
 //#define DLOPEN_DEBUG 0
@@ -89,7 +111,13 @@
   "\n" \
   "static void *get_tls(void) {\n" \
   "  void *tls;\n" \
+  "#if defined(__x86_64__)\n" \
   "  __asm__ volatile(\"mov %%fs:0, %0\" : \"=r\"(tls));\n" \
+  "#elif defined(__aarch64__)\n" \
+  "  __asm__ volatile(\"mrs %0, tpidr_el0\" : \"=r\"(tls));\n" \
+  "#else\n" \
+  "#error \"unsupported architecture\"\n" \
+  "#endif\n" \
   "  return tls;\n" \
   "}\n" \
   "\n" \
@@ -99,10 +127,37 @@
   "  __tls_pool.tls_ptrs[idx] = get_tls();\n" \
   "  __tls_pool.tramp_ctxs[idx] = &__tramp_ctx;\n" \
   "  __tls_pool.count++;\n" \
-  "  if (__tls_pool.count == TLS_POOL_SIZE) sem_post(&__tls_pool.ready);\n" \
   "  pthread_mutex_unlock(&__tls_pool.lock);\n" \
+  "  sem_post(&__tls_pool.ready); /* signal this thread recorded its TLS */\n" \
   "  sem_wait(&__tls_pool.shutdown); /* sleep forever */\n" \
   "  return NULL;\n" \
+  "}\n" \
+  "\n" \
+  "/* On-demand glibc TCB factory: spawn a parked glibc thread and return its\n" \
+  "   TLS pointer, so the musl side can hand fresh glibc TCBs to threads beyond\n" \
+  "   the pre-spawned pool (no fixed cap). The musl side serializes calls, so the\n" \
+  "   statics below need no locking. */\n" \
+  "static sem_t __tcb_ready;\n" \
+  "static void *__tcb_captured;\n" \
+  "static void *tcb_thread(void *arg) {\n" \
+  "  (void)arg;\n" \
+  "  __tcb_captured = get_tls();\n" \
+  "  sem_post(&__tcb_ready);\n" \
+  "  sem_wait(&__tls_pool.shutdown); /* park forever */\n" \
+  "  return NULL;\n" \
+  "}\n" \
+  "void *glibc_tcb_create(void) {\n" \
+  "  pthread_attr_t attr;\n" \
+  "  pthread_attr_init(&attr);\n" \
+  "  pthread_attr_setstacksize(&attr, 16384);\n" \
+  "  sem_init(&__tcb_ready, 0, 0);\n" \
+  "  pthread_t t;\n" \
+  "  int rc = pthread_create(&t, &attr, tcb_thread, NULL);\n" \
+  "  pthread_attr_destroy(&attr);\n" \
+  "  if (rc != 0) return NULL;\n" \
+  "  pthread_detach(t);\n" \
+  "  sem_wait(&__tcb_ready);\n" \
+  "  return __tcb_captured;\n" \
   "}\n" \
   "\n" \
   "int main(int argc, char **argv, char **envp) {\n" \
@@ -130,22 +185,31 @@
   "  pthread_attr_t attr;\n" \
   "  pthread_attr_init(&attr);\n" \
   "  pthread_attr_setstacksize(&attr, 16384); /* minimal stack */\n" \
+  "  int created = 0;\n" \
   "  for (int i = 1; i < TLS_POOL_SIZE; i++) {\n" \
   "    pthread_t t;\n" \
-  "    pthread_create(&t, &attr, pool_thread, (void*)(intptr_t)i);\n" \
-  "    pthread_detach(t);\n" \
+  "    if (pthread_create(&t, &attr, pool_thread, (void*)(intptr_t)i) == 0) {\n" \
+  "      pthread_detach(t);\n" \
+  "      created++;\n" \
+  "    }\n" \
   "  }\n" \
   "  pthread_attr_destroy(&attr);\n" \
-  "  /* Wait for all pool threads to be ready */\n" \
-  "  while (__tls_pool.count < TLS_POOL_SIZE) {\n" \
-  "    sem_wait(&__tls_pool.ready);\n" \
-  "  }\n" \
+  "  /* Wait only for the threads that were actually created, so a failed\n" \
+  "     pthread_create (e.g. RLIMIT_NPROC in a container) cannot hang us\n" \
+  "     forever. Unfilled slots keep NULL TLS pointers; the musl side's\n" \
+  "     get_thread_slot() aborts cleanly if one is ever assigned. */\n" \
+  "  for (int i = 0; i < created; i++) sem_wait(&__tls_pool.ready);\n" \
+  "  if (created < TLS_POOL_SIZE - 1)\n" \
+  "    fprintf(stderr, \"dlopen helper: only %d of %d TLS pool threads \"\n" \
+  "                    \"created; foreign calls limited to %d threads\\n\",\n" \
+  "            created, TLS_POOL_SIZE - 1, created + 1);\n" \
   "  return ((int (*)(void *))addr)((void *[]){\n" \
   "      dlopen,\n" \
   "      dlsym,\n" \
   "      dlclose,\n" \
   "      dlerror,\n" \
   "      &__tls_pool,\n" \
+  "      glibc_tcb_create,\n" \
   "  });\n" \
   "}\n"
 
@@ -156,7 +220,6 @@ struct Loaded {
   Elf64_Phdr ph[25];
 };
 
-static pthread_mutex_t dlopen_mutex = PTHREAD_MUTEX_INITIALIZER;
 static _Thread_local char dlerror_buf[128];
 
 /* TLS pool structure (must match helper's struct tls_pool) */
@@ -192,32 +255,115 @@ struct {
   jmp_buf jb;
   /* Thread-to-slot mapping */
   atomic_int next_slot;
+  /* Factory (in the helper's glibc context) that spawns a parked glibc thread
+   * and returns its TLS pointer, used to grow past the pre-spawned pool. */
+  void *(*glibc_tcb_create)(void);
 } __foreign;
 
-/* Thread-local slot assignment - must be separate for _Thread_local */
-static _Thread_local int my_slot = -1;
+/* Map a CPU TLS pointer -> this thread's assigned glibc TLS pointer.
+ *
+ * Keyed by the value of the CPU TLS register (%fs / tpidr_el0), which the
+ * trampoline already reads on entry and passes in -- so the lookup needs no
+ * syscall (the previous design did a gettid() per foreign call). It is correct
+ * regardless of which TLS is active: an OUTER call enters on the thread's native
+ * (musl) TLS, a NESTED call (foreign lib -> callback -> wrapped fn) enters on the
+ * thread's foreign (glibc) TLS, so we insert BOTH `native -> foreign` and
+ * `foreign -> foreign`; either key resolves to the same foreign TLS.
+ *
+ * Each thread only ever reads its own two entries (no other thread looks up its
+ * unique TLS pointers), so `ftls` needs no cross-thread synchronisation -- only
+ * the `key` CAS is atomic. Threads beyond the pre-spawned pool get a freshly
+ * created glibc TCB on demand (create_donated_tls), so there is no fixed cap.
+ * Entries are never removed (donated glibc threads parked at exit are leaked) --
+ * bounded for engine thread pools; thread-exit cleanup is a later refinement. */
+#define FTLS_TABLE_SIZE 1024
+static struct ftls_ent {
+  _Atomic(uintptr_t) key;   /* CPU TLS pointer (0 = empty) */
+  void *ftls;
+} ftls_table[FTLS_TABLE_SIZE];
 
-/* Get the TLS slot for the current thread, assigning one if needed.
- * This function is called from generated stubs BEFORE TLS switching.
- * It MUST be called with native TLS active (which is the normal case when entering a stub).
- */
-int get_thread_slot(void) {
-  if (my_slot < 0) {
-    my_slot = atomic_fetch_add(&__foreign.next_slot, 1);
-    if (my_slot >= TLS_POOL_SIZE) {
-      /* Pool exhausted - this is fatal but we can't do much */
-      my_slot = 0;  /* Fall back to slot 0 - may cause corruption but won't crash immediately */
+/* Defined later; needed by create_donated_tls below. */
+static void *get_current_tls(void);
+static void set_current_tls(void *tls);
+
+static void ftls_abort(const char *msg) {
+  write(2, msg, strlen(msg));
+  abort();
+}
+
+/* Create a fresh, dedicated glibc TLS for a thread beyond the pre-spawned pool.
+ * We ask the helper (glibc context) to spawn a parked glibc thread and donate
+ * its TCB. That factory call must run under a valid glibc TLS, so we briefly
+ * switch to the main thread's foreign TLS -- serialized by the lock, and that
+ * TLS is otherwise unused (slot 0 is never handed out). The result is a glibc
+ * TCB owned 1:1 by this thread (no borrowing/sharing, no cap). */
+static pthread_mutex_t tcb_create_lock = PTHREAD_MUTEX_INITIALIZER;
+static void *create_donated_tls(void) {
+  if (!__foreign.glibc_tcb_create)
+    ftls_abort("graphics.gd dlopen: on-demand glibc TLS unavailable "
+               "(helper too old); aborting\n");
+  pthread_mutex_lock(&tcb_create_lock);
+  void *saved = get_current_tls();
+  set_current_tls(__foreign.foreign_tls);
+  void *tcb = __foreign.glibc_tcb_create();
+  set_current_tls(saved);
+  pthread_mutex_unlock(&tcb_create_lock);
+  if (!tcb)
+    ftls_abort("graphics.gd dlopen: glibc_tcb_create failed (out of resources); aborting\n");
+  return tcb;
+}
+
+/* Insert key -> ftls (linear probe; idempotent on the same key). Only the owning
+ * thread inserts its own keys, so the ftls store needs no publish barrier. */
+static void ftls_insert(uintptr_t key, void *ftls) {
+  unsigned start = (unsigned)((key >> 4) * 2654435761u) % FTLS_TABLE_SIZE;
+  for (unsigned i = 0; i < FTLS_TABLE_SIZE; i++) {
+    struct ftls_ent *e = &ftls_table[(start + i) % FTLS_TABLE_SIZE];
+    uintptr_t expected = 0;
+    if (atomic_compare_exchange_strong_explicit(
+            &e->key, &expected, key, memory_order_acq_rel, memory_order_acquire)) {
+      e->ftls = ftls;
+      return;
     }
+    if (expected == key) return;  /* already present */
   }
-  return my_slot;
+  ftls_abort("graphics.gd dlopen: foreign TLS table full; aborting\n");
+}
+
+/* Resolve (and lazily assign) the current thread's glibc TLS pointer, keyed on
+ * `entry_tls` (the CPU TLS pointer active on entry, passed by foreign_tramp.S).
+ * Non-static: the trampoline calls it by name. No syscall on the hot path. */
+void *get_thread_foreign_tls(void *entry_tls) {
+  uintptr_t key = (uintptr_t)entry_tls;
+  unsigned start = (unsigned)((key >> 4) * 2654435761u) % FTLS_TABLE_SIZE;
+  /* Fast path: this TLS pointer is already mapped (outer: native; nested: foreign). */
+  for (unsigned i = 0; i < FTLS_TABLE_SIZE; i++) {
+    struct ftls_ent *e = &ftls_table[(start + i) % FTLS_TABLE_SIZE];
+    uintptr_t k = atomic_load_explicit(&e->key, memory_order_acquire);
+    if (k == key) return e->ftls;
+    if (k == 0) break;  /* no tombstones, so an empty slot ends the chain */
+  }
+  /* Miss: first foreign call by this thread (entry_tls is its native TLS).
+   * Assign a glibc TLS from the pool, or create a dedicated one on demand. */
+  void *ftls;
+  int slot = atomic_fetch_add(&__foreign.next_slot, 1);
+  if (slot < TLS_POOL_SIZE) {
+    ftls = __foreign.pool ? __foreign.pool->tls_ptrs[slot] : NULL;
+    if (!ftls)
+      ftls_abort("graphics.gd dlopen: glibc TLS slot uninitialised "
+                 "(helper thread pool incomplete); aborting\n");
+  } else {
+    ftls = create_donated_tls();
+  }
+  /* Map both the native key and the foreign TLS itself, so a later nested call
+   * (which enters on the foreign TLS) also hits the fast path above. */
+  ftls_insert(key, ftls);
+  ftls_insert((uintptr_t)ftls, ftls);
+  return ftls;
 }
 
 /* Forward declarations for assembly functions */
 extern void *foreign_tramp(void);  // Assembly trampoline for TLS switching
-
-/* Helper functions */
-static void __dlopen_lock(void) { pthread_mutex_lock(&dlopen_mutex); }
-static void __dlopen_unlock(void) { pthread_mutex_unlock(&dlopen_mutex); }
 
 /* Get current TLS pointer */
 static void *get_current_tls(void) {
@@ -413,6 +559,7 @@ static void foreign_helper(void **p) {
   __foreign.dlclose_real = p[2];
   __foreign.dlerror_real = p[3];
   __foreign.pool = p[4];  /* TLS pool for multi-threaded support */
+  __foreign.glibc_tcb_create = p[5];  /* on-demand glibc TCB factory */
 
   /* Capture the foreign TLS - we're running in foreign context now */
   __foreign.foreign_tls = get_current_tls();
@@ -464,9 +611,29 @@ static void elf_exec(const char *file, char **envp) {
   /* Auxiliary vectors (pushed in reverse order) */
   *--sp = 0;                              /* AT_NULL value */
   *--sp = 0;                              /* AT_NULL key */
+
+  /* Copy through host auxv entries that modern glibc ld.so/libc consult but
+   * that we'd otherwise omit. Missing AT_SYSINFO_EHDR (vDSO) / AT_HWCAP /
+   * AT_PLATFORM etc. cause glibc-version- and CPU-dependent misbehaviour in
+   * the in-process helper. These pointers/values are valid in our own address
+   * space, which the helper shares. */
+  unsigned long auxval;
+#define PUSH_HOST_AUXV(key) \
+  do { if ((auxval = getauxval(key))) { *--sp = (long)auxval; *--sp = (key); } } while (0)
+  PUSH_HOST_AUXV(AT_SYSINFO_EHDR);
+  PUSH_HOST_AUXV(AT_HWCAP);
+  PUSH_HOST_AUXV(AT_HWCAP2);
+  PUSH_HOST_AUXV(AT_PLATFORM);
+  PUSH_HOST_AUXV(AT_EXECFN);
+  PUSH_HOST_AUXV(AT_MINSIGSTKSZ);
+#undef PUSH_HOST_AUXV
+
   *--sp = 0;                              /* AT_SECURE value */
   *--sp = 23;                             /* AT_SECURE key */
-  *--sp = (long)random_bytes;             /* AT_RANDOM value (pointer to 16 random bytes) */
+  /* Prefer the host's real AT_RANDOM (glibc derives the stack canary and
+   * pointer guard from these 16 bytes); fall back to our fixed bytes. */
+  { unsigned long r = getauxval(AT_RANDOM);
+    *--sp = r ? (long)r : (long)random_bytes; }
   *--sp = 25;                             /* AT_RANDOM key */
   *--sp = 100;                            /* AT_CLKTCK value */
   *--sp = 17;                             /* AT_CLKTCK key */
@@ -544,34 +711,55 @@ static char *dlerror_set(const char *s) {
   return dlerror_buf;
 }
 
+/* Allocate a writable buffer to assemble a JIT stub into. The buffer is mapped
+ * read/write only (never RWX), preserving W^X so this works on hardened kernels
+ * (SELinux execmem, PaX MPROTECT, prctl PR_SET_MDWE). Each stub gets its own
+ * page-aligned mapping; stubs are few, so the per-page slack is negligible.
+ * Call foreign_seal() once the stub bytes are written to make it executable. */
 static void *foreign_alloc(size_t n) {
-  static char *block = NULL;
-  static size_t used = 0;
-  __dlopen_lock();
-  if (!block || used + n > 65536) {
-    block = mmap(NULL, 65536, PROT_READ | PROT_WRITE | PROT_EXEC,
+  long pagesz = sysconf(_SC_PAGESIZE);
+  if (pagesz <= 0) pagesz = 4096;
+  size_t len = (n + (size_t)pagesz - 1) & ~((size_t)pagesz - 1);
+  void *p = mmap(NULL, len, PROT_READ | PROT_WRITE,
                  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-    if (block == MAP_FAILED) block = NULL;
-    used = 4;
+  if (p == MAP_FAILED) {
+    dlerror_set("dlopen: failed to allocate JIT stub memory");
+    return NULL;
   }
-  void *p = block ? block + used : NULL;
-  if (block) used += (n + 7) & ~7ULL;
-  __dlopen_unlock();
   return p;
 }
 
-/* Generate a trampoline stub for calling a foreign function through TLS switching.
+/* Make a freshly-written stub executable: drop write, add execute (W^X) and
+ * flush the instruction cache (required on aarch64, harmless on x86_64).
+ * Returns false and leaves a dlerror if the kernel refuses PROT_EXEC, which
+ * is then surfaced to the caller as a NULL function pointer rather than a
+ * crash through unwritable/unexecutable memory. */
+static bool foreign_seal(void *p, size_t n) {
+  if (!p) return false;
+  long pagesz = sysconf(_SC_PAGESIZE);
+  if (pagesz <= 0) pagesz = 4096;
+  uintptr_t start = (uintptr_t)p & ~((uintptr_t)pagesz - 1);
+  size_t len = ((uintptr_t)p + n - start + (size_t)pagesz - 1) & ~((size_t)pagesz - 1);
+  if (mprotect((void *)start, len, PROT_READ | PROT_EXEC) != 0) {
+    dlerror_set("dlopen: kernel denied executable JIT memory (hardened W^X policy?)");
+    return false;
+  }
+  __builtin___clear_cache((char *)p, (char *)p + n);
+  return true;
+}
+
+/* Generate a tiny trampoline stub for a wrapped foreign function.
  *
- * The stub:
- * 1. Saves argument registers (including %r9, the 6th arg)
- * 2. Calls get_thread_slot() to get this thread's TLS pool slot
- * 3. Restores ALL argument registers (including %r9)
- * 4. Pushes slot onto stack for trampoline
- * 5. Loads real_func into %rax
- * 6. Jumps to foreign_tramp (which pops slot from stack)
- *
- * IMPORTANT: We must preserve %r9 because it's the 6th argument register!
- */
+ * The stub does nothing but hand control to the shared foreign_tramp with the
+ * real function pointer in a scratch register; foreign_tramp resolves this
+ * thread's glibc TLS, saves all argument/return registers around the switch,
+ * calls the real function, and restores the caller's TLS. Keeping the logic in
+ * one hand-written assembly routine (foreign_tramp.S) instead of per-stub
+ * generated bytes is both simpler and avoids the previous stub's bugs (it never
+ * saved the FP argument registers around its helper call, and it read a
+ * _Thread_local under possibly-foreign TLS). All argument registers, the
+ * variadic count (%al / none on aarch64) and the struct-return pointer flow
+ * through untouched. */
 __attribute__((noinline))
 static void *foreign_wrap(void *real_func) {
   if (!real_func) return NULL;
@@ -582,172 +770,33 @@ static void *foreign_wrap(void *real_func) {
 #endif
 
 #ifdef __x86_64__
-  /*
-   * Generate code that:
-   * 1. Allocates stack frame and saves args
-   * 2. Calls get_thread_slot()
-   * 3. Saves slot to %r10 (caller-saved, not an arg register)
-   * 4. Restores ALL args including %r9
-   * 5. Deallocates stack frame
-   * 6. Pushes slot onto stack (for trampoline to read)
-   * 7. Loads real_func and jumps to trampoline
-   *
-   * Stack alignment: on entry %rsp ≡ 8 (mod 16) after caller's CALL.
-   * We sub $56 to make %rsp ≡ 0 (mod 16), so our CALL to get_thread_slot
-   * will result in %rsp ≡ 8 on entry to that function (correct for ABI).
-   * After restoring and pushing slot, stack is: [slot] [ret_addr] with %rsp ≡ 0 (mod 16).
-   */
-  unsigned char *stub = foreign_alloc(112);
+  /* movabs $real_func,%r11 ; movabs $foreign_tramp,%r10 ; jmp *%r10
+   * r10/r11 are caller-saved and not argument registers, so %rax (the variadic
+   * vector count), all integer/SSE args and the return address are preserved. */
+  unsigned char *stub = foreign_alloc(32);
   if (!stub) return NULL;
-
   int i = 0;
-
-  /* sub $56, %rsp - allocate stack frame */
-  stub[i++] = 0x48; stub[i++] = 0x83; stub[i++] = 0xec; stub[i++] = 56;
-
-  /* Save argument registers to stack */
-  /* mov %rdi, 0(%rsp) */
-  stub[i++] = 0x48; stub[i++] = 0x89; stub[i++] = 0x3c; stub[i++] = 0x24;
-  /* mov %rsi, 8(%rsp) */
-  stub[i++] = 0x48; stub[i++] = 0x89; stub[i++] = 0x74; stub[i++] = 0x24; stub[i++] = 0x08;
-  /* mov %rdx, 16(%rsp) */
-  stub[i++] = 0x48; stub[i++] = 0x89; stub[i++] = 0x54; stub[i++] = 0x24; stub[i++] = 0x10;
-  /* mov %rcx, 24(%rsp) */
-  stub[i++] = 0x48; stub[i++] = 0x89; stub[i++] = 0x4c; stub[i++] = 0x24; stub[i++] = 0x18;
-  /* mov %r8, 32(%rsp) */
-  stub[i++] = 0x4c; stub[i++] = 0x89; stub[i++] = 0x44; stub[i++] = 0x24; stub[i++] = 0x20;
-  /* mov %r9, 40(%rsp) */
-  stub[i++] = 0x4c; stub[i++] = 0x89; stub[i++] = 0x4c; stub[i++] = 0x24; stub[i++] = 0x28;
-
-  /* movabs $get_thread_slot, %rax */
-  stub[i++] = 0x48; stub[i++] = 0xb8;
-  WRITE64LE(stub + i, (uintptr_t)get_thread_slot);
-  i += 8;
-
-  /* call *%rax */
-  stub[i++] = 0xff; stub[i++] = 0xd0;
-
-  /* mov %eax, %r10d - save slot in r10 (caller-saved, not arg register) */
-  stub[i++] = 0x41; stub[i++] = 0x89; stub[i++] = 0xc2;
-
-  /* Restore ALL argument registers from stack (including %r9!) */
-  /* mov 0(%rsp), %rdi */
-  stub[i++] = 0x48; stub[i++] = 0x8b; stub[i++] = 0x3c; stub[i++] = 0x24;
-  /* mov 8(%rsp), %rsi */
-  stub[i++] = 0x48; stub[i++] = 0x8b; stub[i++] = 0x74; stub[i++] = 0x24; stub[i++] = 0x08;
-  /* mov 16(%rsp), %rdx */
-  stub[i++] = 0x48; stub[i++] = 0x8b; stub[i++] = 0x54; stub[i++] = 0x24; stub[i++] = 0x10;
-  /* mov 24(%rsp), %rcx */
-  stub[i++] = 0x48; stub[i++] = 0x8b; stub[i++] = 0x4c; stub[i++] = 0x24; stub[i++] = 0x18;
-  /* mov 32(%rsp), %r8 */
-  stub[i++] = 0x4c; stub[i++] = 0x8b; stub[i++] = 0x44; stub[i++] = 0x24; stub[i++] = 0x20;
-  /* mov 40(%rsp), %r9 - RESTORE the 6th argument! */
-  stub[i++] = 0x4c; stub[i++] = 0x8b; stub[i++] = 0x4c; stub[i++] = 0x24; stub[i++] = 0x28;
-
-  /* add $56, %rsp - restore stack */
-  stub[i++] = 0x48; stub[i++] = 0x83; stub[i++] = 0xc4; stub[i++] = 56;
-
-  /* push %r10 - push slot onto stack for trampoline */
-  stub[i++] = 0x41; stub[i++] = 0x52;
-
-  /* movabs $real_func, %rax */
-  stub[i++] = 0x48; stub[i++] = 0xb8;
-  WRITE64LE(stub + i, (uintptr_t)real_func);
-  i += 8;
-
-  /* movabs $foreign_tramp, %r11 */
-  stub[i++] = 0x49; stub[i++] = 0xbb;
-  WRITE64LE(stub + i, (uintptr_t)foreign_tramp);
-  i += 8;
-
-  /* jmp *%r11 */
-  stub[i++] = 0x41; stub[i++] = 0xff; stub[i++] = 0xe3;
-
-#ifdef DLOPEN_DEBUG
-  fprintf(stderr, "[TRAMP] generated stub at %p, size=%d (first bytes: %02x %02x %02x)\n",
-          (void*)stub, i, stub[0], stub[1], stub[2]);
-#endif
-
+  stub[i++] = 0x49; stub[i++] = 0xbb;                 /* movabs imm64, %r11 */
+  WRITE64LE(stub + i, (uintptr_t)real_func); i += 8;
+  stub[i++] = 0x49; stub[i++] = 0xba;                 /* movabs imm64, %r10 */
+  WRITE64LE(stub + i, (uintptr_t)foreign_tramp); i += 8;
+  stub[i++] = 0x41; stub[i++] = 0xff; stub[i++] = 0xe2; /* jmp *%r10 */
+  if (!foreign_seal(stub, i)) return NULL;
   return stub;
 
 #elif defined(__aarch64__)
-  /*
-   * For aarch64, we need to:
-   * 1. Save x0-x7 (args) and x30 (lr)
-   * 2. Call get_thread_slot
-   * 3. Save result to x9
-   * 4. Restore x0-x7
-   * 5. Load real_func to x8 and jump to trampoline
-   */
-  unsigned char *stub = foreign_alloc(128);
+  /* ldr x9,real_func ; ldr x16,foreign_tramp ; br x16
+   * x9/x16 are caller-saved temporaries; x0-x7, v0-v7 and x8 (indirect result)
+   * are untouched. Literals are 8-byte aligned. */
+  unsigned char *stub = foreign_alloc(32);
   if (!stub) return NULL;
-
-  int i = 0;
-
-  /* stp x29, x30, [sp, #-80]! - allocate frame and save fp/lr */
-  WRITE32LE(stub + i, 0xa9b57bfd); i += 4;
-  /* stp x0, x1, [sp, #16] */
-  WRITE32LE(stub + i, 0xa9010fe0); i += 4;
-  /* stp x2, x3, [sp, #32] */
-  WRITE32LE(stub + i, 0xa90217e2); i += 4;
-  /* stp x4, x5, [sp, #48] */
-  WRITE32LE(stub + i, 0xa9031fe4); i += 4;
-  /* stp x6, x7, [sp, #64] */
-  WRITE32LE(stub + i, 0xa90427e6); i += 4;
-
-  /* ldr x16, .Lget_slot - load get_thread_slot address */
-  WRITE32LE(stub + i, 0x58000110); i += 4;  /* ldr x16, [pc, #32] - adjusted later */
-  /* blr x16 */
-  WRITE32LE(stub + i, 0xd63f0200); i += 4;
-  /* mov x9, x0 - save slot */
-  WRITE32LE(stub + i, 0xaa0003e9); i += 4;
-
-  /* Restore args */
-  /* ldp x0, x1, [sp, #16] */
-  WRITE32LE(stub + i, 0xa9410fe0); i += 4;
-  /* ldp x2, x3, [sp, #32] */
-  WRITE32LE(stub + i, 0xa94217e2); i += 4;
-  /* ldp x4, x5, [sp, #48] */
-  WRITE32LE(stub + i, 0xa9431fe4); i += 4;
-  /* ldp x6, x7, [sp, #64] */
-  WRITE32LE(stub + i, 0xa94427e6); i += 4;
-  /* ldp x29, x30, [sp], #80 - restore and deallocate */
-  WRITE32LE(stub + i, 0xa8c57bfd); i += 4;
-
-  /* ldr x8, .Lreal_func */
-  WRITE32LE(stub + i, 0x58000068); i += 4;  /* ldr x8, [pc, #12] - adjusted later */
-  /* ldr x16, .Ltramp */
-  WRITE32LE(stub + i, 0x58000070); i += 4;  /* ldr x16, [pc, #12] - adjusted later */
-  /* br x16 */
-  WRITE32LE(stub + i, 0xd61f0200); i += 4;
-
-  /* Align to 8 bytes for literal pool */
-  while (i & 7) { WRITE32LE(stub + i, 0xd503201f); i += 4; }  /* nop padding */
-
-  /* Literal pool - fix up the ldr offsets above */
-  int pool_start = i;
-  /* .Lget_slot: */
-  WRITE64LE(stub + i, (uintptr_t)get_thread_slot); i += 8;
-  /* .Lreal_func: */
-  WRITE64LE(stub + i, (uintptr_t)real_func); i += 8;
-  /* .Ltramp: */
-  WRITE64LE(stub + i, (uintptr_t)foreign_tramp); i += 8;
-
-  /* Fix up ldr instruction offsets (they load from PC + imm*4) */
-  /* The ldr x16 for get_thread_slot is at offset 20, pool is at pool_start */
-  /* ldr x16, [pc, #offset] where offset = (pool_start - 20) */
-  /* Encoding: 0x58 | (imm19 << 5) | Rt, imm19 = offset/4 */
-  int off1 = (pool_start - 20) / 4;
-  WRITE32LE(stub + 20, 0x58000010 | (off1 << 5));
-
-  /* ldr x8 for real_func is at offset 52, real_func is at pool_start + 8 */
-  int off2 = (pool_start + 8 - 52) / 4;
-  WRITE32LE(stub + 52, 0x58000008 | (off2 << 5));
-
-  /* ldr x16 for tramp is at offset 56, tramp is at pool_start + 16 */
-  int off3 = (pool_start + 16 - 56) / 4;
-  WRITE32LE(stub + 56, 0x58000010 | (off3 << 5));
-
+  WRITE32LE(stub + 0,  0x58000089);  /* ldr x9,  [pc, #16] -> real_func @16 */
+  WRITE32LE(stub + 4,  0x580000b0);  /* ldr x16, [pc, #20] -> foreign_tramp @24 */
+  WRITE32LE(stub + 8,  0xd61f0200);  /* br x16 */
+  WRITE32LE(stub + 12, 0xd503201f);  /* nop (pad literals to 8-byte alignment) */
+  WRITE64LE(stub + 16, (uintptr_t)real_func);
+  WRITE64LE(stub + 24, (uintptr_t)foreign_tramp);
+  if (!foreign_seal(stub, 32)) return NULL;
   return stub;
 #else
 #error "unsupported architecture"
@@ -833,16 +882,6 @@ static bool foreign_init(void) {
   return __foreign.is_supported;
 }
 
-/* Get the foreign TLS for the current thread from the pool */
-static void *get_thread_foreign_tls(void) {
-  int slot = get_thread_slot();
-  if (__foreign.pool && slot >= 0 && slot < TLS_POOL_SIZE) {
-    return __foreign.pool->tls_ptrs[slot];
-  }
-  /* Fallback to main thread's TLS */
-  return __foreign.foreign_tls;
-}
-
 /* Public dlfcn API
  *
  * These functions save and restore the current TLS rather than unconditionally
@@ -854,7 +893,7 @@ __attribute__((noinline))
 void *dlopen(const char *path, int mode) {
   if (!foreign_init()) return NULL;
   void *saved_tls = get_current_tls();
-  set_current_tls(get_thread_foreign_tls());
+  set_current_tls(get_thread_foreign_tls(get_current_tls()));
   void *result = __foreign.dlopen_real(path, mode);
   set_current_tls(saved_tls);
   return result;
@@ -912,7 +951,7 @@ static void *call_procaddr_and_wrap(int idx, void *handle, const char *name) {
   struct procaddr_wrapper *w = &procaddr_wrappers[idx];
 
   void *saved_tls = get_current_tls();
-  set_current_tls(get_thread_foreign_tls());
+  set_current_tls(get_thread_foreign_tls(get_current_tls()));
 
   void *func;
   if (w->has_handle) {
@@ -995,6 +1034,7 @@ static void *create_procaddr_wrapper(void *real_func, bool has_handle) {
   /* jmp *%rax */
   stub[i++] = 0xff; stub[i++] = 0xe0;
 
+  if (!foreign_seal(stub, i)) return NULL;
   return stub;
 #elif defined(__aarch64__)
   /* Similar for aarch64 - adjust register shuffling */
@@ -1027,6 +1067,8 @@ static void *create_procaddr_wrapper(void *real_func, bool has_handle) {
   /* literal: call_procaddr_and_wrap address */
   WRITE64LE(stub + i, (uintptr_t)call_procaddr_and_wrap);
 
+  /* seal i+8 bytes to cover the trailing 64-bit literal as well */
+  if (!foreign_seal(stub, i + 8)) return NULL;
   return stub;
 #else
 #error "unsupported architecture"
@@ -1037,7 +1079,7 @@ __attribute__((noinline))
 void *dlsym(void *handle, const char *name) {
   if (!foreign_init()) return NULL;
   void *saved_tls = get_current_tls();
-  set_current_tls(get_thread_foreign_tls());
+  set_current_tls(get_thread_foreign_tls(get_current_tls()));
   void *real_func = __foreign.dlsym_real(handle, name);
   set_current_tls(saved_tls);
 #ifdef DLOPEN_DEBUG
@@ -1066,7 +1108,7 @@ void *dlsym(void *handle, const char *name) {
 int dlclose(void *handle) {
   if (!foreign_init()) return -1;
   void *saved_tls = get_current_tls();
-  set_current_tls(get_thread_foreign_tls());
+  set_current_tls(get_thread_foreign_tls(get_current_tls()));
   int result = __foreign.dlclose_real(handle);
   set_current_tls(saved_tls);
   return result;
@@ -1075,7 +1117,7 @@ int dlclose(void *handle) {
 char *dlerror(void) {
   if (!foreign_init()) return dlerror_buf;
   void *saved_tls = get_current_tls();
-  set_current_tls(get_thread_foreign_tls());
+  set_current_tls(get_thread_foreign_tls(get_current_tls()));
   char *e = __foreign.dlerror_real();
   set_current_tls(saved_tls);
   return e ? dlerror_set(e) : NULL;
@@ -1086,7 +1128,7 @@ __attribute__((noinline))
 void *dlsym_raw(void *handle, const char *name) {
   if (!foreign_init()) return NULL;
   void *saved_tls = get_current_tls();
-  set_current_tls(get_thread_foreign_tls());
+  set_current_tls(get_thread_foreign_tls(get_current_tls()));
   void *real_func = __foreign.dlsym_real(handle, name);
   set_current_tls(saved_tls);
   return real_func;
@@ -1095,7 +1137,7 @@ void *dlsym_raw(void *handle, const char *name) {
 /* Switch to foreign TLS (call before using foreign libraries extensively) */
 void dlopen_set_foreign_tls(void) {
   if (!foreign_init()) return;
-  set_current_tls(get_thread_foreign_tls());
+  set_current_tls(get_thread_foreign_tls(get_current_tls()));
 }
 
 /* Switch back to native TLS (call when done with foreign libraries) */

@@ -18,259 +18,175 @@
 ╚─────────────────────────────────────────────────────────────────────────────*/
 
 /*
- * Foreign function trampoline with TLS switching (multi-threaded).
+ * Foreign function trampoline with TLS switching.
  *
- * When calling from a static musl binary into dynamically loaded glibc
- * libraries, we switch to glibc's TLS before calling, then restore
- * musl's TLS afterwards. This is a minimal trampoline that:
+ * A static musl binary calls into dynamically loaded glibc libraries through
+ * stubs (see foreign_wrap in dlopen.c) that jump here with the real function
+ * pointer in a scratch register. We:
  *
- *   1. Saves native TLS and return address to a per-thread TLS stack
- *   2. Switches to this thread's foreign TLS from the pool
- *   3. Calls the foreign function
- *   4. Pops from TLS stack and restores native TLS
+ *   1. Save the integer + SSE/FP argument registers (and the variadic vector
+ *      count / struct-return pointer).
+ *   2. Resolve THIS thread's glibc TLS via get_thread_foreign_tls() -- keyed by
+ *      kernel tid, so it is correct no matter which TLS is currently active.
+ *   3. Save the current TLS, switch to the glibc TLS, COPY the caller's
+ *      stack-passed arguments into our frame, call the real function, then
+ *      restore the saved TLS.
  *
- * Each thread has its own slot in the TLS pool (assigned by the stub
- * before jumping here). The pool contains glibc TLS pointers and
- * tramp_ctx addresses for each slot.
+ * This is an ordinary stack-framed function, so each (possibly nested)
+ * invocation keeps its saved-TLS and return address in its OWN machine-stack
+ * frame and nesting to any depth just works -- no per-thread nesting stack, no
+ * slot index, no search on return.
  *
- * On entry:
- *   x86_64: %rax = function pointer to call
- *           stack: [slot] [return_addr]  (slot pushed by stub)
- *   aarch64: x8 = function pointer to call, x9 = slot index
- *
- * The __foreign struct layout (must match dlopen.c):
- *   offset 0:  atomic_uint once
- *   offset 8:  struct tls_pool *pool
- *   offset 16: void *foreign_tls (main thread's, for compat)
- *   offset 24: void *native_tls (main thread's)
- *   ...
- *
- * The tls_pool struct layout:
- *   offset 0:    void *tls_ptrs[64]    (glibc TLS pointers, 512 bytes)
- *   offset 512:  void *tramp_ctxs[64]  (per-thread __tramp_ctx addresses)
- *
- * The __tramp_ctx struct layout (per-thread, in glibc TLS):
- *   offset 0:  long sp (stack pointer, 0-15)
- *   offset 8:  void *stack[32] (pairs of native_tls, return_addr)
+ * Building a frame relocates the caller's stack-passed arguments (the 7th+
+ * integer arg, 9th+ SSE arg), so we copy a fixed window of them down to where
+ * the real function expects them ([rsp+8] upward). STACK_ARG_SLOTS=16 covers
+ * any realistic foreign function (XCreateWindow, glTexImage2D, ...); extra
+ * copied words past the real argument count are simply ignored by the callee.
  *
  * This file is only compiled when targeting musl (not glibc).
  */
 
 #ifndef __GLIBC__
 
-	.text
+#define STACK_ARG_SLOTS 16
 
-	/* Declare external symbol */
-	.extern	__foreign
+	.text
+	.extern	get_thread_foreign_tls
 
 #ifdef __x86_64__
 
-	/* Make symbols hidden (private) to avoid conflicts */
 	.hidden	foreign_tramp
-	.hidden	__set_tls_internal
-
 	.globl	foreign_tramp
 	.type	foreign_tramp, @function
 foreign_tramp:
 	/*
-	 * TLS switch with stack-based restore for nested calls.
-	 * We push native_tls and return_addr onto a per-thread TLS stack,
-	 * then jmp to the foreign function. When it returns, we pop from the stack.
+	 * On entry: %r11 = real function pointer; integer args in
+	 * %rdi/%rsi/%rdx/%rcx/%r8/%r9; SSE args in %xmm0-7; %al = number of
+	 * vector registers used (variadic); return address at (%rsp); any
+	 * stack-passed args at 8(%rsp), 16(%rsp), ...
 	 *
-	 * On entry:
-	 *   %rax = function pointer to call
-	 *   stack: [slot] [return_addr]  (slot was pushed by stub)
-	 *
-	 * __foreign layout:
-	 *   offset 8:  pool pointer (struct tls_pool *)
-	 *
-	 * tls_pool layout:
-	 *   offset 0:    tls_ptrs[64]    (512 bytes)
-	 *   offset 512:  tramp_ctxs[64]  (512 bytes)
-	 *
-	 * __tramp_ctx layout (per-thread):
-	 *   offset 0:  long sp (0-15)
-	 *   offset 8:  void *stack[32] (pairs: native_tls, ret_addr)
+	 * Frame (offsets from %rbp, 16-byte aligned):
+	 *   -8   real_func        -48  rcx         -96..-208  xmm0..xmm7
+	 *   -16  rax (al / ret)   -56  r8          -384..-264 copied stack args
+	 *   -24  rdi (/ ret rdx)  -64  r9
+	 *   -32  rsi              -72  foreign_tls
+	 *   -40  rdx              -80  entry_tls
 	 */
+	push	%rbp
+	mov	%rsp,%rbp
+	sub	$384,%rsp
 
-	/*
-	 * On entry: stack is [slot][ret_addr], rsp points to slot
-	 * After both pops: rsp points to normal position with red zone below
-	 *
-	 * Red zone layout (all offsets from final rsp):
-	 *   -8:  rdi (arg1)
-	 *   -16: rsi (arg2)
-	 *   -24: rdx (arg3)
-	 *   -32: rcx (arg4)
-	 *   -40: r8  (arg5)
-	 *   -48: r9  (arg6)
-	 *   -56: rax (function pointer)
-	 *   -64: slot
-	 *   -72: return address
-	 *   -80: native TLS
-	 */
+	mov	%r11,-8(%rbp)		/* real_func */
+	mov	%rax,-16(%rbp)		/* variadic vector count (%al) */
+	mov	%rdi,-24(%rbp)
+	mov	%rsi,-32(%rbp)
+	mov	%rdx,-40(%rbp)
+	mov	%rcx,-48(%rbp)
+	mov	%r8,-56(%rbp)
+	mov	%r9,-64(%rbp)
+	movaps	%xmm0,-96(%rbp)
+	movaps	%xmm1,-112(%rbp)
+	movaps	%xmm2,-128(%rbp)
+	movaps	%xmm3,-144(%rbp)
+	movaps	%xmm4,-160(%rbp)
+	movaps	%xmm5,-176(%rbp)
+	movaps	%xmm6,-192(%rbp)
+	movaps	%xmm7,-208(%rbp)
 
-	/* Pop slot and return address FIRST into scratch registers */
-	pop	%r10			/* slot */
-	pop	%r11			/* return address */
+	/* Block Go's async signals (SIGURG/SIGPROF) for the whole switched window so
+	 * their handlers can't run while %fs points at the glibc TLS -- they read g
+	 * from %fs-relative TLS and would deref garbage. Also covers the brief switch
+	 * inside get_thread_foreign_tls' on-demand path. Old mask saved at -224.
+	 * rt_sigprocmask(SIG_BLOCK, {SIGURG,SIGPROF}, &old, 8). */
+	mov	$0x4400000,%eax		/* (1<<22 SIGURG)|(1<<26 SIGPROF) */
+	mov	%rax,-216(%rbp)
+	xor	%edi,%edi		/* SIG_BLOCK */
+	lea	-216(%rbp),%rsi
+	lea	-224(%rbp),%rdx
+	mov	$8,%r10d
+	mov	$14,%eax			/* rt_sigprocmask */
+	syscall
 
-	/* Now rsp is in standard position - save everything with consistent offsets */
-	mov	%rdi,-8(%rsp)
-	mov	%rsi,-16(%rsp)
-	mov	%rdx,-24(%rsp)
-	mov	%rcx,-32(%rsp)
-	mov	%r8,-40(%rsp)
-	mov	%r9,-48(%rsp)
-	mov	%rax,-56(%rsp)		/* function pointer */
-	mov	%r10,-64(%rsp)		/* slot */
-	mov	%r11,-72(%rsp)		/* return address */
+	/* entry_tls = %fs base (self pointer at %fs:0); pass it as the lookup key */
+	mov	%fs:0,%rdi
+	mov	%rdi,-80(%rbp)
 
-	/* Save native TLS */
-	mov	%fs:0,%r10
-	mov	%r10,-80(%rsp)		/* native TLS */
+	/* foreign_tls = get_thread_foreign_tls(entry_tls) -- no syscall on hot path */
+	call	get_thread_foreign_tls
+	mov	%rax,-72(%rbp)
 
-	/* Load pool pointer */
-	mov	__foreign+8(%rip),%r11	/* pool = __foreign.pool */
-
-	/* Calculate foreign TLS: pool->tls_ptrs[slot] = pool + slot*8 */
-	mov	-64(%rsp),%r10		/* reload slot */
-	movslq	%r10d,%rcx		/* sign-extend slot to 64-bit */
-	mov	(%r11,%rcx,8),%rsi	/* foreign_tls = pool->tls_ptrs[slot] */
-
-	/* Switch to foreign TLS */
+	/* arch_prctl(ARCH_SET_FS, foreign_tls) */
+	mov	-72(%rbp),%rsi
 	mov	$0x1002,%edi
 	mov	$158,%eax
 	syscall
 
-	/* Now on foreign TLS - get tramp_ctx for this slot */
-	/* tramp_ctx = pool->tramp_ctxs[slot] = pool + 512 + slot*8 */
-	mov	__foreign+8(%rip),%r11	/* reload pool */
-	mov	-64(%rsp),%r10		/* reload slot */
-	movslq	%r10d,%rcx
-	lea	512(%r11,%rcx,8),%r11	/* &pool->tramp_ctxs[slot] */
-	mov	(%r11),%r11		/* tramp_ctx = pool->tramp_ctxs[slot] */
+	/* Copy the caller's stack args [rbp+16 ..] down to [rbp-384 ..] so the
+	 * real function finds them at (rsp+8) once we move rsp there. */
+	mov	16(%rbp),%rax  ; mov %rax,-384(%rbp)
+	mov	24(%rbp),%rax  ; mov %rax,-376(%rbp)
+	mov	32(%rbp),%rax  ; mov %rax,-368(%rbp)
+	mov	40(%rbp),%rax  ; mov %rax,-360(%rbp)
+	mov	48(%rbp),%rax  ; mov %rax,-352(%rbp)
+	mov	56(%rbp),%rax  ; mov %rax,-344(%rbp)
+	mov	64(%rbp),%rax  ; mov %rax,-336(%rbp)
+	mov	72(%rbp),%rax  ; mov %rax,-328(%rbp)
+	mov	80(%rbp),%rax  ; mov %rax,-320(%rbp)
+	mov	88(%rbp),%rax  ; mov %rax,-312(%rbp)
+	mov	96(%rbp),%rax  ; mov %rax,-304(%rbp)
+	mov	104(%rbp),%rax ; mov %rax,-296(%rbp)
+	mov	112(%rbp),%rax ; mov %rax,-288(%rbp)
+	mov	120(%rbp),%rax ; mov %rax,-280(%rbp)
+	mov	128(%rbp),%rax ; mov %rax,-272(%rbp)
+	mov	136(%rbp),%rax ; mov %rax,-264(%rbp)
 
-	/* Push to TLS stack: load sp, store native_tls and ret_addr */
-	mov	(%r11),%rcx		/* sp = pair index (0-15) */
-	shl	$4,%rcx			/* sp * 16 (each pair is 16 bytes) */
-	add	$8,%rcx			/* offset to stack[0] */
-	/* Now store: native_tls at tramp_ctx+rcx, ret_addr at tramp_ctx+rcx+8 */
-	mov	-80(%rsp),%r10		/* native TLS */
-	mov	%r10,(%r11,%rcx,1)	/* store native_tls */
-	mov	-72(%rsp),%r10		/* original return address */
-	mov	%r10,8(%r11,%rcx,1)	/* store return_addr */
-	/* Increment sp */
-	mov	(%r11),%rcx		/* reload sp */
-	inc	%rcx
-	mov	%rcx,(%r11)		/* store sp+1 */
+	/* restore args + variadic vector count */
+	mov	-24(%rbp),%rdi
+	mov	-32(%rbp),%rsi
+	mov	-40(%rbp),%rdx
+	mov	-48(%rbp),%rcx
+	mov	-56(%rbp),%r8
+	mov	-64(%rbp),%r9
+	movaps	-96(%rbp),%xmm0
+	movaps	-112(%rbp),%xmm1
+	movaps	-128(%rbp),%xmm2
+	movaps	-144(%rbp),%xmm3
+	movaps	-160(%rbp),%xmm4
+	movaps	-176(%rbp),%xmm5
+	movaps	-192(%rbp),%xmm6
+	movaps	-208(%rbp),%xmm7
+	mov	-16(%rbp),%rax		/* %al */
+	mov	-8(%rbp),%r11		/* real_func */
 
-	/* Restore ALL args and function pointer */
-	mov	-56(%rsp),%rax		/* function pointer */
-	mov	-8(%rsp),%rdi
-	mov	-16(%rsp),%rsi
-	mov	-24(%rsp),%rdx
-	mov	-32(%rsp),%rcx
-	mov	-40(%rsp),%r8
-	mov	-48(%rsp),%r9
+	/* point rsp at the copied stack args (16-byte aligned) and call */
+	lea	-384(%rbp),%rsp
+	call	*%r11
 
-	/* Push our restore handler as the return address */
-	lea	.Lrestore(%rip),%r11
-	push	%r11
+	/* stash integer return values across the restore syscall */
+	mov	%rax,-16(%rbp)
+	mov	%rdx,-24(%rbp)
 
-	/* Tail call to foreign function - stack alignment preserved! */
-	jmp	*%rax
-
-.Lrestore:
-	/* Foreign function returned here. rax/rdx have return values. */
-	/* We're still in foreign TLS, with this thread's tramp_ctx. */
-	/* We need to find the slot to look up tramp_ctx again... */
-	/* The slot was stored in the TLS stack entry. */
-
-	/* Save return values in red zone */
-	mov	%rax,-8(%rsp)
-	mov	%rdx,-16(%rsp)
-
-	/* We need to find our tramp_ctx. On entry, we stored the slot in the
-	 * TLS stack. But we need the slot to find the tramp_ctx!
-	 *
-	 * Solution: we're in foreign TLS, so we can read fs:0 to get foreign TLS,
-	 * then search the pool to find our slot. But that's expensive.
-	 *
-	 * Better: we stored slot in the stack entry at offset 16. We need to
-	 * find the tramp_ctx first using... the same chicken-and-egg problem.
-	 *
-	 * Alternative: store tramp_ctx address in the red zone before call.
-	 * But we already used red zone and the foreign function may have clobbered it.
-	 *
-	 * Solution: Store tramp_ctx address at a fixed location that survives.
-	 * We'll use fs:-8 (8 bytes before TLS base) which is typically safe.
-	 * Actually, that's not guaranteed safe.
-	 *
-	 * Real solution: The foreign TLS pointer is unique to each slot.
-	 * We can read fs:0 (our foreign TLS), then search pool->tls_ptrs[] for it.
-	 * This is O(n) but n=64 and we only search once per return.
-	 */
-
-	/* Read current foreign TLS */
-	mov	%fs:0,%r10
-
-	/* Load pool pointer */
-	mov	__foreign+8(%rip),%r11
-
-	/* Search for our slot: find i where pool->tls_ptrs[i] == r10 */
-	xor	%ecx,%ecx		/* i = 0 */
-.Lsearch:
-	cmp	(%r11,%rcx,8),%r10	/* pool->tls_ptrs[i] == foreign_tls? */
-	je	.Lfound
-	inc	%ecx
-	cmp	$64,%ecx
-	jb	.Lsearch
-	/* Not found - this shouldn't happen, fall back to slot 0 */
-	xor	%ecx,%ecx
-.Lfound:
-	/* ecx = slot */
-
-	/* Get tramp_ctx for this slot */
-	lea	512(%r11,%rcx,8),%r11	/* &pool->tramp_ctxs[slot] */
-	mov	(%r11),%r11		/* tramp_ctx = pool->tramp_ctxs[slot] */
-
-	/* Pop from TLS stack: decrement sp, load native_tls and ret_addr */
-	mov	(%r11),%rcx		/* load sp */
-	dec	%rcx			/* sp-- */
-	mov	%rcx,(%r11)		/* store decremented sp */
-	shl	$4,%rcx			/* sp * 16 */
-	add	$8,%rcx			/* offset to stack[sp] */
-	mov	8(%r11,%rcx,1),%r10	/* load return_addr from stack[sp]+8 */
-	mov	%r10,-24(%rsp)		/* save to red zone */
-	mov	(%r11,%rcx,1),%rsi	/* load native_tls for syscall */
-
-	/* Restore native TLS */
+	/* arch_prctl(ARCH_SET_FS, entry_tls) */
+	mov	-80(%rbp),%rsi
 	mov	$0x1002,%edi
 	mov	$158,%eax
 	syscall
 
-	/* Restore return values */
-	mov	-8(%rsp),%rax
-	mov	-16(%rsp),%rdx
-
-	/* Jump to original return address */
-	mov	-24(%rsp),%r11
-	jmp	*%r11
-	.size	foreign_tramp, . - foreign_tramp
-
-/*
- * Internal TLS setter - uses arch_prctl syscall on Linux x86_64
- * Input: %rdi = new TLS pointer
- */
-	.globl	__set_tls_internal
-	.type	__set_tls_internal, @function
-__set_tls_internal:
-	mov	%rdi,%rsi	/* TLS pointer as second arg */
-	mov	$0x1002,%edi	/* ARCH_SET_FS as first arg */
-	mov	$158,%eax	/* __NR_arch_prctl */
+	/* Restore the signal mask: rt_sigprocmask(SIG_SETMASK, &old, NULL, 8). */
+	mov	$2,%edi			/* SIG_SETMASK */
+	lea	-224(%rbp),%rsi
+	xor	%edx,%edx
+	mov	$8,%r10d
+	mov	$14,%eax
 	syscall
+
+	mov	-16(%rbp),%rax
+	mov	-24(%rbp),%rdx
+
+	mov	%rbp,%rsp
+	pop	%rbp
 	ret
-	.size	__set_tls_internal, . - __set_tls_internal
+	.size	foreign_tramp, . - foreign_tramp
 
 #elif defined(__aarch64__)
 
@@ -278,76 +194,94 @@ __set_tls_internal:
 	.type	foreign_tramp, @function
 foreign_tramp:
 	/*
-	 * TLS switch with stack-based restore for nested calls.
+	 * On entry: x9 = real function pointer; integer args in x0-x7; FP/SIMD
+	 * args in v0-v7; x8 = indirect result location; x30 = return address;
+	 * stack-passed args at [sp], [sp+8], ...
 	 *
-	 * On entry:
-	 *   x8 = function pointer to call
-	 *   x9 = slot index (which thread's TLS to use)
-	 *
-	 * __foreign layout:
-	 *   offset 8:  pool pointer (struct tls_pool *)
-	 *
-	 * tls_pool layout:
-	 *   offset 0:    tls_ptrs[64]    (512 bytes)
-	 *   offset 512:  tramp_ctxs[64]  (512 bytes)
-	 *
-	 * __tramp_ctx layout (per-thread):
-	 *   offset 0:  long sp (0-15)
-	 *   offset 8:  void *stack[32] (pairs: native_tls, ret_addr)
+	 * Frame (sp = bottom, 384 bytes):
+	 *   [sp+0   .. sp+127]  copied stack args (rsp at blr points here)
+	 *   [sp+128 .. sp+191]  x0-x7
+	 *   [sp+192]            x8
+	 *   [sp+208 .. sp+335]  v0-v7
+	 * real_func / foreign_tls / entry_tls live in callee-saved x19/x20/x21.
 	 */
+	stp	x29,x30,[sp,#-16]!	/* x29 = caller stack args at [x29+16] */
+	mov	x29,sp
+	stp	x19,x20,[sp,#-16]!
+	stp	x21,x22,[sp,#-16]!
+	sub	sp,sp,#384
 
-	/* Save callee-saved registers we'll use */
-	stp	x19,x20,[sp,#-48]!
-	stp	x21,x22,[sp,#16]
-	stp	x23,x30,[sp,#32]
+	stp	x0,x1,[sp,#128]
+	stp	x2,x3,[sp,#144]
+	stp	x4,x5,[sp,#160]
+	stp	x6,x7,[sp,#176]
+	str	x8,[sp,#192]
+	stp	q0,q1,[sp,#208]
+	stp	q2,q3,[sp,#240]
+	stp	q4,q5,[sp,#272]
+	stp	q6,q7,[sp,#304]
 
-	/* Save native TLS, function pointer, and slot */
-	mrs	x19,tpidr_el0		/* native TLS */
-	mov	x20,x8			/* function pointer */
-	mov	x22,x9			/* slot */
+	mov	x19,x9			/* real_func (survives the calls) */
 
-	/* Load __foreign base address and pool */
-	adrp	x10,__foreign
-	add	x10,x10,:lo12:__foreign
-	ldr	x10,[x10,8]		/* pool = __foreign.pool */
+	/* Block Go's async signals (SIGURG/SIGPROF) for the switched window so their
+	 * handlers can't run while tpidr_el0 points at the glibc TLS. x9 is free now.
+	 * rt_sigprocmask(SIG_BLOCK, {SIGURG,SIGPROF}, &old@sp+344, 8). */
+	movz	x9,#0x440,lsl #16	/* 0x4400000 = (1<<22 SIGURG)|(1<<26 SIGPROF) */
+	str	x9,[sp,#336]
+	mov	x0,#0			/* SIG_BLOCK */
+	add	x1,sp,#336
+	add	x2,sp,#344
+	mov	x3,#8
+	mov	x8,#135			/* rt_sigprocmask */
+	svc	#0
 
-	/* Calculate foreign TLS: pool->tls_ptrs[slot] = pool + slot*8 */
-	ldr	x11,[x10,x22,lsl #3]	/* foreign_tls = pool->tls_ptrs[slot] */
-	msr	tpidr_el0,x11		/* switch to foreign TLS */
+	mrs	x21,tpidr_el0		/* entry_tls */
+	mov	x0,x21			/* pass entry_tls as the lookup key */
+	bl	get_thread_foreign_tls
+	mov	x20,x0			/* foreign_tls */
+	msr	tpidr_el0,x20		/* switch to foreign TLS */
 
-	/* Get tramp_ctx for this slot: pool->tramp_ctxs[slot] = pool + 512 + slot*8 */
-	add	x21,x10,#512		/* &pool->tramp_ctxs[0] */
-	ldr	x21,[x21,x22,lsl #3]	/* tramp_ctx = pool->tramp_ctxs[slot] */
+	ldp	x0,x1,[sp,#128]
+	ldp	x2,x3,[sp,#144]
+	ldp	x4,x5,[sp,#160]
+	ldp	x6,x7,[sp,#176]
+	ldr	x8,[sp,#192]
+	ldp	q0,q1,[sp,#208]
+	ldp	q2,q3,[sp,#240]
+	ldp	q4,q5,[sp,#272]
+	ldp	q6,q7,[sp,#304]
 
-	/* Push to TLS stack */
-	ldr	x11,[x21]		/* sp */
-	lsl	x12,x11,#4		/* sp * 16 */
-	add	x12,x12,#8		/* offset to stack[sp] */
-	add	x12,x21,x12		/* &tramp_ctx->stack[sp] */
-	str	x19,[x12]		/* store native_tls */
-	str	x30,[x12,#8]		/* store return address */
-	add	x11,x11,#1		/* sp++ */
-	str	x11,[x21]		/* store incremented sp */
+	/* copy caller stack args [x29+16 ..] -> [sp+0 ..] */
+	add	x10,x29,#16
+	ldp	x12,x13,[x10,#0]   ; stp x12,x13,[sp,#0]
+	ldp	x12,x13,[x10,#16]  ; stp x12,x13,[sp,#16]
+	ldp	x12,x13,[x10,#32]  ; stp x12,x13,[sp,#32]
+	ldp	x12,x13,[x10,#48]  ; stp x12,x13,[sp,#48]
+	ldp	x12,x13,[x10,#64]  ; stp x12,x13,[sp,#64]
+	ldp	x12,x13,[x10,#80]  ; stp x12,x13,[sp,#80]
+	ldp	x12,x13,[x10,#96]  ; stp x12,x13,[sp,#96]
+	ldp	x12,x13,[x10,#112] ; stp x12,x13,[sp,#112]
 
-	/* Call foreign function (x0-x7 args preserved) */
-	blr	x20
+	blr	x19			/* sp points at copied stack args */
 
-	/* Pop from TLS stack - x21 still has tramp_ctx */
-	ldr	x11,[x21]		/* load sp */
-	sub	x11,x11,#1		/* sp-- */
-	str	x11,[x21]		/* store decremented sp */
-	lsl	x12,x11,#4		/* sp * 16 */
-	add	x12,x12,#8		/* offset to stack[sp] */
-	add	x12,x21,x12		/* &tramp_ctx->stack[sp] */
-	ldr	x19,[x12]		/* load native_tls */
+	str	x0,[sp,#352]		/* stash int return values across the syscall */
+	str	x1,[sp,#360]		/* (v0/v1 FP returns survive a syscall) */
+	msr	tpidr_el0,x21		/* restore entry TLS */
 
-	/* Restore native TLS */
-	msr	tpidr_el0,x19
+	/* Restore the signal mask: rt_sigprocmask(SIG_SETMASK, &old@sp+344, NULL, 8). */
+	mov	x0,#2			/* SIG_SETMASK */
+	add	x1,sp,#344
+	mov	x2,#0
+	mov	x3,#8
+	mov	x8,#135
+	svc	#0
+	ldr	x0,[sp,#352]
+	ldr	x1,[sp,#360]
 
-	/* Restore callee-saved registers and return */
-	ldp	x23,x30,[sp,#32]
-	ldp	x21,x22,[sp,#16]
-	ldp	x19,x20,[sp],#48
+	add	sp,sp,#384
+	ldp	x21,x22,[sp],#16
+	ldp	x19,x20,[sp],#16
+	ldp	x29,x30,[sp],#16
 	ret
 	.size	foreign_tramp, . - foreign_tramp
 
