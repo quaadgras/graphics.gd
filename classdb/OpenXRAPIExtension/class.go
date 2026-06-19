@@ -117,6 +117,8 @@ var methods struct {
 	begin_debug_label_region                       gdextension.MethodForClass `hash:"83702148"`
 	end_debug_label_region                         gdextension.MethodForClass `hash:"3218959716"`
 	insert_debug_label                             gdextension.MethodForClass `hash:"83702148"`
+	get_view_count                                 gdextension.MethodForClass `hash:"3905245786"`
+	get_view_configuration                         gdextension.MethodForClass `hash:"3905245786"`
 	is_initialized                                 gdextension.MethodForClass `hash:"2240911060"`
 	is_running                                     gdextension.MethodForClass `hash:"2240911060"`
 	set_custom_play_space                          gdextension.MethodForClass `hash:"1286410249"`
@@ -133,6 +135,8 @@ var methods struct {
 	unregister_projection_views_extension          gdextension.MethodForClass `hash:"1477360496"`
 	register_frame_info_extension                  gdextension.MethodForClass `hash:"1477360496"`
 	unregister_frame_info_extension                gdextension.MethodForClass `hash:"1477360496"`
+	register_projection_layer_extension            gdextension.MethodForClass `hash:"1477360496"`
+	unregister_projection_layer_extension          gdextension.MethodForClass `hash:"1477360496"`
 	get_render_state_z_near                        gdextension.MethodForClass `hash:"191475506"`
 	get_render_state_z_far                         gdextension.MethodForClass `hash:"191475506"`
 	set_velocity_texture                           gdextension.MethodForClass `hash:"2722037293"`
@@ -300,6 +304,22 @@ func (self Instance) InsertDebugLabel(label_name string) { //gd:OpenXRAPIExtensi
 }
 
 /*
+Returns the number of views. It is usually two, one for each eye, but may differ with different view configurations.
+*/
+func (self Instance) GetViewCount() int { //gd:OpenXRAPIExtension.get_view_count
+	return int(int(Advanced(self).GetViewCount()))
+}
+
+/*
+Returns the view configuration type, which is an [XrViewConfigurationType] cast to an integer.
+
+[XrViewConfigurationType]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrViewConfigurationType.html
+*/
+func (self Instance) GetViewConfiguration() int { //gd:OpenXRAPIExtension.get_view_configuration
+	return int(int(Advanced(self).GetViewConfiguration()))
+}
+
+/*
 Returns true if OpenXR is initialized.
 */
 func (self Instance) IsInitialized() bool { //gd:OpenXRAPIExtension.is_initialized
@@ -441,6 +461,27 @@ Note: This cannot be called while the OpenXR session is still running.
 */
 func (self Instance) UnregisterFrameInfoExtension(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.unregister_frame_info_extension
 	Advanced(self).UnregisterFrameInfoExtension(extension)
+}
+
+/*
+Registers the given extension as modifying XrCompositionLayerProjection via the [OpenXRExtensionWrapper.SetProjectionLayerAndGetNextPointer] virtual method.
+
+Note: This cannot be called after the OpenXR session has started. However, it can be called in [OpenXRExtensionWrapper.OnSessionCreated].
+
+[OpenXRExtensionWrapper.OnSessionCreated]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Instance.OnSessionCreated
+[OpenXRExtensionWrapper.SetProjectionLayerAndGetNextPointer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Instance.SetProjectionLayerAndGetNextPointer
+*/
+func (self Instance) RegisterProjectionLayerExtension(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.register_projection_layer_extension
+	Advanced(self).RegisterProjectionLayerExtension(extension)
+}
+
+/*
+Unregisters the given extension as modifying XrCompositionLayerProjection.
+
+Note: This cannot be called while the OpenXR session is still running.
+*/
+func (self Instance) UnregisterProjectionLayerExtension(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.unregister_projection_layer_extension
+	Advanced(self).UnregisterProjectionLayerExtension(extension)
 }
 
 /*
@@ -628,7 +669,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.OpenXRAPIExtension{gdclass.NewOpenXRAPIExtension(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -703,6 +743,16 @@ func (self class) EndDebugLabelRegion() { //gd:OpenXRAPIExtension.end_debug_labe
 func (self class) InsertDebugLabel(label_name String.Readable) { //gd:OpenXRAPIExtension.insert_debug_label
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.insert_debug_label, 0|(gdextension.SizeString<<4), &struct{ label_name gdextension.String }{pointers.Get(gd.InternalString(label_name))})
 }
+func (self class) GetViewCount() int64 { //gd:OpenXRAPIExtension.get_view_count
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetViewConfiguration() int64 { //gd:OpenXRAPIExtension.get_view_configuration
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_configuration, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) IsInitialized() bool { //gd:OpenXRAPIExtension.is_initialized
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_initialized, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
@@ -771,6 +821,12 @@ func (self class) RegisterFrameInfoExtension(extension [1]gdclass.OpenXRExtensio
 }
 func (self class) UnregisterFrameInfoExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_frame_info_extension
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
+}
+func (self class) RegisterProjectionLayerExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_projection_layer_extension
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_projection_layer_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
+}
+func (self class) UnregisterProjectionLayerExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_projection_layer_extension
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_projection_layer_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRExtensionWrapper(extension[0])[0]))})
 }
 func (self class) GetRenderStateZNear() float64 { //gd:OpenXRAPIExtension.get_render_state_z_near
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_render_state_z_near, gdextension.SizeFloat, &struct{}{})

@@ -623,10 +623,11 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	// This prevents the issue where extension classes inheriting from other extension
 	// classes would trigger multiple calls to set_instance_binding on the same object.
 	var super *gdreference.Object = (*gdreference.Object)(value.UnsafePointer())
+	// Objects.Make is classdb_construct_object3, which already establishes the
+	// initial reference (refcount=1) for RefCounted built-in ancestors. This also
+	// satisfies the create_instance3 contract (Godot expects the creation func to
+	// return RefCounted with refcount=1), so we must NOT InitRef again here.
 	gdreference.PinObject(super, gdextension.Host.Objects.Make(pointers.Get(class.EngineClass)))
-	if class.RefCounted {
-		gd.RefCounted(*super).InitRef()
-	}
 	instance := class.reloadInstance(value, super)
 	id := gdextension.ExtensionInstanceID(instances.New(instance))
 	gdextension.Host.Objects.Extension.Setup(gdreference.GetObject(*super), pointers.Get(class.Name), id)

@@ -164,7 +164,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.RDShaderSource{gdclass.NewRDShaderSource(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -231,6 +230,71 @@ func (self Instance) SourceCompute() string { //gd:RDShaderSource.source_compute
 // SetSourceCompute sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetSourceCompute(value string) Instance { //gd:RDShaderSource.source_compute
 	class(self).SetStageSource(4, String.From(value))
+	return self
+}
+
+/*
+Source code for the shader's ray generation stage.
+*/
+func (self Instance) SourceRaygen() string { //gd:RDShaderSource.source_raygen
+	return string(class(self).GetStageSource(5).String())
+}
+
+// SetSourceRaygen sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSourceRaygen(value string) Instance { //gd:RDShaderSource.source_raygen
+	class(self).SetStageSource(5, String.From(value))
+	return self
+}
+
+/*
+Source code for the shader's any hit stage.
+*/
+func (self Instance) SourceAnyHit() string { //gd:RDShaderSource.source_any_hit
+	return string(class(self).GetStageSource(6).String())
+}
+
+// SetSourceAnyHit sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSourceAnyHit(value string) Instance { //gd:RDShaderSource.source_any_hit
+	class(self).SetStageSource(6, String.From(value))
+	return self
+}
+
+/*
+Source code for the shader's closest hit stage.
+*/
+func (self Instance) SourceClosestHit() string { //gd:RDShaderSource.source_closest_hit
+	return string(class(self).GetStageSource(7).String())
+}
+
+// SetSourceClosestHit sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSourceClosestHit(value string) Instance { //gd:RDShaderSource.source_closest_hit
+	class(self).SetStageSource(7, String.From(value))
+	return self
+}
+
+/*
+Source code for the shader's miss stage.
+*/
+func (self Instance) SourceMiss() string { //gd:RDShaderSource.source_miss
+	return string(class(self).GetStageSource(8).String())
+}
+
+// SetSourceMiss sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSourceMiss(value string) Instance { //gd:RDShaderSource.source_miss
+	class(self).SetStageSource(8, String.From(value))
+	return self
+}
+
+/*
+Source code for the shader's intersection stage.
+*/
+func (self Instance) SourceIntersection() string { //gd:RDShaderSource.source_intersection
+	return string(class(self).GetStageSource(9).String())
+}
+
+// SetSourceIntersection sets the property returned by [GetStageSource]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSourceIntersection(value string) Instance { //gd:RDShaderSource.source_intersection
+	class(self).SetStageSource(9, String.From(value))
 	return self
 }
 

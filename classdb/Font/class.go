@@ -98,7 +98,7 @@ var sname gdextension.StringName
 var methods struct {
 	set_fallbacks                 gdextension.MethodForClass `hash:"381264803"`
 	get_fallbacks                 gdextension.MethodForClass `hash:"3995934104"`
-	find_variation                gdextension.MethodForClass `hash:"2553855095"`
+	find_variation                gdextension.MethodForClass `hash:"3275867622"`
 	get_rids                      gdextension.MethodForClass `hash:"3995934104"`
 	get_height                    gdextension.MethodForClass `hash:"378113874"`
 	get_ascent                    gdextension.MethodForClass `hash:"378113874"`
@@ -111,6 +111,9 @@ var methods struct {
 	get_font_style                gdextension.MethodForClass `hash:"2520224254"`
 	get_font_weight               gdextension.MethodForClass `hash:"3905245786"`
 	get_font_stretch              gdextension.MethodForClass `hash:"3905245786"`
+	get_palette_count             gdextension.MethodForClass `hash:"3905245786"`
+	get_palette_name              gdextension.MethodForClass `hash:"844755477"`
+	get_palette_colors            gdextension.MethodForClass `hash:"2552048864"`
 	get_spacing                   gdextension.MethodForClass `hash:"1310880908"`
 	get_opentype_features         gdextension.MethodForClass `hash:"3102165223"`
 	set_cache_capacity            gdextension.MethodForClass `hash:"3937882851"`
@@ -165,7 +168,7 @@ Returns [TextServer] RID of the font cache for specific variation.
 [TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
 func (self Instance) FindVariation(variation_coordinates map[string]float32) RID.Font { //gd:Font.find_variation
-	return RID.Font(RID.Font(Advanced(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), int64(0), float64(0.0), Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), int64(0), int64(0), int64(0), int64(0), float64(0.0))))
+	return RID.Font(RID.Font(Advanced(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), int64(0), float64(0.0), Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), int64(0), int64(0), int64(0), int64(0), float64(0.0), int64(0), Packed.New([1][]Color.RGBA{}[0]...))))
 }
 
 /*
@@ -173,8 +176,8 @@ Returns [TextServer] RID of the font cache for specific variation.
 
 [TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
-func (self MoreArgs) FindVariation(variation_coordinates map[string]float32, face_index int, strength Float.X, transform Transform2D.OriginXY, spacing_top int, spacing_bottom int, spacing_space int, spacing_glyph int, baseline_offset Float.X) RID.Font { //gd:Font.find_variation
-	return RID.Font(RID.Font(Advanced(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), int64(face_index), float64(strength), Transform2D.OriginXY(transform), int64(spacing_top), int64(spacing_bottom), int64(spacing_space), int64(spacing_glyph), float64(baseline_offset))))
+func (self MoreArgs) FindVariation(variation_coordinates map[string]float32, face_index int, strength Float.X, transform Transform2D.OriginXY, spacing_top int, spacing_bottom int, spacing_space int, spacing_glyph int, baseline_offset Float.X, palette_index int, custom_colors []Color.RGBA) RID.Font { //gd:Font.find_variation
+	return RID.Font(RID.Font(Advanced(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), int64(face_index), float64(strength), Transform2D.OriginXY(transform), int64(spacing_top), int64(spacing_bottom), int64(spacing_space), int64(spacing_glyph), float64(baseline_offset), int64(palette_index), Packed.New(custom_colors...))))
 }
 
 /*
@@ -207,7 +210,7 @@ func (self MoreArgs) GetHeight(font_size int) Float.X { //gd:Font.get_height
 }
 
 /*
-Returns the average font ascent (number of pixels above the baseline).
+Returns the maximum font ascent (number of pixels above the baseline) of this font and all fallback fonts.
 
 Note: Real ascent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the ascent of empty line).
 */
@@ -216,7 +219,7 @@ func (self Instance) GetAscent() Float.X { //gd:Font.get_ascent
 }
 
 /*
-Returns the average font ascent (number of pixels above the baseline).
+Returns the maximum font ascent (number of pixels above the baseline) of this font and all fallback fonts.
 
 Note: Real ascent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the ascent of empty line).
 */
@@ -225,7 +228,7 @@ func (self MoreArgs) GetAscent(font_size int) Float.X { //gd:Font.get_ascent
 }
 
 /*
-Returns the average font descent (number of pixels below the baseline).
+Returns the maximum font descent (number of pixels below the baseline) of this font and all fallback fonts.
 
 Note: Real descent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the descent of empty line).
 */
@@ -234,7 +237,7 @@ func (self Instance) GetDescent() Float.X { //gd:Font.get_descent
 }
 
 /*
-Returns the average font descent (number of pixels below the baseline).
+Returns the maximum font descent (number of pixels below the baseline) of this font and all fallback fonts.
 
 Note: Real descent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the descent of empty line).
 */
@@ -318,6 +321,29 @@ Returns font stretch amount, compared to a normal width. A percentage value betw
 */
 func (self Instance) GetFontStretch() int { //gd:Font.get_font_stretch
 	return int(int(Advanced(self).GetFontStretch()))
+}
+
+/*
+Returns the number of predefined color palettes. Palette contains all colors used to render font glyphs. Each palette has the same number of colors.
+*/
+func (self Instance) GetPaletteCount() int { //gd:Font.get_palette_count
+	return int(int(Advanced(self).GetPaletteCount()))
+}
+
+/*
+Returns the name of the predefined color palette at 'index'. Palette contains all colors used to render font glyphs. Each palette has the same number of colors.
+*/
+func (self Instance) GetPaletteName(index int) string { //gd:Font.get_palette_name
+	return string(Advanced(self).GetPaletteName(int64(index)).String())
+}
+
+/*
+Returns the array in the predefined color palette at 'index'. Palette contains all colors used to render font glyphs. Each palette has the same number of colors. Colors can be overridden using [FontVariation].
+
+[FontVariation]: https://pkg.go.dev/graphics.gd/classdb/FontVariation
+*/
+func (self Instance) GetPaletteColors(index int) []Color.RGBA { //gd:Font.get_palette_colors
+	return []Color.RGBA(slices.Collect(Advanced(self).GetPaletteColors(int64(index)).Values()))
 }
 
 /*
@@ -683,7 +709,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Font{gdclass.NewFont(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -715,8 +740,8 @@ func (self class) GetFallbacks() Array.Contains[[1]gdclass.Font] { //gd:Font.get
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Font]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index int64, strength float64, transform Transform2D.OriginXY, spacing_top int64, spacing_bottom int64, spacing_space int64, spacing_glyph int64, baseline_offset float64) RID.Any { //gd:Font.find_variation
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.find_variation, gdextension.SizeRID|(gdextension.SizeDictionary<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeFloat<<36), &struct {
+func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index int64, strength float64, transform Transform2D.OriginXY, spacing_top int64, spacing_bottom int64, spacing_space int64, spacing_glyph int64, baseline_offset float64, palette_index int64, custom_colors Packed.Array[Color.RGBA]) RID.Any { //gd:Font.find_variation
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.find_variation, gdextension.SizeRID|(gdextension.SizeDictionary<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeInt<<40)|(gdextension.SizePackedArray<<44), &struct {
 		variation_coordinates gdextension.Dictionary
 		face_index            int64
 		strength              float64
@@ -726,7 +751,9 @@ func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index
 		spacing_space         int64
 		spacing_glyph         int64
 		baseline_offset       float64
-	}{pointers.Get(gd.InternalDictionary(variation_coordinates)), face_index, strength, transform, spacing_top, spacing_bottom, spacing_space, spacing_glyph, baseline_offset})
+		palette_index         int64
+		custom_colors         gdextension.PackedArray[Color.RGBA]
+	}{pointers.Get(gd.InternalDictionary(variation_coordinates)), face_index, strength, transform, spacing_top, spacing_bottom, spacing_space, spacing_glyph, baseline_offset, palette_index, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](custom_colors))})
 	var ret = r_ret
 	return ret
 }
@@ -788,6 +815,21 @@ func (self class) GetFontWeight() int64 { //gd:Font.get_font_weight
 func (self class) GetFontStretch() int64 { //gd:Font.get_font_stretch
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_font_stretch, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
+	return ret
+}
+func (self class) GetPaletteCount() int64 { //gd:Font.get_palette_count
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_palette_count, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetPaletteName(index int64) String.Readable { //gd:Font.get_palette_name
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_palette_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+func (self class) GetPaletteColors(index int64) Packed.Array[Color.RGBA] { //gd:Font.get_palette_colors
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_palette_colors, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) GetSpacing(spacing TextServer.SpacingType) int64 { //gd:Font.get_spacing

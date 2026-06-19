@@ -285,6 +285,7 @@ func (self class) GetCustomMonitorTypes() Packed.Array[int32] { //gd:Performance
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

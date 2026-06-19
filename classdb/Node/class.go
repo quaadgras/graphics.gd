@@ -985,11 +985,15 @@ Changes the parent of this [Node] to the 'new_parent'. The node needs to already
 
 If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
 
+Warning: If [ProjectSettings] "physics/common/physics_interpolation" is enabled and reparenting causes a large change in global transform, the object may appear to move from its old position to its new one over the next physics tick. To avoid this, call [ResetPhysicsInterpolation] after reparenting.
+
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 [Node2D]: https://pkg.go.dev/graphics.gd/classdb/Node2D
 [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 [Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[ResetPhysicsInterpolation]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ResetPhysicsInterpolation
 */
 func (self Instance) Reparent(new_parent Instance) { //gd:Node.reparent
 	Advanced(self).Reparent(new_parent, true)
@@ -1000,11 +1004,15 @@ Changes the parent of this [Node] to the 'new_parent'. The node needs to already
 
 If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
 
+Warning: If [ProjectSettings] "physics/common/physics_interpolation" is enabled and reparenting causes a large change in global transform, the object may appear to move from its old position to its new one over the next physics tick. To avoid this, call [ResetPhysicsInterpolation] after reparenting.
+
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 [Node2D]: https://pkg.go.dev/graphics.gd/classdb/Node2D
 [Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 [Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[ResetPhysicsInterpolation]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ResetPhysicsInterpolation
 */
 func (self MoreArgs) Reparent(new_parent Instance, keep_global_transform bool) { //gd:Node.reparent
 	Advanced(self).Reparent(new_parent, keep_global_transform)
@@ -1195,7 +1203,7 @@ func (self MoreArgs) FindChild(pattern string, recursive bool, owned bool) Insta
 /*
 Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
 
-If 'type' is not empty, only ancestors inheriting from 'type' are included (see [Object.IsClass]).
+If 'type' is not empty, only descendants inheriting from 'type' are included (see [Object.IsClass]).
 
 If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [AddChild]).
 
@@ -1218,7 +1226,7 @@ func (self Instance) FindChildren(pattern string) []Instance { //gd:Node.find_ch
 /*
 Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
 
-If 'type' is not empty, only ancestors inheriting from 'type' are included (see [Object.IsClass]).
+If 'type' is not empty, only descendants inheriting from 'type' are included (see [Object.IsClass]).
 
 If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [AddChild]).
 
@@ -3655,19 +3663,19 @@ const (
 	//
 	// [ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ProcessMode
 	ProcessModeInherit ProcessMode = 0
-	// Stops processing when [SceneTree.Paused] is true. This is the inverse of [ProcessModeWhenPaused], and the default for the root node.
+	// Processes when [SceneTree.Paused] is false. This is the inverse of [ProcessModeWhenPaused], and the default for the root node.
 	//
 	// [SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
 	ProcessModePausable ProcessMode = 1
-	// Process only when [SceneTree.Paused] is true. This is the inverse of [ProcessModePausable].
+	// Processes only when [SceneTree.Paused] is true. This is the inverse of [ProcessModePausable].
 	//
 	// [SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
 	ProcessModeWhenPaused ProcessMode = 2
-	// Always process. Keeps processing, ignoring [SceneTree.Paused]. This is the inverse of [ProcessModeDisabled].
+	// Always processes. Keeps processing, ignoring [SceneTree.Paused]. This is the inverse of [ProcessModeDisabled].
 	//
 	// [SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
 	ProcessModeAlways ProcessMode = 3
-	// Never process. Completely disables processing, ignoring [SceneTree.Paused]. This is the inverse of [ProcessModeAlways].
+	// Never processes. Completely disables processing, ignoring [SceneTree.Paused]. This is the inverse of [ProcessModeAlways].
 	//
 	// [SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
 	ProcessModeDisabled ProcessMode = 4
@@ -3776,49 +3784,52 @@ const (
 	// String parsing for translation template generation will be skipped for this node and children that are set to [AutoTranslateModeInherit].
 	AutoTranslateModeDisabled AutoTranslateMode = 2
 )
-const NotificationEnterTree Object.Notification = 10                   //gd:Node.NOTIFICATION_ENTER_TREE
-const NotificationExitTree Object.Notification = 11                    //gd:Node.NOTIFICATION_EXIT_TREE
-const NotificationMovedInParent Object.Notification = 12               //gd:Node.NOTIFICATION_MOVED_IN_PARENT
-const NotificationReady Object.Notification = 13                       //gd:Node.NOTIFICATION_READY
-const NotificationPaused Object.Notification = 14                      //gd:Node.NOTIFICATION_PAUSED
-const NotificationUnpaused Object.Notification = 15                    //gd:Node.NOTIFICATION_UNPAUSED
-const NotificationPhysicsProcess Object.Notification = 16              //gd:Node.NOTIFICATION_PHYSICS_PROCESS
-const NotificationProcess Object.Notification = 17                     //gd:Node.NOTIFICATION_PROCESS
-const NotificationParented Object.Notification = 18                    //gd:Node.NOTIFICATION_PARENTED
-const NotificationUnparented Object.Notification = 19                  //gd:Node.NOTIFICATION_UNPARENTED
-const NotificationSceneInstantiated Object.Notification = 20           //gd:Node.NOTIFICATION_SCENE_INSTANTIATED
-const NotificationDragBegin Object.Notification = 21                   //gd:Node.NOTIFICATION_DRAG_BEGIN
-const NotificationDragEnd Object.Notification = 22                     //gd:Node.NOTIFICATION_DRAG_END
-const NotificationPathRenamed Object.Notification = 23                 //gd:Node.NOTIFICATION_PATH_RENAMED
-const NotificationChildOrderChanged Object.Notification = 24           //gd:Node.NOTIFICATION_CHILD_ORDER_CHANGED
-const NotificationInternalProcess Object.Notification = 25             //gd:Node.NOTIFICATION_INTERNAL_PROCESS
-const NotificationInternalPhysicsProcess Object.Notification = 26      //gd:Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS
-const NotificationPostEnterTree Object.Notification = 27               //gd:Node.NOTIFICATION_POST_ENTER_TREE
-const NotificationDisabled Object.Notification = 28                    //gd:Node.NOTIFICATION_DISABLED
-const NotificationEnabled Object.Notification = 29                     //gd:Node.NOTIFICATION_ENABLED
-const NotificationResetPhysicsInterpolation Object.Notification = 2001 //gd:Node.NOTIFICATION_RESET_PHYSICS_INTERPOLATION
-const NotificationEditorPreSave Object.Notification = 9001             //gd:Node.NOTIFICATION_EDITOR_PRE_SAVE
-const NotificationEditorPostSave Object.Notification = 9002            //gd:Node.NOTIFICATION_EDITOR_POST_SAVE
-const NotificationWmMouseEnter Object.Notification = 1002              //gd:Node.NOTIFICATION_WM_MOUSE_ENTER
-const NotificationWmMouseExit Object.Notification = 1003               //gd:Node.NOTIFICATION_WM_MOUSE_EXIT
-const NotificationWmWindowFocusIn Object.Notification = 1004           //gd:Node.NOTIFICATION_WM_WINDOW_FOCUS_IN
-const NotificationWmWindowFocusOut Object.Notification = 1005          //gd:Node.NOTIFICATION_WM_WINDOW_FOCUS_OUT
-const NotificationWmCloseRequest Object.Notification = 1006            //gd:Node.NOTIFICATION_WM_CLOSE_REQUEST
-const NotificationWmGoBackRequest Object.Notification = 1007           //gd:Node.NOTIFICATION_WM_GO_BACK_REQUEST
-const NotificationWmSizeChanged Object.Notification = 1008             //gd:Node.NOTIFICATION_WM_SIZE_CHANGED
-const NotificationWmDpiChange Object.Notification = 1009               //gd:Node.NOTIFICATION_WM_DPI_CHANGE
-const NotificationVpMouseEnter Object.Notification = 1010              //gd:Node.NOTIFICATION_VP_MOUSE_ENTER
-const NotificationVpMouseExit Object.Notification = 1011               //gd:Node.NOTIFICATION_VP_MOUSE_EXIT
-const NotificationWmPositionChanged Object.Notification = 1012         //gd:Node.NOTIFICATION_WM_POSITION_CHANGED
-const NotificationOsMemoryWarning Object.Notification = 2009           //gd:Node.NOTIFICATION_OS_MEMORY_WARNING
-const NotificationTranslationChanged Object.Notification = 2010        //gd:Node.NOTIFICATION_TRANSLATION_CHANGED
-const NotificationWmAbout Object.Notification = 2011                   //gd:Node.NOTIFICATION_WM_ABOUT
-const NotificationCrash Object.Notification = 2012                     //gd:Node.NOTIFICATION_CRASH
-const NotificationOsImeUpdate Object.Notification = 2013               //gd:Node.NOTIFICATION_OS_IME_UPDATE
-const NotificationApplicationResumed Object.Notification = 2014        //gd:Node.NOTIFICATION_APPLICATION_RESUMED
-const NotificationApplicationPaused Object.Notification = 2015         //gd:Node.NOTIFICATION_APPLICATION_PAUSED
-const NotificationApplicationFocusIn Object.Notification = 2016        //gd:Node.NOTIFICATION_APPLICATION_FOCUS_IN
-const NotificationApplicationFocusOut Object.Notification = 2017       //gd:Node.NOTIFICATION_APPLICATION_FOCUS_OUT
-const NotificationTextServerChanged Object.Notification = 2018         //gd:Node.NOTIFICATION_TEXT_SERVER_CHANGED
-const NotificationAccessibilityUpdate Object.Notification = 3000       //gd:Node.NOTIFICATION_ACCESSIBILITY_UPDATE
-const NotificationAccessibilityInvalidate Object.Notification = 3001   //gd:Node.NOTIFICATION_ACCESSIBILITY_INVALIDATE
+const NotificationEnterTree Object.Notification = 10                       //gd:Node.NOTIFICATION_ENTER_TREE
+const NotificationExitTree Object.Notification = 11                        //gd:Node.NOTIFICATION_EXIT_TREE
+const NotificationMovedInParent Object.Notification = 12                   //gd:Node.NOTIFICATION_MOVED_IN_PARENT
+const NotificationReady Object.Notification = 13                           //gd:Node.NOTIFICATION_READY
+const NotificationPaused Object.Notification = 14                          //gd:Node.NOTIFICATION_PAUSED
+const NotificationUnpaused Object.Notification = 15                        //gd:Node.NOTIFICATION_UNPAUSED
+const NotificationPhysicsProcess Object.Notification = 16                  //gd:Node.NOTIFICATION_PHYSICS_PROCESS
+const NotificationProcess Object.Notification = 17                         //gd:Node.NOTIFICATION_PROCESS
+const NotificationParented Object.Notification = 18                        //gd:Node.NOTIFICATION_PARENTED
+const NotificationUnparented Object.Notification = 19                      //gd:Node.NOTIFICATION_UNPARENTED
+const NotificationSceneInstantiated Object.Notification = 20               //gd:Node.NOTIFICATION_SCENE_INSTANTIATED
+const NotificationDragBegin Object.Notification = 21                       //gd:Node.NOTIFICATION_DRAG_BEGIN
+const NotificationDragEnd Object.Notification = 22                         //gd:Node.NOTIFICATION_DRAG_END
+const NotificationPathRenamed Object.Notification = 23                     //gd:Node.NOTIFICATION_PATH_RENAMED
+const NotificationChildOrderChanged Object.Notification = 24               //gd:Node.NOTIFICATION_CHILD_ORDER_CHANGED
+const NotificationInternalProcess Object.Notification = 25                 //gd:Node.NOTIFICATION_INTERNAL_PROCESS
+const NotificationInternalPhysicsProcess Object.Notification = 26          //gd:Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS
+const NotificationPostEnterTree Object.Notification = 27                   //gd:Node.NOTIFICATION_POST_ENTER_TREE
+const NotificationDisabled Object.Notification = 28                        //gd:Node.NOTIFICATION_DISABLED
+const NotificationEnabled Object.Notification = 29                         //gd:Node.NOTIFICATION_ENABLED
+const NotificationResetPhysicsInterpolation Object.Notification = 2001     //gd:Node.NOTIFICATION_RESET_PHYSICS_INTERPOLATION
+const NotificationEditorPreSave Object.Notification = 9001                 //gd:Node.NOTIFICATION_EDITOR_PRE_SAVE
+const NotificationEditorPostSave Object.Notification = 9002                //gd:Node.NOTIFICATION_EDITOR_POST_SAVE
+const NotificationWmMouseEnter Object.Notification = 1002                  //gd:Node.NOTIFICATION_WM_MOUSE_ENTER
+const NotificationWmMouseExit Object.Notification = 1003                   //gd:Node.NOTIFICATION_WM_MOUSE_EXIT
+const NotificationWmWindowFocusIn Object.Notification = 1004               //gd:Node.NOTIFICATION_WM_WINDOW_FOCUS_IN
+const NotificationWmWindowFocusOut Object.Notification = 1005              //gd:Node.NOTIFICATION_WM_WINDOW_FOCUS_OUT
+const NotificationWmCloseRequest Object.Notification = 1006                //gd:Node.NOTIFICATION_WM_CLOSE_REQUEST
+const NotificationWmGoBackRequest Object.Notification = 1007               //gd:Node.NOTIFICATION_WM_GO_BACK_REQUEST
+const NotificationWmSizeChanged Object.Notification = 1008                 //gd:Node.NOTIFICATION_WM_SIZE_CHANGED
+const NotificationWmDpiChange Object.Notification = 1009                   //gd:Node.NOTIFICATION_WM_DPI_CHANGE
+const NotificationVpMouseEnter Object.Notification = 1010                  //gd:Node.NOTIFICATION_VP_MOUSE_ENTER
+const NotificationVpMouseExit Object.Notification = 1011                   //gd:Node.NOTIFICATION_VP_MOUSE_EXIT
+const NotificationWmPositionChanged Object.Notification = 1012             //gd:Node.NOTIFICATION_WM_POSITION_CHANGED
+const NotificationWmOutputMaxLinearValueChanged Object.Notification = 1013 //gd:Node.NOTIFICATION_WM_OUTPUT_MAX_LINEAR_VALUE_CHANGED
+const NotificationOsMemoryWarning Object.Notification = 2009               //gd:Node.NOTIFICATION_OS_MEMORY_WARNING
+const NotificationTranslationChanged Object.Notification = 2010            //gd:Node.NOTIFICATION_TRANSLATION_CHANGED
+const NotificationWmAbout Object.Notification = 2011                       //gd:Node.NOTIFICATION_WM_ABOUT
+const NotificationCrash Object.Notification = 2012                         //gd:Node.NOTIFICATION_CRASH
+const NotificationOsImeUpdate Object.Notification = 2013                   //gd:Node.NOTIFICATION_OS_IME_UPDATE
+const NotificationApplicationResumed Object.Notification = 2014            //gd:Node.NOTIFICATION_APPLICATION_RESUMED
+const NotificationApplicationPaused Object.Notification = 2015             //gd:Node.NOTIFICATION_APPLICATION_PAUSED
+const NotificationApplicationFocusIn Object.Notification = 2016            //gd:Node.NOTIFICATION_APPLICATION_FOCUS_IN
+const NotificationApplicationFocusOut Object.Notification = 2017           //gd:Node.NOTIFICATION_APPLICATION_FOCUS_OUT
+const NotificationTextServerChanged Object.Notification = 2018             //gd:Node.NOTIFICATION_TEXT_SERVER_CHANGED
+const NotificationApplicationPipModeEntered Object.Notification = 2019     //gd:Node.NOTIFICATION_APPLICATION_PIP_MODE_ENTERED
+const NotificationApplicationPipModeExited Object.Notification = 2020      //gd:Node.NOTIFICATION_APPLICATION_PIP_MODE_EXITED
+const NotificationAccessibilityUpdate Object.Notification = 3000           //gd:Node.NOTIFICATION_ACCESSIBILITY_UPDATE
+const NotificationAccessibilityInvalidate Object.Notification = 3001       //gd:Node.NOTIFICATION_ACCESSIBILITY_INVALIDATE

@@ -262,7 +262,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.EditorFeatureProfile{gdclass.NewEditorFeatureProfile(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -361,7 +360,7 @@ const (
 	Feature3d Feature = 0
 	// The Script tab, which contains the script editor and class reference browser. If this feature is disabled, the Script tab won't display.
 	FeatureScript Feature = 1
-	// The AssetLib tab. If this feature is disabled, the AssetLib tab won't display.
+	// The Asset Store tab. If this feature is disabled, the Asset Store tab won't display.
 	FeatureAssetLib Feature = 2
 	// Scene tree editing. If this feature is disabled, the Scene tree dock will still be visible but will be read-only.
 	FeatureSceneTree Feature = 3

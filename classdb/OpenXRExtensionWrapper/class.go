@@ -39,6 +39,7 @@ import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Engine"
 import "graphics.gd/classdb/OpenXR"
+import "graphics.gd/classdb/OpenXRInteractionProfileMetadata"
 import "graphics.gd/internal/gdmemory"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -177,6 +178,12 @@ type Interface interface {
 	// [OnPreRender]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
 	// [OpenXRAPIExtension.RegisterFrameInfoExtension]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.RegisterFrameInfoExtension
 	SetFrameEndInfoAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) int
+	// Adds additional data structures to XrCompositionLayerProjection.
+	//
+	// This will only be called if the extension previously registered itself with [OpenXRAPIExtension.RegisterProjectionLayerExtension].
+	//
+	// [OpenXRAPIExtension.RegisterProjectionLayerExtension]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.RegisterProjectionLayerExtension
+	SetProjectionLayerAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) int
 	// Add additional data structures to XrViewLocateInfo.
 	//
 	// This will only be called if the extension previously registered itself with [OpenXRAPIExtension.RegisterFrameInfoExtension].
@@ -230,7 +237,7 @@ type Interface interface {
 	// Allows extensions to register additional controller metadata. This function is called even when the OpenXR API is not constructed as the metadata needs to be available to the editor.
 	//
 	// Extensions should also provide metadata regardless of whether they are supported on the host system. The controller data is used to setup action maps for users who may have access to the relevant hardware.
-	OnRegisterMetadata()
+	OnRegisterMetadata(interaction_profile_metadata OpenXRInteractionProfileMetadata.Instance)
 	// Called before the OpenXR instance is created.
 	//
 	// Note: This virtual method will be called on the main thread, however, it will be called before OpenXR becomes involved in rendering, so it is safe to write to data that will be used by the render thread.
@@ -363,6 +370,9 @@ func (self implementation) SetFrameWaitInfoAndGetNextPointer(next_pointer Engine
 func (self implementation) SetFrameEndInfoAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
+func (self implementation) SetProjectionLayerAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
+	return
+}
 func (self implementation) SetViewLocateInfoAndGetNextPointer(next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
@@ -388,7 +398,7 @@ func (self implementation) GetCompositionLayerOrder(index int) (_ int) {
 func (self implementation) GetSuggestedTrackerNames() (_ []string) {
 	return
 }
-func (self implementation) OnRegisterMetadata() {
+func (self implementation) OnRegisterMetadata(interaction_profile_metadata OpenXRInteractionProfileMetadata.Instance) {
 }
 func (self implementation) OnBeforeInstanceCreated() {
 }
@@ -592,6 +602,23 @@ func (Instance) _set_frame_end_info_and_get_next_pointer(impl func(ptr gdclass.R
 }
 
 /*
+Adds additional data structures to XrCompositionLayerProjection.
+
+This will only be called if the extension previously registered itself with [OpenXRAPIExtension.RegisterProjectionLayerExtension].
+
+[OpenXRAPIExtension.RegisterProjectionLayerExtension]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAPIExtension#Instance.RegisterProjectionLayerExtension
+*/
+func (Instance) _set_projection_layer_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, next_pointer)
+		gd.UnsafeSet(p_back, int64(ret))
+	}
+}
+
+/*
 Add additional data structures to XrViewLocateInfo.
 
 This will only be called if the extension previously registered itself with [OpenXRAPIExtension.RegisterFrameInfoExtension].
@@ -742,10 +769,13 @@ Allows extensions to register additional controller metadata. This function is c
 
 Extensions should also provide metadata regardless of whether they are supported on the host system. The controller data is used to setup action maps for users who may have access to the relevant hardware.
 */
-func (Instance) _on_register_metadata(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _on_register_metadata(impl func(ptr gdclass.Receiver, interaction_profile_metadata OpenXRInteractionProfileMetadata.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
+		var interaction_profile_metadata = [1]gdclass.OpenXRInteractionProfileMetadata{gdclass.NewOpenXRInteractionProfileMetadata(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
+
+		defer gdreference.EndObject(gdclass.GetOpenXRInteractionProfileMetadata(interaction_profile_metadata[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self)
+		impl(self, interaction_profile_metadata)
 	}
 }
 
@@ -1218,6 +1248,15 @@ func (class) _set_frame_end_info_and_get_next_pointer(impl func(ptr gdclass.Rece
 		gd.UnsafeSet(p_back, ret)
 	}
 }
+func (class) _set_projection_layer_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		defer gdmemory.Barrier()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, next_pointer)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
 func (class) _set_view_locate_info_and_get_next_pointer(impl func(ptr gdclass.Receiver, next_pointer Engine.Pointer[OpenXR.Extension]) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var next_pointer = gdmemory.WrapPointer[OpenXR.Extension](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
@@ -1296,10 +1335,13 @@ func (class) _get_suggested_tracker_names(impl func(ptr gdclass.Receiver) Packed
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _on_register_metadata(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _on_register_metadata(impl func(ptr gdclass.Receiver, interaction_profile_metadata [1]gdclass.OpenXRInteractionProfileMetadata)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
+		var interaction_profile_metadata = [1]gdclass.OpenXRInteractionProfileMetadata{gdclass.NewOpenXRInteractionProfileMetadata(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
+
+		defer gdreference.EndObject(gdclass.GetOpenXRInteractionProfileMetadata(interaction_profile_metadata[0])[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self)
+		impl(self, interaction_profile_metadata)
 	}
 }
 func (class) _on_before_instance_created(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1517,6 +1559,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._set_frame_wait_info_and_get_next_pointer)
 	case "_set_frame_end_info_and_get_next_pointer":
 		return reflect.ValueOf(self._set_frame_end_info_and_get_next_pointer)
+	case "_set_projection_layer_and_get_next_pointer":
+		return reflect.ValueOf(self._set_projection_layer_and_get_next_pointer)
 	case "_set_view_locate_info_and_get_next_pointer":
 		return reflect.ValueOf(self._set_view_locate_info_and_get_next_pointer)
 	case "_set_reference_space_create_info_and_get_next_pointer":
@@ -1612,6 +1656,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._set_frame_wait_info_and_get_next_pointer)
 	case "_set_frame_end_info_and_get_next_pointer":
 		return reflect.ValueOf(self._set_frame_end_info_and_get_next_pointer)
+	case "_set_projection_layer_and_get_next_pointer":
+		return reflect.ValueOf(self._set_projection_layer_and_get_next_pointer)
 	case "_set_view_locate_info_and_get_next_pointer":
 		return reflect.ValueOf(self._set_view_locate_info_and_get_next_pointer)
 	case "_set_reference_space_create_info_and_get_next_pointer":

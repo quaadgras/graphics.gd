@@ -163,4 +163,14 @@ var Callables = map[string][]string{
 	"NavigationServer2DManager.register_server.create_callback": {"void"},
 	"FileDialog.set_get_icon_callback.callback":                 {"Texture2D", "String path"},
 	"FileDialog.set_get_thumbnail_callback.callback":            {"Texture2D", "String path"},
+
+	// --- Godot 4.7 additions ---
+	"AccessibilityServer.update_add_action.callable":                                           {"void", "Variant"}, // doc: callback receives one Variant
+	"JavaClassWrapper.create_sam_callback.callable":                                            {},                  // generic: matches the Java SAM interface method
+	"Tween.tween_await.signal":                                                                 {},                  // awaits an arbitrary signal
+	"OpenXRSpatialAnchorCapability.create_default_persistence_context.user_callback":           {},
+	"OpenXRSpatialAnchorCapability.start_entity_discovery.user_callback":                       {},
+	"OpenXRSpatialEntityExtension.discover_spatial_entities_with_component_data.user_callback": {},
+	"OpenXRSpatialMarkerTrackingCapability.start_entity_discovery.user_callback":               {},
+	"OpenXRSpatialPlaneTrackingCapability.start_entity_discovery.user_callback":                {},
 }

@@ -100,31 +100,33 @@ type Instance [1]gdclass.ScrollContainer
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_h_scroll               gdextension.MethodForClass `hash:"1286410249"`
-	get_h_scroll               gdextension.MethodForClass `hash:"3905245786"`
-	set_v_scroll               gdextension.MethodForClass `hash:"1286410249"`
-	get_v_scroll               gdextension.MethodForClass `hash:"3905245786"`
-	set_horizontal_custom_step gdextension.MethodForClass `hash:"373806689"`
-	get_horizontal_custom_step gdextension.MethodForClass `hash:"1740695150"`
-	set_vertical_custom_step   gdextension.MethodForClass `hash:"373806689"`
-	get_vertical_custom_step   gdextension.MethodForClass `hash:"1740695150"`
-	set_horizontal_scroll_mode gdextension.MethodForClass `hash:"2750506364"`
-	get_horizontal_scroll_mode gdextension.MethodForClass `hash:"3987985145"`
-	set_vertical_scroll_mode   gdextension.MethodForClass `hash:"2750506364"`
-	get_vertical_scroll_mode   gdextension.MethodForClass `hash:"3987985145"`
-	set_deadzone               gdextension.MethodForClass `hash:"1286410249"`
-	get_deadzone               gdextension.MethodForClass `hash:"3905245786"`
-	set_scroll_hint_mode       gdextension.MethodForClass `hash:"578158943"`
-	get_scroll_hint_mode       gdextension.MethodForClass `hash:"246835423"`
-	set_tile_scroll_hint       gdextension.MethodForClass `hash:"2586408642"`
-	is_scroll_hint_tiled       gdextension.MethodForClass `hash:"2240911060"`
-	set_follow_focus           gdextension.MethodForClass `hash:"2586408642"`
-	is_following_focus         gdextension.MethodForClass `hash:"36873697"`
-	get_h_scroll_bar           gdextension.MethodForClass `hash:"4004517983"`
-	get_v_scroll_bar           gdextension.MethodForClass `hash:"2630340773"`
-	ensure_control_visible     gdextension.MethodForClass `hash:"1496901182"`
-	set_draw_focus_border      gdextension.MethodForClass `hash:"2586408642"`
-	get_draw_focus_border      gdextension.MethodForClass `hash:"2240911060"`
+	set_h_scroll                     gdextension.MethodForClass `hash:"1286410249"`
+	get_h_scroll                     gdextension.MethodForClass `hash:"3905245786"`
+	set_v_scroll                     gdextension.MethodForClass `hash:"1286410249"`
+	get_v_scroll                     gdextension.MethodForClass `hash:"3905245786"`
+	set_horizontal_custom_step       gdextension.MethodForClass `hash:"373806689"`
+	get_horizontal_custom_step       gdextension.MethodForClass `hash:"1740695150"`
+	set_vertical_custom_step         gdextension.MethodForClass `hash:"373806689"`
+	get_vertical_custom_step         gdextension.MethodForClass `hash:"1740695150"`
+	set_horizontal_scroll_mode       gdextension.MethodForClass `hash:"2750506364"`
+	get_horizontal_scroll_mode       gdextension.MethodForClass `hash:"3987985145"`
+	set_vertical_scroll_mode         gdextension.MethodForClass `hash:"2750506364"`
+	get_vertical_scroll_mode         gdextension.MethodForClass `hash:"3987985145"`
+	set_scroll_horizontal_by_default gdextension.MethodForClass `hash:"2586408642"`
+	is_scroll_horizontal_by_default  gdextension.MethodForClass `hash:"36873697"`
+	set_deadzone                     gdextension.MethodForClass `hash:"1286410249"`
+	get_deadzone                     gdextension.MethodForClass `hash:"3905245786"`
+	set_scroll_hint_mode             gdextension.MethodForClass `hash:"578158943"`
+	get_scroll_hint_mode             gdextension.MethodForClass `hash:"246835423"`
+	set_tile_scroll_hint             gdextension.MethodForClass `hash:"2586408642"`
+	is_scroll_hint_tiled             gdextension.MethodForClass `hash:"2240911060"`
+	set_follow_focus                 gdextension.MethodForClass `hash:"2586408642"`
+	is_following_focus               gdextension.MethodForClass `hash:"36873697"`
+	get_h_scroll_bar                 gdextension.MethodForClass `hash:"4004517983"`
+	get_v_scroll_bar                 gdextension.MethodForClass `hash:"2630340773"`
+	ensure_control_visible           gdextension.MethodForClass `hash:"1496901182"`
+	set_draw_focus_border            gdextension.MethodForClass `hash:"2586408642"`
+	get_draw_focus_border            gdextension.MethodForClass `hash:"2240911060"`
 }
 
 func init() {
@@ -353,6 +355,21 @@ func (self Instance) SetVerticalScrollMode(value ScrollMode) Instance { //gd:Scr
 }
 
 /*
+If true, the mouse wheel scrolls the view horizontally, and holding Shift scrolls vertically.
+
+If false (default), the mouse wheel scrolls the view vertically, and holding Shift scrolls horizontally.
+*/
+func (self Instance) ScrollHorizontalByDefault() bool { //gd:ScrollContainer.scroll_horizontal_by_default
+	return bool(class(self).IsScrollHorizontalByDefault())
+}
+
+// SetScrollHorizontalByDefault sets the property returned by [IsScrollHorizontalByDefault]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScrollHorizontalByDefault(value bool) Instance { //gd:ScrollContainer.scroll_horizontal_by_default
+	class(self).SetScrollHorizontalByDefault(value)
+	return self
+}
+
+/*
 Deadzone for touch scrolling. Lower deadzone makes the scrolling more sensitive.
 */
 func (self Instance) ScrollDeadzone() int { //gd:ScrollContainer.scroll_deadzone
@@ -440,6 +457,14 @@ func (self class) SetVerticalScrollMode(enable ScrollMode) { //gd:ScrollContaine
 }
 func (self class) GetVerticalScrollMode() ScrollMode { //gd:ScrollContainer.get_vertical_scroll_mode
 	var r_ret = jumponly.Call[ScrollMode](gd.ObjectChecked(self.AsObject()), methods.get_vertical_scroll_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetScrollHorizontalByDefault(enable bool) { //gd:ScrollContainer.set_scroll_horizontal_by_default
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_horizontal_by_default, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
+func (self class) IsScrollHorizontalByDefault() bool { //gd:ScrollContainer.is_scroll_horizontal_by_default
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_horizontal_by_default, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -583,6 +608,11 @@ const (
 	ScrollModeShowNever ScrollMode = 3
 	// Combines [ScrollModeAuto] and [ScrollModeShowAlways]. The scrollbar is only visible if necessary, but the content size is adjusted as if it was always visible. It's useful for ensuring that content size stays the same regardless if the scrollbar is visible.
 	ScrollModeReserve ScrollMode = 4
+	// Behaves like [ScrollModeAuto], but makes the [ScrollContainer] report a minimum size based on its content (limited by [Control.CustomMaximumSize] when set on the corresponding axis). This allows it to grow first and only start scrolling once constrained.
+	//
+	// [Control.CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
+	// [ScrollContainer]: https://pkg.go.dev/graphics.gd/classdb/ScrollContainer
+	ScrollModeMaximizeFirst ScrollMode = 5
 )
 
 type ScrollHintMode int64 //gd:ScrollContainer.ScrollHintMode

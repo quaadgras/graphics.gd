@@ -371,6 +371,17 @@ Generates a GET/POST application/x-www-form-urlencoded style query string from a
 	// Returns "username=user&password=pass"
 
 Furthermore, if a key has a null value, only the key itself is added, without equal sign and value. If the value is an array, for each value in it a pair with the same key is added.
+
+	package main
+
+	import "graphics.gd/classdb/HTTPClient"
+
+	func ExampleQueryStringFromDict(httpClient HTTPClient.Instance) {
+		var fields = map[string]string{"single": "123", "not_valued": "", "multiple": "22"}
+		var queryString = httpClient.QueryStringFromDict(fields)
+		// Returns "single=123&not_valued&multiple=22&multiple=33&multiple=44"
+		_ = queryString
+	}
 */
 func (self Instance) QueryStringFromDict(fields map[string]string) string { //gd:HTTPClient.query_string_from_dict
 	return string(Advanced(self).QueryStringFromDict(gd.DictionaryFromMap(fields)).String())
@@ -414,7 +425,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.HTTPClient{gdclass.NewHTTPClient(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

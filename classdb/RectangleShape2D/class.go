@@ -164,7 +164,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.RectangleShape2D{gdclass.NewRectangleShape2D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

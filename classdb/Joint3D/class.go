@@ -221,6 +221,8 @@ func (self Instance) SetNodeB(value string) Instance { //gd:Joint3D.node_b
 
 /*
 The priority used to define which solver is executed first for multiple joints. The lower the value, the higher the priority.
+
+Note: Only supported when using GodotPhysics3D. This property is ignored when using Jolt Physics.
 */
 func (self Instance) SolverPriority() int { //gd:Joint3D.solver_priority
 	return int(int(class(self).GetSolverPriority()))

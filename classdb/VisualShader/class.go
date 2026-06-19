@@ -326,7 +326,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.VisualShader{gdclass.NewVisualShader(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -546,8 +545,10 @@ const (
 	TypeSky Type = 8
 	// A compute shader that runs for each froxel of the volumetric fog map.
 	TypeFog Type = 9
+	// A shader used to process blit calls to a DrawableTexture.
+	TypeTextureBlit Type = 10
 	// Represents the size of the [Type] enum.
-	TypeMax Type = 10
+	TypeMax Type = 11
 )
 
 type VaryingMode int64 //gd:VisualShader.VaryingMode

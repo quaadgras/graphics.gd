@@ -502,6 +502,7 @@ func (self class) GetTicksUsec() int64 { //gd:Time.get_ticks_usec
 	var ret = r_ret
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

@@ -7,6 +7,8 @@ This is useful for smoothly twisting bones in combination with [CopyTransformMod
 
 Note: If an extracted twist is greater than 180 degrees, flipping occurs. This is similar to [ConvertTransformModifier3D].
 
+Note: Most methods in this class take an index parameter. This parameter specifies which setting list entry to return if the IK has multiple entries (e.g. settings/<index>/root_bone_name).
+
 [BoneTwistDisperser3D]: https://pkg.go.dev/graphics.gd/classdb/BoneTwistDisperser3D
 [ConvertTransformModifier3D]: https://pkg.go.dev/graphics.gd/classdb/ConvertTransformModifier3D
 [CopyTransformModifier3D]: https://pkg.go.dev/graphics.gd/classdb/CopyTransformModifier3D

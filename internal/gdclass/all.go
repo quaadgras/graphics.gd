@@ -43,6 +43,16 @@ type AcceptDialog struct {
 func NewAcceptDialog(obj Object) AcceptDialog    { return AcceptDialog{object: object(obj)} }
 func GetAcceptDialog(obj AcceptDialog) [1]Object { return obj.AsObject() }
 
+type AccessibilityServer struct {
+	object
+	_AccessibilityServer struct{}
+}
+
+func NewAccessibilityServer(obj Object) AccessibilityServer {
+	return AccessibilityServer{object: object(obj)}
+}
+func GetAccessibilityServer(obj AccessibilityServer) [1]Object { return obj.AsObject() }
+
 type AimModifier3D struct {
 	object
 	_AimModifier3D struct{}
@@ -358,6 +368,14 @@ type Area3D struct {
 
 func NewArea3D(obj Object) Area3D    { return Area3D{object: object(obj)} }
 func GetArea3D(obj Area3D) [1]Object { return obj.AsObject() }
+
+type AreaLight3D struct {
+	object
+	_AreaLight3D struct{}
+}
+
+func NewAreaLight3D(obj Object) AreaLight3D    { return AreaLight3D{object: object(obj)} }
+func GetAreaLight3D(obj AreaLight3D) [1]Object { return obj.AsObject() }
 
 type ArrayMesh struct {
 	object
@@ -959,6 +977,14 @@ type AudioStreamWAV struct {
 func NewAudioStreamWAV(obj Object) AudioStreamWAV    { return AudioStreamWAV{object: object(obj)} }
 func GetAudioStreamWAV(obj AudioStreamWAV) [1]Object { return obj.AsObject() }
 
+type AwaitTweener struct {
+	object
+	_AwaitTweener struct{}
+}
+
+func NewAwaitTweener(obj Object) AwaitTweener    { return AwaitTweener{object: object(obj)} }
+func GetAwaitTweener(obj AwaitTweener) [1]Object { return obj.AsObject() }
+
 type BackBufferCopy struct {
 	object
 	_BackBufferCopy struct{}
@@ -990,6 +1016,14 @@ type BitMap struct {
 
 func NewBitMap(obj Object) BitMap    { return BitMap{object: object(obj)} }
 func GetBitMap(obj BitMap) [1]Object { return obj.AsObject() }
+
+type BlitMaterial struct {
+	object
+	_BlitMaterial struct{}
+}
+
+func NewBlitMaterial(obj Object) BlitMaterial    { return BlitMaterial{object: object(obj)} }
+func GetBlitMaterial(obj BlitMaterial) [1]Object { return obj.AsObject() }
 
 type Bone2D struct {
 	object
@@ -1841,6 +1875,16 @@ type DisplayServer struct {
 func NewDisplayServer(obj Object) DisplayServer    { return DisplayServer{object: object(obj)} }
 func GetDisplayServer(obj DisplayServer) [1]Object { return obj.AsObject() }
 
+type DrawableTexture2D struct {
+	object
+	_DrawableTexture2D struct{}
+}
+
+func NewDrawableTexture2D(obj Object) DrawableTexture2D {
+	return DrawableTexture2D{object: object(obj)}
+}
+func GetDrawableTexture2D(obj DrawableTexture2D) [1]Object { return obj.AsObject() }
+
 type ENetConnection struct {
 	object
 	_ENetConnection struct{}
@@ -2621,6 +2665,16 @@ type GDScript struct {
 func NewGDScript(obj Object) GDScript    { return GDScript{object: object(obj)} }
 func GetGDScript(obj GDScript) [1]Object { return obj.AsObject() }
 
+type GDScriptLanguageProtocol struct {
+	object
+	_GDScriptLanguageProtocol struct{}
+}
+
+func NewGDScriptLanguageProtocol(obj Object) GDScriptLanguageProtocol {
+	return GDScriptLanguageProtocol{object: object(obj)}
+}
+func GetGDScriptLanguageProtocol(obj GDScriptLanguageProtocol) [1]Object { return obj.AsObject() }
+
 type GDScriptSyntaxHighlighter struct {
 	object
 	_GDScriptSyntaxHighlighter struct{}
@@ -2630,6 +2684,26 @@ func NewGDScriptSyntaxHighlighter(obj Object) GDScriptSyntaxHighlighter {
 	return GDScriptSyntaxHighlighter{object: object(obj)}
 }
 func GetGDScriptSyntaxHighlighter(obj GDScriptSyntaxHighlighter) [1]Object { return obj.AsObject() }
+
+type GDScriptTextDocument struct {
+	object
+	_GDScriptTextDocument struct{}
+}
+
+func NewGDScriptTextDocument(obj Object) GDScriptTextDocument {
+	return GDScriptTextDocument{object: object(obj)}
+}
+func GetGDScriptTextDocument(obj GDScriptTextDocument) [1]Object { return obj.AsObject() }
+
+type GDScriptWorkspace struct {
+	object
+	_GDScriptWorkspace struct{}
+}
+
+func NewGDScriptWorkspace(obj Object) GDScriptWorkspace {
+	return GDScriptWorkspace{object: object(obj)}
+}
+func GetGDScriptWorkspace(obj GDScriptWorkspace) [1]Object { return obj.AsObject() }
 
 type GLTFAccessor struct {
 	object
@@ -5803,6 +5877,30 @@ type QuadOccluder3D struct {
 func NewQuadOccluder3D(obj Object) QuadOccluder3D    { return QuadOccluder3D{object: object(obj)} }
 func GetQuadOccluder3D(obj QuadOccluder3D) [1]Object { return obj.AsObject() }
 
+type RDAccelerationStructureGeometry struct {
+	object
+	_RDAccelerationStructureGeometry struct{}
+}
+
+func NewRDAccelerationStructureGeometry(obj Object) RDAccelerationStructureGeometry {
+	return RDAccelerationStructureGeometry{object: object(obj)}
+}
+func GetRDAccelerationStructureGeometry(obj RDAccelerationStructureGeometry) [1]Object {
+	return obj.AsObject()
+}
+
+type RDAccelerationStructureInstance struct {
+	object
+	_RDAccelerationStructureInstance struct{}
+}
+
+func NewRDAccelerationStructureInstance(obj Object) RDAccelerationStructureInstance {
+	return RDAccelerationStructureInstance{object: object(obj)}
+}
+func GetRDAccelerationStructureInstance(obj RDAccelerationStructureInstance) [1]Object {
+	return obj.AsObject()
+}
+
 type RDAttachmentFormat struct {
 	object
 	_RDAttachmentFormat struct{}
@@ -5822,6 +5920,14 @@ func NewRDFramebufferPass(obj Object) RDFramebufferPass {
 	return RDFramebufferPass{object: object(obj)}
 }
 func GetRDFramebufferPass(obj RDFramebufferPass) [1]Object { return obj.AsObject() }
+
+type RDHitGroup struct {
+	object
+	_RDHitGroup struct{}
+}
+
+func NewRDHitGroup(obj Object) RDHitGroup    { return RDHitGroup{object: object(obj)} }
+func GetRDHitGroup(obj RDHitGroup) [1]Object { return obj.AsObject() }
 
 type RDPipelineColorBlendState struct {
 	object
@@ -5876,6 +5982,14 @@ func NewRDPipelineRasterizationState(obj Object) RDPipelineRasterizationState {
 func GetRDPipelineRasterizationState(obj RDPipelineRasterizationState) [1]Object {
 	return obj.AsObject()
 }
+
+type RDPipelineShader struct {
+	object
+	_RDPipelineShader struct{}
+}
+
+func NewRDPipelineShader(obj Object) RDPipelineShader    { return RDPipelineShader{object: object(obj)} }
+func GetRDPipelineShader(obj RDPipelineShader) [1]Object { return obj.AsObject() }
 
 type RDPipelineSpecializationConstant struct {
 	object
@@ -7862,6 +7976,14 @@ type ViewportTexture struct {
 
 func NewViewportTexture(obj Object) ViewportTexture    { return ViewportTexture{object: object(obj)} }
 func GetViewportTexture(obj ViewportTexture) [1]Object { return obj.AsObject() }
+
+type VirtualJoystick struct {
+	object
+	_VirtualJoystick struct{}
+}
+
+func NewVirtualJoystick(obj Object) VirtualJoystick    { return VirtualJoystick{object: object(obj)} }
+func GetVirtualJoystick(obj VirtualJoystick) [1]Object { return obj.AsObject() }
 
 type VisibleOnScreenEnabler2D struct {
 	object

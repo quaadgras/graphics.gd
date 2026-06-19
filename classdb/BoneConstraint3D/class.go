@@ -3,6 +3,8 @@
 /*
 Base class of [SkeletonModifier3D] that modifies the bone set in [SetApplyBone] based on the transform of the bone retrieved by [GetReferenceBone].
 
+Note: Most methods in this class take an index parameter. This parameter specifies which setting list entry to return if the IK has multiple entries (e.g. settings/<index>/amount).
+
 [GetReferenceBone]: https://pkg.go.dev/graphics.gd/classdb/BoneConstraint3D#Instance.GetReferenceBone
 [SetApplyBone]: https://pkg.go.dev/graphics.gd/classdb/BoneConstraint3D#Instance.SetApplyBone
 [SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D

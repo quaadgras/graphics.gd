@@ -124,7 +124,6 @@ type Interface interface {
 	GetInstanceBaseType() string
 	InstanceCreate(for_object Object.Instance) uintptr
 	PlaceholderInstanceCreate(for_object Object.Instance) uintptr
-	InstanceHas(obj Object.Instance) bool
 	HasSourceCode() bool
 	GetSourceCode() string
 	SetSourceCode(code string)
@@ -154,6 +153,7 @@ type Interface interface {
 	GetMembers() []string
 	IsPlaceholderFallbackEnabled() bool
 	GetRpcConfig() any
+	InstanceHas(obj Object.Instance) bool
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -185,9 +185,6 @@ func (self implementation) InstanceCreate(for_object Object.Instance) (_ uintptr
 	return
 }
 func (self implementation) PlaceholderInstanceCreate(for_object Object.Instance) (_ uintptr) {
-	return
-}
-func (self implementation) InstanceHas(obj Object.Instance) (_ bool) {
 	return
 }
 func (self implementation) HasSourceCode() (_ bool) {
@@ -267,6 +264,9 @@ func (self implementation) IsPlaceholderFallbackEnabled() (_ bool) {
 	return
 }
 func (self implementation) GetRpcConfig() (_ any) {
+	return
+}
+func (self implementation) InstanceHas(obj Object.Instance) (_ bool) {
 	return
 }
 func (Instance) _editor_can_reload_from_file(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -363,15 +363,6 @@ func (Instance) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
-	}
-}
-func (Instance) _instance_has(impl func(ptr gdclass.Receiver, obj Object.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
-		defer gdreference.EndObject(obj[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, obj)
-		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _has_source_code(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -663,6 +654,15 @@ func (Instance) _get_rpc_config(impl func(ptr gdclass.Receiver) any) (cb gd.Exte
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
+func (Instance) _instance_has(impl func(ptr gdclass.Receiver, obj Object.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, obj)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
@@ -702,7 +702,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.ScriptExtension{gdclass.NewScriptExtension(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -800,15 +799,6 @@ func (class) _placeholder_instance_create(impl func(ptr gdclass.Receiver, for_ob
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
-	}
-}
-func (class) _instance_has(impl func(ptr gdclass.Receiver, obj [1]gdreference.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args, p_back gdextension.Pointer) {
-		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
-		defer gdreference.EndObject(obj[0])
-		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, obj)
-		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _has_source_code(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1092,6 +1082,15 @@ func (class) _get_rpc_config(impl func(ptr gdclass.Receiver) variant.Any) (cb gd
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
+func (class) _instance_has(impl func(ptr gdclass.Receiver, obj [1]gdreference.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var obj = [1]gdreference.Object{gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free)}
+		defer gdreference.EndObject(obj[0])
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, obj)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
 
 func (o class) AsScriptExtension() Advanced           { return Advanced(o) }
 func (o Instance) AsScriptExtension() Instance        { return o }
@@ -1126,8 +1125,6 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._instance_create)
 	case "_placeholder_instance_create":
 		return reflect.ValueOf(self._placeholder_instance_create)
-	case "_instance_has":
-		return reflect.ValueOf(self._instance_has)
 	case "_has_source_code":
 		return reflect.ValueOf(self._has_source_code)
 	case "_get_source_code":
@@ -1182,6 +1179,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._is_placeholder_fallback_enabled)
 	case "_get_rpc_config":
 		return reflect.ValueOf(self._get_rpc_config)
+	case "_instance_has":
+		return reflect.ValueOf(self._instance_has)
 	default:
 		return gd.VirtualByName(Script.Advanced(self.AsScript()), name)
 	}
@@ -1207,8 +1206,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._instance_create)
 	case "_placeholder_instance_create":
 		return reflect.ValueOf(self._placeholder_instance_create)
-	case "_instance_has":
-		return reflect.ValueOf(self._instance_has)
 	case "_has_source_code":
 		return reflect.ValueOf(self._has_source_code)
 	case "_get_source_code":
@@ -1263,6 +1260,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._is_placeholder_fallback_enabled)
 	case "_get_rpc_config":
 		return reflect.ValueOf(self._get_rpc_config)
+	case "_instance_has":
+		return reflect.ValueOf(self._instance_has)
 	default:
 		return gd.VirtualByName(Script.Instance(self.AsScript()), name)
 	}

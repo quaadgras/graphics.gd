@@ -232,7 +232,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.XRPositionalTracker{gdclass.NewXRPositionalTracker(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -348,7 +347,7 @@ func (self class) PoseLostTracking() Signal.Any {
 /*
 Emitted when a button on this tracker is pressed. Note that many XR runtimes allow other inputs to be mapped to buttons.
 */
-func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags) Instance {
+func (self Instance) OnButtonPressed(cb func(action_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
@@ -364,7 +363,7 @@ func (self class) ButtonPressed() Signal.Any {
 /*
 Emitted when a button on this tracker is released.
 */
-func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flags) Instance {
+func (self Instance) OnButtonReleased(cb func(action_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
@@ -380,7 +379,7 @@ func (self class) ButtonReleased() Signal.Any {
 /*
 Emitted when a trigger or similar input on this tracker changes value.
 */
-func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), flags ...Signal.Flags) Instance {
+func (self Instance) OnInputFloatChanged(cb func(action_name string, value Float.X), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
@@ -396,7 +395,7 @@ func (self class) InputFloatChanged() Signal.Any {
 /*
 Emitted when a thumbstick or thumbpad on this tracker moves.
 */
-func (self Instance) OnInputVector2Changed(cb func(name string, vector Vector2.XY), flags ...Signal.Flags) Instance {
+func (self Instance) OnInputVector2Changed(cb func(action_name string, vector Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag

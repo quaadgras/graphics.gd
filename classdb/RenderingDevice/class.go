@@ -35,12 +35,16 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/RDAccelerationStructureGeometry"
+import "graphics.gd/classdb/RDAccelerationStructureInstance"
 import "graphics.gd/classdb/RDAttachmentFormat"
 import "graphics.gd/classdb/RDFramebufferPass"
+import "graphics.gd/classdb/RDHitGroup"
 import "graphics.gd/classdb/RDPipelineColorBlendState"
 import "graphics.gd/classdb/RDPipelineDepthStencilState"
 import "graphics.gd/classdb/RDPipelineMultisampleState"
 import "graphics.gd/classdb/RDPipelineRasterizationState"
+import "graphics.gd/classdb/RDPipelineShader"
 import "graphics.gd/classdb/RDPipelineSpecializationConstant"
 import "graphics.gd/classdb/RDSamplerState"
 import "graphics.gd/classdb/RDShaderSPIRV"
@@ -126,124 +130,141 @@ type Instance [1]gdclass.RenderingDevice
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	texture_create                         gdextension.MethodForClass `hash:"3709173589"`
-	texture_create_shared                  gdextension.MethodForClass `hash:"3178156134"`
-	texture_create_shared_from_slice       gdextension.MethodForClass `hash:"1808971279"`
-	texture_create_from_extension          gdextension.MethodForClass `hash:"3732868568"`
-	texture_update                         gdextension.MethodForClass `hash:"1349464008"`
-	texture_get_data                       gdextension.MethodForClass `hash:"1859412099"`
-	texture_get_data_async                 gdextension.MethodForClass `hash:"498832090"`
-	texture_is_format_supported_for_usage  gdextension.MethodForClass `hash:"2592520478"`
-	texture_is_shared                      gdextension.MethodForClass `hash:"3521089500"`
-	texture_is_valid                       gdextension.MethodForClass `hash:"3521089500"`
-	texture_set_discardable                gdextension.MethodForClass `hash:"1265174801"`
-	texture_is_discardable                 gdextension.MethodForClass `hash:"3521089500"`
-	texture_copy                           gdextension.MethodForClass `hash:"2859522160"`
-	texture_clear                          gdextension.MethodForClass `hash:"3477703247"`
-	texture_resolve_multisample            gdextension.MethodForClass `hash:"3181288260"`
-	texture_get_format                     gdextension.MethodForClass `hash:"1374471690"`
-	texture_get_native_handle              gdextension.MethodForClass `hash:"3917799429"`
-	framebuffer_format_create              gdextension.MethodForClass `hash:"697032759"`
-	framebuffer_format_create_multipass    gdextension.MethodForClass `hash:"2647479094"`
-	framebuffer_format_create_empty        gdextension.MethodForClass `hash:"555930169"`
-	framebuffer_format_get_texture_samples gdextension.MethodForClass `hash:"4223391010"`
-	framebuffer_create                     gdextension.MethodForClass `hash:"3284231055"`
-	framebuffer_create_multipass           gdextension.MethodForClass `hash:"1750306695"`
-	framebuffer_create_empty               gdextension.MethodForClass `hash:"3058360618"`
-	framebuffer_get_format                 gdextension.MethodForClass `hash:"3917799429"`
-	framebuffer_is_valid                   gdextension.MethodForClass `hash:"4155700596"`
-	sampler_create                         gdextension.MethodForClass `hash:"2327892535"`
-	sampler_is_format_supported_for_filter gdextension.MethodForClass `hash:"2247922238"`
-	vertex_buffer_create                   gdextension.MethodForClass `hash:"2089548973"`
-	vertex_format_create                   gdextension.MethodForClass `hash:"1242678479"`
-	vertex_array_create                    gdextension.MethodForClass `hash:"3799816279"`
-	index_buffer_create                    gdextension.MethodForClass `hash:"2368684885"`
-	index_array_create                     gdextension.MethodForClass `hash:"2256026069"`
-	shader_compile_spirv_from_source       gdextension.MethodForClass `hash:"1178973306"`
-	shader_compile_binary_from_spirv       gdextension.MethodForClass `hash:"134910450"`
-	shader_create_from_spirv               gdextension.MethodForClass `hash:"342949005"`
-	shader_create_from_bytecode            gdextension.MethodForClass `hash:"1687031350"`
-	shader_create_placeholder              gdextension.MethodForClass `hash:"529393457"`
-	shader_get_vertex_input_attribute_mask gdextension.MethodForClass `hash:"3917799429"`
-	uniform_buffer_create                  gdextension.MethodForClass `hash:"2089548973"`
-	storage_buffer_create                  gdextension.MethodForClass `hash:"1609052553"`
-	texture_buffer_create                  gdextension.MethodForClass `hash:"1470338698"`
-	uniform_set_create                     gdextension.MethodForClass `hash:"2280795797"`
-	uniform_set_is_valid                   gdextension.MethodForClass `hash:"3521089500"`
-	buffer_copy                            gdextension.MethodForClass `hash:"864257779"`
-	buffer_update                          gdextension.MethodForClass `hash:"3454956949"`
-	buffer_clear                           gdextension.MethodForClass `hash:"2452320800"`
-	buffer_get_data                        gdextension.MethodForClass `hash:"3101830688"`
-	buffer_get_data_async                  gdextension.MethodForClass `hash:"2370287848"`
-	buffer_get_device_address              gdextension.MethodForClass `hash:"3917799429"`
-	render_pipeline_create                 gdextension.MethodForClass `hash:"2385451958"`
-	render_pipeline_is_valid               gdextension.MethodForClass `hash:"3521089500"`
-	compute_pipeline_create                gdextension.MethodForClass `hash:"1448838280"`
-	compute_pipeline_is_valid              gdextension.MethodForClass `hash:"3521089500"`
-	screen_get_width                       gdextension.MethodForClass `hash:"1591665591"`
-	screen_get_height                      gdextension.MethodForClass `hash:"1591665591"`
-	screen_get_framebuffer_format          gdextension.MethodForClass `hash:"1591665591"`
-	draw_list_begin_for_screen             gdextension.MethodForClass `hash:"3988079995"`
-	draw_list_begin                        gdextension.MethodForClass `hash:"1317926357"`
-	draw_list_begin_split                  gdextension.MethodForClass `hash:"2406300660"`
-	draw_list_set_blend_constants          gdextension.MethodForClass `hash:"2878471219"`
-	draw_list_bind_render_pipeline         gdextension.MethodForClass `hash:"4040184819"`
-	draw_list_bind_uniform_set             gdextension.MethodForClass `hash:"749655778"`
-	draw_list_bind_vertex_array            gdextension.MethodForClass `hash:"4040184819"`
-	draw_list_bind_vertex_buffers_format   gdextension.MethodForClass `hash:"2008628980"`
-	draw_list_bind_index_array             gdextension.MethodForClass `hash:"4040184819"`
-	draw_list_set_push_constant            gdextension.MethodForClass `hash:"2772371345"`
-	draw_list_draw                         gdextension.MethodForClass `hash:"4230067973"`
-	draw_list_draw_indirect                gdextension.MethodForClass `hash:"1092133571"`
-	draw_list_enable_scissor               gdextension.MethodForClass `hash:"244650101"`
-	draw_list_disable_scissor              gdextension.MethodForClass `hash:"1286410249"`
-	draw_list_switch_to_next_pass          gdextension.MethodForClass `hash:"2455072627"`
-	draw_list_switch_to_next_pass_split    gdextension.MethodForClass `hash:"2865087369"`
-	draw_list_end                          gdextension.MethodForClass `hash:"3218959716"`
-	compute_list_begin                     gdextension.MethodForClass `hash:"2455072627"`
-	compute_list_bind_compute_pipeline     gdextension.MethodForClass `hash:"4040184819"`
-	compute_list_set_push_constant         gdextension.MethodForClass `hash:"2772371345"`
-	compute_list_bind_uniform_set          gdextension.MethodForClass `hash:"749655778"`
-	compute_list_dispatch                  gdextension.MethodForClass `hash:"4275841770"`
-	compute_list_dispatch_indirect         gdextension.MethodForClass `hash:"749655778"`
-	compute_list_add_barrier               gdextension.MethodForClass `hash:"1286410249"`
-	compute_list_end                       gdextension.MethodForClass `hash:"3218959716"`
-	free_rid                               gdextension.MethodForClass `hash:"2722037293"`
-	capture_timestamp                      gdextension.MethodForClass `hash:"83702148"`
-	get_captured_timestamps_count          gdextension.MethodForClass `hash:"3905245786"`
-	get_captured_timestamps_frame          gdextension.MethodForClass `hash:"3905245786"`
-	get_captured_timestamp_gpu_time        gdextension.MethodForClass `hash:"923996154"`
-	get_captured_timestamp_cpu_time        gdextension.MethodForClass `hash:"923996154"`
-	get_captured_timestamp_name            gdextension.MethodForClass `hash:"844755477"`
-	has_feature                            gdextension.MethodForClass `hash:"1772728326"`
-	limit_get                              gdextension.MethodForClass `hash:"1559202131"`
-	get_frame_delay                        gdextension.MethodForClass `hash:"3905245786"`
-	submit                                 gdextension.MethodForClass `hash:"3218959716"`
-	sync                                   gdextension.MethodForClass `hash:"3218959716"`
-	barrier                                gdextension.MethodForClass `hash:"3718155691"`
-	full_barrier                           gdextension.MethodForClass `hash:"3218959716"`
-	create_local_device                    gdextension.MethodForClass `hash:"2846302423"`
-	set_resource_name                      gdextension.MethodForClass `hash:"2726140452"`
-	draw_command_begin_label               gdextension.MethodForClass `hash:"1636512886"`
-	draw_command_insert_label              gdextension.MethodForClass `hash:"1636512886"`
-	draw_command_end_label                 gdextension.MethodForClass `hash:"3218959716"`
-	get_device_vendor_name                 gdextension.MethodForClass `hash:"201670096"`
-	get_device_name                        gdextension.MethodForClass `hash:"201670096"`
-	get_device_pipeline_cache_uuid         gdextension.MethodForClass `hash:"201670096"`
-	get_memory_usage                       gdextension.MethodForClass `hash:"251690689"`
-	get_driver_resource                    gdextension.MethodForClass `hash:"501815484"`
-	get_perf_report                        gdextension.MethodForClass `hash:"201670096"`
-	get_driver_and_device_memory_report    gdextension.MethodForClass `hash:"201670096"`
-	get_tracked_object_name                gdextension.MethodForClass `hash:"844755477"`
-	get_tracked_object_type_count          gdextension.MethodForClass `hash:"3905245786"`
-	get_driver_total_memory                gdextension.MethodForClass `hash:"3905245786"`
-	get_driver_allocation_count            gdextension.MethodForClass `hash:"3905245786"`
-	get_driver_memory_by_object_type       gdextension.MethodForClass `hash:"923996154"`
-	get_driver_allocs_by_object_type       gdextension.MethodForClass `hash:"923996154"`
-	get_device_total_memory                gdextension.MethodForClass `hash:"3905245786"`
-	get_device_allocation_count            gdextension.MethodForClass `hash:"3905245786"`
-	get_device_memory_by_object_type       gdextension.MethodForClass `hash:"923996154"`
-	get_device_allocs_by_object_type       gdextension.MethodForClass `hash:"923996154"`
+	texture_create                           gdextension.MethodForClass `hash:"3709173589"`
+	texture_create_shared                    gdextension.MethodForClass `hash:"3178156134"`
+	texture_create_shared_from_slice         gdextension.MethodForClass `hash:"1808971279"`
+	texture_create_from_extension            gdextension.MethodForClass `hash:"3732868568"`
+	texture_update                           gdextension.MethodForClass `hash:"1349464008"`
+	texture_get_data                         gdextension.MethodForClass `hash:"1859412099"`
+	texture_get_data_async                   gdextension.MethodForClass `hash:"498832090"`
+	texture_is_format_supported_for_usage    gdextension.MethodForClass `hash:"2592520478"`
+	texture_is_shared                        gdextension.MethodForClass `hash:"3521089500"`
+	texture_is_valid                         gdextension.MethodForClass `hash:"3521089500"`
+	texture_set_discardable                  gdextension.MethodForClass `hash:"1265174801"`
+	texture_is_discardable                   gdextension.MethodForClass `hash:"3521089500"`
+	texture_copy                             gdextension.MethodForClass `hash:"2859522160"`
+	texture_clear                            gdextension.MethodForClass `hash:"3477703247"`
+	texture_resolve_multisample              gdextension.MethodForClass `hash:"3181288260"`
+	texture_get_format                       gdextension.MethodForClass `hash:"1374471690"`
+	texture_get_native_handle                gdextension.MethodForClass `hash:"3917799429"`
+	framebuffer_format_create                gdextension.MethodForClass `hash:"697032759"`
+	framebuffer_format_create_multipass      gdextension.MethodForClass `hash:"2647479094"`
+	framebuffer_format_create_empty          gdextension.MethodForClass `hash:"555930169"`
+	framebuffer_format_get_texture_samples   gdextension.MethodForClass `hash:"4223391010"`
+	framebuffer_create                       gdextension.MethodForClass `hash:"3284231055"`
+	framebuffer_create_multipass             gdextension.MethodForClass `hash:"1750306695"`
+	framebuffer_create_empty                 gdextension.MethodForClass `hash:"3058360618"`
+	framebuffer_get_format                   gdextension.MethodForClass `hash:"3917799429"`
+	framebuffer_is_valid                     gdextension.MethodForClass `hash:"4155700596"`
+	sampler_create                           gdextension.MethodForClass `hash:"2327892535"`
+	sampler_is_format_supported_for_filter   gdextension.MethodForClass `hash:"2247922238"`
+	vertex_buffer_create                     gdextension.MethodForClass `hash:"2089548973"`
+	vertex_format_create                     gdextension.MethodForClass `hash:"1242678479"`
+	vertex_array_create                      gdextension.MethodForClass `hash:"3799816279"`
+	index_buffer_create                      gdextension.MethodForClass `hash:"2368684885"`
+	index_array_create                       gdextension.MethodForClass `hash:"2256026069"`
+	shader_compile_spirv_from_source         gdextension.MethodForClass `hash:"1178973306"`
+	shader_compile_binary_from_spirv         gdextension.MethodForClass `hash:"134910450"`
+	shader_create_from_spirv                 gdextension.MethodForClass `hash:"342949005"`
+	shader_create_from_bytecode              gdextension.MethodForClass `hash:"1687031350"`
+	shader_create_placeholder                gdextension.MethodForClass `hash:"529393457"`
+	shader_get_vertex_input_attribute_mask   gdextension.MethodForClass `hash:"3917799429"`
+	uniform_buffer_create                    gdextension.MethodForClass `hash:"2089548973"`
+	storage_buffer_create                    gdextension.MethodForClass `hash:"1609052553"`
+	texture_buffer_create                    gdextension.MethodForClass `hash:"1470338698"`
+	uniform_set_create                       gdextension.MethodForClass `hash:"2280795797"`
+	uniform_set_is_valid                     gdextension.MethodForClass `hash:"3521089500"`
+	buffer_copy                              gdextension.MethodForClass `hash:"864257779"`
+	buffer_update                            gdextension.MethodForClass `hash:"3454956949"`
+	buffer_clear                             gdextension.MethodForClass `hash:"2452320800"`
+	buffer_get_data                          gdextension.MethodForClass `hash:"3101830688"`
+	buffer_get_data_async                    gdextension.MethodForClass `hash:"2370287848"`
+	buffer_get_device_address                gdextension.MethodForClass `hash:"3917799429"`
+	render_pipeline_create                   gdextension.MethodForClass `hash:"2385451958"`
+	render_pipeline_is_valid                 gdextension.MethodForClass `hash:"3521089500"`
+	compute_pipeline_create                  gdextension.MethodForClass `hash:"1448838280"`
+	compute_pipeline_is_valid                gdextension.MethodForClass `hash:"3521089500"`
+	raytracing_pipeline_create               gdextension.MethodForClass `hash:"1489129684"`
+	raytracing_pipeline_is_valid             gdextension.MethodForClass `hash:"3521089500"`
+	blas_create                              gdextension.MethodForClass `hash:"1010940044"`
+	tlas_create                              gdextension.MethodForClass `hash:"592780330"`
+	blas_build                               gdextension.MethodForClass `hash:"813180755"`
+	tlas_build                               gdextension.MethodForClass `hash:"261981775"`
+	hit_sbt_create                           gdextension.MethodForClass `hash:"2233757277"`
+	hit_sbt_set_pipeline                     gdextension.MethodForClass `hash:"3181288260"`
+	hit_sbt_range_alloc                      gdextension.MethodForClass `hash:"2722015314"`
+	hit_sbt_range_free                       gdextension.MethodForClass `hash:"3804025326"`
+	hit_sbt_range_update                     gdextension.MethodForClass `hash:"1332346675"`
+	screen_get_width                         gdextension.MethodForClass `hash:"1591665591"`
+	screen_get_height                        gdextension.MethodForClass `hash:"1591665591"`
+	screen_get_framebuffer_format            gdextension.MethodForClass `hash:"1591665591"`
+	draw_list_begin_for_screen               gdextension.MethodForClass `hash:"3988079995"`
+	draw_list_begin                          gdextension.MethodForClass `hash:"1317926357"`
+	draw_list_begin_split                    gdextension.MethodForClass `hash:"2406300660"`
+	draw_list_set_blend_constants            gdextension.MethodForClass `hash:"2878471219"`
+	draw_list_bind_render_pipeline           gdextension.MethodForClass `hash:"4040184819"`
+	draw_list_bind_uniform_set               gdextension.MethodForClass `hash:"749655778"`
+	draw_list_bind_vertex_array              gdextension.MethodForClass `hash:"4040184819"`
+	draw_list_bind_vertex_buffers_format     gdextension.MethodForClass `hash:"2008628980"`
+	draw_list_bind_index_array               gdextension.MethodForClass `hash:"4040184819"`
+	draw_list_set_push_constant              gdextension.MethodForClass `hash:"2772371345"`
+	draw_list_draw                           gdextension.MethodForClass `hash:"4230067973"`
+	draw_list_draw_indirect                  gdextension.MethodForClass `hash:"1092133571"`
+	draw_list_enable_scissor                 gdextension.MethodForClass `hash:"244650101"`
+	draw_list_disable_scissor                gdextension.MethodForClass `hash:"1286410249"`
+	draw_list_switch_to_next_pass            gdextension.MethodForClass `hash:"2455072627"`
+	draw_list_switch_to_next_pass_split      gdextension.MethodForClass `hash:"2865087369"`
+	draw_list_end                            gdextension.MethodForClass `hash:"3218959716"`
+	compute_list_begin                       gdextension.MethodForClass `hash:"2455072627"`
+	compute_list_bind_compute_pipeline       gdextension.MethodForClass `hash:"4040184819"`
+	compute_list_set_push_constant           gdextension.MethodForClass `hash:"2772371345"`
+	compute_list_bind_uniform_set            gdextension.MethodForClass `hash:"749655778"`
+	compute_list_dispatch                    gdextension.MethodForClass `hash:"4275841770"`
+	compute_list_dispatch_indirect           gdextension.MethodForClass `hash:"749655778"`
+	compute_list_add_barrier                 gdextension.MethodForClass `hash:"1286410249"`
+	compute_list_end                         gdextension.MethodForClass `hash:"3218959716"`
+	raytracing_list_begin                    gdextension.MethodForClass `hash:"2455072627"`
+	raytracing_list_bind_raytracing_pipeline gdextension.MethodForClass `hash:"4040184819"`
+	raytracing_list_set_push_constant        gdextension.MethodForClass `hash:"2772371345"`
+	raytracing_list_bind_uniform_set         gdextension.MethodForClass `hash:"749655778"`
+	raytracing_list_trace_rays               gdextension.MethodForClass `hash:"2559472681"`
+	raytracing_list_end                      gdextension.MethodForClass `hash:"3218959716"`
+	free_rid                                 gdextension.MethodForClass `hash:"2722037293"`
+	capture_timestamp                        gdextension.MethodForClass `hash:"83702148"`
+	get_captured_timestamps_count            gdextension.MethodForClass `hash:"3905245786"`
+	get_captured_timestamps_frame            gdextension.MethodForClass `hash:"3905245786"`
+	get_captured_timestamp_gpu_time          gdextension.MethodForClass `hash:"923996154"`
+	get_captured_timestamp_cpu_time          gdextension.MethodForClass `hash:"923996154"`
+	get_captured_timestamp_name              gdextension.MethodForClass `hash:"844755477"`
+	has_feature                              gdextension.MethodForClass `hash:"1772728326"`
+	limit_get                                gdextension.MethodForClass `hash:"1559202131"`
+	get_frame_delay                          gdextension.MethodForClass `hash:"3905245786"`
+	submit                                   gdextension.MethodForClass `hash:"3218959716"`
+	sync                                     gdextension.MethodForClass `hash:"3218959716"`
+	barrier                                  gdextension.MethodForClass `hash:"3718155691"`
+	full_barrier                             gdextension.MethodForClass `hash:"3218959716"`
+	create_local_device                      gdextension.MethodForClass `hash:"2846302423"`
+	set_resource_name                        gdextension.MethodForClass `hash:"2726140452"`
+	draw_command_begin_label                 gdextension.MethodForClass `hash:"1636512886"`
+	draw_command_insert_label                gdextension.MethodForClass `hash:"1636512886"`
+	draw_command_end_label                   gdextension.MethodForClass `hash:"3218959716"`
+	get_device_vendor_name                   gdextension.MethodForClass `hash:"201670096"`
+	get_device_name                          gdextension.MethodForClass `hash:"201670096"`
+	get_device_pipeline_cache_uuid           gdextension.MethodForClass `hash:"201670096"`
+	get_memory_usage                         gdextension.MethodForClass `hash:"251690689"`
+	get_driver_resource                      gdextension.MethodForClass `hash:"501815484"`
+	get_perf_report                          gdextension.MethodForClass `hash:"201670096"`
+	get_driver_and_device_memory_report      gdextension.MethodForClass `hash:"201670096"`
+	get_tracked_object_name                  gdextension.MethodForClass `hash:"844755477"`
+	get_tracked_object_type_count            gdextension.MethodForClass `hash:"3905245786"`
+	get_driver_total_memory                  gdextension.MethodForClass `hash:"3905245786"`
+	get_driver_allocation_count              gdextension.MethodForClass `hash:"3905245786"`
+	get_driver_memory_by_object_type         gdextension.MethodForClass `hash:"923996154"`
+	get_driver_allocs_by_object_type         gdextension.MethodForClass `hash:"923996154"`
+	get_device_total_memory                  gdextension.MethodForClass `hash:"3905245786"`
+	get_device_allocation_count              gdextension.MethodForClass `hash:"3905245786"`
+	get_device_memory_by_object_type         gdextension.MethodForClass `hash:"923996154"`
+	get_device_allocs_by_object_type         gdextension.MethodForClass `hash:"923996154"`
 }
 
 func init() {
@@ -455,7 +476,7 @@ func (self Instance) TextureIsDiscardable(texture RID.Texture) bool { //gd:Rende
 }
 
 /*
-Copies the 'from_texture' to 'to_texture' with the specified 'from_pos', 'to_pos' and 'size' coordinates. The Z axis of the 'from_pos', 'to_pos' and 'size' must be 0 for 2-dimensional textures. Source and destination mipmaps/layers must also be specified, with these parameters being 0 for textures without mipmaps or single-layer textures. Returns [@Globalscope.Ok] if the texture copy was successful or [@Globalscope.ErrInvalidParameter] otherwise.
+Copies the 'from_texture' to 'to_texture' with the specified 'from_pos', 'to_pos' and 'size' coordinates. For 2-dimensional textures, 'from_pos' and 'to_pos' must have a Z axis of 0, and 'size' must have a Z axis of 1. Source and destination mipmaps/layers must also be specified, with these parameters being 0 for textures without mipmaps or single-layer textures. Returns [@Globalscope.Ok] if the texture copy was successful or [@Globalscope.ErrInvalidParameter] otherwise.
 
 Note: 'from_texture' texture can't be copied while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [FinalActionContinue]) to copy this texture.
 
@@ -1171,6 +1192,164 @@ func (self Instance) ComputePipelineIsValid(compute_pipeline RID.ComputePipeline
 }
 
 /*
+Creates a new raytracing pipeline. It can be accessed with the RID that is returned.
+
+Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
+
+Each shader must provide the required stage. All stages must use compatible pipeline layouts. The pipeline selects the required stage from each shader.
+
+Input order defines stable indices used by the API:
+
+- 'raygen_shaders' is indexed in [RaytracingListTraceRays].
+
+- 'miss_shaders' is indexed in traceRayEXT.
+
+- 'hit_groups' is indexed in [HitSbtRangeUpdate].
+
+[FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
+[HitSbtRangeUpdate]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.HitSbtRangeUpdate
+[RaytracingListTraceRays]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.RaytracingListTraceRays
+*/
+func (self Instance) RaytracingPipelineCreate(raygen_shaders []RDPipelineShader.Instance, miss_shaders []RDPipelineShader.Instance, hit_groups []RDHitGroup.Instance, max_trace_recursion_depth int) RID.RaytracingPipeline { //gd:RenderingDevice.raytracing_pipeline_create
+	return RID.RaytracingPipeline(RID.RaytracingPipeline(Advanced(self).RaytracingPipelineCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineShader]](raygen_shaders), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineShader]](miss_shaders), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDHitGroup]](hit_groups), int64(max_trace_recursion_depth))))
+}
+
+/*
+Returns true if the raytracing pipeline specified by the 'raytracing_pipeline' RID is valid, false otherwise.
+*/
+func (self Instance) RaytracingPipelineIsValid(raytracing_pipeline RID.RaytracingPipeline) bool { //gd:RenderingDevice.raytracing_pipeline_is_valid
+	return bool(Advanced(self).RaytracingPipelineIsValid(RID.Any(raytracing_pipeline)))
+}
+
+/*
+Creates a new Bottom-Level Acceleration Structure (BLAS). It can be accessed with the RID that is returned.
+
+Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
+
+[FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
+*/
+func (self Instance) BlasCreate(geometries []RDAccelerationStructureGeometry.Instance, flags Rendering.AccelerationStructureFlagBits) RID.AccelerationStructure { //gd:RenderingDevice.blas_create
+	return RID.AccelerationStructure(RID.AccelerationStructure(Advanced(self).BlasCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDAccelerationStructureGeometry]](geometries), flags)))
+}
+
+/*
+Creates a new Top-Level Acceleration Structure (TLAS). It can be accessed with the RID that is returned.
+
+Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
+
+[FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
+*/
+func (self Instance) TlasCreate(max_instance_count int, flags Rendering.AccelerationStructureFlagBits) RID.AccelerationStructure { //gd:RenderingDevice.tlas_create
+	return RID.AccelerationStructure(RID.AccelerationStructure(Advanced(self).TlasCreate(int64(max_instance_count), flags)))
+}
+
+/*
+Builds the 'blas'.
+*/
+func (self Instance) BlasBuild(blas RID.AccelerationStructure) error { //gd:RenderingDevice.blas_build
+	return error(gd.ToError(Advanced(self).BlasBuild(RID.Any(blas))))
+}
+
+/*
+Builds the 'tlas'. The contents of previous builds are discarded.
+
+Any BLAS provided through the [RDAccelerationStructureInstance.Blas] member must already have been built using the [BlasBuild] method.
+
+The number of instances can be equal to or smaller than the maximum instance count provided in the [TlasCreate] method.
+
+Note: Freeing or rebuilding any of the provided BLASes after this method invalidates the TLAS and requires it to be rebuilt.
+
+[BlasBuild]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.BlasBuild
+[RDAccelerationStructureInstance.Blas]: https://pkg.go.dev/graphics.gd/classdb/RDAccelerationStructureInstance#Instance.Blas
+[TlasCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TlasCreate
+*/
+func (self Instance) TlasBuild(tlas RID.AccelerationStructure, instances []RDAccelerationStructureInstance.Instance) error { //gd:RenderingDevice.tlas_build
+	return error(gd.ToError(Advanced(self).TlasBuild(RID.Any(tlas), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDAccelerationStructureInstance]](instances))))
+}
+
+/*
+Creates a new hit shader binding table (SBT). It can be accessed with the RID that is returned.
+
+Once finished with your RID, you will want to free the RID using the RenderingDevice's [FreeRid] method.
+
+This will be freed automatically when the 'raytracing_pipeline' is freed.
+
+The hit SBT resizes itself as needed. 'initial_hit_group_capacity' is used to allocate the initial backing memory.
+
+[FreeRid]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.FreeRid
+*/
+func (self Instance) HitSbtCreate(raytracing_pipeline RID.RaytracingPipeline, initial_hit_group_capacity int) RID.ShaderBindingTable { //gd:RenderingDevice.hit_sbt_create
+	return RID.ShaderBindingTable(RID.ShaderBindingTable(Advanced(self).HitSbtCreate(RID.Any(raytracing_pipeline), int64(initial_hit_group_capacity))))
+}
+
+/*
+Sets a new 'raytracing_pipeline' for 'hit_sbt'.
+
+The new pipeline must be a superset of the previous one. Existing hit groups must keep the same order and new hit groups should be appended to the end. This preserves existing SBT entries.
+
+The previous pipeline must remain valid during the call.
+*/
+func (self Instance) HitSbtSetPipeline(hit_sbt RID.ShaderBindingTable, raytracing_pipeline RID.RaytracingPipeline) error { //gd:RenderingDevice.hit_sbt_set_pipeline
+	return error(gd.ToError(Advanced(self).HitSbtSetPipeline(RID.Any(hit_sbt), RID.Any(raytracing_pipeline))))
+}
+
+/*
+Allocates a contiguous range of SBT entries from 'hit_sbt'.
+
+The returned value should be assigned to [RDAccelerationStructureInstance.HitSbtRange].
+
+During ray traversal, hit group index is computed as:
+
+	(geometry index in [RDAccelerationStructureInstance.Blas])
+
+	× (SBT stride used in traceRayEXT)
+
+	+ (SBT offset used in traceRayEXT)
+
+	+ (range offset)
+
+'hit_group_count' must be large enough to cover all SBT entries that may be indexed by this equation. This typically corresponds to:
+
+	(geometry count in [RDAccelerationStructureInstance.Blas])
+
+	× (SBT stride used in traceRayEXT)
+
+The allocated range is uninitialized and must be filled using [HitSbtRangeUpdate].
+
+[HitSbtRangeUpdate]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.HitSbtRangeUpdate
+[RDAccelerationStructureInstance.HitSbtRange]: https://pkg.go.dev/graphics.gd/classdb/RDAccelerationStructureInstance#Instance.HitSbtRange
+
+[RDAccelerationStructureInstance.Blas]: https://pkg.go.dev/graphics.gd/classdb/RDAccelerationStructureInstance#Instance.Blas
+*/
+func (self Instance) HitSbtRangeAlloc(hit_sbt RID.ShaderBindingTable, hit_group_count int) int { //gd:RenderingDevice.hit_sbt_range_alloc
+	return int(int(Advanced(self).HitSbtRangeAlloc(RID.Any(hit_sbt), int64(hit_group_count))))
+}
+
+/*
+Frees a hit SBT range previously allocated with [HitSbtRangeAlloc].
+
+The range must not be in use by any acceleration structure after being freed.
+
+[HitSbtRangeAlloc]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.HitSbtRangeAlloc
+*/
+func (self Instance) HitSbtRangeFree(hit_sbt RID.ShaderBindingTable, arange int) error { //gd:RenderingDevice.hit_sbt_range_free
+	return error(gd.ToError(Advanced(self).HitSbtRangeFree(RID.Any(hit_sbt), int64(arange))))
+}
+
+/*
+Updates the contents of a hit SBT range.
+
+'hit_group_indices' specifies indices into the hit group array provided in [RaytracingPipelineCreate].
+
+The 'offset' parameter specifies where within the allocated range the writing begins. This allows partial updates of a range. However, the complete range must be fully initialized before it is used in a raytracing dispatch.
+
+[RaytracingPipelineCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.RaytracingPipelineCreate
+*/
+func (self Instance) HitSbtRangeUpdate(hit_sbt RID.ShaderBindingTable, arange int, offset int, hit_group_indices []int32) error { //gd:RenderingDevice.hit_sbt_range_update
+	return error(gd.ToError(Advanced(self).HitSbtRangeUpdate(RID.Any(hit_sbt), int64(arange), int64(offset), Packed.New(hit_group_indices...))))
+}
+
+/*
 Returns the window width matching the graphics API context for the given window ID (in pixels). Despite the parameter being named 'screen', this returns the window size. See also [ScreenGetHeight].
 
 Note: Only the main [RenderingDevice] returned by [RenderingServer.GetRenderingDevice] has a width. If called on a local [RenderingDevice], this method prints an error and returns [InvalidId].
@@ -1293,6 +1472,22 @@ The 'breadcrumb' parameter can be an arbitrary 32-bit integer that is useful to 
 
 It does not affect rendering behavior and can be set to 0. It is recommended to use [BreadcrumbMarker] enumerations for consistency but it's not required. It is also possible to use bitwise operations to add extra data. e.g.
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Rendering"
+		"graphics.gd/classdb/RenderingDevice"
+		"graphics.gd/variant/Color"
+		"graphics.gd/variant/RID"
+		"graphics.gd/variant/Rect2"
+	)
+
+	// Note: this doc snippet predates the 4.7 draw_flags-based draw_list_begin signature;
+	// translated to the current API.
+	func ExampleDrawListBegin(rd RenderingDevice.Instance, fb []RID.Framebuffer, clearColors []Color.RGBA) {
+		rd.MoreArgs().DrawListBegin(fb[0], Rendering.DrawClearColorAll, clearColors, 1.0, 0, Rect2.PositionSize{}, 0)
+	}
+
 [DrawListEnd]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.DrawListEnd
 [RDTextureFormat]: https://pkg.go.dev/graphics.gd/classdb/RDTextureFormat
 [TextureSetDiscardable]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureSetDiscardable
@@ -1323,6 +1518,22 @@ The 'draw_flags' indicates if the texture attachments of the framebuffer should 
 The 'breadcrumb' parameter can be an arbitrary 32-bit integer that is useful to diagnose GPU crashes. If Godot is built in dev or debug mode; when the GPU crashes Godot will dump all shaders that were being executed at the time of the crash and the breadcrumb is useful to diagnose what passes did those shaders belong to.
 
 It does not affect rendering behavior and can be set to 0. It is recommended to use [BreadcrumbMarker] enumerations for consistency but it's not required. It is also possible to use bitwise operations to add extra data. e.g.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Rendering"
+		"graphics.gd/classdb/RenderingDevice"
+		"graphics.gd/variant/Color"
+		"graphics.gd/variant/RID"
+		"graphics.gd/variant/Rect2"
+	)
+
+	// Note: this doc snippet predates the 4.7 draw_flags-based draw_list_begin signature;
+	// translated to the current API.
+	func ExampleDrawListBegin(rd RenderingDevice.Instance, fb []RID.Framebuffer, clearColors []Color.RGBA) {
+		rd.MoreArgs().DrawListBegin(fb[0], Rendering.DrawClearColorAll, clearColors, 1.0, 0, Rect2.PositionSize{}, 0)
+	}
 
 [DrawListEnd]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.DrawListEnd
 [RDTextureFormat]: https://pkg.go.dev/graphics.gd/classdb/RDTextureFormat
@@ -1565,6 +1776,121 @@ Finishes a list of compute commands created with the compute_* methods.
 */
 func (self Instance) ComputeListEnd() { //gd:RenderingDevice.compute_list_end
 	Advanced(self).ComputeListEnd()
+}
+
+/*
+Starts a list of raytracing commands. The returned value should be passed to other raytracing_list_* functions.
+
+Multiple raytracing lists cannot be created at the same time; you must finish the previous raytracing list first using [RaytracingListEnd].
+
+A simple raytracing operation might look like this (code is not a complete example):
+
+	package main
+
+	import (
+		"graphics.gd/classdb/RDAccelerationStructureGeometry"
+		"graphics.gd/classdb/RDAccelerationStructureInstance"
+		"graphics.gd/classdb/Rendering"
+		"graphics.gd/classdb/RenderingDevice"
+		"graphics.gd/variant/RID"
+	)
+
+	func ExampleRaytracingList(
+		rd RenderingDevice.Instance,
+		vertexBuffer RID.VertexBuffer, indexBuffer RID.IndexBuffer,
+		hitSbt RID.ShaderBindingTable, raytracingPipeline RID.RaytracingPipeline,
+		uniformSet RID.UniformSet, width, height int,
+	) {
+		if !rd.HasFeature(Rendering.SupportsRaytracingPipeline) {
+			return
+		}
+
+		// Create a BLAS for a mesh.
+		var geometry = RDAccelerationStructureGeometry.New()
+		geometry.SetFlags(Rendering.AccelerationStructureGeometryOpaqueBit)
+		geometry.SetVertexBuffer(RID.Any(vertexBuffer))
+		geometry.SetVertexStride(12)
+		geometry.SetVertexFormat(Rendering.DataFormatR32g32b32Sfloat)
+		geometry.SetVertexCount(3)
+		geometry.SetIndexBuffer(RID.Any(indexBuffer))
+		geometry.SetIndexCount(3)
+
+		var blas = rd.BlasCreate([]RDAccelerationStructureGeometry.Instance{geometry}, 0)
+
+		// Create TLAS.
+		var tlas = rd.TlasCreate(1, 0)
+
+		// Build acceleration structures.
+		rd.BlasBuild(blas)
+
+		var instance = RDAccelerationStructureInstance.New()
+		instance.SetBlas(RID.Any(blas))
+
+		var hitSbtRange = rd.HitSbtRangeAlloc(hitSbt, 1)
+		instance.SetHitSbtRange(hitSbtRange)
+		rd.HitSbtRangeUpdate(hitSbt, hitSbtRange, 0, []int32{0})
+
+		rd.TlasBuild(tlas, []RDAccelerationStructureInstance.Instance{instance})
+
+		var raylist = rd.RaytracingListBegin()
+
+		// Bind pipeline and uniforms.
+		rd.RaytracingListBindRaytracingPipeline(raylist, raytracingPipeline)
+		rd.RaytracingListBindUniformSet(raylist, uniformSet, 0)
+
+		// Trace rays.
+		rd.RaytracingListTraceRays(raylist, 0, hitSbt, width, height, 1)
+
+		rd.RaytracingListEnd()
+	}
+
+[RaytracingListEnd]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.RaytracingListEnd
+*/
+func (self Instance) RaytracingListBegin() int { //gd:RenderingDevice.raytracing_list_begin
+	return int(int(Advanced(self).RaytracingListBegin()))
+}
+
+/*
+Binds 'raytracing_pipeline' to the specified 'raytracing_list'.
+*/
+func (self Instance) RaytracingListBindRaytracingPipeline(raytracing_list int, raytracing_pipeline RID.RaytracingPipeline) { //gd:RenderingDevice.raytracing_list_bind_raytracing_pipeline
+	Advanced(self).RaytracingListBindRaytracingPipeline(int64(raytracing_list), RID.Any(raytracing_pipeline))
+}
+
+/*
+Sets the push constant data to 'buffer' for the specified 'raytracing_list'. The shader determines how this binary data is used. The buffer's size in bytes must also be specified in 'size_bytes' (this can be obtained by calling the [PackedByteArray.Size] method on the passed 'buffer').
+
+[PackedByteArray.Size]: https://pkg.go.dev/graphics.gd/classdb/PackedByteArray#Instance.Size
+*/
+func (self Instance) RaytracingListSetPushConstant(raytracing_list int, buffer []byte, size_bytes int) { //gd:RenderingDevice.raytracing_list_set_push_constant
+	Advanced(self).RaytracingListSetPushConstant(int64(raytracing_list), Packed.BytesFrom(buffer...), int64(size_bytes))
+}
+
+/*
+Binds the 'uniform_set' to this 'raytracing_list'.
+*/
+func (self Instance) RaytracingListBindUniformSet(raytracing_list int, uniform_set RID.UniformSet, set_index int) { //gd:RenderingDevice.raytracing_list_bind_uniform_set
+	Advanced(self).RaytracingListBindUniformSet(int64(raytracing_list), RID.Any(uniform_set), int64(set_index))
+}
+
+/*
+Initializes a raytracing dispatch for 'raytracing_list', launching 'width' × 'height' × 'depth' rays.
+
+'raygen_shader_index' selects the ray generation shader from the pipeline bound with [RaytracingListBindRaytracingPipeline].
+
+'hit_sbt' must use the same pipeline bound to 'raytracing_list'.
+
+[RaytracingListBindRaytracingPipeline]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.RaytracingListBindRaytracingPipeline
+*/
+func (self Instance) RaytracingListTraceRays(raytracing_list int, raygen_shader_index int, hit_sbt RID.ShaderBindingTable, width int, height int, depth int) { //gd:RenderingDevice.raytracing_list_trace_rays
+	Advanced(self).RaytracingListTraceRays(int64(raytracing_list), int64(raygen_shader_index), RID.Any(hit_sbt), int64(width), int64(height), int64(depth))
+}
+
+/*
+Finishes a list of raytracing commands created with the raytracing_* methods.
+*/
+func (self Instance) RaytracingListEnd() { //gd:RenderingDevice.raytracing_list_end
+	Advanced(self).RaytracingListEnd()
 }
 
 /*
@@ -2463,6 +2789,92 @@ func (self class) ComputePipelineIsValid(compute_pipeline RID.Any) bool { //gd:R
 	var ret = r_ret
 	return ret
 }
+func (self class) RaytracingPipelineCreate(raygen_shaders Array.Contains[[1]gdclass.RDPipelineShader], miss_shaders Array.Contains[[1]gdclass.RDPipelineShader], hit_groups Array.Contains[[1]gdclass.RDHitGroup], max_trace_recursion_depth int64) RID.Any { //gd:RenderingDevice.raytracing_pipeline_create
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.raytracing_pipeline_create, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeInt<<16), &struct {
+		raygen_shaders            gdextension.Array
+		miss_shaders              gdextension.Array
+		hit_groups                gdextension.Array
+		max_trace_recursion_depth int64
+	}{pointers.Get(gd.InternalArray(raygen_shaders)), pointers.Get(gd.InternalArray(miss_shaders)), pointers.Get(gd.InternalArray(hit_groups)), max_trace_recursion_depth})
+	var ret = r_ret
+	return ret
+}
+func (self class) RaytracingPipelineIsValid(raytracing_pipeline RID.Any) bool { //gd:RenderingDevice.raytracing_pipeline_is_valid
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.raytracing_pipeline_is_valid, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ raytracing_pipeline RID.Any }{raytracing_pipeline})
+	var ret = r_ret
+	return ret
+}
+func (self class) BlasCreate(geometries Array.Contains[[1]gdclass.RDAccelerationStructureGeometry], flags Rendering.AccelerationStructureFlagBits) RID.Any { //gd:RenderingDevice.blas_create
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.blas_create, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), &struct {
+		geometries gdextension.Array
+		flags      Rendering.AccelerationStructureFlagBits
+	}{pointers.Get(gd.InternalArray(geometries)), flags})
+	var ret = r_ret
+	return ret
+}
+func (self class) TlasCreate(max_instance_count int64, flags Rendering.AccelerationStructureFlagBits) RID.Any { //gd:RenderingDevice.tlas_create
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.tlas_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		max_instance_count int64
+		flags              Rendering.AccelerationStructureFlagBits
+	}{max_instance_count, flags})
+	var ret = r_ret
+	return ret
+}
+func (self class) BlasBuild(blas RID.Any) Error.Code { //gd:RenderingDevice.blas_build
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.blas_build, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ blas RID.Any }{blas})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) TlasBuild(tlas RID.Any, instances Array.Contains[[1]gdclass.RDAccelerationStructureInstance]) Error.Code { //gd:RenderingDevice.tlas_build
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.tlas_build, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), &struct {
+		tlas      RID.Any
+		instances gdextension.Array
+	}{tlas, pointers.Get(gd.InternalArray(instances))})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) HitSbtCreate(raytracing_pipeline RID.Any, initial_hit_group_capacity int64) RID.Any { //gd:RenderingDevice.hit_sbt_create
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.hit_sbt_create, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		raytracing_pipeline        RID.Any
+		initial_hit_group_capacity int64
+	}{raytracing_pipeline, initial_hit_group_capacity})
+	var ret = r_ret
+	return ret
+}
+func (self class) HitSbtSetPipeline(hit_sbt RID.Any, raytracing_pipeline RID.Any) Error.Code { //gd:RenderingDevice.hit_sbt_set_pipeline
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.hit_sbt_set_pipeline, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		hit_sbt             RID.Any
+		raytracing_pipeline RID.Any
+	}{hit_sbt, raytracing_pipeline})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) HitSbtRangeAlloc(hit_sbt RID.Any, hit_group_count int64) int64 { //gd:RenderingDevice.hit_sbt_range_alloc
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.hit_sbt_range_alloc, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		hit_sbt         RID.Any
+		hit_group_count int64
+	}{hit_sbt, hit_group_count})
+	var ret = r_ret
+	return ret
+}
+func (self class) HitSbtRangeFree(hit_sbt RID.Any, arange int64) Error.Code { //gd:RenderingDevice.hit_sbt_range_free
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.hit_sbt_range_free, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		hit_sbt RID.Any
+		arange  int64
+	}{hit_sbt, arange})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) HitSbtRangeUpdate(hit_sbt RID.Any, arange int64, offset int64, hit_group_indices Packed.Array[int32]) Error.Code { //gd:RenderingDevice.hit_sbt_range_update
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.hit_sbt_range_update, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), &struct {
+		hit_sbt           RID.Any
+		arange            int64
+		offset            int64
+		hit_group_indices gdextension.PackedArray[int32]
+	}{hit_sbt, arange, offset, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](hit_group_indices))})
+	var ret = Error.Code(r_ret)
+	return ret
+}
 func (self class) ScreenGetWidth(screen int64) int64 { //gd:RenderingDevice.screen_get_width
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.screen_get_width, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
@@ -2648,6 +3060,44 @@ func (self class) ComputeListAddBarrier(compute_list int64) { //gd:RenderingDevi
 }
 func (self class) ComputeListEnd() { //gd:RenderingDevice.compute_list_end
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_end, 0, &struct{}{})
+}
+func (self class) RaytracingListBegin() int64 { //gd:RenderingDevice.raytracing_list_begin
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.raytracing_list_begin, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) RaytracingListBindRaytracingPipeline(raytracing_list int64, raytracing_pipeline RID.Any) { //gd:RenderingDevice.raytracing_list_bind_raytracing_pipeline
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.raytracing_list_bind_raytracing_pipeline, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
+		raytracing_list     int64
+		raytracing_pipeline RID.Any
+	}{raytracing_list, raytracing_pipeline})
+}
+func (self class) RaytracingListSetPushConstant(raytracing_list int64, buffer Packed.Bytes, size_bytes int64) { //gd:RenderingDevice.raytracing_list_set_push_constant
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.raytracing_list_set_push_constant, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
+		raytracing_list int64
+		buffer          gdextension.PackedArray[byte]
+		size_bytes      int64
+	}{raytracing_list, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array))), size_bytes})
+}
+func (self class) RaytracingListBindUniformSet(raytracing_list int64, uniform_set RID.Any, set_index int64) { //gd:RenderingDevice.raytracing_list_bind_uniform_set
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.raytracing_list_bind_uniform_set, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12), &struct {
+		raytracing_list int64
+		uniform_set     RID.Any
+		set_index       int64
+	}{raytracing_list, uniform_set, set_index})
+}
+func (self class) RaytracingListTraceRays(raytracing_list int64, raygen_shader_index int64, hit_sbt RID.Any, width int64, height int64, depth int64) { //gd:RenderingDevice.raytracing_list_trace_rays
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.raytracing_list_trace_rays, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
+		raytracing_list     int64
+		raygen_shader_index int64
+		hit_sbt             RID.Any
+		width               int64
+		height              int64
+		depth               int64
+	}{raytracing_list, raygen_shader_index, hit_sbt, width, height, depth})
+}
+func (self class) RaytracingListEnd() { //gd:RenderingDevice.raytracing_list_end
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.raytracing_list_end, 0, &struct{}{})
 }
 func (self class) FreeRid(rid RID.Any) { //gd:RenderingDevice.free_rid
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})

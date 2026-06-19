@@ -2,7 +2,7 @@
 [gdscript]
 var tween = create_tween()
 for sprite in get_children():
-	tween.tween_property(sprite, "position", Vector2(0, 0), 1)
+	tween.tween_property(sprite, "position", Vector2(0, 0), 1.0)
 [/gdscript]
 [csharp]
 Tween tween = CreateTween();
@@ -19,9 +19,9 @@ import (
 	"graphics.gd/variant/Vector2"
 )
 
-func ExampleTweenObjects(node Node.Instance) {
+func ExampleTweenChildren(node Node.Instance) {
 	var tween = node.CreateTween()
 	for _, sprite := range node.GetChildren() {
-		PropertyTweener.Make(tween, sprite.AsObject(), "position", Vector2.Zero, 1.0)
+		PropertyTweener.Make(tween, sprite.AsObject(), "position", Vector2.New(0, 0), 1)
 	}
 }

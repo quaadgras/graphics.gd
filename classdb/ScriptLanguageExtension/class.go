@@ -164,7 +164,13 @@ type Interface interface {
 	DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) string
 	DebugGetCurrentStackInfo() []StackInfo
 	ReloadAllScripts()
+	// Reloads all 'scripts' from disk and the specifics of how that happens is [ScriptLanguageExtension] specific.
+	//
+	// [ScriptLanguageExtension]: https://pkg.go.dev/graphics.gd/classdb/ScriptLanguageExtension
 	ReloadScripts(scripts []Script.Instance, soft_reload bool)
+	// Reloads the given 'script' from disk and the specifics of how that happens is [ScriptLanguageExtension] specific.
+	//
+	// [ScriptLanguageExtension]: https://pkg.go.dev/graphics.gd/classdb/ScriptLanguageExtension
 	ReloadToolScript(script Script.Instance, soft_reload bool)
 	GetRecognizedExtensions() []string
 	GetPublicFunctions() [][]struct{}
@@ -883,6 +889,12 @@ func (Instance) _reload_all_scripts(impl func(ptr gdclass.Receiver)) (cb gd.Exte
 		impl(self)
 	}
 }
+
+/*
+Reloads all 'scripts' from disk and the specifics of how that happens is [ScriptLanguageExtension] specific.
+
+[ScriptLanguageExtension]: https://pkg.go.dev/graphics.gd/classdb/ScriptLanguageExtension
+*/
 func (Instance) _reload_scripts(impl func(ptr gdclass.Receiver, scripts []Script.Instance, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scripts = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0)))))
@@ -892,6 +904,12 @@ func (Instance) _reload_scripts(impl func(ptr gdclass.Receiver, scripts []Script
 		impl(self, gd.ArrayAs[[]Script.Instance](gd.InternalArray(scripts)), soft_reload)
 	}
 }
+
+/*
+Reloads the given 'script' from disk and the specifics of how that happens is [ScriptLanguageExtension] specific.
+
+[ScriptLanguageExtension]: https://pkg.go.dev/graphics.gd/classdb/ScriptLanguageExtension
+*/
 func (Instance) _reload_tool_script(impl func(ptr gdclass.Receiver, script Script.Instance, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var script = [1]gdclass.Script{gdclass.NewScript(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
@@ -2033,7 +2051,8 @@ const (
 	CodeCompletionKindNodePath  CodeCompletionKind = 7
 	CodeCompletionKindFilePath  CodeCompletionKind = 8
 	CodeCompletionKindPlainText CodeCompletionKind = 9
-	CodeCompletionKindMax       CodeCompletionKind = 10
+	CodeCompletionKindKeyword   CodeCompletionKind = 10
+	CodeCompletionKindMax       CodeCompletionKind = 11
 )
 
 type ClassName struct {

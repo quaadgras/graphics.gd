@@ -291,6 +291,23 @@ Register a reference to an object that will be erased if the "do" history is del
 
 When the "do" history is deleted, if the object is a [RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/Node2D"
+		"graphics.gd/classdb/UndoRedo"
+	)
+
+	func ExampleUndoRedoAddDoReference(self Node.Instance, undoRedo UndoRedo.Instance) {
+		var node = Node2D.New()
+		undoRedo.CreateAction("Add node")
+		undoRedo.AddDoMethod(func() { self.AddChild(node.AsNode()) })
+		undoRedo.AddDoReference(node.AsObject())
+		undoRedo.AddUndoMethod(func() { self.RemoveChild(node.AsNode()) })
+		undoRedo.CommitAction()
+	}
+
 [RefCounted]: https://pkg.go.dev/graphics.gd/variant/RefCounted
 */
 func (self Instance) AddDoReference(obj Object.Instance) { //gd:UndoRedo.add_do_reference
@@ -301,6 +318,22 @@ func (self Instance) AddDoReference(obj Object.Instance) { //gd:UndoRedo.add_do_
 Register a reference to an object that will be erased if the "undo" history is deleted. This is useful for objects added by the "undo" action and removed by the "do" action.
 
 When the "undo" history is deleted, if the object is a [RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/Node2D"
+		"graphics.gd/classdb/UndoRedo"
+	)
+
+	func ExampleUndoRedoAddUndoReference(self Node.Instance, node Node2D.Instance, undoRedo UndoRedo.Instance) {
+		undoRedo.CreateAction("Remove node")
+		undoRedo.AddDoMethod(func() { self.RemoveChild(node.AsNode()) })
+		undoRedo.AddUndoMethod(func() { self.AddChild(node.AsNode()) })
+		undoRedo.AddUndoReference(node.AsObject())
+		undoRedo.CommitAction()
+	}
 
 [RefCounted]: https://pkg.go.dev/graphics.gd/variant/RefCounted
 */
@@ -398,14 +431,14 @@ func (self Instance) GetVersion() int { //gd:UndoRedo.get_version
 }
 
 /*
-Redo the last action.
+Redo the last action. Returns false if there was no action to redo.
 */
 func (self Instance) Redo() bool { //gd:UndoRedo.redo
 	return bool(Advanced(self).Redo())
 }
 
 /*
-Undo the last action.
+Undo the last action. Returns false if there was no action to undo.
 */
 func (self Instance) Undo() bool { //gd:UndoRedo.undo
 	return bool(Advanced(self).Undo())

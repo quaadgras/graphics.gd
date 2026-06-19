@@ -160,12 +160,11 @@ func CreateCallback(callable func(args []any) any) JavaScriptObject.Instance { /
 }
 
 /*
-Returns true if the given 'javascript_object' is of type [[code]ArrayBuffer[/code]], [[code]DataView[/code]], or one of the many [typed array objects].
+Returns true if the given 'javascript_object' is of type [ArrayBuffer], [DataView], or one of the many [typed array objects].
 
+[ArrayBuffer]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
+[DataView]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView
 [typed array objects]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
-
-[[code]ArrayBuffer[/code]]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
-[[code]DataView[/code]]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView
 */
 func IsJsBuffer(javascript_object JavaScriptObject.Instance) bool { //gd:JavaScriptBridge.is_js_buffer
 	return bool(Advanced().IsJsBuffer(javascript_object))

@@ -491,6 +491,18 @@ A connection is represented as a data structure in the form of:
 	}
 
 For example, getting a connection at a given mouse position can be achieved like this:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/GraphEdit"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleGraphEditClosestConnection(self GraphEdit.Instance, mousePosition Vector2.XY) {
+		var connection = self.GetClosestConnectionAtPoint(mousePosition)
+		_ = connection
+	}
 */
 func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) Connection { //gd:GraphEdit.get_closest_connection_at_point
 	return Connection(gd.DictionaryAs[Connection](Advanced(self).GetClosestConnectionAtPoint(Vector2.XY(point), float64(4.0))))
@@ -510,6 +522,18 @@ A connection is represented as a data structure in the form of:
 	}
 
 For example, getting a connection at a given mouse position can be achieved like this:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/GraphEdit"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleGraphEditClosestConnection(self GraphEdit.Instance, mousePosition Vector2.XY) {
+		var connection = self.GetClosestConnectionAtPoint(mousePosition)
+		_ = connection
+	}
 */
 func (self MoreArgs) GetClosestConnectionAtPoint(point Vector2.XY, max_distance Float.X) Connection { //gd:GraphEdit.get_closest_connection_at_point
 	return Connection(gd.DictionaryAs[Connection](Advanced(self).GetClosestConnectionAtPoint(Vector2.XY(point), float64(max_distance))))
@@ -529,6 +553,25 @@ A connection is represented as a data structure in the form of:
 	}
 
 Example: Get all connections on a specific port:
+
+	package main
+
+	import "graphics.gd/classdb/GraphEdit"
+
+	func getConnectionListFromPort(self GraphEdit.Instance, node string, port int) []map[string]any {
+		var connections = self.GetConnectionListFromNode(node)
+		var result []map[string]any
+		for _, group := range connections {
+			for _, connection := range group {
+				if connection.FromNode == node && connection.FromPort == port {
+					result = append(result, map[string]any{"node": connection.ToNode, "port": connection.ToPort, "type": "left"})
+				} else if connection.ToNode == node && connection.ToPort == port {
+					result = append(result, map[string]any{"node": connection.FromNode, "port": connection.FromPort, "type": "right"})
+				}
+			}
+		}
+		return result
+	}
 */
 func (self Instance) GetConnectionListFromNode(node string) [][]Connection { //gd:GraphEdit.get_connection_list_from_node
 	return [][]Connection(gd.ArrayAs[[][]Connection](gd.InternalArray(Advanced(self).GetConnectionListFromNode(String.Name(String.From(node))))))

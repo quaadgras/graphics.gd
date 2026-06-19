@@ -158,13 +158,12 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.AudioEffectAmplify{gdclass.NewAudioEffectAmplify(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
 /*
-Amount of amplification in decibels. Positive values make the sound louder, negative values make it quieter. Value can range from -80 to 24.
+Amount of amplification in dB. Positive values make the sound louder, negative values make it quieter. Value can range from -80 to 24.
 */
 func (self Instance) VolumeDb() Float.X { //gd:AudioEffectAmplify.volume_db
 	return Float.X(Float.X(class(self).GetVolumeDb()))

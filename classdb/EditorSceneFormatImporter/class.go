@@ -316,7 +316,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.EditorSceneFormatImporter{gdclass.NewEditorSceneFormatImporter(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -431,12 +430,43 @@ func init() {
 	gdclass.Register("EditorSceneFormatImporter", func(ptr gdreference.Object) any { return Instance{gdclass.NewEditorSceneFormatImporter(ptr)} })
 }
 
-type Flags int
+type ImportFlags int64 //gd:EditorSceneFormatImporter.ImportFlags
 
-const ImportScene Flags = 1                        //gd:EditorSceneFormatImporter.IMPORT_SCENE
-const ImportAnimation Flags = 2                    //gd:EditorSceneFormatImporter.IMPORT_ANIMATION
-const ImportFailOnMissingDependencies Flags = 4    //gd:EditorSceneFormatImporter.IMPORT_FAIL_ON_MISSING_DEPENDENCIES
-const ImportGenerateTangentArrays Flags = 8        //gd:EditorSceneFormatImporter.IMPORT_GENERATE_TANGENT_ARRAYS
-const ImportUseNamedSkinBinds Flags = 16           //gd:EditorSceneFormatImporter.IMPORT_USE_NAMED_SKIN_BINDS
-const ImportDiscardMeshesAndMaterials Flags = 32   //gd:EditorSceneFormatImporter.IMPORT_DISCARD_MESHES_AND_MATERIALS
-const ImportForceDisableMeshCompression Flags = 64 //gd:EditorSceneFormatImporter.IMPORT_FORCE_DISABLE_MESH_COMPRESSION
+const (
+	// Unused flag (this has no effect when enabled).
+	ImportScene ImportFlags = 1
+	// Import animations from the 3D scene. When importing a scene as an [AnimationLibrary], this flag is always enabled.
+	//
+	// [AnimationLibrary]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary
+	ImportAnimation ImportFlags = 2
+	// Unused flag (this has no effect when enabled).
+	ImportFailOnMissingDependencies ImportFlags = 4
+	// If true, generate vertex tangents using [Mikktspace] if the input meshes don't have tangent data. When possible, it's recommended to let the 3D modeling software generate tangents on export instead of relying on this option. Tangents are required for correct display of normal and height maps, along with any material/shader features that require tangents.
+	//
+	// If you don't need material features that require tangents, disabling this can reduce output file size and speed up importing if the source 3D file doesn't contain tangents.
+	//
+	// [Mikktspace]: http://www.mikktspace.com/
+	ImportGenerateTangentArrays ImportFlags = 8
+	// If checked, use named [Skin]s for animation. The [MeshInstance3D] node contains 3 properties of relevance here: a skeleton node path pointing to the [Skeleton3D] node (usually ..), a mesh, and a skin:
+	//
+	// - The [Skeleton3D] node contains a list of bones with names, their pose and rest, a name, and a parent bone.
+	//
+	// - The mesh is all of the raw vertex data needed to display a mesh. In terms of the mesh, it knows how vertices are weight-painted and uses some internal numbering often imported from 3D modeling software.
+	//
+	// - The skin contains the information necessary to bind this mesh onto this Skeleton3D. For each of the internal bone IDs chosen by the 3D modeling software, it contains two things. Firstly, a matrix known as the Bind Pose Matrix, Inverse Bind Matrix, or IBM for short. Secondly, the [Skin] contains each bone's name (if this flag is enabled), or the bone's index within the [Skeleton3D] list (if this flag is disabled).
+	//
+	// Together, this information is enough to tell Godot how to use the bone poses in the [Skeleton3D] node to render the mesh from each [MeshInstance3D]. Note that each [MeshInstance3D] may share binds, as is common in models exported from Blender, or each [MeshInstance3D] may use a separate [Skin] object, as is common in models exported from other tools such as Maya.
+	//
+	// [MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+	// [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
+	// [Skin]: https://pkg.go.dev/graphics.gd/classdb/Skin
+	ImportUseNamedSkinBinds ImportFlags = 16
+	// Ignore meshes and materials on import. When importing a scene as an [AnimationLibrary], this flag is always enabled.
+	//
+	// [AnimationLibrary]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary
+	ImportDiscardMeshesAndMaterials ImportFlags = 32
+	// If true, mesh compression will not be used. Consider enabling if you notice blocky artifacts in your mesh normals or UVs, or if you have meshes that are larger than a few thousand meters in each direction.
+	ImportForceDisableMeshCompression ImportFlags = 64
+)
+
+type Flags int

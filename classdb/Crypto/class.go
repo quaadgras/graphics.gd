@@ -195,6 +195,19 @@ Generates a self-signed [X509Certificate] from the given [CryptoKey] and 'issuer
 
 A small example to generate an RSA key and an X509 self-signed certificate.
 
+	package main
+
+	import "graphics.gd/classdb/Crypto"
+
+	func ExampleCryptoSelfSigned() {
+		var crypto = Crypto.New()
+		// Generate 4096 bits RSA key.
+		var key = crypto.GenerateRsa(4096)
+		// Generate self-signed certificate using the given key.
+		var cert = crypto.MoreArgs().GenerateSelfSignedCertificate(key, "CN=example.com,O=A Game Company,C=IT", "", "")
+		_ = cert
+	}
+
 [CryptoKey]: https://pkg.go.dev/graphics.gd/classdb/CryptoKey
 [X509Certificate]: https://pkg.go.dev/graphics.gd/classdb/X509Certificate
 */
@@ -206,6 +219,19 @@ func (self Instance) GenerateSelfSignedCertificate(key CryptoKey.Instance) X509C
 Generates a self-signed [X509Certificate] from the given [CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
 
 A small example to generate an RSA key and an X509 self-signed certificate.
+
+	package main
+
+	import "graphics.gd/classdb/Crypto"
+
+	func ExampleCryptoSelfSigned() {
+		var crypto = Crypto.New()
+		// Generate 4096 bits RSA key.
+		var key = crypto.GenerateRsa(4096)
+		// Generate self-signed certificate using the given key.
+		var cert = crypto.MoreArgs().GenerateSelfSignedCertificate(key, "CN=example.com,O=A Game Company,C=IT", "", "")
+		_ = cert
+	}
 
 [CryptoKey]: https://pkg.go.dev/graphics.gd/classdb/CryptoKey
 [X509Certificate]: https://pkg.go.dev/graphics.gd/classdb/X509Certificate
@@ -306,7 +332,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Crypto{gdclass.NewCrypto(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

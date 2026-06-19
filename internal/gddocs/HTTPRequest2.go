@@ -7,7 +7,7 @@ func _ready():
 	http_request.request_completed.connect(self._http_request_completed)
 
 	# Perform the HTTP request. The URL below returns a PNG image as of writing.
-	var error = http_request.request("https://placehold.co/512")
+	var error = http_request.request("https://placehold.co/512.png")
 	if error != OK:
 		push_error("An error occurred in the HTTP request.")
 
@@ -37,7 +37,7 @@ public override void _Ready()
 	httpRequest.RequestCompleted += HttpRequestCompleted;
 
 	// Perform the HTTP request. The URL below returns a PNG image as of writing.
-	Error error = httpRequest.Request("https://placehold.co/512");
+	Error error = httpRequest.Request("https://placehold.co/512.png");
 	if (error != Error.Ok)
 	{
 		GD.PushError("An error occurred in the HTTP request.");
@@ -71,43 +71,42 @@ private void HttpRequestCompleted(long result, long responseCode, string[] heade
 package main
 
 import (
-	"errors"
-
-	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/HTTPRequest"
 	"graphics.gd/classdb/Image"
 	"graphics.gd/classdb/ImageTexture"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/TextureRect"
-	"graphics.gd/variant/Signal"
 )
 
-type ExampleDownloadImage struct {
-	Node.Extension[ExampleDownloadImage]
+type httpImageRequestExample struct {
+	Node.Extension[httpImageRequestExample]
 }
 
-func (n ExampleDownloadImage) Ready() {
-	var http_request = HTTPRequest.New()
-	n.AsNode().AddChild(http_request.AsNode())
-	http_request.AsHTTPRequest().OnRequestCompleted(func(result HTTPRequest.Result, response_code int, headers []string, body []byte) {
-		if result != HTTPRequest.ResultSuccess {
-			Engine.Raise(errors.New("Image couldn't be downloaded. Try a different image."))
-		}
-		var image = Image.New()
-		var err = image.LoadPngFromBuffer(body)
-		if err != nil {
-			Engine.Raise(errors.New("Couldn't load the image."))
-		}
-		var texture = ImageTexture.CreateFromImage(image)
+func (n httpImageRequestExample) Ready() {
+	// Create an HTTP request node and connect its completion signal.
+	var httpRequest = HTTPRequest.New()
+	n.AsNode().AddChild(httpRequest.AsNode())
+	httpRequest.OnRequestCompleted(n.httpRequestCompleted)
 
-		// Display the image in a TextureRect node.
-		var texture_rect = TextureRect.New()
-		texture_rect.AsTextureRect().SetTexture(texture.AsTexture2D())
-		n.AsNode().AddChild(texture_rect.AsNode())
-	}, Signal.OneShot)
 	// Perform the HTTP request. The URL below returns a PNG image as of writing.
-	var error = http_request.Request("https://placehold.co/512")
-	if error != nil {
-		panic("An error occurred in the HTTP request.")
+	if err := httpRequest.Request("https://placehold.co/512.png"); err != nil {
+		// An error occurred in the HTTP request.
 	}
+}
+
+// Called when the HTTP request is completed.
+func (n httpImageRequestExample) httpRequestCompleted(result HTTPRequest.Result, responseCode int, headers []string, body []byte) {
+	if result != HTTPRequest.ResultSuccess {
+		// Image couldn't be downloaded. Try a different image.
+	}
+	var image = Image.New()
+	if err := image.LoadPngFromBuffer(body); err != nil {
+		// Couldn't load the image.
+	}
+	var texture = ImageTexture.CreateFromImage(image)
+
+	// Display the image in a TextureRect node.
+	var textureRect = TextureRect.New()
+	n.AsNode().AddChild(textureRect.AsNode())
+	textureRect.SetTexture(texture.AsTexture2D())
 }

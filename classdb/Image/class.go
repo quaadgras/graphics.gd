@@ -136,8 +136,8 @@ var methods struct {
 	save_png_to_buffer     gdextension.MethodForClass `hash:"2362200018"`
 	save_jpg               gdextension.MethodForClass `hash:"2800019068"`
 	save_jpg_to_buffer     gdextension.MethodForClass `hash:"592235273"`
-	save_exr               gdextension.MethodForClass `hash:"3108122999"`
-	save_exr_to_buffer     gdextension.MethodForClass `hash:"3178917920"`
+	save_exr               gdextension.MethodForClass `hash:"2018602448"`
+	save_exr_to_buffer     gdextension.MethodForClass `hash:"1477518536"`
 	save_dds               gdextension.MethodForClass `hash:"2113323047"`
 	save_dds_to_buffer     gdextension.MethodForClass `hash:"2362200018"`
 	save_webp              gdextension.MethodForClass `hash:"2781156876"`
@@ -300,6 +300,8 @@ func (self MoreArgs) ResizeToPo2(square bool, interpolation Interpolation) { //g
 
 /*
 Resizes the image to the given 'width' and 'height'. New pixels are calculated using the 'interpolation' mode defined via [Interpolation] constants.
+
+Note: If the image's format is [FormatRgba4444], [FormatRgb565], or [FormatRgbe9995], it will be temporarily converted to either [FormatRgba8] or [FormatRgbah]. This can affect the quality of the resized image.
 */
 func (self Instance) Resize(width int, height int) { //gd:Image.resize
 	Advanced(self).Resize(int64(width), int64(height), 1)
@@ -307,6 +309,8 @@ func (self Instance) Resize(width int, height int) { //gd:Image.resize
 
 /*
 Resizes the image to the given 'width' and 'height'. New pixels are calculated using the 'interpolation' mode defined via [Interpolation] constants.
+
+Note: If the image's format is [FormatRgba4444], [FormatRgb565], or [FormatRgbe9995], it will be temporarily converted to either [FormatRgba8] or [FormatRgbah]. This can affect the quality of the resized image.
 */
 func (self MoreArgs) Resize(width int, height int, interpolation Interpolation) { //gd:Image.resize
 	Advanced(self).Resize(int64(width), int64(height), interpolation)
@@ -505,31 +509,47 @@ func (self MoreArgs) SaveJpgToBuffer(quality Float.X) []byte { //gd:Image.save_j
 }
 
 /*
-Saves the image as an EXR file to 'path'. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return [ErrUnavailable] if Godot was compiled without the TinyEXR module.
+Saves the image as an EXR file to 'path'. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. Set 'color_image' to true when saving a color image, such as a screenshot. Negative values will be included when 'color_image' is false, which may be useful for saving raw floating point data such as a lightmap that includes negative light information. Color component values in the resulting EXR file will not exceed 'max_linear_value' if 'max_linear_value' is not negative. This function will return [ErrUnavailable] if Godot was compiled without the TinyEXR module.
+
+When saving screenshots of a project that uses HDR output, use [Window.GetOutputMaxLinearValue] for 'max_linear_value'.
+
+[Window.GetOutputMaxLinearValue]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetOutputMaxLinearValue
 */
 func (self Instance) SaveExr(path string) error { //gd:Image.save_exr
-	return error(gd.ToError(Advanced(self).SaveExr(String.From(path), false)))
+	return error(gd.ToError(Advanced(self).SaveExr(String.From(path), false, false, float64(-1.0))))
 }
 
 /*
-Saves the image as an EXR file to 'path'. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return [ErrUnavailable] if Godot was compiled without the TinyEXR module.
+Saves the image as an EXR file to 'path'. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. Set 'color_image' to true when saving a color image, such as a screenshot. Negative values will be included when 'color_image' is false, which may be useful for saving raw floating point data such as a lightmap that includes negative light information. Color component values in the resulting EXR file will not exceed 'max_linear_value' if 'max_linear_value' is not negative. This function will return [ErrUnavailable] if Godot was compiled without the TinyEXR module.
+
+When saving screenshots of a project that uses HDR output, use [Window.GetOutputMaxLinearValue] for 'max_linear_value'.
+
+[Window.GetOutputMaxLinearValue]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetOutputMaxLinearValue
 */
-func (self MoreArgs) SaveExr(path string, grayscale bool) error { //gd:Image.save_exr
-	return error(gd.ToError(Advanced(self).SaveExr(String.From(path), grayscale)))
+func (self MoreArgs) SaveExr(path string, grayscale bool, color_image bool, max_linear_value Float.X) error { //gd:Image.save_exr
+	return error(gd.ToError(Advanced(self).SaveExr(String.From(path), grayscale, color_image, float64(max_linear_value))))
 }
 
 /*
-Saves the image as an EXR file to a byte array. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return an empty byte array if Godot was compiled without the TinyEXR module.
+Saves the image as an EXR file to a byte array. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. Set 'color_image' to true when saving a color image, such as a screenshot. Negative values will be included when 'color_image' is false, which may be useful for saving raw floating point data such as a lightmap that includes negative light information. Color component values in the resulting EXR file will not exceed 'max_linear_value' if 'max_linear_value' is not negative. This function will return an empty byte array if Godot was compiled without the TinyEXR module.
+
+When saving screenshots of a project that uses HDR output, use [Window.GetOutputMaxLinearValue] for 'max_linear_value'.
+
+[Window.GetOutputMaxLinearValue]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetOutputMaxLinearValue
 */
 func (self Instance) SaveExrToBuffer() []byte { //gd:Image.save_exr_to_buffer
-	return []byte(Advanced(self).SaveExrToBuffer(false).Bytes())
+	return []byte(Advanced(self).SaveExrToBuffer(false, false, float64(-1.0)).Bytes())
 }
 
 /*
-Saves the image as an EXR file to a byte array. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return an empty byte array if Godot was compiled without the TinyEXR module.
+Saves the image as an EXR file to a byte array. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. Set 'color_image' to true when saving a color image, such as a screenshot. Negative values will be included when 'color_image' is false, which may be useful for saving raw floating point data such as a lightmap that includes negative light information. Color component values in the resulting EXR file will not exceed 'max_linear_value' if 'max_linear_value' is not negative. This function will return an empty byte array if Godot was compiled without the TinyEXR module.
+
+When saving screenshots of a project that uses HDR output, use [Window.GetOutputMaxLinearValue] for 'max_linear_value'.
+
+[Window.GetOutputMaxLinearValue]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetOutputMaxLinearValue
 */
-func (self MoreArgs) SaveExrToBuffer(grayscale bool) []byte { //gd:Image.save_exr_to_buffer
-	return []byte(Advanced(self).SaveExrToBuffer(grayscale).Bytes())
+func (self MoreArgs) SaveExrToBuffer(grayscale bool, color_image bool, max_linear_value Float.X) []byte { //gd:Image.save_exr_to_buffer
+	return []byte(Advanced(self).SaveExrToBuffer(grayscale, color_image, float64(max_linear_value)).Bytes())
 }
 
 /*
@@ -1083,7 +1103,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Image{gdclass.NewImage(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -1250,16 +1269,22 @@ func (self class) SaveJpgToBuffer(quality float64) Packed.Bytes { //gd:Image.sav
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
-func (self class) SaveExr(path String.Readable, grayscale bool) Error.Code { //gd:Image.save_exr
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_exr, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
-		path      gdextension.String
-		grayscale bool
-	}{pointers.Get(gd.InternalString(path)), grayscale})
+func (self class) SaveExr(path String.Readable, grayscale bool, color_image bool, max_linear_value float64) Error.Code { //gd:Image.save_exr
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_exr, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeFloat<<16), &struct {
+		path             gdextension.String
+		grayscale        bool
+		color_image      bool
+		max_linear_value float64
+	}{pointers.Get(gd.InternalString(path)), grayscale, color_image, max_linear_value})
 	var ret = Error.Code(r_ret)
 	return ret
 }
-func (self class) SaveExrToBuffer(grayscale bool) Packed.Bytes { //gd:Image.save_exr_to_buffer
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.save_exr_to_buffer, gdextension.SizePackedArray|(gdextension.SizeBool<<4), &struct{ grayscale bool }{grayscale})
+func (self class) SaveExrToBuffer(grayscale bool, color_image bool, max_linear_value float64) Packed.Bytes { //gd:Image.save_exr_to_buffer
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.save_exr_to_buffer, gdextension.SizePackedArray|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12), &struct {
+		grayscale        bool
+		color_image      bool
+		max_linear_value float64
+	}{grayscale, color_image, max_linear_value})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }

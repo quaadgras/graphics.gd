@@ -353,12 +353,13 @@ func (self Instance) SetLightProjector(value Texture2D.Instance) Instance { //gd
 }
 
 /*
-The size of the light in Godot units. Only available for [OmniLight3D]s and [SpotLight3D]s. Increasing this value will make the light fade out slower and shadows appear blurrier (also called percentage-closer soft shadows, or PCSS). This can be used to simulate area lights to an extent. Increasing this value above 0.0 for lights with shadows enabled will have a noticeable performance cost due to PCSS.
+The simulated size of the light in Godot units, affecting shading and shadows. For [OmniLight3D]s and [SpotLight3D]s, increasing this value simulates a spherical area light, expanding the size of specular highlights. If shadows are enabled, a penumbra is rendered, making shadows appear blurrier. For [AreaLight3D]s, only the shadows are affected. Penumbras are simulated with percentage-closer soft shadows, or PCSS, which has a noticeable performance cost for values above 0.0.
 
 Note: [LightSize] is not affected by [Node3D.Scale] (the light's scale or its parent's scale).
 
 Note: PCSS for positional lights is only supported in the Forward+ and Mobile rendering methods, not Compatibility.
 
+[AreaLight3D]: https://pkg.go.dev/graphics.gd/classdb/AreaLight3D
 [LightSize]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightSize
 [Node3D.Scale]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Scale
 [OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D

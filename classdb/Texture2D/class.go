@@ -109,10 +109,13 @@ type Instance [1]gdclass.Texture2D
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
+	get_format         gdextension.MethodForClass `hash:"3847873762"`
+	get_mipmap_count   gdextension.MethodForClass `hash:"3905245786"`
 	get_width          gdextension.MethodForClass `hash:"3905245786"`
 	get_height         gdextension.MethodForClass `hash:"3905245786"`
 	get_size           gdextension.MethodForClass `hash:"3341600327"`
 	has_alpha          gdextension.MethodForClass `hash:"36873697"`
+	has_mipmaps        gdextension.MethodForClass `hash:"36873697"`
 	draw               gdextension.MethodForClass `hash:"2729649137"`
 	draw_rect          gdextension.MethodForClass `hash:"3499451691"`
 	draw_rect_region   gdextension.MethodForClass `hash:"2963678660"`
@@ -148,6 +151,18 @@ type Any interface {
 }
 
 type Interface interface {
+	// Called when [GetImage] is called.
+	//
+	// [GetImage]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.GetImage
+	GetImage() Image.Instance
+	// Called when [GetFormat] is called.
+	//
+	// [GetFormat]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.GetFormat
+	GetFormat() Image.Format
+	// Called when [GetMipmapCount] is called.
+	//
+	// [GetMipmapCount]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.GetMipmapCount
+	GetMipmapCount() int
 	// Called when the [Texture2D]'s width is queried.
 	//
 	// [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
@@ -164,6 +179,10 @@ type Interface interface {
 	//
 	// [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 	HasAlpha() bool
+	// Called when [HasMipmaps] is called.
+	//
+	// [HasMipmaps]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.HasMipmaps
+	HasMipmaps() bool
 	// Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem], with the top-left offset specified in 'pos'. 'modulate' specifies a multiplier for the colors being drawn, while 'transpose' specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 	//
 	// Note: This is only used in 2D rendering, not 3D.
@@ -192,6 +211,15 @@ type Implementation = implementation
 
 type implementation struct{}
 
+func (self implementation) GetImage() (_ Image.Instance) {
+	return
+}
+func (self implementation) GetFormat() (_ Image.Format) {
+	return
+}
+func (self implementation) GetMipmapCount() (_ int) {
+	return
+}
 func (self implementation) GetWidth() (_ int) {
 	return
 }
@@ -204,11 +232,58 @@ func (self implementation) IsPixelOpaque(x int, y int) (_ bool) {
 func (self implementation) HasAlpha() (_ bool) {
 	return
 }
+func (self implementation) HasMipmaps() (_ bool) {
+	return
+}
 func (self implementation) Draw(to_canvas_item RID.CanvasItem, pos Vector2.XY, modulate Color.RGBA, transpose bool) {
 }
 func (self implementation) DrawRect(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) {
 }
 func (self implementation) DrawRectRegion(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) {
+}
+
+/*
+Called when [GetImage] is called.
+
+[GetImage]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.GetImage
+*/
+func (Instance) _get_image(impl func(ptr gdclass.Receiver) Image.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := gdreference.EndObject(gdclass.GetImage(ret[0])[0])
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Called when [GetFormat] is called.
+
+[GetFormat]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.GetFormat
+*/
+func (Instance) _get_format(impl func(ptr gdclass.Receiver) Image.Format) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Called when [GetMipmapCount] is called.
+
+[GetMipmapCount]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.GetMipmapCount
+*/
+func (Instance) _get_mipmap_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, int64(ret))
+	}
 }
 
 /*
@@ -258,6 +333,19 @@ Called when the presence of an alpha channel in the [Texture2D] is queried.
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 func (Instance) _has_alpha(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Called when [HasMipmaps] is called.
+
+[HasMipmaps]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.HasMipmaps
+*/
+func (Instance) _has_mipmaps(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -326,6 +414,20 @@ func (Instance) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item
 }
 
 /*
+Returns the image format of the texture.
+*/
+func (self Instance) GetFormat() Image.Format { //gd:Texture2D.get_format
+	return Image.Format(Advanced(self).GetFormat())
+}
+
+/*
+Returns the number of mipmaps of the texture.
+*/
+func (self Instance) GetMipmapCount() int { //gd:Texture2D.get_mipmap_count
+	return int(int(Advanced(self).GetMipmapCount()))
+}
+
+/*
 Returns the texture width in pixels.
 */
 func (self Instance) GetWidth() int { //gd:Texture2D.get_width
@@ -353,6 +455,13 @@ Returns true if this [Texture2D] has an alpha channel.
 */
 func (self Instance) HasAlpha() bool { //gd:Texture2D.has_alpha
 	return bool(Advanced(self).HasAlpha())
+}
+
+/*
+Returns true if the texture has mipmaps.
+*/
+func (self Instance) HasMipmaps() bool { //gd:Texture2D.has_mipmaps
+	return bool(Advanced(self).HasMipmaps())
 }
 
 /*
@@ -477,9 +586,34 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Texture2D{gdclass.NewTexture2D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
+}
+func (class) _get_image(impl func(ptr gdclass.Receiver) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := gdreference.EndObject(gdclass.GetImage(ret[0])[0])
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+func (class) _get_format(impl func(ptr gdclass.Receiver) Image.Format) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+func (class) _get_mipmap_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
 }
 func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -505,6 +639,13 @@ func (class) _is_pixel_opaque(impl func(ptr gdclass.Receiver, x int64, y int64) 
 	}
 }
 func (class) _has_alpha(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+func (class) _has_mipmaps(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -545,6 +686,16 @@ func (class) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item RI
 	}
 }
 
+func (self class) GetFormat() Image.Format { //gd:Texture2D.get_format
+	var r_ret = noescape.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetMipmapCount() int64 { //gd:Texture2D.get_mipmap_count
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mipmap_count, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) GetWidth() int64 { //gd:Texture2D.get_width
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
@@ -562,6 +713,11 @@ func (self class) GetSize() Vector2.XY { //gd:Texture2D.get_size
 }
 func (self class) HasAlpha() bool { //gd:Texture2D.has_alpha
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_alpha, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) HasMipmaps() bool { //gd:Texture2D.has_mipmaps
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_mipmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -617,6 +773,12 @@ func (o Instance) AsRefCounted() ie.RC                { return *(*ie.RC)(ie.As(&
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
+	case "_get_image":
+		return reflect.ValueOf(self._get_image)
+	case "_get_format":
+		return reflect.ValueOf(self._get_format)
+	case "_get_mipmap_count":
+		return reflect.ValueOf(self._get_mipmap_count)
 	case "_get_width":
 		return reflect.ValueOf(self._get_width)
 	case "_get_height":
@@ -625,6 +787,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._is_pixel_opaque)
 	case "_has_alpha":
 		return reflect.ValueOf(self._has_alpha)
+	case "_has_mipmaps":
+		return reflect.ValueOf(self._has_mipmaps)
 	case "_draw":
 		return reflect.ValueOf(self._draw)
 	case "_draw_rect":
@@ -638,6 +802,12 @@ func (self class) Virtual(name string) reflect.Value {
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
+	case "_get_image":
+		return reflect.ValueOf(self._get_image)
+	case "_get_format":
+		return reflect.ValueOf(self._get_format)
+	case "_get_mipmap_count":
+		return reflect.ValueOf(self._get_mipmap_count)
 	case "_get_width":
 		return reflect.ValueOf(self._get_width)
 	case "_get_height":
@@ -646,6 +816,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._is_pixel_opaque)
 	case "_has_alpha":
 		return reflect.ValueOf(self._has_alpha)
+	case "_has_mipmaps":
+		return reflect.ValueOf(self._has_mipmaps)
 	case "_draw":
 		return reflect.ValueOf(self._draw)
 	case "_draw_rect":

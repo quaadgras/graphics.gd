@@ -144,6 +144,11 @@ type Any interface {
 	AsVoxelGIData() Instance
 }
 
+/*
+Initializes this [VoxelGIData] with the specified data. 'octree_cells' must be a multiple of 32. 'octree_cells' must be double the size of 'data_cells'. The allocated data can be retrieved later using the various getter methods.
+
+[VoxelGIData]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData
+*/
 func (self Instance) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3.XYZ, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) { //gd:VoxelGIData.allocate
 	Advanced(self).Allocate(Transform3D.BasisOrigin(to_cell_xform), AABB.PositionSize(aabb), Vector3.XYZ(octree_size), Packed.BytesFrom(octree_cells...), Packed.BytesFrom(data_cells...), Packed.BytesFrom(distance_field...), Packed.New(level_counts...))
 }
@@ -161,18 +166,49 @@ Note: If the size was modified without baking the VoxelGI data, then the value o
 func (self Instance) GetBounds() AABB.PositionSize { //gd:VoxelGIData.get_bounds
 	return AABB.PositionSize(Advanced(self).GetBounds())
 }
+
+/*
+Returns the baked octree size for this [VoxelGIData], which corresponds to the number of subdivisions per axis. This can be viewed in the editor by hovering the Bake VoxelGI button at the top of the 3D editor viewport when a [VoxelGI] node is selected and looking at the Subdivisions field in the tooltip.
+
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+[VoxelGIData]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData
+*/
 func (self Instance) GetOctreeSize() Vector3.XYZ { //gd:VoxelGIData.get_octree_size
 	return Vector3.XYZ(Advanced(self).GetOctreeSize())
 }
+
+/*
+Returns the baked cell transform for this [VoxelGIData].
+
+[VoxelGIData]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData
+*/
 func (self Instance) GetToCellXform() Transform3D.BasisOrigin { //gd:VoxelGIData.get_to_cell_xform
 	return Transform3D.BasisOrigin(Advanced(self).GetToCellXform())
 }
+
+/*
+Returns the baked octree cell data for this [VoxelGIData].
+
+[VoxelGIData]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData
+*/
 func (self Instance) GetOctreeCells() []byte { //gd:VoxelGIData.get_octree_cells
 	return []byte(Advanced(self).GetOctreeCells().Bytes())
 }
+
+/*
+Returns the baked cell data for this [VoxelGIData].
+
+[VoxelGIData]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData
+*/
 func (self Instance) GetDataCells() []byte { //gd:VoxelGIData.get_data_cells
 	return []byte(Advanced(self).GetDataCells().Bytes())
 }
+
+/*
+Returns the baked level counts for this [VoxelGIData].
+
+[VoxelGIData]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData
+*/
 func (self Instance) GetLevelCounts() []int32 { //gd:VoxelGIData.get_level_counts
 	return []int32(slices.Collect(Advanced(self).GetLevelCounts().Values()))
 }
@@ -215,7 +251,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.VoxelGIData{gdclass.NewVoxelGIData(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

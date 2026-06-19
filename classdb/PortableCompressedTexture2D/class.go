@@ -106,7 +106,6 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	create_from_image                 gdextension.MethodForClass `hash:"3679243433"`
-	get_format                        gdextension.MethodForClass `hash:"3847873762"`
 	get_compression_mode              gdextension.MethodForClass `hash:"3265612739"`
 	set_size_override                 gdextension.MethodForClass `hash:"743155724"`
 	get_size_override                 gdextension.MethodForClass `hash:"3341600327"`
@@ -164,13 +163,6 @@ If lossy compression is requested, the quality setting can optionally be provide
 */
 func (self MoreArgs) CreateFromImage(image Image.Instance, compression_mode CompressionMode, normal_map bool, lossy_quality Float.X) { //gd:PortableCompressedTexture2D.create_from_image
 	Advanced(self).CreateFromImage(image, compression_mode, normal_map, float64(lossy_quality))
-}
-
-/*
-Return the image format used (valid after initialized).
-*/
-func (self Instance) GetFormat() Image.Format { //gd:PortableCompressedTexture2D.get_format
-	return Image.Format(Advanced(self).GetFormat())
 }
 
 /*
@@ -249,7 +241,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.PortableCompressedTexture2D{gdclass.NewPortableCompressedTexture2D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -291,11 +282,6 @@ func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode Compr
 		normal_map       bool
 		lossy_quality    float64
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0])), compression_mode, normal_map, lossy_quality})
-}
-func (self class) GetFormat() Image.Format { //gd:PortableCompressedTexture2D.get_format
-	var r_ret = jumponly.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
-	var ret = r_ret
-	return ret
 }
 func (self class) GetCompressionMode() CompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
 	var r_ret = jumponly.Call[CompressionMode](gd.ObjectChecked(self.AsObject()), methods.get_compression_mode, gdextension.SizeInt, &struct{}{})

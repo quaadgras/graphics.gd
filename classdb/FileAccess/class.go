@@ -378,7 +378,7 @@ func (self Instance) SeekTo(position int) { //gd:FileAccess.seek
 /*
 Sets the file cursor to the specified position in bytes, from the end of the file. This changes the value returned by [GetPosition].
 
-Note: This is an offset, so you should use negative numbers otherwise the file cursor will be at the end of the file.
+Note: This is an offset, so you should use negative numbers otherwise the file cursor will move past the end of the file.
 
 [GetPosition]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetPosition
 */
@@ -389,7 +389,7 @@ func (self Instance) SeekEnd() { //gd:FileAccess.seek_end
 /*
 Sets the file cursor to the specified position in bytes, from the end of the file. This changes the value returned by [GetPosition].
 
-Note: This is an offset, so you should use negative numbers otherwise the file cursor will be at the end of the file.
+Note: This is an offset, so you should use negative numbers otherwise the file cursor will move past the end of the file.
 
 [GetPosition]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetPosition
 */
@@ -418,6 +418,16 @@ func (self Instance) GetLength() int { //gd:FileAccess.get_length
 Returns true if the file cursor has already read past the end of the file.
 
 Note: eof_reached() == false cannot be used to check whether there is more data available. To loop while there is more data available, use:
+
+	package main
+
+	import "graphics.gd/classdb/FileAccess"
+
+	func ExampleFileAccessEofReached(file FileAccess.Instance) {
+		for file.GetPosition() < file.GetLength() {
+			// Read data
+		}
+	}
 */
 func (self Instance) EofReached() bool { //gd:FileAccess.eof_reached
 	return bool(Advanced(self).EofReached())
@@ -613,6 +623,26 @@ Note: The 'value' should lie in the interval [0, 2^16 - 1]. Any other value will
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 
 To store a signed integer, use [Store64] or store a signed integer from the interval [-2^15, 2^15 - 1] (i.e. keeping one bit for the signedness) and compute its sign manually when reading. For example:
+
+	package main
+
+	import "graphics.gd/classdb/FileAccess"
+
+	func ExampleFileAccessStore16() {
+		const MAX_15B = 1 << 15
+		const MAX_16B = 1 << 16
+		unsigned16ToSigned := func(unsigned int) int { return (unsigned+MAX_15B)%MAX_16B - MAX_15B }
+
+		var f = FileAccess.Open("user://file.dat", FileAccess.WriteRead)
+		f.Store16(-42)                                  // This wraps around and stores 65494 (2^16 - 42).
+		f.Store16(121)                                  // In bounds, will store 121.
+		f.SeekTo(0)                                     // Go back to start to read the stored value.
+		var read1 = f.Get16()                           // 65494
+		var read2 = f.Get16()                           // 121
+		var converted1 = unsigned16ToSigned(int(read1)) // -42
+		var converted2 = unsigned16ToSigned(int(read2)) // 121
+		_, _ = converted1, converted2
+	}
 
 [Store64]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store64
 */
@@ -1035,7 +1065,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.FileAccess{gdclass.NewFileAccess(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

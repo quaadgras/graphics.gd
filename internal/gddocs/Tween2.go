@@ -1,8 +1,8 @@
 /*
 [gdscript]
 var tween = get_tree().create_tween()
-tween.tween_property($Sprite, "modulate", Color.RED, 1).set_trans(Tween.TRANS_SINE)
-tween.tween_property($Sprite, "scale", Vector2(), 1).set_trans(Tween.TRANS_BOUNCE)
+tween.tween_property($Sprite, "modulate", Color.RED, 1.0).set_trans(Tween.TRANS_SINE)
+tween.tween_property($Sprite, "scale", Vector2(), 1.0).set_trans(Tween.TRANS_BOUNCE)
 tween.tween_callback($Sprite.queue_free)
 [/gdscript]
 [csharp]

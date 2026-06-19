@@ -185,14 +185,17 @@ type Any interface {
 }
 
 /*
-Returns a list of intersecting [PhysicsBody3D]s and [GridMap]s. The overlapping body's [CollisionObject3D.CollisionLayer] must be part of this area's [CollisionObject3D.CollisionMask] in order to be detected.
+Returns a list of intersecting [PhysicsBody3D]s, [SoftBody3D]s, and [GridMap]s. The overlapping body's [CollisionObject3D.CollisionLayer] must be part of this area's [CollisionObject3D.CollisionMask] in order to be detected.
 
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
+
+Note: Godot Physics does not support reporting overlaps with [SoftBody3D], so will not return any such bodies.
 
 [CollisionObject3D.CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionLayer
 [CollisionObject3D.CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionMask
 [GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
+[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
 func (self Instance) GetOverlappingBodies() []Node3D.Instance { //gd:Area3D.get_overlapping_bodies
 	return []Node3D.Instance(gd.ArrayAs[[]Node3D.Instance](gd.InternalArray(Advanced(self).GetOverlappingBodies())))
@@ -212,14 +215,17 @@ func (self Instance) GetOverlappingAreas() []Instance { //gd:Area3D.get_overlapp
 }
 
 /*
-Returns true if intersecting any [PhysicsBody3D]s or [GridMap]s, otherwise returns false. The overlapping body's [CollisionObject3D.CollisionLayer] must be part of this area's [CollisionObject3D.CollisionMask] in order to be detected.
+Returns true if intersecting any [PhysicsBody3D]s, [SoftBody3D]s, or [GridMap]s, otherwise returns false. The overlapping body's [CollisionObject3D.CollisionLayer] must be part of this area's [CollisionObject3D.CollisionMask] in order to be detected.
 
 For performance reasons (collisions are all processed at the same time) the list of overlapping bodies is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
+
+Note: Godot Physics does not support reporting overlaps with [SoftBody3D], so will not consider such bodies.
 
 [CollisionObject3D.CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionLayer
 [CollisionObject3D.CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.CollisionMask
 [GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
+[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
 func (self Instance) HasOverlappingBodies() bool { //gd:Area3D.has_overlapping_bodies
 	return bool(Advanced(self).HasOverlappingBodies())
@@ -241,13 +247,16 @@ func (self Instance) HasOverlappingAreas() bool { //gd:Area3D.has_overlapping_ar
 /*
 Returns true if the given physics body intersects or overlaps this [Area3D], false otherwise.
 
+'body' argument can either be a [PhysicsBody3D], [SoftBody3D], or a [GridMap] instance. While GridMaps are not physics body themselves, they register their tiles with collision shapes as a virtual physics body.
+
 Note: The result of this test is not immediate after moving objects. For performance, list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
 
-The 'body' argument can either be a [PhysicsBody3D] or a [GridMap] instance. While GridMaps are not physics body themselves, they register their tiles with collision shapes as a virtual physics body.
+Note: Godot Physics does not support reporting overlaps with [SoftBody3D], so will return false in such cases.
 
 [Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
 [GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
+[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
 func (self Instance) OverlapsBody(body Node.Instance) bool { //gd:Area3D.overlaps_body
 	return bool(Advanced(self).OverlapsBody(body))
@@ -832,9 +841,11 @@ func (self class) GetReverbUniformity() float64 { //gd:Area3D.get_reverb_uniform
 }
 
 /*
-Emitted when a [Shape3D] of the received 'body' enters a shape of this area. 'body' can be a [PhysicsBody3D] or a [GridMap]. [GridMap]s are detected if their [MeshLibrary] has collision shapes configured. Requires [Monitoring] to be set to true.
+Emitted when a [Shape3D] of the received 'body' enters a shape of this area. 'body' can be a [PhysicsBody3D], [SoftBody3D] or [GridMap]. [GridMap]s are detected if their [MeshLibrary] has collision shapes configured. Requires [Monitoring] to be set to true.
 
 'local_shape_index' and 'body_shape_index' contain indices of the interacting shapes from this area and the interacting body, respectively. 'body_rid' contains the [Resource.ID] of the body. These values can be used with the [PhysicsServer3D].
+
+Note: Godot Physics does not support reporting overlaps with [SoftBody3D], so will not emit this signal in such cases.
 
 Example: Get the [CollisionShape3D] node from the shape index:
 
@@ -846,6 +857,7 @@ Example: Get the [CollisionShape3D] node from the shape index:
 [PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
+[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
 func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node3D.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
@@ -861,9 +873,11 @@ func (self class) BodyShapeEntered() Signal.Any {
 }
 
 /*
-Emitted when a [Shape3D] of the received 'body' exits a shape of this area. 'body' can be a [PhysicsBody3D] or a [GridMap]. [GridMap]s are detected if their [MeshLibrary] has collision shapes configured. Requires [Monitoring] to be set to true.
+Emitted when a [Shape3D] of the received 'body' exits a shape of this area. 'body' can be a [PhysicsBody3D], [SoftBody3D] or [GridMap]. [GridMap]s are detected if their [MeshLibrary] has collision shapes configured. Requires [Monitoring] to be set to true.
 
 See also [OnBodyShapeEntered].
+
+Note: Godot Physics does not support reporting overlaps with [SoftBody3D], so will not emit this signal in such cases.
 
 [GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
 [MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
@@ -871,6 +885,7 @@ See also [OnBodyShapeEntered].
 [OnBodyShapeEntered]: https://pkg.go.dev/graphics.gd/classdb/Area3D#Instance.OnBodyShapeEntered
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
 [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
+[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
 func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node3D.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
@@ -886,12 +901,15 @@ func (self class) BodyShapeExited() Signal.Any {
 }
 
 /*
-Emitted when the received 'body' enters this area. 'body' can be a [PhysicsBody3D] or a [GridMap]. [GridMap]s are detected if their [MeshLibrary] has collision shapes configured. Requires [Monitoring] to be set to true.
+Emitted when the received 'body' enters this area. 'body' can be a [PhysicsBody3D], [SoftBody3D] or [GridMap]. [GridMap]s are detected if their [MeshLibrary] has collision shapes configured. Requires [Monitoring] to be set to true.
+
+Note: Godot Physics does not support reporting overlaps with [SoftBody3D], so will not emit this signal in such cases.
 
 [GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
 [MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
 [Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area3D#Instance.Monitoring
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
+[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
 func (self Instance) OnBodyEntered(cb func(body Node3D.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
@@ -907,12 +925,15 @@ func (self class) BodyEntered() Signal.Any {
 }
 
 /*
-Emitted when the received 'body' exits this area. 'body' can be a [PhysicsBody3D] or a [GridMap]. [GridMap]s are detected if their [MeshLibrary] has collision shapes configured. Requires [Monitoring] to be set to true.
+Emitted when the received 'body' exits this area. 'body' can be a [PhysicsBody3D], [SoftBody3D] or [GridMap]. [GridMap]s are detected if their [MeshLibrary] has collision shapes configured. Requires [Monitoring] to be set to true.
+
+Note: Godot Physics does not support reporting overlaps with [SoftBody3D], so will not emit this signal in such cases.
 
 [GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
 [MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
 [Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area3D#Instance.Monitoring
 [PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
+[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
 func (self Instance) OnBodyExited(cb func(body Node3D.Instance), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags

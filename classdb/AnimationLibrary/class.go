@@ -222,7 +222,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.AnimationLibrary{gdclass.NewAnimationLibrary(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -266,11 +265,11 @@ func (self class) GetAnimationListSize() int64 { //gd:AnimationLibrary.get_anima
 }
 
 /*
-Emitted when an [Animation] is added, under the key 'name'.
+Emitted when an [Animation] is added, under the key 'anim_name'.
 
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 */
-func (self Instance) OnAnimationAdded(cb func(name string), flags ...Signal.Flags) Instance {
+func (self Instance) OnAnimationAdded(cb func(anim_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
@@ -284,11 +283,11 @@ func (self class) AnimationAdded() Signal.Any {
 }
 
 /*
-Emitted when an [Animation] stored with the key 'name' is removed.
+Emitted when an [Animation] stored with the key 'anim_name' is removed.
 
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 */
-func (self Instance) OnAnimationRemoved(cb func(name string), flags ...Signal.Flags) Instance {
+func (self Instance) OnAnimationRemoved(cb func(anim_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
@@ -302,11 +301,11 @@ func (self class) AnimationRemoved() Signal.Any {
 }
 
 /*
-Emitted when the key for an [Animation] is changed, from 'name' to 'to_name'.
+Emitted when the key for an [Animation] is changed, from 'old_name' to 'new_name'.
 
 [Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
 */
-func (self Instance) OnAnimationRenamed(cb func(name string, to_name string), flags ...Signal.Flags) Instance {
+func (self Instance) OnAnimationRenamed(cb func(old_name string, new_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
@@ -320,13 +319,13 @@ func (self class) AnimationRenamed() Signal.Any {
 }
 
 /*
-Emitted when there's a change in one of the animations, e.g. tracks are added, moved or have changed paths. 'name' is the key of the animation that was changed.
+Emitted when there's a change in one of the animations, e.g. tracks are added, moved or have changed paths. 'anim_name' is the key of the animation that was changed.
 
 See also [OnResource.Changed], which this acts as a relay for.
 
 [OnResource.Changed]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary#Instance.OnResource.Changed
 */
-func (self Instance) OnAnimationChanged(cb func(name string), flags ...Signal.Flags) Instance {
+func (self Instance) OnAnimationChanged(cb func(anim_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag

@@ -471,6 +471,7 @@ func (self class) ListDirectory(directory_path String.Readable) Packed.Strings {
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

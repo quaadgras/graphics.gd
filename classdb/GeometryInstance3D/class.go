@@ -302,7 +302,7 @@ func (self Instance) SetExtraCullMargin(value Float.X) Instance { //gd:GeometryI
 }
 
 /*
-Overrides the bounding box of this node with a custom one. This can be used to avoid the expensive [AABB.PositionSize] recalculation that happens when a skeleton is used with a [MeshInstance3D] or to have precise control over the [MeshInstance3D]'s bounding box. To use the default AABB, set value to an [AABB.PositionSize] with all fields set to 0.0. To avoid frustum culling, set [CustomAabb] to a very large AABB that covers your entire game world such as AABB(-10000, -10000, -10000, 20000, 20000, 20000). To disable all forms of culling (including occlusion culling), call [RenderingServer.InstanceSetIgnoreCulling] on the [GeometryInstance3D]'s [Resource.ID].
+Overrides the bounding box of this node with a custom one. This can be used to avoid the expensive [AABB.PositionSize] recalculation that happens when a skeleton is used with a [MeshInstance3D] or to have precise control over the [MeshInstance3D]'s bounding box. To use the default AABB, set value to an [AABB.PositionSize] with all fields set to 0.0. To avoid frustum culling, set [CustomAabb] to a very large AABB that covers your entire game world such as AABB(-10000, -10000, -10000, 20000, 20000, 20000). To disable all forms of culling (including occlusion and layer culling), call [RenderingServer.InstanceSetIgnoreCulling] on the [GeometryInstance3D]'s [Resource.ID].
 
 [AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
 [CustomAabb]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CustomAabb

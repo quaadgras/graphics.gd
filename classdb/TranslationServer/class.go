@@ -660,6 +660,7 @@ func (self class) Pseudolocalize(message String.Name) String.Name { //gd:Transla
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

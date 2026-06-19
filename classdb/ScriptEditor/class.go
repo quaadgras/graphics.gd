@@ -111,9 +111,13 @@ var methods struct {
 	get_current_script            gdextension.MethodForClass `hash:"2146468882"`
 	get_open_scripts              gdextension.MethodForClass `hash:"3995934104"`
 	open_script_create_dialog     gdextension.MethodForClass `hash:"3186203200"`
+	reload_open_files             gdextension.MethodForClass `hash:"3218959716"`
 	goto_help                     gdextension.MethodForClass `hash:"83702148"`
 	update_docs_from_script       gdextension.MethodForClass `hash:"3657522847"`
 	clear_docs_from_script        gdextension.MethodForClass `hash:"3657522847"`
+	get_unsaved_files             gdextension.MethodForClass `hash:"1139954409"`
+	save_all_scripts              gdextension.MethodForClass `hash:"3218959716"`
+	close_file                    gdextension.MethodForClass `hash:"166001499"`
 }
 
 func init() {
@@ -216,6 +220,15 @@ func (self Instance) OpenScriptCreateDialog(base_name string, base_path string) 
 }
 
 /*
+Reloads all currently opened files. This should be used when opened files are changed outside of the script editor. The user may be prompted to resolve file conflicts, see [EditorSettings] "text_editor/behavior/files/auto_reload_scripts_on_external_change".
+
+[EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
+*/
+func (self Instance) ReloadOpenFiles() { //gd:ScriptEditor.reload_open_files
+	Advanced(self).ReloadOpenFiles()
+}
+
+/*
 Opens help for the given topic. The 'topic' is an encoded string that controls which class, method, constant, signal, annotation, property, or theme item should be focused.
 
 The supported 'topic' formats include class_name:class, class_method:class:method, class_constant:class:constant, class_signal:class:signal, class_annotation:class:@annotation, class_property:class:property, and class_theme_item:class:item, where class is the class name, method is the method name, constant is the constant name, signal is the signal name, annotation is the annotation name, property is the property name, and item is the theme item.
@@ -264,6 +277,29 @@ Note: This should be called whenever the script is changed to keep the open docu
 */
 func (self Instance) ClearDocsFromScript(script Script.Instance) { //gd:ScriptEditor.clear_docs_from_script
 	Advanced(self).ClearDocsFromScript(script)
+}
+
+/*
+Returns an array of file paths of scripts with unsaved changes open in the editor.
+*/
+func (self Instance) GetUnsavedFiles() []string { //gd:ScriptEditor.get_unsaved_files
+	return []string(Advanced(self).GetUnsavedFiles().Strings())
+}
+
+/*
+Saves all open scripts.
+*/
+func (self Instance) SaveAllScripts() { //gd:ScriptEditor.save_all_scripts
+	Advanced(self).SaveAllScripts()
+}
+
+/*
+Closes the file at the given 'path', discarding any unsaved changes.
+
+Returns [Ok] on success or [ErrFileNotFound] if the file is not found.
+*/
+func (self Instance) CloseFile(path string) error { //gd:ScriptEditor.close_file
+	return error(gd.ToError(Advanced(self).CloseFile(String.From(path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -348,6 +384,9 @@ func (self class) OpenScriptCreateDialog(base_name String.Readable, base_path St
 		base_path gdextension.String
 	}{pointers.Get(gd.InternalString(base_name)), pointers.Get(gd.InternalString(base_path))})
 }
+func (self class) ReloadOpenFiles() { //gd:ScriptEditor.reload_open_files
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reload_open_files, 0, &struct{}{})
+}
 func (self class) GotoHelp(topic String.Readable) { //gd:ScriptEditor.goto_help
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.goto_help, 0|(gdextension.SizeString<<4), &struct{ topic gdextension.String }{pointers.Get(gd.InternalString(topic))})
 }
@@ -356,6 +395,19 @@ func (self class) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEd
 }
 func (self class) ClearDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.clear_docs_from_script
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_docs_from_script, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetScript(script[0])[0]))})
+}
+func (self class) GetUnsavedFiles() Packed.Strings { //gd:ScriptEditor.get_unsaved_files
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_unsaved_files, gdextension.SizePackedArray, &struct{}{})
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
+func (self class) SaveAllScripts() { //gd:ScriptEditor.save_all_scripts
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.save_all_scripts, 0, &struct{}{})
+}
+func (self class) CloseFile(path String.Readable) Error.Code { //gd:ScriptEditor.close_file
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var ret = Error.Code(r_ret)
+	return ret
 }
 
 /*

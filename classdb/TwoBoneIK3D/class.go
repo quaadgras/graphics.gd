@@ -5,6 +5,8 @@ This [IKModifier3D] requires a pole target. It provides deterministic results by
 
 This IK can handle twist by setting the pole direction. If there are more than one bone between each set bone, their rotations are ignored, and the straight line connecting the root-middle and middle-end joints are treated as virtual bones.
 
+Note: All the methods in this class take an index parameter. This parameter specifies which setting list entry to return if the IK has multiple entries (e.g. settings/<index>/root_bone_name).
+
 [IKModifier3D]: https://pkg.go.dev/graphics.gd/classdb/IKModifier3D
 */
 package TwoBoneIK3D

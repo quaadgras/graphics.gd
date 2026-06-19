@@ -20,6 +20,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/OpenXRStructureBase"
 import "graphics.gd/classdb/XRPositionalTracker"
 import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Array"
@@ -94,10 +95,15 @@ type Instance [1]gdclass.OpenXRSpatialEntityTracker
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
+	set_spatial_context        gdextension.MethodForClass `hash:"2722037293"`
+	get_spatial_context        gdextension.MethodForClass `hash:"2944877500"`
 	set_entity                 gdextension.MethodForClass `hash:"2722037293"`
 	get_entity                 gdextension.MethodForClass `hash:"2944877500"`
 	set_spatial_tracking_state gdextension.MethodForClass `hash:"2170234447"`
 	get_spatial_tracking_state gdextension.MethodForClass `hash:"3351876560"`
+	get_next                   gdextension.MethodForClass `hash:"2798796760"`
+	add_next                   gdextension.MethodForClass `hash:"334698771"`
+	remove_next                gdextension.MethodForClass `hash:"334698771"`
 }
 
 func init() {
@@ -118,6 +124,61 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsOpenXRSpatialEntityTracker() Instance
+}
+
+/*
+Sets the spatial context used to create this tracker.
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetSpatialContext(spatial_context RID.SpatialContext) Instance { //gd:OpenXRSpatialEntityTracker.set_spatial_context
+	Advanced(self).SetSpatialContext(RID.Any(spatial_context))
+	return self
+}
+
+/*
+Gets the spatial context used to create this [OpenXRSpatialEntityTracker].
+
+[OpenXRSpatialEntityTracker]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityTracker
+*/
+func (self Instance) GetSpatialContext() RID.SpatialContext { //gd:OpenXRSpatialEntityTracker.get_spatial_context
+	return RID.SpatialContext(RID.SpatialContext(Advanced(self).GetSpatialContext()))
+}
+
+/*
+Gets the head [OpenXRStructureBase] in the next-chain.
+
+See also [AddNext] and [RemoveNext].
+
+[AddNext]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityTracker#Instance.AddNext
+[OpenXRStructureBase]: https://pkg.go.dev/graphics.gd/classdb/OpenXRStructureBase
+[RemoveNext]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityTracker#Instance.RemoveNext
+*/
+func (self Instance) GetNext() OpenXRStructureBase.Instance { //gd:OpenXRSpatialEntityTracker.get_next
+	return OpenXRStructureBase.Instance(Advanced(self).GetNext())
+}
+
+/*
+Adds a new [OpenXRStructureBase] to the next-chain.
+
+[GetNext] will return this 'next' until either [AddNext] is called again or it's removed in [RemoveNext].
+
+[AddNext]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityTracker#Instance.AddNext
+[GetNext]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityTracker#Instance.GetNext
+[OpenXRStructureBase]: https://pkg.go.dev/graphics.gd/classdb/OpenXRStructureBase
+[RemoveNext]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityTracker#Instance.RemoveNext
+*/
+func (self Instance) AddNext(next OpenXRStructureBase.Instance) { //gd:OpenXRSpatialEntityTracker.add_next
+	Advanced(self).AddNext(next)
+}
+
+/*
+Removes a 'next' object previously added in [AddNext] from the next-chain.
+
+[AddNext]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityTracker#Instance.AddNext
+*/
+func (self Instance) RemoveNext(next OpenXRStructureBase.Instance) { //gd:OpenXRSpatialEntityTracker.remove_next
+	Advanced(self).RemoveNext(next)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -158,7 +219,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.OpenXRSpatialEntityTracker{gdclass.NewOpenXRSpatialEntityTracker(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -189,6 +249,14 @@ func (self Instance) SetSpatialTrackingState(value EntityTrackingState) Instance
 	return self
 }
 
+func (self class) SetSpatialContext(spatial_context RID.Any) { //gd:OpenXRSpatialEntityTracker.set_spatial_context
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spatial_context, 0|(gdextension.SizeRID<<4), &struct{ spatial_context RID.Any }{spatial_context})
+}
+func (self class) GetSpatialContext() RID.Any { //gd:OpenXRSpatialEntityTracker.get_spatial_context
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_spatial_context, gdextension.SizeRID, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) SetEntity(entity RID.Any) { //gd:OpenXRSpatialEntityTracker.set_entity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_entity, 0|(gdextension.SizeRID<<4), &struct{ entity RID.Any }{entity})
 }
@@ -205,6 +273,37 @@ func (self class) GetSpatialTrackingState() EntityTrackingState { //gd:OpenXRSpa
 	var ret = r_ret
 	return ret
 }
+func (self class) GetNext() [1]gdclass.OpenXRStructureBase { //gd:OpenXRSpatialEntityTracker.get_next
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.OpenXRStructureBase{gdclass.NewOpenXRStructureBase(gd.PointerWithOwnershipTransferredToGo(r_ret))}
+	return ret
+}
+func (self class) AddNext(next [1]gdclass.OpenXRStructureBase) { //gd:OpenXRSpatialEntityTracker.add_next
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_next, 0|(gdextension.SizeObject<<4), &struct{ next gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next[0])[0]))})
+}
+func (self class) RemoveNext(next [1]gdclass.OpenXRStructureBase) { //gd:OpenXRSpatialEntityTracker.remove_next
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_next, 0|(gdextension.SizeObject<<4), &struct{ next gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next[0])[0]))})
+}
+
+/*
+Emitted when the next-chain changes, from either [AddNext] or [RemoveNext].
+
+[AddNext]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityTracker#Instance.AddNext
+[RemoveNext]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityTracker#Instance.RemoveNext
+*/
+func (self Instance) OnNextChanged(cb func(), flags ...Signal.Flags) Instance {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("next_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
+}
+
+func (self class) NextChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`next_changed`))))
+}
+
 func (self Instance) OnSpatialTrackingStateChanged(cb func(spatial_tracking_state int), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

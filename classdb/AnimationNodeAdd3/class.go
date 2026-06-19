@@ -13,6 +13,8 @@ This animation node has three inputs:
 
 If the absolute value of the amount is greater than 1.0, the animation connected to "in" port is blended with the amplified animation connected to "-add"/"+add" port.
 
+Note: The signs are only used to distinguish ports, and additive blending occurs based on absolute values always, meaning the animation of a "-add" port does not subtract from the animation of an "in" port.
+
 [AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
 */
 package AnimationNodeAdd3
@@ -165,7 +167,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.AnimationNodeAdd3{gdclass.NewAnimationNodeAdd3(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

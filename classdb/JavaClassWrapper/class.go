@@ -119,8 +119,10 @@ type Instance [1]gdclass.JavaClassWrapper
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	wrap          gdextension.MethodForClass `hash:"1124367868"`
-	get_exception gdextension.MethodForClass `hash:"3277089691"`
+	wrap                gdextension.MethodForClass `hash:"1124367868"`
+	get_exception       gdextension.MethodForClass `hash:"3277089691"`
+	create_sam_callback gdextension.MethodForClass `hash:"2479014754"`
+	create_proxy        gdextension.MethodForClass `hash:"2694931752"`
 }
 
 func init() {
@@ -149,6 +151,19 @@ When wrapping inner (nested) classes, use $ instead of . to separate them. For e
 
 Note: To invoke a constructor, call a method with the same name as the class. For example:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/JavaClassWrapper"
+		"graphics.gd/variant/Object"
+	)
+
+	func ExampleJavaClassWrapperWrap() {
+		var Intent = JavaClassWrapper.Wrap("android.content.Intent")
+		var intent = Object.Call(Intent, "Intent")
+		_ = intent
+	}
+
 Note: This method only works on Android. On every other platform, this method does nothing and returns an empty [JavaClass].
 
 [JavaClass]: https://pkg.go.dev/graphics.gd/classdb/JavaClass
@@ -165,6 +180,66 @@ Note: This method only works on Android. On every other platform, this method wi
 */
 func GetException() JavaObject.Instance { //gd:JavaClassWrapper.get_exception
 	return JavaObject.Instance(Advanced().GetException())
+}
+
+/*
+Creates a [JavaObject] implementing the Java Single Abstract Method (SAM) interface using the Godot func as the implementation.
+
+The 'sam_interface' must be a Java SAM interface, meaning it must only have a single abstract method to implement.
+
+The 'callable' must be able to handle the same parameter types as the SAM interface method, and must provide the same return type. The 'callable' will be invoked as a callback, passing the arguments from the Java SAM interface method.
+
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/JavaClassWrapper"
+		"graphics.gd/variant/Callable"
+		"graphics.gd/variant/Object"
+	)
+
+	func ExampleJavaClassWrapperCreateSamCallback() {
+		cb := func(content string) { fmt.Println(content) }
+		var callback = JavaClassWrapper.CreateSamCallback("android.util.Printer", Callable.New(cb))
+		Object.Call(callback, "println", "Hello Godot World!") // dynamic Java call.
+		_ = callback
+	}
+
+Note: This method only works on Android. On every other platform, this method will always return null.
+
+[JavaObject]: https://pkg.go.dev/graphics.gd/classdb/JavaObject
+*/
+func CreateSamCallback(sam_interface string, callable Callable.Function) JavaObject.Instance { //gd:JavaClassWrapper.create_sam_callback
+	return JavaObject.Instance(Advanced().CreateSamCallback(String.From(sam_interface), Callable.New(callable)))
+}
+
+/*
+Creates a [JavaObject] implementing the given Java interfaces using the given [Object] as the implementation.
+
+The 'object' must contain methods signatures matching the methods signatures from the passed Java 'interfaces'. Invoking methods from the Java 'interfaces' will route to the matching 'object' method.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/JavaClassWrapper"
+		"graphics.gd/variant/Object"
+	)
+
+	// printProxy stands in for a Godot object implementing the println(String) method.
+	func ExampleJavaClassWrapperCreateProxy(printProxy Object.Instance) {
+		var printerObject = JavaClassWrapper.CreateProxy(printProxy, []string{"android.util.Printer"})
+		Object.Call(printerObject, "println", "Hello Godot World!") // dynamic Java call.
+		_ = printerObject
+	}
+
+Note: This method only works on Android. On every other platform, this method will always return null.
+
+[JavaObject]: https://pkg.go.dev/graphics.gd/classdb/JavaObject
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
+*/
+func CreateProxy(obj Object.Instance, interfaces []string) JavaObject.Instance { //gd:JavaClassWrapper.create_proxy
+	return JavaObject.Instance(Advanced().CreateProxy(obj, Packed.MakeStrings(interfaces...)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -202,6 +277,25 @@ func (self class) GetException() [1]gdclass.JavaObject { //gd:JavaClassWrapper.g
 	var ret = [1]gdclass.JavaObject{gdclass.NewJavaObject(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
+func (self class) CreateSamCallback(sam_interface String.Readable, callable Callable.Function) [1]gdclass.JavaObject { //gd:JavaClassWrapper.create_sam_callback
+	once.Do(singleton)
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.create_sam_callback, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
+		sam_interface gdextension.String
+		callable      gdextension.Callable
+	}{pointers.Get(gd.InternalString(sam_interface)), pointers.Get(gd.InternalCallable(callable))})
+	var ret = [1]gdclass.JavaObject{gdclass.NewJavaObject(gd.PointerWithOwnershipTransferredToGo(r_ret))}
+	return ret
+}
+func (self class) CreateProxy(obj [1]gdreference.Object, interfaces Packed.Strings) [1]gdclass.JavaObject { //gd:JavaClassWrapper.create_proxy
+	once.Do(singleton)
+	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.create_proxy, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), &struct {
+		obj        gdextension.Object
+		interfaces gdextension.PackedArray[gdextension.String]
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalPackedStrings(interfaces))})
+	var ret = [1]gdclass.JavaObject{gdclass.NewJavaObject(gd.PointerWithOwnershipTransferredToGo(r_ret))}
+	return ret
+}
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

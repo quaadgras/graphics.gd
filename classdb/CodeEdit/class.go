@@ -217,6 +217,7 @@ var methods struct {
 	move_lines_up                         gdextension.MethodForClass `hash:"3218959716"`
 	move_lines_down                       gdextension.MethodForClass `hash:"3218959716"`
 	delete_lines                          gdextension.MethodForClass `hash:"3218959716"`
+	join_lines                            gdextension.MethodForClass `hash:"4063782979"`
 	duplicate_selection                   gdextension.MethodForClass `hash:"3218959716"`
 	duplicate_lines                       gdextension.MethodForClass `hash:"3218959716"`
 }
@@ -987,6 +988,20 @@ Deletes all lines that are selected or have a caret on them.
 */
 func (self Instance) DeleteLines() { //gd:CodeEdit.delete_lines
 	Advanced(self).DeleteLines()
+}
+
+/*
+Joins all selected lines or lines containing a caret with their next line. Whitespace in between will be removed. If the next line has content, the 'line_ending' will be inserted in between.
+*/
+func (self Instance) JoinLines() { //gd:CodeEdit.join_lines
+	Advanced(self).JoinLines(String.From(" "))
+}
+
+/*
+Joins all selected lines or lines containing a caret with their next line. Whitespace in between will be removed. If the next line has content, the 'line_ending' will be inserted in between.
+*/
+func (self MoreArgs) JoinLines(line_ending string) { //gd:CodeEdit.join_lines
+	Advanced(self).JoinLines(String.From(line_ending))
 }
 
 /*
@@ -1885,6 +1900,9 @@ func (self class) MoveLinesDown() { //gd:CodeEdit.move_lines_down
 func (self class) DeleteLines() { //gd:CodeEdit.delete_lines
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_lines, 0, &struct{}{})
 }
+func (self class) JoinLines(line_ending String.Readable) { //gd:CodeEdit.join_lines
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.join_lines, 0|(gdextension.SizeString<<4), &struct{ line_ending gdextension.String }{pointers.Get(gd.InternalString(line_ending))})
+}
 func (self class) DuplicateSelection() { //gd:CodeEdit.duplicate_selection
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.duplicate_selection, 0, &struct{}{})
 }
@@ -2054,6 +2072,8 @@ const (
 	KindFilePath CodeCompletionKind = 8
 	// Marks the option as unclassified or plain text.
 	KindPlainText CodeCompletionKind = 9
+	// Marks the option as a keyword.
+	KindKeyword CodeCompletionKind = 10
 )
 
 type CodeCompletionLocation int64 //gd:CodeEdit.CodeCompletionLocation

@@ -130,8 +130,8 @@ var methods struct {
 	add_text                                  gdextension.MethodForClass `hash:"83702148"`
 	set_text                                  gdextension.MethodForClass `hash:"83702148"`
 	add_hr                                    gdextension.MethodForClass `hash:"16816895"`
-	add_image                                 gdextension.MethodForClass `hash:"1390915033"`
-	update_image                              gdextension.MethodForClass `hash:"6389170"`
+	add_image                                 gdextension.MethodForClass `hash:"1980227702"`
+	update_image                              gdextension.MethodForClass `hash:"202998225"`
 	newline                                   gdextension.MethodForClass `hash:"3218959716"`
 	remove_paragraph                          gdextension.MethodForClass `hash:"3262369265"`
 	invalidate_paragraph                      gdextension.MethodForClass `hash:"3067735520"`
@@ -340,16 +340,14 @@ If 'width' and 'height' are not set, but 'region' is, the region's rect will be 
 
 If 'pad' is set, and the image is smaller than the size specified by 'width' and 'height', the image padding is added to match the size instead of upscaling.
 
-If 'width_in_percent' is set, 'width' values are percentages of the control width instead of pixels.
-
-If 'height_in_percent' is set, 'height' values are percentages of the control width instead of pixels.
+Parameters 'width_unit' and 'height_unit' determine the units used to calculate the image width and height, respectively.
 
 'alt_text' is used as the image description for assistive apps.
 
 [UpdateImage]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.UpdateImage
 */
 func (self Instance) AddImage(image Texture2D.Instance) { //gd:RichTextLabel.add_image
-	Advanced(self).AddImage(image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), variant.New([1]any{}[0]), false, String.From(""), false, false, String.From(""))
+	Advanced(self).AddImage(image, float64(0), float64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), variant.New([1]any{}[0]), false, String.From(""), 0, 0, String.From(""))
 }
 
 /*
@@ -363,16 +361,14 @@ If 'width' and 'height' are not set, but 'region' is, the region's rect will be 
 
 If 'pad' is set, and the image is smaller than the size specified by 'width' and 'height', the image padding is added to match the size instead of upscaling.
 
-If 'width_in_percent' is set, 'width' values are percentages of the control width instead of pixels.
-
-If 'height_in_percent' is set, 'height' values are percentages of the control width instead of pixels.
+Parameters 'width_unit' and 'height_unit' determine the units used to calculate the image width and height, respectively.
 
 'alt_text' is used as the image description for assistive apps.
 
 [UpdateImage]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.UpdateImage
 */
-func (self MoreArgs) AddImage(image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key any, pad bool, tooltip string, width_in_percent bool, height_in_percent bool, alt_text string) { //gd:RichTextLabel.add_image
-	Advanced(self).AddImage(image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), variant.New(key), pad, String.From(tooltip), width_in_percent, height_in_percent, String.From(alt_text))
+func (self MoreArgs) AddImage(image Texture2D.Instance, width Float.X, height Float.X, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key any, pad bool, tooltip string, width_unit ImageUnit, height_unit ImageUnit, alt_text string) { //gd:RichTextLabel.add_image
+	Advanced(self).AddImage(image, float64(width), float64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), variant.New(key), pad, String.From(tooltip), width_unit, height_unit, String.From(alt_text))
 }
 
 /*
@@ -381,7 +377,7 @@ Updates the existing images with the key 'key'. Only properties specified by 'ma
 [AddImage]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.AddImage
 */
 func (self Instance) UpdateImage(key any, mask ImageUpdateMask, image Texture2D.Instance) { //gd:RichTextLabel.update_image
-	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), false, String.From(""), false, false)
+	Advanced(self).UpdateImage(variant.New(key), mask, image, float64(0), float64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), false, String.From(""), 0, 0)
 }
 
 /*
@@ -389,8 +385,8 @@ Updates the existing images with the key 'key'. Only properties specified by 'ma
 
 [AddImage]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.AddImage
 */
-func (self MoreArgs) UpdateImage(key any, mask ImageUpdateMask, image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip string, width_in_percent bool, height_in_percent bool) { //gd:RichTextLabel.update_image
-	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), pad, String.From(tooltip), width_in_percent, height_in_percent)
+func (self MoreArgs) UpdateImage(key any, mask ImageUpdateMask, image Texture2D.Instance, width Float.X, height Float.X, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip string, width_unit ImageUnit, height_unit ImageUnit) { //gd:RichTextLabel.update_image
+	Advanced(self).UpdateImage(variant.New(key), mask, image, float64(width), float64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), pad, String.From(tooltip), width_unit, height_unit)
 }
 
 /*
@@ -1184,6 +1180,23 @@ Example: With the following script extending from [RichTextEffect]:
 
 The above effect can be installed in [RichTextLabel] from a script:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/RichTextEffect"
+		"graphics.gd/classdb/RichTextLabel"
+	)
+
+	type richTextLabelInstallEffect struct {
+		RichTextLabel.Extension[richTextLabelInstallEffect]
+
+		Effect RichTextEffect.Instance
+	}
+
+	func (n richTextLabelInstallEffect) Ready() {
+		n.AsRichTextLabel().InstallEffect(n.Effect)
+	}
+
 [CustomEffects]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.CustomEffects
 [RichTextEffect]: https://pkg.go.dev/graphics.gd/classdb/RichTextEffect
 [RichTextLabel]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel
@@ -1324,6 +1337,11 @@ func (self Instance) SetText(value string) Instance { //gd:RichTextLabel.text
 /*
 If true, the label's minimum size will be automatically updated to fit its content, matching the behavior of [Label].
 
+Note: RichTextLabels with autowrapping and [FitContent] enabled must have a custom maximum width configured to work correctly, either through the RichTextLabel's own [Control.CustomMaximumSize] or as a result of a propagated maximum size from a parent Control with [Control.PropagateMaximumSize] enabled.
+
+[Control.CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
+[Control.PropagateMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PropagateMaximumSize
+[FitContent]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.FitContent
 [Label]: https://pkg.go.dev/graphics.gd/classdb/Label
 */
 func (self Instance) FitContent() bool { //gd:RichTextLabel.fit_content
@@ -1382,6 +1400,12 @@ func (self Instance) SetScrollFollowingVisibleCharacters(value bool) Instance { 
 
 /*
 If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the node's bounding rectangle.
+
+Note: RichTextLabels with autowrapping and [FitContent] enabled must have a custom maximum width configured to work correctly, either through the RichTextLabel's own [Control.CustomMaximumSize] or as a result of a propagated maximum size from a parent Control with [Control.PropagateMaximumSize] enabled.
+
+[Control.CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
+[Control.PropagateMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PropagateMaximumSize
+[FitContent]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.FitContent
 */
 func (self Instance) AutowrapMode() TextServer.AutowrapMode { //gd:RichTextLabel.autowrap_mode
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
@@ -1738,37 +1762,37 @@ func (self class) AddHr(width int64, height int64, color Color.RGBA, alignment G
 		height_in_percent bool
 	}{width, height, color, alignment, width_in_percent, height_in_percent})
 }
-func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key variant.Any, pad bool, tooltip String.Readable, width_in_percent bool, height_in_percent bool, alt_text String.Readable) { //gd:RichTextLabel.add_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeString<<36)|(gdextension.SizeBool<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeString<<48), &struct {
-		image             gdextension.Object
-		width             int64
-		height            int64
-		color             Color.RGBA
-		inline_align      GUI.InlineAlignment
-		region            Rect2.PositionSize
-		key               gdextension.Variant
-		pad               bool
-		tooltip           gdextension.String
-		width_in_percent  bool
-		height_in_percent bool
-		alt_text          gdextension.String
-	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(image[0])[0])), width, height, color, inline_align, region, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent, pointers.Get(gd.InternalString(alt_text))})
+func (self class) AddImage(image [1]gdclass.Texture2D, width float64, height float64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key variant.Any, pad bool, tooltip String.Readable, width_unit ImageUnit, height_unit ImageUnit, alt_text String.Readable) { //gd:RichTextLabel.add_image
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeString<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeString<<48), &struct {
+		image        gdextension.Object
+		width        float64
+		height       float64
+		color        Color.RGBA
+		inline_align GUI.InlineAlignment
+		region       Rect2.PositionSize
+		key          gdextension.Variant
+		pad          bool
+		tooltip      gdextension.String
+		width_unit   ImageUnit
+		height_unit  ImageUnit
+		alt_text     gdextension.String
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(image[0])[0])), width, height, color, inline_align, region, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), pad, pointers.Get(gd.InternalString(tooltip)), width_unit, height_unit, pointers.Get(gd.InternalString(alt_text))})
 }
-func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip String.Readable, width_in_percent bool, height_in_percent bool) { //gd:RichTextLabel.update_image
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_image, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeRect2<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeString<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeBool<<48), &struct {
-		key               gdextension.Variant
-		mask              ImageUpdateMask
-		image             gdextension.Object
-		width             int64
-		height            int64
-		color             Color.RGBA
-		inline_align      GUI.InlineAlignment
-		region            Rect2.PositionSize
-		pad               bool
-		tooltip           gdextension.String
-		width_in_percent  bool
-		height_in_percent bool
-	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), mask, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(image[0])[0])), width, height, color, inline_align, region, pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent})
+func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gdclass.Texture2D, width float64, height float64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip String.Readable, width_unit ImageUnit, height_unit ImageUnit) { //gd:RichTextLabel.update_image
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_image, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeRect2<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeString<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48), &struct {
+		key          gdextension.Variant
+		mask         ImageUpdateMask
+		image        gdextension.Object
+		width        float64
+		height       float64
+		color        Color.RGBA
+		inline_align GUI.InlineAlignment
+		region       Rect2.PositionSize
+		pad          bool
+		tooltip      gdextension.String
+		width_unit   ImageUnit
+		height_unit  ImageUnit
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), mask, gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(image[0])[0])), width, height, color, inline_align, region, pad, pointers.Get(gd.InternalString(tooltip)), width_unit, height_unit})
 }
 func (self class) Newline() { //gd:RichTextLabel.newline
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.newline, 0, &struct{}{})
@@ -2517,8 +2541,19 @@ const (
 	//
 	// [UpdateImage]: https://pkg.go.dev/graphics.gd/classdb/#Instance.UpdateImage
 	UpdateTooltip ImageUpdateMask = 64
-	// If this bit is set, [UpdateImage] changes image width from/to percents.
+	// If this bit is set, [UpdateImage] changes the units used to calculate image size.
 	//
 	// [UpdateImage]: https://pkg.go.dev/graphics.gd/classdb/#Instance.UpdateImage
-	UpdateWidthInPercent ImageUpdateMask = 128
+	UpdateWidthUnit ImageUpdateMask = 128
+)
+
+type ImageUnit int64 //gd:RichTextLabel.ImageUnit
+
+const (
+	// Images drawn with this unit will be in pixels.
+	ImageUnitPixel ImageUnit = 0
+	// Images drawn with this unit will be in percentages of the control width.
+	ImageUnitPercent ImageUnit = 1
+	// Images drawn with this unit will be in percentages of the surrounding font size.
+	ImageUnitEm ImageUnit = 2
 )

@@ -153,7 +153,7 @@ func SegmentIntersectsCircle(segment_from Vector2.XY, segment_to Vector2.XY, cir
 }
 
 /*
-Checks if the two segments ('from_a', 'to_a') and ('from_b', 'to_b') intersect. If yes, return the point of intersection as [Vector2.XY]. If no intersection takes place, returns null.
+Checks if two line segments intersect, with line a between 'from_a' and 'to_a' and line b between 'from_b' and 'to_b'. If the line segments intersect, the point of intersection is returned as a [Vector2.XY]. If no intersection takes place, null is returned.
 
 [Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
@@ -164,7 +164,7 @@ func SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, from_b Vector2
 /*
 Returns the point of intersection between the two lines ('from_a', 'dir_a') and ('from_b', 'dir_b'). Returns a [Vector2.XY], or null if the lines are parallel.
 
-from and dir are not endpoints of a line segment or ray but the slope (dir) and a known point (from) on that line.
+from and dir are not endpoints of a line segment or ray but the slope (dir) and a known point (from) on that line. To get the intersection between two line segments, use [SegmentIntersectsSegment].
 
 	var fromA = Vector2.Zero
 	var dirA = Vector2.Right
@@ -637,6 +637,7 @@ func (self class) BresenhamLine(from Vector2i.XY, to Vector2i.XY) Array.Contains
 	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

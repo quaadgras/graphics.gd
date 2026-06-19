@@ -241,7 +241,7 @@ type Interface interface {
 	BodySetStateSyncCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance))
 	BodySetForceIntegrationCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any)
 	BodySetRayPickable(body RID.Body3D, enable bool)
-	BodyTestMotion(body RID.Body3D, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result Engine.Pointer[MotionResult]) bool
+	BodyTestMotion(body RID.Body3D, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, r_result Engine.Pointer[MotionResult]) bool
 	BodyGetDirectState(body RID.Body3D) PhysicsDirectBodyState3D.Instance
 	SoftBodyCreate() RID.SoftBody3D
 	SoftBodyUpdateRenderingServer(body RID.SoftBody3D, rendering_server_handler PhysicsServer3DRenderingServerHandler.Instance)
@@ -604,7 +604,7 @@ func (self implementation) BodySetForceIntegrationCallback(body RID.Body3D, call
 }
 func (self implementation) BodySetRayPickable(body RID.Body3D, enable bool) {
 }
-func (self implementation) BodyTestMotion(body RID.Body3D, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result Engine.Pointer[MotionResult]) (_ bool) {
+func (self implementation) BodyTestMotion(body RID.Body3D, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, r_result Engine.Pointer[MotionResult]) (_ bool) {
 	return
 }
 func (self implementation) BodyGetDirectState(body RID.Body3D) (_ PhysicsDirectBodyState3D.Instance) {
@@ -1747,7 +1747,7 @@ func (Instance) _body_set_ray_pickable(impl func(ptr gdclass.Receiver, body RID.
 		impl(self, RID.Body3D(body), enable)
 	}
 }
-func (Instance) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Body3D, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result Engine.Pointer[MotionResult]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Body3D, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, r_result Engine.Pointer[MotionResult]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var from = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
@@ -1756,10 +1756,10 @@ func (Instance) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Body3
 		var max_collisions = gd.UnsafeGet[int64](p_args, 4)
 		var collide_separation_ray = gd.UnsafeGet[bool](p_args, 5)
 		var recovery_as_collision = gd.UnsafeGet[bool](p_args, 6)
-		var result = gdmemory.WrapPointer[MotionResult](gd.UnsafeGet[gdextension.Pointer](p_args, 7))
+		var r_result = gdmemory.WrapPointer[MotionResult](gd.UnsafeGet[gdextension.Pointer](p_args, 7))
 		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, RID.Body3D(body), from, motion, Float.X(margin), int(max_collisions), collide_separation_ray, recovery_as_collision, result)
+		ret := impl(self, RID.Body3D(body), from, motion, Float.X(margin), int(max_collisions), collide_separation_ray, recovery_as_collision, r_result)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3457,7 +3457,7 @@ func (class) _body_set_ray_pickable(impl func(ptr gdclass.Receiver, body RID.Any
 		impl(self, body, enable)
 	}
 }
-func (class) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Any, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin float64, max_collisions int64, collide_separation_ray bool, recovery_as_collision bool, result Engine.Pointer[MotionResult]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Any, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin float64, max_collisions int64, collide_separation_ray bool, recovery_as_collision bool, r_result Engine.Pointer[MotionResult]) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var from = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
@@ -3466,10 +3466,10 @@ func (class) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Any, fro
 		var max_collisions = gd.UnsafeGet[int64](p_args, 4)
 		var collide_separation_ray = gd.UnsafeGet[bool](p_args, 5)
 		var recovery_as_collision = gd.UnsafeGet[bool](p_args, 6)
-		var result = gdmemory.WrapPointer[MotionResult](gd.UnsafeGet[gdextension.Pointer](p_args, 7))
+		var r_result = gdmemory.WrapPointer[MotionResult](gd.UnsafeGet[gdextension.Pointer](p_args, 7))
 		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body, from, motion, margin, max_collisions, collide_separation_ray, recovery_as_collision, result)
+		ret := impl(self, body, from, motion, margin, max_collisions, collide_separation_ray, recovery_as_collision, r_result)
 		gd.UnsafeSet(p_back, ret)
 	}
 }

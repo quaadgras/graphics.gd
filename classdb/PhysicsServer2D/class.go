@@ -171,7 +171,7 @@ var methods struct {
 	body_remove_shape                            gdextension.MethodForClass `hash:"3411492887"`
 	body_clear_shapes                            gdextension.MethodForClass `hash:"2722037293"`
 	body_set_shape_disabled                      gdextension.MethodForClass `hash:"2658558584"`
-	body_set_shape_as_one_way_collision          gdextension.MethodForClass `hash:"2556489974"`
+	body_set_shape_as_one_way_collision          gdextension.MethodForClass `hash:"2389283141"`
 	body_attach_object_instance_id               gdextension.MethodForClass `hash:"3411492887"`
 	body_get_object_instance_id                  gdextension.MethodForClass `hash:"2198884583"`
 	body_attach_canvas_instance_id               gdextension.MethodForClass `hash:"3411492887"`
@@ -782,10 +782,17 @@ func BodySetShapeDisabled(body RID.Body2D, shape_idx int, disabled bool) { //gd:
 }
 
 /*
-Sets the one-way collision properties of the body's shape with the given index. If 'enable' is true, the one-way collision direction given by the shape's local upward axis body_get_shape_transform(body, shape_idx).y will be used to ignore collisions with the shape in the opposite direction, and to ensure depenetration of kinematic bodies happens in this direction.
+Sets the one-way collision properties of the body's shape with the given index. If 'enable' is true, the one-way collision direction given by 'direction' in the shape's local space (that is body_get_shape_transform(body, shape_idx).basis_xform(direction).normalized() in the body's local space) will be used to ignore collisions with the shape in the opposite direction, and to ensure depenetration of kinematic bodies happens in this direction.
 */
 func BodySetShapeAsOneWayCollision(body RID.Body2D, shape_idx int, enable bool, margin Float.X) { //gd:PhysicsServer2D.body_set_shape_as_one_way_collision
-	Advanced().BodySetShapeAsOneWayCollision(RID.Any(body), int64(shape_idx), enable, float64(margin))
+	Advanced().BodySetShapeAsOneWayCollision(RID.Any(body), int64(shape_idx), enable, float64(margin), Vector2.XY(gd.Vector2{0, 1}))
+}
+
+/*
+Sets the one-way collision properties of the body's shape with the given index. If 'enable' is true, the one-way collision direction given by 'direction' in the shape's local space (that is body_get_shape_transform(body, shape_idx).basis_xform(direction).normalized() in the body's local space) will be used to ignore collisions with the shape in the opposite direction, and to ensure depenetration of kinematic bodies happens in this direction.
+*/
+func BodySetShapeAsOneWayCollisionOptions(body RID.Body2D, shape_idx int, enable bool, margin Float.X, direction Vector2.XY) { //gd:PhysicsServer2D.body_set_shape_as_one_way_collision
+	Advanced().BodySetShapeAsOneWayCollision(RID.Any(body), int64(shape_idx), enable, float64(margin), Vector2.XY(direction))
 }
 
 /*
@@ -1714,14 +1721,15 @@ func (self class) BodySetShapeDisabled(body RID.Any, shape_idx int64, disabled b
 		disabled  bool
 	}{body, shape_idx, disabled})
 }
-func (self class) BodySetShapeAsOneWayCollision(body RID.Any, shape_idx int64, enable bool, margin float64) { //gd:PhysicsServer2D.body_set_shape_as_one_way_collision
+func (self class) BodySetShapeAsOneWayCollision(body RID.Any, shape_idx int64, enable bool, margin float64, direction Vector2.XY) { //gd:PhysicsServer2D.body_set_shape_as_one_way_collision
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.body_set_shape_as_one_way_collision, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeFloat<<16), &struct {
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.body_set_shape_as_one_way_collision, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeVector2<<20), &struct {
 		body      RID.Any
 		shape_idx int64
 		enable    bool
 		margin    float64
-	}{body, shape_idx, enable, margin})
+		direction Vector2.XY
+	}{body, shape_idx, enable, margin, direction})
 }
 func (self class) BodyAttachObjectInstanceId(body RID.Any, id int64) { //gd:PhysicsServer2D.body_attach_object_instance_id
 	once.Do(singleton)
@@ -2150,6 +2158,7 @@ func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:PhysicsS
 	var ret = r_ret
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

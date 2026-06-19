@@ -110,42 +110,50 @@ type Instance [1]gdclass.OptionButton
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	add_item                     gdextension.MethodForClass `hash:"2697778442"`
-	add_icon_item                gdextension.MethodForClass `hash:"3781678508"`
-	set_item_text                gdextension.MethodForClass `hash:"501894301"`
-	set_item_icon                gdextension.MethodForClass `hash:"666127730"`
-	set_item_disabled            gdextension.MethodForClass `hash:"300928843"`
-	set_item_id                  gdextension.MethodForClass `hash:"3937882851"`
-	set_item_metadata            gdextension.MethodForClass `hash:"2152698145"`
-	set_item_tooltip             gdextension.MethodForClass `hash:"501894301"`
-	set_item_auto_translate_mode gdextension.MethodForClass `hash:"287402019"`
-	get_item_text                gdextension.MethodForClass `hash:"844755477"`
-	get_item_icon                gdextension.MethodForClass `hash:"3536238170"`
-	get_item_id                  gdextension.MethodForClass `hash:"923996154"`
-	get_item_index               gdextension.MethodForClass `hash:"923996154"`
-	get_item_metadata            gdextension.MethodForClass `hash:"4227898402"`
-	get_item_tooltip             gdextension.MethodForClass `hash:"844755477"`
-	get_item_auto_translate_mode gdextension.MethodForClass `hash:"906302372"`
-	is_item_disabled             gdextension.MethodForClass `hash:"1116898809"`
-	is_item_separator            gdextension.MethodForClass `hash:"1116898809"`
-	add_separator                gdextension.MethodForClass `hash:"3005725572"`
-	clear                        gdextension.MethodForClass `hash:"3218959716"`
-	select_                      gdextension.MethodForClass `hash:"1286410249"`
-	get_selected                 gdextension.MethodForClass `hash:"3905245786"`
-	get_selected_id              gdextension.MethodForClass `hash:"3905245786"`
-	get_selected_metadata        gdextension.MethodForClass `hash:"1214101251"`
-	remove_item                  gdextension.MethodForClass `hash:"1286410249"`
-	get_popup                    gdextension.MethodForClass `hash:"229722558"`
-	show_popup                   gdextension.MethodForClass `hash:"3218959716"`
-	set_item_count               gdextension.MethodForClass `hash:"1286410249"`
-	get_item_count               gdextension.MethodForClass `hash:"3905245786"`
-	has_selectable_items         gdextension.MethodForClass `hash:"36873697"`
-	get_selectable_item          gdextension.MethodForClass `hash:"894402480"`
-	set_fit_to_longest_item      gdextension.MethodForClass `hash:"2586408642"`
-	is_fit_to_longest_item       gdextension.MethodForClass `hash:"36873697"`
-	set_allow_reselect           gdextension.MethodForClass `hash:"2586408642"`
-	get_allow_reselect           gdextension.MethodForClass `hash:"36873697"`
-	set_disable_shortcuts        gdextension.MethodForClass `hash:"2586408642"`
+	add_item                               gdextension.MethodForClass `hash:"2697778442"`
+	add_icon_item                          gdextension.MethodForClass `hash:"3781678508"`
+	set_item_text                          gdextension.MethodForClass `hash:"501894301"`
+	set_item_icon                          gdextension.MethodForClass `hash:"666127730"`
+	set_item_disabled                      gdextension.MethodForClass `hash:"300928843"`
+	set_item_id                            gdextension.MethodForClass `hash:"3937882851"`
+	set_item_metadata                      gdextension.MethodForClass `hash:"2152698145"`
+	set_item_tooltip                       gdextension.MethodForClass `hash:"501894301"`
+	set_item_auto_translate_mode           gdextension.MethodForClass `hash:"287402019"`
+	set_search_bar_enabled                 gdextension.MethodForClass `hash:"2586408642"`
+	set_search_bar_min_item_count          gdextension.MethodForClass `hash:"1286410249"`
+	get_search_bar_min_item_count          gdextension.MethodForClass `hash:"3905245786"`
+	set_search_bar_fuzzy_search_enabled    gdextension.MethodForClass `hash:"2586408642"`
+	is_search_bar_fuzzy_search_enabled     gdextension.MethodForClass `hash:"36873697"`
+	set_search_bar_fuzzy_search_max_misses gdextension.MethodForClass `hash:"1286410249"`
+	get_search_bar_fuzzy_search_max_misses gdextension.MethodForClass `hash:"3905245786"`
+	get_item_text                          gdextension.MethodForClass `hash:"844755477"`
+	get_item_icon                          gdextension.MethodForClass `hash:"3536238170"`
+	get_item_id                            gdextension.MethodForClass `hash:"923996154"`
+	get_item_index                         gdextension.MethodForClass `hash:"923996154"`
+	get_item_metadata                      gdextension.MethodForClass `hash:"4227898402"`
+	get_item_tooltip                       gdextension.MethodForClass `hash:"844755477"`
+	get_item_auto_translate_mode           gdextension.MethodForClass `hash:"906302372"`
+	is_item_disabled                       gdextension.MethodForClass `hash:"1116898809"`
+	is_item_separator                      gdextension.MethodForClass `hash:"1116898809"`
+	is_search_bar_enabled                  gdextension.MethodForClass `hash:"36873697"`
+	add_separator                          gdextension.MethodForClass `hash:"3005725572"`
+	clear                                  gdextension.MethodForClass `hash:"3218959716"`
+	select_                                gdextension.MethodForClass `hash:"1286410249"`
+	get_selected                           gdextension.MethodForClass `hash:"3905245786"`
+	get_selected_id                        gdextension.MethodForClass `hash:"3905245786"`
+	get_selected_metadata                  gdextension.MethodForClass `hash:"1214101251"`
+	remove_item                            gdextension.MethodForClass `hash:"1286410249"`
+	get_popup                              gdextension.MethodForClass `hash:"229722558"`
+	show_popup                             gdextension.MethodForClass `hash:"3218959716"`
+	set_item_count                         gdextension.MethodForClass `hash:"1286410249"`
+	get_item_count                         gdextension.MethodForClass `hash:"3905245786"`
+	has_selectable_items                   gdextension.MethodForClass `hash:"36873697"`
+	get_selectable_item                    gdextension.MethodForClass `hash:"894402480"`
+	set_fit_to_longest_item                gdextension.MethodForClass `hash:"2586408642"`
+	is_fit_to_longest_item                 gdextension.MethodForClass `hash:"36873697"`
+	set_allow_reselect                     gdextension.MethodForClass `hash:"2586408642"`
+	get_allow_reselect                     gdextension.MethodForClass `hash:"36873697"`
+	set_disable_shortcuts                  gdextension.MethodForClass `hash:"2586408642"`
 }
 
 func init() {
@@ -540,6 +548,71 @@ func (self Instance) SetAllowReselect(value bool) Instance { //gd:OptionButton.a
 }
 
 /*
+If true, shows a search bar at the top of the [PopupMenu] for filtering items. See [SearchBarMinItemCount] for dynamically controlling its visibility based on the number of items.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+[SearchBarMinItemCount]: https://pkg.go.dev/graphics.gd/classdb/OptionButton#Instance.SearchBarMinItemCount
+*/
+func (self Instance) SearchBarEnabled() bool { //gd:OptionButton.search_bar_enabled
+	return bool(class(self).IsSearchBarEnabled())
+}
+
+// SetSearchBarEnabled sets the property returned by [IsSearchBarEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSearchBarEnabled(value bool) Instance { //gd:OptionButton.search_bar_enabled
+	class(self).SetSearchBarEnabled(value)
+	return self
+}
+
+/*
+Sets the minimum number of items required for the [PopupMenu] search bar to be visible. [SearchBarEnabled] must be true for this to have any effect.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+[SearchBarEnabled]: https://pkg.go.dev/graphics.gd/classdb/OptionButton#Instance.SearchBarEnabled
+*/
+func (self Instance) SearchBarMinItemCount() int { //gd:OptionButton.search_bar_min_item_count
+	return int(int(class(self).GetSearchBarMinItemCount()))
+}
+
+// SetSearchBarMinItemCount sets the property returned by [GetSearchBarMinItemCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSearchBarMinItemCount(value int) Instance { //gd:OptionButton.search_bar_min_item_count
+	class(self).SetSearchBarMinItemCount(int64(value))
+	return self
+}
+
+/*
+If true, enables fuzzy searching in the [PopupMenu] search bar. This allows the search results to include items that almost match the search query, as well items that match the individual characters of the search query, but not in sequence.
+
+Use [SearchBarFuzzySearchMaxMisses] to set the maximum number of mismatches allowed in the search results.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+[SearchBarFuzzySearchMaxMisses]: https://pkg.go.dev/graphics.gd/classdb/OptionButton#Instance.SearchBarFuzzySearchMaxMisses
+*/
+func (self Instance) SearchBarFuzzySearchEnabled() bool { //gd:OptionButton.search_bar_fuzzy_search_enabled
+	return bool(class(self).IsSearchBarFuzzySearchEnabled())
+}
+
+// SetSearchBarFuzzySearchEnabled sets the property returned by [IsSearchBarFuzzySearchEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSearchBarFuzzySearchEnabled(value bool) Instance { //gd:OptionButton.search_bar_fuzzy_search_enabled
+	class(self).SetSearchBarFuzzySearchEnabled(value)
+	return self
+}
+
+/*
+Sets the maximum number of mismatches allowed in each search result when fuzzy searching is enabled for the [PopupMenu] search bar. Any item with more mismatches will be hidden from the search results.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
+func (self Instance) SearchBarFuzzySearchMaxMisses() int { //gd:OptionButton.search_bar_fuzzy_search_max_misses
+	return int(int(class(self).GetSearchBarFuzzySearchMaxMisses()))
+}
+
+// SetSearchBarFuzzySearchMaxMisses sets the property returned by [GetSearchBarFuzzySearchMaxMisses]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSearchBarFuzzySearchMaxMisses(value int) Instance { //gd:OptionButton.search_bar_fuzzy_search_max_misses
+	class(self).SetSearchBarFuzzySearchMaxMisses(int64(value))
+	return self
+}
+
+/*
 The number of items to select from.
 */
 func (self Instance) ItemCount() int { //gd:OptionButton.item_count
@@ -607,6 +680,33 @@ func (self class) SetItemAutoTranslateMode(idx int64, mode Node.AutoTranslateMod
 		mode Node.AutoTranslateMode
 	}{idx, mode})
 }
+func (self class) SetSearchBarEnabled(enabled bool) { //gd:OptionButton.set_search_bar_enabled
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_search_bar_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) SetSearchBarMinItemCount(count int64) { //gd:OptionButton.set_search_bar_min_item_count
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_search_bar_min_item_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+}
+func (self class) GetSearchBarMinItemCount() int64 { //gd:OptionButton.get_search_bar_min_item_count
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_search_bar_min_item_count, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetSearchBarFuzzySearchEnabled(enabled bool) { //gd:OptionButton.set_search_bar_fuzzy_search_enabled
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_search_bar_fuzzy_search_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) IsSearchBarFuzzySearchEnabled() bool { //gd:OptionButton.is_search_bar_fuzzy_search_enabled
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_search_bar_fuzzy_search_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetSearchBarFuzzySearchMaxMisses(max_misses int64) { //gd:OptionButton.set_search_bar_fuzzy_search_max_misses
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_search_bar_fuzzy_search_max_misses, 0|(gdextension.SizeInt<<4), &struct{ max_misses int64 }{max_misses})
+}
+func (self class) GetSearchBarFuzzySearchMaxMisses() int64 { //gd:OptionButton.get_search_bar_fuzzy_search_max_misses
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_search_bar_fuzzy_search_max_misses, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) GetItemText(idx int64) String.Readable { //gd:OptionButton.get_item_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
@@ -649,6 +749,11 @@ func (self class) IsItemDisabled(idx int64) bool { //gd:OptionButton.is_item_dis
 }
 func (self class) IsItemSeparator(idx int64) bool { //gd:OptionButton.is_item_separator
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_separator, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var ret = r_ret
+	return ret
+}
+func (self class) IsSearchBarEnabled() bool { //gd:OptionButton.is_search_bar_enabled
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_search_bar_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -746,7 +851,7 @@ func (self class) ItemSelected() Signal.Any {
 }
 
 /*
-Emitted when the user navigates to an item using the [ProjectSettings] "input/ui_up" or [ProjectSettings] "input/ui_down" input actions. The index of the item selected is passed as argument.
+Emitted when the user navigates to an item using the [ProjectSettings] "input/ui_up" or [ProjectSettings] "input/ui_down" input actions. The index of the item focused is passed as argument.
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */

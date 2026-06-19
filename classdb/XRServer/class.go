@@ -565,6 +565,23 @@ func (self class) TrackerRemoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`tracker_removed`))))
 }
 
+/*
+Emitted when the world origin transform changes.
+*/
+func OnWorldOriginChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	once.Do(singleton)
+	gd.ObjectConnect(gdclass.GetXRServer(self[0])[0], gd.NewStringName("world_origin_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) WorldOriginChanged() Signal.Any {
+	once.Do(singleton)
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`world_origin_changed`))))
+}
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

@@ -227,6 +227,23 @@ func (self implementation) LoadLayoutFromConfig(config ConfigFile.Instance, sect
 
 /*
 Implement this method to handle the layout switching for this dock. 'layout' is one of the [DockLayout] constants.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/BoxContainer"
+		"graphics.gd/classdb/EditorDock"
+	)
+
+	type editorDockUpdateLayout struct {
+		EditorDock.Extension[editorDockUpdateLayout]
+
+		BoxContainer BoxContainer.Instance
+	}
+
+	func (n editorDockUpdateLayout) UpdateLayout(layout EditorDock.DockLayout) {
+		n.BoxContainer.SetVertical(layout == EditorDock.DockLayoutVertical)
+	}
 */
 func (Instance) _update_layout(impl func(ptr gdclass.Receiver, layout int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -445,7 +462,7 @@ func (self Instance) SetDockIcon(value Texture2D.Instance) Instance { //gd:Edito
 }
 
 /*
-If true, the dock will always display an icon, regardless of [EditorSettings] "interface/editor/dock_tab_style" or [EditorSettings] "interface/editor/bottom_dock_tab_style".
+If true, the dock will always display an icon, regardless of [EditorSettings] "interface/editor/docks/dock_tab_style" or [EditorSettings] "interface/editor/docks/bottom_dock_tab_style".
 
 [EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
 */
@@ -651,6 +668,22 @@ func (self class) GetAvailableLayouts() DockLayout { //gd:EditorDock.get_availab
 }
 
 /*
+Emitted when the dock is opened via the Editor > Editor Docks menu, before it's made visible.
+*/
+func (self Instance) OnOpened(cb func(), flags ...Signal.Flags) Instance {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("opened"), gd.NewCallable(cb), int64(flags_together))
+	return self
+}
+
+func (self class) Opened() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`opened`))))
+}
+
+/*
 Emitted when the dock is closed with the Close button in the context popup, before it's removed from its parent. See [Closable].
 
 [Closable]: https://pkg.go.dev/graphics.gd/classdb/EditorDock#Instance.Closable
@@ -727,7 +760,7 @@ type DockLayout int64 //gd:EditorDock.DockLayout
 const (
 	// Allows placing the dock in the vertical dock slots on either side of the editor.
 	DockLayoutVertical DockLayout = 1
-	// Allows placing the dock in the editor's bottom panel.
+	// Allows placing the dock in the horizontal dock slots at the bottom.
 	DockLayoutHorizontal DockLayout = 2
 	// Allows making the dock floating (opened as a separate window).
 	DockLayoutFloating DockLayout = 4
@@ -758,6 +791,10 @@ const (
 	DockSlotRightBr DockSlot = 7
 	// Bottom panel.
 	DockSlotBottom DockSlot = 8
+	// Dock slot at the bottom, below bottom panel, on the left side.
+	DockSlotBottomL DockSlot = 9
+	// Dock slot at the bottom, below bottom panel, on the right side.
+	DockSlotBottomR DockSlot = 10
 	// Represents the size of the [DockSlot] enum.
-	DockSlotMax DockSlot = 9
+	DockSlotMax DockSlot = 11
 )

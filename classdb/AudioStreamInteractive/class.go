@@ -393,7 +393,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.AudioStreamInteractive{gdclass.NewAudioStreamInteractive(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -622,6 +621,8 @@ const (
 	TransitionToTimeSamePosition TransitionToTime = 0
 	// Transition to the start of the destination clip.
 	TransitionToTimeStart TransitionToTime = 1
+	// Transition to the last played position in the destination clip, if there was a previous transition from that clip. Otherwise, plays from the start of the destination clip.
+	TransitionToTimePreviousPosition TransitionToTime = 2
 )
 
 type FadeMode int64 //gd:AudioStreamInteractive.FadeMode

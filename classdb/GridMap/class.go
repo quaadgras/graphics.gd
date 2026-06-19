@@ -37,6 +37,7 @@ import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/PhysicsMaterial"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Basis"
 import "graphics.gd/variant/Callable"
@@ -112,53 +113,62 @@ type Instance [1]gdclass.GridMap
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_collision_layer             gdextension.MethodForClass `hash:"1286410249"`
-	get_collision_layer             gdextension.MethodForClass `hash:"3905245786"`
-	set_collision_mask              gdextension.MethodForClass `hash:"1286410249"`
-	get_collision_mask              gdextension.MethodForClass `hash:"3905245786"`
-	set_collision_mask_value        gdextension.MethodForClass `hash:"300928843"`
-	get_collision_mask_value        gdextension.MethodForClass `hash:"1116898809"`
-	set_collision_layer_value       gdextension.MethodForClass `hash:"300928843"`
-	get_collision_layer_value       gdextension.MethodForClass `hash:"1116898809"`
-	set_collision_priority          gdextension.MethodForClass `hash:"373806689"`
-	get_collision_priority          gdextension.MethodForClass `hash:"1740695150"`
-	set_physics_material            gdextension.MethodForClass `hash:"1784508650"`
-	get_physics_material            gdextension.MethodForClass `hash:"2521850424"`
-	set_bake_navigation             gdextension.MethodForClass `hash:"2586408642"`
-	is_baking_navigation            gdextension.MethodForClass `hash:"2240911060"`
-	set_navigation_map              gdextension.MethodForClass `hash:"2722037293"`
-	get_navigation_map              gdextension.MethodForClass `hash:"2944877500"`
-	set_mesh_library                gdextension.MethodForClass `hash:"1488083439"`
-	get_mesh_library                gdextension.MethodForClass `hash:"3350993772"`
-	set_cell_size                   gdextension.MethodForClass `hash:"3460891852"`
-	get_cell_size                   gdextension.MethodForClass `hash:"3360562783"`
-	set_cell_scale                  gdextension.MethodForClass `hash:"373806689"`
-	get_cell_scale                  gdextension.MethodForClass `hash:"1740695150"`
-	set_octant_size                 gdextension.MethodForClass `hash:"1286410249"`
-	get_octant_size                 gdextension.MethodForClass `hash:"3905245786"`
-	set_cell_item                   gdextension.MethodForClass `hash:"3449088946"`
-	get_cell_item                   gdextension.MethodForClass `hash:"3724960147"`
-	get_cell_item_orientation       gdextension.MethodForClass `hash:"3724960147"`
-	get_cell_item_basis             gdextension.MethodForClass `hash:"3493604918"`
-	get_basis_with_orthogonal_index gdextension.MethodForClass `hash:"2816196998"`
-	get_orthogonal_index_from_basis gdextension.MethodForClass `hash:"4210359952"`
-	local_to_map                    gdextension.MethodForClass `hash:"1257687843"`
-	map_to_local                    gdextension.MethodForClass `hash:"1088329196"`
-	resource_changed                gdextension.MethodForClass `hash:"968641751"`
-	set_center_x                    gdextension.MethodForClass `hash:"2586408642"`
-	get_center_x                    gdextension.MethodForClass `hash:"36873697"`
-	set_center_y                    gdextension.MethodForClass `hash:"2586408642"`
-	get_center_y                    gdextension.MethodForClass `hash:"36873697"`
-	set_center_z                    gdextension.MethodForClass `hash:"2586408642"`
-	get_center_z                    gdextension.MethodForClass `hash:"36873697"`
-	clear                           gdextension.MethodForClass `hash:"3218959716"`
-	get_used_cells                  gdextension.MethodForClass `hash:"3995934104"`
-	get_used_cells_by_item          gdextension.MethodForClass `hash:"663333327"`
-	get_meshes                      gdextension.MethodForClass `hash:"3995934104"`
-	get_bake_meshes                 gdextension.MethodForClass `hash:"2915620761"`
-	get_bake_mesh_instance          gdextension.MethodForClass `hash:"937000113"`
-	clear_baked_meshes              gdextension.MethodForClass `hash:"3218959716"`
-	make_baked_meshes               gdextension.MethodForClass `hash:"3609286057"`
+	set_collision_layer                gdextension.MethodForClass `hash:"1286410249"`
+	get_collision_layer                gdextension.MethodForClass `hash:"3905245786"`
+	set_collision_mask                 gdextension.MethodForClass `hash:"1286410249"`
+	get_collision_mask                 gdextension.MethodForClass `hash:"3905245786"`
+	set_collision_mask_value           gdextension.MethodForClass `hash:"300928843"`
+	get_collision_mask_value           gdextension.MethodForClass `hash:"1116898809"`
+	set_collision_layer_value          gdextension.MethodForClass `hash:"300928843"`
+	get_collision_layer_value          gdextension.MethodForClass `hash:"1116898809"`
+	set_collision_priority             gdextension.MethodForClass `hash:"373806689"`
+	get_collision_priority             gdextension.MethodForClass `hash:"1740695150"`
+	set_collision_visibility_mode      gdextension.MethodForClass `hash:"4160694578"`
+	get_collision_visibility_mode      gdextension.MethodForClass `hash:"3729798365"`
+	set_physics_material               gdextension.MethodForClass `hash:"1784508650"`
+	get_physics_material               gdextension.MethodForClass `hash:"2521850424"`
+	set_bake_navigation                gdextension.MethodForClass `hash:"2586408642"`
+	is_baking_navigation               gdextension.MethodForClass `hash:"2240911060"`
+	set_navigation_map                 gdextension.MethodForClass `hash:"2722037293"`
+	get_navigation_map                 gdextension.MethodForClass `hash:"2944877500"`
+	set_mesh_library                   gdextension.MethodForClass `hash:"1488083439"`
+	get_mesh_library                   gdextension.MethodForClass `hash:"3350993772"`
+	set_cell_size                      gdextension.MethodForClass `hash:"3460891852"`
+	get_cell_size                      gdextension.MethodForClass `hash:"3360562783"`
+	set_cell_scale                     gdextension.MethodForClass `hash:"373806689"`
+	get_cell_scale                     gdextension.MethodForClass `hash:"1740695150"`
+	set_octant_size                    gdextension.MethodForClass `hash:"1286410249"`
+	get_octant_size                    gdextension.MethodForClass `hash:"3905245786"`
+	set_cell_item                      gdextension.MethodForClass `hash:"3449088946"`
+	get_cell_item                      gdextension.MethodForClass `hash:"3724960147"`
+	get_cell_item_orientation          gdextension.MethodForClass `hash:"3724960147"`
+	get_cell_item_basis                gdextension.MethodForClass `hash:"3493604918"`
+	get_basis_with_orthogonal_index    gdextension.MethodForClass `hash:"2816196998"`
+	get_orthogonal_index_from_basis    gdextension.MethodForClass `hash:"4210359952"`
+	local_to_map                       gdextension.MethodForClass `hash:"1257687843"`
+	map_to_local                       gdextension.MethodForClass `hash:"1088329196"`
+	resource_changed                   gdextension.MethodForClass `hash:"968641751"`
+	set_center_x                       gdextension.MethodForClass `hash:"2586408642"`
+	get_center_x                       gdextension.MethodForClass `hash:"36873697"`
+	set_center_y                       gdextension.MethodForClass `hash:"2586408642"`
+	get_center_y                       gdextension.MethodForClass `hash:"36873697"`
+	set_center_z                       gdextension.MethodForClass `hash:"2586408642"`
+	get_center_z                       gdextension.MethodForClass `hash:"36873697"`
+	clear                              gdextension.MethodForClass `hash:"3218959716"`
+	get_used_cells                     gdextension.MethodForClass `hash:"3995934104"`
+	get_used_cells_by_item             gdextension.MethodForClass `hash:"663333327"`
+	get_used_octants                   gdextension.MethodForClass `hash:"3995934104"`
+	get_used_octants_by_item           gdextension.MethodForClass `hash:"663333327"`
+	get_used_cells_in_octant           gdextension.MethodForClass `hash:"2658725580"`
+	get_used_cells_in_octant_by_item   gdextension.MethodForClass `hash:"2384667821"`
+	get_octants_in_bounds              gdextension.MethodForClass `hash:"2489849902"`
+	get_used_octants_in_bounds         gdextension.MethodForClass `hash:"2489849902"`
+	get_octant_coords_from_cell_coords gdextension.MethodForClass `hash:"2075501597"`
+	get_meshes                         gdextension.MethodForClass `hash:"3995934104"`
+	get_bake_meshes                    gdextension.MethodForClass `hash:"2915620761"`
+	get_bake_mesh_instance             gdextension.MethodForClass `hash:"937000113"`
+	clear_baked_meshes                 gdextension.MethodForClass `hash:"3218959716"`
+	make_baked_meshes                  gdextension.MethodForClass `hash:"3609286057"`
 }
 
 func init() {
@@ -370,6 +380,69 @@ Returns an array of all cells with the given item index specified in 'item'.
 */
 func (self Instance) GetUsedCellsByItem(item CellItem) []Vector3i.XYZ { //gd:GridMap.get_used_cells_by_item
 	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).GetUsedCellsByItem(int64(item)))))
+}
+
+/*
+Returns an array of [Vector3i.XYZ]s with the octant coordinates of the non-empty octants in the grid map.
+
+[Vector3i.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3i#XYZ
+*/
+func (self Instance) GetUsedOctants() []Vector3i.XYZ { //gd:GridMap.get_used_octants
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).GetUsedOctants())))
+}
+
+/*
+Returns an array of [Vector3i.XYZ]s with the octant coordinates of the octants that use the specified 'item' in the grid map.
+
+[Vector3i.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3i#XYZ
+*/
+func (self Instance) GetUsedOctantsByItem(item CellItem) []Vector3i.XYZ { //gd:GridMap.get_used_octants_by_item
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).GetUsedOctantsByItem(int64(item)))))
+}
+
+/*
+Returns an array of [Vector3i.XYZ]s with the cell coordinates of non-empty cells inside the octant at 'octant_coords'.
+
+[Vector3i.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3i#XYZ
+*/
+func (self Instance) GetUsedCellsInOctant(octant_coords Vector3i.XYZ) []Vector3i.XYZ { //gd:GridMap.get_used_cells_in_octant
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).GetUsedCellsInOctant(Vector3i.XYZ(octant_coords)))))
+}
+
+/*
+Returns an array of [Vector3i.XYZ]s with the cell coordinates of cells inside the octant at 'octant_coords' that use the specified cell 'item'.
+
+[Vector3i.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3i#XYZ
+*/
+func (self Instance) GetUsedCellsInOctantByItem(octant_coords Vector3i.XYZ, item CellItem) []Vector3i.XYZ { //gd:GridMap.get_used_cells_in_octant_by_item
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).GetUsedCellsInOctantByItem(Vector3i.XYZ(octant_coords), int64(item)))))
+}
+
+/*
+Returns an array of [Vector3i.XYZ] octant coordinates that are inside the given 'bounds', including octants that have no cells in use.
+
+[Vector3i.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3i#XYZ
+*/
+func (self Instance) GetOctantsInBounds(bounds AABB.PositionSize) []Vector3i.XYZ { //gd:GridMap.get_octants_in_bounds
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).GetOctantsInBounds(AABB.PositionSize(bounds)))))
+}
+
+/*
+Returns an array of [Vector3i.XYZ]s with the octant coordinates of non-empty octants that are inside the local 'bounds'.
+
+[Vector3i.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3i#XYZ
+*/
+func (self Instance) GetUsedOctantsInBounds(bounds AABB.PositionSize) []Vector3i.XYZ { //gd:GridMap.get_used_octants_in_bounds
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).GetUsedOctantsInBounds(AABB.PositionSize(bounds)))))
+}
+
+/*
+Returns the [Vector3i.XYZ] octant coordinates of the octant that the cell at 'cell_coords' belongs to.
+
+[Vector3i.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3i#XYZ
+*/
+func (self Instance) GetOctantCoordsFromCellCoords(cell_coords Vector3i.XYZ) Vector3i.XYZ { //gd:GridMap.get_octant_coords_from_cell_coords
+	return Vector3i.XYZ(Advanced(self).GetOctantCoordsFromCellCoords(Vector3i.XYZ(cell_coords)))
 }
 
 /*
@@ -641,6 +714,21 @@ func (self Instance) SetCollisionPriority(value Float.X) Instance { //gd:GridMap
 }
 
 /*
+Show or hide the [GridMap]'s collision shapes. If set to [DebugVisibilityModeDefault], this depends on the show collision debug settings.
+
+[GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
+*/
+func (self Instance) CollisionVisibilityMode() DebugVisibilityMode { //gd:GridMap.collision_visibility_mode
+	return DebugVisibilityMode(class(self).GetCollisionVisibilityMode())
+}
+
+// SetCollisionVisibilityMode sets the property returned by [GetCollisionVisibilityMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCollisionVisibilityMode(value DebugVisibilityMode) Instance { //gd:GridMap.collision_visibility_mode
+	class(self).SetCollisionVisibilityMode(value)
+	return self
+}
+
+/*
 If true, this GridMap creates a navigation region for each cell that uses a [MeshLibrary] item with a navigation mesh. The created navigation region will use the navigation layers bitmask assigned to the [MeshLibrary]'s item.
 
 [MeshLibrary]: https://pkg.go.dev/graphics.gd/classdb/MeshLibrary
@@ -698,6 +786,14 @@ func (self class) SetCollisionPriority(priority float64) { //gd:GridMap.set_coll
 }
 func (self class) GetCollisionPriority() float64 { //gd:GridMap.get_collision_priority
 	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetCollisionVisibilityMode(visibility_mode DebugVisibilityMode) { //gd:GridMap.set_collision_visibility_mode
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ visibility_mode DebugVisibilityMode }{visibility_mode})
+}
+func (self class) GetCollisionVisibilityMode() DebugVisibilityMode { //gd:GridMap.get_collision_visibility_mode
+	var r_ret = noescape.Call[DebugVisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_collision_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -839,6 +935,44 @@ func (self class) GetUsedCellsByItem(item int64) Array.Contains[Vector3i.XYZ] { 
 	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
+func (self class) GetUsedOctants() Array.Contains[Vector3i.XYZ] { //gd:GridMap.get_used_octants
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_octants, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) GetUsedOctantsByItem(item int64) Array.Contains[Vector3i.XYZ] { //gd:GridMap.get_used_octants_by_item
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_octants_by_item, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ item int64 }{item})
+	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) GetUsedCellsInOctant(octant_coords Vector3i.XYZ) Array.Contains[Vector3i.XYZ] { //gd:GridMap.get_used_cells_in_octant
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_cells_in_octant, gdextension.SizeArray|(gdextension.SizeVector3i<<4), &struct{ octant_coords Vector3i.XYZ }{octant_coords})
+	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) GetUsedCellsInOctantByItem(octant_coords Vector3i.XYZ, item int64) Array.Contains[Vector3i.XYZ] { //gd:GridMap.get_used_cells_in_octant_by_item
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_cells_in_octant_by_item, gdextension.SizeArray|(gdextension.SizeVector3i<<4)|(gdextension.SizeInt<<8), &struct {
+		octant_coords Vector3i.XYZ
+		item          int64
+	}{octant_coords, item})
+	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) GetOctantsInBounds(bounds AABB.PositionSize) Array.Contains[Vector3i.XYZ] { //gd:GridMap.get_octants_in_bounds
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_octants_in_bounds, gdextension.SizeArray|(gdextension.SizeAABB<<4), &struct{ bounds AABB.PositionSize }{bounds})
+	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) GetUsedOctantsInBounds(bounds AABB.PositionSize) Array.Contains[Vector3i.XYZ] { //gd:GridMap.get_used_octants_in_bounds
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_octants_in_bounds, gdextension.SizeArray|(gdextension.SizeAABB<<4), &struct{ bounds AABB.PositionSize }{bounds})
+	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) GetOctantCoordsFromCellCoords(cell_coords Vector3i.XYZ) Vector3i.XYZ { //gd:GridMap.get_octant_coords_from_cell_coords
+	var r_ret = noescape.Call[Vector3i.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_octant_coords_from_cell_coords, gdextension.SizeVector3i|(gdextension.SizeVector3i<<4), &struct{ cell_coords Vector3i.XYZ }{cell_coords})
+	var ret = r_ret
+	return ret
+}
 func (self class) GetMeshes() Array.Any { //gd:GridMap.get_meshes
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_meshes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
@@ -926,6 +1060,20 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("GridMap", func(ptr gdreference.Object) any { return Instance{gdclass.NewGridMap(ptr)} })
 }
+
+type DebugVisibilityMode int64 //gd:GridMap.DebugVisibilityMode
+
+const (
+	// Hide the collisions debug shapes in the editor, and use the debug settings to determine their visibility in game (i.e. [SceneTree.DebugCollisionsHint] or [SceneTree.DebugNavigationHint]).
+	//
+	// [SceneTree.DebugCollisionsHint]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.DebugCollisionsHint
+	// [SceneTree.DebugNavigationHint]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.DebugNavigationHint
+	DebugVisibilityModeDefault DebugVisibilityMode = 0
+	// Always show the collisions debug shapes.
+	DebugVisibilityModeForceShow DebugVisibilityMode = 1
+	// Always hide the collisions debug shapes.
+	DebugVisibilityModeForceHide DebugVisibilityMode = 2
+)
 
 type CellItem int
 

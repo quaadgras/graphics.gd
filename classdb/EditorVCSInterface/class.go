@@ -139,8 +139,10 @@ type Interface interface {
 	UnstageFile(file_path string)
 	// Discards the changes made in a file present at 'file_path'.
 	DiscardFile(file_path string)
-	// Commits the currently staged changes and applies the commit 'msg' to the resulting commit.
-	Commit(msg string)
+	// Commits the currently staged changes and applies the commit 'msg' to the resulting commit. If 'amend' is true the commit will modify the most recent commit instead.
+	Commit(msg string, amend bool)
+	// Returns whether or not the plugin allows commit amends.
+	AllowAmends() bool
 	// Returns an array of data structure items (see [CreateDiffFile], [CreateDiffHunk], [CreateDiffLine], [AddLineDiffsIntoDiffHunk] and [AddDiffHunksIntoDiffFile]), each containing information about a diff. If 'identifier' is a file path, returns a file diff, and if it is a commit identifier, then returns a commit diff.
 	//
 	// [AddDiffHunksIntoDiffFile]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.AddDiffHunksIntoDiffFile
@@ -204,7 +206,10 @@ func (self implementation) UnstageFile(file_path string) {
 }
 func (self implementation) DiscardFile(file_path string) {
 }
-func (self implementation) Commit(msg string) {
+func (self implementation) Commit(msg string, amend bool) {
+}
+func (self implementation) AllowAmends() (_ bool) {
+	return
 }
 func (self implementation) GetDiff(identifier string, area int) (_ [][]DiffFile) {
 	return
@@ -336,14 +341,26 @@ func (Instance) _discard_file(impl func(ptr gdclass.Receiver, file_path string))
 }
 
 /*
-Commits the currently staged changes and applies the commit 'msg' to the resulting commit.
+Commits the currently staged changes and applies the commit 'msg' to the resulting commit. If 'amend' is true the commit will modify the most recent commit instead.
 */
-func (Instance) _commit(impl func(ptr gdclass.Receiver, msg string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _commit(impl func(ptr gdclass.Receiver, msg string, amend bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var msg = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(msg))
+		var amend = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, msg.String())
+		impl(self, msg.String(), amend)
+	}
+}
+
+/*
+Returns whether or not the plugin allows commit amends.
+*/
+func (Instance) _allow_amends(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
@@ -746,12 +763,20 @@ func (class) _discard_file(impl func(ptr gdclass.Receiver, file_path String.Read
 		impl(self, file_path)
 	}
 }
-func (class) _commit(impl func(ptr gdclass.Receiver, msg String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _commit(impl func(ptr gdclass.Receiver, msg String.Readable, amend bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var msg = String.Via(gd.StringProxy{}, pointers.Pack(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(msg))
+		var amend = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, msg)
+		impl(self, msg, amend)
+	}
+}
+func (class) _allow_amends(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_diff(impl func(ptr gdclass.Receiver, identifier String.Readable, area int64) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1009,6 +1034,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._discard_file)
 	case "_commit":
 		return reflect.ValueOf(self._commit)
+	case "_allow_amends":
+		return reflect.ValueOf(self._allow_amends)
 	case "_get_diff":
 		return reflect.ValueOf(self._get_diff)
 	case "_shut_down":
@@ -1062,6 +1089,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._discard_file)
 	case "_commit":
 		return reflect.ValueOf(self._commit)
+	case "_allow_amends":
+		return reflect.ValueOf(self._allow_amends)
 	case "_get_diff":
 		return reflect.ValueOf(self._get_diff)
 	case "_shut_down":

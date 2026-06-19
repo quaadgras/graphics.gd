@@ -5,11 +5,11 @@ The [CameraServer] keeps track of different cameras accessible in Godot. These a
 
 It is notably used to provide AR modules with a video feed from the camera.
 
-Note: This class is currently only implemented on Linux, Android, macOS, and iOS. On other platforms no [CameraFeed]s will be available. To get a [CameraFeed] on iOS, the camera plugin from [godot-ios-plugins] is required.
+Note: This class is currently only implemented on Linux, Android, macOS, and iOS. On other platforms no [CameraFeed]s will be available. To get a [CameraFeed] on iOS, enable [EditorExportPlatformIOS] "modules/camera".
 
 [CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
 [CameraServer]: https://pkg.go.dev/graphics.gd/classdb/CameraServer
-[godot-ios-plugins]: https://github.com/godotengine/godot-ios-plugins
+[EditorExportPlatformIOS]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformIOS
 */
 package CameraServer
 

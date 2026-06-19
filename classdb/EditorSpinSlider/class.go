@@ -104,20 +104,22 @@ type Instance [1]gdclass.EditorSpinSlider
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_label           gdextension.MethodForClass `hash:"83702148"`
-	get_label           gdextension.MethodForClass `hash:"201670096"`
-	set_suffix          gdextension.MethodForClass `hash:"83702148"`
-	get_suffix          gdextension.MethodForClass `hash:"201670096"`
-	set_read_only       gdextension.MethodForClass `hash:"2586408642"`
-	is_read_only        gdextension.MethodForClass `hash:"36873697"`
-	set_flat            gdextension.MethodForClass `hash:"2586408642"`
-	is_flat             gdextension.MethodForClass `hash:"36873697"`
-	set_control_state   gdextension.MethodForClass `hash:"1324557109"`
-	get_control_state   gdextension.MethodForClass `hash:"3406006200"`
-	set_hide_slider     gdextension.MethodForClass `hash:"2586408642"`
-	is_hiding_slider    gdextension.MethodForClass `hash:"36873697"`
-	set_editing_integer gdextension.MethodForClass `hash:"2586408642"`
-	is_editing_integer  gdextension.MethodForClass `hash:"36873697"`
+	set_label                      gdextension.MethodForClass `hash:"83702148"`
+	get_label                      gdextension.MethodForClass `hash:"201670096"`
+	set_suffix                     gdextension.MethodForClass `hash:"83702148"`
+	get_suffix                     gdextension.MethodForClass `hash:"201670096"`
+	set_read_only                  gdextension.MethodForClass `hash:"2586408642"`
+	is_read_only                   gdextension.MethodForClass `hash:"36873697"`
+	set_flat                       gdextension.MethodForClass `hash:"2586408642"`
+	is_flat                        gdextension.MethodForClass `hash:"36873697"`
+	set_control_state              gdextension.MethodForClass `hash:"1324557109"`
+	get_control_state              gdextension.MethodForClass `hash:"3406006200"`
+	set_hide_slider                gdextension.MethodForClass `hash:"2586408642"`
+	is_hiding_slider               gdextension.MethodForClass `hash:"36873697"`
+	set_editing_integer            gdextension.MethodForClass `hash:"2586408642"`
+	is_editing_integer             gdextension.MethodForClass `hash:"36873697"`
+	set_deferred_drag_mode_enabled gdextension.MethodForClass `hash:"3216645846"`
+	is_deferred_drag_mode_enabled  gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -131,6 +133,13 @@ func init() {
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.EditorSpinSlider
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -278,6 +287,19 @@ func (self Instance) SetEditingInteger(value bool) Instance { //gd:EditorSpinSli
 	return self
 }
 
+/*
+If true, changing via dragging is applied only at the end of the input (for example, when the user releases a mouse button).
+*/
+func (self Instance) DeferredDragMode() bool { //gd:EditorSpinSlider.deferred_drag_mode
+	return bool(class(self).IsDeferredDragModeEnabled())
+}
+
+// SetDeferredDragMode sets the property returned by [IsDeferredDragModeEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDeferredDragMode(value bool) Instance { //gd:EditorSpinSlider.deferred_drag_mode
+	class(self).SetDeferredDragModeEnabled(value)
+	return self
+}
+
 func (self class) SetLabel(label String.Readable) { //gd:EditorSpinSlider.set_label
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label, 0|(gdextension.SizeString<<4), &struct{ label gdextension.String }{pointers.Get(gd.InternalString(label))})
 }
@@ -331,6 +353,14 @@ func (self class) SetEditingInteger(editing_integer bool) { //gd:EditorSpinSlide
 }
 func (self class) IsEditingInteger() bool { //gd:EditorSpinSlider.is_editing_integer
 	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_integer, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetDeferredDragModeEnabled(enabled bool) { //gd:EditorSpinSlider.set_deferred_drag_mode_enabled
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deferred_drag_mode_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) IsDeferredDragModeEnabled() bool { //gd:EditorSpinSlider.is_deferred_drag_mode_enabled
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deferred_drag_mode_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

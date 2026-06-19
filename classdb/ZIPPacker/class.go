@@ -40,6 +40,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/FileAccess"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -115,7 +116,8 @@ var methods struct {
 	open                  gdextension.MethodForClass `hash:"1936816515"`
 	set_compression_level gdextension.MethodForClass `hash:"1286410249"`
 	get_compression_level gdextension.MethodForClass `hash:"3905245786"`
-	start_file            gdextension.MethodForClass `hash:"166001499"`
+	add_directory         gdextension.MethodForClass `hash:"934773537"`
+	start_file            gdextension.MethodForClass `hash:"4260848715"`
 	write_file            gdextension.MethodForClass `hash:"680677267"`
 	close_file            gdextension.MethodForClass `hash:"166280745"`
 	close                 gdextension.MethodForClass `hash:"166280745"`
@@ -167,14 +169,47 @@ func (self MoreArgs) Open(path string, append ZipAppend) error { //gd:ZIPPacker.
 }
 
 /*
-Starts writing to a file within the archive. Only one file can be written at the same time.
+Adds directory to the archive. If 'modified_time' is set to 0, current system time is used.
+
+Note: Directories are automatically created when [StartFile] is called, use this function before adding files to create directories with custom permissions and modification time.
+
+[StartFile]: https://pkg.go.dev/graphics.gd/classdb/ZIPPacker#Instance.StartFile
+*/
+func (self Instance) AddDirectory(path string) error { //gd:ZIPPacker.add_directory
+	return error(gd.ToError(Advanced(self).AddDirectory(String.From(path), 493, int64(0))))
+}
+
+/*
+Adds directory to the archive. If 'modified_time' is set to 0, current system time is used.
+
+Note: Directories are automatically created when [StartFile] is called, use this function before adding files to create directories with custom permissions and modification time.
+
+[StartFile]: https://pkg.go.dev/graphics.gd/classdb/ZIPPacker#Instance.StartFile
+*/
+func (self MoreArgs) AddDirectory(path string, permissions FileAccess.UnixPermissionFlags, modified_time int) error { //gd:ZIPPacker.add_directory
+	return error(gd.ToError(Advanced(self).AddDirectory(String.From(path), permissions, int64(modified_time))))
+}
+
+/*
+Starts writing to a file within the archive. Only one file can be written at the same time. If 'modified_time' is set to 0, current system time is used.
 
 Must be called after [Open].
 
 [Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPPacker#Instance.Open
 */
 func (self Instance) StartFile(path string) error { //gd:ZIPPacker.start_file
-	return error(gd.ToError(Advanced(self).StartFile(String.From(path))))
+	return error(gd.ToError(Advanced(self).StartFile(String.From(path), 420, int64(0))))
+}
+
+/*
+Starts writing to a file within the archive. Only one file can be written at the same time. If 'modified_time' is set to 0, current system time is used.
+
+Must be called after [Open].
+
+[Open]: https://pkg.go.dev/graphics.gd/classdb/ZIPPacker#Instance.Open
+*/
+func (self MoreArgs) StartFile(path string, permissions FileAccess.UnixPermissionFlags, modified_time int) error { //gd:ZIPPacker.start_file
+	return error(gd.ToError(Advanced(self).StartFile(String.From(path), permissions, int64(modified_time))))
 }
 
 /*
@@ -242,7 +277,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.ZIPPacker{gdclass.NewZIPPacker(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -278,8 +312,21 @@ func (self class) GetCompressionLevel() int64 { //gd:ZIPPacker.get_compression_l
 	var ret = r_ret
 	return ret
 }
-func (self class) StartFile(path String.Readable) Error.Code { //gd:ZIPPacker.start_file
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+func (self class) AddDirectory(path String.Readable, permissions FileAccess.UnixPermissionFlags, modified_time int64) Error.Code { //gd:ZIPPacker.add_directory
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_directory, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+		path          gdextension.String
+		permissions   FileAccess.UnixPermissionFlags
+		modified_time int64
+	}{pointers.Get(gd.InternalString(path)), permissions, modified_time})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+func (self class) StartFile(path String.Readable, permissions FileAccess.UnixPermissionFlags, modified_time int64) Error.Code { //gd:ZIPPacker.start_file
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_file, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+		path          gdextension.String
+		permissions   FileAccess.UnixPermissionFlags
+		modified_time int64
+	}{pointers.Get(gd.InternalString(path)), permissions, modified_time})
 	var ret = Error.Code(r_ret)
 	return ret
 }

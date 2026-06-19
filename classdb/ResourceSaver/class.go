@@ -254,6 +254,7 @@ func (self class) GetResourceIdForPath(path String.Readable, generate bool) int6
 	var ret = r_ret
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

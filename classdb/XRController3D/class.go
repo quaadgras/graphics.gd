@@ -254,7 +254,7 @@ func (self class) GetTrackerHand() XRPositionalTracker.TrackerHand { //gd:XRCont
 /*
 Emitted when a button on this controller is pressed.
 */
-func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags) Instance {
+func (self Instance) OnButtonPressed(cb func(action_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
@@ -270,7 +270,7 @@ func (self class) ButtonPressed() Signal.Any {
 /*
 Emitted when a button on this controller is released.
 */
-func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flags) Instance {
+func (self Instance) OnButtonReleased(cb func(action_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
@@ -286,7 +286,7 @@ func (self class) ButtonReleased() Signal.Any {
 /*
 Emitted when a trigger or similar input on this controller changes value.
 */
-func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), flags ...Signal.Flags) Instance {
+func (self Instance) OnInputFloatChanged(cb func(action_name string, value Float.X), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
@@ -302,7 +302,7 @@ func (self class) InputFloatChanged() Signal.Any {
 /*
 Emitted when a thumbstick or thumbpad on this controller is moved.
 */
-func (self Instance) OnInputVector2Changed(cb func(name string, value Vector2.XY), flags ...Signal.Flags) Instance {
+func (self Instance) OnInputVector2Changed(cb func(action_name string, value Vector2.XY), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag

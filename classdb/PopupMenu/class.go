@@ -122,99 +122,108 @@ type Instance [1]gdclass.PopupMenu
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	activate_item_by_event               gdextension.MethodForClass `hash:"3716412023"`
-	set_prefer_native_menu               gdextension.MethodForClass `hash:"2586408642"`
-	is_prefer_native_menu                gdextension.MethodForClass `hash:"36873697"`
-	is_native_menu                       gdextension.MethodForClass `hash:"36873697"`
-	add_item                             gdextension.MethodForClass `hash:"3674230041"`
-	add_icon_item                        gdextension.MethodForClass `hash:"1086190128"`
-	add_check_item                       gdextension.MethodForClass `hash:"3674230041"`
-	add_icon_check_item                  gdextension.MethodForClass `hash:"1086190128"`
-	add_radio_check_item                 gdextension.MethodForClass `hash:"3674230041"`
-	add_icon_radio_check_item            gdextension.MethodForClass `hash:"1086190128"`
-	add_multistate_item                  gdextension.MethodForClass `hash:"150780458"`
-	add_shortcut                         gdextension.MethodForClass `hash:"3451850107"`
-	add_icon_shortcut                    gdextension.MethodForClass `hash:"2997871092"`
-	add_check_shortcut                   gdextension.MethodForClass `hash:"1642193386"`
-	add_icon_check_shortcut              gdextension.MethodForClass `hash:"3856247530"`
-	add_radio_check_shortcut             gdextension.MethodForClass `hash:"1642193386"`
-	add_icon_radio_check_shortcut        gdextension.MethodForClass `hash:"3856247530"`
-	add_submenu_item                     gdextension.MethodForClass `hash:"2979222410"`
-	add_submenu_node_item                gdextension.MethodForClass `hash:"1325455216"`
-	set_item_text                        gdextension.MethodForClass `hash:"501894301"`
-	set_item_text_direction              gdextension.MethodForClass `hash:"1707680378"`
-	set_item_language                    gdextension.MethodForClass `hash:"501894301"`
-	set_item_auto_translate_mode         gdextension.MethodForClass `hash:"287402019"`
-	set_item_icon                        gdextension.MethodForClass `hash:"666127730"`
-	set_item_icon_max_width              gdextension.MethodForClass `hash:"3937882851"`
-	set_item_icon_modulate               gdextension.MethodForClass `hash:"2878471219"`
-	set_item_checked                     gdextension.MethodForClass `hash:"300928843"`
-	set_item_id                          gdextension.MethodForClass `hash:"3937882851"`
-	set_item_accelerator                 gdextension.MethodForClass `hash:"2992817551"`
-	set_item_metadata                    gdextension.MethodForClass `hash:"2152698145"`
-	set_item_disabled                    gdextension.MethodForClass `hash:"300928843"`
-	set_item_submenu                     gdextension.MethodForClass `hash:"501894301"`
-	set_item_submenu_node                gdextension.MethodForClass `hash:"1068370740"`
-	set_item_as_separator                gdextension.MethodForClass `hash:"300928843"`
-	set_item_as_checkable                gdextension.MethodForClass `hash:"300928843"`
-	set_item_as_radio_checkable          gdextension.MethodForClass `hash:"300928843"`
-	set_item_tooltip                     gdextension.MethodForClass `hash:"501894301"`
-	set_item_shortcut                    gdextension.MethodForClass `hash:"825127832"`
-	set_item_indent                      gdextension.MethodForClass `hash:"3937882851"`
-	set_item_multistate                  gdextension.MethodForClass `hash:"3937882851"`
-	set_item_multistate_max              gdextension.MethodForClass `hash:"3937882851"`
-	set_item_shortcut_disabled           gdextension.MethodForClass `hash:"300928843"`
-	toggle_item_checked                  gdextension.MethodForClass `hash:"1286410249"`
-	toggle_item_multistate               gdextension.MethodForClass `hash:"1286410249"`
-	get_item_text                        gdextension.MethodForClass `hash:"844755477"`
-	get_item_text_direction              gdextension.MethodForClass `hash:"4235602388"`
-	get_item_language                    gdextension.MethodForClass `hash:"844755477"`
-	get_item_auto_translate_mode         gdextension.MethodForClass `hash:"906302372"`
-	get_item_icon                        gdextension.MethodForClass `hash:"3536238170"`
-	get_item_icon_max_width              gdextension.MethodForClass `hash:"923996154"`
-	get_item_icon_modulate               gdextension.MethodForClass `hash:"3457211756"`
-	is_item_checked                      gdextension.MethodForClass `hash:"1116898809"`
-	get_item_id                          gdextension.MethodForClass `hash:"923996154"`
-	get_item_index                       gdextension.MethodForClass `hash:"923996154"`
-	get_item_accelerator                 gdextension.MethodForClass `hash:"253789942"`
-	get_item_metadata                    gdextension.MethodForClass `hash:"4227898402"`
-	is_item_disabled                     gdextension.MethodForClass `hash:"1116898809"`
-	get_item_submenu                     gdextension.MethodForClass `hash:"844755477"`
-	get_item_submenu_node                gdextension.MethodForClass `hash:"2100501353"`
-	is_item_separator                    gdextension.MethodForClass `hash:"1116898809"`
-	is_item_checkable                    gdextension.MethodForClass `hash:"1116898809"`
-	is_item_radio_checkable              gdextension.MethodForClass `hash:"1116898809"`
-	is_item_shortcut_disabled            gdextension.MethodForClass `hash:"1116898809"`
-	get_item_tooltip                     gdextension.MethodForClass `hash:"844755477"`
-	get_item_shortcut                    gdextension.MethodForClass `hash:"1449483325"`
-	get_item_indent                      gdextension.MethodForClass `hash:"923996154"`
-	get_item_multistate_max              gdextension.MethodForClass `hash:"923996154"`
-	get_item_multistate                  gdextension.MethodForClass `hash:"923996154"`
-	set_focused_item                     gdextension.MethodForClass `hash:"1286410249"`
-	get_focused_item                     gdextension.MethodForClass `hash:"3905245786"`
-	set_item_count                       gdextension.MethodForClass `hash:"1286410249"`
-	get_item_count                       gdextension.MethodForClass `hash:"3905245786"`
-	scroll_to_item                       gdextension.MethodForClass `hash:"1286410249"`
-	remove_item                          gdextension.MethodForClass `hash:"1286410249"`
-	add_separator                        gdextension.MethodForClass `hash:"2266703459"`
-	clear                                gdextension.MethodForClass `hash:"107499316"`
-	set_hide_on_item_selection           gdextension.MethodForClass `hash:"2586408642"`
-	is_hide_on_item_selection            gdextension.MethodForClass `hash:"36873697"`
-	set_hide_on_checkable_item_selection gdextension.MethodForClass `hash:"2586408642"`
-	is_hide_on_checkable_item_selection  gdextension.MethodForClass `hash:"36873697"`
-	set_hide_on_state_item_selection     gdextension.MethodForClass `hash:"2586408642"`
-	is_hide_on_state_item_selection      gdextension.MethodForClass `hash:"36873697"`
-	set_submenu_popup_delay              gdextension.MethodForClass `hash:"373806689"`
-	get_submenu_popup_delay              gdextension.MethodForClass `hash:"1740695150"`
-	set_allow_search                     gdextension.MethodForClass `hash:"2586408642"`
-	get_allow_search                     gdextension.MethodForClass `hash:"36873697"`
-	is_system_menu                       gdextension.MethodForClass `hash:"36873697"`
-	set_system_menu                      gdextension.MethodForClass `hash:"600639674"`
-	get_system_menu                      gdextension.MethodForClass `hash:"1222557358"`
-	set_shrink_height                    gdextension.MethodForClass `hash:"2586408642"`
-	get_shrink_height                    gdextension.MethodForClass `hash:"36873697"`
-	set_shrink_width                     gdextension.MethodForClass `hash:"2586408642"`
-	get_shrink_width                     gdextension.MethodForClass `hash:"36873697"`
+	activate_item_by_event                 gdextension.MethodForClass `hash:"3716412023"`
+	set_prefer_native_menu                 gdextension.MethodForClass `hash:"2586408642"`
+	is_prefer_native_menu                  gdextension.MethodForClass `hash:"36873697"`
+	is_native_menu                         gdextension.MethodForClass `hash:"36873697"`
+	add_item                               gdextension.MethodForClass `hash:"3674230041"`
+	add_icon_item                          gdextension.MethodForClass `hash:"1086190128"`
+	add_check_item                         gdextension.MethodForClass `hash:"3674230041"`
+	add_icon_check_item                    gdextension.MethodForClass `hash:"1086190128"`
+	add_radio_check_item                   gdextension.MethodForClass `hash:"3674230041"`
+	add_icon_radio_check_item              gdextension.MethodForClass `hash:"1086190128"`
+	add_multistate_item                    gdextension.MethodForClass `hash:"150780458"`
+	add_shortcut                           gdextension.MethodForClass `hash:"3451850107"`
+	add_icon_shortcut                      gdextension.MethodForClass `hash:"2997871092"`
+	add_check_shortcut                     gdextension.MethodForClass `hash:"1642193386"`
+	add_icon_check_shortcut                gdextension.MethodForClass `hash:"3856247530"`
+	add_radio_check_shortcut               gdextension.MethodForClass `hash:"1642193386"`
+	add_icon_radio_check_shortcut          gdextension.MethodForClass `hash:"3856247530"`
+	add_submenu_item                       gdextension.MethodForClass `hash:"2979222410"`
+	add_submenu_node_item                  gdextension.MethodForClass `hash:"1325455216"`
+	set_item_text                          gdextension.MethodForClass `hash:"501894301"`
+	set_item_text_direction                gdextension.MethodForClass `hash:"1707680378"`
+	set_item_language                      gdextension.MethodForClass `hash:"501894301"`
+	set_item_auto_translate_mode           gdextension.MethodForClass `hash:"287402019"`
+	set_item_icon                          gdextension.MethodForClass `hash:"666127730"`
+	set_item_icon_max_width                gdextension.MethodForClass `hash:"3937882851"`
+	set_item_icon_modulate                 gdextension.MethodForClass `hash:"2878471219"`
+	set_item_checked                       gdextension.MethodForClass `hash:"300928843"`
+	set_item_id                            gdextension.MethodForClass `hash:"3937882851"`
+	set_item_accelerator                   gdextension.MethodForClass `hash:"2992817551"`
+	set_item_metadata                      gdextension.MethodForClass `hash:"2152698145"`
+	set_item_disabled                      gdextension.MethodForClass `hash:"300928843"`
+	set_item_submenu                       gdextension.MethodForClass `hash:"501894301"`
+	set_item_submenu_node                  gdextension.MethodForClass `hash:"1068370740"`
+	set_item_as_separator                  gdextension.MethodForClass `hash:"300928843"`
+	set_item_as_checkable                  gdextension.MethodForClass `hash:"300928843"`
+	set_item_as_radio_checkable            gdextension.MethodForClass `hash:"300928843"`
+	set_item_tooltip                       gdextension.MethodForClass `hash:"501894301"`
+	set_item_shortcut                      gdextension.MethodForClass `hash:"825127832"`
+	set_item_indent                        gdextension.MethodForClass `hash:"3937882851"`
+	set_item_multistate                    gdextension.MethodForClass `hash:"3937882851"`
+	set_item_multistate_max                gdextension.MethodForClass `hash:"3937882851"`
+	set_item_shortcut_disabled             gdextension.MethodForClass `hash:"300928843"`
+	set_item_index                         gdextension.MethodForClass `hash:"3937882851"`
+	toggle_item_checked                    gdextension.MethodForClass `hash:"1286410249"`
+	toggle_item_multistate                 gdextension.MethodForClass `hash:"1286410249"`
+	get_item_text                          gdextension.MethodForClass `hash:"844755477"`
+	get_item_text_direction                gdextension.MethodForClass `hash:"4235602388"`
+	get_item_language                      gdextension.MethodForClass `hash:"844755477"`
+	get_item_auto_translate_mode           gdextension.MethodForClass `hash:"906302372"`
+	get_item_icon                          gdextension.MethodForClass `hash:"3536238170"`
+	get_item_icon_max_width                gdextension.MethodForClass `hash:"923996154"`
+	get_item_icon_modulate                 gdextension.MethodForClass `hash:"3457211756"`
+	is_item_checked                        gdextension.MethodForClass `hash:"1116898809"`
+	get_item_id                            gdextension.MethodForClass `hash:"923996154"`
+	get_item_index                         gdextension.MethodForClass `hash:"923996154"`
+	get_item_accelerator                   gdextension.MethodForClass `hash:"253789942"`
+	get_item_metadata                      gdextension.MethodForClass `hash:"4227898402"`
+	is_item_disabled                       gdextension.MethodForClass `hash:"1116898809"`
+	get_item_submenu                       gdextension.MethodForClass `hash:"844755477"`
+	get_item_submenu_node                  gdextension.MethodForClass `hash:"2100501353"`
+	is_item_separator                      gdextension.MethodForClass `hash:"1116898809"`
+	is_item_checkable                      gdextension.MethodForClass `hash:"1116898809"`
+	is_item_radio_checkable                gdextension.MethodForClass `hash:"1116898809"`
+	is_item_shortcut_disabled              gdextension.MethodForClass `hash:"1116898809"`
+	get_item_tooltip                       gdextension.MethodForClass `hash:"844755477"`
+	get_item_shortcut                      gdextension.MethodForClass `hash:"1449483325"`
+	get_item_indent                        gdextension.MethodForClass `hash:"923996154"`
+	get_item_multistate_max                gdextension.MethodForClass `hash:"923996154"`
+	get_item_multistate                    gdextension.MethodForClass `hash:"923996154"`
+	set_focused_item                       gdextension.MethodForClass `hash:"1286410249"`
+	get_focused_item                       gdextension.MethodForClass `hash:"3905245786"`
+	set_item_count                         gdextension.MethodForClass `hash:"1286410249"`
+	get_item_count                         gdextension.MethodForClass `hash:"3905245786"`
+	scroll_to_item                         gdextension.MethodForClass `hash:"1286410249"`
+	remove_item                            gdextension.MethodForClass `hash:"1286410249"`
+	add_separator                          gdextension.MethodForClass `hash:"2266703459"`
+	clear                                  gdextension.MethodForClass `hash:"107499316"`
+	set_hide_on_item_selection             gdextension.MethodForClass `hash:"2586408642"`
+	is_hide_on_item_selection              gdextension.MethodForClass `hash:"36873697"`
+	set_hide_on_checkable_item_selection   gdextension.MethodForClass `hash:"2586408642"`
+	is_hide_on_checkable_item_selection    gdextension.MethodForClass `hash:"36873697"`
+	set_hide_on_state_item_selection       gdextension.MethodForClass `hash:"2586408642"`
+	is_hide_on_state_item_selection        gdextension.MethodForClass `hash:"36873697"`
+	set_submenu_popup_delay                gdextension.MethodForClass `hash:"373806689"`
+	get_submenu_popup_delay                gdextension.MethodForClass `hash:"1740695150"`
+	set_allow_search                       gdextension.MethodForClass `hash:"2586408642"`
+	get_allow_search                       gdextension.MethodForClass `hash:"36873697"`
+	is_system_menu                         gdextension.MethodForClass `hash:"36873697"`
+	set_system_menu                        gdextension.MethodForClass `hash:"600639674"`
+	get_system_menu                        gdextension.MethodForClass `hash:"1222557358"`
+	set_search_bar_enabled                 gdextension.MethodForClass `hash:"2586408642"`
+	is_search_bar_enabled                  gdextension.MethodForClass `hash:"36873697"`
+	set_search_bar_min_item_count          gdextension.MethodForClass `hash:"1286410249"`
+	get_search_bar_min_item_count          gdextension.MethodForClass `hash:"3905245786"`
+	set_search_bar_fuzzy_search_enabled    gdextension.MethodForClass `hash:"2586408642"`
+	is_search_bar_fuzzy_search_enabled     gdextension.MethodForClass `hash:"36873697"`
+	set_search_bar_fuzzy_search_max_misses gdextension.MethodForClass `hash:"1286410249"`
+	get_search_bar_fuzzy_search_max_misses gdextension.MethodForClass `hash:"3905245786"`
+	set_shrink_height                      gdextension.MethodForClass `hash:"2586408642"`
+	get_shrink_height                      gdextension.MethodForClass `hash:"36873697"`
+	set_shrink_width                       gdextension.MethodForClass `hash:"2586408642"`
+	get_shrink_width                       gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -975,6 +984,18 @@ func (self Instance) SetItemShortcutDisabled(index int, disabled bool) Instance 
 }
 
 /*
+Changes the index of the item at index 'index' to be at index 'target_index'. This can be used to move an item above other items. The moved item will keep the same ID, even if it was generated from the original index.
+
+Note: The indices of any items between index 'index' and index 'target_index' will be shifted by one.
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetItemIndex(index int, target_index int) Instance { //gd:PopupMenu.set_item_index
+	Advanced(self).SetItemIndex(int64(index), int64(target_index))
+	return self
+}
+
+/*
 Toggles the check state of the item at the given 'index'.
 */
 func (self Instance) ToggleItemChecked(index int) { //gd:PopupMenu.toggle_item_checked
@@ -1049,14 +1070,14 @@ func (self Instance) IsItemChecked(index int) bool { //gd:PopupMenu.is_item_chec
 }
 
 /*
-Returns the ID of the item at the given 'index'. id can be manually assigned, while index can not.
+Returns the ID of the item at the given 'index'.
 */
 func (self Instance) GetItemId(index int) int { //gd:PopupMenu.get_item_id
 	return int(int(Advanced(self).GetItemId(int64(index))))
 }
 
 /*
-Returns the index of the item containing the specified 'id'. Index is automatically assigned to each item by the engine and can not be set manually.
+Returns the index of the item containing the specified 'id'. The index is automatically assigned to each item by the engine when added and represents the order items will be displayed.
 */
 func (self Instance) GetItemIndex(id int) int { //gd:PopupMenu.get_item_index
 	return int(int(Advanced(self).GetItemIndex(int64(id))))
@@ -1441,6 +1462,73 @@ func (self Instance) SetShrinkWidth(value bool) Instance { //gd:PopupMenu.shrink
 }
 
 /*
+If true, shows a search bar at the top of the [PopupMenu] for filtering items. See [SearchBarMinItemCount] for dynamically controlling its visibility based on the number of items.
+
+Note: When enabled, [AllowSearch] is ignored.
+
+[AllowSearch]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AllowSearch
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+[SearchBarMinItemCount]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SearchBarMinItemCount
+*/
+func (self Instance) SearchBarEnabled() bool { //gd:PopupMenu.search_bar_enabled
+	return bool(class(self).IsSearchBarEnabled())
+}
+
+// SetSearchBarEnabled sets the property returned by [IsSearchBarEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSearchBarEnabled(value bool) Instance { //gd:PopupMenu.search_bar_enabled
+	class(self).SetSearchBarEnabled(value)
+	return self
+}
+
+/*
+Sets the minimum number of items required for the search bar to be visible. [SearchBarEnabled] must be true for this to have any effect. Separator items are not counted.
+
+[SearchBarEnabled]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SearchBarEnabled
+*/
+func (self Instance) SearchBarMinItemCount() int { //gd:PopupMenu.search_bar_min_item_count
+	return int(int(class(self).GetSearchBarMinItemCount()))
+}
+
+// SetSearchBarMinItemCount sets the property returned by [GetSearchBarMinItemCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSearchBarMinItemCount(value int) Instance { //gd:PopupMenu.search_bar_min_item_count
+	class(self).SetSearchBarMinItemCount(int64(value))
+	return self
+}
+
+/*
+If true, enables fuzzy searching in the [PopupMenu] search bar. This allows the search results to include items that almost match the search query, as well items that match the individual characters of the search query, but not in sequence.
+
+Use [SearchBarFuzzySearchMaxMisses] to set the maximum number of mismatches allowed in the search results.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+[SearchBarFuzzySearchMaxMisses]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.SearchBarFuzzySearchMaxMisses
+*/
+func (self Instance) SearchBarFuzzySearchEnabled() bool { //gd:PopupMenu.search_bar_fuzzy_search_enabled
+	return bool(class(self).IsSearchBarFuzzySearchEnabled())
+}
+
+// SetSearchBarFuzzySearchEnabled sets the property returned by [IsSearchBarFuzzySearchEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSearchBarFuzzySearchEnabled(value bool) Instance { //gd:PopupMenu.search_bar_fuzzy_search_enabled
+	class(self).SetSearchBarFuzzySearchEnabled(value)
+	return self
+}
+
+/*
+Sets the maximum number of mismatches allowed in each search result when fuzzy searching is enabled for the [PopupMenu] search bar. Any item with more mismatches will be hidden from the search results.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
+func (self Instance) SearchBarFuzzySearchMaxMisses() int { //gd:PopupMenu.search_bar_fuzzy_search_max_misses
+	return int(int(class(self).GetSearchBarFuzzySearchMaxMisses()))
+}
+
+// SetSearchBarFuzzySearchMaxMisses sets the property returned by [GetSearchBarFuzzySearchMaxMisses]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSearchBarFuzzySearchMaxMisses(value int) Instance { //gd:PopupMenu.search_bar_fuzzy_search_max_misses
+	class(self).SetSearchBarFuzzySearchMaxMisses(int64(value))
+	return self
+}
+
+/*
 The number of items currently in the list.
 */
 func (self Instance) ItemCount() int { //gd:PopupMenu.item_count
@@ -1728,6 +1816,12 @@ func (self class) SetItemShortcutDisabled(index int64, disabled bool) { //gd:Pop
 		disabled bool
 	}{index, disabled})
 }
+func (self class) SetItemIndex(index int64, target_index int64) { //gd:PopupMenu.set_item_index
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_index, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		index        int64
+		target_index int64
+	}{index, target_index})
+}
 func (self class) ToggleItemChecked(index int64) { //gd:PopupMenu.toggle_item_checked
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.toggle_item_checked, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
@@ -1935,6 +2029,38 @@ func (self class) SetSystemMenu(system_menu_id NativeMenu.SystemMenus) { //gd:Po
 }
 func (self class) GetSystemMenu() NativeMenu.SystemMenus { //gd:PopupMenu.get_system_menu
 	var r_ret = jumponly.Call[NativeMenu.SystemMenus](gd.ObjectChecked(self.AsObject()), methods.get_system_menu, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetSearchBarEnabled(enabled bool) { //gd:PopupMenu.set_search_bar_enabled
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_search_bar_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) IsSearchBarEnabled() bool { //gd:PopupMenu.is_search_bar_enabled
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_search_bar_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetSearchBarMinItemCount(count int64) { //gd:PopupMenu.set_search_bar_min_item_count
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_search_bar_min_item_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+}
+func (self class) GetSearchBarMinItemCount() int64 { //gd:PopupMenu.get_search_bar_min_item_count
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_search_bar_min_item_count, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetSearchBarFuzzySearchEnabled(enabled bool) { //gd:PopupMenu.set_search_bar_fuzzy_search_enabled
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_search_bar_fuzzy_search_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) IsSearchBarFuzzySearchEnabled() bool { //gd:PopupMenu.is_search_bar_fuzzy_search_enabled
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_search_bar_fuzzy_search_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetSearchBarFuzzySearchMaxMisses(max_misses int64) { //gd:PopupMenu.set_search_bar_fuzzy_search_max_misses
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_search_bar_fuzzy_search_max_misses, 0|(gdextension.SizeInt<<4), &struct{ max_misses int64 }{max_misses})
+}
+func (self class) GetSearchBarFuzzySearchMaxMisses() int64 { //gd:PopupMenu.get_search_bar_fuzzy_search_max_misses
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_search_bar_fuzzy_search_max_misses, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

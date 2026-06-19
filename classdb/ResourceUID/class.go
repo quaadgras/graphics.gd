@@ -318,6 +318,7 @@ func (self class) EnsurePath(path_or_uid String.Readable) String.Readable { //gd
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

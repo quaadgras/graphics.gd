@@ -496,6 +496,17 @@ func (self Instance) GetEdgeMeta(idx int) any { //gd:MeshDataTool.get_edge_meta
 Returns the specified vertex index of the given face.
 
 'vertex' must be either 0, 1, or 2 because faces contain three vertices.
+
+	package main
+
+	import "graphics.gd/classdb/MeshDataTool"
+
+	func ExampleMeshDataToolGetFaceVertex(meshDataTool MeshDataTool.Instance) {
+		var index = meshDataTool.GetFaceVertex(0, 1) // Gets the index of the second vertex of the first face.
+		var position = meshDataTool.GetVertex(index)
+		var normal = meshDataTool.GetVertexNormal(index)
+		_, _ = position, normal
+	}
 */
 func (self Instance) GetFaceVertex(idx int, vertex int) int { //gd:MeshDataTool.get_face_vertex
 	return int(int(Advanced(self).GetFaceVertex(int64(idx), int64(vertex))))
@@ -593,7 +604,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.MeshDataTool{gdclass.NewMeshDataTool(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

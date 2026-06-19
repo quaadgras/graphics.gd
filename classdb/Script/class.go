@@ -98,7 +98,6 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	can_instantiate            gdextension.MethodForClass `hash:"36873697"`
-	instance_has               gdextension.MethodForClass `hash:"397768994"`
 	has_source_code            gdextension.MethodForClass `hash:"36873697"`
 	get_source_code            gdextension.MethodForClass `hash:"201670096"`
 	set_source_code            gdextension.MethodForClass `hash:"83702148"`
@@ -106,6 +105,7 @@ var methods struct {
 	get_base_script            gdextension.MethodForClass `hash:"278624046"`
 	get_instance_base_type     gdextension.MethodForClass `hash:"2002593661"`
 	get_global_name            gdextension.MethodForClass `hash:"2002593661"`
+	has_script_method          gdextension.MethodForClass `hash:"2619796661"`
 	has_script_signal          gdextension.MethodForClass `hash:"2619796661"`
 	get_script_property_list   gdextension.MethodForClass `hash:"2915620761"`
 	get_script_method_list     gdextension.MethodForClass `hash:"2915620761"`
@@ -115,6 +115,7 @@ var methods struct {
 	is_tool                    gdextension.MethodForClass `hash:"36873697"`
 	is_abstract                gdextension.MethodForClass `hash:"36873697"`
 	get_rpc_config             gdextension.MethodForClass `hash:"1214101251"`
+	instance_has               gdextension.MethodForClass `hash:"397768994"`
 }
 
 func init() {
@@ -149,13 +150,6 @@ Returns true if the script can be instantiated.
 */
 func (self Instance) CanInstantiate() bool { //gd:Script.can_instantiate
 	return bool(Advanced(self).CanInstantiate())
-}
-
-/*
-Returns true if 'base_object' is an instance of this script.
-*/
-func (self Instance) InstanceHas(base_object Object.Instance) bool { //gd:Script.instance_has
-	return bool(Advanced(self).InstanceHas(base_object))
 }
 
 /*
@@ -207,6 +201,13 @@ To give the script a global name, you can use the class_name keyword in GDScript
 */
 func (self Instance) GetGlobalName() string { //gd:Script.get_global_name
 	return string(Advanced(self).GetGlobalName().String())
+}
+
+/*
+Returns true if the script, or a base class, defines a method with the given name.
+*/
+func (self Instance) HasScriptMethod(method_name string) bool { //gd:Script.has_script_method
+	return bool(Advanced(self).HasScriptMethod(String.Name(String.From(method_name))))
 }
 
 /*
@@ -287,6 +288,13 @@ func (self Instance) GetRpcConfig() any { //gd:Script.get_rpc_config
 	return any(Advanced(self).GetRpcConfig().Interface())
 }
 
+/*
+Returns true if 'base_object' is an instance of this script.
+*/
+func (self Instance) InstanceHas(base_object Object.Instance) bool { //gd:Script.instance_has
+	return bool(Advanced(self).InstanceHas(base_object))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.Script
@@ -325,7 +333,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Script{gdclass.NewScript(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -345,11 +352,6 @@ func (self Instance) SetSourceCode(value string) Instance { //gd:Script.source_c
 
 func (self class) CanInstantiate() bool { //gd:Script.can_instantiate
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_instantiate, gdextension.SizeBool, &struct{}{})
-	var ret = r_ret
-	return ret
-}
-func (self class) InstanceHas(base_object [1]gdreference.Object) bool { //gd:Script.instance_has
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ base_object gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetObject(base_object[0])[0]))})
 	var ret = r_ret
 	return ret
 }
@@ -384,6 +386,11 @@ func (self class) GetInstanceBaseType() String.Name { //gd:Script.get_instance_b
 func (self class) GetGlobalName() String.Name { //gd:Script.get_global_name
 	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_global_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
+	return ret
+}
+func (self class) HasScriptMethod(method_name String.Name) bool { //gd:Script.has_script_method
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_script_method, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ method_name gdextension.StringName }{pointers.Get(gd.InternalStringName(method_name))})
+	var ret = r_ret
 	return ret
 }
 func (self class) HasScriptSignal(signal_name String.Name) bool { //gd:Script.has_script_signal
@@ -429,6 +436,11 @@ func (self class) IsAbstract() bool { //gd:Script.is_abstract
 func (self class) GetRpcConfig() variant.Any { //gd:Script.get_rpc_config
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_rpc_config, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
+	return ret
+}
+func (self class) InstanceHas(base_object [1]gdreference.Object) bool { //gd:Script.instance_has
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ base_object gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetObject(base_object[0])[0]))})
+	var ret = r_ret
 	return ret
 }
 func (o class) AsScript() Advanced                    { return Advanced(o) }

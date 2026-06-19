@@ -470,14 +470,14 @@ func GetOutputDeviceList() []string { //gd:AudioServer.get_output_device_list
 }
 
 /*
-Returns the relative time until the next mix occurs.
+Returns the relative time until the next mix occurs, in seconds.
 */
 func GetTimeToNextMix() Float.X { //gd:AudioServer.get_time_to_next_mix
 	return Float.X(Float.X(Advanced().GetTimeToNextMix()))
 }
 
 /*
-Returns the relative time since the last mix occurred.
+Returns the relative time since the last mix occurred, in seconds.
 */
 func GetTimeSinceLastMix() Float.X { //gd:AudioServer.get_time_since_last_mix
 	return Float.X(Float.X(Advanced().GetTimeSinceLastMix()))

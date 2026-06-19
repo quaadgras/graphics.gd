@@ -100,6 +100,7 @@ var sname gdextension.StringName
 var methods struct {
 	get_filesystem        gdextension.MethodForClass `hash:"842323275"`
 	is_scanning           gdextension.MethodForClass `hash:"36873697"`
+	is_importing          gdextension.MethodForClass `hash:"36873697"`
 	get_scanning_progress gdextension.MethodForClass `hash:"1740695150"`
 	scan                  gdextension.MethodForClass `hash:"3218959716"`
 	scan_sources          gdextension.MethodForClass `hash:"3218959716"`
@@ -141,6 +142,13 @@ Returns true if the filesystem is being scanned.
 */
 func (self Instance) IsScanning() bool { //gd:EditorFileSystem.is_scanning
 	return bool(Advanced(self).IsScanning())
+}
+
+/*
+Returns true if resources are currently being imported.
+*/
+func (self Instance) IsImporting() bool { //gd:EditorFileSystem.is_importing
+	return bool(Advanced(self).IsImporting())
 }
 
 /*
@@ -255,6 +263,11 @@ func (self class) GetFilesystem() [1]gdclass.EditorFileSystemDirectory { //gd:Ed
 }
 func (self class) IsScanning() bool { //gd:EditorFileSystem.is_scanning
 	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scanning, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) IsImporting() bool { //gd:EditorFileSystem.is_importing
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_importing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -1,8 +1,8 @@
 /*
 [gdscript]
 var tween = get_tree().create_tween().bind_node(self).set_trans(Tween.TRANS_ELASTIC)
-tween.tween_property($Sprite, "modulate", Color.RED, 1)
-tween.tween_property($Sprite, "scale", Vector2(), 1)
+tween.tween_property($Sprite, "modulate", Color.RED, 1.0)
+tween.tween_property($Sprite, "scale", Vector2(), 1.0)
 tween.tween_callback($Sprite.queue_free)
 [/gdscript]
 [csharp]

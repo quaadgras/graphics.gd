@@ -95,24 +95,26 @@ type Instance [1]gdclass.SpriteFrames
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	add_animation       gdextension.MethodForClass `hash:"3304788590"`
-	has_animation       gdextension.MethodForClass `hash:"2619796661"`
-	duplicate_animation gdextension.MethodForClass `hash:"3740211285"`
-	remove_animation    gdextension.MethodForClass `hash:"3304788590"`
-	rename_animation    gdextension.MethodForClass `hash:"3740211285"`
-	get_animation_names gdextension.MethodForClass `hash:"1139954409"`
-	set_animation_speed gdextension.MethodForClass `hash:"4135858297"`
-	get_animation_speed gdextension.MethodForClass `hash:"2349060816"`
-	set_animation_loop  gdextension.MethodForClass `hash:"2524380260"`
-	get_animation_loop  gdextension.MethodForClass `hash:"2619796661"`
-	add_frame           gdextension.MethodForClass `hash:"1351332740"`
-	set_frame           gdextension.MethodForClass `hash:"56804795"`
-	remove_frame        gdextension.MethodForClass `hash:"2415702435"`
-	get_frame_count     gdextension.MethodForClass `hash:"2458036349"`
-	get_frame_texture   gdextension.MethodForClass `hash:"2900517879"`
-	get_frame_duration  gdextension.MethodForClass `hash:"1129309260"`
-	clear               gdextension.MethodForClass `hash:"3304788590"`
-	clear_all           gdextension.MethodForClass `hash:"3218959716"`
+	add_animation           gdextension.MethodForClass `hash:"3304788590"`
+	has_animation           gdextension.MethodForClass `hash:"2619796661"`
+	duplicate_animation     gdextension.MethodForClass `hash:"3740211285"`
+	remove_animation        gdextension.MethodForClass `hash:"3304788590"`
+	rename_animation        gdextension.MethodForClass `hash:"3740211285"`
+	get_animation_names     gdextension.MethodForClass `hash:"1139954409"`
+	set_animation_speed     gdextension.MethodForClass `hash:"4135858297"`
+	get_animation_speed     gdextension.MethodForClass `hash:"2349060816"`
+	set_animation_loop      gdextension.MethodForClass `hash:"2524380260"`
+	get_animation_loop      gdextension.MethodForClass `hash:"2619796661"`
+	set_animation_loop_mode gdextension.MethodForClass `hash:"918068248"`
+	get_animation_loop_mode gdextension.MethodForClass `hash:"3606360228"`
+	add_frame               gdextension.MethodForClass `hash:"1351332740"`
+	set_frame               gdextension.MethodForClass `hash:"56804795"`
+	remove_frame            gdextension.MethodForClass `hash:"2415702435"`
+	get_frame_count         gdextension.MethodForClass `hash:"2458036349"`
+	get_frame_texture       gdextension.MethodForClass `hash:"2900517879"`
+	get_frame_duration      gdextension.MethodForClass `hash:"1129309260"`
+	clear                   gdextension.MethodForClass `hash:"3304788590"`
+	clear_all               gdextension.MethodForClass `hash:"3218959716"`
 }
 
 func init() {
@@ -202,7 +204,9 @@ func (self Instance) GetAnimationSpeed(anim string) Float.X { //gd:SpriteFrames.
 }
 
 /*
-If 'loop' is true, the 'anim' animation will loop when it reaches the end, or the start if it is played in reverse.
+If 'loop' is false equivalent to set_animation_loop_mode(LOOP_NONE).
+
+If 'loop' is true equivalent to set_animation_loop_mode(LOOP_LINEAR).
 
 Returns 'self' to enable method chaining.
 */
@@ -212,10 +216,27 @@ func (self Instance) SetAnimationLoop(anim string, loop bool) Instance { //gd:Sp
 }
 
 /*
-Returns true if the given animation is configured to loop when it finishes playing. Otherwise, returns false.
+Returns true if get_animation_loop_mode(anim) == LOOP_LINEAR. Otherwise, returns false.
 */
 func (self Instance) GetAnimationLoop(anim string) bool { //gd:SpriteFrames.get_animation_loop
 	return bool(Advanced(self).GetAnimationLoop(String.Name(String.From(anim))))
+}
+
+/*
+Sets the 'loop_mode' for the 'anim' animation.
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetAnimationLoopMode(anim string, loop_mode LoopMode) Instance { //gd:SpriteFrames.set_animation_loop_mode
+	Advanced(self).SetAnimationLoopMode(String.Name(String.From(anim)), loop_mode)
+	return self
+}
+
+/*
+Returns the loop mode for the 'anim' animation.
+*/
+func (self Instance) GetAnimationLoopMode(anim string) LoopMode { //gd:SpriteFrames.get_animation_loop_mode
+	return LoopMode(Advanced(self).GetAnimationLoopMode(String.Name(String.From(anim))))
 }
 
 /*
@@ -347,7 +368,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.SpriteFrames{gdclass.NewSpriteFrames(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -399,6 +419,17 @@ func (self class) SetAnimationLoop(anim String.Name, loop bool) { //gd:SpriteFra
 }
 func (self class) GetAnimationLoop(anim String.Name) bool { //gd:SpriteFrames.get_animation_loop
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_animation_loop, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetAnimationLoopMode(anim String.Name, loop_mode LoopMode) { //gd:SpriteFrames.set_animation_loop_mode
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation_loop_mode, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
+		anim      gdextension.StringName
+		loop_mode LoopMode
+	}{pointers.Get(gd.InternalStringName(anim)), loop_mode})
+}
+func (self class) GetAnimationLoopMode(anim String.Name) LoopMode { //gd:SpriteFrames.get_animation_loop_mode
+	var r_ret = noescape.Call[LoopMode](gd.ObjectChecked(self.AsObject()), methods.get_animation_loop_mode, gdextension.SizeInt|(gdextension.SizeStringName<<4), &struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))})
 	var ret = r_ret
 	return ret
 }
@@ -477,3 +508,19 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("SpriteFrames", func(ptr gdreference.Object) any { return Instance{gdclass.NewSpriteFrames(ptr)} })
 }
+
+type LoopMode int64 //gd:SpriteFrames.LoopMode
+
+const (
+	// The animation plays once and stops when it reaches the end, or the start if played in reverse.
+	LoopNone LoopMode = 0
+	// The animation restarts from the beginning when it reaches the end, or from the end if played in reverse, repeating continuously.
+	LoopLinear LoopMode = 1
+	// The animation alternates direction each time it reaches the end or start, playing forward and then in reverse repeatedly.
+	//
+	// Note: Both [AnimatedSprite2D] and [AnimatedSprite3D] play the first/last frame for its duration only once at each end of the animation loop (instead of twice, once per forward/backward animation direction).
+	//
+	// [AnimatedSprite2D]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D
+	// [AnimatedSprite3D]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite3D
+	LoopPingpong LoopMode = 2
+)

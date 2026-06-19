@@ -648,6 +648,7 @@ func (self class) IsClassEnabled(class_ String.Name) bool { //gd:ClassDB.is_clas
 	var ret = r_ret
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
@@ -708,9 +709,9 @@ const (
 type PropertyHint int64 //gd:PropertyHint
 
 const (
-	// The property has no hint for the editor.
+	// The property has no hint for the editor. However, the hint string is still read, which can be used to specify a suffix for a property that has no range limit (see [PropertyHintRange]'s description).
 	PropertyHintNone PropertyHint = 0
-	// Hints that an int or [Float.X] property should be within a range specified via the hint string "min,max" or "min,max,step". The hint string can optionally include "or_greater" and/or "or_less" to allow manual input going respectively above the max or below the min values.
+	// Hints that an int, [Float.X], or packed/typed slice property containing int or [Float.X] types should be within a range specified via the hint string "min,max" or "min,max,step". The hint string can optionally include "or_greater" and/or "or_less" to allow manual input going respectively above the max or below the min values.
 	//
 	// Example: "-360,360,1,or_greater,or_less".
 	//
@@ -726,14 +727,20 @@ const (
 	//
 	// Unlike [PropertyHintEnum], a property with this hint still accepts arbitrary values and can be empty. The list of values serves to suggest possible values.
 	PropertyHintEnumSuggestion PropertyHint = 3
-	// Hints that a [Float.X] property should be edited via an exponential easing function. The hint string can include "attenuation" to flip the curve horizontally and/or "positive_only" to exclude in/out easing and limit values to be greater than or equal to zero.
+	// Hints that a [Float.X] property should be edited using a curve editor showing an exponential easing function. The hint string can include "attenuation" to flip the curve horizontally and/or "positive_only" to exclude in/out easing and limit values to be greater than or equal to zero. This displays differently to a property that uses [PropertyHintRange] with the "exp" keyword, as it's edited with a slider instead of a curve editor.
 	//
 	// [Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 	PropertyHintExpEasing PropertyHint = 4
-	// Hints that a vector property should allow its components to be linked. For example, this allows [Vector2.X] and [Vector2.Y] to be edited together.
+	// Hints that a vector property should allow its components to be linked. For example, this allows [Vector2.X] and [Vector2.Y] to be edited together. This hint is supported on [Vector2.XY], [Vector2i.XY], [Vector3.XYZ], [Vector3i.XYZ], [Vector4.XYZW], and [Vector4i.XYZW]. The hint string can be used to specify a suffix indicating each value's unit with the "suffix:px/s" syntax.
 	//
 	// [Vector2.X]: https://pkg.go.dev/graphics.gd/classdb/Vector2#Instance.X
+	// [Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 	// [Vector2.Y]: https://pkg.go.dev/graphics.gd/classdb/Vector2#Instance.Y
+	// [Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
+	// [Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
+	// [Vector3i.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3i#XYZ
+	// [Vector4.XYZW]: https://pkg.go.dev/graphics.gd/variant/Vector4#XYZW
+	// [Vector4i.XYZW]: https://pkg.go.dev/graphics.gd/variant/Vector4i#XYZW
 	PropertyHintLink PropertyHint = 5
 	// Hints that an int property is a bitmask with named bit flags.
 	//
@@ -826,7 +833,7 @@ const (
 	//
 	// hintString = $"{elemType:D}:";
 	//
-	// hintString = $"{elemType:}/{elemHint:D}:{elemHintString}";
+	// hintString = $"{elemType:D}/{elemHint:D}:{elemHintString}";
 	//
 	// // Two-dimensional array of elemType (array of arrays of elemType).
 	//

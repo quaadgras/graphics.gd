@@ -110,275 +110,293 @@ type Instance [1]gdclass.DisplayServer
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	has_feature                                      gdextension.MethodForClass `hash:"334065950"`
-	get_name                                         gdextension.MethodForClass `hash:"201670096"`
-	help_set_search_callbacks                        gdextension.MethodForClass `hash:"1687350599"`
-	global_menu_set_popup_callbacks                  gdextension.MethodForClass `hash:"3893727526"`
-	global_menu_add_submenu_item                     gdextension.MethodForClass `hash:"2828985934"`
-	global_menu_add_item                             gdextension.MethodForClass `hash:"3616842746"`
-	global_menu_add_check_item                       gdextension.MethodForClass `hash:"3616842746"`
-	global_menu_add_icon_item                        gdextension.MethodForClass `hash:"3867083847"`
-	global_menu_add_icon_check_item                  gdextension.MethodForClass `hash:"3867083847"`
-	global_menu_add_radio_check_item                 gdextension.MethodForClass `hash:"3616842746"`
-	global_menu_add_icon_radio_check_item            gdextension.MethodForClass `hash:"3867083847"`
-	global_menu_add_multistate_item                  gdextension.MethodForClass `hash:"3297554655"`
-	global_menu_add_separator                        gdextension.MethodForClass `hash:"3214812433"`
-	global_menu_get_item_index_from_text             gdextension.MethodForClass `hash:"2878152881"`
-	global_menu_get_item_index_from_tag              gdextension.MethodForClass `hash:"2941063483"`
-	global_menu_is_item_checked                      gdextension.MethodForClass `hash:"3511468594"`
-	global_menu_is_item_checkable                    gdextension.MethodForClass `hash:"3511468594"`
-	global_menu_is_item_radio_checkable              gdextension.MethodForClass `hash:"3511468594"`
-	global_menu_get_item_callback                    gdextension.MethodForClass `hash:"748666903"`
-	global_menu_get_item_key_callback                gdextension.MethodForClass `hash:"748666903"`
-	global_menu_get_item_tag                         gdextension.MethodForClass `hash:"330672633"`
-	global_menu_get_item_text                        gdextension.MethodForClass `hash:"591067909"`
-	global_menu_get_item_submenu                     gdextension.MethodForClass `hash:"591067909"`
-	global_menu_get_item_accelerator                 gdextension.MethodForClass `hash:"936065394"`
-	global_menu_is_item_disabled                     gdextension.MethodForClass `hash:"3511468594"`
-	global_menu_is_item_hidden                       gdextension.MethodForClass `hash:"3511468594"`
-	global_menu_get_item_tooltip                     gdextension.MethodForClass `hash:"591067909"`
-	global_menu_get_item_state                       gdextension.MethodForClass `hash:"3422818498"`
-	global_menu_get_item_max_states                  gdextension.MethodForClass `hash:"3422818498"`
-	global_menu_get_item_icon                        gdextension.MethodForClass `hash:"3591713183"`
-	global_menu_get_item_indentation_level           gdextension.MethodForClass `hash:"3422818498"`
-	global_menu_set_item_checked                     gdextension.MethodForClass `hash:"4108344793"`
-	global_menu_set_item_checkable                   gdextension.MethodForClass `hash:"4108344793"`
-	global_menu_set_item_radio_checkable             gdextension.MethodForClass `hash:"4108344793"`
-	global_menu_set_item_callback                    gdextension.MethodForClass `hash:"3809915389"`
-	global_menu_set_item_hover_callbacks             gdextension.MethodForClass `hash:"3809915389"`
-	global_menu_set_item_key_callback                gdextension.MethodForClass `hash:"3809915389"`
-	global_menu_set_item_tag                         gdextension.MethodForClass `hash:"453659863"`
-	global_menu_set_item_text                        gdextension.MethodForClass `hash:"965966136"`
-	global_menu_set_item_submenu                     gdextension.MethodForClass `hash:"965966136"`
-	global_menu_set_item_accelerator                 gdextension.MethodForClass `hash:"566943293"`
-	global_menu_set_item_disabled                    gdextension.MethodForClass `hash:"4108344793"`
-	global_menu_set_item_hidden                      gdextension.MethodForClass `hash:"4108344793"`
-	global_menu_set_item_tooltip                     gdextension.MethodForClass `hash:"965966136"`
-	global_menu_set_item_state                       gdextension.MethodForClass `hash:"3474840532"`
-	global_menu_set_item_max_states                  gdextension.MethodForClass `hash:"3474840532"`
-	global_menu_set_item_icon                        gdextension.MethodForClass `hash:"3201338066"`
-	global_menu_set_item_indentation_level           gdextension.MethodForClass `hash:"3474840532"`
-	global_menu_get_item_count                       gdextension.MethodForClass `hash:"1321353865"`
-	global_menu_remove_item                          gdextension.MethodForClass `hash:"2956805083"`
-	global_menu_clear                                gdextension.MethodForClass `hash:"83702148"`
-	global_menu_get_system_menu_roots                gdextension.MethodForClass `hash:"3102165223"`
-	tts_is_speaking                                  gdextension.MethodForClass `hash:"36873697"`
-	tts_is_paused                                    gdextension.MethodForClass `hash:"36873697"`
-	tts_get_voices                                   gdextension.MethodForClass `hash:"3995934104"`
-	tts_get_voices_for_language                      gdextension.MethodForClass `hash:"4291131558"`
-	tts_speak                                        gdextension.MethodForClass `hash:"903992738"`
-	tts_pause                                        gdextension.MethodForClass `hash:"3218959716"`
-	tts_resume                                       gdextension.MethodForClass `hash:"3218959716"`
-	tts_stop                                         gdextension.MethodForClass `hash:"3218959716"`
-	tts_set_utterance_callback                       gdextension.MethodForClass `hash:"109679083"`
-	is_dark_mode_supported                           gdextension.MethodForClass `hash:"36873697"`
-	is_dark_mode                                     gdextension.MethodForClass `hash:"36873697"`
-	get_accent_color                                 gdextension.MethodForClass `hash:"3444240500"`
-	get_base_color                                   gdextension.MethodForClass `hash:"3444240500"`
-	set_system_theme_change_callback                 gdextension.MethodForClass `hash:"1611583062"`
-	mouse_set_mode                                   gdextension.MethodForClass `hash:"348288463"`
-	mouse_get_mode                                   gdextension.MethodForClass `hash:"1353961651"`
-	warp_mouse                                       gdextension.MethodForClass `hash:"1130785943"`
-	mouse_get_position                               gdextension.MethodForClass `hash:"3690982128"`
-	mouse_get_button_state                           gdextension.MethodForClass `hash:"2512161324"`
-	clipboard_set                                    gdextension.MethodForClass `hash:"83702148"`
-	clipboard_get                                    gdextension.MethodForClass `hash:"201670096"`
-	clipboard_get_image                              gdextension.MethodForClass `hash:"4190603485"`
-	clipboard_has                                    gdextension.MethodForClass `hash:"36873697"`
-	clipboard_has_image                              gdextension.MethodForClass `hash:"36873697"`
-	clipboard_set_primary                            gdextension.MethodForClass `hash:"83702148"`
-	clipboard_get_primary                            gdextension.MethodForClass `hash:"201670096"`
-	get_display_cutouts                              gdextension.MethodForClass `hash:"3995934104"`
-	get_display_safe_area                            gdextension.MethodForClass `hash:"410525958"`
-	get_screen_count                                 gdextension.MethodForClass `hash:"3905245786"`
-	get_primary_screen                               gdextension.MethodForClass `hash:"3905245786"`
-	get_keyboard_focus_screen                        gdextension.MethodForClass `hash:"3905245786"`
-	get_screen_from_rect                             gdextension.MethodForClass `hash:"741354659"`
-	screen_get_position                              gdextension.MethodForClass `hash:"1725937825"`
-	screen_get_size                                  gdextension.MethodForClass `hash:"1725937825"`
-	screen_get_usable_rect                           gdextension.MethodForClass `hash:"2439012528"`
-	screen_get_dpi                                   gdextension.MethodForClass `hash:"181039630"`
-	screen_get_scale                                 gdextension.MethodForClass `hash:"909105437"`
-	is_touchscreen_available                         gdextension.MethodForClass `hash:"36873697"`
-	screen_get_max_scale                             gdextension.MethodForClass `hash:"1740695150"`
-	screen_get_refresh_rate                          gdextension.MethodForClass `hash:"909105437"`
-	screen_get_pixel                                 gdextension.MethodForClass `hash:"1532707496"`
-	screen_get_image                                 gdextension.MethodForClass `hash:"3813388802"`
-	screen_get_image_rect                            gdextension.MethodForClass `hash:"2601441065"`
-	screen_set_orientation                           gdextension.MethodForClass `hash:"2211511631"`
-	screen_get_orientation                           gdextension.MethodForClass `hash:"133818562"`
-	screen_set_keep_on                               gdextension.MethodForClass `hash:"2586408642"`
-	screen_is_kept_on                                gdextension.MethodForClass `hash:"36873697"`
-	get_window_list                                  gdextension.MethodForClass `hash:"1930428628"`
-	get_window_at_screen_position                    gdextension.MethodForClass `hash:"2485466453"`
-	window_get_native_handle                         gdextension.MethodForClass `hash:"1096425680"`
-	window_get_active_popup                          gdextension.MethodForClass `hash:"3905245786"`
-	window_set_popup_safe_rect                       gdextension.MethodForClass `hash:"3317281434"`
-	window_get_popup_safe_rect                       gdextension.MethodForClass `hash:"2161169500"`
-	window_set_title                                 gdextension.MethodForClass `hash:"441246282"`
-	window_get_title_size                            gdextension.MethodForClass `hash:"2925301799"`
-	window_set_mouse_passthrough                     gdextension.MethodForClass `hash:"1993637420"`
-	window_get_current_screen                        gdextension.MethodForClass `hash:"1591665591"`
-	window_set_current_screen                        gdextension.MethodForClass `hash:"2230941749"`
-	window_get_position                              gdextension.MethodForClass `hash:"763922886"`
-	window_get_position_with_decorations             gdextension.MethodForClass `hash:"763922886"`
-	window_set_position                              gdextension.MethodForClass `hash:"2019273902"`
-	window_get_size                                  gdextension.MethodForClass `hash:"763922886"`
-	window_set_size                                  gdextension.MethodForClass `hash:"2019273902"`
-	window_set_rect_changed_callback                 gdextension.MethodForClass `hash:"1091192925"`
-	window_set_window_event_callback                 gdextension.MethodForClass `hash:"1091192925"`
-	window_set_input_event_callback                  gdextension.MethodForClass `hash:"1091192925"`
-	window_set_input_text_callback                   gdextension.MethodForClass `hash:"1091192925"`
-	window_set_drop_files_callback                   gdextension.MethodForClass `hash:"1091192925"`
-	window_get_attached_instance_id                  gdextension.MethodForClass `hash:"1591665591"`
-	window_get_max_size                              gdextension.MethodForClass `hash:"763922886"`
-	window_set_max_size                              gdextension.MethodForClass `hash:"2019273902"`
-	window_get_min_size                              gdextension.MethodForClass `hash:"763922886"`
-	window_set_min_size                              gdextension.MethodForClass `hash:"2019273902"`
-	window_get_size_with_decorations                 gdextension.MethodForClass `hash:"763922886"`
-	window_get_mode                                  gdextension.MethodForClass `hash:"2185728461"`
-	window_set_mode                                  gdextension.MethodForClass `hash:"1319965401"`
-	window_set_flag                                  gdextension.MethodForClass `hash:"254894155"`
-	window_get_flag                                  gdextension.MethodForClass `hash:"802816991"`
-	window_set_window_buttons_offset                 gdextension.MethodForClass `hash:"2019273902"`
-	window_get_safe_title_margins                    gdextension.MethodForClass `hash:"2295066620"`
-	window_request_attention                         gdextension.MethodForClass `hash:"1995695955"`
-	window_move_to_foreground                        gdextension.MethodForClass `hash:"1995695955"`
-	window_is_focused                                gdextension.MethodForClass `hash:"1051549951"`
-	window_can_draw                                  gdextension.MethodForClass `hash:"1051549951"`
-	window_set_transient                             gdextension.MethodForClass `hash:"3937882851"`
-	window_set_exclusive                             gdextension.MethodForClass `hash:"300928843"`
-	window_set_ime_active                            gdextension.MethodForClass `hash:"1661950165"`
-	window_set_ime_position                          gdextension.MethodForClass `hash:"2019273902"`
-	window_set_vsync_mode                            gdextension.MethodForClass `hash:"2179333492"`
-	window_get_vsync_mode                            gdextension.MethodForClass `hash:"578873795"`
-	window_is_maximize_allowed                       gdextension.MethodForClass `hash:"1051549951"`
-	window_maximize_on_title_dbl_click               gdextension.MethodForClass `hash:"36873697"`
-	window_minimize_on_title_dbl_click               gdextension.MethodForClass `hash:"36873697"`
-	window_start_drag                                gdextension.MethodForClass `hash:"1995695955"`
-	window_start_resize                              gdextension.MethodForClass `hash:"4009722312"`
-	window_set_color                                 gdextension.MethodForClass `hash:"2920490490"`
-	accessibility_should_increase_contrast           gdextension.MethodForClass `hash:"3905245786"`
-	accessibility_should_reduce_animation            gdextension.MethodForClass `hash:"3905245786"`
-	accessibility_should_reduce_transparency         gdextension.MethodForClass `hash:"3905245786"`
-	accessibility_screen_reader_active               gdextension.MethodForClass `hash:"3905245786"`
-	accessibility_create_element                     gdextension.MethodForClass `hash:"2968347744"`
-	accessibility_create_sub_element                 gdextension.MethodForClass `hash:"1949948826"`
-	accessibility_create_sub_text_edit_elements      gdextension.MethodForClass `hash:"2702009895"`
-	accessibility_has_element                        gdextension.MethodForClass `hash:"4155700596"`
-	accessibility_free_element                       gdextension.MethodForClass `hash:"2722037293"`
-	accessibility_element_set_meta                   gdextension.MethodForClass `hash:"3175752987"`
-	accessibility_element_get_meta                   gdextension.MethodForClass `hash:"4171304767"`
-	accessibility_set_window_rect                    gdextension.MethodForClass `hash:"2386961724"`
-	accessibility_set_window_focused                 gdextension.MethodForClass `hash:"300928843"`
-	accessibility_update_set_focus                   gdextension.MethodForClass `hash:"2722037293"`
-	accessibility_get_window_root                    gdextension.MethodForClass `hash:"495598643"`
-	accessibility_update_set_role                    gdextension.MethodForClass `hash:"3352768215"`
-	accessibility_update_set_name                    gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_extra_info              gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_description             gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_value                   gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_tooltip                 gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_bounds                  gdextension.MethodForClass `hash:"1378122625"`
-	accessibility_update_set_transform               gdextension.MethodForClass `hash:"1246044741"`
-	accessibility_update_add_child                   gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_add_related_controls        gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_add_related_details         gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_add_related_described_by    gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_add_related_flow_to         gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_add_related_labeled_by      gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_add_related_radio_group     gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_set_active_descendant       gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_set_next_on_line            gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_set_previous_on_line        gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_set_member_of               gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_set_in_page_link_target     gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_set_error_message           gdextension.MethodForClass `hash:"395945892"`
-	accessibility_update_set_live                    gdextension.MethodForClass `hash:"2683302212"`
-	accessibility_update_add_action                  gdextension.MethodForClass `hash:"2898696987"`
-	accessibility_update_add_custom_action           gdextension.MethodForClass `hash:"4153150897"`
-	accessibility_update_set_table_row_count         gdextension.MethodForClass `hash:"3411492887"`
-	accessibility_update_set_table_column_count      gdextension.MethodForClass `hash:"3411492887"`
-	accessibility_update_set_table_row_index         gdextension.MethodForClass `hash:"3411492887"`
-	accessibility_update_set_table_column_index      gdextension.MethodForClass `hash:"3411492887"`
-	accessibility_update_set_table_cell_position     gdextension.MethodForClass `hash:"4288446313"`
-	accessibility_update_set_table_cell_span         gdextension.MethodForClass `hash:"4288446313"`
-	accessibility_update_set_list_item_count         gdextension.MethodForClass `hash:"3411492887"`
-	accessibility_update_set_list_item_index         gdextension.MethodForClass `hash:"3411492887"`
-	accessibility_update_set_list_item_level         gdextension.MethodForClass `hash:"3411492887"`
-	accessibility_update_set_list_item_selected      gdextension.MethodForClass `hash:"1265174801"`
-	accessibility_update_set_list_item_expanded      gdextension.MethodForClass `hash:"1265174801"`
-	accessibility_update_set_popup_type              gdextension.MethodForClass `hash:"2040885448"`
-	accessibility_update_set_checked                 gdextension.MethodForClass `hash:"1265174801"`
-	accessibility_update_set_num_value               gdextension.MethodForClass `hash:"1794382983"`
-	accessibility_update_set_num_range               gdextension.MethodForClass `hash:"2513314492"`
-	accessibility_update_set_num_step                gdextension.MethodForClass `hash:"1794382983"`
-	accessibility_update_set_num_jump                gdextension.MethodForClass `hash:"1794382983"`
-	accessibility_update_set_scroll_x                gdextension.MethodForClass `hash:"1794382983"`
-	accessibility_update_set_scroll_x_range          gdextension.MethodForClass `hash:"2513314492"`
-	accessibility_update_set_scroll_y                gdextension.MethodForClass `hash:"1794382983"`
-	accessibility_update_set_scroll_y_range          gdextension.MethodForClass `hash:"2513314492"`
-	accessibility_update_set_text_decorations        gdextension.MethodForClass `hash:"1672422386"`
-	accessibility_update_set_text_align              gdextension.MethodForClass `hash:"3725995085"`
-	accessibility_update_set_text_selection          gdextension.MethodForClass `hash:"3119144029"`
-	accessibility_update_set_flag                    gdextension.MethodForClass `hash:"3758675396"`
-	accessibility_update_set_classname               gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_placeholder             gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_language                gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_text_orientation        gdextension.MethodForClass `hash:"1265174801"`
-	accessibility_update_set_list_orientation        gdextension.MethodForClass `hash:"1265174801"`
-	accessibility_update_set_shortcut                gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_url                     gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_role_description        gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_state_description       gdextension.MethodForClass `hash:"2726140452"`
-	accessibility_update_set_color_value             gdextension.MethodForClass `hash:"2948539648"`
-	accessibility_update_set_background_color        gdextension.MethodForClass `hash:"2948539648"`
-	accessibility_update_set_foreground_color        gdextension.MethodForClass `hash:"2948539648"`
-	ime_get_selection                                gdextension.MethodForClass `hash:"3690982128"`
-	ime_get_text                                     gdextension.MethodForClass `hash:"201670096"`
-	virtual_keyboard_show                            gdextension.MethodForClass `hash:"3042891259"`
-	virtual_keyboard_hide                            gdextension.MethodForClass `hash:"3218959716"`
-	virtual_keyboard_get_height                      gdextension.MethodForClass `hash:"3905245786"`
-	has_hardware_keyboard                            gdextension.MethodForClass `hash:"36873697"`
-	set_hardware_keyboard_connection_change_callback gdextension.MethodForClass `hash:"1611583062"`
-	cursor_set_shape                                 gdextension.MethodForClass `hash:"2026291549"`
-	cursor_get_shape                                 gdextension.MethodForClass `hash:"1087724927"`
-	cursor_set_custom_image                          gdextension.MethodForClass `hash:"1816663697"`
-	get_swap_cancel_ok                               gdextension.MethodForClass `hash:"2240911060"`
-	enable_for_stealing_focus                        gdextension.MethodForClass `hash:"1286410249"`
-	dialog_show                                      gdextension.MethodForClass `hash:"4115553226"`
-	dialog_input_text                                gdextension.MethodForClass `hash:"3088703427"`
-	file_dialog_show                                 gdextension.MethodForClass `hash:"1386825884"`
-	file_dialog_with_options_show                    gdextension.MethodForClass `hash:"1448789813"`
-	beep                                             gdextension.MethodForClass `hash:"4051624405"`
-	keyboard_get_layout_count                        gdextension.MethodForClass `hash:"3905245786"`
-	keyboard_get_current_layout                      gdextension.MethodForClass `hash:"3905245786"`
-	keyboard_set_current_layout                      gdextension.MethodForClass `hash:"1286410249"`
-	keyboard_get_layout_language                     gdextension.MethodForClass `hash:"844755477"`
-	keyboard_get_layout_name                         gdextension.MethodForClass `hash:"844755477"`
-	keyboard_get_keycode_from_physical               gdextension.MethodForClass `hash:"3447613187"`
-	keyboard_get_label_from_physical                 gdextension.MethodForClass `hash:"3447613187"`
-	show_emoji_and_symbol_picker                     gdextension.MethodForClass `hash:"4051624405"`
-	color_picker                                     gdextension.MethodForClass `hash:"151643214"`
-	process_events                                   gdextension.MethodForClass `hash:"3218959716"`
-	force_process_and_drop_events                    gdextension.MethodForClass `hash:"3218959716"`
-	set_native_icon                                  gdextension.MethodForClass `hash:"83702148"`
-	set_icon                                         gdextension.MethodForClass `hash:"532598488"`
-	create_status_indicator                          gdextension.MethodForClass `hash:"1904285171"`
-	status_indicator_set_icon                        gdextension.MethodForClass `hash:"666127730"`
-	status_indicator_set_tooltip                     gdextension.MethodForClass `hash:"501894301"`
-	status_indicator_set_menu                        gdextension.MethodForClass `hash:"4040184819"`
-	status_indicator_set_callback                    gdextension.MethodForClass `hash:"957362965"`
-	status_indicator_get_rect                        gdextension.MethodForClass `hash:"3327874267"`
-	delete_status_indicator                          gdextension.MethodForClass `hash:"1286410249"`
-	tablet_get_driver_count                          gdextension.MethodForClass `hash:"3905245786"`
-	tablet_get_driver_name                           gdextension.MethodForClass `hash:"844755477"`
-	tablet_get_current_driver                        gdextension.MethodForClass `hash:"201670096"`
-	tablet_set_current_driver                        gdextension.MethodForClass `hash:"83702148"`
-	is_window_transparency_available                 gdextension.MethodForClass `hash:"36873697"`
-	register_additional_output                       gdextension.MethodForClass `hash:"3975164845"`
-	unregister_additional_output                     gdextension.MethodForClass `hash:"3975164845"`
-	has_additional_outputs                           gdextension.MethodForClass `hash:"36873697"`
+	has_feature                                       gdextension.MethodForClass `hash:"334065950"`
+	get_name                                          gdextension.MethodForClass `hash:"201670096"`
+	help_set_search_callbacks                         gdextension.MethodForClass `hash:"1687350599"`
+	global_menu_set_popup_callbacks                   gdextension.MethodForClass `hash:"3893727526"`
+	global_menu_add_submenu_item                      gdextension.MethodForClass `hash:"2828985934"`
+	global_menu_add_item                              gdextension.MethodForClass `hash:"3616842746"`
+	global_menu_add_check_item                        gdextension.MethodForClass `hash:"3616842746"`
+	global_menu_add_icon_item                         gdextension.MethodForClass `hash:"3867083847"`
+	global_menu_add_icon_check_item                   gdextension.MethodForClass `hash:"3867083847"`
+	global_menu_add_radio_check_item                  gdextension.MethodForClass `hash:"3616842746"`
+	global_menu_add_icon_radio_check_item             gdextension.MethodForClass `hash:"3867083847"`
+	global_menu_add_multistate_item                   gdextension.MethodForClass `hash:"3297554655"`
+	global_menu_add_separator                         gdextension.MethodForClass `hash:"3214812433"`
+	global_menu_get_item_index_from_text              gdextension.MethodForClass `hash:"2878152881"`
+	global_menu_get_item_index_from_tag               gdextension.MethodForClass `hash:"2941063483"`
+	global_menu_is_item_checked                       gdextension.MethodForClass `hash:"3511468594"`
+	global_menu_is_item_checkable                     gdextension.MethodForClass `hash:"3511468594"`
+	global_menu_is_item_radio_checkable               gdextension.MethodForClass `hash:"3511468594"`
+	global_menu_get_item_callback                     gdextension.MethodForClass `hash:"748666903"`
+	global_menu_get_item_key_callback                 gdextension.MethodForClass `hash:"748666903"`
+	global_menu_get_item_tag                          gdextension.MethodForClass `hash:"330672633"`
+	global_menu_get_item_text                         gdextension.MethodForClass `hash:"591067909"`
+	global_menu_get_item_submenu                      gdextension.MethodForClass `hash:"591067909"`
+	global_menu_get_item_accelerator                  gdextension.MethodForClass `hash:"936065394"`
+	global_menu_is_item_disabled                      gdextension.MethodForClass `hash:"3511468594"`
+	global_menu_is_item_hidden                        gdextension.MethodForClass `hash:"3511468594"`
+	global_menu_get_item_tooltip                      gdextension.MethodForClass `hash:"591067909"`
+	global_menu_get_item_state                        gdextension.MethodForClass `hash:"3422818498"`
+	global_menu_get_item_max_states                   gdextension.MethodForClass `hash:"3422818498"`
+	global_menu_get_item_icon                         gdextension.MethodForClass `hash:"3591713183"`
+	global_menu_get_item_indentation_level            gdextension.MethodForClass `hash:"3422818498"`
+	global_menu_set_item_checked                      gdextension.MethodForClass `hash:"4108344793"`
+	global_menu_set_item_checkable                    gdextension.MethodForClass `hash:"4108344793"`
+	global_menu_set_item_radio_checkable              gdextension.MethodForClass `hash:"4108344793"`
+	global_menu_set_item_callback                     gdextension.MethodForClass `hash:"3809915389"`
+	global_menu_set_item_hover_callbacks              gdextension.MethodForClass `hash:"3809915389"`
+	global_menu_set_item_key_callback                 gdextension.MethodForClass `hash:"3809915389"`
+	global_menu_set_item_tag                          gdextension.MethodForClass `hash:"453659863"`
+	global_menu_set_item_text                         gdextension.MethodForClass `hash:"965966136"`
+	global_menu_set_item_submenu                      gdextension.MethodForClass `hash:"965966136"`
+	global_menu_set_item_accelerator                  gdextension.MethodForClass `hash:"566943293"`
+	global_menu_set_item_disabled                     gdextension.MethodForClass `hash:"4108344793"`
+	global_menu_set_item_hidden                       gdextension.MethodForClass `hash:"4108344793"`
+	global_menu_set_item_tooltip                      gdextension.MethodForClass `hash:"965966136"`
+	global_menu_set_item_state                        gdextension.MethodForClass `hash:"3474840532"`
+	global_menu_set_item_max_states                   gdextension.MethodForClass `hash:"3474840532"`
+	global_menu_set_item_icon                         gdextension.MethodForClass `hash:"3201338066"`
+	global_menu_set_item_indentation_level            gdextension.MethodForClass `hash:"3474840532"`
+	global_menu_get_item_count                        gdextension.MethodForClass `hash:"1321353865"`
+	global_menu_remove_item                           gdextension.MethodForClass `hash:"2956805083"`
+	global_menu_clear                                 gdextension.MethodForClass `hash:"83702148"`
+	global_menu_get_system_menu_roots                 gdextension.MethodForClass `hash:"3102165223"`
+	tts_is_speaking                                   gdextension.MethodForClass `hash:"36873697"`
+	tts_is_paused                                     gdextension.MethodForClass `hash:"36873697"`
+	tts_get_voices                                    gdextension.MethodForClass `hash:"3995934104"`
+	tts_get_voices_for_language                       gdextension.MethodForClass `hash:"4291131558"`
+	tts_speak                                         gdextension.MethodForClass `hash:"903992738"`
+	tts_pause                                         gdextension.MethodForClass `hash:"3218959716"`
+	tts_resume                                        gdextension.MethodForClass `hash:"3218959716"`
+	tts_stop                                          gdextension.MethodForClass `hash:"3218959716"`
+	tts_set_utterance_callback                        gdextension.MethodForClass `hash:"109679083"`
+	is_dark_mode_supported                            gdextension.MethodForClass `hash:"36873697"`
+	is_dark_mode                                      gdextension.MethodForClass `hash:"36873697"`
+	get_accent_color                                  gdextension.MethodForClass `hash:"3444240500"`
+	get_base_color                                    gdextension.MethodForClass `hash:"3444240500"`
+	set_system_theme_change_callback                  gdextension.MethodForClass `hash:"1611583062"`
+	mouse_set_mode                                    gdextension.MethodForClass `hash:"348288463"`
+	mouse_get_mode                                    gdextension.MethodForClass `hash:"1353961651"`
+	warp_mouse                                        gdextension.MethodForClass `hash:"1130785943"`
+	mouse_get_position                                gdextension.MethodForClass `hash:"3690982128"`
+	mouse_get_button_state                            gdextension.MethodForClass `hash:"2512161324"`
+	clipboard_set                                     gdextension.MethodForClass `hash:"83702148"`
+	clipboard_get                                     gdextension.MethodForClass `hash:"201670096"`
+	clipboard_get_image                               gdextension.MethodForClass `hash:"4190603485"`
+	clipboard_has                                     gdextension.MethodForClass `hash:"36873697"`
+	clipboard_has_image                               gdextension.MethodForClass `hash:"36873697"`
+	clipboard_set_primary                             gdextension.MethodForClass `hash:"83702148"`
+	clipboard_get_primary                             gdextension.MethodForClass `hash:"201670096"`
+	get_display_cutouts                               gdextension.MethodForClass `hash:"3995934104"`
+	get_display_safe_area                             gdextension.MethodForClass `hash:"410525958"`
+	get_screen_count                                  gdextension.MethodForClass `hash:"3905245786"`
+	get_primary_screen                                gdextension.MethodForClass `hash:"3905245786"`
+	get_keyboard_focus_screen                         gdextension.MethodForClass `hash:"3905245786"`
+	get_screen_from_rect                              gdextension.MethodForClass `hash:"741354659"`
+	screen_get_position                               gdextension.MethodForClass `hash:"1725937825"`
+	screen_get_size                                   gdextension.MethodForClass `hash:"1725937825"`
+	screen_get_usable_rect                            gdextension.MethodForClass `hash:"2439012528"`
+	screen_get_dpi                                    gdextension.MethodForClass `hash:"181039630"`
+	screen_get_scale                                  gdextension.MethodForClass `hash:"909105437"`
+	is_touchscreen_available                          gdextension.MethodForClass `hash:"36873697"`
+	screen_get_max_scale                              gdextension.MethodForClass `hash:"1740695150"`
+	screen_get_refresh_rate                           gdextension.MethodForClass `hash:"909105437"`
+	screen_get_pixel                                  gdextension.MethodForClass `hash:"1532707496"`
+	screen_get_image                                  gdextension.MethodForClass `hash:"3813388802"`
+	screen_get_image_rect                             gdextension.MethodForClass `hash:"2601441065"`
+	screen_set_orientation                            gdextension.MethodForClass `hash:"2211511631"`
+	screen_get_orientation                            gdextension.MethodForClass `hash:"133818562"`
+	screen_set_keep_on                                gdextension.MethodForClass `hash:"2586408642"`
+	screen_is_kept_on                                 gdextension.MethodForClass `hash:"36873697"`
+	get_window_list                                   gdextension.MethodForClass `hash:"1930428628"`
+	get_window_at_screen_position                     gdextension.MethodForClass `hash:"2485466453"`
+	window_get_native_handle                          gdextension.MethodForClass `hash:"1096425680"`
+	window_get_active_popup                           gdextension.MethodForClass `hash:"3905245786"`
+	window_set_popup_safe_rect                        gdextension.MethodForClass `hash:"3317281434"`
+	window_get_popup_safe_rect                        gdextension.MethodForClass `hash:"2161169500"`
+	window_set_title                                  gdextension.MethodForClass `hash:"441246282"`
+	window_get_title_size                             gdextension.MethodForClass `hash:"2925301799"`
+	window_set_mouse_passthrough                      gdextension.MethodForClass `hash:"1993637420"`
+	window_get_current_screen                         gdextension.MethodForClass `hash:"1591665591"`
+	window_set_current_screen                         gdextension.MethodForClass `hash:"2230941749"`
+	window_get_position                               gdextension.MethodForClass `hash:"763922886"`
+	window_get_position_with_decorations              gdextension.MethodForClass `hash:"763922886"`
+	window_set_position                               gdextension.MethodForClass `hash:"2019273902"`
+	window_get_size                                   gdextension.MethodForClass `hash:"763922886"`
+	window_set_size                                   gdextension.MethodForClass `hash:"2019273902"`
+	window_set_rect_changed_callback                  gdextension.MethodForClass `hash:"1091192925"`
+	window_set_window_event_callback                  gdextension.MethodForClass `hash:"1091192925"`
+	window_set_input_event_callback                   gdextension.MethodForClass `hash:"1091192925"`
+	window_set_input_text_callback                    gdextension.MethodForClass `hash:"1091192925"`
+	window_set_drop_files_callback                    gdextension.MethodForClass `hash:"1091192925"`
+	window_get_attached_instance_id                   gdextension.MethodForClass `hash:"1591665591"`
+	window_get_max_size                               gdextension.MethodForClass `hash:"763922886"`
+	window_set_max_size                               gdextension.MethodForClass `hash:"2019273902"`
+	window_get_min_size                               gdextension.MethodForClass `hash:"763922886"`
+	window_set_min_size                               gdextension.MethodForClass `hash:"2019273902"`
+	window_get_size_with_decorations                  gdextension.MethodForClass `hash:"763922886"`
+	window_get_mode                                   gdextension.MethodForClass `hash:"2185728461"`
+	window_set_mode                                   gdextension.MethodForClass `hash:"1319965401"`
+	window_set_flag                                   gdextension.MethodForClass `hash:"254894155"`
+	window_get_flag                                   gdextension.MethodForClass `hash:"802816991"`
+	window_set_icon                                   gdextension.MethodForClass `hash:"2457502155"`
+	window_set_window_buttons_offset                  gdextension.MethodForClass `hash:"2019273902"`
+	window_get_safe_title_margins                     gdextension.MethodForClass `hash:"2295066620"`
+	window_request_attention                          gdextension.MethodForClass `hash:"1995695955"`
+	window_set_taskbar_progress_value                 gdextension.MethodForClass `hash:"3506631519"`
+	window_set_taskbar_progress_state                 gdextension.MethodForClass `hash:"4119882768"`
+	window_move_to_foreground                         gdextension.MethodForClass `hash:"1995695955"`
+	window_is_focused                                 gdextension.MethodForClass `hash:"1051549951"`
+	window_can_draw                                   gdextension.MethodForClass `hash:"1051549951"`
+	window_set_transient                              gdextension.MethodForClass `hash:"3937882851"`
+	window_set_exclusive                              gdextension.MethodForClass `hash:"300928843"`
+	window_set_ime_active                             gdextension.MethodForClass `hash:"1661950165"`
+	window_set_ime_position                           gdextension.MethodForClass `hash:"2019273902"`
+	window_set_vsync_mode                             gdextension.MethodForClass `hash:"2179333492"`
+	window_get_vsync_mode                             gdextension.MethodForClass `hash:"578873795"`
+	window_is_hdr_output_supported                    gdextension.MethodForClass `hash:"1051549951"`
+	window_request_hdr_output                         gdextension.MethodForClass `hash:"1661950165"`
+	window_is_hdr_output_requested                    gdextension.MethodForClass `hash:"1051549951"`
+	window_is_hdr_output_enabled                      gdextension.MethodForClass `hash:"1051549951"`
+	window_set_hdr_output_reference_luminance         gdextension.MethodForClass `hash:"3506631519"`
+	window_get_hdr_output_reference_luminance         gdextension.MethodForClass `hash:"218038398"`
+	window_get_hdr_output_current_reference_luminance gdextension.MethodForClass `hash:"218038398"`
+	window_set_hdr_output_max_luminance               gdextension.MethodForClass `hash:"3506631519"`
+	window_get_hdr_output_max_luminance               gdextension.MethodForClass `hash:"218038398"`
+	window_get_hdr_output_current_max_luminance       gdextension.MethodForClass `hash:"218038398"`
+	window_get_output_max_linear_value                gdextension.MethodForClass `hash:"218038398"`
+	window_is_maximize_allowed                        gdextension.MethodForClass `hash:"1051549951"`
+	window_maximize_on_title_dbl_click                gdextension.MethodForClass `hash:"36873697"`
+	window_minimize_on_title_dbl_click                gdextension.MethodForClass `hash:"36873697"`
+	window_start_drag                                 gdextension.MethodForClass `hash:"1995695955"`
+	window_start_resize                               gdextension.MethodForClass `hash:"4009722312"`
+	window_set_color                                  gdextension.MethodForClass `hash:"2920490490"`
+	accessibility_should_increase_contrast            gdextension.MethodForClass `hash:"3905245786"`
+	accessibility_should_reduce_animation             gdextension.MethodForClass `hash:"3905245786"`
+	accessibility_should_reduce_transparency          gdextension.MethodForClass `hash:"3905245786"`
+	accessibility_screen_reader_active                gdextension.MethodForClass `hash:"3905245786"`
+	accessibility_create_element                      gdextension.MethodForClass `hash:"2968347744"`
+	accessibility_create_sub_element                  gdextension.MethodForClass `hash:"1949948826"`
+	accessibility_create_sub_text_edit_elements       gdextension.MethodForClass `hash:"2702009895"`
+	accessibility_has_element                         gdextension.MethodForClass `hash:"4155700596"`
+	accessibility_free_element                        gdextension.MethodForClass `hash:"2722037293"`
+	accessibility_element_set_meta                    gdextension.MethodForClass `hash:"3175752987"`
+	accessibility_element_get_meta                    gdextension.MethodForClass `hash:"4171304767"`
+	accessibility_set_window_rect                     gdextension.MethodForClass `hash:"2386961724"`
+	accessibility_set_window_focused                  gdextension.MethodForClass `hash:"300928843"`
+	accessibility_update_set_focus                    gdextension.MethodForClass `hash:"2722037293"`
+	accessibility_get_window_root                     gdextension.MethodForClass `hash:"495598643"`
+	accessibility_update_set_role                     gdextension.MethodForClass `hash:"3352768215"`
+	accessibility_update_set_name                     gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_extra_info               gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_description              gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_value                    gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_tooltip                  gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_bounds                   gdextension.MethodForClass `hash:"1378122625"`
+	accessibility_update_set_transform                gdextension.MethodForClass `hash:"1246044741"`
+	accessibility_update_add_child                    gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_controls         gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_details          gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_described_by     gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_flow_to          gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_labeled_by       gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_radio_group      gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_active_descendant        gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_next_on_line             gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_previous_on_line         gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_member_of                gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_in_page_link_target      gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_error_message            gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_live                     gdextension.MethodForClass `hash:"2683302212"`
+	accessibility_update_add_action                   gdextension.MethodForClass `hash:"2898696987"`
+	accessibility_update_add_custom_action            gdextension.MethodForClass `hash:"4153150897"`
+	accessibility_update_set_table_row_count          gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_table_column_count       gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_table_row_index          gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_table_column_index       gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_table_cell_position      gdextension.MethodForClass `hash:"4288446313"`
+	accessibility_update_set_table_cell_span          gdextension.MethodForClass `hash:"4288446313"`
+	accessibility_update_set_list_item_count          gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_list_item_index          gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_list_item_level          gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_list_item_selected       gdextension.MethodForClass `hash:"1265174801"`
+	accessibility_update_set_list_item_expanded       gdextension.MethodForClass `hash:"1265174801"`
+	accessibility_update_set_popup_type               gdextension.MethodForClass `hash:"2040885448"`
+	accessibility_update_set_checked                  gdextension.MethodForClass `hash:"1265174801"`
+	accessibility_update_set_num_value                gdextension.MethodForClass `hash:"1794382983"`
+	accessibility_update_set_num_range                gdextension.MethodForClass `hash:"2513314492"`
+	accessibility_update_set_num_step                 gdextension.MethodForClass `hash:"1794382983"`
+	accessibility_update_set_num_jump                 gdextension.MethodForClass `hash:"1794382983"`
+	accessibility_update_set_scroll_x                 gdextension.MethodForClass `hash:"1794382983"`
+	accessibility_update_set_scroll_x_range           gdextension.MethodForClass `hash:"2513314492"`
+	accessibility_update_set_scroll_y                 gdextension.MethodForClass `hash:"1794382983"`
+	accessibility_update_set_scroll_y_range           gdextension.MethodForClass `hash:"2513314492"`
+	accessibility_update_set_text_decorations         gdextension.MethodForClass `hash:"1672422386"`
+	accessibility_update_set_text_align               gdextension.MethodForClass `hash:"3725995085"`
+	accessibility_update_set_text_selection           gdextension.MethodForClass `hash:"3119144029"`
+	accessibility_update_set_flag                     gdextension.MethodForClass `hash:"3758675396"`
+	accessibility_update_set_classname                gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_placeholder              gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_language                 gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_text_orientation         gdextension.MethodForClass `hash:"1265174801"`
+	accessibility_update_set_list_orientation         gdextension.MethodForClass `hash:"1265174801"`
+	accessibility_update_set_shortcut                 gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_url                      gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_role_description         gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_state_description        gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_color_value              gdextension.MethodForClass `hash:"2948539648"`
+	accessibility_update_set_background_color         gdextension.MethodForClass `hash:"2948539648"`
+	accessibility_update_set_foreground_color         gdextension.MethodForClass `hash:"2948539648"`
+	ime_get_selection                                 gdextension.MethodForClass `hash:"3690982128"`
+	ime_get_text                                      gdextension.MethodForClass `hash:"201670096"`
+	virtual_keyboard_show                             gdextension.MethodForClass `hash:"3042891259"`
+	virtual_keyboard_hide                             gdextension.MethodForClass `hash:"3218959716"`
+	virtual_keyboard_get_height                       gdextension.MethodForClass `hash:"3905245786"`
+	has_hardware_keyboard                             gdextension.MethodForClass `hash:"36873697"`
+	set_hardware_keyboard_connection_change_callback  gdextension.MethodForClass `hash:"1611583062"`
+	cursor_set_shape                                  gdextension.MethodForClass `hash:"2026291549"`
+	cursor_get_shape                                  gdextension.MethodForClass `hash:"1087724927"`
+	cursor_set_custom_image                           gdextension.MethodForClass `hash:"1816663697"`
+	get_swap_cancel_ok                                gdextension.MethodForClass `hash:"2240911060"`
+	enable_for_stealing_focus                         gdextension.MethodForClass `hash:"1286410249"`
+	dialog_show                                       gdextension.MethodForClass `hash:"4115553226"`
+	dialog_input_text                                 gdextension.MethodForClass `hash:"3088703427"`
+	file_dialog_show                                  gdextension.MethodForClass `hash:"1386825884"`
+	file_dialog_with_options_show                     gdextension.MethodForClass `hash:"1448789813"`
+	beep                                              gdextension.MethodForClass `hash:"4051624405"`
+	keyboard_get_layout_count                         gdextension.MethodForClass `hash:"3905245786"`
+	keyboard_get_current_layout                       gdextension.MethodForClass `hash:"3905245786"`
+	keyboard_set_current_layout                       gdextension.MethodForClass `hash:"1286410249"`
+	keyboard_get_layout_language                      gdextension.MethodForClass `hash:"844755477"`
+	keyboard_get_layout_name                          gdextension.MethodForClass `hash:"844755477"`
+	keyboard_get_keycode_from_physical                gdextension.MethodForClass `hash:"3447613187"`
+	keyboard_get_label_from_physical                  gdextension.MethodForClass `hash:"3447613187"`
+	show_emoji_and_symbol_picker                      gdextension.MethodForClass `hash:"4051624405"`
+	color_picker                                      gdextension.MethodForClass `hash:"151643214"`
+	process_events                                    gdextension.MethodForClass `hash:"3218959716"`
+	force_process_and_drop_events                     gdextension.MethodForClass `hash:"3218959716"`
+	set_native_icon                                   gdextension.MethodForClass `hash:"83702148"`
+	set_icon                                          gdextension.MethodForClass `hash:"532598488"`
+	create_status_indicator                           gdextension.MethodForClass `hash:"1904285171"`
+	status_indicator_set_icon                         gdextension.MethodForClass `hash:"666127730"`
+	status_indicator_set_tooltip                      gdextension.MethodForClass `hash:"501894301"`
+	status_indicator_set_menu                         gdextension.MethodForClass `hash:"4040184819"`
+	status_indicator_set_callback                     gdextension.MethodForClass `hash:"957362965"`
+	status_indicator_get_rect                         gdextension.MethodForClass `hash:"3327874267"`
+	delete_status_indicator                           gdextension.MethodForClass `hash:"1286410249"`
+	tablet_get_driver_count                           gdextension.MethodForClass `hash:"3905245786"`
+	tablet_get_driver_name                            gdextension.MethodForClass `hash:"844755477"`
+	tablet_get_current_driver                         gdextension.MethodForClass `hash:"201670096"`
+	tablet_set_current_driver                         gdextension.MethodForClass `hash:"83702148"`
+	is_window_transparency_available                  gdextension.MethodForClass `hash:"36873697"`
+	register_additional_output                        gdextension.MethodForClass `hash:"3975164845"`
+	unregister_additional_output                      gdextension.MethodForClass `hash:"3975164845"`
+	has_additional_outputs                            gdextension.MethodForClass `hash:"36873697"`
+	is_in_pip_mode                                    gdextension.MethodForClass `hash:"1885608816"`
+	pip_mode_enter                                    gdextension.MethodForClass `hash:"1995695955"`
+	pip_mode_set_aspect_ratio                         gdextension.MethodForClass `hash:"3471927553"`
+	pip_mode_set_auto_enter_on_background             gdextension.MethodForClass `hash:"1661950165"`
 }
 
 func init() {
@@ -2060,6 +2078,15 @@ func WindowGetFlag(flag WindowFlags, window_id Window) bool { //gd:DisplayServer
 }
 
 /*
+Sets the window icon (usually displayed in the top-left corner) for the window specified by 'window_id'.
+
+Note: This method is implemented on Linux and Windows.
+*/
+func WindowSetIcon(icon Image.Instance, window_id Window) { //gd:DisplayServer.window_set_icon
+	Advanced().WindowSetIcon(icon, int64(window_id))
+}
+
+/*
 When [WindowFlagExtendToTitle] flag is set, set offset to the center of the first titlebar button.
 
 Note: This flag is implemented only on macOS.
@@ -2080,6 +2107,30 @@ Makes the window specified by 'window_id' request attention, which is materializ
 */
 func WindowRequestAttention(window_id Window) { //gd:DisplayServer.window_request_attention
 	Advanced().WindowRequestAttention(int64(window_id))
+}
+
+/*
+Creates a progress bar on the taskbar/dock icon of the window specified by 'window_id' if it does not exist, sets the progress of the icon.
+
+'value' acts as a relative percentage value, ranges from 0.0 (lowest) to 1.0 (highest).
+
+Note: This method is implemented only on Windows and macOS.
+
+Note: On macOS, the progress bar is displayed only for the main window.
+*/
+func WindowSetTaskbarProgressValue(value Float.X, window_id Window) { //gd:DisplayServer.window_set_taskbar_progress_value
+	Advanced().WindowSetTaskbarProgressValue(float64(value), int64(window_id))
+}
+
+/*
+Sets the type and state of the progress bar on the taskbar/dock icon of the window specified by 'window_id'. See [ProgressState] for possible values and how each mode behaves.
+
+Note: This method is implemented only on Windows and macOS.
+
+Note: On macOS, the progress bar is displayed only for the main window.
+*/
+func WindowSetTaskbarProgressState(state ProgressState, window_id Window) { //gd:DisplayServer.window_set_taskbar_progress_state
+	Advanced().WindowSetTaskbarProgressState(state, int64(window_id))
 }
 
 /*
@@ -2163,6 +2214,102 @@ Returns the V-Sync mode of the given window.
 */
 func WindowGetVsyncMode(window_id Window) VSyncMode { //gd:DisplayServer.window_get_vsync_mode
 	return VSyncMode(Advanced().WindowGetVsyncMode(int64(window_id)))
+}
+
+/*
+Returns true if the window specified by 'window_id' supports HDR output. This depends on the platform, screen capabilities, system settings, and the screen the window is currently on.
+*/
+func WindowIsHdrOutputSupported(window_id Window) bool { //gd:DisplayServer.window_is_hdr_output_supported
+	return bool(Advanced().WindowIsHdrOutputSupported(int64(window_id)))
+}
+
+/*
+If 'enable' is true, HDR output is requested for the window specified by 'window_id'. The window will automatically switch between HDR and SDR if it is moved between screens, screen capabilities change, or system settings are modified. This will internally force [Viewport.UseHdr2d] to be enabled on the main [Viewport]. All other [SubViewport] of the [Window] must have their [Viewport.UseHdr2d] property enabled to produce HDR output. Corresponds to [Window.HdrOutputRequested].
+
+[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+[Viewport.UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+[Window.HdrOutputRequested]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.HdrOutputRequested
+*/
+func WindowRequestHdrOutput(enable bool, window_id Window) { //gd:DisplayServer.window_request_hdr_output
+	Advanced().WindowRequestHdrOutput(enable, int64(window_id))
+}
+
+/*
+Returns true if HDR output is requested for the window specified by 'window_id'. Corresponds to [Window.HdrOutputRequested].
+
+[Window.HdrOutputRequested]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.HdrOutputRequested
+*/
+func WindowIsHdrOutputRequested(window_id Window) bool { //gd:DisplayServer.window_is_hdr_output_requested
+	return bool(Advanced().WindowIsHdrOutputRequested(int64(window_id)))
+}
+
+/*
+Returns true if HDR output is currently enabled for the window specified by 'window_id'. The returned value may change dynamically based on system settings, screen capabilities, and which screen the window is currently on.
+*/
+func WindowIsHdrOutputEnabled(window_id Window) bool { //gd:DisplayServer.window_is_hdr_output_enabled
+	return bool(Advanced().WindowIsHdrOutputEnabled(int64(window_id)))
+}
+
+/*
+Sets the reference white luminance in nits (cd/m²) for HDR output by the window specified by 'window_id'. If 'reference_luminance' is negative, the window automatically adjusts to the brightness set by the operating system. By default, this luminance is set to -1.0 for every window. Typically this property should be left at this default value, but may optionally be exposed as an "HDR Brightness" in-game setting to allow the player to adjust the brightness of their game, independently of their device settings. See also [WindowGetHdrOutputCurrentReferenceLuminance] and [WindowGetHdrOutputReferenceLuminance].
+
+Note: This method is only implemented on Windows. Other platforms will always use the reference luminance that is reported by the operating system.
+*/
+func WindowSetHdrOutputReferenceLuminance(reference_luminance Float.X, window_id Window) { //gd:DisplayServer.window_set_hdr_output_reference_luminance
+	Advanced().WindowSetHdrOutputReferenceLuminance(float64(reference_luminance), int64(window_id))
+}
+
+/*
+Returns the reference white luminance in nits (cd/m²) set for HDR output by the window specified by 'window_id'. Negative values indicate that the value is being automatically adjusted to match the operating system brightness. See also [WindowGetHdrOutputCurrentReferenceLuminance].
+*/
+func WindowGetHdrOutputReferenceLuminance(window_id Window) Float.X { //gd:DisplayServer.window_get_hdr_output_reference_luminance
+	return Float.X(Float.X(Advanced().WindowGetHdrOutputReferenceLuminance(int64(window_id))))
+}
+
+/*
+When [WindowIsHdrOutputEnabled] returns true, this returns the current reference white luminance in nits (cd/m²) for HDR output by the window specified by 'window_id'. If the reference luminance is being automatically adjusted to match the operating system brightness, this will return that value. Otherwise, it will return the value set by [WindowSetHdrOutputReferenceLuminance]. This reference luminance value is used when calculating [WindowGetOutputMaxLinearValue].
+
+Note: This reference white luminance may not match the physical behavior of the screen, but will always be proportionally correct relative to [WindowGetHdrOutputCurrentMaxLuminance].
+*/
+func WindowGetHdrOutputCurrentReferenceLuminance(window_id Window) Float.X { //gd:DisplayServer.window_get_hdr_output_current_reference_luminance
+	return Float.X(Float.X(Advanced().WindowGetHdrOutputCurrentReferenceLuminance(int64(window_id))))
+}
+
+/*
+Sets the maximum luminance in nits (cd/m²) for HDR output by the window specified by 'window_id'. If 'max_luminance' is negative, the window uses the screen's maximum luminance that is reported by the operating system. By default, this luminance is set to -1.0 for every window. Typically this property should be left at this default value, but may optionally be exposed through in-game settings to allow the player to correct an inaccurate maximum luminance reported by the operating system. See also [WindowGetHdrOutputCurrentMaxLuminance] and [WindowGetHdrOutputMaxLuminance].
+
+Note: This method is only implemented on macOS and Windows. Other platforms will always use the screen's maximum luminance that is reported by the operating system.
+*/
+func WindowSetHdrOutputMaxLuminance(max_luminance Float.X, window_id Window) { //gd:DisplayServer.window_set_hdr_output_max_luminance
+	Advanced().WindowSetHdrOutputMaxLuminance(float64(max_luminance), int64(window_id))
+}
+
+/*
+Returns the maximum luminance in nits (cd/m²) set for HDR output by the window specified by 'window_id'. Negative values indicate that the value is being automatically adjusted based on the screen's capabilities. See also [WindowGetHdrOutputCurrentMaxLuminance].
+*/
+func WindowGetHdrOutputMaxLuminance(window_id Window) Float.X { //gd:DisplayServer.window_get_hdr_output_max_luminance
+	return Float.X(Float.X(Advanced().WindowGetHdrOutputMaxLuminance(int64(window_id))))
+}
+
+/*
+When [WindowIsHdrOutputEnabled] returns true, this returns the current maximum luminance in nits (cd/m²) for HDR output by the window specified by 'window_id'. If the maximum luminance is being automatically adjusted based on the screen's capabilities, this method will return that value. Otherwise, it will return the value set by [WindowSetHdrOutputMaxLuminance]. This maximum luminance value is used when calculating [WindowGetOutputMaxLinearValue].
+
+Note: This maximum luminance may not match the physical behavior of the screen, but will always be proportionally correct relative to [WindowGetHdrOutputCurrentReferenceLuminance].
+*/
+func WindowGetHdrOutputCurrentMaxLuminance(window_id Window) Float.X { //gd:DisplayServer.window_get_hdr_output_current_max_luminance
+	return Float.X(Float.X(Advanced().WindowGetHdrOutputCurrentMaxLuminance(int64(window_id))))
+}
+
+/*
+Returns the maximum value for linear color components that can be displayed for the window specified by 'window_id', regardless of SDR or HDR output. Returns 1.0 if HDR is not enabled or not supported. When HDR output is enabled, this is calculated based on [WindowGetHdrOutputCurrentReferenceLuminance] and [WindowGetHdrOutputCurrentMaxLuminance]. The [OnWindow.OutputMaxLinearValueChanged] signal will be emitted whenever this value changes. This value is used by tonemapping and other [Environment] effects to ensure that bright colors are presented in the range that can be displayed by this window. Corresponds to [Window.GetOutputMaxLinearValue].
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
+[Window.GetOutputMaxLinearValue]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetOutputMaxLinearValue
+*/
+func WindowGetOutputMaxLinearValue(window_id Window) Float.X { //gd:DisplayServer.window_get_output_max_linear_value
+	return Float.X(Float.X(Advanced().WindowGetOutputMaxLinearValue(int64(window_id))))
 }
 
 /*
@@ -2417,8 +2564,8 @@ func AccessibilityUpdateSetTooltip(id RID.AccessibilityElement, tooltip string) 
 /*
 Sets element bounding box, relative to the node position.
 */
-func AccessibilityUpdateSetBounds(id RID.AccessibilityElement, p_rect Rect2.PositionSize) { //gd:DisplayServer.accessibility_update_set_bounds
-	Advanced().AccessibilityUpdateSetBounds(RID.Any(id), Rect2.PositionSize(p_rect))
+func AccessibilityUpdateSetBounds(id RID.AccessibilityElement, rect Rect2.PositionSize) { //gd:DisplayServer.accessibility_update_set_bounds
+	Advanced().AccessibilityUpdateSetBounds(RID.Any(id), Rect2.PositionSize(rect))
 }
 
 /*
@@ -3180,7 +3327,7 @@ func SetNativeIcon(filename string) { //gd:DisplayServer.set_native_icon
 }
 
 /*
-Sets the window icon (usually displayed in the top-left corner) with an [Image]. To use icons in the operating system's native format, use [SetNativeIcon] instead.
+Sets the application icon and icons of all windows with an [Image]. To use icons in the operating system's native format, use [SetNativeIcon] instead.
 
 Note: Requires support for [FeatureIcon].
 
@@ -3341,6 +3488,42 @@ Returns true if any additional outputs have been registered via [RegisterAdditio
 */
 func HasAdditionalOutputs() bool { //gd:DisplayServer.has_additional_outputs
 	return bool(Advanced().HasAdditionalOutputs())
+}
+
+/*
+Returns true if the application is in picture-in-picture mode.
+
+Note: This method is implemented on Android.
+*/
+func IsInPipMode(window_id Window) bool { //gd:DisplayServer.is_in_pip_mode
+	return bool(Advanced().IsInPipMode(int64(window_id)))
+}
+
+/*
+Enters picture-in-picture mode.
+
+Note: This method is implemented on Android.
+*/
+func PipModeEnter(window_id Window) { //gd:DisplayServer.pip_mode_enter
+	Advanced().PipModeEnter(int64(window_id))
+}
+
+/*
+Specifies the aspect ratio for picture-in-picture mode.
+
+Note: This method is implemented on Android.
+*/
+func PipModeSetAspectRatio(numerator int, denominator int, window_id Window) { //gd:DisplayServer.pip_mode_set_aspect_ratio
+	Advanced().PipModeSetAspectRatio(int64(numerator), int64(denominator), int64(window_id))
+}
+
+/*
+Specifies whether picture-in-picture mode should be entered automatically when the application goes in the background.
+
+Note: This method is implemented on Android.
+*/
+func PipModeSetAutoEnterOnBackground(auto_enter_on_background bool, window_id Window) { //gd:DisplayServer.pip_mode_set_auto_enter_on_background
+	Advanced().PipModeSetAutoEnterOnBackground(auto_enter_on_background, int64(window_id))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -4320,6 +4503,13 @@ func (self class) WindowGetFlag(flag WindowFlags, window_id int64) bool { //gd:D
 	var ret = r_ret
 	return ret
 }
+func (self class) WindowSetIcon(icon [1]gdclass.Image, window_id int64) { //gd:DisplayServer.window_set_icon
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_icon, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
+		icon      gdextension.Object
+		window_id int64
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(icon[0])[0])), window_id})
+}
 func (self class) WindowSetWindowButtonsOffset(offset Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_window_buttons_offset
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_window_buttons_offset, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
@@ -4336,6 +4526,20 @@ func (self class) WindowGetSafeTitleMargins(window_id int64) Vector3i.XYZ { //gd
 func (self class) WindowRequestAttention(window_id int64) { //gd:DisplayServer.window_request_attention
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_request_attention, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+}
+func (self class) WindowSetTaskbarProgressValue(value float64, window_id int64) { //gd:DisplayServer.window_set_taskbar_progress_value
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_taskbar_progress_value, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), &struct {
+		value     float64
+		window_id int64
+	}{value, window_id})
+}
+func (self class) WindowSetTaskbarProgressState(state ProgressState, window_id int64) { //gd:DisplayServer.window_set_taskbar_progress_state
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_taskbar_progress_state, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		state     ProgressState
+		window_id int64
+	}{state, window_id})
 }
 func (self class) WindowMoveToForeground(window_id int64) { //gd:DisplayServer.window_move_to_foreground
 	once.Do(singleton)
@@ -4391,6 +4595,75 @@ func (self class) WindowSetVsyncMode(vsync_mode VSyncMode, window_id int64) { //
 func (self class) WindowGetVsyncMode(window_id int64) VSyncMode { //gd:DisplayServer.window_get_vsync_mode
 	once.Do(singleton)
 	var r_ret = noescape.Call[VSyncMode](gdreference.GetObject(self.AsObject()[0]), methods.window_get_vsync_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var ret = r_ret
+	return ret
+}
+func (self class) WindowIsHdrOutputSupported(window_id int64) bool { //gd:DisplayServer.window_is_hdr_output_supported
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_is_hdr_output_supported, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var ret = r_ret
+	return ret
+}
+func (self class) WindowRequestHdrOutput(enable bool, window_id int64) { //gd:DisplayServer.window_request_hdr_output
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_request_hdr_output, 0|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
+		enable    bool
+		window_id int64
+	}{enable, window_id})
+}
+func (self class) WindowIsHdrOutputRequested(window_id int64) bool { //gd:DisplayServer.window_is_hdr_output_requested
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_is_hdr_output_requested, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var ret = r_ret
+	return ret
+}
+func (self class) WindowIsHdrOutputEnabled(window_id int64) bool { //gd:DisplayServer.window_is_hdr_output_enabled
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.window_is_hdr_output_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var ret = r_ret
+	return ret
+}
+func (self class) WindowSetHdrOutputReferenceLuminance(reference_luminance float64, window_id int64) { //gd:DisplayServer.window_set_hdr_output_reference_luminance
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_hdr_output_reference_luminance, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), &struct {
+		reference_luminance float64
+		window_id           int64
+	}{reference_luminance, window_id})
+}
+func (self class) WindowGetHdrOutputReferenceLuminance(window_id int64) float64 { //gd:DisplayServer.window_get_hdr_output_reference_luminance
+	once.Do(singleton)
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.window_get_hdr_output_reference_luminance, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var ret = r_ret
+	return ret
+}
+func (self class) WindowGetHdrOutputCurrentReferenceLuminance(window_id int64) float64 { //gd:DisplayServer.window_get_hdr_output_current_reference_luminance
+	once.Do(singleton)
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.window_get_hdr_output_current_reference_luminance, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var ret = r_ret
+	return ret
+}
+func (self class) WindowSetHdrOutputMaxLuminance(max_luminance float64, window_id int64) { //gd:DisplayServer.window_set_hdr_output_max_luminance
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.window_set_hdr_output_max_luminance, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), &struct {
+		max_luminance float64
+		window_id     int64
+	}{max_luminance, window_id})
+}
+func (self class) WindowGetHdrOutputMaxLuminance(window_id int64) float64 { //gd:DisplayServer.window_get_hdr_output_max_luminance
+	once.Do(singleton)
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.window_get_hdr_output_max_luminance, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var ret = r_ret
+	return ret
+}
+func (self class) WindowGetHdrOutputCurrentMaxLuminance(window_id int64) float64 { //gd:DisplayServer.window_get_hdr_output_current_max_luminance
+	once.Do(singleton)
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.window_get_hdr_output_current_max_luminance, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var ret = r_ret
+	return ret
+}
+func (self class) WindowGetOutputMaxLinearValue(window_id int64) float64 { //gd:DisplayServer.window_get_output_max_linear_value
+	once.Do(singleton)
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.window_get_output_max_linear_value, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -4572,12 +4845,12 @@ func (self class) AccessibilityUpdateSetTooltip(id RID.Any, tooltip String.Reada
 		tooltip gdextension.String
 	}{id, pointers.Get(gd.InternalString(tooltip))})
 }
-func (self class) AccessibilityUpdateSetBounds(id RID.Any, p_rect Rect2.PositionSize) { //gd:DisplayServer.accessibility_update_set_bounds
+func (self class) AccessibilityUpdateSetBounds(id RID.Any, rect Rect2.PositionSize) { //gd:DisplayServer.accessibility_update_set_bounds
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.accessibility_update_set_bounds, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), &struct {
-		id     RID.Any
-		p_rect Rect2.PositionSize
-	}{id, p_rect})
+		id   RID.Any
+		rect Rect2.PositionSize
+	}{id, rect})
 }
 func (self class) AccessibilityUpdateSetTransform(id RID.Any, transform Transform2D.OriginXY) { //gd:DisplayServer.accessibility_update_set_transform
 	once.Do(singleton)
@@ -5255,6 +5528,53 @@ func (self class) HasAdditionalOutputs() bool { //gd:DisplayServer.has_additiona
 	var ret = r_ret
 	return ret
 }
+func (self class) IsInPipMode(window_id int64) bool { //gd:DisplayServer.is_in_pip_mode
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_in_pip_mode, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var ret = r_ret
+	return ret
+}
+func (self class) PipModeEnter(window_id int64) { //gd:DisplayServer.pip_mode_enter
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.pip_mode_enter, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+}
+func (self class) PipModeSetAspectRatio(numerator int64, denominator int64, window_id int64) { //gd:DisplayServer.pip_mode_set_aspect_ratio
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.pip_mode_set_aspect_ratio, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+		numerator   int64
+		denominator int64
+		window_id   int64
+	}{numerator, denominator, window_id})
+}
+func (self class) PipModeSetAutoEnterOnBackground(auto_enter_on_background bool, window_id int64) { //gd:DisplayServer.pip_mode_set_auto_enter_on_background
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.pip_mode_set_auto_enter_on_background, 0|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
+		auto_enter_on_background bool
+		window_id                int64
+	}{auto_enter_on_background, window_id})
+}
+
+/*
+Emitted when the device orientation changes. 'orientation' is the new orientation.
+
+Returns 1 for portrait, 2 for landscape, and 0 if the orientation is undefined.
+
+Note: This method is implemented on Android and iOS.
+*/
+func OnOrientationChanged(cb func(orientation int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	once.Do(singleton)
+	gd.ObjectConnect(gdclass.GetDisplayServer(self[0])[0], gd.NewStringName("orientation_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) OrientationChanged() Signal.Any {
+	once.Do(singleton)
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`orientation_changed`))))
+}
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
@@ -5279,7 +5599,7 @@ const (
 	FeatureGlobalMenu Feature = 0
 	// Display server supports multiple windows that can be moved outside of the main window. Windows, macOS, Linux (X11)
 	FeatureSubwindows Feature = 1
-	// Display server supports touchscreen input. Windows, Linux (X11), Android, iOS, Web
+	// Display server supports touchscreen input. Windows, Linux (X11/Wayland), Android, iOS, Web
 	FeatureTouchscreen Feature = 2
 	// Display server supports mouse input. Windows, macOS, Linux (X11/Wayland), Android, Web
 	FeatureMouse Feature = 3
@@ -5366,6 +5686,10 @@ const (
 	FeatureSelfFittingWindows Feature = 33
 	// Display server supports interaction with screen reader or Braille display. Linux (X11/Wayland), macOS, Windows
 	FeatureAccessibilityScreenReader Feature = 34
+	// Display server supports HDR output. Linux (Wayland), macOS, iOS, visionOS, Windows
+	FeatureHdrOutput Feature = 35
+	// Display server supports putting the application in picture-in-picture mode. Android
+	FeaturePipMode Feature = 36
 )
 
 type AccessibilityRole int64 //gd:DisplayServer.AccessibilityRole
@@ -5463,6 +5787,12 @@ const (
 	RoleDialog AccessibilityRole = 44
 	// Tooltip element.
 	RoleTooltip AccessibilityRole = 45
+	// Region/landmark element. Screen readers can navigate between regions using landmark navigation.
+	RoleRegion AccessibilityRole = 46
+	// Unifor text run.
+	//
+	// Note: This role is used for internal text elements, and should not be assigned to nodes.
+	RoleTextRun AccessibilityRole = 47
 )
 
 type AccessibilityPopupType int64 //gd:DisplayServer.AccessibilityPopupType
@@ -5800,16 +6130,43 @@ const (
 	WindowModeExclusiveFullscreen WindowMode = 4
 )
 
+type ProgressState int64 //gd:DisplayServer.ProgressState
+
+const (
+	// Stops displaying progress and returns the button to its normal state.
+	ProgressStateNoprogress ProgressState = 0
+	// The progress indicator shows an indeterminate progress.
+	//
+	// On Windows, the progress indicator does not grow in size, but cycles repeatedly along the length of the taskbar button by default.
+	ProgressStateIndeterminate ProgressState = 1
+	// The progress indicator shows progress normally.
+	ProgressStateNormal ProgressState = 2
+	// The progress indicator shows that an error has occurred.
+	//
+	// On Windows, the progress indicator turns red by default to show that an error has occurred in one of the windows that is broadcasting progress.
+	ProgressStateError ProgressState = 3
+	// The progress indicator shows it was paused.
+	//
+	// On Windows, the progress indicator turns yellow by default to show that progress is currently stopped in one of the windows but can be resumed by the user.
+	ProgressStatePaused ProgressState = 4
+)
+
 type WindowFlags int64 //gd:DisplayServer.WindowFlags
 
 const (
 	// The window can't be resized by dragging its resize grip. It's still possible to resize the window using [WindowSetSize]. This flag is ignored for full screen windows.
 	//
+	// Note: This flag is implemented on Linux (X11), macOS, and Windows.
+	//
 	// [WindowSetSize]: https://pkg.go.dev/graphics.gd/classdb/#Instance.WindowSetSize
 	WindowFlagResizeDisabled WindowFlags = 0
 	// The window do not have native title bar and other decorations. This flag is ignored for full-screen windows.
+	//
+	// Note: This flag is implemented on Linux (X11/Wayland), macOS, and Windows.
 	WindowFlagBorderless WindowFlags = 1
 	// The window is floating on top of all other windows. This flag is ignored for full-screen windows.
+	//
+	// Note: This flag is implemented on Linux (X11), macOS, and Windows.
 	WindowFlagAlwaysOnTop WindowFlags = 2
 	// The window background can be transparent.
 	//
@@ -5823,8 +6180,12 @@ const (
 	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	WindowFlagTransparent WindowFlags = 3
 	// The window can't be focused. No-focus window will ignore all input, except mouse clicks.
+	//
+	// Note: This flag is implemented on Linux (X11), macOS, and Windows.
 	WindowFlagNoFocus WindowFlags = 4
 	// Window is part of menu or [OptionButton] dropdown. This flag can't be changed when the window is visible. An active popup window will exclusively receive all input, without stealing focus from its parent. Popup windows are automatically closed when uses click outside it, or when an application is switched. Popup window must have transient parent set (see [WindowSetTransient]).
+	//
+	// Note: This flag is implemented on Linux (X11/Wayland), macOS, and Windows.
 	//
 	// [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 	// [WindowSetTransient]: https://pkg.go.dev/graphics.gd/classdb/#Instance.WindowSetTransient
@@ -5841,6 +6202,8 @@ const (
 	// [WindowSetWindowButtonsOffset]: https://pkg.go.dev/graphics.gd/classdb/#Instance.WindowSetWindowButtonsOffset
 	WindowFlagExtendToTitle WindowFlags = 6
 	// All mouse events are passed to the underlying window of the same application.
+	//
+	// Note: This flag is implemented on Linux (X11), macOS, and Windows.
 	WindowFlagMousePassthrough WindowFlags = 7
 	// Window style is overridden, forcing sharp corners.
 	//
@@ -5857,14 +6220,16 @@ const (
 	// [ScreenGetPixel]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ScreenGetPixel
 	WindowFlagExcludeFromCapture WindowFlags = 9
 	// Signals the window manager that this window is supposed to be an implementation-defined "popup" (usually a floating, borderless, untileable and immovable child window).
+	//
+	// Note: This flag is implemented on Linux (Wayland).
 	WindowFlagPopupWmHint WindowFlags = 10
 	// Window minimize button is disabled.
 	//
-	// Note: This flag is implemented on macOS and Windows.
+	// Note: This flag is implemented on Linux (X11), macOS, and Windows.
 	WindowFlagMinimizeDisabled WindowFlags = 11
 	// Window maximize button is disabled.
 	//
-	// Note: This flag is implemented on macOS and Windows.
+	// Note: This flag is implemented on Linux (X11), macOS, and Windows.
 	WindowFlagMaximizeDisabled WindowFlags = 12
 	// Represents the size of the [WindowFlags] enum.
 	WindowFlagMax WindowFlags = 13
@@ -5899,6 +6264,12 @@ const (
 	//
 	// Note: This flag is implemented only on Linux (Wayland).
 	WindowEventForceClose WindowEvent = 8
+	// Sent when the output max linear value returned by [Window.GetOutputMaxLinearValue] has changed.
+	//
+	// This occurs when HDR output is enabled or disabled and when any HDR output luminance values of the window have changed, such as when the player adjusts their screen brightness setting or moves the window to a different screen.
+	//
+	// [Window.GetOutputMaxLinearValue]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetOutputMaxLinearValue
+	WindowEventOutputMaxLinearValueChanged WindowEvent = 9
 )
 
 type WindowResizeEdge int64 //gd:DisplayServer.WindowResizeEdge
@@ -6004,6 +6375,14 @@ const (
 	//
 	// - Linux (Wayland): EGLConfig for the window.
 	EglConfig HandleType = 5
+	// The GLX VisualID for the window.
+	//
+	// Note: Only available on Linux when using X11.
+	GlxVisualid HandleType = 6
+	// The GLXFBConfig for the window.
+	//
+	// Note: Only available on Linux when using X11.
+	GlxFbconfig HandleType = 7
 )
 
 type TTSUtteranceEvent int64 //gd:DisplayServer.TTSUtteranceEvent

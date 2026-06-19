@@ -176,7 +176,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.RenderSceneBuffersConfiguration{gdclass.NewRenderSceneBuffersConfiguration(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -290,6 +289,8 @@ func (self Instance) SetFsrSharpness(value Float.X) Instance { //gd:RenderSceneB
 
 /*
 Bias applied to mipmaps.
+
+Note: This property is only supported in the Forward+ and Mobile renderers, not Compatibility. In Compatibility, this property is always treated as if it was set to 0.0.
 */
 func (self Instance) TextureMipmapBias() Float.X { //gd:RenderSceneBuffersConfiguration.texture_mipmap_bias
 	return Float.X(Float.X(class(self).GetTextureMipmapBias()))

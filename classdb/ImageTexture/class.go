@@ -161,7 +161,6 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	create_from_image gdextension.MethodForClass `hash:"2775144163"`
-	get_format        gdextension.MethodForClass `hash:"3847873762"`
 	set_image         gdextension.MethodForClass `hash:"532598488"`
 	update            gdextension.MethodForClass `hash:"532598488"`
 	set_size_override gdextension.MethodForClass `hash:"1130785943"`
@@ -196,13 +195,6 @@ Creates a new [ImageTexture] and initializes it by allocating and setting the da
 func CreateFromImage(image Image.Instance) Instance { //gd:ImageTexture.create_from_image
 	self := Instance{}
 	return Instance(Advanced(self).CreateFromImage(image))
-}
-
-/*
-Returns the format of the texture.
-*/
-func (self Instance) GetFormat() Image.Format { //gd:ImageTexture.get_format
-	return Image.Format(Advanced(self).GetFormat())
 }
 
 /*
@@ -282,7 +274,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.ImageTexture{gdclass.NewImageTexture(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -290,11 +281,6 @@ func New() Instance {
 func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture { //gd:ImageTexture.create_from_image
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_from_image, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0]))})
 	var ret = [1]gdclass.ImageTexture{gdclass.NewImageTexture(gd.PointerWithOwnershipTransferredToGo(r_ret))}
-	return ret
-}
-func (self class) GetFormat() Image.Format { //gd:ImageTexture.get_format
-	var r_ret = jumponly.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
-	var ret = r_ret
 	return ret
 }
 func (self class) SetImage(image [1]gdclass.Image) { //gd:ImageTexture.set_image

@@ -467,6 +467,23 @@ func Inverse(m XYZ) XYZ { //gd:Basis.inverse
 // and may only be composed of rotation and uniform scale. Returns false if the basis has non-uniform
 // scale or shear/skew. This can be used to validate if the basis is non-distorted, which is important
 // for physics and other use cases.
+// IsOrthonormal returns true if this basis is orthonormal, i.e. its rows are
+// mutually orthogonal unit vectors (no scale, shear or skew). Orthonormal bases
+// represent pure rotations.
+func IsOrthonormal(b XYZ) bool { //gd:Basis.is_orthonormal
+	var (
+		x = b.X
+		y = b.Y
+		z = b.Z
+	)
+	return Float.IsApproximatelyEqual(Vector3.LengthSquared(x), 1) &&
+		Float.IsApproximatelyEqual(Vector3.LengthSquared(y), 1) &&
+		Float.IsApproximatelyEqual(Vector3.LengthSquared(z), 1) &&
+		Float.IsApproximatelyZero(Vector3.Dot(x, y)) &&
+		Float.IsApproximatelyZero(Vector3.Dot(x, z)) &&
+		Float.IsApproximatelyZero(Vector3.Dot(y, z))
+}
+
 func IsConformal(b XYZ) bool { //gd:Basis.is_conformal
 	var (
 		x = b.X

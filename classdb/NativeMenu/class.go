@@ -203,6 +203,7 @@ var methods struct {
 	set_item_max_states          gdextension.MethodForClass `hash:"4288446313"`
 	set_item_icon                gdextension.MethodForClass `hash:"1388763257"`
 	set_item_indentation_level   gdextension.MethodForClass `hash:"4288446313"`
+	set_item_index               gdextension.MethodForClass `hash:"23951185"`
 	get_item_count               gdextension.MethodForClass `hash:"2198884583"`
 	is_system_menu               gdextension.MethodForClass `hash:"4155700596"`
 	remove_item                  gdextension.MethodForClass `hash:"3411492887"`
@@ -704,7 +705,7 @@ func AddSeparatorOptions(rid RID.NativeMenu, index int) int { //gd:NativeMenu.ad
 }
 
 /*
-Returns the index of the item with the specified 'text'. Indices are automatically assigned to each item by the engine, and cannot be set manually.
+Returns the index of the item with the specified 'text'. Indices are automatically assigned to each item by the engine.
 
 Note: This method is implemented on macOS and Windows.
 */
@@ -713,7 +714,7 @@ func FindItemIndexWithText(rid RID.NativeMenu, text string) int { //gd:NativeMen
 }
 
 /*
-Returns the index of the item with the specified 'tag'. Indices are automatically assigned to each item by the engine, and cannot be set manually.
+Returns the index of the item with the specified 'tag'. Indices are automatically assigned to each item by the engine.
 
 Note: This method is implemented on macOS and Windows.
 */
@@ -722,7 +723,7 @@ func FindItemIndexWithTag(rid RID.NativeMenu, tag any) int { //gd:NativeMenu.fin
 }
 
 /*
-Returns the index of the item with the submenu specified by 'submenu_rid'. Indices are automatically assigned to each item by the engine, and cannot be set manually.
+Returns the index of the item with the submenu specified by 'submenu_rid'. Indices are automatically assigned to each item by the engine.
 
 Note: This method is implemented on macOS and Windows.
 */
@@ -1043,6 +1044,19 @@ Note: This method is implemented only on macOS.
 */
 func SetItemIndentationLevel(rid RID.NativeMenu, idx int, level int) { //gd:NativeMenu.set_item_indentation_level
 	Advanced().SetItemIndentationLevel(RID.Any(rid), int64(idx), int64(level))
+}
+
+/*
+Changes the index of the item at index 'idx' to be at index 'target_idx'. This can be used to move an item above other items.
+
+Returns the new index of the moved item, it's not guaranteed to be the same as 'target_idx'.
+
+Note: The indices of any items between index 'idx' and index 'target_idx' will be shifted by one.
+
+Note: This method is implemented on macOS and Windows.
+*/
+func SetItemIndex(rid RID.NativeMenu, idx int, target_idx int) int { //gd:NativeMenu.set_item_index
+	return int(int(Advanced().SetItemIndex(RID.Any(rid), int64(idx), int64(target_idx))))
 }
 
 /*
@@ -1655,6 +1669,16 @@ func (self class) SetItemIndentationLevel(rid RID.Any, idx int64, level int64) {
 		level int64
 	}{rid, idx, level})
 }
+func (self class) SetItemIndex(rid RID.Any, idx int64, target_idx int64) int64 { //gd:NativeMenu.set_item_index
+	once.Do(singleton)
+	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.set_item_index, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+		rid        RID.Any
+		idx        int64
+		target_idx int64
+	}{rid, idx, target_idx})
+	var ret = r_ret
+	return ret
+}
 func (self class) GetItemCount(rid RID.Any) int64 { //gd:NativeMenu.get_item_count
 	once.Do(singleton)
 	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.get_item_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
@@ -1678,6 +1702,7 @@ func (self class) Clear(rid RID.Any) { //gd:NativeMenu.clear
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.clear, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

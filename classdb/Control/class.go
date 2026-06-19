@@ -63,8 +63,8 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/AccessibilityServer"
 import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/DisplayServer"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Node"
@@ -150,8 +150,13 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	accept_event                         gdextension.MethodForClass `hash:"3218959716"`
+	get_maximum_size                     gdextension.MethodForClass `hash:"3341600327"`
+	get_combined_maximum_size            gdextension.MethodForClass `hash:"3341600327"`
 	get_minimum_size                     gdextension.MethodForClass `hash:"3341600327"`
 	get_combined_minimum_size            gdextension.MethodForClass `hash:"3341600327"`
+	set_propagate_maximum_size           gdextension.MethodForClass `hash:"2586408642"`
+	is_propagating_maximum_size          gdextension.MethodForClass `hash:"2240911060"`
+	get_bound_minimum_size               gdextension.MethodForClass `hash:"3341600327"`
 	set_anchors_preset                   gdextension.MethodForClass `hash:"509135270"`
 	set_offsets_preset                   gdextension.MethodForClass `hash:"3724524307"`
 	set_anchors_and_offsets_preset       gdextension.MethodForClass `hash:"3724524307"`
@@ -165,6 +170,7 @@ var methods struct {
 	set_position                         gdextension.MethodForClass `hash:"2436320129"`
 	set_size                             gdextension.MethodForClass `hash:"2436320129"`
 	reset_size                           gdextension.MethodForClass `hash:"3218959716"`
+	set_custom_maximum_size              gdextension.MethodForClass `hash:"743155724"`
 	set_custom_minimum_size              gdextension.MethodForClass `hash:"743155724"`
 	set_global_position                  gdextension.MethodForClass `hash:"2436320129"`
 	set_rotation                         gdextension.MethodForClass `hash:"373806689"`
@@ -182,6 +188,7 @@ var methods struct {
 	get_pivot_offset                     gdextension.MethodForClass `hash:"3341600327"`
 	get_pivot_offset_ratio               gdextension.MethodForClass `hash:"3341600327"`
 	get_combined_pivot_offset            gdextension.MethodForClass `hash:"3341600327"`
+	get_custom_maximum_size              gdextension.MethodForClass `hash:"3341600327"`
 	get_custom_minimum_size              gdextension.MethodForClass `hash:"3341600327"`
 	get_parent_area_size                 gdextension.MethodForClass `hash:"3341600327"`
 	get_global_position                  gdextension.MethodForClass `hash:"3341600327"`
@@ -205,6 +212,22 @@ var methods struct {
 	get_stretch_ratio                    gdextension.MethodForClass `hash:"1740695150"`
 	set_v_size_flags                     gdextension.MethodForClass `hash:"394851643"`
 	get_v_size_flags                     gdextension.MethodForClass `hash:"3781367401"`
+	set_offset_transform_enabled         gdextension.MethodForClass `hash:"2586408642"`
+	is_offset_transform_enabled          gdextension.MethodForClass `hash:"36873697"`
+	set_offset_transform_position        gdextension.MethodForClass `hash:"743155724"`
+	get_offset_transform_position        gdextension.MethodForClass `hash:"3341600327"`
+	set_offset_transform_position_ratio  gdextension.MethodForClass `hash:"743155724"`
+	get_offset_transform_position_ratio  gdextension.MethodForClass `hash:"3341600327"`
+	set_offset_transform_scale           gdextension.MethodForClass `hash:"743155724"`
+	get_offset_transform_scale           gdextension.MethodForClass `hash:"3341600327"`
+	set_offset_transform_rotation        gdextension.MethodForClass `hash:"373806689"`
+	get_offset_transform_rotation        gdextension.MethodForClass `hash:"1740695150"`
+	set_offset_transform_pivot           gdextension.MethodForClass `hash:"743155724"`
+	get_offset_transform_pivot           gdextension.MethodForClass `hash:"3341600327"`
+	set_offset_transform_pivot_ratio     gdextension.MethodForClass `hash:"743155724"`
+	get_offset_transform_pivot_ratio     gdextension.MethodForClass `hash:"3341600327"`
+	set_offset_transform_visual_only     gdextension.MethodForClass `hash:"2586408642"`
+	is_offset_transform_visual_only      gdextension.MethodForClass `hash:"36873697"`
 	set_theme                            gdextension.MethodForClass `hash:"2326690814"`
 	get_theme                            gdextension.MethodForClass `hash:"3846893731"`
 	set_theme_type_variation             gdextension.MethodForClass `hash:"3304788590"`
@@ -254,6 +277,8 @@ var methods struct {
 	set_tooltip_text                     gdextension.MethodForClass `hash:"83702148"`
 	get_tooltip_text                     gdextension.MethodForClass `hash:"201670096"`
 	get_tooltip                          gdextension.MethodForClass `hash:"2895288280"`
+	set_translation_context              gdextension.MethodForClass `hash:"3304788590"`
+	get_translation_context              gdextension.MethodForClass `hash:"2002593661"`
 	set_default_cursor_shape             gdextension.MethodForClass `hash:"217062046"`
 	get_default_cursor_shape             gdextension.MethodForClass `hash:"2359535750"`
 	get_cursor_shape                     gdextension.MethodForClass `hash:"1395773853"`
@@ -270,8 +295,8 @@ var methods struct {
 	get_accessibility_name               gdextension.MethodForClass `hash:"201670096"`
 	set_accessibility_description        gdextension.MethodForClass `hash:"83702148"`
 	get_accessibility_description        gdextension.MethodForClass `hash:"201670096"`
-	set_accessibility_live               gdextension.MethodForClass `hash:"1720261470"`
-	get_accessibility_live               gdextension.MethodForClass `hash:"3311037003"`
+	set_accessibility_live               gdextension.MethodForClass `hash:"353443434"`
+	get_accessibility_live               gdextension.MethodForClass `hash:"2858591811"`
 	set_accessibility_controls_nodes     gdextension.MethodForClass `hash:"381264803"`
 	get_accessibility_controls_nodes     gdextension.MethodForClass `hash:"3995934104"`
 	set_accessibility_described_by_nodes gdextension.MethodForClass `hash:"381264803"`
@@ -296,6 +321,7 @@ var methods struct {
 	warp_mouse                           gdextension.MethodForClass `hash:"743155724"`
 	set_shortcut_context                 gdextension.MethodForClass `hash:"1078189570"`
 	get_shortcut_context                 gdextension.MethodForClass `hash:"3160264692"`
+	update_maximum_size                  gdextension.MethodForClass `hash:"3218959716"`
 	update_minimum_size                  gdextension.MethodForClass `hash:"3218959716"`
 	set_layout_direction                 gdextension.MethodForClass `hash:"3310692370"`
 	get_layout_direction                 gdextension.MethodForClass `hash:"1546772008"`
@@ -336,7 +362,7 @@ type Any interface {
 type Interface interface {
 	// Virtual method to be implemented by the user. Returns whether the given 'point' is inside this control.
 	//
-	// If not overridden, default behavior is checking if the point is within control's Rect.
+	// If not overridden, default behavior is checking if the point is within the control's Rect.
 	//
 	// Note: If you want to check if a point is inside the control, you can use Rect2(Vector2.ZERO, size).has_point(point).
 	HasPoint(point Vector2.XY) bool
@@ -346,6 +372,20 @@ type Interface interface {
 	//
 	// [Vector3i.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3i#XYZ
 	StructuredTextParser(args []any, text string) []Vector3i.XYZ
+	// Virtual method to be implemented by the user. Returns the maximum size for this control. Alternative to [CustomMaximumSize] for controlling maximum size via code. The actual maximum size will be the max value of these two (in each axis separately).
+	//
+	// If not overridden, defaults to [Vector2.Zero].
+	//
+	// Note: This method will not be called when the script is attached to a [Control] node that already overrides its maximum size (e.g. [ScrollContainer]).
+	//
+	// Note: It is recommended to use [GetBoundMinimumSize] instead of [GetCombinedMinimumSize] when implementing this method, as the former respects maximum size limits when calculating the minimum size, while the latter does not.
+	//
+	// [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+	// [CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
+	// [GetBoundMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetBoundMinimumSize
+	// [GetCombinedMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCombinedMinimumSize
+	// [ScrollContainer]: https://pkg.go.dev/graphics.gd/classdb/ScrollContainer
+	GetMaximumSize() Vector2.XY
 	// Virtual method to be implemented by the user. Returns the minimum size for this control. Alternative to [CustomMinimumSize] for controlling minimum size via code. The actual minimum size will be the max value of these two (in each axis separately).
 	//
 	// If not overridden, defaults to [Vector2.Zero].
@@ -360,13 +400,17 @@ type Interface interface {
 	// [Panel]: https://pkg.go.dev/graphics.gd/classdb/Panel
 	// [PanelContainer]: https://pkg.go.dev/graphics.gd/classdb/PanelContainer
 	GetMinimumSize() Vector2.XY
-	// Virtual method to be implemented by the user. Returns the tooltip text for the position 'at_position' in control's local coordinates, which will typically appear when the cursor is resting over this control. See [GetTooltip].
+	// Virtual method to be implemented by the user. Returns the tooltip text for the position 'at_position' in the control's local coordinates, which will typically appear when the cursor is resting over this control. See [GetTooltip].
 	//
 	// Note: If this method returns an empty string and [MakeCustomTooltip] is not overridden, no tooltip is displayed.
 	//
 	// [GetTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetTooltip
 	// [MakeCustomTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
 	GetTooltip(at_position Vector2.XY) string
+	// Return the auto-translation mode at the given 'at_position'. If not implemented, the [TooltipAutoTranslateMode] property will be used instead.
+	//
+	// [TooltipAutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.TooltipAutoTranslateMode
+	GetTooltipAutoTranslateModeAt(at_position Vector2.XY) Node.AutoTranslateMode
 	// Godot calls this method to get data that can be dragged and dropped onto controls that expect drop data. Returns null if there is no data to drag. Controls that want to receive drop data should implement [CanDropData] and [DropData]. 'at_position' is local to this control. Drag may be forced with [ForceDrag].
 	//
 	// A preview that will follow the mouse that should represent the data can be set with [SetDragPreview]. A good time to set the preview is in this method.
@@ -589,6 +633,13 @@ type Interface interface {
 	// [Theme.SetStylebox]: https://pkg.go.dev/graphics.gd/classdb/Theme#Instance.SetStylebox
 	// [TooltipText]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.TooltipText
 	MakeCustomTooltip(for_text string) Object.Instance
+	// Virtual method to be implemented by the user. Returns the cursor shape for the position 'at_position' in the control's local coordinates, which will typically be used while hovering over this control. See [GetCursorShape].
+	//
+	// If not overridden, defaults to [MouseDefaultCursorShape].
+	//
+	// [GetCursorShape]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCursorShape
+	// [MouseDefaultCursorShape]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseDefaultCursorShape
+	GetCursorShape(at_position Vector2.XY) int
 	// Return the description of the keyboard shortcuts and other contextual help for this control.
 	AccessibilityGetContextualInfo() string
 	// Override this method to return a human-readable description of the position of the child 'node' in the custom container, added to the [AccessibilityName].
@@ -672,10 +723,16 @@ func (self implementation) HasPoint(point Vector2.XY) (_ bool) {
 func (self implementation) StructuredTextParser(args []any, text string) (_ []Vector3i.XYZ) {
 	return
 }
+func (self implementation) GetMaximumSize() (_ Vector2.XY) {
+	return
+}
 func (self implementation) GetMinimumSize() (_ Vector2.XY) {
 	return
 }
 func (self implementation) GetTooltip(at_position Vector2.XY) (_ string) {
+	return
+}
+func (self implementation) GetTooltipAutoTranslateModeAt(at_position Vector2.XY) (_ Node.AutoTranslateMode) {
 	return
 }
 func (self implementation) GetDragData(at_position Vector2.XY) (_ any) {
@@ -687,6 +744,9 @@ func (self implementation) CanDropData(at_position Vector2.XY, data any) (_ bool
 func (self implementation) DropData(at_position Vector2.XY, data any) {
 }
 func (self implementation) MakeCustomTooltip(for_text string) (_ Object.Instance) {
+	return
+}
+func (self implementation) GetCursorShape(at_position Vector2.XY) (_ int) {
 	return
 }
 func (self implementation) AccessibilityGetContextualInfo() (_ string) {
@@ -701,7 +761,7 @@ func (self implementation) GuiInput(event InputEvent.Instance) {
 /*
 Virtual method to be implemented by the user. Returns whether the given 'point' is inside this control.
 
-If not overridden, default behavior is checking if the point is within control's Rect.
+If not overridden, default behavior is checking if the point is within the control's Rect.
 
 Note: If you want to check if a point is inside the control, you can use Rect2(Vector2.ZERO, size).has_point(point).
 */
@@ -739,6 +799,29 @@ func (Instance) _structured_text_parser(impl func(ptr gdclass.Receiver, args []a
 }
 
 /*
+Virtual method to be implemented by the user. Returns the maximum size for this control. Alternative to [CustomMaximumSize] for controlling maximum size via code. The actual maximum size will be the max value of these two (in each axis separately).
+
+If not overridden, defaults to [Vector2.Zero].
+
+Note: This method will not be called when the script is attached to a [Control] node that already overrides its maximum size (e.g. [ScrollContainer]).
+
+Note: It is recommended to use [GetBoundMinimumSize] instead of [GetCombinedMinimumSize] when implementing this method, as the former respects maximum size limits when calculating the minimum size, while the latter does not.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
+[GetBoundMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetBoundMinimumSize
+[GetCombinedMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCombinedMinimumSize
+[ScrollContainer]: https://pkg.go.dev/graphics.gd/classdb/ScrollContainer
+*/
+func (Instance) _get_maximum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, Vector2.XY(ret))
+	}
+}
+
+/*
 Virtual method to be implemented by the user. Returns the minimum size for this control. Alternative to [CustomMinimumSize] for controlling minimum size via code. The actual minimum size will be the max value of these two (in each axis separately).
 
 If not overridden, defaults to [Vector2.Zero].
@@ -762,7 +845,7 @@ func (Instance) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (c
 }
 
 /*
-Virtual method to be implemented by the user. Returns the tooltip text for the position 'at_position' in control's local coordinates, which will typically appear when the cursor is resting over this control. See [GetTooltip].
+Virtual method to be implemented by the user. Returns the tooltip text for the position 'at_position' in the control's local coordinates, which will typically appear when the cursor is resting over this control. See [GetTooltip].
 
 Note: If this method returns an empty string and [MakeCustomTooltip] is not overridden, no tooltip is displayed.
 
@@ -780,6 +863,20 @@ func (Instance) _get_tooltip(impl func(ptr gdclass.Receiver, at_position Vector2
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Return the auto-translation mode at the given 'at_position'. If not implemented, the [TooltipAutoTranslateMode] property will be used instead.
+
+[TooltipAutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.TooltipAutoTranslateMode
+*/
+func (Instance) _get_tooltip_auto_translate_mode_at(impl func(ptr gdclass.Receiver, at_position Vector2.XY) Node.AutoTranslateMode) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, at_position)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 
@@ -891,6 +988,29 @@ Example: Use a constructed node as a tooltip:
 
 Example: Use a scene instance as a tooltip:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Control"
+		"graphics.gd/classdb/Label"
+		"graphics.gd/classdb/PackedScene"
+		"graphics.gd/variant/Object"
+	)
+
+	type controlMakeCustomTooltip struct {
+		Control.Extension[controlMakeCustomTooltip]
+
+		TooltipScene PackedScene.Instance // preload("res://some_tooltip_scene.tscn")
+	}
+
+	func (n controlMakeCustomTooltip) MakeCustomTooltip(forText string) Object.Instance {
+		var tooltip = n.TooltipScene.Instantiate()
+		if label, ok := Object.As[Label.Instance](tooltip.GetNode("Label")); ok {
+			label.SetText(forText)
+		}
+		return tooltip.AsObject()
+	}
+
 [CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [CustomMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMinimumSize
@@ -911,6 +1031,23 @@ func (Instance) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text st
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Virtual method to be implemented by the user. Returns the cursor shape for the position 'at_position' in the control's local coordinates, which will typically be used while hovering over this control. See [GetCursorShape].
+
+If not overridden, defaults to [MouseDefaultCursorShape].
+
+[GetCursorShape]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCursorShape
+[MouseDefaultCursorShape]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseDefaultCursorShape
+*/
+func (Instance) _get_cursor_shape(impl func(ptr gdclass.Receiver, at_position Vector2.XY) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, at_position)
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 
@@ -1008,6 +1145,26 @@ func (self Instance) AcceptEvent() { //gd:Control.accept_event
 }
 
 /*
+Returns the maximum size for this control. See [CustomMaximumSize].
+
+[CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
+*/
+func (self Instance) GetMaximumSize() Vector2.XY { //gd:Control.get_maximum_size
+	return Vector2.XY(Advanced(self).GetMaximumSize())
+}
+
+/*
+Returns the combined maximum size from [CustomMaximumSize] and [GetMaximumSize], as well as the [CustomMaximumSize] of this node's parent if it is a Control node with [PropagateMaximumSize] set to true.
+
+[CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
+[GetMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMaximumSize
+[PropagateMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PropagateMaximumSize
+*/
+func (self Instance) GetCombinedMaximumSize() Vector2.XY { //gd:Control.get_combined_maximum_size
+	return Vector2.XY(Advanced(self).GetCombinedMaximumSize())
+}
+
+/*
 Returns the minimum size for this control. See [CustomMinimumSize].
 
 [CustomMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMinimumSize
@@ -1017,13 +1174,27 @@ func (self Instance) GetMinimumSize() Vector2.XY { //gd:Control.get_minimum_size
 }
 
 /*
-Returns combined minimum size from [CustomMinimumSize] and [GetMinimumSize].
+Returns the combined minimum size from [CustomMinimumSize] and [GetMinimumSize].
 
 [CustomMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMinimumSize
 [GetMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMinimumSize
 */
 func (self Instance) GetCombinedMinimumSize() Vector2.XY { //gd:Control.get_combined_minimum_size
 	return Vector2.XY(Advanced(self).GetCombinedMinimumSize())
+}
+
+/*
+Returns the bound value of [GetCombinedMinimumSize] by [GetCombinedMaximumSize].
+
+This value is the true minimum size of the container, as the maximum size has priority over the minimum size.
+
+For example, if the combined minimum size is (100, 100) and the combined maximum size is (50, 150), the bound minimum size will be (50, 100).
+
+[GetCombinedMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCombinedMaximumSize
+[GetCombinedMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCombinedMinimumSize
+*/
+func (self Instance) GetBoundMinimumSize() Vector2.XY { //gd:Control.get_bound_minimum_size
+	return Vector2.XY(Advanced(self).GetBoundMinimumSize())
 }
 
 /*
@@ -1426,7 +1597,7 @@ func (self MoreArgs) HasFocus(ignore_hidden_focus bool) bool { //gd:Control.has_
 /*
 Steal the focus from another control and become the focused control (see [FocusMode]).
 
-If 'hide_focus' is true, the control will not visually show its focused state. Has no effect for [LineEdit] and [TextEdit] when [ProjectSettings] "gui/common/show_focus_state_on_pointer_event" is set to Control Supports Keyboard Input, or for any control when it is set to Always.
+If 'hide_focus' is true, the control will not visually show its focused state. Has no effect for [LineEdit] and [TextEdit] when [ProjectSettings] "gui/common/show_focus_state_on_pointer_event" is set to Text Input Controls, or for any control when it is set to Always.
 
 Note: Using this method together with [Callable.CallDeferred] makes it more reliable, especially when called inside [Node.Ready].
 
@@ -1444,7 +1615,7 @@ func (self Instance) GrabFocus() { //gd:Control.grab_focus
 /*
 Steal the focus from another control and become the focused control (see [FocusMode]).
 
-If 'hide_focus' is true, the control will not visually show its focused state. Has no effect for [LineEdit] and [TextEdit] when [ProjectSettings] "gui/common/show_focus_state_on_pointer_event" is set to Control Supports Keyboard Input, or for any control when it is set to Always.
+If 'hide_focus' is true, the control will not visually show its focused state. Has no effect for [LineEdit] and [TextEdit] when [ProjectSettings] "gui/common/show_focus_state_on_pointer_event" is set to Text Input Controls, or for any control when it is set to Always.
 
 Note: Using this method together with [Callable.CallDeferred] makes it more reliable, especially when called inside [Node.Ready].
 
@@ -2100,9 +2271,9 @@ func (self Instance) GetParentControl() Instance { //gd:Control.get_parent_contr
 }
 
 /*
-Returns the tooltip text for the position 'at_position' in control's local coordinates, which will typically appear when the cursor is resting over this control. By default, it returns [TooltipText].
+Returns the tooltip text for the position 'at_position' in the control's local coordinates, which will typically appear when the cursor is resting over this control. By default, it returns [TooltipText].
 
-This method can be overridden to customize its behavior. See [GetTooltip].
+You can override [GetTooltip] to implement custom behavior for this method.
 
 Note: If this method returns an empty string and [MakeCustomTooltip] is not overridden, no tooltip is displayed.
 
@@ -2115,9 +2286,9 @@ func (self Instance) GetTooltip() string { //gd:Control.get_tooltip
 }
 
 /*
-Returns the tooltip text for the position 'at_position' in control's local coordinates, which will typically appear when the cursor is resting over this control. By default, it returns [TooltipText].
+Returns the tooltip text for the position 'at_position' in the control's local coordinates, which will typically appear when the cursor is resting over this control. By default, it returns [TooltipText].
 
-This method can be overridden to customize its behavior. See [GetTooltip].
+You can override [GetTooltip] to implement custom behavior for this method.
 
 Note: If this method returns an empty string and [MakeCustomTooltip] is not overridden, no tooltip is displayed.
 
@@ -2130,8 +2301,11 @@ func (self MoreArgs) GetTooltip(at_position Vector2.XY) string { //gd:Control.ge
 }
 
 /*
-Returns the mouse cursor shape for this control when hovered over 'position' in local coordinates. For most controls, this is the same as [MouseDefaultCursorShape], but some built-in controls implement more complex logic.
+Returns the mouse cursor shape for this control when hovered over 'at_position' in local coordinates. For most controls, this is the same as [MouseDefaultCursorShape], but some built-in controls implement more complex logic.
 
+You can override [GetCursorShape] to implement custom behavior for this method.
+
+[GetCursorShape]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
 [MouseDefaultCursorShape]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseDefaultCursorShape
 */
 func (self Instance) GetCursorShape() CursorShape { //gd:Control.get_cursor_shape
@@ -2139,12 +2313,15 @@ func (self Instance) GetCursorShape() CursorShape { //gd:Control.get_cursor_shap
 }
 
 /*
-Returns the mouse cursor shape for this control when hovered over 'position' in local coordinates. For most controls, this is the same as [MouseDefaultCursorShape], but some built-in controls implement more complex logic.
+Returns the mouse cursor shape for this control when hovered over 'at_position' in local coordinates. For most controls, this is the same as [MouseDefaultCursorShape], but some built-in controls implement more complex logic.
 
+You can override [GetCursorShape] to implement custom behavior for this method.
+
+[GetCursorShape]: https://pkg.go.dev/graphics.gd/classdb/Control#Interface
 [MouseDefaultCursorShape]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseDefaultCursorShape
 */
-func (self MoreArgs) GetCursorShape(position Vector2.XY) CursorShape { //gd:Control.get_cursor_shape
-	return CursorShape(Advanced(self).GetCursorShape(Vector2.XY(position)))
+func (self MoreArgs) GetCursorShape(at_position Vector2.XY) CursorShape { //gd:Control.get_cursor_shape
+	return CursorShape(Advanced(self).GetCursorShape(Vector2.XY(at_position)))
 }
 
 /*
@@ -2265,7 +2442,20 @@ func (self Instance) WarpMouse(position Vector2.XY) { //gd:Control.warp_mouse
 }
 
 /*
-Invalidates the size cache in this node and in parent nodes up to top level. Intended to be used with [GetMinimumSize] when the return value is changed. Setting [CustomMinimumSize] directly calls this method automatically.
+Invalidates the maximum size cache in this node and in parent nodes up to top level. Intended to be used with [GetMaximumSize] when the return value is changed. Setting [CustomMaximumSize] directly calls this method automatically.
+
+Note: Calling this method also calls [UpdateMinimumSize] since the combined minimum size may be affected by the maximum size change.
+
+[CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
+[GetMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMaximumSize
+[UpdateMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.UpdateMinimumSize
+*/
+func (self Instance) UpdateMaximumSize() { //gd:Control.update_maximum_size
+	Advanced(self).UpdateMaximumSize()
+}
+
+/*
+Invalidates the minimum size cache in this node and in parent nodes up to top level. Intended to be used with [GetMinimumSize] when the return value is changed. Setting [CustomMinimumSize] directly calls this method automatically.
 
 [CustomMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMinimumSize
 [GetMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMinimumSize
@@ -2326,24 +2516,13 @@ func New() Instance {
 }
 
 /*
-Enables whether rendering of [CanvasItem] based children should be clipped to this control's rectangle. If true, parts of a child which would be visibly outside of this control's rectangle will not be rendered and won't receive input.
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-*/
-func (self Instance) ClipContents() bool { //gd:Control.clip_contents
-	return bool(class(self).IsClippingContents())
-}
-
-// SetClipContents sets the property returned by [IsClippingContents]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetClipContents(value bool) Instance { //gd:Control.clip_contents
-	class(self).SetClipContents(value)
-	return self
-}
-
-/*
 The minimum size of the node's bounding rectangle. If you set it to a value greater than (0, 0), the node's bounding rectangle will always have at least this size. Note that [Control] nodes have their internal minimum size returned by [GetMinimumSize]. It depends on the control's contents, like text, textures, or style boxes. The actual minimum size is the maximum value of this property and the internal minimum size (see [GetCombinedMinimumSize]).
 
+Note: [CustomMaximumSize] has priority over this property. For example, if you set [CustomMinimumSize] to (200, 200) and [CustomMaximumSize] to (100, 100), the resulting size will be (100, 100).
+
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
+[CustomMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMinimumSize
 [GetCombinedMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCombinedMinimumSize
 [GetMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetMinimumSize
 */
@@ -2358,17 +2537,60 @@ func (self Instance) SetCustomMinimumSize(value Vector2.XY) Instance { //gd:Cont
 }
 
 /*
-Controls layout direction and text writing direction. Right-to-left layouts are necessary for certain languages (e.g. Arabic and Hebrew). See also [IsLayoutRtl].
+The maximum size of this Control's bounding rectangle. If set to a value greater than or equal to (0, 0), the node's bounding rectangle will never exceed this size. A value below (0, 0) means there is no maximum size.
 
-[IsLayoutRtl]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.IsLayoutRtl
+Note: The final effective maximum size may be subject to parent Container sizing and propagated maximum sizes. See also: [GetCombinedMaximumSize].
+
+Note: Not all [Control] subtypes handle a custom maximum size gracefully, which may lead to unexpected behavior if the control's contents exceed this size.
+
+Note: This value has priority over [CustomMinimumSize]. For example, if you set [CustomMaximumSize] to (100, 100) and [CustomMinimumSize] to (200, 200), the resulting size will be (100, 100).
+
+Note: It is recommended to use [GetBoundMinimumSize] instead of [GetCombinedMinimumSize] when using this property, as the former respects maximum size limits when calculating the minimum size, while the latter does not.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
+[CustomMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMinimumSize
+[GetBoundMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetBoundMinimumSize
+[GetCombinedMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCombinedMaximumSize
+[GetCombinedMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCombinedMinimumSize
 */
-func (self Instance) LayoutDirection() LayoutDirection { //gd:Control.layout_direction
-	return LayoutDirection(class(self).GetLayoutDirection())
+func (self Instance) CustomMaximumSize() Vector2.XY { //gd:Control.custom_maximum_size
+	return Vector2.XY(class(self).GetCustomMaximumSize())
 }
 
-// SetLayoutDirection sets the property returned by [GetLayoutDirection]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetLayoutDirection(value LayoutDirection) Instance { //gd:Control.layout_direction
-	class(self).SetLayoutDirection(value)
+// SetCustomMaximumSize sets the property returned by [GetCustomMaximumSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCustomMaximumSize(value Vector2.XY) Instance { //gd:Control.custom_maximum_size
+	class(self).SetCustomMaximumSize(Vector2.XY(value))
+	return self
+}
+
+/*
+If true, this Control's children will use the value returned by [GetCombinedMaximumSize] in their own size calculations.
+
+[GetCombinedMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GetCombinedMaximumSize
+*/
+func (self Instance) PropagateMaximumSize() bool { //gd:Control.propagate_maximum_size
+	return bool(class(self).IsPropagatingMaximumSize())
+}
+
+// SetPropagateMaximumSize sets the property returned by [IsPropagatingMaximumSize]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPropagateMaximumSize(value bool) Instance { //gd:Control.propagate_maximum_size
+	class(self).SetPropagateMaximumSize(value)
+	return self
+}
+
+/*
+Enables whether rendering of [CanvasItem] based children should be clipped to this control's rectangle. If true, parts of a child which would be visibly outside of this control's rectangle will not be rendered and won't receive input.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+*/
+func (self Instance) ClipContents() bool { //gd:Control.clip_contents
+	return bool(class(self).IsClippingContents())
+}
+
+// SetClipContents sets the property returned by [IsClippingContents]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetClipContents(value bool) Instance { //gd:Control.clip_contents
+	class(self).SetClipContents(value)
 	return self
 }
 
@@ -2669,6 +2891,160 @@ func (self Instance) SetSizeFlagsStretchRatio(value Float.X) Instance { //gd:Con
 }
 
 /*
+If true, applies all offset transform properties. Otherwise, no offset transform is applied and the properties have no effect.
+*/
+func (self Instance) OffsetTransformEnabled() bool { //gd:Control.offset_transform_enabled
+	return bool(class(self).IsOffsetTransformEnabled())
+}
+
+// SetOffsetTransformEnabled sets the property returned by [IsOffsetTransformEnabled]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetTransformEnabled(value bool) Instance { //gd:Control.offset_transform_enabled
+	class(self).SetOffsetTransformEnabled(value)
+	return self
+}
+
+/*
+Position offset in absolute units. The final offset is the combined value of this property and [OffsetTransformPositionRatio].
+
+Has no effect unless [OffsetTransformEnabled] is true.
+
+[OffsetTransformEnabled]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformEnabled
+[OffsetTransformPositionRatio]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformPositionRatio
+*/
+func (self Instance) OffsetTransformPosition() Vector2.XY { //gd:Control.offset_transform_position
+	return Vector2.XY(class(self).GetOffsetTransformPosition())
+}
+
+// SetOffsetTransformPosition sets the property returned by [GetOffsetTransformPosition]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetTransformPosition(value Vector2.XY) Instance { //gd:Control.offset_transform_position
+	class(self).SetOffsetTransformPosition(Vector2.XY(value))
+	return self
+}
+
+/*
+Same as [OffsetTransformPosition] but expressed in units relative to the [Control] [Size] where Vector2(0, 0) is the top-left corner of this control, and Vector2(1, 1) is its bottom-right corner.
+
+The final offset is the combined value of this property and [OffsetTransformPosition].
+
+Has no effect unless [OffsetTransformEnabled] is true.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[OffsetTransformEnabled]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformEnabled
+[OffsetTransformPosition]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformPosition
+[Size]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Size
+*/
+func (self Instance) OffsetTransformPositionRatio() Vector2.XY { //gd:Control.offset_transform_position_ratio
+	return Vector2.XY(class(self).GetOffsetTransformPositionRatio())
+}
+
+// SetOffsetTransformPositionRatio sets the property returned by [GetOffsetTransformPositionRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetTransformPositionRatio(value Vector2.XY) Instance { //gd:Control.offset_transform_position_ratio
+	class(self).SetOffsetTransformPositionRatio(Vector2.XY(value))
+	return self
+}
+
+/*
+Scale offset. The scale pivot is defined by [OffsetTransformPivot] and [OffsetTransformPivotRatio].
+
+Has no effect unless [OffsetTransformEnabled] is true.
+
+[OffsetTransformEnabled]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformEnabled
+[OffsetTransformPivot]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformPivot
+[OffsetTransformPivotRatio]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformPivotRatio
+*/
+func (self Instance) OffsetTransformScale() Vector2.XY { //gd:Control.offset_transform_scale
+	return Vector2.XY(class(self).GetOffsetTransformScale())
+}
+
+// SetOffsetTransformScale sets the property returned by [GetOffsetTransformScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetTransformScale(value Vector2.XY) Instance { //gd:Control.offset_transform_scale
+	class(self).SetOffsetTransformScale(Vector2.XY(value))
+	return self
+}
+
+/*
+Rotation offset. The rotation pivot is defined by [OffsetTransformPivot] and [OffsetTransformPivotRatio].
+
+Has no effect unless [OffsetTransformEnabled] is true.
+
+[OffsetTransformEnabled]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformEnabled
+[OffsetTransformPivot]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformPivot
+[OffsetTransformPivotRatio]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformPivotRatio
+*/
+func (self Instance) OffsetTransformRotation() Float.X { //gd:Control.offset_transform_rotation
+	return Float.X(Float.X(class(self).GetOffsetTransformRotation()))
+}
+
+// SetOffsetTransformRotation sets the property returned by [GetOffsetTransformRotation]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetTransformRotation(value Float.X) Instance { //gd:Control.offset_transform_rotation
+	class(self).SetOffsetTransformRotation(float64(value))
+	return self
+}
+
+/*
+Pivot used by [OffsetTransformRotation] and [OffsetTransformScale] in absolute units.
+
+The final pivot position is the combined value of this property and [OffsetTransformPivotRatio].
+
+Has no effect unless [OffsetTransformEnabled] is true.
+
+[OffsetTransformEnabled]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformEnabled
+[OffsetTransformPivotRatio]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformPivotRatio
+[OffsetTransformRotation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformRotation
+[OffsetTransformScale]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformScale
+*/
+func (self Instance) OffsetTransformPivot() Vector2.XY { //gd:Control.offset_transform_pivot
+	return Vector2.XY(class(self).GetOffsetTransformPivot())
+}
+
+// SetOffsetTransformPivot sets the property returned by [GetOffsetTransformPivot]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetTransformPivot(value Vector2.XY) Instance { //gd:Control.offset_transform_pivot
+	class(self).SetOffsetTransformPivot(Vector2.XY(value))
+	return self
+}
+
+/*
+Same as [OffsetTransformPivot] but expressed in units relative to the [Control] [Size] where Vector2(0, 0) is the top-left corner of this control, and Vector2(1, 1) is its bottom-right corner.
+
+The final pivot position is the combined value of this property and [OffsetTransformPivot].
+
+Has no effect unless [OffsetTransformEnabled] is true.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[OffsetTransformEnabled]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformEnabled
+[OffsetTransformPivot]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformPivot
+[Size]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Size
+*/
+func (self Instance) OffsetTransformPivotRatio() Vector2.XY { //gd:Control.offset_transform_pivot_ratio
+	return Vector2.XY(class(self).GetOffsetTransformPivotRatio())
+}
+
+// SetOffsetTransformPivotRatio sets the property returned by [GetOffsetTransformPivotRatio]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetTransformPivotRatio(value Vector2.XY) Instance { //gd:Control.offset_transform_pivot_ratio
+	class(self).SetOffsetTransformPivotRatio(Vector2.XY(value))
+	return self
+}
+
+/*
+If true, the offset transforms is only applied visually and does not affect input. In other words, this Control will still receive input events at its original location before the offset transform is applied.
+
+If false, the entire transform of this Control is affected and input events will register where the Control is visually.
+
+Has no effect unless [OffsetTransformEnabled] is true.
+
+[OffsetTransformEnabled]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.OffsetTransformEnabled
+*/
+func (self Instance) OffsetTransformVisualOnly() bool { //gd:Control.offset_transform_visual_only
+	return bool(class(self).IsOffsetTransformVisualOnly())
+}
+
+// SetOffsetTransformVisualOnly sets the property returned by [IsOffsetTransformVisualOnly]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOffsetTransformVisualOnly(value bool) Instance { //gd:Control.offset_transform_visual_only
+	class(self).SetOffsetTransformVisualOnly(value)
+	return self
+}
+
+/*
 If true, automatically converts code line numbers, list indices, [SpinBox] and [ProgressBar] values from the Western Arabic (0..9) to the numeral systems used in current locale.
 
 Note: Numbers within the text are not automatically converted, it can be done manually, using [TextServer.FormatNumber].
@@ -2684,6 +3060,34 @@ func (self Instance) LocalizeNumeralSystem() bool { //gd:Control.localize_numera
 // SetLocalizeNumeralSystem sets the property returned by [IsLocalizingNumeralSystem]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetLocalizeNumeralSystem(value bool) Instance { //gd:Control.localize_numeral_system
 	class(self).SetLocalizeNumeralSystem(value)
+	return self
+}
+
+/*
+Controls layout direction and text writing direction. Right-to-left layouts are necessary for certain languages (e.g. Arabic and Hebrew). See also [IsLayoutRtl].
+
+[IsLayoutRtl]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.IsLayoutRtl
+*/
+func (self Instance) LayoutDirection() LayoutDirection { //gd:Control.layout_direction
+	return LayoutDirection(class(self).GetLayoutDirection())
+}
+
+// SetLayoutDirection sets the property returned by [GetLayoutDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetLayoutDirection(value LayoutDirection) Instance { //gd:Control.layout_direction
+	class(self).SetLayoutDirection(value)
+	return self
+}
+
+/*
+The translation context used when translating this control's displayed text, if it has any. Also used when generating translation templates.
+*/
+func (self Instance) TranslationContext() string { //gd:Control.translation_context
+	return string(class(self).GetTranslationContext().String())
+}
+
+// SetTranslationContext sets the property returned by [GetTranslationContext]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTranslationContext(value string) Instance { //gd:Control.translation_context
+	class(self).SetTranslationContext(String.Name(String.From(value)))
 	return self
 }
 
@@ -2992,12 +3396,12 @@ The mode with which a live region updates. A live region is a [Node] that is upd
 
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 */
-func (self Instance) AccessibilityLive() DisplayServer.AccessibilityLiveMode { //gd:Control.accessibility_live
-	return DisplayServer.AccessibilityLiveMode(class(self).GetAccessibilityLive())
+func (self Instance) AccessibilityLive() AccessibilityServer.AccessibilityLiveMode { //gd:Control.accessibility_live
+	return AccessibilityServer.AccessibilityLiveMode(class(self).GetAccessibilityLive())
 }
 
 // SetAccessibilityLive sets the property returned by [GetAccessibilityLive]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAccessibilityLive(value DisplayServer.AccessibilityLiveMode) Instance { //gd:Control.accessibility_live
+func (self Instance) SetAccessibilityLive(value AccessibilityServer.AccessibilityLiveMode) Instance { //gd:Control.accessibility_live
 	class(self).SetAccessibilityLive(value)
 	return self
 }
@@ -3120,6 +3524,13 @@ func (class) _structured_text_parser(impl func(ptr gdclass.Receiver, args Array.
 		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
+func (class) _get_maximum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
 func (class) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -3138,6 +3549,14 @@ func (class) _get_tooltip(impl func(ptr gdclass.Receiver, at_position Vector2.XY
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
+	}
+}
+func (class) _get_tooltip_auto_translate_mode_at(impl func(ptr gdclass.Receiver, at_position Vector2.XY) Node.AutoTranslateMode) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, at_position)
+		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (class) _get_drag_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -3186,6 +3605,14 @@ func (class) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text Strin
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
+func (class) _get_cursor_shape(impl func(ptr gdclass.Receiver, at_position Vector2.XY) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, at_position)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
 func (class) _accessibility_get_contextual_info(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -3226,6 +3653,16 @@ func (class) _gui_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEv
 func (self class) AcceptEvent() { //gd:Control.accept_event
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accept_event, 0, &struct{}{})
 }
+func (self class) GetMaximumSize() Vector2.XY { //gd:Control.get_maximum_size
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_maximum_size, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetCombinedMaximumSize() Vector2.XY { //gd:Control.get_combined_maximum_size
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_combined_maximum_size, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) GetMinimumSize() Vector2.XY { //gd:Control.get_minimum_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_minimum_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
@@ -3233,6 +3670,19 @@ func (self class) GetMinimumSize() Vector2.XY { //gd:Control.get_minimum_size
 }
 func (self class) GetCombinedMinimumSize() Vector2.XY { //gd:Control.get_combined_minimum_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_combined_minimum_size, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetPropagateMaximumSize(enable bool) { //gd:Control.set_propagate_maximum_size
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_propagate_maximum_size, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
+func (self class) IsPropagatingMaximumSize() bool { //gd:Control.is_propagating_maximum_size
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_propagating_maximum_size, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetBoundMinimumSize() Vector2.XY { //gd:Control.get_bound_minimum_size
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_bound_minimum_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3309,6 +3759,9 @@ func (self class) SetSize(size Vector2.XY, keep_offsets bool) { //gd:Control.set
 func (self class) ResetSize() { //gd:Control.reset_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_size, 0, &struct{}{})
 }
+func (self class) SetCustomMaximumSize(size Vector2.XY) { //gd:Control.set_custom_maximum_size
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_maximum_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
+}
 func (self class) SetCustomMinimumSize(size Vector2.XY) { //gd:Control.set_custom_minimum_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_minimum_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
@@ -3380,6 +3833,11 @@ func (self class) GetPivotOffsetRatio() Vector2.XY { //gd:Control.get_pivot_offs
 }
 func (self class) GetCombinedPivotOffset() Vector2.XY { //gd:Control.get_combined_pivot_offset
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_combined_pivot_offset, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetCustomMaximumSize() Vector2.XY { //gd:Control.get_custom_maximum_size
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_custom_maximum_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3481,6 +3939,70 @@ func (self class) SetVSizeFlags(flags SizeFlags) { //gd:Control.set_v_size_flags
 }
 func (self class) GetVSizeFlags() SizeFlags { //gd:Control.get_v_size_flags
 	var r_ret = noescape.Call[SizeFlags](gd.ObjectChecked(self.AsObject()), methods.get_v_size_flags, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetOffsetTransformEnabled(enabled bool) { //gd:Control.set_offset_transform_enabled
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset_transform_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) IsOffsetTransformEnabled() bool { //gd:Control.is_offset_transform_enabled
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_offset_transform_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetOffsetTransformPosition(offset Vector2.XY) { //gd:Control.set_offset_transform_position
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset_transform_position, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
+}
+func (self class) GetOffsetTransformPosition() Vector2.XY { //gd:Control.get_offset_transform_position
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset_transform_position, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetOffsetTransformPositionRatio(offset Vector2.XY) { //gd:Control.set_offset_transform_position_ratio
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset_transform_position_ratio, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
+}
+func (self class) GetOffsetTransformPositionRatio() Vector2.XY { //gd:Control.get_offset_transform_position_ratio
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset_transform_position_ratio, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetOffsetTransformScale(scale Vector2.XY) { //gd:Control.set_offset_transform_scale
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset_transform_scale, 0|(gdextension.SizeVector2<<4), &struct{ scale Vector2.XY }{scale})
+}
+func (self class) GetOffsetTransformScale() Vector2.XY { //gd:Control.get_offset_transform_scale
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset_transform_scale, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetOffsetTransformRotation(rotation float64) { //gd:Control.set_offset_transform_rotation
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset_transform_rotation, 0|(gdextension.SizeFloat<<4), &struct{ rotation float64 }{rotation})
+}
+func (self class) GetOffsetTransformRotation() float64 { //gd:Control.get_offset_transform_rotation
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_offset_transform_rotation, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetOffsetTransformPivot(pivot Vector2.XY) { //gd:Control.set_offset_transform_pivot
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset_transform_pivot, 0|(gdextension.SizeVector2<<4), &struct{ pivot Vector2.XY }{pivot})
+}
+func (self class) GetOffsetTransformPivot() Vector2.XY { //gd:Control.get_offset_transform_pivot
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset_transform_pivot, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetOffsetTransformPivotRatio(pivot Vector2.XY) { //gd:Control.set_offset_transform_pivot_ratio
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset_transform_pivot_ratio, 0|(gdextension.SizeVector2<<4), &struct{ pivot Vector2.XY }{pivot})
+}
+func (self class) GetOffsetTransformPivotRatio() Vector2.XY { //gd:Control.get_offset_transform_pivot_ratio
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset_transform_pivot_ratio, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetOffsetTransformVisualOnly(enabled bool) { //gd:Control.set_offset_transform_visual_only
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset_transform_visual_only, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) IsOffsetTransformVisualOnly() bool { //gd:Control.is_offset_transform_visual_only
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_offset_transform_visual_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3743,6 +4265,14 @@ func (self class) GetTooltip(at_position Vector2.XY) String.Readable { //gd:Cont
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
+func (self class) SetTranslationContext(context String.Name) { //gd:Control.set_translation_context
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_translation_context, 0|(gdextension.SizeStringName<<4), &struct{ context gdextension.StringName }{pointers.Get(gd.InternalStringName(context))})
+}
+func (self class) GetTranslationContext() String.Name { //gd:Control.get_translation_context
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_translation_context, gdextension.SizeStringName, &struct{}{})
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
+	return ret
+}
 func (self class) SetDefaultCursorShape(shape CursorShape) { //gd:Control.set_default_cursor_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_cursor_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
 }
@@ -3751,8 +4281,8 @@ func (self class) GetDefaultCursorShape() CursorShape { //gd:Control.get_default
 	var ret = r_ret
 	return ret
 }
-func (self class) GetCursorShape(position Vector2.XY) CursorShape { //gd:Control.get_cursor_shape
-	var r_ret = noescape.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_cursor_shape, gdextension.SizeInt|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
+func (self class) GetCursorShape(at_position Vector2.XY) CursorShape { //gd:Control.get_cursor_shape
+	var r_ret = noescape.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_cursor_shape, gdextension.SizeInt|(gdextension.SizeVector2<<4), &struct{ at_position Vector2.XY }{at_position})
 	var ret = r_ret
 	return ret
 }
@@ -3811,13 +4341,13 @@ func (self class) GetAccessibilityDescription() String.Readable { //gd:Control.g
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-func (self class) SetAccessibilityLive(mode DisplayServer.AccessibilityLiveMode) { //gd:Control.set_accessibility_live
+func (self class) SetAccessibilityLive(mode AccessibilityServer.AccessibilityLiveMode) { //gd:Control.set_accessibility_live
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_live, 0|(gdextension.SizeInt<<4), &struct {
-		mode DisplayServer.AccessibilityLiveMode
+		mode AccessibilityServer.AccessibilityLiveMode
 	}{mode})
 }
-func (self class) GetAccessibilityLive() DisplayServer.AccessibilityLiveMode { //gd:Control.get_accessibility_live
-	var r_ret = jumponly.Call[DisplayServer.AccessibilityLiveMode](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_live, gdextension.SizeInt, &struct{}{})
+func (self class) GetAccessibilityLive() AccessibilityServer.AccessibilityLiveMode { //gd:Control.get_accessibility_live
+	var r_ret = jumponly.Call[AccessibilityServer.AccessibilityLiveMode](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_live, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3918,6 +4448,9 @@ func (self class) GetShortcutContext() [1]gdclass.Node { //gd:Control.get_shortc
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut_context, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
+}
+func (self class) UpdateMaximumSize() { //gd:Control.update_maximum_size
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_maximum_size, 0, &struct{}{})
 }
 func (self class) UpdateMinimumSize() { //gd:Control.update_minimum_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_minimum_size, 0, &struct{}{})
@@ -4082,6 +4615,22 @@ func (self class) SizeFlagsChanged() Signal.Any {
 }
 
 /*
+Emitted when the node's maximum size changes.
+*/
+func (self Instance) OnMaximumSizeChanged(cb func(), flags ...Signal.Flags) Instance {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("maximum_size_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
+}
+
+func (self class) MaximumSizeChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`maximum_size_changed`))))
+}
+
+/*
 Emitted when the node's minimum size changes.
 */
 func (self Instance) OnMinimumSizeChanged(cb func(), flags ...Signal.Flags) Instance {
@@ -4129,10 +4678,14 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._has_point)
 	case "_structured_text_parser":
 		return reflect.ValueOf(self._structured_text_parser)
+	case "_get_maximum_size":
+		return reflect.ValueOf(self._get_maximum_size)
 	case "_get_minimum_size":
 		return reflect.ValueOf(self._get_minimum_size)
 	case "_get_tooltip":
 		return reflect.ValueOf(self._get_tooltip)
+	case "_get_tooltip_auto_translate_mode_at":
+		return reflect.ValueOf(self._get_tooltip_auto_translate_mode_at)
 	case "_get_drag_data":
 		return reflect.ValueOf(self._get_drag_data)
 	case "_can_drop_data":
@@ -4141,6 +4694,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._drop_data)
 	case "_make_custom_tooltip":
 		return reflect.ValueOf(self._make_custom_tooltip)
+	case "_get_cursor_shape":
+		return reflect.ValueOf(self._get_cursor_shape)
 	case "_accessibility_get_contextual_info":
 		return reflect.ValueOf(self._accessibility_get_contextual_info)
 	case "_get_accessibility_container_name":
@@ -4158,10 +4713,14 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._has_point)
 	case "_structured_text_parser":
 		return reflect.ValueOf(self._structured_text_parser)
+	case "_get_maximum_size":
+		return reflect.ValueOf(self._get_maximum_size)
 	case "_get_minimum_size":
 		return reflect.ValueOf(self._get_minimum_size)
 	case "_get_tooltip":
 		return reflect.ValueOf(self._get_tooltip)
+	case "_get_tooltip_auto_translate_mode_at":
+		return reflect.ValueOf(self._get_tooltip_auto_translate_mode_at)
 	case "_get_drag_data":
 		return reflect.ValueOf(self._get_drag_data)
 	case "_can_drop_data":
@@ -4170,6 +4729,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._drop_data)
 	case "_make_custom_tooltip":
 		return reflect.ValueOf(self._make_custom_tooltip)
+	case "_get_cursor_shape":
+		return reflect.ValueOf(self._get_cursor_shape)
 	case "_accessibility_get_contextual_info":
 		return reflect.ValueOf(self._accessibility_get_contextual_info)
 	case "_get_accessibility_container_name":

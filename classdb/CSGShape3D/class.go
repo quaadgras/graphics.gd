@@ -133,6 +133,10 @@ var methods struct {
 	is_calculating_tangents   gdextension.MethodForClass `hash:"36873697"`
 	get_meshes                gdextension.MethodForClass `hash:"3995934104"`
 	bake_static_mesh          gdextension.MethodForClass `hash:"1605880883"`
+	set_autosmooth            gdextension.MethodForClass `hash:"2586408642"`
+	is_autosmooth             gdextension.MethodForClass `hash:"36873697"`
+	set_smoothing_angle       gdextension.MethodForClass `hash:"373806689"`
+	get_smoothing_angle       gdextension.MethodForClass `hash:"1740695150"`
 }
 
 func init() {
@@ -290,6 +294,39 @@ func New() Instance {
 	casted := Instance([1]gdclass.CSGShape3D{gdclass.NewCSGShape3D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
+}
+
+/*
+Enables automatic smoothing. This overrides any smoothing on the CSG node and instead uses [SmoothingAngle] to calculate normals based on the angle between faces.
+
+Children of a [CSGCombiner3D] node will be treated as a single mesh.
+
+[CSGCombiner3D]: https://pkg.go.dev/graphics.gd/classdb/CSGCombiner3D
+[SmoothingAngle]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D#Instance.SmoothingAngle
+*/
+func (self Instance) Autosmooth() bool { //gd:CSGShape3D.autosmooth
+	return bool(class(self).IsAutosmooth())
+}
+
+// SetAutosmooth sets the property returned by [IsAutosmooth]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAutosmooth(value bool) Instance { //gd:CSGShape3D.autosmooth
+	class(self).SetAutosmooth(value)
+	return self
+}
+
+/*
+When autosmooth is enabled, faces with an angle between them greater than this will be smoothed, while faces with a smaller angle will remain sharp.
+
+Note: An angle lower than 0.1 will cause all smoothing to be disabled, this can be used to increase performance.
+*/
+func (self Instance) SmoothingAngle() Angle.Radians { //gd:CSGShape3D.smoothing_angle
+	return Angle.Radians(Float.X(class(self).GetSmoothingAngle()))
+}
+
+// SetSmoothingAngle sets the property returned by [GetSmoothingAngle]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSmoothingAngle(value Angle.Radians) Instance { //gd:CSGShape3D.smoothing_angle
+	class(self).SetSmoothingAngle(float64(value))
+	return self
 }
 
 /*
@@ -493,6 +530,22 @@ func (self class) GetMeshes() Array.Any { //gd:CSGShape3D.get_meshes
 func (self class) BakeStaticMesh() [1]gdclass.ArrayMesh { //gd:CSGShape3D.bake_static_mesh
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_static_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
+	return ret
+}
+func (self class) SetAutosmooth(autosmooth bool) { //gd:CSGShape3D.set_autosmooth
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autosmooth, 0|(gdextension.SizeBool<<4), &struct{ autosmooth bool }{autosmooth})
+}
+func (self class) IsAutosmooth() bool { //gd:CSGShape3D.is_autosmooth
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autosmooth, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetSmoothingAngle(smoothing_angle float64) { //gd:CSGShape3D.set_smoothing_angle
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smoothing_angle, 0|(gdextension.SizeFloat<<4), &struct{ smoothing_angle float64 }{smoothing_angle})
+}
+func (self class) GetSmoothingAngle() float64 { //gd:CSGShape3D.get_smoothing_angle
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_smoothing_angle, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (o class) AsCSGShape3D() Advanced         { return Advanced(o) }

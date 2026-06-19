@@ -109,13 +109,17 @@ type Instance [1]gdclass.AnimationNodeBlendSpace2D
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	add_blend_point          gdextension.MethodForClass `hash:"402261981"`
+	add_blend_point          gdextension.MethodForClass `hash:"768750458"`
 	set_blend_point_position gdextension.MethodForClass `hash:"163021252"`
 	get_blend_point_position gdextension.MethodForClass `hash:"2299179447"`
 	set_blend_point_node     gdextension.MethodForClass `hash:"4240341528"`
 	get_blend_point_node     gdextension.MethodForClass `hash:"665599029"`
+	set_blend_point_name     gdextension.MethodForClass `hash:"3780747571"`
+	get_blend_point_name     gdextension.MethodForClass `hash:"659327637"`
+	find_blend_point_by_name gdextension.MethodForClass `hash:"2458036349"`
 	remove_blend_point       gdextension.MethodForClass `hash:"1286410249"`
 	get_blend_point_count    gdextension.MethodForClass `hash:"3905245786"`
+	reorder_blend_point      gdextension.MethodForClass `hash:"3937882851"`
 	add_triangle             gdextension.MethodForClass `hash:"753017335"`
 	get_triangle_point       gdextension.MethodForClass `hash:"50157827"`
 	remove_triangle          gdextension.MethodForClass `hash:"1286410249"`
@@ -136,6 +140,10 @@ var methods struct {
 	get_blend_mode           gdextension.MethodForClass `hash:"1398433632"`
 	set_use_sync             gdextension.MethodForClass `hash:"2586408642"`
 	is_using_sync            gdextension.MethodForClass `hash:"36873697"`
+	set_sync_mode            gdextension.MethodForClass `hash:"2615784488"`
+	get_sync_mode            gdextension.MethodForClass `hash:"242032665"`
+	set_cyclic_length        gdextension.MethodForClass `hash:"373806689"`
+	get_cyclic_length        gdextension.MethodForClass `hash:"1740695150"`
 }
 
 func init() {
@@ -166,17 +174,21 @@ type Any interface {
 }
 
 /*
-Adds a new point that represents a 'node' at the position set by 'pos'. You can insert it at a specific index using the 'at_index' argument. If you use the default value for 'at_index', the point is inserted at the end of the blend points array.
+Adds a new point with 'name' that represents a 'node' at the position set by 'pos'. You can insert it at a specific index using the 'at_index' argument. If you use the default value for 'at_index', the point is inserted at the end of the blend points array.
+
+Note: If no name is provided, safe index is used as reference. In the future, empty names will be deprecated, so explicitly passing a name is recommended.
 */
 func (self Instance) AddBlendPoint(node AnimationRootNode.Instance, pos Vector2.XY) { //gd:AnimationNodeBlendSpace2D.add_blend_point
-	Advanced(self).AddBlendPoint(node, Vector2.XY(pos), int64(-1))
+	Advanced(self).AddBlendPoint(node, Vector2.XY(pos), int64(-1), String.Name(String.From("")))
 }
 
 /*
-Adds a new point that represents a 'node' at the position set by 'pos'. You can insert it at a specific index using the 'at_index' argument. If you use the default value for 'at_index', the point is inserted at the end of the blend points array.
+Adds a new point with 'name' that represents a 'node' at the position set by 'pos'. You can insert it at a specific index using the 'at_index' argument. If you use the default value for 'at_index', the point is inserted at the end of the blend points array.
+
+Note: If no name is provided, safe index is used as reference. In the future, empty names will be deprecated, so explicitly passing a name is recommended.
 */
-func (self MoreArgs) AddBlendPoint(node AnimationRootNode.Instance, pos Vector2.XY, at_index int) { //gd:AnimationNodeBlendSpace2D.add_blend_point
-	Advanced(self).AddBlendPoint(node, Vector2.XY(pos), int64(at_index))
+func (self MoreArgs) AddBlendPoint(node AnimationRootNode.Instance, pos Vector2.XY, at_index int, name string) { //gd:AnimationNodeBlendSpace2D.add_blend_point
+	Advanced(self).AddBlendPoint(node, Vector2.XY(pos), int64(at_index), String.Name(String.From(name)))
 }
 
 /*
@@ -218,6 +230,30 @@ func (self Instance) GetBlendPointNode(point int) AnimationRootNode.Instance { /
 }
 
 /*
+Sets the name of the blend point at index 'point'. If the name conflicts with an existing point, a unique name will be generated automatically.
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetBlendPointName(point int, name string) Instance { //gd:AnimationNodeBlendSpace2D.set_blend_point_name
+	Advanced(self).SetBlendPointName(int64(point), String.Name(String.From(name)))
+	return self
+}
+
+/*
+Returns the name of the blend point at index 'point'.
+*/
+func (self Instance) GetBlendPointName(point int) string { //gd:AnimationNodeBlendSpace2D.get_blend_point_name
+	return string(Advanced(self).GetBlendPointName(int64(point)).String())
+}
+
+/*
+Returns the index of the blend point with the given 'name'. Returns -1 if no blend point with that name is found.
+*/
+func (self Instance) FindBlendPointByName(name string) int { //gd:AnimationNodeBlendSpace2D.find_blend_point_by_name
+	return int(int(Advanced(self).FindBlendPointByName(String.Name(String.From(name)))))
+}
+
+/*
 Removes the point at index 'point' from the blend space.
 */
 func (self Instance) RemoveBlendPoint(point int) { //gd:AnimationNodeBlendSpace2D.remove_blend_point
@@ -229,6 +265,13 @@ Returns the number of points in the blend space.
 */
 func (self Instance) GetBlendPointCount() int { //gd:AnimationNodeBlendSpace2D.get_blend_point_count
 	return int(int(Advanced(self).GetBlendPointCount()))
+}
+
+/*
+Swaps the blend points at indices 'from_index' and 'to_index', exchanging their positions and properties.
+*/
+func (self Instance) ReorderBlendPoint(from_index int, to_index int) { //gd:AnimationNodeBlendSpace2D.reorder_blend_point
+	Advanced(self).ReorderBlendPoint(int64(from_index), int64(to_index))
 }
 
 /*
@@ -304,7 +347,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.AnimationNodeBlendSpace2D{gdclass.NewAnimationNodeBlendSpace2D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -408,9 +450,7 @@ func (self Instance) SetBlendMode(value BlendMode) Instance { //gd:AnimationNode
 }
 
 /*
-If false, the blended animations' frame are stopped when the blend value is 0.
-
-If true, forcing the blended animations to advance frame.
+If true, sync mode is enabled (equivalent to [SyncModeIndependent]). This property is kept for backward compatibility.
 */
 func (self Instance) Sync() bool { //gd:AnimationNodeBlendSpace2D.sync
 	return bool(class(self).IsUsingSync())
@@ -422,12 +462,39 @@ func (self Instance) SetSync(value bool) Instance { //gd:AnimationNodeBlendSpace
 	return self
 }
 
-func (self class) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos Vector2.XY, at_index int64) { //gd:AnimationNodeBlendSpace2D.add_blend_point
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blend_point, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12), &struct {
+/*
+Controls how animations are synced when blended. See [SyncMode] for available options.
+*/
+func (self Instance) SyncMode() SyncMode { //gd:AnimationNodeBlendSpace2D.sync_mode
+	return SyncMode(class(self).GetSyncMode())
+}
+
+// SetSyncMode sets the property returned by [GetSyncMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetSyncMode(value SyncMode) Instance { //gd:AnimationNodeBlendSpace2D.sync_mode
+	class(self).SetSyncMode(value)
+	return self
+}
+
+/*
+The cycle length in seconds used by [SyncModeCyclicConstant]. All animations are time-scaled so they complete one full cycle in this duration. Must be greater than 0 for cyclic sync to take effect.
+*/
+func (self Instance) CyclicLength() Float.X { //gd:AnimationNodeBlendSpace2D.cyclic_length
+	return Float.X(Float.X(class(self).GetCyclicLength()))
+}
+
+// SetCyclicLength sets the property returned by [GetCyclicLength]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCyclicLength(value Float.X) Instance { //gd:AnimationNodeBlendSpace2D.cyclic_length
+	class(self).SetCyclicLength(float64(value))
+	return self
+}
+
+func (self class) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos Vector2.XY, at_index int64, name String.Name) { //gd:AnimationNodeBlendSpace2D.add_blend_point
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blend_point, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), &struct {
 		node     gdextension.Object
 		pos      Vector2.XY
 		at_index int64
-	}{gdextension.Object(gdreference.GetObject(gdclass.GetAnimationRootNode(node[0])[0])), pos, at_index})
+		name     gdextension.StringName
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetAnimationRootNode(node[0])[0])), pos, at_index, pointers.Get(gd.InternalStringName(name))})
 }
 func (self class) SetBlendPointPosition(point int64, pos Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_blend_point_position
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
@@ -451,6 +518,22 @@ func (self class) GetBlendPointNode(point int64) [1]gdclass.AnimationRootNode { 
 	var ret = [1]gdclass.AnimationRootNode{gdclass.NewAnimationRootNode(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
+func (self class) SetBlendPointName(point int64, name String.Name) { //gd:AnimationNodeBlendSpace2D.set_blend_point_name
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_point_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
+		point int64
+		name  gdextension.StringName
+	}{point, pointers.Get(gd.InternalStringName(name))})
+}
+func (self class) GetBlendPointName(point int64) String.Name { //gd:AnimationNodeBlendSpace2D.get_blend_point_name
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_blend_point_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
+	return ret
+}
+func (self class) FindBlendPointByName(name String.Name) int64 { //gd:AnimationNodeBlendSpace2D.find_blend_point_by_name
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_blend_point_by_name, gdextension.SizeInt|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var ret = r_ret
+	return ret
+}
 func (self class) RemoveBlendPoint(point int64) { //gd:AnimationNodeBlendSpace2D.remove_blend_point
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_blend_point, 0|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
 }
@@ -458,6 +541,12 @@ func (self class) GetBlendPointCount() int64 { //gd:AnimationNodeBlendSpace2D.ge
 	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_point_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
+}
+func (self class) ReorderBlendPoint(from_index int64, to_index int64) { //gd:AnimationNodeBlendSpace2D.reorder_blend_point
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reorder_blend_point, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		from_index int64
+		to_index   int64
+	}{from_index, to_index})
 }
 func (self class) AddTriangle(x int64, y int64, z int64, at_index int64) { //gd:AnimationNodeBlendSpace2D.add_triangle
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_triangle, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
@@ -547,6 +636,22 @@ func (self class) IsUsingSync() bool { //gd:AnimationNodeBlendSpace2D.is_using_s
 	var ret = r_ret
 	return ret
 }
+func (self class) SetSyncMode(sync_mode SyncMode) { //gd:AnimationNodeBlendSpace2D.set_sync_mode
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sync_mode, 0|(gdextension.SizeInt<<4), &struct{ sync_mode SyncMode }{sync_mode})
+}
+func (self class) GetSyncMode() SyncMode { //gd:AnimationNodeBlendSpace2D.get_sync_mode
+	var r_ret = noescape.Call[SyncMode](gd.ObjectChecked(self.AsObject()), methods.get_sync_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetCyclicLength(length float64) { //gd:AnimationNodeBlendSpace2D.set_cyclic_length
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cyclic_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
+}
+func (self class) GetCyclicLength() float64 { //gd:AnimationNodeBlendSpace2D.get_cyclic_length
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cyclic_length, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 
 /*
 Emitted every time the blend space's triangles are created, removed, or when one of their vertices changes position.
@@ -614,4 +719,28 @@ const (
 	BlendModeDiscrete BlendMode = 1
 	// Similar to [BlendModeDiscrete], but starts the new animation at the last animation's playback position.
 	BlendModeDiscreteCarry BlendMode = 2
+)
+
+type SyncMode int64 //gd:AnimationNodeBlendSpace2D.SyncMode
+
+const (
+	// Inactive animations are frozen and do not advance.
+	SyncModeNone SyncMode = 0
+	// Inactive animations advance with a weight of 0. This is equivalent to the previous sync = true behavior.
+	SyncModeIndependent SyncMode = 1
+	// All animations are time-scaled so they stay in sync, with the cycle length dynamically computed from active blend weights. This is self-normalizing: a solo animation plays at normal speed.
+	//
+	// Note: If you apply [AnimationNodeTimeSeek] to the result when handling animations of different lengths, synchronization will be broken. In such cases, it is recommended to use [AnimationNodeAnimation.UseCustomTimeline] to align the animation lengths.
+	//
+	// [AnimationNodeAnimation.UseCustomTimeline]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.UseCustomTimeline
+	// [AnimationNodeTimeSeek]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeTimeSeek
+	SyncModeCyclicMutable SyncMode = 2
+	// All animations are time-scaled so they complete one cycle in [CyclicLength] seconds, keeping them in sync regardless of their individual lengths.
+	//
+	// Note: If you apply [AnimationNodeTimeSeek] to the result when handling animations of different lengths, synchronization will be broken. In such cases, it is recommended to use [AnimationNodeAnimation.UseCustomTimeline] to align the animation lengths.
+	//
+	// [AnimationNodeAnimation.UseCustomTimeline]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.UseCustomTimeline
+	// [AnimationNodeTimeSeek]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeTimeSeek
+	// [CyclicLength]: https://pkg.go.dev/graphics.gd/classdb/#Instance.CyclicLength
+	SyncModeCyclicConstant SyncMode = 3
 )

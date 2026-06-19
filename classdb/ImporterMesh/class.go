@@ -3,7 +3,7 @@
 /*
 ImporterMesh is a type of [Resource] analogous to [ArrayMesh]. It contains vertex array-based geometry, divided in surfaces. Each surface contains a completely separate array and a material used to draw it. Design wise, a mesh with multiple surfaces is preferred to a single surface, because objects created in 3D editing software commonly contain multiple materials.
 
-Unlike its runtime counterpart, [ImporterMesh] contains mesh data before various import steps, such as lod and shadow mesh generation, have taken place. Modify surface data by calling [Clear], followed by [AddSurface] for each surface.
+Unlike its runtime counterpart, [ImporterMesh] contains mesh data before various import steps, such as LOD and shadow mesh generation, have taken place. Modify surface data by calling [Clear], followed by [AddSurface] for each surface.
 
 [AddSurface]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.AddSurface
 [ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
@@ -43,6 +43,7 @@ import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
@@ -105,6 +106,7 @@ type Instance [1]gdclass.ImporterMesh
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
+	merge_importer_meshes          gdextension.MethodForClass `hash:"1030647649"`
 	add_blend_shape                gdextension.MethodForClass `hash:"83702148"`
 	get_blend_shape_count          gdextension.MethodForClass `hash:"3905245786"`
 	get_blend_shape_name           gdextension.MethodForClass `hash:"844755477"`
@@ -156,6 +158,36 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsImporterMesh() Instance
+}
+
+/*
+Merges multiple [ImporterMesh]es into a single [ImporterMesh]. Each input mesh is transformed by the corresponding [Transform3D.BasisOrigin] in the 'relative_transforms' array, which must be the same size as 'importer_meshes'. Negative scales are supported, and the winding order in the mesh data will be corrected to account for this.
+
+If 'deduplicate_surfaces' is true and multiple meshes have surfaces with the same names and formats, the surfaces will be merged together when the meshes are merged, and will use the material from the first matching surface. This is useful for reducing the number of surfaces in the resulting mesh, and avoids duplicating materials. Surfaces with bone weights will never be deduplicated. If 'deduplicate_surfaces' is false, the surfaces will always be kept separate, and will be given unique names.
+
+Warning: Blend shapes and LODs are not supported and will be discarded. Do not use this function to discard blend shapes and LODs, as support for these may be added in the future.
+
+[ImporterMesh]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
+*/
+func MergeImporterMeshes(importer_meshes []Instance, relative_transforms []Transform3D.BasisOrigin) Instance { //gd:ImporterMesh.merge_importer_meshes
+	self := Instance{}
+	return Instance(Advanced(self).MergeImporterMeshes(gd.ArrayFromSlice[Array.Contains[[1]gdclass.ImporterMesh]](importer_meshes), gd.ArrayFromSlice[Array.Contains[Transform3D.BasisOrigin]](relative_transforms), true))
+}
+
+/*
+Merges multiple [ImporterMesh]es into a single [ImporterMesh]. Each input mesh is transformed by the corresponding [Transform3D.BasisOrigin] in the 'relative_transforms' array, which must be the same size as 'importer_meshes'. Negative scales are supported, and the winding order in the mesh data will be corrected to account for this.
+
+If 'deduplicate_surfaces' is true and multiple meshes have surfaces with the same names and formats, the surfaces will be merged together when the meshes are merged, and will use the material from the first matching surface. This is useful for reducing the number of surfaces in the resulting mesh, and avoids duplicating materials. Surfaces with bone weights will never be deduplicated. If 'deduplicate_surfaces' is false, the surfaces will always be kept separate, and will be given unique names.
+
+Warning: Blend shapes and LODs are not supported and will be discarded. Do not use this function to discard blend shapes and LODs, as support for these may be added in the future.
+
+[ImporterMesh]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
+*/
+func MergeImporterMeshesOptions(importer_meshes []Instance, relative_transforms []Transform3D.BasisOrigin, deduplicate_surfaces bool) Instance { //gd:ImporterMesh.merge_importer_meshes
+	self := Instance{}
+	return Instance(Advanced(self).MergeImporterMeshes(gd.ArrayFromSlice[Array.Contains[[1]gdclass.ImporterMesh]](importer_meshes), gd.ArrayFromSlice[Array.Contains[Transform3D.BasisOrigin]](relative_transforms), deduplicate_surfaces))
 }
 
 /*
@@ -488,11 +520,19 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.ImporterMesh{gdclass.NewImporterMesh(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
+func (self class) MergeImporterMeshes(importer_meshes Array.Contains[[1]gdclass.ImporterMesh], relative_transforms Array.Contains[Transform3D.BasisOrigin], deduplicate_surfaces bool) [1]gdclass.ImporterMesh { //gd:ImporterMesh.merge_importer_meshes
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.merge_importer_meshes, gdextension.SizeObject|(gdextension.SizeArray<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeBool<<12), &struct {
+		importer_meshes      gdextension.Array
+		relative_transforms  gdextension.Array
+		deduplicate_surfaces bool
+	}{pointers.Get(gd.InternalArray(importer_meshes)), pointers.Get(gd.InternalArray(relative_transforms)), deduplicate_surfaces})
+	var ret = [1]gdclass.ImporterMesh{gdclass.NewImporterMesh(gd.PointerWithOwnershipTransferredToGo(r_ret))}
+	return ret
+}
 func (self class) AddBlendShape(name String.Readable) { //gd:ImporterMesh.add_blend_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blend_shape, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }

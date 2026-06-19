@@ -165,7 +165,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Shape3D{gdclass.NewShape3D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -175,6 +174,9 @@ The shape's custom solver bias. Defines how much bodies react to enforce contact
 
 When set to 0, the default value from [ProjectSettings] "physics/3d/solver/default_contact_bias" is used.
 
+Note: [CustomSolverBias] is only effective when using GodotPhysics3D. It has no effect when using Jolt Physics.
+
+[CustomSolverBias]: https://pkg.go.dev/graphics.gd/classdb/Shape3D#Instance.CustomSolverBias
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func (self Instance) CustomSolverBias() Float.X { //gd:Shape3D.custom_solver_bias

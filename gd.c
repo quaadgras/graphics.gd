@@ -265,10 +265,10 @@ GDExtensionInterfacePlaceHolderScriptInstanceCreate gdextension_placeholder_scri
 GDExtensionInterfacePlaceHolderScriptInstanceUpdate gdextension_placeholder_script_instance_update = NULL;
 GDExtensionInterfaceObjectGetScriptInstance gdextension_object_get_script_instance = NULL;
 GDExtensionInterfaceObjectSetScriptInstance gdextension_object_set_script_instance = NULL;
-GDExtensionInterfaceClassdbConstructObject2 gdextension_classdb_construct_object2 = NULL;
+GDExtensionInterfaceClassdbConstructObject3 gdextension_classdb_construct_object3 = NULL;
 GDExtensionInterfaceClassdbGetMethodBind gdextension_classdb_get_method_bind = NULL;
 GDExtensionInterfaceClassdbGetClassTag gdextension_classdb_get_class_tag = NULL;
-GDExtensionInterfaceClassdbRegisterExtensionClass5 gdextension_classdb_register_extension_class5 = NULL;
+GDExtensionInterfaceClassdbRegisterExtensionClass6 gdextension_classdb_register_extension_class6 = NULL;
 GDExtensionInterfaceClassdbRegisterExtensionClassMethod gdextension_classdb_register_extension_class_method = NULL;
 GDExtensionInterfaceClassdbRegisterExtensionClassVirtualMethod gdextension_classdb_register_extension_class_virtual_method = NULL;
 GDExtensionInterfaceClassdbRegisterExtensionClassIntegerConstant gdextension_classdb_register_extension_class_integer_constant = NULL;
@@ -456,10 +456,10 @@ EXPORT GDExtensionBool gd_extension_init(GDExtensionInterfaceGetProcAddress p_ge
 	LOAD_PROC_ADDRESS(placeholder_script_instance_update, GDExtensionInterfacePlaceHolderScriptInstanceUpdate);
 	LOAD_PROC_ADDRESS(object_get_script_instance, GDExtensionInterfaceObjectGetScriptInstance);
 	LOAD_PROC_ADDRESS(object_set_script_instance, GDExtensionInterfaceObjectSetScriptInstance);
-	LOAD_PROC_ADDRESS(classdb_construct_object2, GDExtensionInterfaceClassdbConstructObject2);
+	LOAD_PROC_ADDRESS(classdb_construct_object3, GDExtensionInterfaceClassdbConstructObject3);
 	LOAD_PROC_ADDRESS(classdb_get_method_bind, GDExtensionInterfaceClassdbGetMethodBind);
 	LOAD_PROC_ADDRESS(classdb_get_class_tag, GDExtensionInterfaceClassdbGetClassTag);
-	LOAD_PROC_ADDRESS(classdb_register_extension_class5, GDExtensionInterfaceClassdbRegisterExtensionClass5);
+	LOAD_PROC_ADDRESS(classdb_register_extension_class6, GDExtensionInterfaceClassdbRegisterExtensionClass6);
 	LOAD_PROC_ADDRESS(classdb_register_extension_class_method, GDExtensionInterfaceClassdbRegisterExtensionClassMethod);
 	LOAD_PROC_ADDRESS(classdb_register_extension_class_virtual_method, GDExtensionInterfaceClassdbRegisterExtensionClassVirtualMethod);
 	LOAD_PROC_ADDRESS(classdb_register_extension_class_integer_constant, GDExtensionInterfaceClassdbRegisterExtensionClassIntegerConstant);
@@ -773,7 +773,7 @@ static void extension_instance_free(void *p_class_userdata, GDExtensionClassInst
     gd_on_extension_instance_free((uintptr_t)p_instance);
 }
 void gd_classdb_register(uintptr_t class_name, uintptr_t parent, uintptr_t id, bool is_virtual, bool abstract, bool exposed, bool runtime, uintptr_t icon_path) {
-    GDExtensionClassCreationInfo5 info = {
+    GDExtensionClassCreationInfo6 info = {
         .is_virtual = is_virtual,
         .is_abstract = abstract,
         .is_exposed = exposed,
@@ -796,7 +796,7 @@ void gd_classdb_register(uintptr_t class_name, uintptr_t parent, uintptr_t id, b
         .call_virtual_with_data_func = extension_instance_called,
         .class_userdata = (void *)id,
     };
-    gdextension_classdb_register_extension_class5(gd_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&parent, &info);
+    gdextension_classdb_register_extension_class6(gd_library, (GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&parent, &info);
 };
 void gd_classdb_register_methods(uintptr_t class_name, uintptr_t methods) {
     method_list *list = (method_list *)methods;
@@ -977,7 +977,7 @@ uint32_t gd_memory_load_u32(uintptr_t addr) {
     return *(uint32_t *)addr;
 };
 uintptr_t gd_object_make(uintptr_t name) {
-    return (uintptr_t)gdextension_classdb_construct_object2((GDExtensionConstStringNamePtr)&name);
+    return (uintptr_t)gdextension_classdb_construct_object3((GDExtensionConstStringNamePtr)&name);
 };
 void gd_object_call(uintptr_t obj, uintptr_t fn, ANY result, INT argc, ANY args, ANY err) {
     void *points[16]; prepare_variants(&points[0], argc, args);

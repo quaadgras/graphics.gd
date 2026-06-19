@@ -5,11 +5,11 @@ A camera feed gives you access to a single physical camera attached to your devi
 
 Note: Many cameras will return YCbCr images which are split into two textures and need to be combined in a shader. Godot does this automatically for you if you set the environment to show the camera image in the background.
 
-Note: This class is currently only implemented on Linux, Android, macOS, and iOS. On other platforms no [CameraFeed]s will be available. To get a [CameraFeed] on iOS, the camera plugin from [godot-ios-plugins] is required.
+Note: This class is currently only implemented on Linux, Android, macOS, and iOS. On other platforms no [CameraFeed]s will be available. To get a [CameraFeed] on iOS, enable [EditorExportPlatformIOS] "modules/camera".
 
 [CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
 [CameraServer]: https://pkg.go.dev/graphics.gd/classdb/CameraServer
-[godot-ios-plugins]: https://github.com/godotengine/godot-ios-plugins
+[EditorExportPlatformIOS]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformIOS
 */
 package CameraFeed
 
@@ -148,6 +148,10 @@ type Interface interface {
 	ActivateFeed() bool
 	// Called when the camera feed is deactivated.
 	DeactivateFeed()
+	// Override this method to set the format of the camera feed.
+	SetFormat(index int, parameters FormatParameters) bool
+	// Override this method to define supported formats of the camera feed.
+	GetFormats() []Format
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -159,6 +163,12 @@ func (self implementation) ActivateFeed() (_ bool) {
 	return
 }
 func (self implementation) DeactivateFeed() {
+}
+func (self implementation) SetFormat(index int, parameters FormatParameters) (_ bool) {
+	return
+}
+func (self implementation) GetFormats() (_ []Format) {
+	return
 }
 
 /*
@@ -179,6 +189,36 @@ func (Instance) _deactivate_feed(impl func(ptr gdclass.Receiver)) (cb gd.Extensi
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
+	}
+}
+
+/*
+Override this method to set the format of the camera feed.
+*/
+func (Instance) _set_format(impl func(ptr gdclass.Receiver, index int, parameters FormatParameters) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var index = gd.UnsafeGet[int64](p_args, 0)
+		var parameters = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1)))))
+		defer pointers.End(gd.InternalDictionary(parameters))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, int(index), gd.DictionaryAs[FormatParameters](parameters))
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Override this method to define supported formats of the camera feed.
+*/
+func (Instance) _get_formats(impl func(ptr gdclass.Receiver) []Format) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalArray(gd.EngineArrayFromSlice(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -330,7 +370,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.CameraFeed{gdclass.NewCameraFeed(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -378,6 +417,28 @@ func (class) _deactivate_feed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionC
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
+	}
+}
+func (class) _set_format(impl func(ptr gdclass.Receiver, index int64, parameters Dictionary.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var index = gd.UnsafeGet[int64](p_args, 0)
+		var parameters = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1)))))
+		defer pointers.End(gd.InternalDictionary(parameters))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, index, parameters)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+func (class) _get_formats(impl func(ptr gdclass.Receiver) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -505,6 +566,10 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._activate_feed)
 	case "_deactivate_feed":
 		return reflect.ValueOf(self._deactivate_feed)
+	case "_set_format":
+		return reflect.ValueOf(self._set_format)
+	case "_get_formats":
+		return reflect.ValueOf(self._get_formats)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -516,6 +581,10 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._activate_feed)
 	case "_deactivate_feed":
 		return reflect.ValueOf(self._deactivate_feed)
+	case "_set_format":
+		return reflect.ValueOf(self._set_format)
+	case "_get_formats":
+		return reflect.ValueOf(self._get_formats)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

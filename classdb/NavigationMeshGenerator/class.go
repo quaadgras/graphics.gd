@@ -225,6 +225,7 @@ func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.Navigati
 		callback             gdextension.Callable
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationMesh(navigation_mesh[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetNavigationMeshSourceGeometryData3D(source_geometry_data[0])[0])), pointers.Get(gd.InternalCallable(callback))})
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

@@ -39,6 +39,7 @@ import "graphics.gd/classdb/ClassDB"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/EditorProperty"
+import "graphics.gd/classdb/LineEdit"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/ScrollContainer"
@@ -117,7 +118,11 @@ var methods struct {
 	edit                        gdextension.MethodForClass `hash:"3975164845"`
 	get_selected_path           gdextension.MethodForClass `hash:"201670096"`
 	get_edited_object           gdextension.MethodForClass `hash:"2050059866"`
+	collapse_all_folding        gdextension.MethodForClass `hash:"3218959716"`
+	expand_all_folding          gdextension.MethodForClass `hash:"3218959716"`
+	expand_revertable           gdextension.MethodForClass `hash:"3218959716"`
 	instantiate_property_editor gdextension.MethodForClass `hash:"1429914152"`
+	create_default_inspector    gdextension.MethodForClass `hash:"2419746798"`
 }
 
 func init() {
@@ -166,11 +171,44 @@ func (self Instance) GetEditedObject() Object.Instance { //gd:EditorInspector.ge
 }
 
 /*
+Collapses all foldable sections.
+*/
+func (self Instance) CollapseAllFolding() { //gd:EditorInspector.collapse_all_folding
+	Advanced(self).CollapseAllFolding()
+}
+
+/*
+Expands all foldable sections.
+*/
+func (self Instance) ExpandAllFolding() { //gd:EditorInspector.expand_all_folding
+	Advanced(self).ExpandAllFolding()
+}
+
+/*
+Expands only the foldable sections that contain a revertable (i.e. non-default) property.
+*/
+func (self Instance) ExpandRevertable() { //gd:EditorInspector.expand_revertable
+	Advanced(self).ExpandRevertable()
+}
+
+/*
 Creates a property editor that can be used by plugin UI to edit the specified property of an 'object'.
 */
 func InstantiatePropertyEditor(obj Object.Instance, atype variant.Type, path string, hint ClassDB.PropertyHint, hint_text string, usage int, wide bool) EditorProperty.Instance { //gd:EditorInspector.instantiate_property_editor
 	self := Instance{}
 	return EditorProperty.Instance(Advanced(self).InstantiatePropertyEditor(obj, atype, String.From(path), hint, String.From(hint_text), int64(usage), wide))
+}
+
+/*
+Creates an inspector with the same configuration as the one used in the editor's Inspector dock. When passing a [LineEdit] into 'filter_line_edit', the inspector will filter its properties based on [LineEdit.Text] whenever [OnLineedit.TextChanged] is emitted.
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
+[LineEdit.Text]: https://pkg.go.dev/graphics.gd/classdb/LineEdit#Instance.Text
+[OnLineedit.TextChanged]: https://pkg.go.dev/graphics.gd/classdb/EditorInspector#Instance.OnLineedit.TextChanged
+*/
+func CreateDefaultInspector(filter_line_edit LineEdit.Instance) Instance { //gd:EditorInspector.create_default_inspector
+	self := Instance{}
+	return Instance(Advanced(self).CreateDefaultInspector(filter_line_edit))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -228,6 +266,15 @@ func (self class) GetEditedObject() [1]gdreference.Object { //gd:EditorInspector
 	var ret = [1]gdreference.Object{gdreference.LetObject(r_ret)}
 	return ret
 }
+func (self class) CollapseAllFolding() { //gd:EditorInspector.collapse_all_folding
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.collapse_all_folding, 0, &struct{}{})
+}
+func (self class) ExpandAllFolding() { //gd:EditorInspector.expand_all_folding
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.expand_all_folding, 0, &struct{}{})
+}
+func (self class) ExpandRevertable() { //gd:EditorInspector.expand_revertable
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.expand_revertable, 0, &struct{}{})
+}
 func (self class) InstantiatePropertyEditor(obj [1]gdreference.Object, atype variant.Type, path String.Readable, hint ClassDB.PropertyHint, hint_text String.Readable, usage int64, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.instantiate_property_editor, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
 		obj       gdextension.Object
@@ -239,6 +286,11 @@ func (self class) InstantiatePropertyEditor(obj [1]gdreference.Object, atype var
 		wide      bool
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0])), atype, pointers.Get(gd.InternalString(path)), hint, pointers.Get(gd.InternalString(hint_text)), usage, wide})
 	var ret = [1]gdclass.EditorProperty{gdclass.NewEditorProperty(gdreference.LetObject(r_ret))}
+	return ret
+}
+func (self class) CreateDefaultInspector(filter_line_edit [1]gdclass.LineEdit) [1]gdclass.EditorInspector { //gd:EditorInspector.create_default_inspector
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_default_inspector, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ filter_line_edit gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetLineEdit(filter_line_edit[0])[0]))})
+	var ret = [1]gdclass.EditorInspector{gdclass.NewEditorInspector(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 

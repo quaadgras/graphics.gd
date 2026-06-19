@@ -268,11 +268,12 @@ func (self Instance) SetOrthogonal(size Float.X, z_near Float.X, z_far Float.X) 
 }
 
 /*
-Sets the camera projection to frustum mode (see [ProjectionFrustum]), by specifying a 'size', an 'offset', and the 'z_near' and 'z_far' clip planes in world space units. See also [FrustumOffset].
+Sets the camera projection to frustum mode (see [ProjectionFrustum]), by specifying a 'size', an 'offset', and the 'z_near' and 'z_far' clip planes in world space units. The 'size' parameter represents the size of the near plane, either its width or height depending on the value of [KeepAspect]. See also [FrustumOffset].
 
 Returns 'self' to enable method chaining.
 
 [FrustumOffset]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.FrustumOffset
+[KeepAspect]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.KeepAspect
 */
 func (self Instance) SetFrustum(size Float.X, offset Vector2.XY, z_near Float.X, z_far Float.X) Instance { //gd:Camera3D.set_frustum
 	Advanced(self).SetFrustum(float64(size), Vector2.XY(offset), float64(z_near), float64(z_far))

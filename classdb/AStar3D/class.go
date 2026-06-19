@@ -292,6 +292,9 @@ Adds a new point at the given position with the given identifier. The 'id' must 
 
 The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
 
+	var astar = AStar3D.New()
+	astar.MoreArgs().AddPoint(1, Vector3.New(1, 0, 0), 4) // Adds the point (1, 0, 0) with weight_scale 4 and id 1
+
 If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
 
 [ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Interface
@@ -304,6 +307,9 @@ func (self Instance) AddPoint(id Point, position Vector3.XYZ) { //gd:AStar3D.add
 Adds a new point at the given position with the given identifier. The 'id' must be 0 or larger, and the 'weight_scale' must be 0.0 or greater.
 
 The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
+
+	var astar = AStar3D.New()
+	astar.MoreArgs().AddPoint(1, Vector3.New(1, 0, 0), 4) // Adds the point (1, 0, 0) with weight_scale 4 and id 1
 
 If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
 
@@ -365,6 +371,15 @@ func (self Instance) HasPoint(id Point) bool { //gd:AStar3D.has_point
 
 /*
 Returns an array with the IDs of the points that form the connection with the given point.
+
+	var astar = AStar3D.New()
+	astar.AddPoint(1, Vector3.New(0, 0, 0))
+	astar.AddPoint(2, Vector3.New(0, 1, 0))
+	astar.AddPoint(3, Vector3.New(1, 1, 0))
+	astar.AddPoint(4, Vector3.New(2, 0, 0))
+	astar.MoreArgs().ConnectPoints(1, 2, true)
+	astar.MoreArgs().ConnectPoints(1, 3, true)
+	var neighbors = astar.GetPointConnections(1) // Returns [2, 3]
 */
 func (self Instance) GetPointConnections(id Point) []Point { //gd:AStar3D.get_point_connections
 	return []Point(gd.IntsCollectAs[Point](Advanced(self).GetPointConnections(int64(id)).Values()))
@@ -406,6 +421,11 @@ func (self Instance) IsPointDisabled(id Point) bool { //gd:AStar3D.is_point_disa
 
 /*
 Creates a segment between the given points. If 'bidirectional' is false, only movement from 'id' to 'to_id' is allowed, not the reverse direction.
+
+	var astar = AStar3D.New()
+	astar.AddPoint(1, Vector3.New(1, 1, 0))
+	astar.AddPoint(2, Vector3.New(0, 5, 0))
+	astar.MoreArgs().ConnectPoints(1, 2, false)
 */
 func (self Instance) ConnectPoints(id Point, to_id Point) { //gd:AStar3D.connect_points
 	Advanced(self).ConnectPoints(int64(id), int64(to_id), true)
@@ -413,6 +433,11 @@ func (self Instance) ConnectPoints(id Point, to_id Point) { //gd:AStar3D.connect
 
 /*
 Creates a segment between the given points. If 'bidirectional' is false, only movement from 'id' to 'to_id' is allowed, not the reverse direction.
+
+	var astar = AStar3D.New()
+	astar.AddPoint(1, Vector3.New(1, 1, 0))
+	astar.AddPoint(2, Vector3.New(0, 5, 0))
+	astar.MoreArgs().ConnectPoints(1, 2, false)
 */
 func (self MoreArgs) ConnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar3D.connect_points
 	Advanced(self).ConnectPoints(int64(id), int64(to_id), bidirectional)
@@ -497,6 +522,12 @@ func (self MoreArgs) GetClosestPoint(to_position Vector3.XYZ, include_disabled b
 /*
 Returns the closest position to 'to_position' that resides inside a segment between two connected points.
 
+	var astar = AStar3D.New()
+	astar.AddPoint(1, Vector3.New(0, 0, 0))
+	astar.AddPoint(2, Vector3.New(0, 5, 0))
+	astar.ConnectPoints(1, 2)
+	var res = astar.GetClosestPositionInSegment(Vector3.New(3, 3, 0)) // Returns (0, 3, 0)
+
 The result is in the segment that goes from y = 0 to y = 5. It's the closest position in the segment to the given point.
 */
 func (self Instance) GetClosestPositionInSegment(to_position Vector3.XYZ) Vector3.XYZ { //gd:AStar3D.get_closest_position_in_segment
@@ -548,6 +579,17 @@ If 'from_id' point is not disabled, there is no valid path to the target, and 'a
 
 Note: When 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
 
+	var astar = AStar3D.New()
+	astar.AddPoint(1, Vector3.New(0, 0, 0))
+	astar.MoreArgs().AddPoint(2, Vector3.New(0, 1, 0), 1) // Default weight is 1
+	astar.AddPoint(3, Vector3.New(1, 1, 0))
+	astar.AddPoint(4, Vector3.New(2, 0, 0))
+	astar.MoreArgs().ConnectPoints(1, 2, false)
+	astar.MoreArgs().ConnectPoints(2, 3, false)
+	astar.MoreArgs().ConnectPoints(4, 3, false)
+	astar.MoreArgs().ConnectPoints(1, 4, false)
+	var res = astar.GetIdPath(1, 3) // Returns [1, 2, 3]
+
 If you change the 2nd point's weight to 3, then the result will be [1, 4, 3] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
 func (self Instance) GetIdPath(from_id Point, to_id Point) []Point { //gd:AStar3D.get_id_path
@@ -562,6 +604,17 @@ If 'from_id' point is disabled, returns an empty array (even if from_id == to_id
 If 'from_id' point is not disabled, there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
 Note: When 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
+
+	var astar = AStar3D.New()
+	astar.AddPoint(1, Vector3.New(0, 0, 0))
+	astar.MoreArgs().AddPoint(2, Vector3.New(0, 1, 0), 1) // Default weight is 1
+	astar.AddPoint(3, Vector3.New(1, 1, 0))
+	astar.AddPoint(4, Vector3.New(2, 0, 0))
+	astar.MoreArgs().ConnectPoints(1, 2, false)
+	astar.MoreArgs().ConnectPoints(2, 3, false)
+	astar.MoreArgs().ConnectPoints(4, 3, false)
+	astar.MoreArgs().ConnectPoints(1, 4, false)
+	var res = astar.GetIdPath(1, 3) // Returns [1, 2, 3]
 
 If you change the 2nd point's weight to 3, then the result will be [1, 4, 3] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
@@ -607,7 +660,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.AStar3D{gdclass.NewAStar3D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

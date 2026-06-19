@@ -589,7 +589,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.AnimationNode{gdclass.NewAnimationNode(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -833,6 +832,26 @@ func (self class) TreeChanged() Signal.Any {
 }
 
 /*
+Emitted by [AnimationNodeAnimation] when its [AnimationNodeAnimation.Animation] resource is changed, or by [AnimationNodeBlendTree] when its connections change.
+
+[AnimationNodeAnimation]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation
+[AnimationNodeAnimation.Animation]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.Animation
+[AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
+*/
+func (self Instance) OnNodeUpdated(cb func(object_id int), flags ...Signal.Flags) Instance {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("node_updated"), gd.NewCallable(cb), int64(flags_together))
+	return self
+}
+
+func (self class) NodeUpdated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`node_updated`))))
+}
+
+/*
 Emitted by nodes that inherit from this class and that have an internal tree when one of their animation node names changes. The animation nodes that emit this signal are [AnimationNodeBlendSpace1D], [AnimationNodeBlendSpace2D], [AnimationNodeStateMachine], and [AnimationNodeBlendTree].
 
 [AnimationNodeBlendSpace1D]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace1D
@@ -861,7 +880,7 @@ Emitted by nodes that inherit from this class and that have an internal tree whe
 [AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
 [AnimationNodeStateMachine]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachine
 */
-func (self Instance) OnAnimationNodeRemoved(cb func(object_id int, name string), flags ...Signal.Flags) Instance {
+func (self Instance) OnAnimationNodeRemoved(cb func(object_id int, node_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag

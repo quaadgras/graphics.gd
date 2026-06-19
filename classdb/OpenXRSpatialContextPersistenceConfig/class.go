@@ -95,6 +95,7 @@ var sname gdextension.StringName
 var methods struct {
 	add_persistence_context    gdextension.MethodForClass `hash:"2722037293"`
 	remove_persistence_context gdextension.MethodForClass `hash:"2722037293"`
+	get_persistence_contexts   gdextension.MethodForClass `hash:"3995934104"`
 }
 
 func init() {
@@ -131,6 +132,16 @@ Removes a persistence context.
 */
 func (self Instance) RemovePersistenceContext(persistence_context RID.PersistenceContext) { //gd:OpenXRSpatialContextPersistenceConfig.remove_persistence_context
 	Advanced(self).RemovePersistenceContext(RID.Any(persistence_context))
+}
+
+/*
+Gets the persistence context(s) (as [Resource.ID]s) received by [AddPersistenceContext].
+
+[AddPersistenceContext]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialContextPersistenceConfig#Instance.AddPersistenceContext
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
+func (self Instance) GetPersistenceContexts() []RID.PersistenceContext { //gd:OpenXRSpatialContextPersistenceConfig.get_persistence_contexts
+	return []RID.PersistenceContext(gd.ArrayAs[[]RID.PersistenceContext](gd.InternalArray(Advanced(self).GetPersistenceContexts())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -171,7 +182,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.OpenXRSpatialContextPersistenceConfig{gdclass.NewOpenXRSpatialContextPersistenceConfig(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -181,6 +191,11 @@ func (self class) AddPersistenceContext(persistence_context RID.Any) { //gd:Open
 }
 func (self class) RemovePersistenceContext(persistence_context RID.Any) { //gd:OpenXRSpatialContextPersistenceConfig.remove_persistence_context
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_persistence_context, 0|(gdextension.SizeRID<<4), &struct{ persistence_context RID.Any }{persistence_context})
+}
+func (self class) GetPersistenceContexts() Array.Any { //gd:OpenXRSpatialContextPersistenceConfig.get_persistence_contexts
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_persistence_contexts, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
 }
 func (o class) AsOpenXRSpatialContextPersistenceConfig() Advanced         { return Advanced(o) }
 func (o Instance) AsOpenXRSpatialContextPersistenceConfig() Instance      { return o }

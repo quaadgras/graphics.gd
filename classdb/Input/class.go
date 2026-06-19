@@ -106,64 +106,83 @@ type Instance [1]gdclass.Input
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	is_anything_pressed              gdextension.MethodForClass `hash:"36873697"`
-	is_key_pressed                   gdextension.MethodForClass `hash:"1938909964"`
-	is_physical_key_pressed          gdextension.MethodForClass `hash:"1938909964"`
-	is_key_label_pressed             gdextension.MethodForClass `hash:"1938909964"`
-	is_mouse_button_pressed          gdextension.MethodForClass `hash:"1821097125"`
-	is_joy_button_pressed            gdextension.MethodForClass `hash:"787208542"`
-	is_action_pressed                gdextension.MethodForClass `hash:"1558498928"`
-	is_action_just_pressed           gdextension.MethodForClass `hash:"1558498928"`
-	is_action_just_released          gdextension.MethodForClass `hash:"1558498928"`
-	is_action_just_pressed_by_event  gdextension.MethodForClass `hash:"551972873"`
-	is_action_just_released_by_event gdextension.MethodForClass `hash:"551972873"`
-	get_action_strength              gdextension.MethodForClass `hash:"801543509"`
-	get_action_raw_strength          gdextension.MethodForClass `hash:"801543509"`
-	get_axis                         gdextension.MethodForClass `hash:"1958752504"`
-	get_vector                       gdextension.MethodForClass `hash:"2479607902"`
-	add_joy_mapping                  gdextension.MethodForClass `hash:"1168363258"`
-	remove_joy_mapping               gdextension.MethodForClass `hash:"83702148"`
-	is_joy_known                     gdextension.MethodForClass `hash:"3067735520"`
-	get_joy_axis                     gdextension.MethodForClass `hash:"4063175957"`
-	get_joy_name                     gdextension.MethodForClass `hash:"990163283"`
-	get_joy_guid                     gdextension.MethodForClass `hash:"844755477"`
-	get_joy_info                     gdextension.MethodForClass `hash:"3485342025"`
-	should_ignore_device             gdextension.MethodForClass `hash:"2522259332"`
-	get_connected_joypads            gdextension.MethodForClass `hash:"2915620761"`
-	get_joy_vibration_strength       gdextension.MethodForClass `hash:"3114997196"`
-	get_joy_vibration_duration       gdextension.MethodForClass `hash:"4025615559"`
-	start_joy_vibration              gdextension.MethodForClass `hash:"2576575033"`
-	stop_joy_vibration               gdextension.MethodForClass `hash:"1286410249"`
-	vibrate_handheld                 gdextension.MethodForClass `hash:"544894297"`
-	get_gravity                      gdextension.MethodForClass `hash:"3360562783"`
-	get_accelerometer                gdextension.MethodForClass `hash:"3360562783"`
-	get_magnetometer                 gdextension.MethodForClass `hash:"3360562783"`
-	get_gyroscope                    gdextension.MethodForClass `hash:"3360562783"`
-	set_gravity                      gdextension.MethodForClass `hash:"3460891852"`
-	set_accelerometer                gdextension.MethodForClass `hash:"3460891852"`
-	set_magnetometer                 gdextension.MethodForClass `hash:"3460891852"`
-	set_gyroscope                    gdextension.MethodForClass `hash:"3460891852"`
-	set_joy_light                    gdextension.MethodForClass `hash:"2878471219"`
-	has_joy_light                    gdextension.MethodForClass `hash:"1116898809"`
-	get_last_mouse_velocity          gdextension.MethodForClass `hash:"1497962370"`
-	get_last_mouse_screen_velocity   gdextension.MethodForClass `hash:"1497962370"`
-	get_mouse_button_mask            gdextension.MethodForClass `hash:"2512161324"`
-	set_mouse_mode                   gdextension.MethodForClass `hash:"2228490894"`
-	get_mouse_mode                   gdextension.MethodForClass `hash:"965286182"`
-	warp_mouse                       gdextension.MethodForClass `hash:"743155724"`
-	action_press                     gdextension.MethodForClass `hash:"1713091165"`
-	action_release                   gdextension.MethodForClass `hash:"3304788590"`
-	set_default_cursor_shape         gdextension.MethodForClass `hash:"2124816902"`
-	get_current_cursor_shape         gdextension.MethodForClass `hash:"3455658929"`
-	set_custom_mouse_cursor          gdextension.MethodForClass `hash:"703945977"`
-	parse_input_event                gdextension.MethodForClass `hash:"3754044979"`
-	set_use_accumulated_input        gdextension.MethodForClass `hash:"2586408642"`
-	is_using_accumulated_input       gdextension.MethodForClass `hash:"2240911060"`
-	flush_buffered_events            gdextension.MethodForClass `hash:"3218959716"`
-	set_emulate_mouse_from_touch     gdextension.MethodForClass `hash:"2586408642"`
-	is_emulating_mouse_from_touch    gdextension.MethodForClass `hash:"36873697"`
-	set_emulate_touch_from_mouse     gdextension.MethodForClass `hash:"2586408642"`
-	is_emulating_touch_from_mouse    gdextension.MethodForClass `hash:"36873697"`
+	is_anything_pressed                         gdextension.MethodForClass `hash:"36873697"`
+	is_key_pressed                              gdextension.MethodForClass `hash:"1938909964"`
+	is_physical_key_pressed                     gdextension.MethodForClass `hash:"1938909964"`
+	is_key_label_pressed                        gdextension.MethodForClass `hash:"1938909964"`
+	is_mouse_button_pressed                     gdextension.MethodForClass `hash:"1821097125"`
+	is_joy_button_pressed                       gdextension.MethodForClass `hash:"787208542"`
+	is_action_pressed                           gdextension.MethodForClass `hash:"1558498928"`
+	is_action_just_pressed                      gdextension.MethodForClass `hash:"1558498928"`
+	is_action_just_released                     gdextension.MethodForClass `hash:"1558498928"`
+	is_action_just_pressed_by_event             gdextension.MethodForClass `hash:"551972873"`
+	is_action_just_released_by_event            gdextension.MethodForClass `hash:"551972873"`
+	get_action_strength                         gdextension.MethodForClass `hash:"801543509"`
+	get_action_raw_strength                     gdextension.MethodForClass `hash:"801543509"`
+	get_axis                                    gdextension.MethodForClass `hash:"1958752504"`
+	get_vector                                  gdextension.MethodForClass `hash:"2479607902"`
+	add_joy_mapping                             gdextension.MethodForClass `hash:"1168363258"`
+	remove_joy_mapping                          gdextension.MethodForClass `hash:"83702148"`
+	is_joy_known                                gdextension.MethodForClass `hash:"3067735520"`
+	get_joy_axis                                gdextension.MethodForClass `hash:"4063175957"`
+	get_joy_name                                gdextension.MethodForClass `hash:"990163283"`
+	get_joy_guid                                gdextension.MethodForClass `hash:"844755477"`
+	get_joy_info                                gdextension.MethodForClass `hash:"3485342025"`
+	should_ignore_device                        gdextension.MethodForClass `hash:"2522259332"`
+	get_connected_joypads                       gdextension.MethodForClass `hash:"2915620761"`
+	get_joy_vibration_strength                  gdextension.MethodForClass `hash:"3114997196"`
+	get_joy_vibration_duration                  gdextension.MethodForClass `hash:"4025615559"`
+	get_joy_vibration_remaining_duration        gdextension.MethodForClass `hash:"4025615559"`
+	is_joy_vibrating                            gdextension.MethodForClass `hash:"3067735520"`
+	has_joy_vibration                           gdextension.MethodForClass `hash:"1116898809"`
+	start_joy_vibration                         gdextension.MethodForClass `hash:"2576575033"`
+	stop_joy_vibration                          gdextension.MethodForClass `hash:"1286410249"`
+	vibrate_handheld                            gdextension.MethodForClass `hash:"544894297"`
+	set_ignore_joypad_on_unfocused_application  gdextension.MethodForClass `hash:"2586408642"`
+	is_ignoring_joypad_on_unfocused_application gdextension.MethodForClass `hash:"36873697"`
+	get_gravity                                 gdextension.MethodForClass `hash:"3360562783"`
+	get_accelerometer                           gdextension.MethodForClass `hash:"3360562783"`
+	get_magnetometer                            gdextension.MethodForClass `hash:"3360562783"`
+	get_gyroscope                               gdextension.MethodForClass `hash:"3360562783"`
+	get_joy_accelerometer                       gdextension.MethodForClass `hash:"711720468"`
+	get_joy_gravity                             gdextension.MethodForClass `hash:"711720468"`
+	get_joy_gyroscope                           gdextension.MethodForClass `hash:"711720468"`
+	get_joy_motion_sensors_rate                 gdextension.MethodForClass `hash:"2339986948"`
+	is_joy_motion_sensors_enabled               gdextension.MethodForClass `hash:"1116898809"`
+	set_joy_motion_sensors_enabled              gdextension.MethodForClass `hash:"300928843"`
+	has_joy_motion_sensors                      gdextension.MethodForClass `hash:"1116898809"`
+	start_joy_motion_sensors_calibration        gdextension.MethodForClass `hash:"1286410249"`
+	stop_joy_motion_sensors_calibration         gdextension.MethodForClass `hash:"1286410249"`
+	clear_joy_motion_sensors_calibration        gdextension.MethodForClass `hash:"1286410249"`
+	get_joy_motion_sensors_calibration          gdextension.MethodForClass `hash:"3485342025"`
+	set_joy_motion_sensors_calibration          gdextension.MethodForClass `hash:"64545446"`
+	is_joy_motion_sensors_calibrated            gdextension.MethodForClass `hash:"1116898809"`
+	is_joy_motion_sensors_calibrating           gdextension.MethodForClass `hash:"1116898809"`
+	set_gravity                                 gdextension.MethodForClass `hash:"3460891852"`
+	set_accelerometer                           gdextension.MethodForClass `hash:"3460891852"`
+	set_magnetometer                            gdextension.MethodForClass `hash:"3460891852"`
+	set_gyroscope                               gdextension.MethodForClass `hash:"3460891852"`
+	set_joy_light                               gdextension.MethodForClass `hash:"2878471219"`
+	has_joy_light                               gdextension.MethodForClass `hash:"1116898809"`
+	get_last_mouse_velocity                     gdextension.MethodForClass `hash:"1497962370"`
+	get_last_mouse_screen_velocity              gdextension.MethodForClass `hash:"1497962370"`
+	get_mouse_button_mask                       gdextension.MethodForClass `hash:"2512161324"`
+	set_mouse_mode                              gdextension.MethodForClass `hash:"2228490894"`
+	get_mouse_mode                              gdextension.MethodForClass `hash:"965286182"`
+	warp_mouse                                  gdextension.MethodForClass `hash:"743155724"`
+	action_press                                gdextension.MethodForClass `hash:"1713091165"`
+	action_release                              gdextension.MethodForClass `hash:"3304788590"`
+	set_default_cursor_shape                    gdextension.MethodForClass `hash:"2124816902"`
+	get_current_cursor_shape                    gdextension.MethodForClass `hash:"3455658929"`
+	set_custom_mouse_cursor                     gdextension.MethodForClass `hash:"703945977"`
+	parse_input_event                           gdextension.MethodForClass `hash:"3754044979"`
+	set_use_accumulated_input                   gdextension.MethodForClass `hash:"2586408642"`
+	is_using_accumulated_input                  gdextension.MethodForClass `hash:"2240911060"`
+	flush_buffered_events                       gdextension.MethodForClass `hash:"3218959716"`
+	set_emulate_mouse_from_touch                gdextension.MethodForClass `hash:"2586408642"`
+	is_emulating_mouse_from_touch               gdextension.MethodForClass `hash:"36873697"`
+	set_emulate_touch_from_mouse                gdextension.MethodForClass `hash:"2586408642"`
+	is_emulating_touch_from_mouse               gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -199,7 +218,31 @@ Returns true if you are pressing the Latin key in the current keyboard layout. Y
 
 Note: Due to keyboard ghosting, [IsKeyPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
 
+Note: If you want to check if a key was just pressed by using its keycode, use Godot's input action system with [IsActionJustPressed] or use the [Node.Input] method like this instead:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Input"
+		"graphics.gd/classdb/InputEvent"
+		"graphics.gd/classdb/InputEventKey"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Object"
+	)
+
+	type inputIsKeyPressed struct {
+		Node.Extension[inputIsKeyPressed]
+	}
+
+	func (n inputIsKeyPressed) Input(event InputEvent.Instance) {
+		key, ok := Object.As[InputEventKey.Instance](event)
+		if ok && !event.IsEcho() && event.IsPressed() && key.Keycode() == Input.KeySpace {
+			// Your code here.
+		}
+	}
+
 [Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
+[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func IsKeyPressed(keycode Key) bool { //gd:Input.is_key_pressed
 	return bool(Advanced().IsKeyPressed(keycode))
@@ -212,7 +255,31 @@ Returns true if you are pressing the key in the physical location on the 101/102
 
 Note: Due to keyboard ghosting, [IsPhysicalKeyPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
 
+Note: If you want to check if a key was just pressed by using its physical keycode, use Godot's input action system with [IsActionJustPressed] or use the [Node.Input] method like this instead:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Input"
+		"graphics.gd/classdb/InputEvent"
+		"graphics.gd/classdb/InputEventKey"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Object"
+	)
+
+	type inputIsPhysicalKeyPressed struct {
+		Node.Extension[inputIsPhysicalKeyPressed]
+	}
+
+	func (n inputIsPhysicalKeyPressed) Input(event InputEvent.Instance) {
+		key, ok := Object.As[InputEventKey.Instance](event)
+		if ok && !event.IsEcho() && event.IsPressed() && key.PhysicalKeycode() == Input.KeySpace {
+			// Your code here.
+		}
+	}
+
 [Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
+[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func IsPhysicalKeyPressed(keycode Key) bool { //gd:Input.is_physical_key_pressed
 	return bool(Advanced().IsPhysicalKeyPressed(keycode))
@@ -220,6 +287,31 @@ func IsPhysicalKeyPressed(keycode Key) bool { //gd:Input.is_physical_key_pressed
 
 /*
 Returns true if you are pressing the key with the 'keycode' printed on it. You can pass a [Key] constant or any Unicode character code.
+
+Note: If you want to check if a key was just pressed by using its label, use Godot's input action system with [IsActionJustPressed] or use the [Node.Input] method like this instead:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Input"
+		"graphics.gd/classdb/InputEvent"
+		"graphics.gd/classdb/InputEventKey"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Object"
+	)
+
+	type inputIsKeyLabelPressed struct {
+		Node.Extension[inputIsKeyLabelPressed]
+	}
+
+	func (n inputIsKeyLabelPressed) Input(event InputEvent.Instance) {
+		key, ok := Object.As[InputEventKey.Instance](event)
+		if ok && !event.IsEcho() && event.IsPressed() && key.KeyLabel() == Input.KeySpace {
+			// Your code here.
+		}
+	}
+
+[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func IsKeyLabelPressed(keycode Key) bool { //gd:Input.is_key_label_pressed
 	return bool(Advanced().IsKeyLabelPressed(keycode))
@@ -227,6 +319,31 @@ func IsKeyLabelPressed(keycode Key) bool { //gd:Input.is_key_label_pressed
 
 /*
 Returns true if you are pressing the mouse button specified with [MouseButton].
+
+Note: If you want to check if a mouse button was just pressed, use Godot's input action system with [IsActionJustPressed] or use the [Node.Input] method like this instead:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Input"
+		"graphics.gd/classdb/InputEvent"
+		"graphics.gd/classdb/InputEventMouseButton"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Object"
+	)
+
+	type inputIsMouseButtonPressed struct {
+		Node.Extension[inputIsMouseButtonPressed]
+	}
+
+	func (n inputIsMouseButtonPressed) Input(event InputEvent.Instance) {
+		mb, ok := Object.As[InputEventMouseButton.Instance](event)
+		if ok && event.IsPressed() && mb.ButtonIndex() == Input.MouseButtonLeft {
+			// Your code here.
+		}
+	}
+
+[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func IsMouseButtonPressed(button MouseButton) bool { //gd:Input.is_mouse_button_pressed
 	return bool(Advanced().IsMouseButtonPressed(button))
@@ -234,6 +351,31 @@ func IsMouseButtonPressed(button MouseButton) bool { //gd:Input.is_mouse_button_
 
 /*
 Returns true if you are pressing the joypad button at index 'button'.
+
+Note: If you want to check if a joypad button was just pressed, use Godot's input action system with [IsActionJustPressed] or use the [Node.Input] method like this instead:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Input"
+		"graphics.gd/classdb/InputEvent"
+		"graphics.gd/classdb/InputEventJoypadButton"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Object"
+	)
+
+	type inputIsJoyButtonPressed struct {
+		Node.Extension[inputIsJoyButtonPressed]
+	}
+
+	func (n inputIsJoyButtonPressed) Input(event InputEvent.Instance) {
+		jb, ok := Object.As[InputEventJoypadButton.Instance](event)
+		if ok && event.IsPressed() && jb.ButtonIndex() == Input.JoyButtonA {
+			// Your code here.
+		}
+	}
+
+[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func IsJoyButtonPressed(device Device, button JoyButton) bool { //gd:Input.is_joy_button_pressed
 	return bool(Advanced().IsJoyButtonPressed(int64(device), button))
@@ -434,11 +576,9 @@ func GetJoyName(device Device) string { //gd:Input.get_joy_name
 }
 
 /*
-Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, e.g. 030000004c050000c405000000010000. Returns an empty string if it cannot be found. Godot uses the [SDL2 game controller database] to determine gamepad names and mappings based on this GUID.
+Returns an SDL-compatible device GUID on platforms that use gamepad remapping, e.g. 030000004c050000c405000000010000. Returns an empty string if it cannot be found. Godot uses SDL's internal mappings, supplemented by community-contributed mappings, to determine gamepad names and mappings based on this GUID.
 
 On Windows, all XInput joypad GUIDs will be overridden by Godot to __XINPUT_DEVICE__, because their mappings are the same.
-
-[SDL2 game controller database]: https://github.com/gabomdq/SDL_GameControllerDB
 */
 func GetJoyGuid(device Device) string { //gd:Input.get_joy_guid
 	return string(Advanced().GetJoyGuid(int64(device)).String())
@@ -447,7 +587,7 @@ func GetJoyGuid(device Device) string { //gd:Input.get_joy_guid
 /*
 Returns a dictionary with extra platform-specific information about the device, e.g. the raw gamepad name from the OS or the Steam Input index.
 
-On Windows, Linux, and macOS, the dictionary contains the following fields:
+On Windows, Linux, macOS, and iOS, the dictionary contains the following fields:
 
 raw_name: The name of the controller as it came from the OS, before getting renamed by the controller database.
 
@@ -455,13 +595,15 @@ vendor_id: The USB vendor ID of the device.
 
 product_id: The USB product ID of the device.
 
-steam_input_index: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
+serial_number: The serial number of the device. This key won't be present if the serial number is unavailable.
 
-On Windows, the dictionary can have an additional field:
+The dictionary can also include the following fields under selected platforms:
 
-xinput_index: The index of the controller in the XInput system. This key won't be present for devices not handled by XInput.
+steam_input_index: The Steam Input gamepad index (Windows, Linux, and macOS only). If the device is not a Steam Input device this key won't be present.
 
-Note: The returned dictionary is always empty on Android, iOS, visionOS, and Web.
+xinput_index: The index of the controller in the XInput system (Windows only). This key won't be present for devices not handled by XInput.
+
+Note: The returned dictionary is always empty on Android and Web.
 */
 func GetJoyInfo(device Device) JoyInfo { //gd:Input.get_joy_info
 	return JoyInfo(gd.DictionaryAs[JoyInfo](Advanced().GetJoyInfo(int64(device))))
@@ -480,6 +622,8 @@ func ShouldIgnoreDevice(vendor_id int, product_id int) bool { //gd:Input.should_
 
 /*
 Returns an slice containing the device IDs of all currently connected joypads.
+
+Note: The order of connected joypads can not be guaranteed to be the same after a project and/or the editor is restarted, because Godot doesn't save the order of joypad connections. Joypads are registered in the order they are discovered by Godot.
 */
 func GetConnectedJoypads() []int { //gd:Input.get_connected_joypads
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(Advanced().GetConnectedJoypads())))
@@ -487,6 +631,10 @@ func GetConnectedJoypads() []int { //gd:Input.get_connected_joypads
 
 /*
 Returns the strength of the joypad vibration: x is the strength of the weak motor, and y is the strength of the strong motor.
+
+Note: This method returns the same values that were passed to [StartJoyVibration], and these values do not change when the joypad's vibration runs out, they only get reset after a call to [StopJoyVibration].
+
+If you want to check if a joypad is still vibrating, use [IsJoyVibrating] instead.
 */
 func GetJoyVibrationStrength(device Device) Vector2.XY { //gd:Input.get_joy_vibration_strength
 	return Vector2.XY(Advanced().GetJoyVibrationStrength(int64(device)))
@@ -494,15 +642,54 @@ func GetJoyVibrationStrength(device Device) Vector2.XY { //gd:Input.get_joy_vibr
 
 /*
 Returns the duration of the current vibration effect in seconds.
+
+Note: This method returns the same value that was passed to [StartJoyVibration], and this value does not change when the joypad's vibration runs out, it only gets reset after a call to [StopJoyVibration].
+
+If you want to check if a joypad is still vibrating, use [IsJoyVibrating] instead.
 */
 func GetJoyVibrationDuration(device Device) Float.X { //gd:Input.get_joy_vibration_duration
 	return Float.X(Float.X(Advanced().GetJoyVibrationDuration(int64(device))))
 }
 
 /*
-Starts to vibrate the joypad. Joypads usually come with two rumble motors, a strong and a weak one. 'weak_magnitude' is the strength of the weak motor (between 0 and 1) and 'strong_magnitude' is the strength of the strong motor (between 0 and 1). 'duration' is the duration of the effect in seconds (a duration of 0 will try to play the vibration indefinitely). The vibration can be stopped early by calling [StopJoyVibration].
+Returns the remaining duration of the current vibration effect in seconds.
+*/
+func GetJoyVibrationRemainingDuration(device Device) Float.X { //gd:Input.get_joy_vibration_remaining_duration
+	return Float.X(Float.X(Advanced().GetJoyVibrationRemainingDuration(int64(device))))
+}
 
-Note: Not every hardware is compatible with long effect durations; it is recommended to restart an effect if it has to be played for more than a few seconds.
+/*
+Returns true if the joypad is still vibrating after a call to [StartJoyVibration].
+
+Unlike [GetJoyVibrationStrength] and [GetJoyVibrationDuration], this method returns false after the joypad's vibration runs out.
+*/
+func IsJoyVibrating(device Device) bool { //gd:Input.is_joy_vibrating
+	return bool(Advanced().IsJoyVibrating(int64(device)))
+}
+
+/*
+Returns true if the joypad supports vibration. See also [StartJoyVibration].
+
+Note: For macOS, vibration is only supported in macOS 11 and later. When connected via USB, vibration is only supported for major brand controllers (except Xbox One and Xbox Series X/S controllers) due to macOS limitations.
+*/
+func HasJoyVibration(device Device) bool { //gd:Input.has_joy_vibration
+	return bool(Advanced().HasJoyVibration(int64(device)))
+}
+
+/*
+Starts to vibrate the joypad. See also [HasJoyVibration] and [IsJoyVibrating].
+
+Joypads usually come with two rumble motors, a strong and a weak one.
+
+'weak_magnitude' is the strength of the weak motor (between 0.0 and 1.0).
+
+'strong_magnitude' is the strength of the strong motor (between 0.0 and 1.0).
+
+'duration' is the duration of the effect in seconds (a duration of 0.0 will try to play the vibration as long as possible, which is about 65 seconds).
+
+The vibration can be stopped early by calling [StopJoyVibration].
+
+See also [GetJoyVibrationStrength] and [GetJoyVibrationDuration].
 
 Note: For macOS, vibration is only supported in macOS 11 and later. When connected via USB, vibration is only supported for major brand controllers (except Xbox One and Xbox Series X/S controllers) due to macOS limitations.
 */
@@ -531,6 +718,8 @@ Note: For iOS, specifying the duration is only supported in iOS 13 and later.
 Note: For Web, the amplitude cannot be changed.
 
 Note: Some web browsers such as Safari and Firefox for Android do not support [VibrateHandheld].
+
+Note: Device settings such as vibration on/off, "do not disturb" mode or specific haptic feedback on/off may prevent [VibrateHandheld] effects.
 */
 func VibrateHandheld() { //gd:Input.vibrate_handheld
 	Advanced().VibrateHandheld(int64(500), float64(-1.0))
@@ -550,6 +739,8 @@ Note: For iOS, specifying the duration is only supported in iOS 13 and later.
 Note: For Web, the amplitude cannot be changed.
 
 Note: Some web browsers such as Safari and Firefox for Android do not support [VibrateHandheld].
+
+Note: Device settings such as vibration on/off, "do not disturb" mode or specific haptic feedback on/off may prevent [VibrateHandheld] effects.
 */
 func VibrateHandheldOptions(duration_ms int, amplitude Float.X) { //gd:Input.vibrate_handheld
 	Advanced().VibrateHandheld(int64(duration_ms), float64(amplitude))
@@ -611,6 +802,251 @@ func GetGyroscope() Vector3.XYZ { //gd:Input.get_gyroscope
 }
 
 /*
+Returns the acceleration, including the force of gravity, in m/s² of the joypad's accelerometer sensor, if the joypad has one and it's currently enabled. Otherwise, the method returns [Vector3.Zero]. See also [GetJoyGravity] and [SetJoyMotionSensorsEnabled].
+
+For a joypad held in front of you, the returned axes are defined as follows:
+
++X ... -X: left ... right;
+
++Y ... -Y: bottom ... top;
+
++Z ... -Z: farther ... closer.
+
+The gravity part value is measured as a vector with length of 9.8 away from the center of the Earth, which is a negative Y value.
+
+Note: This feature is only supported on Windows, Linux, and macOS. On iOS, joypad accelerometer sensor reading is not supported due to OS limitations.
+*/
+func GetJoyAccelerometer(device Device) Vector3.XYZ { //gd:Input.get_joy_accelerometer
+	return Vector3.XYZ(Advanced().GetJoyAccelerometer(int64(device)))
+}
+
+/*
+Returns the gravity in m/s² of the joypad's accelerometer sensor, if the joypad has one and it's currently enabled. Otherwise, the method returns [Vector3.Zero]. See also [GetJoyAccelerometer] and [SetJoyMotionSensorsEnabled].
+
+For a joypad held in front of you, the returned axes are defined as follows:
+
++X ... -X: left ... right;
+
++Y ... -Y: bottom ... top;
+
++Z ... -Z: farther ... closer.
+
+The gravity part value is measured as a vector with length of 9.8 away from the center of the Earth, which is a negative Y value.
+
+Note: This feature is only supported on Windows, Linux, and macOS. On iOS, joypad accelerometer sensor reading is not supported due to OS limitations.
+*/
+func GetJoyGravity(device Device) Vector3.XYZ { //gd:Input.get_joy_gravity
+	return Vector3.XYZ(Advanced().GetJoyGravity(int64(device)))
+}
+
+/*
+Returns the rotation rate in rad/s around a joypad's X, Y, and Z axes of the gyroscope sensor, if the joypad has one and it's currently enabled. Otherwise, the method returns [Vector3.Zero]. See also [SetJoyMotionSensorsEnabled].
+
+The rotation is positive in the counter-clockwise direction.
+
+For a joypad held in front of you, the returned axes are defined as follows:
+
+X: Angular speed around the X axis (pitch);
+
+Y: Angular speed around the Y axis (yaw);
+
+Z: Angular speed around the Z axis (roll).
+
+See [StartJoyMotionSensorsCalibration] for an example on how to use joypad gyroscope and gyroscope calibration in your games.
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func GetJoyGyroscope(device Device) Vector3.XYZ { //gd:Input.get_joy_gyroscope
+	return Vector3.XYZ(Advanced().GetJoyGyroscope(int64(device)))
+}
+
+/*
+Returns the joypad's motion sensor rate in Hz, if the joypad has motion sensors and they're currently enabled. See also [SetJoyMotionSensorsEnabled].
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func GetJoyMotionSensorsRate(device Device) Float.X { //gd:Input.get_joy_motion_sensors_rate
+	return Float.X(Float.X(Advanced().GetJoyMotionSensorsRate(int64(device))))
+}
+
+/*
+Returns true if the requested joypad has motion sensors (accelerometer and gyroscope) and they are currently enabled. See also [SetJoyMotionSensorsEnabled] and [HasJoyMotionSensors].
+
+See [StartJoyMotionSensorsCalibration] for an example on how to use joypad motion sensors and calibration in your games.
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func IsJoyMotionSensorsEnabled(device Device) bool { //gd:Input.is_joy_motion_sensors_enabled
+	return bool(Advanced().IsJoyMotionSensorsEnabled(int64(device)))
+}
+
+/*
+Enables or disables the motion sensors (accelerometer and gyroscope), if available, on the specified joypad.
+
+See [StartJoyMotionSensorsCalibration] for an example on how to use joypad motion sensors and calibration in your games.
+
+It's recommended to disable the motion sensors when they're no longer being used, because otherwise it might drain the controller battery faster.
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func SetJoyMotionSensorsEnabled(device Device, enable bool) { //gd:Input.set_joy_motion_sensors_enabled
+	Advanced().SetJoyMotionSensorsEnabled(int64(device), enable)
+}
+
+/*
+Returns true if the joypad has motion sensors (accelerometer and gyroscope).
+
+Note: On iOS, joypad accelerometer sensor reading is not supported due to OS limitations.
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func HasJoyMotionSensors(device Device) bool { //gd:Input.has_joy_motion_sensors
+	return bool(Advanced().HasJoyMotionSensors(int64(device)))
+}
+
+/*
+Starts the process of calibrating the specified joypad's gyroscope, if it has one.
+
+Once a joypad's gyroscope has been calibrated correctly (e.g. laying still on a table without being rotated), [GetJoyGyroscope] will return values close or equal to [Vector3.Zero] when the joypad is not being rotated.
+
+Here's an example of how to use joypad gyroscope and gyroscope calibration in your games:
+
+	package main
+
+	import (
+		"slices"
+
+		"graphics.gd/classdb/Input"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/Node3D"
+		"graphics.gd/variant/Angle"
+		"graphics.gd/variant/Float"
+	)
+
+	const gyroSensitivity = 10.0
+
+	type joyMotionExample struct {
+		Node.Extension[joyMotionExample]
+
+		Object Node3D.Instance // Put your node here.
+	}
+
+	func (n joyMotionExample) Ready() {
+		// In this example we only use the first connected joypad (id 0).
+		if !slices.Contains(Input.GetConnectedJoypads(), 0) {
+			return
+		}
+		if !Input.HasJoyMotionSensors(0) {
+			return
+		}
+		// We must enable the motion sensors before using them.
+		Input.SetJoyMotionSensorsEnabled(0, true)
+		// (Tell the users to put their joypads on a flat surface and wait for confirmation.)
+		// Start the calibration process.
+		n.calibrateMotion()
+	}
+
+	func (n joyMotionExample) Process(delta Float.X) {
+		// Only move the object if the joypad motion sensors are calibrated.
+		if Input.IsJoyMotionSensorsCalibrated(0) {
+			n.moveObject(delta)
+		}
+	}
+
+	func (n joyMotionExample) calibrateMotion() {
+		Input.StartJoyMotionSensorsCalibration(0)
+		// Wait for some time: await get_tree().create_timer(1.0).timeout
+		Input.StopJoyMotionSensorsCalibration(0)
+		// The joypad is now calibrated.
+	}
+
+	func (n joyMotionExample) moveObject(delta Float.X) {
+		var gyro = Input.GetJoyGyroscope(0)
+		var rotation = n.Object.Rotation()
+		rotation.X -= Angle.Radians(-gyro.Y * gyroSensitivity * delta) // Use rotation around the Y axis (yaw).
+		rotation.Y += Angle.Radians(-gyro.X * gyroSensitivity * delta) // Use rotation around the X axis (pitch).
+		n.Object.SetRotation(rotation)
+	}
+
+Note: Accelerometer sensor doesn't usually require calibration.
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func StartJoyMotionSensorsCalibration(device Device) { //gd:Input.start_joy_motion_sensors_calibration
+	Advanced().StartJoyMotionSensorsCalibration(int64(device))
+}
+
+/*
+Stops the calibration process of the specified joypad's motion sensors.
+
+See [StartJoyMotionSensorsCalibration] for an example on how to use joypad motion sensors and calibration in your games.
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func StopJoyMotionSensorsCalibration(device Device) { //gd:Input.stop_joy_motion_sensors_calibration
+	Advanced().StopJoyMotionSensorsCalibration(int64(device))
+}
+
+/*
+Clears the calibration information for the specified joypad's motion sensors, if it has any and if they were calibrated.
+
+See [StartJoyMotionSensorsCalibration] for an example on how to use joypad motion sensors and calibration in your games.
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func ClearJoyMotionSensorsCalibration(device Device) { //gd:Input.clear_joy_motion_sensors_calibration
+	Advanced().ClearJoyMotionSensorsCalibration(int64(device))
+}
+
+/*
+Returns the calibration information about the specified joypad's motion sensors in the form of a data structure, if it has any and if they have been calibrated, otherwise returns an empty data structure.
+
+The dictionary contains the following fields:
+
+gyroscope_offset: average offset in gyroscope values from [Vector2.Zero] in rad/s.
+
+See [StartJoyMotionSensorsCalibration] for an example on how to use joypad motion sensors and calibration in your games.
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func GetJoyMotionSensorsCalibration(device Device) map[string]any { //gd:Input.get_joy_motion_sensors_calibration
+	return map[string]any(gd.DictionaryAs[map[string]any](Advanced().GetJoyMotionSensorsCalibration(int64(device))))
+}
+
+/*
+Sets the specified joypad's calibration information. See also [GetJoyMotionSensorsCalibration].
+
+See [StartJoyMotionSensorsCalibration] for an example on how to use joypad motion sensors and calibration in your games.
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func SetJoyMotionSensorsCalibration(device Device, calibration_info map[string]any) { //gd:Input.set_joy_motion_sensors_calibration
+	Advanced().SetJoyMotionSensorsCalibration(int64(device), gd.DictionaryFromMap(calibration_info))
+}
+
+/*
+Returns true if the joypad's motion sensors have been calibrated.
+
+See [StartJoyMotionSensorsCalibration] for an example on how to use joypad motion sensors and calibration in your games.
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func IsJoyMotionSensorsCalibrated(device Device) bool { //gd:Input.is_joy_motion_sensors_calibrated
+	return bool(Advanced().IsJoyMotionSensorsCalibrated(int64(device)))
+}
+
+/*
+Returns true if the joypad's motion sensors are currently being calibrated.
+
+See [StartJoyMotionSensorsCalibration] for an example on how to use joypad motion sensors and calibration in your games.
+
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
+*/
+func IsJoyMotionSensorsCalibrating(device Device) bool { //gd:Input.is_joy_motion_sensors_calibrating
+	return bool(Advanced().IsJoyMotionSensorsCalibrating(int64(device)))
+}
+
+/*
 Sets the gravity value of the accelerometer sensor. Can be used for debugging on devices without a hardware sensor, for example in an editor on a PC.
 
 Note: This value can be immediately overwritten by the hardware sensor value on Android and iOS.
@@ -651,7 +1087,7 @@ Sets the joypad's LED light, if available, to the specified color. See also [Has
 
 Note: There is no way to get the color of the light from a joypad. If you need to know the assigned color, store it separately.
 
-Note: This feature is only supported on Windows, Linux, and macOS.
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
 */
 func SetJoyLight(device Device, color Color.RGBA) { //gd:Input.set_joy_light
 	Advanced().SetJoyLight(int64(device), Color.RGBA(color))
@@ -660,7 +1096,7 @@ func SetJoyLight(device Device, color Color.RGBA) { //gd:Input.set_joy_light
 /*
 Returns true if the joypad has an LED light that can change colors and/or brightness. See also [SetJoyLight].
 
-Note: This feature is only supported on Windows, Linux, and macOS.
+Note: This feature is only supported on Windows, Linux, macOS, and iOS.
 */
 func HasJoyLight(device Device) bool { //gd:Input.has_joy_light
 	return bool(Advanced().HasJoyLight(int64(device)))
@@ -894,6 +1330,20 @@ func SetEmulateTouchFromMouse(value bool) { //gd:Input.emulate_touch_from_mouse
 	class(self).SetEmulateTouchFromMouse(value)
 }
 
+/*
+If true, joypad input (including motion sensors) and LED light changes will be ignored and joypad vibration will be stopped when the application is not focused.
+*/
+func IgnoreJoypadOnUnfocusedApplication() bool { //gd:Input.ignore_joypad_on_unfocused_application
+	once.Do(singleton)
+	return bool(class(self).IsIgnoringJoypadOnUnfocusedApplication())
+}
+
+// SetIgnoreJoypadOnUnfocusedApplication sets the property returned by [IsIgnoringJoypadOnUnfocusedApplication].
+func SetIgnoreJoypadOnUnfocusedApplication(value bool) { //gd:Input.ignore_joypad_on_unfocused_application
+	once.Do(singleton)
+	class(self).SetIgnoreJoypadOnUnfocusedApplication(value)
+}
+
 func (self class) IsAnythingPressed() bool { //gd:Input.is_anything_pressed
 	once.Do(singleton)
 	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_anything_pressed, gdextension.SizeBool, &struct{}{})
@@ -1090,6 +1540,24 @@ func (self class) GetJoyVibrationDuration(device int64) float64 { //gd:Input.get
 	var ret = r_ret
 	return ret
 }
+func (self class) GetJoyVibrationRemainingDuration(device int64) float64 { //gd:Input.get_joy_vibration_remaining_duration
+	once.Do(singleton)
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_joy_vibration_remaining_duration, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = r_ret
+	return ret
+}
+func (self class) IsJoyVibrating(device int64) bool { //gd:Input.is_joy_vibrating
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_joy_vibrating, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = r_ret
+	return ret
+}
+func (self class) HasJoyVibration(device int64) bool { //gd:Input.has_joy_vibration
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_joy_vibration, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = r_ret
+	return ret
+}
 func (self class) StartJoyVibration(device int64, weak_magnitude float64, strong_magnitude float64, duration float64) { //gd:Input.start_joy_vibration
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.start_joy_vibration, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
@@ -1109,6 +1577,16 @@ func (self class) VibrateHandheld(duration_ms int64, amplitude float64) { //gd:I
 		duration_ms int64
 		amplitude   float64
 	}{duration_ms, amplitude})
+}
+func (self class) SetIgnoreJoypadOnUnfocusedApplication(enable bool) { //gd:Input.set_ignore_joypad_on_unfocused_application
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_ignore_joypad_on_unfocused_application, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
+func (self class) IsIgnoringJoypadOnUnfocusedApplication() bool { //gd:Input.is_ignoring_joypad_on_unfocused_application
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_ignoring_joypad_on_unfocused_application, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
 }
 func (self class) GetGravity() Vector3.XYZ { //gd:Input.get_gravity
 	once.Do(singleton)
@@ -1131,6 +1609,86 @@ func (self class) GetMagnetometer() Vector3.XYZ { //gd:Input.get_magnetometer
 func (self class) GetGyroscope() Vector3.XYZ { //gd:Input.get_gyroscope
 	once.Do(singleton)
 	var r_ret = jumponly.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_gyroscope, gdextension.SizeVector3, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetJoyAccelerometer(device int64) Vector3.XYZ { //gd:Input.get_joy_accelerometer
+	once.Do(singleton)
+	var r_ret = noescape.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_joy_accelerometer, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetJoyGravity(device int64) Vector3.XYZ { //gd:Input.get_joy_gravity
+	once.Do(singleton)
+	var r_ret = noescape.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_joy_gravity, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetJoyGyroscope(device int64) Vector3.XYZ { //gd:Input.get_joy_gyroscope
+	once.Do(singleton)
+	var r_ret = noescape.Call[Vector3.XYZ](gdreference.GetObject(self.AsObject()[0]), methods.get_joy_gyroscope, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetJoyMotionSensorsRate(device int64) float64 { //gd:Input.get_joy_motion_sensors_rate
+	once.Do(singleton)
+	var r_ret = noescape.Call[float64](gdreference.GetObject(self.AsObject()[0]), methods.get_joy_motion_sensors_rate, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = r_ret
+	return ret
+}
+func (self class) IsJoyMotionSensorsEnabled(device int64) bool { //gd:Input.is_joy_motion_sensors_enabled
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_joy_motion_sensors_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetJoyMotionSensorsEnabled(device int64, enable bool) { //gd:Input.set_joy_motion_sensors_enabled
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_joy_motion_sensors_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+		device int64
+		enable bool
+	}{device, enable})
+}
+func (self class) HasJoyMotionSensors(device int64) bool { //gd:Input.has_joy_motion_sensors
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_joy_motion_sensors, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = r_ret
+	return ret
+}
+func (self class) StartJoyMotionSensorsCalibration(device int64) { //gd:Input.start_joy_motion_sensors_calibration
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.start_joy_motion_sensors_calibration, 0|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+}
+func (self class) StopJoyMotionSensorsCalibration(device int64) { //gd:Input.stop_joy_motion_sensors_calibration
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.stop_joy_motion_sensors_calibration, 0|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+}
+func (self class) ClearJoyMotionSensorsCalibration(device int64) { //gd:Input.clear_joy_motion_sensors_calibration
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.clear_joy_motion_sensors_calibration, 0|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+}
+func (self class) GetJoyMotionSensorsCalibration(device int64) Dictionary.Any { //gd:Input.get_joy_motion_sensors_calibration
+	once.Do(singleton)
+	var r_ret = noescape.Call[gdextension.Dictionary](gdreference.GetObject(self.AsObject()[0]), methods.get_joy_motion_sensors_calibration, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
+	return ret
+}
+func (self class) SetJoyMotionSensorsCalibration(device int64, calibration_info Dictionary.Any) { //gd:Input.set_joy_motion_sensors_calibration
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_joy_motion_sensors_calibration, 0|(gdextension.SizeInt<<4)|(gdextension.SizeDictionary<<8), &struct {
+		device           int64
+		calibration_info gdextension.Dictionary
+	}{device, pointers.Get(gd.InternalDictionary(calibration_info))})
+}
+func (self class) IsJoyMotionSensorsCalibrated(device int64) bool { //gd:Input.is_joy_motion_sensors_calibrated
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_joy_motion_sensors_calibrated, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
+	var ret = r_ret
+	return ret
+}
+func (self class) IsJoyMotionSensorsCalibrating(device int64) bool { //gd:Input.is_joy_motion_sensors_calibrating
+	once.Do(singleton)
+	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_joy_motion_sensors_calibrating, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = r_ret
 	return ret
 }
@@ -1429,8 +1987,18 @@ const (
 	JoyButtonPaddle4 JoyButton = 19
 	// Game controller SDL touchpad button.
 	JoyButtonTouchpad JoyButton = 20
+	// Game controller SDL miscellaneous button. Used by Nintendo Switch 2 Pro Controller and Horipad Steam controllers.
+	JoyButtonMisc2 JoyButton = 21
+	// Game controller SDL miscellaneous button.
+	JoyButtonMisc3 JoyButton = 22
+	// Game controller SDL miscellaneous button.
+	JoyButtonMisc4 JoyButton = 23
+	// Game controller SDL miscellaneous button.
+	JoyButtonMisc5 JoyButton = 24
+	// Game controller SDL miscellaneous button.
+	JoyButtonMisc6 JoyButton = 25
 	// The number of SDL game controller buttons.
-	JoyButtonSdlMax JoyButton = 21
+	JoyButtonSdlMax JoyButton = 26
 	// The maximum number of game controller buttons supported by the engine. The actual limit may be lower on specific platforms:
 	//
 	// - Android: Up to 36 buttons.
@@ -1850,9 +2418,29 @@ const (
 type KeyModifierMask int64 //gd:KeyModifierMask
 
 const (
-	// Key Code mask.
+	// Bit mask with all bits enabled except for modifier keys. Apply it to remove modifiers.
+	//
+	//
+	//
+	// var keycode = KEY_A | KEY_MASK_SHIFT
+	//
+	// keycode = keycode & KEY_CODE_MASK
+	//
+	// print(keycode) # KEY_A
+	//
+	//
 	KeyCodeMask KeyModifierMask = 8388607
-	// Modifier key mask.
+	// Bit mask with all modifier bits enabled. Apply it to isolate modifiers.
+	//
+	//
+	//
+	// var keycode = KEY_A | KEY_MASK_SHIFT
+	//
+	// keycode = keycode & KEY_MODIFIER_MASK
+	//
+	// print(keycode) # KEY_MASK_SHIFT
+	//
+	//
 	KeyModifierMaskDefault KeyModifierMask = 2130706432
 	// Automatically remapped to [KeyMeta] on macOS and [KeyCtrl] on other platforms, this mask is never set in the actual events, and should be used for key mapping only.
 	KeyMaskCmdOrCtrl KeyModifierMask = 16777216

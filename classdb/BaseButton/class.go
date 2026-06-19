@@ -391,11 +391,12 @@ func (self Instance) SetShortcutFeedback(value bool) Instance { //gd:BaseButton.
 }
 
 /*
-If true, the button will add information about its shortcut in the tooltip.
+If true, the button will add information about its shortcut in the tooltip. This includes the shortcut's events and its [Resource.ResourceName]. If both events and name are empty, the shortcut will not be included.
 
 Note: This property does nothing when the tooltip control is customized using [Control.MakeCustomTooltip].
 
 [Control.MakeCustomTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MakeCustomTooltip
+[Resource.ResourceName]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourceName
 */
 func (self Instance) ShortcutInTooltip() bool { //gd:BaseButton.shortcut_in_tooltip
 	return bool(class(self).IsShortcutInTooltipEnabled())

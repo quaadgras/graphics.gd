@@ -126,7 +126,7 @@ type Interface interface {
 	//
 	// [AudioServer]: https://pkg.go.dev/graphics.gd/classdb/AudioServer
 	// [ProcessSilence]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectInstance#Interface
-	Process(src_buffer Array.Contains[AudioFrame], dst_buffer Array.Contains[AudioFrame])
+	Process(src_buffer Array.Contains[AudioFrame], r_dst_buffer Array.Contains[AudioFrame])
 	// Override this method to customize the processing behavior of this effect instance.
 	//
 	// Should return true to force the [AudioServer] to always call [Process], even if the bus has been muted or cannot otherwise be heard.
@@ -141,7 +141,7 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Process(src_buffer Array.Contains[AudioFrame], dst_buffer Array.Contains[AudioFrame]) {
+func (self implementation) Process(src_buffer Array.Contains[AudioFrame], r_dst_buffer Array.Contains[AudioFrame]) {
 }
 func (self implementation) ProcessSilence() (_ bool) {
 	return
@@ -155,15 +155,15 @@ Note: It is not useful to override this method in GDScript or C#. Only GDExtensi
 [AudioServer]: https://pkg.go.dev/graphics.gd/classdb/AudioServer
 [ProcessSilence]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectInstance#Interface
 */
-func (Instance) _process(impl func(ptr gdclass.Receiver, src_buffer Array.Contains[AudioFrame], dst_buffer Array.Contains[AudioFrame])) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _process(impl func(ptr gdclass.Receiver, src_buffer Array.Contains[AudioFrame], r_dst_buffer Array.Contains[AudioFrame])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var src_buffer_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
-		var dst_buffer_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
+		var r_dst_buffer_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
 		var frame_count = gd.UnsafeGet[int64](p_args, 2)
 		var src_buffer = gdmemory.ArrayContains[AudioFrame](src_buffer_ptr, int(frame_count))
-		var dst_buffer = gdmemory.ArrayContains[AudioFrame](dst_buffer_ptr, int(frame_count))
+		var r_dst_buffer = gdmemory.ArrayContains[AudioFrame](r_dst_buffer_ptr, int(frame_count))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, src_buffer, dst_buffer)
+		impl(self, src_buffer, r_dst_buffer)
 	}
 }
 
@@ -221,18 +221,17 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.AudioEffectInstance{gdclass.NewAudioEffectInstance(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
-func (class) _process(impl func(ptr gdclass.Receiver, src_buffer Engine.Pointer[AudioFrame], dst_buffer Engine.Pointer[AudioFrame], frame_count int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _process(impl func(ptr gdclass.Receiver, src_buffer Engine.Pointer[AudioFrame], r_dst_buffer Engine.Pointer[AudioFrame], frame_count int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var src_buffer = gdmemory.WrapPointer[AudioFrame](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
 		defer gdmemory.Barrier()
-		var dst_buffer = gdmemory.WrapPointer[AudioFrame](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
+		var r_dst_buffer = gdmemory.WrapPointer[AudioFrame](gd.UnsafeGet[gdextension.Pointer](p_args, 1))
 		var frame_count = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, src_buffer, dst_buffer, frame_count)
+		impl(self, src_buffer, r_dst_buffer, frame_count)
 	}
 }
 func (class) _process_silence(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {

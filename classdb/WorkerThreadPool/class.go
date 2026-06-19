@@ -341,6 +341,7 @@ func (self class) GetCallerGroupId() int64 { //gd:WorkerThreadPool.get_caller_gr
 	var ret = r_ret
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

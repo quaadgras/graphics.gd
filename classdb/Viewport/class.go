@@ -229,7 +229,7 @@ var methods struct {
 	set_disable_3d                              gdextension.MethodForClass `hash:"2586408642"`
 	is_3d_disabled                              gdextension.MethodForClass `hash:"36873697"`
 	set_use_xr                                  gdextension.MethodForClass `hash:"2586408642"`
-	is_using_xr                                 gdextension.MethodForClass `hash:"2240911060"`
+	is_using_xr                                 gdextension.MethodForClass `hash:"36873697"`
 	set_scaling_3d_mode                         gdextension.MethodForClass `hash:"1531597597"`
 	get_scaling_3d_mode                         gdextension.MethodForClass `hash:"2597660574"`
 	set_scaling_3d_scale                        gdextension.MethodForClass `hash:"373806689"`
@@ -1086,6 +1086,8 @@ The automatic LOD bias to use for meshes rendered within the [Viewport] (this is
 
 To control this property on the root viewport, set the [ProjectSettings] "rendering/mesh_lod/lod_change/threshold_pixels" project setting.
 
+Note: Depending on the mesh's attributes (vertex colors, blend shapes, ...), a mesh may have fewer levels of LOD generated to avoid visible distortion of the mesh once it is affected by vertex colors or blend shapes. Meshes with a very low vertex count will also not have any LODs generated, which means this setting will not affect them at all. In general, this setting makes the largest impact on static meshes with a high vertex count.
+
 Note: [MeshLodThreshold] does not affect [GeometryInstance3D] visibility ranges (also known as "manual" LOD or hierarchical LOD).
 
 [GeometryInstance3D]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D
@@ -1173,9 +1175,11 @@ Affects the final texture sharpness by reading from a lower or higher mipmap (al
 
 Enabling temporal antialiasing ([UseTaa]) will automatically apply a -0.5 offset to this value, while enabling FXAA ([ScreenSpaceAa]) will automatically apply a -0.25 offset to this value. If both TAA and FXAA are enabled at the same time, an offset of -0.75 is applied to this value.
 
+To control this property on the root viewport, set the [ProjectSettings] "rendering/textures/default_filters/texture_mipmap_bias" project setting.
+
 Note: If [Scaling3dScale] is lower than 1.0 (exclusive), [TextureMipmapBias] is used to adjust the automatic mipmap bias which is calculated internally based on the scale factor. The formula for this is log2(scaling_3d_scale) + mipmap_bias.
 
-To control this property on the root viewport, set the [ProjectSettings] "rendering/textures/default_filters/texture_mipmap_bias" project setting.
+Note: This property is only supported in the Forward+ and Mobile renderers, not Compatibility. In Compatibility, this property is always treated as if it was set to 0.0.
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [Scaling3dScale]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Scaling3dScale
@@ -2309,8 +2313,14 @@ const (
 	// [RenderingDevice.LimitGet]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.LimitGet
 	// [Scaling3dScale]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Scaling3dScale
 	Scaling3dModeMetalfxTemporal Scaling3DMode = 4
+	// Use nearest-neighbor filtering for the viewport's 3D buffer. This looks crisper than [Scaling3dModeBilinear] and has no additional rendering cost. The amount of scaling can be set using [Scaling3dScale]. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
+	//
+	// Note: When using the Nearest scaling mode, to avoid uneven pixel scaling, it's highly recommended to use a value equal to an integer divisor with a dividend of 1. For example, it's best to use a scale of 0.5 (1/2), 0.3333 (1/3), 0.25 (1/4), 0.2 (1/5), and so on.
+	//
+	// [Scaling3dScale]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Scaling3dScale
+	Scaling3dModeNearest Scaling3DMode = 5
 	// Represents the size of the [Scaling3DMode] enum.
-	Scaling3dModeMax Scaling3DMode = 5
+	Scaling3dModeMax Scaling3DMode = 6
 )
 
 type MSAA int64 //gd:Viewport.MSAA
@@ -2402,6 +2412,8 @@ const (
 	// Objects are displayed as wireframe models.
 	//
 	// Note: [RenderingServer.SetDebugGenerateWireframes] must be called before loading any meshes for wireframes to be visible when using the Compatibility renderer.
+	//
+	// Note: In the Compatibility renderer, backfaces are always visible when using wireframe rendering. In the Forward+ and Mobile renderers, wireframes follow the material's backface culling properties instead.
 	//
 	// [RenderingServer.SetDebugGenerateWireframes]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#SetDebugGenerateWireframes
 	DebugDrawWireframe DebugDraw = 4
@@ -2536,6 +2548,19 @@ const (
 	//
 	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	DebugDrawInternalBuffer DebugDraw = 26
+	// Draws the cluster used by [AreaLight3D] nodes to optimize light rendering.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
+	//
+	// [AreaLight3D]: https://pkg.go.dev/graphics.gd/classdb/AreaLight3D
+	DebugDrawClusterAreaLights DebugDraw = 27
+	// Draws the atlas used by [AreaLight3D] nodes in the upper left quadrant of the [Viewport].
+	//
+	// Note: Only supported when using the Forward+ or Mobile rendering method.
+	//
+	// [AreaLight3D]: https://pkg.go.dev/graphics.gd/classdb/AreaLight3D
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+	DebugDrawAreaLightAtlas DebugDraw = 28
 )
 
 type DefaultCanvasItemTextureFilter int64 //gd:Viewport.DefaultCanvasItemTextureFilter
@@ -2559,8 +2584,13 @@ const (
 	// [Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
 	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	DefaultCanvasItemTextureFilterNearestWithMipmaps DefaultCanvasItemTextureFilter = 3
+	// The [Viewport] will inherit the filter from its parent [CanvasItem] or [Viewport].
+	//
+	// [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+	DefaultCanvasItemTextureFilterParentNode DefaultCanvasItemTextureFilter = 4
 	// Represents the size of the [DefaultCanvasItemTextureFilter] enum.
-	DefaultCanvasItemTextureFilterMax DefaultCanvasItemTextureFilter = 4
+	DefaultCanvasItemTextureFilterMax DefaultCanvasItemTextureFilter = 5
 )
 
 type DefaultCanvasItemTextureRepeat int64 //gd:Viewport.DefaultCanvasItemTextureRepeat
@@ -2572,8 +2602,13 @@ const (
 	DefaultCanvasItemTextureRepeatEnabled DefaultCanvasItemTextureRepeat = 1
 	// Flip the texture when repeating so that the edge lines up instead of abruptly changing.
 	DefaultCanvasItemTextureRepeatMirror DefaultCanvasItemTextureRepeat = 2
+	// The [Viewport] will inherit the repeat mode from its parent [CanvasItem] or [Viewport].
+	//
+	// [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+	DefaultCanvasItemTextureRepeatParentNode DefaultCanvasItemTextureRepeat = 3
 	// Represents the size of the [DefaultCanvasItemTextureRepeat] enum.
-	DefaultCanvasItemTextureRepeatMax DefaultCanvasItemTextureRepeat = 3
+	DefaultCanvasItemTextureRepeatMax DefaultCanvasItemTextureRepeat = 4
 )
 
 type SDFOversize int64 //gd:Viewport.SDFOversize

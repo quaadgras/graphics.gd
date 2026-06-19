@@ -190,6 +190,7 @@ var methods struct {
 	is_anything_selected         gdextension.MethodForClass `hash:"2240911060"`
 	get_item_at_position         gdextension.MethodForClass `hash:"2300324924"`
 	ensure_current_is_visible    gdextension.MethodForClass `hash:"3218959716"`
+	center_on_current            gdextension.MethodForClass `hash:"3058350285"`
 	get_v_scroll_bar             gdextension.MethodForClass `hash:"2630340773"`
 	get_h_scroll_bar             gdextension.MethodForClass `hash:"4004517983"`
 	set_scroll_hint_mode         gdextension.MethodForClass `hash:"2917787337"`
@@ -560,7 +561,7 @@ func (self Instance) GetItemTooltip(idx int) string { //gd:ItemList.get_item_too
 }
 
 /*
-Select the item at the specified index.
+Selects the item at the specified index.
 
 Note: This method does not trigger the item selection signal.
 */
@@ -569,7 +570,7 @@ func (self Instance) Select(idx int) { //gd:ItemList.select
 }
 
 /*
-Select the item at the specified index.
+Selects the item at the specified index.
 
 Note: This method does not trigger the item selection signal.
 */
@@ -667,10 +668,34 @@ func (self MoreArgs) GetItemAtPosition(position Vector2.XY, exact bool) int { //
 }
 
 /*
-Ensure current selection is visible, adjusting the scroll position as necessary.
+Ensures the currently selected item (the first selected item if multiple selection is enabled) is visible, adjusting the scroll position as necessary. See also [CenterOnCurrent].
+
+[CenterOnCurrent]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.CenterOnCurrent
 */
 func (self Instance) EnsureCurrentIsVisible() { //gd:ItemList.ensure_current_is_visible
 	Advanced(self).EnsureCurrentIsVisible()
+}
+
+/*
+Ensures the currently selected item (the first selected item if multiple selection is enabled) is visible, adjusting the scroll position as necessary to place the item at the center of the list if possible. See also [EnsureCurrentIsVisible].
+
+Fails and prints an error if both arguments are false.
+
+[EnsureCurrentIsVisible]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.EnsureCurrentIsVisible
+*/
+func (self Instance) CenterOnCurrent() { //gd:ItemList.center_on_current
+	Advanced(self).CenterOnCurrent(true, true)
+}
+
+/*
+Ensures the currently selected item (the first selected item if multiple selection is enabled) is visible, adjusting the scroll position as necessary to place the item at the center of the list if possible. See also [EnsureCurrentIsVisible].
+
+Fails and prints an error if both arguments are false.
+
+[EnsureCurrentIsVisible]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.EnsureCurrentIsVisible
+*/
+func (self MoreArgs) CenterOnCurrent(center_verically bool, center_horizontally bool) { //gd:ItemList.center_on_current
+	Advanced(self).CenterOnCurrent(center_verically, center_horizontally)
 }
 
 /*
@@ -1359,6 +1384,12 @@ func (self class) GetItemAtPosition(position Vector2.XY, exact bool) int64 { //g
 }
 func (self class) EnsureCurrentIsVisible() { //gd:ItemList.ensure_current_is_visible
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_current_is_visible, 0, &struct{}{})
+}
+func (self class) CenterOnCurrent(center_verically bool, center_horizontally bool) { //gd:ItemList.center_on_current
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.center_on_current, 0|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), &struct {
+		center_verically    bool
+		center_horizontally bool
+	}{center_verically, center_horizontally})
 }
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ItemList.get_v_scroll_bar
 	var r_ret = jumponly.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})

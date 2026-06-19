@@ -163,6 +163,8 @@ type Interface interface {
 	CanBeHidden() bool
 	// Override this method to define whether Node3D with this gizmo should be selectable even when the gizmo is hidden.
 	IsSelectableWhenHidden() bool
+	// Override this method to define whether the gizmos should commit when the final handle position is the same as the initial one. Returns false if not overridden.
+	CanCommitHandleOnClick() bool
 	// Override this method to add all the gizmo elements whenever a gizmo update is requested. It's common to call [EditorNode3DGizmo.Clear] at the beginning of this method and then add visual elements depending on the node's properties.
 	//
 	// [EditorNode3DGizmo.Clear]: https://pkg.go.dev/graphics.gd/classdb/EditorNode3DGizmo#Instance.Clear
@@ -256,6 +258,9 @@ func (self implementation) CanBeHidden() (_ bool) {
 	return
 }
 func (self implementation) IsSelectableWhenHidden() (_ bool) {
+	return
+}
+func (self implementation) CanCommitHandleOnClick() (_ bool) {
 	return
 }
 func (self implementation) Redraw(gizmo EditorNode3DGizmo.Instance) {
@@ -372,6 +377,17 @@ func (Instance) _can_be_hidden(impl func(ptr gdclass.Receiver) bool) (cb gd.Exte
 Override this method to define whether Node3D with this gizmo should be selectable even when the gizmo is hidden.
 */
 func (Instance) _is_selectable_when_hidden(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Override this method to define whether the gizmos should commit when the final handle position is the same as the initial one. Returns false if not overridden.
+*/
+func (Instance) _can_commit_handle_on_click(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -773,7 +789,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.EditorNode3DGizmoPlugin{gdclass.NewEditorNode3DGizmoPlugin(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -829,6 +844,13 @@ func (class) _can_be_hidden(impl func(ptr gdclass.Receiver) bool) (cb gd.Extensi
 	}
 }
 func (class) _is_selectable_when_hidden(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+func (class) _can_commit_handle_on_click(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -1063,6 +1085,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._can_be_hidden)
 	case "_is_selectable_when_hidden":
 		return reflect.ValueOf(self._is_selectable_when_hidden)
+	case "_can_commit_handle_on_click":
+		return reflect.ValueOf(self._can_commit_handle_on_click)
 	case "_redraw":
 		return reflect.ValueOf(self._redraw)
 	case "_get_handle_name":
@@ -1106,6 +1130,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._can_be_hidden)
 	case "_is_selectable_when_hidden":
 		return reflect.ValueOf(self._is_selectable_when_hidden)
+	case "_can_commit_handle_on_click":
+		return reflect.ValueOf(self._can_commit_handle_on_click)
 	case "_redraw":
 		return reflect.ValueOf(self._redraw)
 	case "_get_handle_name":

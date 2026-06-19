@@ -199,7 +199,28 @@ func (self Instance) RandiRange(from int, to int) int { //gd:RandomNumberGenerat
 }
 
 /*
-Returns a random index with non-uniform weights. Prints an error and returns -1 if the array is empty.
+Returns a random integer between 0 and the size of the array that is passed as a parameter. Each value in the array should be a floating-point number that represents the relative likelihood that it will be returned as an index. A higher value means the value is more likely to be returned as an index, while a value of 0 means it will never be returned as an index.
+
+For example, if [0.5, 1, 1, 2] is passed as a parameter, then the method is twice as likely to return 3 (the index of the value 2) and twice as unlikely to return 0 (the index of the value 0.5) compared to the indices 1 and 2.
+
+Prints an error and returns -1 if the array is empty.
+
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/RandomNumberGenerator"
+	)
+
+	func ExampleRandWeighted() {
+		var rng = RandomNumberGenerator.New()
+		var myArray = []string{"one", "two", "three", "four"}
+		var weights = []float32{0.5, 1, 1, 2}
+		// Prints one of the four elements in myArray.
+		// It is more likely to print "four", and less likely to print "one".
+		fmt.Println(myArray[rng.RandWeighted(weights)])
+	}
 */
 func (self Instance) RandWeighted(weights []float32) int { //gd:RandomNumberGenerator.rand_weighted
 	return int(int(Advanced(self).RandWeighted(Packed.New(weights...))))
@@ -252,7 +273,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.RandomNumberGenerator{gdclass.NewRandomNumberGenerator(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -262,9 +282,9 @@ Initializes the random number generator state based on the given seed value. A g
 
 Note: The RNG does not have an avalanche effect, and can output similar random streams given similar seeds. Consider using a hash function to improve your seed quality if they're sourced externally.
 
-Note: Setting this property produces a side effect of changing the internal [State], so make sure to initialize the seed before modifying the [State]:
-
 Note: The default value of this property is pseudo-random, and changes when calling [Randomize]. The 0 value documented here is a placeholder, and not the actual default seed.
+
+Note: Setting this property produces a side effect of changing the internal [State], so make sure to initialize the seed before modifying the [State]:
 
 [Randomize]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator#Instance.Randomize
 [State]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator#Instance.State

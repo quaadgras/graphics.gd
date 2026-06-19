@@ -535,7 +535,7 @@ func (self Instance) SetTabsVisible(value bool) Instance { //gd:TabContainer.tab
 }
 
 /*
-If true, all tabs are drawn in front of the panel. If false, inactive tabs are drawn behind the panel.
+This doesn't do anything.
 */
 func (self Instance) AllTabsInFront() bool { //gd:TabContainer.all_tabs_in_front
 	return bool(class(self).IsAllTabsInFront())

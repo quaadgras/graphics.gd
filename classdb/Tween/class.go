@@ -7,7 +7,7 @@ Tweens are mostly useful for animations requiring a numerical property to be int
 
 A [Tween] can be created by using either [SceneTree.CreateTween] or [Node.CreateTween]. [Tween]s created manually (i.e. by using Tween.new()) are invalid and can't be used for tweening values.
 
-A tween animation is created by adding [Tweener]s to the [Tween] object, using [TweenProperty], [TweenInterval], [TweenCallback] or [TweenMethod]:
+A tween animation is created by adding [Tweener]s to the [Tween] object, using [TweenProperty], [TweenInterval], [TweenCallback], [TweenMethod], [TweenSubtween], or [TweenAwait]:
 
 	package main
 
@@ -81,10 +81,10 @@ Another interesting use for [Tween]s is animating arbitrary sets of objects:
 		"graphics.gd/variant/Vector2"
 	)
 
-	func ExampleTweenObjects(node Node.Instance) {
+	func ExampleTweenChildren(node Node.Instance) {
 		var tween = node.CreateTween()
 		for _, sprite := range node.GetChildren() {
-			PropertyTweener.Make(tween, sprite.AsObject(), "position", Vector2.Zero, 1.0)
+			PropertyTweener.Make(tween, sprite.AsObject(), "position", Vector2.New(0, 0), 1)
 		}
 	}
 
@@ -129,10 +129,12 @@ Note: The tween is processed after all of the nodes in the current frame, i.e. n
 [SetTrans]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetTrans
 [Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
 [Tween easing and transition types cheatsheet]: https://raw.githubusercontent.com/godotengine/godot-docs/master/img/tween_cheatsheet.webp
+[TweenAwait]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.TweenAwait
 [TweenCallback]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.TweenCallback
 [TweenInterval]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.TweenInterval
 [TweenMethod]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.TweenMethod
 [TweenProperty]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.TweenProperty
+[TweenSubtween]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.TweenSubtween
 [Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
 [easings.net]: https://easings.net/
 */
@@ -153,6 +155,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/AwaitTweener"
 import "graphics.gd/classdb/CallbackTweener"
 import "graphics.gd/classdb/IntervalTweener"
 import "graphics.gd/classdb/SubtweenTweener"
@@ -233,12 +236,14 @@ var methods struct {
 	tween_callback         gdextension.MethodForClass `hash:"1540176488"`
 	tween_method           gdextension.MethodForClass `hash:"2337877153"`
 	tween_subtween         gdextension.MethodForClass `hash:"1567358477"`
+	tween_await            gdextension.MethodForClass `hash:"2242837462"`
 	custom_step            gdextension.MethodForClass `hash:"330693286"`
 	stop                   gdextension.MethodForClass `hash:"3218959716"`
 	pause                  gdextension.MethodForClass `hash:"3218959716"`
 	play                   gdextension.MethodForClass `hash:"3218959716"`
 	kill                   gdextension.MethodForClass `hash:"3218959716"`
 	get_total_elapsed_time gdextension.MethodForClass `hash:"1740695150"`
+	has_tweeners           gdextension.MethodForClass `hash:"36873697"`
 	is_running             gdextension.MethodForClass `hash:"2240911060"`
 	is_valid               gdextension.MethodForClass `hash:"2240911060"`
 	bind_node              gdextension.MethodForClass `hash:"2946786331"`
@@ -288,7 +293,35 @@ Creates and appends an [IntervalTweener]. This method can be used to create dela
 
 Example: Creating an interval in code execution:
 
+	package main
+
+	import "graphics.gd/classdb/Node"
+
+	func ExampleTweenInterval(node Node.Instance) {
+		// ... some code
+		node.CreateTween().TweenInterval(2) // await ....finished
+		// ... more code
+	}
+
 Example: Creating an object that moves back and forth and jumps every few seconds:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+		"graphics.gd/classdb/Sprite2D"
+	)
+
+	func ExampleTweenIntervalLoop(node Node.Instance, sprite Sprite2D.Instance, jump func()) {
+		var tween = node.CreateTween().SetLoops()
+		PropertyTweener.Make(tween, sprite.AsObject(), "position:x", 200.0, 1).AsRelative()
+		tween.TweenCallback(jump)
+		tween.TweenInterval(2)
+		PropertyTweener.Make(tween, sprite.AsObject(), "position:x", -200.0, 1).AsRelative()
+		tween.TweenCallback(jump)
+		tween.TweenInterval(2)
+	}
 
 [IntervalTweener]: https://pkg.go.dev/graphics.gd/classdb/IntervalTweener
 [Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
@@ -303,7 +336,34 @@ Creates and appends a [CallbackTweener]. This method can be used to call an arbi
 
 Example: Object that keeps shooting every 1 second:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/SceneTree"
+	)
+
+	func ExampleTweenCallbackDelay(node Node.Instance, shoot func()) {
+		var tween = SceneTree.Get(node).CreateTween().SetLoops()
+		tween.TweenCallback(shoot).SetDelay(1.0)
+	}
+
 Example: Turning a sprite red and then blue, with 2 second delay:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/SceneTree"
+		"graphics.gd/classdb/Sprite2D"
+		"graphics.gd/variant/Color"
+	)
+
+	func ExampleTweenCallbackBind(node Node.Instance, sprite Sprite2D.Instance) {
+		var tween = SceneTree.Get(node).CreateTween()
+		tween.TweenCallback(func() { sprite.AsCanvasItem().SetModulate(Color.W3C.Red) }).SetDelay(2)
+		tween.TweenCallback(func() { sprite.AsCanvasItem().SetModulate(Color.W3C.Blue) }).SetDelay(2)
+	}
 
 [Callable.Bind]: https://pkg.go.dev/graphics.gd/classdb/Callable#Instance.Bind
 [CallbackTweener]: https://pkg.go.dev/graphics.gd/classdb/CallbackTweener
@@ -314,6 +374,26 @@ func (self Instance) TweenCallback(callback func()) CallbackTweener.Instance { /
 
 /*
 Creates and appends a [SubtweenTweener]. This method can be used to nest 'subtween' within this [Tween], allowing for the creation of more complex and composable sequences.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+	)
+
+	func ExampleTweenSubtween(node Node.Instance) {
+		// Subtween will rotate the object.
+		var subtween = node.CreateTween()
+		PropertyTweener.Make(subtween, node.AsObject(), "rotation_degrees", 45.0, 1)
+		PropertyTweener.Make(subtween, node.AsObject(), "rotation_degrees", 0.0, 1)
+
+		// Parent tween will execute the subtween as one of its steps.
+		var tween = node.CreateTween()
+		PropertyTweener.Make(tween, node.AsObject(), "position:x", 500, 3)
+		tween.TweenSubtween(subtween)
+		PropertyTweener.Make(tween, node.AsObject(), "position:x", 300, 2)
+	}
 
 Note: The methods [Pause], [Stop], and [SetLoops] can cause the parent [Tween] to get stuck on the subtween step; see the documentation for those methods for more information.
 
@@ -332,6 +412,70 @@ func (self Instance) TweenSubtween(subtween Instance) SubtweenTweener.Instance {
 }
 
 /*
+Creates and appends an [AwaitTweener]. This method can be used to await a signal to be emitted and create asynchronous animations or cutscenes.
+
+The animation will not progress to the next step until the awaited signal is emitted or the connection becomes invalid (e.g. as a result of freeing the target object). If you know that the emission may not happen, use [AwaitTweener.SetTimeout].
+
+Note: The awaited signal should be emitted during the step when [AwaitTweener] is active.
+
+Example: An object launches itself and explodes upon collision or after 4 seconds.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Signal"
+	)
+
+	func ExampleTweenAwait(node Node.Instance, collided Signal.Any, launch, explode func()) {
+		var tween = node.CreateTween()
+		tween.TweenCallback(launch)
+		tween.TweenAwait(collided).SetTimeout(4.0)
+		tween.TweenCallback(explode)
+	}
+
+Example: A character walks to a specific point, says some lines and walks back when the player closes the message box.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Signal"
+	)
+
+	func ExampleTweenAwaitDialogue(node Node.Instance, destinationReached, dialogueClosed Signal.Any, walkTo func(float64), sayDialogue func(string)) {
+		var tween = node.CreateTween()
+		tween.TweenCallback(func() { walkTo(600.0) })
+		tween.TweenAwait(destinationReached)
+		tween.TweenCallback(func() { sayDialogue("Good day, sir!") })
+		tween.TweenAwait(dialogueClosed)
+		tween.TweenCallback(func() { walkTo(0.0) })
+	}
+
+Note: If you are awaiting a signal from a callback called in the same [Tween], make sure the signal is emitted after the await starts. If it can't be reasonably guaranteed, you can await and emit in the same step:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Signal"
+	)
+
+	func ExampleTweenAwaitSelf(node Node.Instance, signal Signal.Any, methodThatEmitsSignal func()) {
+		var tween = node.CreateTween()
+		tween.TweenAwait(signal)
+		tween.Parallel().TweenCallback(methodThatEmitsSignal)
+	}
+
+[AwaitTweener]: https://pkg.go.dev/graphics.gd/classdb/AwaitTweener
+[AwaitTweener.SetTimeout]: https://pkg.go.dev/graphics.gd/classdb/AwaitTweener#Instance.SetTimeout
+[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
+*/
+func (self Instance) TweenAwait(signal Signal.Any) AwaitTweener.Instance { //gd:Tween.tween_await
+	return AwaitTweener.Instance(Advanced(self).TweenAwait(signal))
+}
+
+/*
 Processes the [Tween] by the given 'delta' value, in seconds. This is mostly useful for manual control when the [Tween] is paused. It can also be used to end the [Tween] animation immediately, by setting 'delta' longer than the whole duration of the [Tween] animation.
 
 Returns true if the [Tween] still has [Tweener]s that haven't finished.
@@ -347,6 +491,22 @@ func (self Instance) CustomStep(delta Float.X) bool { //gd:Tween.custom_step
 Stops the tweening and resets the [Tween] to its initial state. This will not remove any appended [Tweener]s.
 
 Note: This does not reset targets of [PropertyTweener]s to their values when the [Tween] first started.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+	)
+
+	func ExampleTweenStop(node Node.Instance) {
+		var tween = node.CreateTween()
+		// Will move from 0 to 500 over 1 second.
+		PropertyTweener.Make(tween, node.AsObject(), "position:x", 500, 1)
+		// await get_tree().create_timer(0.5).timeout
+		tween.Stop()
+		tween.Play()
+	}
 
 Note: If a Tween is stopped and not bound to any node, it will exist indefinitely until manually started or invalidated. If you lose a reference to such Tween, you can retrieve it using [SceneTree.GetProcessedTweens].
 
@@ -400,6 +560,16 @@ Note: As it results from accumulating frame deltas, the time returned after the 
 */
 func (self Instance) GetTotalElapsedTime() Float.X { //gd:Tween.get_total_elapsed_time
 	return Float.X(Float.X(Advanced(self).GetTotalElapsedTime()))
+}
+
+/*
+Returns true if any [Tweener] has been added to the [Tween] and the [Tween] is valid. Useful when tweeners are added dynamically and the tween can end up empty. Killing an empty tween before it starts will prevent errors.
+
+[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
+[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
+*/
+func (self Instance) HasTweeners() bool { //gd:Tween.has_tweeners
+	return bool(Advanced(self).HasTweeners())
 }
 
 /*
@@ -472,6 +642,22 @@ If 'parallel' is true, the [Tweener]s appended after this method will by default
 
 Note: Just like with [Parallel], the tweener added right before this method will also be part of the parallel step.
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+		"graphics.gd/variant/Color"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleTweenSetParallel(node Node.Instance) {
+		var tween = node.CreateTween()
+		PropertyTweener.Make(tween, node.AsObject(), "position", Vector2.New(300, 0), 0.5)
+		tween.SetParallel()
+		PropertyTweener.Make(tween, node.AsObject(), "modulate", Color.W3C.Green, 0.5) // Runs together with the position tweener.
+	}
+
 [Parallel]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.Parallel
 [Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
 */
@@ -483,6 +669,22 @@ func (self Instance) SetParallel() Instance { //gd:Tween.set_parallel
 If 'parallel' is true, the [Tweener]s appended after this method will by default run simultaneously, as opposed to sequentially.
 
 Note: Just like with [Parallel], the tweener added right before this method will also be part of the parallel step.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+		"graphics.gd/variant/Color"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleTweenSetParallel(node Node.Instance) {
+		var tween = node.CreateTween()
+		PropertyTweener.Make(tween, node.AsObject(), "position", Vector2.New(300, 0), 0.5)
+		tween.SetParallel()
+		PropertyTweener.Make(tween, node.AsObject(), "modulate", Color.W3C.Green, 0.5) // Runs together with the position tweener.
+	}
 
 [Parallel]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.Parallel
 [Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
@@ -547,6 +749,22 @@ Sets the default transition type for [PropertyTweener]s and [MethodTweener]s app
 
 Before this method is called, the default transition type is [TransLinear].
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+		"graphics.gd/classdb/Tween"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleTweenSetTransition(node Node.Instance) {
+		var tween = node.CreateTween()
+		PropertyTweener.Make(tween, node.AsObject(), "position", Vector2.New(300, 0), 0.5) // Uses TransLinear.
+		tween.SetTrans(Tween.TransSine)
+		PropertyTweener.Make(tween, node.AsObject(), "rotation_degrees", 45.0, 0.5) // Uses TransSine.
+	}
+
 [MethodTweener]: https://pkg.go.dev/graphics.gd/classdb/MethodTweener
 [PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
 */
@@ -559,6 +777,22 @@ Sets the default ease type for [PropertyTweener]s and [MethodTweener]s appended 
 
 Before this method is called, the default ease type is [EaseInOut].
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+		"graphics.gd/classdb/Tween"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleTweenSetEase(node Node.Instance) {
+		var tween = node.CreateTween()
+		PropertyTweener.Make(tween, node.AsObject(), "position", Vector2.New(300, 0), 0.5) // Uses EaseInOut.
+		tween.SetEase(Tween.EaseIn)
+		PropertyTweener.Make(tween, node.AsObject(), "rotation_degrees", 45.0, 0.5) // Uses EaseIn.
+	}
+
 [MethodTweener]: https://pkg.go.dev/graphics.gd/classdb/MethodTweener
 [PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
 */
@@ -568,6 +802,22 @@ func (self Instance) SetEase(ease EaseType) Instance { //gd:Tween.set_ease
 
 /*
 Makes the next [Tweener] run parallelly to the previous one.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+		"graphics.gd/variant/Color"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleTweenParallel(node Node.Instance) {
+		var tween = node.CreateTween()
+		PropertyTweener.Make(tween, node.AsObject(), "position", Vector2.New(100, 0), 1)
+		PropertyTweener.Make(tween.Parallel(), node.AsObject(), "modulate", Color.W3C.Red, 1)
+		PropertyTweener.Make(tween.Parallel(), node.AsObject(), "scale", Vector2.One, 1)
+	}
 
 All [Tweener]s in the example will run at the same time.
 
@@ -583,6 +833,22 @@ func (self Instance) Parallel() Instance { //gd:Tween.parallel
 
 /*
 Used to chain two [Tweener]s after [SetParallel] is called with true.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+		"graphics.gd/variant/Color"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleTweenChain(node Node.Instance) {
+		var tween = node.CreateTween().SetParallel()
+		PropertyTweener.Make(tween, node.AsObject(), "position", Vector2.New(100, 0), 1)
+		PropertyTweener.Make(tween, node.AsObject(), "modulate", Color.W3C.Red, 1)    // Will run parallelly with above.
+		PropertyTweener.Make(tween.Chain(), node.AsObject(), "scale", Vector2.One, 1) // Will run after two above are finished.
+	}
 
 [SetParallel]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.SetParallel
 [Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
@@ -650,7 +916,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Tween{gdclass.NewTween(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -690,6 +955,11 @@ func (self class) TweenSubtween(subtween [1]gdclass.Tween) [1]gdclass.SubtweenTw
 	var ret = [1]gdclass.SubtweenTweener{gdclass.NewSubtweenTweener(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
+func (self class) TweenAwait(signal Signal.Any) [1]gdclass.AwaitTweener { //gd:Tween.tween_await
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_await, gdextension.SizeObject|(gdextension.SizeSignal<<4), &struct{ signal [2]uint64 }{pointers.Get(gd.InternalSignal(signal))})
+	var ret = [1]gdclass.AwaitTweener{gdclass.NewAwaitTweener(gd.PointerWithOwnershipTransferredToGo(r_ret))}
+	return ret
+}
 func (self class) CustomStep(delta float64) bool { //gd:Tween.custom_step
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.custom_step, gdextension.SizeBool|(gdextension.SizeFloat<<4), &struct{ delta float64 }{delta})
 	var ret = r_ret
@@ -709,6 +979,11 @@ func (self class) Kill() { //gd:Tween.kill
 }
 func (self class) GetTotalElapsedTime() float64 { //gd:Tween.get_total_elapsed_time
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_elapsed_time, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) HasTweeners() bool { //gd:Tween.has_tweeners
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_tweeners, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

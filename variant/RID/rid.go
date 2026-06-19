@@ -65,6 +65,9 @@ type (
 	Buffer                           Any
 	RenderPipeline                   Any
 	ComputePipeline                  Any
+	RaytracingPipeline               Any
+	AccelerationStructure            Any
+	ShaderBindingTable               Any
 	Texture2D                        Any
 	Texture3D                        Any
 	TextureProxy                     Any

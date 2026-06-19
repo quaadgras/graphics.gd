@@ -15,6 +15,8 @@ For physical simulation, [SpringBoneSimulator3D] can have children as self-stand
 
 Warning: A scaled [SpringBoneSimulator3D] will likely not behave as expected. Make sure that the parent [Skeleton3D] and its bones are not scaled.
 
+Note: Most methods in this class take an index parameter. This parameter specifies which setting list entry to return if the IK has multiple entries (e.g. settings/<index>/root_bone_name).
+
 [Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 [PhysicalBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBoneSimulator3D
 [PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
@@ -462,13 +464,14 @@ func (self Instance) GetRadius(index int) Float.X { //gd:SpringBoneSimulator3D.g
 /*
 Sets the rotation axis of the bone chain. If set to a specific axis, it acts like a hinge joint. The value is cached in each joint setting in the joint list.
 
-The axes are based on the [Skeleton3D.GetBoneRest]'s space, if 'axis' is [Skeletonmodifier3d.RotationAxisCustom], you can specify any axis.
+The axes are based on the reference pose's space, if 'axis' is [Skeletonmodifier3d.RotationAxisCustom], you can specify any axis.
+
+In here, the reference pose is the bone pose immediately before the simulation.
 
 Note: The rotation axis vector and the forward vector shouldn't be colinear to avoid unintended rotation since [SpringBoneSimulator3D] does not factor in twisting forces.
 
 Returns 'self' to enable method chaining.
 
-[Skeleton3D.GetBoneRest]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBoneRest
 [SpringBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D
 */
 func (self Instance) SetRotationAxis(index int, axis SkeletonModifier3D.RotationAxis) Instance { //gd:SpringBoneSimulator3D.set_rotation_axis
@@ -706,14 +709,15 @@ func (self Instance) GetJointBone(index int, joint int) int { //gd:SpringBoneSim
 /*
 Sets the rotation axis at 'joint' in the bone chain's joint list when [IsConfigIndividual] is true.
 
-The axes are based on the [Skeleton3D.GetBoneRest]'s space, if 'axis' is [Skeletonmodifier3d.RotationAxisCustom], you can specify any axis.
+The axes are based on the reference pose's space, if 'axis' is [Skeletonmodifier3d.RotationAxisCustom], you can specify any axis.
+
+In here, the reference pose is the bone pose immediately before the simulation.
 
 Note: The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [SpringBoneSimulator3D] does not factor in twisting forces.
 
 Returns 'self' to enable method chaining.
 
 [IsConfigIndividual]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D#Instance.IsConfigIndividual
-[Skeleton3D.GetBoneRest]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBoneRest
 [SpringBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/SpringBoneSimulator3D
 */
 func (self Instance) SetJointRotationAxis(index int, joint int, axis SkeletonModifier3D.RotationAxis) Instance { //gd:SpringBoneSimulator3D.set_joint_rotation_axis

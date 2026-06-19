@@ -400,13 +400,15 @@ func init() {
 	gdclass.Register("MainLoop", func(ptr gdreference.Object) any { return Instance{gdclass.NewMainLoop(ptr)} })
 }
 
-const NotificationOsMemoryWarning Object.Notification = 2009     //gd:MainLoop.NOTIFICATION_OS_MEMORY_WARNING
-const NotificationTranslationChanged Object.Notification = 2010  //gd:MainLoop.NOTIFICATION_TRANSLATION_CHANGED
-const NotificationWmAbout Object.Notification = 2011             //gd:MainLoop.NOTIFICATION_WM_ABOUT
-const NotificationCrash Object.Notification = 2012               //gd:MainLoop.NOTIFICATION_CRASH
-const NotificationOsImeUpdate Object.Notification = 2013         //gd:MainLoop.NOTIFICATION_OS_IME_UPDATE
-const NotificationApplicationResumed Object.Notification = 2014  //gd:MainLoop.NOTIFICATION_APPLICATION_RESUMED
-const NotificationApplicationPaused Object.Notification = 2015   //gd:MainLoop.NOTIFICATION_APPLICATION_PAUSED
-const NotificationApplicationFocusIn Object.Notification = 2016  //gd:MainLoop.NOTIFICATION_APPLICATION_FOCUS_IN
-const NotificationApplicationFocusOut Object.Notification = 2017 //gd:MainLoop.NOTIFICATION_APPLICATION_FOCUS_OUT
-const NotificationTextServerChanged Object.Notification = 2018   //gd:MainLoop.NOTIFICATION_TEXT_SERVER_CHANGED
+const NotificationOsMemoryWarning Object.Notification = 2009           //gd:MainLoop.NOTIFICATION_OS_MEMORY_WARNING
+const NotificationTranslationChanged Object.Notification = 2010        //gd:MainLoop.NOTIFICATION_TRANSLATION_CHANGED
+const NotificationWmAbout Object.Notification = 2011                   //gd:MainLoop.NOTIFICATION_WM_ABOUT
+const NotificationCrash Object.Notification = 2012                     //gd:MainLoop.NOTIFICATION_CRASH
+const NotificationOsImeUpdate Object.Notification = 2013               //gd:MainLoop.NOTIFICATION_OS_IME_UPDATE
+const NotificationApplicationResumed Object.Notification = 2014        //gd:MainLoop.NOTIFICATION_APPLICATION_RESUMED
+const NotificationApplicationPaused Object.Notification = 2015         //gd:MainLoop.NOTIFICATION_APPLICATION_PAUSED
+const NotificationApplicationFocusIn Object.Notification = 2016        //gd:MainLoop.NOTIFICATION_APPLICATION_FOCUS_IN
+const NotificationApplicationFocusOut Object.Notification = 2017       //gd:MainLoop.NOTIFICATION_APPLICATION_FOCUS_OUT
+const NotificationTextServerChanged Object.Notification = 2018         //gd:MainLoop.NOTIFICATION_TEXT_SERVER_CHANGED
+const NotificationApplicationPipModeEntered Object.Notification = 2019 //gd:MainLoop.NOTIFICATION_APPLICATION_PIP_MODE_ENTERED
+const NotificationApplicationPipModeExited Object.Notification = 2020  //gd:MainLoop.NOTIFICATION_APPLICATION_PIP_MODE_EXITED

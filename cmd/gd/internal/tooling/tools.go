@@ -2,9 +2,9 @@ package tooling
 
 var Godot = toolchain{
 	Name:          "godot",
-	Version:       "4.6.2",
+	Version:       "4.7.0",
 	VersionFlags:  []string{"--version"},
-	VersionPrefix: "4.6.",
+	VersionPrefix: "4.7.",
 	DownloadHint:  "https://godotengine.org/download",
 	DownloadURL:   "https://github.com/godotengine/godot/releases/download/$(VERSION)-stable/Godot_v$(VERSION)-stable_$(OS).zip",
 	DownloadOS:    map[string]string{"windows": "win64.exe", "linux": "linux.$(ARCH)", "darwin": "macos.universal"},
@@ -157,4 +157,3 @@ var ListDynamicDependencies = toolchain{
 	Name:        "ldd",
 	RequiredFor: "musl detection",
 }
-

@@ -235,6 +235,7 @@ func (self class) Base64ToUtf8(base64_str String.Readable) String.Readable { //g
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

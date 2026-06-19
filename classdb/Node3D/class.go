@@ -775,7 +775,7 @@ Rotation of this node as [Euler angles], in radians and in parent space (relativ
 
 - The [Vector3.Z] is the angle around the local Z axis (roll).
 
-The order of each consecutive rotation can be changed with [RotationOrder] (see [EulerOrder] constants). By default, the YXZ convention is used ([EulerOrderYxz]).
+The order of each consecutive rotation can be changed with [RotationOrder] (see [EulerOrder] constants). In Godot, Euler angles always use intrinsic order. By default, the intrinsic YXZ convention is used ([EulerOrderYxz]).
 
 Note: This property is edited in degrees in the inspector. If you want to use degrees in a script, use [RotationDegrees].
 
@@ -884,7 +884,7 @@ func (self Instance) SetRotationEditMode(value RotationEditMode) Instance { //gd
 }
 
 /*
-The axis rotation order of the [Rotation] property. The final orientation is calculated by rotating around the local X, Y, and Z axis in this order.
+The axis rotation order of the [Rotation] property. In Godot, Euler angles always use intrinsic order, meaning that the final orientation is calculated by rotating around the local axes in this order.
 
 [Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Rotation
 */
@@ -1368,14 +1368,15 @@ func init() {
 type RotationEditMode int64 //gd:Node3D.RotationEditMode
 
 const (
-	// The rotation is edited using a [Vector3.XYZ] in [Euler angles].
+	// The rotation is edited using a [Vector3.XYZ] in [Euler angles]. In Godot, Euler angles always use intrinsic order, meaning that rotation happens around the local axes of the object.
 	//
 	// [Euler angles]: https://en.wikipedia.org/wiki/Euler_angles
 	// [Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 	RotationEditModeEuler RotationEditMode = 0
-	// The rotation is edited using a [Quaternion.IJKX].
+	// The rotation is edited using a [Quaternion.IJKX]. Quaternions avoid [gimbal lock] and having to choose an order of rotation, but are less intuitive. Quaternion rotation is mostly the same as rotors in 3D geometric algebra, except that the numbers are labeled differently.
 	//
 	// [Quaternion.IJKX]: https://pkg.go.dev/graphics.gd/variant/Quaternion#IJKX
+	// [gimbal lock]: https://docs.godotengine.org/tutorials/3d/using_transforms.html
 	RotationEditModeQuaternion RotationEditMode = 1
 	// The rotation is edited using a [Basis.XYZ]. In this mode, the raw [Basis]'s axes can be freely modified, but the [Scale] property is not available.
 	//

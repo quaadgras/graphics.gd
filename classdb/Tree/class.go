@@ -143,6 +143,7 @@ var methods struct {
 	is_column_clipping_content      gdextension.MethodForClass `hash:"1116898809"`
 	get_column_expand_ratio         gdextension.MethodForClass `hash:"923996154"`
 	get_column_width                gdextension.MethodForClass `hash:"923996154"`
+	get_custom_drawing_canvas_item  gdextension.MethodForClass `hash:"2944877500"`
 	set_hide_root                   gdextension.MethodForClass `hash:"2586408642"`
 	is_root_hidden                  gdextension.MethodForClass `hash:"36873697"`
 	get_next_selected               gdextension.MethodForClass `hash:"873446299"`
@@ -234,6 +235,8 @@ type Any interface {
 
 /*
 Clears the tree. This removes all items.
+
+Prints an error and does not allow clearing the tree if called during mouse selection.
 */
 func (self Instance) Clear() { //gd:Tree.clear
 	Advanced(self).Clear()
@@ -245,6 +248,8 @@ Creates an item in the tree and adds it as a child of 'parent', which can be eit
 If 'parent' is null, the root item will be the parent, or the new item will be the root itself if the tree is empty.
 
 The new item will be the 'index'-th child of parent, or it will be the last child if there are not enough siblings.
+
+Prints an error and returns null if called during mouse selection, or if the 'parent' does not belong to this tree.
 
 [TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
 */
@@ -258,6 +263,8 @@ Creates an item in the tree and adds it as a child of 'parent', which can be eit
 If 'parent' is null, the root item will be the parent, or the new item will be the root itself if the tree is empty.
 
 The new item will be the 'index'-th child of parent, or it will be the last child if there are not enough siblings.
+
+Prints an error and returns null if called during mouse selection, or if the 'parent' does not belong to this tree.
 
 [TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
 */
@@ -353,6 +360,17 @@ func (self Instance) GetColumnWidth(column int) int { //gd:Tree.get_column_width
 }
 
 /*
+Returns the internal canvas item designated for custom drawing. See [TreeItem.SetCustomDrawCallback].
+
+Note: This canvas item clears automatically on each Tree draw call.
+
+[TreeItem.SetCustomDrawCallback]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.SetCustomDrawCallback
+*/
+func (self Instance) GetCustomDrawingCanvasItem() RID.CanvasItem { //gd:Tree.get_custom_drawing_canvas_item
+	return RID.CanvasItem(RID.CanvasItem(Advanced(self).GetCustomDrawingCanvasItem()))
+}
+
+/*
 Returns the next selected [TreeItem] after the given one, or null if the end is reached.
 
 If 'from' is null, this returns the first selected item.
@@ -417,6 +435,29 @@ func (self Instance) DeselectAll() { //gd:Tree.deselect_all
 
 /*
 Returns the currently edited item. Can be used with [OnItemEdited] to get the item that was modified.
+
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/Tree"
+	)
+
+	type treeGetEditedExample struct {
+		Node.Extension[treeGetEditedExample]
+
+		Tree Tree.Instance
+	}
+
+	func (n treeGetEditedExample) Ready() {
+		n.Tree.OnItemEdited(n.onTreeItemEdited)
+	}
+
+	func (n treeGetEditedExample) onTreeItemEdited() {
+		fmt.Println(n.Tree.GetEdited()) // This item just got edited (e.g. checked).
+	}
 
 [OnItemEdited]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.OnItemEdited
 */
@@ -499,11 +540,19 @@ func (self Instance) GetColumnAtPosition(position Vector2.XY) int { //gd:Tree.ge
 }
 
 /*
-Returns the drop section at 'position', or -100 if no item is there.
+Returns the drop section at 'position', as permitted by enabled [DropModeFlags].
 
-Values -1, 0, or 1 will be returned for the "above item", "on item", and "below item" drop sections, respectively. See [DropModeFlags] for a description of each drop section.
+- -1 if the position is above the item. Typically used to insert as the item's previous sibling.
 
-To get the item which the returned drop section is relative to, use [GetItemAtPosition].
+- 0 if the position is on the item. Typically used to insert as the item's last child.
+
+- 1 if the position is below the item, when the item has no children. Typically used to insert as the item's next sibling. If the item does have children, this section is still reachable by hovering to the left of the item's collapse arrow, and below.
+
+- 2 if the position is below the item, when the item has children. Typically used to insert as the item's first child.
+
+- -100 if the position is not over any item, or no [DropModeFlags] are set.
+
+See [DropModeFlags] for a description of each drop region. To get the item which the returned drop section refers to, use [GetItemAtPosition].
 
 [GetItemAtPosition]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.GetItemAtPosition
 */
@@ -692,6 +741,8 @@ func New() Instance {
 
 /*
 The number of columns.
+
+Prints an error and does not allow setting the columns during mouse selection.
 */
 func (self Instance) Columns() int { //gd:Tree.columns
 	return int(int(class(self).GetColumns()))
@@ -969,6 +1020,11 @@ func (self class) GetColumnExpandRatio(column int64) int64 { //gd:Tree.get_colum
 }
 func (self class) GetColumnWidth(column int64) int64 { //gd:Tree.get_column_width
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_column_width, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetCustomDrawingCanvasItem() RID.Any { //gd:Tree.get_custom_drawing_canvas_item
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_custom_drawing_canvas_item, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1549,19 +1605,17 @@ const (
 type DropModeFlags int64 //gd:Tree.DropModeFlags
 
 const (
-	// Disables all drop sections, but still allows to detect the "on item" drop section by [GetDropSectionAtPosition].
+	// Disables all drop sections.
 	//
 	// Note: This is the default flag, it has no effect when combined with other flags.
-	//
-	// [GetDropSectionAtPosition]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GetDropSectionAtPosition
 	DropModeDisabled DropModeFlags = 0
 	// Enables the "on item" drop section. This drop section covers the entire item.
 	//
-	// When combined with [DropModeInbetween], this drop section halves the height and stays centered vertically.
+	// When combined with [DropModeInbetween], this drop section halves in height and stays centered vertically.
 	DropModeOnItem DropModeFlags = 1
-	// Enables "above item" and "below item" drop sections. The "above item" drop section covers the top half of the item, and the "below item" drop section covers the bottom half.
+	// Enables "above item" and "below item" drop sections. The "above item" drop section covers the top half of the item, while the "below item" drop section covers the bottom half, and extends downward to the left of any children.
 	//
-	// When combined with [DropModeOnItem], these drop sections halves the height and stays on top / bottom accordingly.
+	// When combined with [DropModeOnItem], these drop sections halve in height and stay at the top and bottom respectively.
 	DropModeInbetween DropModeFlags = 2
 )
 

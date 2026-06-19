@@ -7,7 +7,7 @@ package gdjson
 var Addressables = map[string]string{
 	// Audio buffers.
 	"AudioEffectInstance._process.src_buffer":                "Engine.Pointer[AudioFrame]",
-	"AudioEffectInstance._process.dst_buffer":                "Engine.Pointer[AudioFrame]",
+	"AudioEffectInstance._process.r_dst_buffer":              "Engine.Pointer[AudioFrame]",
 	"AudioStreamPlayback._mix.buffer":                        "Engine.Pointer[AudioFrame]",
 	"AudioStreamPlaybackResampled._mix_resampled.dst_buffer": "Engine.Pointer[AudioFrame]",
 	"MovieWriter._write_frame.audio_frame_block":             "Engine.Pointer[int32]",
@@ -30,6 +30,7 @@ var Addressables = map[string]string{
 	"OpenXRExtensionWrapper._set_view_configuration_and_get_next_pointer.next_pointer":                    "Engine.Pointer[OpenXR.Extension]",
 	"OpenXRExtensionWrapper._set_viewport_composition_layer_and_get_next_pointer.next_pointer":            "Engine.Pointer[OpenXR.Extension]",
 	"OpenXRExtensionWrapper._set_android_surface_swapchain_create_info_and_get_next_pointer.next_pointer": "Engine.Pointer[OpenXR.Extension]",
+	"OpenXRExtensionWrapper._set_projection_layer_and_get_next_pointer.next_pointer":                      "Engine.Pointer[OpenXR.Extension]",
 
 	// OpenXR event and composition layer pointers.
 	"OpenXRExtensionWrapper._on_event_polled.event":                                     "Engine.Pointer[OpenXR.EventDataBuffer]",
@@ -42,39 +43,39 @@ var Addressables = map[string]string{
 	// Multiplayer/Packet peer — byte buffers.
 	"MultiplayerPeerExtension._get_packet.r_buffer":      "Engine.Pointer[Engine.Pointer[byte]]",
 	"MultiplayerPeerExtension._get_packet.r_buffer_size": "Engine.Pointer[int32]",
-	"MultiplayerPeerExtension._put_packet.p_buffer":      "Engine.Pointer[byte]",
+	"MultiplayerPeerExtension._put_packet.buffer":        "Engine.Pointer[byte]",
 	"PacketPeerExtension._get_packet.r_buffer":           "Engine.Pointer[Engine.Pointer[byte]]",
 	"PacketPeerExtension._get_packet.r_buffer_size":      "Engine.Pointer[int32]",
-	"PacketPeerExtension._put_packet.p_buffer":           "Engine.Pointer[byte]",
+	"PacketPeerExtension._put_packet.buffer":             "Engine.Pointer[byte]",
 
 	// Physics 2D — results and out-params.
-	"PhysicsDirectSpaceState2DExtension._intersect_ray.result":       "Engine.Pointer[RayResult]",
-	"PhysicsDirectSpaceState2DExtension._intersect_point.results":    "Engine.Pointer[ShapeResult]",
-	"PhysicsDirectSpaceState2DExtension._intersect_shape.result":     "Engine.Pointer[ShapeResult]",
-	"PhysicsDirectSpaceState2DExtension._cast_motion.closest_safe":   "Engine.Pointer[float32]",
-	"PhysicsDirectSpaceState2DExtension._cast_motion.closest_unsafe": "Engine.Pointer[float32]",
-	"PhysicsDirectSpaceState2DExtension._collide_shape.results":      "Engine.Pointer[Vector2.XY]",
-	"PhysicsDirectSpaceState2DExtension._collide_shape.result_count": "Engine.Pointer[int32]",
-	"PhysicsDirectSpaceState2DExtension._rest_info.rest_info":        "Engine.Pointer[ShapeRestInfo]",
+	"PhysicsDirectSpaceState2DExtension._intersect_ray.r_result":       "Engine.Pointer[RayResult]",
+	"PhysicsDirectSpaceState2DExtension._intersect_point.r_results":    "Engine.Pointer[ShapeResult]",
+	"PhysicsDirectSpaceState2DExtension._intersect_shape.r_result":     "Engine.Pointer[ShapeResult]",
+	"PhysicsDirectSpaceState2DExtension._cast_motion.r_closest_safe":   "Engine.Pointer[float32]",
+	"PhysicsDirectSpaceState2DExtension._cast_motion.r_closest_unsafe": "Engine.Pointer[float32]",
+	"PhysicsDirectSpaceState2DExtension._collide_shape.r_results":      "Engine.Pointer[Vector2.XY]",
+	"PhysicsDirectSpaceState2DExtension._collide_shape.r_result_count": "Engine.Pointer[int32]",
+	"PhysicsDirectSpaceState2DExtension._rest_info.r_rest_info":        "Engine.Pointer[ShapeRestInfo]",
 
 	// Physics 3D — results and out-params.
-	"PhysicsDirectSpaceState3DExtension._intersect_ray.result":         "Engine.Pointer[RayResult]",
-	"PhysicsDirectSpaceState3DExtension._intersect_point.results":      "Engine.Pointer[ShapeResult]",
-	"PhysicsDirectSpaceState3DExtension._intersect_shape.result_count": "Engine.Pointer[ShapeResult]",
-	"PhysicsDirectSpaceState3DExtension._cast_motion.closest_safe":     "Engine.Pointer[float32]",
-	"PhysicsDirectSpaceState3DExtension._cast_motion.closest_unsafe":   "Engine.Pointer[float32]",
-	"PhysicsDirectSpaceState3DExtension._cast_motion.info":             "Engine.Pointer[ShapeRestInfo]",
-	"PhysicsDirectSpaceState3DExtension._collide_shape.results":        "Engine.Pointer[Vector3.XYZ]",
-	"PhysicsDirectSpaceState3DExtension._collide_shape.result_count":   "Engine.Pointer[int32]",
-	"PhysicsDirectSpaceState3DExtension._rest_info.rest_info":          "Engine.Pointer[ShapeRestInfo]",
+	"PhysicsDirectSpaceState3DExtension._intersect_ray.r_result":         "Engine.Pointer[RayResult]",
+	"PhysicsDirectSpaceState3DExtension._intersect_point.r_results":      "Engine.Pointer[ShapeResult]",
+	"PhysicsDirectSpaceState3DExtension._intersect_shape.r_result_count": "Engine.Pointer[ShapeResult]",
+	"PhysicsDirectSpaceState3DExtension._cast_motion.r_closest_safe":     "Engine.Pointer[float32]",
+	"PhysicsDirectSpaceState3DExtension._cast_motion.r_closest_unsafe":   "Engine.Pointer[float32]",
+	"PhysicsDirectSpaceState3DExtension._cast_motion.r_info":             "Engine.Pointer[ShapeRestInfo]",
+	"PhysicsDirectSpaceState3DExtension._collide_shape.r_results":        "Engine.Pointer[Vector3.XYZ]",
+	"PhysicsDirectSpaceState3DExtension._collide_shape.r_result_count":   "Engine.Pointer[int32]",
+	"PhysicsDirectSpaceState3DExtension._rest_info.r_rest_info":          "Engine.Pointer[ShapeRestInfo]",
 
 	// Physics server — collision results and motion testing.
-	"PhysicsServer2DExtension._shape_collide.results":           "Engine.Pointer[Vector2.XY]",
-	"PhysicsServer2DExtension._shape_collide.result_count":      "Engine.Pointer[int32]",
-	"PhysicsServer2DExtension._body_collide_shape.results":      "Engine.Pointer[Vector2.XY]",
-	"PhysicsServer2DExtension._body_collide_shape.result_count": "Engine.Pointer[int32]",
-	"PhysicsServer2DExtension._body_test_motion.result":         "Engine.Pointer[MotionResult]",
-	"PhysicsServer3DExtension._body_test_motion.result":         "Engine.Pointer[MotionResult]",
+	"PhysicsServer2DExtension._shape_collide.r_results":           "Engine.Pointer[Vector2.XY]",
+	"PhysicsServer2DExtension._shape_collide.r_result_count":      "Engine.Pointer[int32]",
+	"PhysicsServer2DExtension._body_collide_shape.r_results":      "Engine.Pointer[Vector2.XY]",
+	"PhysicsServer2DExtension._body_collide_shape.r_result_count": "Engine.Pointer[int32]",
+	"PhysicsServer2DExtension._body_test_motion.r_result":         "Engine.Pointer[MotionResult]",
+	"PhysicsServer3DExtension._body_test_motion.r_result":         "Engine.Pointer[MotionResult]",
 
 	// Script extension — opaque handles and profiling.
 	"ScriptExtension._placeholder_erased.placeholder":                    "uintptr",
@@ -89,9 +90,9 @@ var Addressables = map[string]string{
 	"StreamPeerExtension._get_data.r_received":         "Engine.Pointer[int32]",
 	"StreamPeerExtension._get_partial_data.r_buffer":   "Engine.Pointer[byte]",
 	"StreamPeerExtension._get_partial_data.r_received": "Engine.Pointer[int32]",
-	"StreamPeerExtension._put_data.p_data":             "Engine.Pointer[byte]",
+	"StreamPeerExtension._put_data.data":               "Engine.Pointer[byte]",
 	"StreamPeerExtension._put_data.r_sent":             "Engine.Pointer[int32]",
-	"StreamPeerExtension._put_partial_data.p_data":     "Engine.Pointer[byte]",
+	"StreamPeerExtension._put_partial_data.data":       "Engine.Pointer[byte]",
 	"StreamPeerExtension._put_partial_data.r_sent":     "Engine.Pointer[int32]",
 
 	// Text server — font data and glyph buffers.
@@ -99,10 +100,10 @@ var Addressables = map[string]string{
 	"TextServerExtension._shaped_text_get_glyphs.":          "Engine.Pointer[Glyph]",
 	"TextServerExtension._shaped_text_sort_logical.":        "Engine.Pointer[Glyph]",
 	"TextServerExtension._shaped_text_get_ellipsis_glyphs.": "Engine.Pointer[Glyph]",
-	"TextServerExtension._shaped_text_get_carets.caret":     "Engine.Pointer[CaretInfo]",
+	"TextServerExtension._shaped_text_get_carets.r_caret":   "Engine.Pointer[CaretInfo]",
 
 	// WebRTC — byte buffers.
 	"WebRTCDataChannelExtension._get_packet.r_buffer":      "Engine.Pointer[Engine.Pointer[byte]]",
 	"WebRTCDataChannelExtension._get_packet.r_buffer_size": "Engine.Pointer[int32]",
-	"WebRTCDataChannelExtension._put_packet.p_buffer":      "Engine.Pointer[byte]",
+	"WebRTCDataChannelExtension._put_packet.buffer":        "Engine.Pointer[byte]",
 }

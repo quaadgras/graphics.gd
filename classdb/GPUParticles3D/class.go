@@ -32,6 +32,7 @@ import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/RenderingServer"
 import "graphics.gd/classdb/Skin"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/AABB"
@@ -110,65 +111,69 @@ type Instance [1]gdclass.GPUParticles3D
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_emitting              gdextension.MethodForClass `hash:"2586408642"`
-	set_amount                gdextension.MethodForClass `hash:"1286410249"`
-	set_lifetime              gdextension.MethodForClass `hash:"373806689"`
-	set_one_shot              gdextension.MethodForClass `hash:"2586408642"`
-	set_pre_process_time      gdextension.MethodForClass `hash:"373806689"`
-	set_explosiveness_ratio   gdextension.MethodForClass `hash:"373806689"`
-	set_randomness_ratio      gdextension.MethodForClass `hash:"373806689"`
-	set_visibility_aabb       gdextension.MethodForClass `hash:"259215842"`
-	set_use_local_coordinates gdextension.MethodForClass `hash:"2586408642"`
-	set_fixed_fps             gdextension.MethodForClass `hash:"1286410249"`
-	set_fractional_delta      gdextension.MethodForClass `hash:"2586408642"`
-	set_interpolate           gdextension.MethodForClass `hash:"2586408642"`
-	set_process_material      gdextension.MethodForClass `hash:"2757459619"`
-	set_speed_scale           gdextension.MethodForClass `hash:"373806689"`
-	set_collision_base_size   gdextension.MethodForClass `hash:"373806689"`
-	set_interp_to_end         gdextension.MethodForClass `hash:"373806689"`
-	is_emitting               gdextension.MethodForClass `hash:"36873697"`
-	get_amount                gdextension.MethodForClass `hash:"3905245786"`
-	get_lifetime              gdextension.MethodForClass `hash:"1740695150"`
-	get_one_shot              gdextension.MethodForClass `hash:"36873697"`
-	get_pre_process_time      gdextension.MethodForClass `hash:"1740695150"`
-	get_explosiveness_ratio   gdextension.MethodForClass `hash:"1740695150"`
-	get_randomness_ratio      gdextension.MethodForClass `hash:"1740695150"`
-	get_visibility_aabb       gdextension.MethodForClass `hash:"1068685055"`
-	get_use_local_coordinates gdextension.MethodForClass `hash:"36873697"`
-	get_fixed_fps             gdextension.MethodForClass `hash:"3905245786"`
-	get_fractional_delta      gdextension.MethodForClass `hash:"36873697"`
-	get_interpolate           gdextension.MethodForClass `hash:"36873697"`
-	get_process_material      gdextension.MethodForClass `hash:"5934680"`
-	get_speed_scale           gdextension.MethodForClass `hash:"1740695150"`
-	get_collision_base_size   gdextension.MethodForClass `hash:"1740695150"`
-	get_interp_to_end         gdextension.MethodForClass `hash:"1740695150"`
-	set_use_fixed_seed        gdextension.MethodForClass `hash:"2586408642"`
-	get_use_fixed_seed        gdextension.MethodForClass `hash:"36873697"`
-	set_seed                  gdextension.MethodForClass `hash:"1286410249"`
-	get_seed                  gdextension.MethodForClass `hash:"3905245786"`
-	set_draw_order            gdextension.MethodForClass `hash:"1208074815"`
-	get_draw_order            gdextension.MethodForClass `hash:"3770381780"`
-	set_draw_passes           gdextension.MethodForClass `hash:"1286410249"`
-	set_draw_pass_mesh        gdextension.MethodForClass `hash:"969122797"`
-	get_draw_passes           gdextension.MethodForClass `hash:"3905245786"`
-	get_draw_pass_mesh        gdextension.MethodForClass `hash:"1576363275"`
-	set_skin                  gdextension.MethodForClass `hash:"3971435618"`
-	get_skin                  gdextension.MethodForClass `hash:"2074563878"`
-	restart                   gdextension.MethodForClass `hash:"107499316"`
-	capture_aabb              gdextension.MethodForClass `hash:"1068685055"`
-	set_sub_emitter           gdextension.MethodForClass `hash:"1348162250"`
-	get_sub_emitter           gdextension.MethodForClass `hash:"4075236667"`
-	emit_particle             gdextension.MethodForClass `hash:"992173727"`
-	set_trail_enabled         gdextension.MethodForClass `hash:"2586408642"`
-	set_trail_lifetime        gdextension.MethodForClass `hash:"373806689"`
-	is_trail_enabled          gdextension.MethodForClass `hash:"36873697"`
-	get_trail_lifetime        gdextension.MethodForClass `hash:"1740695150"`
-	set_transform_align       gdextension.MethodForClass `hash:"3892425954"`
-	get_transform_align       gdextension.MethodForClass `hash:"2100992166"`
-	convert_from_particles    gdextension.MethodForClass `hash:"1078189570"`
-	set_amount_ratio          gdextension.MethodForClass `hash:"373806689"`
-	get_amount_ratio          gdextension.MethodForClass `hash:"1740695150"`
-	request_particles_process gdextension.MethodForClass `hash:"373806689"`
+	set_emitting                       gdextension.MethodForClass `hash:"2586408642"`
+	set_amount                         gdextension.MethodForClass `hash:"1286410249"`
+	set_lifetime                       gdextension.MethodForClass `hash:"373806689"`
+	set_one_shot                       gdextension.MethodForClass `hash:"2586408642"`
+	set_pre_process_time               gdextension.MethodForClass `hash:"373806689"`
+	set_explosiveness_ratio            gdextension.MethodForClass `hash:"373806689"`
+	set_randomness_ratio               gdextension.MethodForClass `hash:"373806689"`
+	set_visibility_aabb                gdextension.MethodForClass `hash:"259215842"`
+	set_use_local_coordinates          gdextension.MethodForClass `hash:"2586408642"`
+	set_fixed_fps                      gdextension.MethodForClass `hash:"1286410249"`
+	set_fractional_delta               gdextension.MethodForClass `hash:"2586408642"`
+	set_interpolate                    gdextension.MethodForClass `hash:"2586408642"`
+	set_process_material               gdextension.MethodForClass `hash:"2757459619"`
+	set_speed_scale                    gdextension.MethodForClass `hash:"373806689"`
+	set_collision_base_size            gdextension.MethodForClass `hash:"373806689"`
+	set_interp_to_end                  gdextension.MethodForClass `hash:"373806689"`
+	is_emitting                        gdextension.MethodForClass `hash:"36873697"`
+	get_amount                         gdextension.MethodForClass `hash:"3905245786"`
+	get_lifetime                       gdextension.MethodForClass `hash:"1740695150"`
+	get_one_shot                       gdextension.MethodForClass `hash:"36873697"`
+	get_pre_process_time               gdextension.MethodForClass `hash:"1740695150"`
+	get_explosiveness_ratio            gdextension.MethodForClass `hash:"1740695150"`
+	get_randomness_ratio               gdextension.MethodForClass `hash:"1740695150"`
+	get_visibility_aabb                gdextension.MethodForClass `hash:"1068685055"`
+	get_use_local_coordinates          gdextension.MethodForClass `hash:"36873697"`
+	get_fixed_fps                      gdextension.MethodForClass `hash:"3905245786"`
+	get_fractional_delta               gdextension.MethodForClass `hash:"36873697"`
+	get_interpolate                    gdextension.MethodForClass `hash:"36873697"`
+	get_process_material               gdextension.MethodForClass `hash:"5934680"`
+	get_speed_scale                    gdextension.MethodForClass `hash:"1740695150"`
+	get_collision_base_size            gdextension.MethodForClass `hash:"1740695150"`
+	get_interp_to_end                  gdextension.MethodForClass `hash:"1740695150"`
+	set_use_fixed_seed                 gdextension.MethodForClass `hash:"2586408642"`
+	get_use_fixed_seed                 gdextension.MethodForClass `hash:"36873697"`
+	set_seed                           gdextension.MethodForClass `hash:"1286410249"`
+	get_seed                           gdextension.MethodForClass `hash:"3905245786"`
+	set_draw_order                     gdextension.MethodForClass `hash:"1208074815"`
+	get_draw_order                     gdextension.MethodForClass `hash:"3770381780"`
+	set_draw_passes                    gdextension.MethodForClass `hash:"1286410249"`
+	set_draw_pass_mesh                 gdextension.MethodForClass `hash:"969122797"`
+	get_draw_passes                    gdextension.MethodForClass `hash:"3905245786"`
+	get_draw_pass_mesh                 gdextension.MethodForClass `hash:"1576363275"`
+	set_skin                           gdextension.MethodForClass `hash:"3971435618"`
+	get_skin                           gdextension.MethodForClass `hash:"2074563878"`
+	restart                            gdextension.MethodForClass `hash:"107499316"`
+	capture_aabb                       gdextension.MethodForClass `hash:"1068685055"`
+	set_sub_emitter                    gdextension.MethodForClass `hash:"1348162250"`
+	get_sub_emitter                    gdextension.MethodForClass `hash:"4075236667"`
+	emit_particle                      gdextension.MethodForClass `hash:"992173727"`
+	set_trail_enabled                  gdextension.MethodForClass `hash:"2586408642"`
+	set_trail_lifetime                 gdextension.MethodForClass `hash:"373806689"`
+	is_trail_enabled                   gdextension.MethodForClass `hash:"36873697"`
+	get_trail_lifetime                 gdextension.MethodForClass `hash:"1740695150"`
+	set_transform_align                gdextension.MethodForClass `hash:"3892425954"`
+	get_transform_align                gdextension.MethodForClass `hash:"2100992166"`
+	set_transform_align_channel_filter gdextension.MethodForClass `hash:"540833286"`
+	get_transform_align_channel_filter gdextension.MethodForClass `hash:"1664431231"`
+	set_transform_align_axis           gdextension.MethodForClass `hash:"3781785913"`
+	get_transform_align_axis           gdextension.MethodForClass `hash:"2427180841"`
+	convert_from_particles             gdextension.MethodForClass `hash:"1078189570"`
+	set_amount_ratio                   gdextension.MethodForClass `hash:"373806689"`
+	get_amount_ratio                   gdextension.MethodForClass `hash:"1740695150"`
+	request_particles_process          gdextension.MethodForClass `hash:"66938510"`
 }
 
 func init() {
@@ -258,13 +263,23 @@ func (self Instance) ConvertFromParticles(particles Node.Instance) { //gd:GPUPar
 /*
 Requests the particles to process for extra process time during a single frame.
 
-Useful for particle playback, if used in combination with [UseFixedSeed] or by calling [Restart] with parameter keep_seed set to true.
+'process_time' defines the time that the particles will process while emitting is on. 'process_time_residual' defines the time that particles will process with emitting turned off for the simulation. When combined with [SpeedScale] set to 0.0, this is useful to be able to seek a particle system timeline.
 
-[Restart]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Restart
-[UseFixedSeed]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.UseFixedSeed
+[SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.SpeedScale
 */
 func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:GPUParticles3D.request_particles_process
-	Advanced(self).RequestParticlesProcess(float64(process_time))
+	Advanced(self).RequestParticlesProcess(float64(process_time), float64(0.0))
+}
+
+/*
+Requests the particles to process for extra process time during a single frame.
+
+'process_time' defines the time that the particles will process while emitting is on. 'process_time_residual' defines the time that particles will process with emitting turned off for the simulation. When combined with [SpeedScale] set to 0.0, this is useful to be able to seek a particle system timeline.
+
+[SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.SpeedScale
+*/
+func (self MoreArgs) RequestParticlesProcess(process_time Float.X, process_time_residual Float.X) { //gd:GPUParticles3D.request_particles_process
+	Advanced(self).RequestParticlesProcess(float64(process_time), float64(process_time_residual))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -626,6 +641,9 @@ func (self Instance) SetDrawOrder(value DrawOrder) Instance { //gd:GPUParticles3
 	return self
 }
 
+/*
+The alignment of particles. Use this for billboarding and aligning to velocity.
+*/
 func (self Instance) TransformAlign() TransformAlign { //gd:GPUParticles3D.transform_align
 	return TransformAlign(class(self).GetTransformAlign())
 }
@@ -633,6 +651,32 @@ func (self Instance) TransformAlign() TransformAlign { //gd:GPUParticles3D.trans
 // SetTransformAlign sets the property returned by [GetTransformAlign]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetTransformAlign(value TransformAlign) Instance { //gd:GPUParticles3D.transform_align
 	class(self).SetTransformAlign(value)
+	return self
+}
+
+/*
+When using transform align local billboard, which axis to use for the billboarding. Supports only X or Y.
+*/
+func (self Instance) TransformAlignAxis() RenderingServer.ParticlesTransformAlignAxis { //gd:GPUParticles3D.transform_align_axis
+	return RenderingServer.ParticlesTransformAlignAxis(class(self).GetTransformAlignAxis())
+}
+
+// SetTransformAlignAxis sets the property returned by [GetTransformAlignAxis]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransformAlignAxis(value RenderingServer.ParticlesTransformAlignAxis) Instance { //gd:GPUParticles3D.transform_align_axis
+	class(self).SetTransformAlignAxis(value)
+	return self
+}
+
+/*
+In the case of billboarded particles, which custom channel to read from to calculate their angle.
+*/
+func (self Instance) TransformAlignChannelFilter() RenderingServer.ParticlesTransformAlignCustomSrc { //gd:GPUParticles3D.transform_align_channel_filter
+	return RenderingServer.ParticlesTransformAlignCustomSrc(class(self).GetTransformAlignChannelFilter())
+}
+
+// SetTransformAlignChannelFilter sets the property returned by [GetTransformAlignChannelFilter]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTransformAlignChannelFilter(value RenderingServer.ParticlesTransformAlignCustomSrc) Instance { //gd:GPUParticles3D.transform_align_channel_filter
+	class(self).SetTransformAlignChannelFilter(value)
 	return self
 }
 
@@ -1002,6 +1046,26 @@ func (self class) GetTransformAlign() TransformAlign { //gd:GPUParticles3D.get_t
 	var ret = r_ret
 	return ret
 }
+func (self class) SetTransformAlignChannelFilter(channel_filter RenderingServer.ParticlesTransformAlignCustomSrc) { //gd:GPUParticles3D.set_transform_align_channel_filter
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform_align_channel_filter, 0|(gdextension.SizeInt<<4), &struct {
+		channel_filter RenderingServer.ParticlesTransformAlignCustomSrc
+	}{channel_filter})
+}
+func (self class) GetTransformAlignChannelFilter() RenderingServer.ParticlesTransformAlignCustomSrc { //gd:GPUParticles3D.get_transform_align_channel_filter
+	var r_ret = noescape.Call[RenderingServer.ParticlesTransformAlignCustomSrc](gd.ObjectChecked(self.AsObject()), methods.get_transform_align_channel_filter, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetTransformAlignAxis(align RenderingServer.ParticlesTransformAlignAxis) { //gd:GPUParticles3D.set_transform_align_axis
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform_align_axis, 0|(gdextension.SizeInt<<4), &struct {
+		align RenderingServer.ParticlesTransformAlignAxis
+	}{align})
+}
+func (self class) GetTransformAlignAxis() RenderingServer.ParticlesTransformAlignAxis { //gd:GPUParticles3D.get_transform_align_axis
+	var r_ret = noescape.Call[RenderingServer.ParticlesTransformAlignAxis](gd.ObjectChecked(self.AsObject()), methods.get_transform_align_axis, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:GPUParticles3D.convert_from_particles
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_from_particles, 0|(gdextension.SizeObject<<4), &struct{ particles gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetNode(particles[0])[0]))})
 }
@@ -1013,8 +1077,11 @@ func (self class) GetAmountRatio() float64 { //gd:GPUParticles3D.get_amount_rati
 	var ret = r_ret
 	return ret
 }
-func (self class) RequestParticlesProcess(process_time float64) { //gd:GPUParticles3D.request_particles_process
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4), &struct{ process_time float64 }{process_time})
+func (self class) RequestParticlesProcess(process_time float64, process_time_residual float64) { //gd:GPUParticles3D.request_particles_process
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
+		process_time          float64
+		process_time_residual float64
+	}{process_time, process_time_residual})
 }
 
 /*
@@ -1117,9 +1184,15 @@ const (
 type TransformAlign int64 //gd:GPUParticles3D.TransformAlign
 
 const (
-	TransformAlignDisabled              TransformAlign = 0
-	TransformAlignZBillboard            TransformAlign = 1
-	TransformAlignYToVelocity           TransformAlign = 2
+	// Do not align particle transforms relative to the camera or velocity.
+	TransformAlignDisabled TransformAlign = 0
+	// Align each particle's Z axis to face the camera.
+	TransformAlignZBillboard TransformAlign = 1
+	// Align each particle's Y axis to the velocity vector.
+	TransformAlignYToVelocity TransformAlign = 2
+	// Align each particle's Z axis to face the camera and Y axis to the velocity vector.
 	TransformAlignZBillboardYToVelocity TransformAlign = 3
+	// Align each particle's Z axis to face the camera, while preserving a given axis (X or Y).
+	TransformAlignLocalBillboard TransformAlign = 4
 )
 const MaxDrawPasses int = 4 //gd:GPUParticles3D.MAX_DRAW_PASSES

@@ -268,7 +268,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Shader{gdclass.NewShader(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -364,4 +363,6 @@ const (
 	ModeSky Mode = 3
 	// Mode used for setting the color and density of volumetric fog effect.
 	ModeFog Mode = 4
+	// Mode used for drawing to DrawableTexture resources via blit calls.
+	ModeTextureBlit Mode = 5
 )

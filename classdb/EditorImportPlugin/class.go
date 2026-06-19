@@ -508,6 +508,27 @@ func (Instance) _get_format_version(impl func(ptr gdclass.Receiver) int) (cb gd.
 
 /*
 Gets whether the import option specified by 'option_name' should be visible in the Import dock. The default implementation always returns true, making all options visible. This is mainly useful for hiding options that depend on others if one of them is disabled.
+
+	package main
+
+	import "graphics.gd/classdb/EditorImportPlugin"
+
+	const compressLossy = 0 // This is a constant that you set.
+
+	type editorImportPluginOptionVisibility struct {
+		EditorImportPlugin.Extension[editorImportPluginOptionVisibility]
+	}
+
+	func (n editorImportPluginOptionVisibility) GetOptionVisibility(path string, optionName string, options map[string]any) bool {
+		// Only show the lossy quality setting if the compression mode is set to "Lossy".
+		if optionName == "compress/lossy_quality" {
+			if mode, ok := options["compress/mode"]; ok {
+				v, _ := mode.(int64)
+				return int(v) == compressLossy
+			}
+		}
+		return true
+	}
 */
 func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path string, option_name string, options map[string]any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -628,7 +649,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.EditorImportPlugin{gdclass.NewEditorImportPlugin(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

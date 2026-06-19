@@ -97,7 +97,7 @@ type Instance [1]gdclass.OptimizedTranslation
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	generate gdextension.MethodForClass `hash:"1466479800"`
+	generate gdextension.MethodForClass `hash:"2141509306"`
 }
 
 func init() {
@@ -121,7 +121,7 @@ type Any interface {
 }
 
 /*
-Generates and sets an optimized translation from the given [Translation] resource.
+Generates and sets an optimized translation from the given [Translation] resource. Returns true if successful.
 
 Note: Messages in 'from' should not use context or plural forms.
 
@@ -129,8 +129,8 @@ Note: This method is intended to be used in the editor. It does nothing when cal
 
 [Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
 */
-func (self Instance) Generate(from Translation.Instance) { //gd:OptimizedTranslation.generate
-	Advanced(self).Generate(from)
+func (self Instance) Generate(from Translation.Instance) bool { //gd:OptimizedTranslation.generate
+	return bool(Advanced(self).Generate(from))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -171,13 +171,14 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.OptimizedTranslation{gdclass.NewOptimizedTranslation(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
 
-func (self class) Generate(from [1]gdclass.Translation) { //gd:OptimizedTranslation.generate
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate, 0|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTranslation(from[0])[0]))})
+func (self class) Generate(from [1]gdclass.Translation) bool { //gd:OptimizedTranslation.generate
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.generate, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTranslation(from[0])[0]))})
+	var ret = r_ret
+	return ret
 }
 func (o class) AsOptimizedTranslation() Advanced            { return Advanced(o) }
 func (o Instance) AsOptimizedTranslation() Instance         { return o }

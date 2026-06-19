@@ -140,10 +140,13 @@ type Any interface {
 }
 
 type Interface interface {
-	// This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. 'menu_node' is a reference to the [PopupMenu] node.
+	// This virtual method is called when updating the context menu of an [Editable] [EditorResourcePicker]. Implement this method to override the "New" items section with your own options. 'menu_node' is a reference to the [PopupMenu] node.
 	//
 	// Note: Implement [HandleMenuSelected] to handle these custom items.
 	//
+	// Note: Relevant built-in options ("Load", "Copy", "Paste", etc.) are automatically added to the 'menu_node' afterwards, using their hard-coded IDs starting from 0. Custom options need to use non-colliding IDs to be handled properly. Using id = 100 + custom_option_index is safe (this is what the default items in the "New" section use).
+	//
+	// [Editable]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker#Instance.Editable
 	// [EditorResourcePicker]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker
 	// [HandleMenuSelected]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker#Interface
 	// [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
@@ -166,10 +169,13 @@ func (self implementation) HandleMenuSelected(id int) (_ bool) {
 }
 
 /*
-This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. 'menu_node' is a reference to the [PopupMenu] node.
+This virtual method is called when updating the context menu of an [Editable] [EditorResourcePicker]. Implement this method to override the "New" items section with your own options. 'menu_node' is a reference to the [PopupMenu] node.
 
 Note: Implement [HandleMenuSelected] to handle these custom items.
 
+Note: Relevant built-in options ("Load", "Copy", "Paste", etc.) are automatically added to the 'menu_node' afterwards, using their hard-coded IDs starting from 0. Custom options need to use non-colliding IDs to be handled properly. Using id = 100 + custom_option_index is safe (this is what the default items in the "New" section use).
+
+[Editable]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker#Instance.Editable
 [EditorResourcePicker]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker
 [HandleMenuSelected]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker#Interface
 [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu

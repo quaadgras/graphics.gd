@@ -175,6 +175,7 @@ func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:
 		priority int64
 	}{pointers.Get(gd.InternalString(name)), priority})
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

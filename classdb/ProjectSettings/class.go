@@ -7,8 +7,9 @@ When naming a Project Settings property, use the full path to the setting includ
 
 Feature tags: Project settings can be overridden for specific platforms and configurations (debug, release, ...) using [feature tags].
 
-Overriding: Any project setting can be overridden by creating a file named override.cfg in the project's root directory. This can also be used in exported projects by placing this file in the same directory as the project binary. Overriding will still take the base project settings' [feature tags] in account. Therefore, make sure to also override the setting with the desired feature tags if you want them to override base project settings on all platforms and configurations.
+Overriding: Any project setting can be overridden by creating a file named override.cfg in the project's root directory. This file is in the same format as project.godot, and can also be written using [ConfigFile]. This can also be used in exported projects by placing this file in the same directory as the project binary. Overriding will still take the base project settings' [feature tags] in account. Therefore, make sure to also override the setting with the desired feature tags if you want them to override base project settings on all platforms and configurations.
 
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [feature tags]: https://docs.godotengine.org/tutorials/export/feature_tags.html
 */
@@ -333,7 +334,7 @@ func GlobalizePath(path string) string { //gd:ProjectSettings.globalize_path
 /*
 Saves the configuration to the project.godot file.
 
-Note: This method is intended to be used by editor plugins, as modified [ProjectSettings] can't be loaded back in the running app. If you want to change project settings in exported projects, use [SaveCustom] to save override.cfg file.
+Note: This method is intended to be used by editor plugins, as modified [ProjectSettings] can't be loaded back in the running app. If you want to change project settings in exported projects, use [SaveCustom] to save an override.cfg file.
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
@@ -372,7 +373,7 @@ func LoadResourcePackOptions(pack string, replace_files bool, offset int) bool {
 }
 
 /*
-Saves the configuration to a custom file. The file extension must be .godot (to save in text-based [ConfigFile] format) or .binary (to save in binary format). You can also save override.cfg file, which is also text, but can be used in exported projects unlike other formats.
+Saves the configuration to a custom file. The file extension must be .godot (to save in text-based [ConfigFile] format) or .binary (to save in binary format). You can also save an override.cfg file, which is also text, but can be used in exported projects unlike other formats.
 
 [ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */

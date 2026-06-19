@@ -123,6 +123,7 @@ var methods struct {
 	find_item_by_name                  gdextension.MethodForClass `hash:"1321353865"`
 	clear                              gdextension.MethodForClass `hash:"3218959716"`
 	get_item_list                      gdextension.MethodForClass `hash:"1930428628"`
+	get_item_count                     gdextension.MethodForClass `hash:"3905245786"`
 	get_last_unused_item_id            gdextension.MethodForClass `hash:"3905245786"`
 }
 
@@ -356,6 +357,13 @@ func (self Instance) GetItemList() []int32 { //gd:MeshLibrary.get_item_list
 }
 
 /*
+Returns the number of items present in the library.
+*/
+func (self Instance) GetItemCount() int { //gd:MeshLibrary.get_item_count
+	return int(int(Advanced(self).GetItemCount()))
+}
+
+/*
 Gets an unused ID for a new item.
 */
 func (self Instance) GetLastUnusedItemId() int { //gd:MeshLibrary.get_last_unused_item_id
@@ -400,7 +408,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.MeshLibrary{gdclass.NewMeshLibrary(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -521,6 +528,11 @@ func (self class) Clear() { //gd:MeshLibrary.clear
 func (self class) GetItemList() Packed.Array[int32] { //gd:MeshLibrary.get_item_list
 	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_item_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
+func (self class) GetItemCount() int64 { //gd:MeshLibrary.get_item_count
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (self class) GetLastUnusedItemId() int64 { //gd:MeshLibrary.get_last_unused_item_id

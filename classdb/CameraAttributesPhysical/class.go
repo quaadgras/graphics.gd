@@ -9,6 +9,8 @@ The default settings are intended for use in an outdoor environment, tips for se
 
 Note: Depth of field blur is only supported in the Forward+ and Mobile rendering methods, not Compatibility.
 
+Note: Auto-exposure is only supported in the Forward+ rendering method, not Mobile or Compatibility.
+
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 [Camera3D.Far]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Far
 [Camera3D.Fov]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Fov
@@ -197,7 +199,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.CameraAttributesPhysical{gdclass.NewCameraAttributesPhysical(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

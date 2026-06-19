@@ -801,6 +801,61 @@ const (
 	BufferCreationDeviceAddressBit BufferCreationBits = 1
 	// Set this flag so that it is created as storage. This is useful if Compute Shaders need access (for reading or writing) to the buffer, e.g. skeletal animations are processed in Compute Shaders which need access to vertex buffers, to be later consumed by vertex shaders as part of the regular rasterization pipeline.
 	BufferCreationAsStorageBit BufferCreationBits = 2
+	// Allows usage of this buffer as input data for an acceleration structure build operation. You must first check that the GPU supports it:
+	//
+	//
+	//
+	// [gdscript]
+	//
+	// rd = RenderingServer.get_rendering_device()
+	//
+	//
+	//
+	// if rd.has_feature(RenderingDevice.SUPPORTS_RAYTRACING_PIPELINE):
+	//
+	//     storage_buffer = rd.storage_buffer_create(bytes.size(), bytes, RenderingDevice.BUFFER_CREATION_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT)
+	//
+	// [/gdscript]
+	//
+	//
+	BufferCreationAccelerationStructureBuildInputReadOnlyBit BufferCreationBits = 8
+)
+
+type AccelerationStructureFlagBits int64 //gd:RenderingDevice.AccelerationStructureFlagBits
+
+const (
+	// Allows the acceleration structure to be updated after it has been built.
+	AccelerationStructureAllowUpdateBit AccelerationStructureFlagBits = 1
+	// Allows the acceleration structure to be compacted to reduce memory usage after it has been built.
+	AccelerationStructureAllowCompactionBit AccelerationStructureFlagBits = 2
+	// Prioritizes ray traversal performance over build performance when building the acceleration structure.
+	AccelerationStructurePreferFastTraceBit AccelerationStructureFlagBits = 4
+	// Prioritizes build performance over ray traversal performance when building the acceleration structure.
+	AccelerationStructurePreferFastBuildBit AccelerationStructureFlagBits = 8
+	// Reduces the memory usage of the acceleration structure, potentially at the cost of reduced ray traversal performance.
+	AccelerationStructureLowMemoryBit AccelerationStructureFlagBits = 16
+)
+
+type AccelerationStructureGeometryFlagBits int64 //gd:RenderingDevice.AccelerationStructureGeometryFlagBits
+
+const (
+	// An opaque geometry does not invoke the any hit shaders.
+	AccelerationStructureGeometryOpaqueBit AccelerationStructureGeometryFlagBits = 1
+	// This geometry only calls the any hit shader a single time for each primitive.
+	AccelerationStructureGeometryNoDuplicateAnyHitInvocationBit AccelerationStructureGeometryFlagBits = 2
+)
+
+type AccelerationStructureInstanceFlagBits int64 //gd:RenderingDevice.AccelerationStructureInstanceFlagBits
+
+const (
+	// Disables triangle face culling for this instance during ray traversal.
+	AccelerationStructureInstanceTriangleFacingCullDisableBit AccelerationStructureInstanceFlagBits = 1
+	// Flips the triangle facing direction for this instance during ray traversal.
+	AccelerationStructureInstanceTriangleFlipFacingBit AccelerationStructureInstanceFlagBits = 2
+	// Forces all geometries in this instance to be treated as opaque, preventing any hit shaders from being invoked.
+	AccelerationStructureInstanceForceOpaqueBit AccelerationStructureInstanceFlagBits = 4
+	// Forces all geometries in this instance to be treated as non-opaque, allowing any hit shaders to be invoked.
+	AccelerationStructureInstanceForceNoOpaqueBit AccelerationStructureInstanceFlagBits = 8
 )
 
 type UniformType int64 //gd:RenderingDevice.UniformType
@@ -840,8 +895,10 @@ const (
 	//
 	// It's exposed in case GD users receive a buffer created with such flag from Godot.
 	UniformTypeStorageBufferDynamic UniformType = 11
+	// Acceleration structure uniform.
+	UniformTypeAccelerationStructure UniformType = 12
 	// Represents the size of the [UniformType] enum.
-	UniformTypeMax UniformType = 12
+	UniformTypeMax UniformType = 13
 )
 
 type RenderPrimitive int64 //gd:RenderingDevice.RenderPrimitive
@@ -1124,8 +1181,18 @@ const (
 	ShaderStageTesselationEvaluation ShaderStage = 3
 	// Compute shader stage. This can be used to run arbitrary computing tasks in a shader, performing them on the GPU instead of the CPU.
 	ShaderStageCompute ShaderStage = 4
+	// Ray generation shader stage. This can be used to generate primary rays.
+	ShaderStageRaygen ShaderStage = 5
+	// Any hit shader stage. Invoked when ray intersections are not opaque. This can be used to specify what happens when a ray hits any of the geometry in the scene.
+	ShaderStageAnyHit ShaderStage = 6
+	// Closest hit shader stage. This can be used to specify what happens when a ray hits the closest geometry in the scene.
+	ShaderStageClosestHit ShaderStage = 7
+	// Miss shader stage. This can be used to specify what happens if a ray does not hit anything in the scene.
+	ShaderStageMiss ShaderStage = 8
+	// Intersection shader stage. The intersection shader for triangles is built-in. This can be used to compute ray intersections with primitives that are not triangles.
+	ShaderStageIntersection ShaderStage = 9
 	// Represents the size of the [ShaderStage] enum.
-	ShaderStageMax ShaderStage = 5
+	ShaderStageMax ShaderStage = 10
 	// Vertex shader stage bit (see also [ShaderStageVertex]).
 	ShaderStageVertexBit ShaderStage = 1
 	// Fragment shader stage bit (see also [ShaderStageFragment]).
@@ -1136,6 +1203,16 @@ const (
 	ShaderStageTesselationEvaluationBit ShaderStage = 8
 	// Compute shader stage bit (see also [ShaderStageCompute]).
 	ShaderStageComputeBit ShaderStage = 16
+	// Ray generation shader stage bit (see also [ShaderStageRaygen]).
+	ShaderStageRaygenBit ShaderStage = 32
+	// Any hit shader stage bit (see also [ShaderStageAnyHit]).
+	ShaderStageAnyHitBit ShaderStage = 64
+	// Closest hit shader stage bit (see also [ShaderStageClosestHit]).
+	ShaderStageClosestHitBit ShaderStage = 128
+	// Miss shader stage bit (see also [ShaderStageMiss]).
+	ShaderStageMissBit ShaderStage = 256
+	// Intersection shader stage bit (see also [ShaderStageIntersection]).
+	ShaderStageIntersectionBit ShaderStage = 512
 )
 
 type ShaderLanguage int64 //gd:RenderingDevice.ShaderLanguage
@@ -1169,6 +1246,20 @@ const (
 	SupportsBufferDeviceAddress Features = 6
 	// Support for 32-bit image atomic operations.
 	SupportsImageAtomic32Bit Features = 7
+	// Support for ray query extension.
+	//
+	//
+	//
+	// Note: This is currently only supported when using Vulkan. This is not supported on macOS and iOS (even on hardware supporting raytracing) due to MoltenVK limitations.
+	SupportsRayQuery Features = 11
+	// Support for raytracing pipeline extension.
+	//
+	//
+	//
+	// Note: This is currently only supported when using Vulkan. This is not supported on macOS and iOS (even on hardware supporting raytracing) due to MoltenVK limitations.
+	SupportsRaytracingPipeline Features = 12
+	// Support for high dynamic range (HDR) output.
+	SupportsHdrOutput Features = 13
 )
 
 type Limit int64 //gd:RenderingDevice.Limit

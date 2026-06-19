@@ -317,9 +317,76 @@ The most basic example is applying position to [CharacterBody3D]:
 
 By using this in combination with [GetRootMotionRotationAccumulator], you can apply the root motion position more correctly to account for the rotation of the node.
 
+	package main
+
+	import (
+		"graphics.gd/classdb/AnimationNodeStateMachinePlayback"
+		"graphics.gd/classdb/AnimationTree"
+		"graphics.gd/classdb/CharacterBody3D"
+		"graphics.gd/classdb/Input"
+		"graphics.gd/variant/Float"
+		"graphics.gd/variant/Quaternion"
+		"graphics.gd/variant/Vector3"
+	)
+
+	type rootMotionExample2 struct {
+		CharacterBody3D.Extension[rootMotionExample2]
+
+		StateMachine  AnimationNodeStateMachinePlayback.Instance
+		AnimationTree AnimationTree.Instance
+	}
+
+	func (n rootMotionExample2) Process(delta Float.X) {
+		if Input.IsActionJustPressed("animate", false) {
+			n.StateMachine.Travel("Animate")
+		}
+		n.AsNode3D().SetQuaternion(Quaternion.Mul(n.AsNode3D().Quaternion(), n.AnimationTree.AsAnimationMixer().GetRootMotionRotation()))
+		var velocity = Vector3.Div(
+			Quaternion.Rotate(
+				n.AnimationTree.AsAnimationMixer().GetRootMotionPosition(),
+				Quaternion.Mul(Quaternion.Inverse(n.AnimationTree.AsAnimationMixer().GetRootMotionRotationAccumulator()), n.AsNode3D().Quaternion()),
+			),
+			Vector3.New(delta, delta, delta),
+		)
+		n.AsCharacterBody3D().SetVelocity(velocity)
+		n.AsCharacterBody3D().MoveAndSlide()
+	}
+
 If [RootMotionLocal] is true, returns the pre-multiplied translation value with the inverted rotation.
 
 In this case, the code can be written as follows:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/AnimationNodeStateMachinePlayback"
+		"graphics.gd/classdb/AnimationTree"
+		"graphics.gd/classdb/CharacterBody3D"
+		"graphics.gd/classdb/Input"
+		"graphics.gd/variant/Float"
+		"graphics.gd/variant/Quaternion"
+		"graphics.gd/variant/Vector3"
+	)
+
+	type rootMotionExample3 struct {
+		CharacterBody3D.Extension[rootMotionExample3]
+
+		StateMachine  AnimationNodeStateMachinePlayback.Instance
+		AnimationTree AnimationTree.Instance
+	}
+
+	func (n rootMotionExample3) Process(delta Float.X) {
+		if Input.IsActionJustPressed("animate", false) {
+			n.StateMachine.Travel("Animate")
+		}
+		n.AsNode3D().SetQuaternion(Quaternion.Mul(n.AsNode3D().Quaternion(), n.AnimationTree.AsAnimationMixer().GetRootMotionRotation()))
+		var velocity = Vector3.Div(
+			Quaternion.Rotate(n.AnimationTree.AsAnimationMixer().GetRootMotionPosition(), n.AsNode3D().Quaternion()),
+			Vector3.New(delta, delta, delta),
+		)
+		n.AsCharacterBody3D().SetVelocity(velocity)
+		n.AsCharacterBody3D().MoveAndSlide()
+	}
 
 [CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
 [GetRootMotionRotationAccumulator]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.GetRootMotionRotationAccumulator

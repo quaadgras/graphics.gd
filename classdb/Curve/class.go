@@ -206,7 +206,7 @@ func (self Instance) SetPointValue(index int, y Float.X) Instance { //gd:Curve.s
 }
 
 /*
-Sets the offset from 0.5.
+Assigns the horizontal position 'offset' to the point at 'index'.
 */
 func (self Instance) SetPointOffset(index int, offset Float.X) int { //gd:Curve.set_point_offset
 	return int(int(Advanced(self).SetPointOffset(int64(index), float64(offset))))
@@ -366,7 +366,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Curve{gdclass.NewCurve(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

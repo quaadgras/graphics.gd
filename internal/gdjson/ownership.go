@@ -298,6 +298,10 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 	},
 	"EditorInspector": {
+		"create_default_inspector": {
+			"filter_line_edit": IsTemporaryReference,
+			"return value":     OwnershipTransferred,
+		},
 		"get_edited_object": {
 			"return value": MustAssertInstanceID,
 		},
@@ -700,6 +704,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 	},
 	"GLTFDocumentExtension": {
+		"_export_get_property_list": {
+			"root_node": IsTemporaryReference,
+		},
 		"_generate_scene_node": {
 			"scene_parent": IsTemporaryReference,
 			"return value": OwnershipTransferred,
@@ -1533,6 +1540,12 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"unregister_frame_info_extension": {
 			"extension": ReversesTheOwnership,
 		},
+		"register_projection_layer_extension": {
+			"extension": OwnershipTransferred,
+		},
+		"unregister_projection_layer_extension": {
+			"extension": ReversesTheOwnership,
+		},
 	},
 	"OpenXRRenderModelExtension": {
 		"render_model_new_scene_instance": {
@@ -1584,6 +1597,21 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	"SpringBoneCollision3D": {
 		"get_skeleton": {
 			"return value": MustAssertInstanceID,
+		},
+	},
+	"GDScriptWorkspace": {
+		"apply_new_signal": {
+			"obj": IsTemporaryReference,
+		},
+	},
+	"JavaClassWrapper": {
+		"create_proxy": {
+			"object": IsTemporaryReference, // src: only stores p_object->get_instance_id(), borrows the object
+		},
+	},
+	"OpenXRExtensionWrapper": {
+		"_on_register_metadata": {
+			"interaction_profile_metadata": IsTemporaryReference,
 		},
 	},
 }

@@ -178,7 +178,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.CameraAttributes{gdclass.NewCameraAttributes(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -218,6 +217,8 @@ func (self Instance) SetExposureMultiplier(value Float.X) Instance { //gd:Camera
 
 /*
 If true, enables the tonemapping auto exposure mode of the scene renderer. If true, the renderer will automatically determine the exposure setting to adapt to the scene's illumination and the observed light.
+
+Note: Auto-exposure is only supported in the Forward+ rendering method, not Mobile or Compatibility.
 */
 func (self Instance) AutoExposureEnabled() bool { //gd:CameraAttributes.auto_exposure_enabled
 	return bool(class(self).IsAutoExposureEnabled())

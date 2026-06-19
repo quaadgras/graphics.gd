@@ -142,6 +142,8 @@ var methods struct {
 	get_max_anisotropy       gdextension.MethodForClass `hash:"1740695150"`
 	set_border_color         gdextension.MethodForClass `hash:"2920490490"`
 	get_border_color         gdextension.MethodForClass `hash:"3444240500"`
+	set_eye_visibility       gdextension.MethodForClass `hash:"156391336"`
+	get_eye_visibility       gdextension.MethodForClass `hash:"467669000"`
 	intersects_ray           gdextension.MethodForClass `hash:"1091262597"`
 }
 
@@ -349,6 +351,21 @@ func (self Instance) EnableHolePunch() bool { //gd:OpenXRCompositionLayer.enable
 // SetEnableHolePunch sets the property returned by [GetEnableHolePunch]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetEnableHolePunch(value bool) Instance { //gd:OpenXRCompositionLayer.enable_hole_punch
 	class(self).SetEnableHolePunch(value)
+	return self
+}
+
+/*
+The eye(s) the composition layer is visible to.
+
+Note: Not all composition layer types or runtimes support restricting visibility to a single eye.
+*/
+func (self Instance) EyeVisibility() EyeVisibility { //gd:OpenXRCompositionLayer.eye_visibility
+	return EyeVisibility(class(self).GetEyeVisibility())
+}
+
+// SetEyeVisibility sets the property returned by [GetEyeVisibility]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetEyeVisibility(value EyeVisibility) Instance { //gd:OpenXRCompositionLayer.eye_visibility
+	class(self).SetEyeVisibility(value)
 	return self
 }
 
@@ -671,6 +688,14 @@ func (self class) GetBorderColor() Color.RGBA { //gd:OpenXRCompositionLayer.get_
 	var ret = r_ret
 	return ret
 }
+func (self class) SetEyeVisibility(eye_visibility EyeVisibility) { //gd:OpenXRCompositionLayer.set_eye_visibility
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_eye_visibility, 0|(gdextension.SizeInt<<4), &struct{ eye_visibility EyeVisibility }{eye_visibility})
+}
+func (self class) GetEyeVisibility() EyeVisibility { //gd:OpenXRCompositionLayer.get_eye_visibility
+	var r_ret = noescape.Call[EyeVisibility](gd.ObjectChecked(self.AsObject()), methods.get_eye_visibility, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Vector2.XY { //gd:OpenXRCompositionLayer.intersects_ray
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.intersects_ray, gdextension.SizeVector2|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		origin    Vector3.XYZ
@@ -762,4 +787,15 @@ const (
 	SwizzleZero Swizzle = 4
 	// Maps a color channel to the value of one.
 	SwizzleOne Swizzle = 5
+)
+
+type EyeVisibility int64 //gd:OpenXRCompositionLayer.EyeVisibility
+
+const (
+	// The layer is visible to both the left and right eyes.
+	EyeVisibilityBoth EyeVisibility = 0
+	// The layer is visible only to the left eye.
+	EyeVisibilityLeft EyeVisibility = 1
+	// The layer is visible only to the right eye.
+	EyeVisibilityRight EyeVisibility = 2
 )

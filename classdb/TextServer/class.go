@@ -170,6 +170,13 @@ var methods struct {
 	font_is_force_autohinter                    gdextension.MethodForClass `hash:"4155700596"`
 	font_set_modulate_color_glyphs              gdextension.MethodForClass `hash:"1265174801"`
 	font_is_modulate_color_glyphs               gdextension.MethodForClass `hash:"4155700596"`
+	font_get_palette_count                      gdextension.MethodForClass `hash:"2198884583"`
+	font_get_palette_name                       gdextension.MethodForClass `hash:"1464764419"`
+	font_get_palette_colors                     gdextension.MethodForClass `hash:"1595517857"`
+	font_set_palette_custom_colors              gdextension.MethodForClass `hash:"4037098590"`
+	font_get_palette_custom_colors              gdextension.MethodForClass `hash:"1569415609"`
+	font_get_used_palette                       gdextension.MethodForClass `hash:"2198884583"`
+	font_set_used_palette                       gdextension.MethodForClass `hash:"3411492887"`
 	font_set_hinting                            gdextension.MethodForClass `hash:"1520010864"`
 	font_get_hinting                            gdextension.MethodForClass `hash:"3971592737"`
 	font_set_subpixel_positioning               gdextension.MethodForClass `hash:"3830459669"`
@@ -290,6 +297,7 @@ var methods struct {
 	shaped_get_run_count                        gdextension.MethodForClass `hash:"2198884583"`
 	shaped_get_run_text                         gdextension.MethodForClass `hash:"1464764419"`
 	shaped_get_run_range                        gdextension.MethodForClass `hash:"4069534484"`
+	shaped_get_run_glyph_range                  gdextension.MethodForClass `hash:"4069534484"`
 	shaped_get_run_font_rid                     gdextension.MethodForClass `hash:"1066463050"`
 	shaped_get_run_font_size                    gdextension.MethodForClass `hash:"1120910005"`
 	shaped_get_run_language                     gdextension.MethodForClass `hash:"1464764419"`
@@ -779,8 +787,8 @@ func (self Instance) FontIsForceAutohinter(font_rid RID.Font) bool { //gd:TextSe
 /*
 If set to true, color modulation is applied when drawing colored glyphs, otherwise it's applied to the monochrome glyphs only.
 */
-func (self Instance) FontSetModulateColorGlyphs(font_rid RID.Font, force_autohinter bool) { //gd:TextServer.font_set_modulate_color_glyphs
-	Advanced(self).FontSetModulateColorGlyphs(RID.Any(font_rid), force_autohinter)
+func (self Instance) FontSetModulateColorGlyphs(font_rid RID.Font, modulate bool) { //gd:TextServer.font_set_modulate_color_glyphs
+	Advanced(self).FontSetModulateColorGlyphs(RID.Any(font_rid), modulate)
 }
 
 /*
@@ -788,6 +796,57 @@ Returns true if color modulation is applied when drawing the font's colored glyp
 */
 func (self Instance) FontIsModulateColorGlyphs(font_rid RID.Font) bool { //gd:TextServer.font_is_modulate_color_glyphs
 	return bool(Advanced(self).FontIsModulateColorGlyphs(RID.Any(font_rid)))
+}
+
+/*
+Returns the number of predefined color palettes. Palette contains all colors used to render font glyphs. Each palette has the same number of colors.
+*/
+func (self Instance) FontGetPaletteCount(font_rid RID.Font) int { //gd:TextServer.font_get_palette_count
+	return int(int(Advanced(self).FontGetPaletteCount(RID.Any(font_rid))))
+}
+
+/*
+Returns the name of the predefined color palette at 'index'. Palette contains all colors used to render font glyphs. Each palette has the same number of colors.
+*/
+func (self Instance) FontGetPaletteName(font_rid RID.Font, index int) string { //gd:TextServer.font_get_palette_name
+	return string(Advanced(self).FontGetPaletteName(RID.Any(font_rid), int64(index)).String())
+}
+
+/*
+Returns the array in the predefined color palette at 'index'. Palette contains all colors used to render font glyphs. Each palette has the same number of colors. Colors can be overridden using [FontSetPaletteCustomColors].
+
+[FontSetPaletteCustomColors]: https://pkg.go.dev/graphics.gd/classdb/TextServer#Instance.FontSetPaletteCustomColors
+*/
+func (self Instance) FontGetPaletteColors(font_rid RID.Font, index int) []Color.RGBA { //gd:TextServer.font_get_palette_colors
+	return []Color.RGBA(slices.Collect(Advanced(self).FontGetPaletteColors(RID.Any(font_rid), int64(index)).Values()))
+}
+
+/*
+Sets array of custom colors to override predefined palette. Set to empty array to reset overrides. Use Color(0, 0, 0, 0), to keep predefined palette color at specific position.
+*/
+func (self Instance) FontSetPaletteCustomColors(font_rid RID.Font, colors []Color.RGBA) { //gd:TextServer.font_set_palette_custom_colors
+	Advanced(self).FontSetPaletteCustomColors(RID.Any(font_rid), Packed.New(colors...))
+}
+
+/*
+Returns array of custom colors to override predefined palette.
+*/
+func (self Instance) FontGetPaletteCustomColors(font_rid RID.Font) []Color.RGBA { //gd:TextServer.font_get_palette_custom_colors
+	return []Color.RGBA(slices.Collect(Advanced(self).FontGetPaletteCustomColors(RID.Any(font_rid)).Values()))
+}
+
+/*
+Returns used palette index.
+*/
+func (self Instance) FontGetUsedPalette(font_rid RID.Font) int { //gd:TextServer.font_get_used_palette
+	return int(int(Advanced(self).FontGetUsedPalette(RID.Any(font_rid))))
+}
+
+/*
+Sets used palette index.
+*/
+func (self Instance) FontSetUsedPalette(font_rid RID.Font, index int) { //gd:TextServer.font_set_used_palette
+	Advanced(self).FontSetUsedPalette(RID.Any(font_rid), int64(index))
 }
 
 /*
@@ -1837,6 +1896,13 @@ func (self Instance) ShapedGetRunRange(shaped RID.TextBuffer, index int) Vector2
 }
 
 /*
+Returns the glyph range of the 'index' text run (in visual order).
+*/
+func (self Instance) ShapedGetRunGlyphRange(shaped RID.TextBuffer, index int) Vector2i.XY { //gd:TextServer.shaped_get_run_glyph_range
+	return Vector2i.XY(Advanced(self).ShapedGetRunGlyphRange(RID.Any(shaped), int64(index)))
+}
+
+/*
 Returns the font RID of the 'index' text run (in visual order).
 */
 func (self Instance) ShapedGetRunFontRid(shaped RID.TextBuffer, index int) RID.Font { //gd:TextServer.shaped_get_run_font_rid
@@ -2293,6 +2359,21 @@ func (self MoreArgs) PercentSign(language string) string { //gd:TextServer.perce
 Returns an array of the word break boundaries. Elements in the returned array are the offsets of the start and end of words. Therefore the length of the array is always even.
 
 When 'chars_per_line' is greater than zero, line break boundaries are returned instead.
+
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/TextServerManager"
+	)
+
+	func ExampleStringGetWordBreaks() {
+		var ts = TextServerManager.GetPrimaryInterface()
+		fmt.Println(ts.StringGetWordBreaks("The Godot Engine, 4"))                      // Prints [0 3 4 9 10 16 18 19]
+		fmt.Println(ts.MoreArgs().StringGetWordBreaks("The Godot Engine, 4", "en", 5))  // Prints [0 3 4 9 10 15 15 19]
+		fmt.Println(ts.MoreArgs().StringGetWordBreaks("The Godot Engine, 4", "en", 10)) // Prints [0 9 10 19]
+	}
 */
 func (self Instance) StringGetWordBreaks(s string) []int32 { //gd:TextServer.string_get_word_breaks
 	return []int32(slices.Collect(Advanced(self).StringGetWordBreaks(String.From(s), String.From(""), int64(0)).Values()))
@@ -2302,6 +2383,21 @@ func (self Instance) StringGetWordBreaks(s string) []int32 { //gd:TextServer.str
 Returns an array of the word break boundaries. Elements in the returned array are the offsets of the start and end of words. Therefore the length of the array is always even.
 
 When 'chars_per_line' is greater than zero, line break boundaries are returned instead.
+
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/TextServerManager"
+	)
+
+	func ExampleStringGetWordBreaks() {
+		var ts = TextServerManager.GetPrimaryInterface()
+		fmt.Println(ts.StringGetWordBreaks("The Godot Engine, 4"))                      // Prints [0 3 4 9 10 16 18 19]
+		fmt.Println(ts.MoreArgs().StringGetWordBreaks("The Godot Engine, 4", "en", 5))  // Prints [0 3 4 9 10 15 15 19]
+		fmt.Println(ts.MoreArgs().StringGetWordBreaks("The Godot Engine, 4", "en", 10)) // Prints [0 9 10 19]
+	}
 */
 func (self MoreArgs) StringGetWordBreaks(s string, language string, chars_per_line int) []int32 { //gd:TextServer.string_get_word_breaks
 	return []int32(slices.Collect(Advanced(self).StringGetWordBreaks(String.From(s), String.From(language), int64(chars_per_line)).Values()))
@@ -2309,6 +2405,19 @@ func (self MoreArgs) StringGetWordBreaks(s string, language string, chars_per_li
 
 /*
 Returns array of the composite character boundaries.
+
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/TextServerManager"
+	)
+
+	func ExampleStringGetCharacterBreaks() {
+		var ts = TextServerManager.GetPrimaryInterface()
+		fmt.Println(ts.StringGetCharacterBreaks("Test ❤️‍🔥 Test")) // Prints [1 2 3 4 5 9 10 11 12 13 14]
+	}
 */
 func (self Instance) StringGetCharacterBreaks(s string) []int32 { //gd:TextServer.string_get_character_breaks
 	return []int32(slices.Collect(Advanced(self).StringGetCharacterBreaks(String.From(s), String.From("")).Values()))
@@ -2316,6 +2425,19 @@ func (self Instance) StringGetCharacterBreaks(s string) []int32 { //gd:TextServe
 
 /*
 Returns array of the composite character boundaries.
+
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/TextServerManager"
+	)
+
+	func ExampleStringGetCharacterBreaks() {
+		var ts = TextServerManager.GetPrimaryInterface()
+		fmt.Println(ts.StringGetCharacterBreaks("Test ❤️‍🔥 Test")) // Prints [1 2 3 4 5 9 10 11 12 13 14]
+	}
 */
 func (self MoreArgs) StringGetCharacterBreaks(s string, language string) []int32 { //gd:TextServer.string_get_character_breaks
 	return []int32(slices.Collect(Advanced(self).StringGetCharacterBreaks(String.From(s), String.From(language)).Values()))
@@ -2505,7 +2627,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.TextServer{gdclass.NewTextServer(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -2783,16 +2904,59 @@ func (self class) FontIsForceAutohinter(font_rid RID.Any) bool { //gd:TextServer
 	var ret = r_ret
 	return ret
 }
-func (self class) FontSetModulateColorGlyphs(font_rid RID.Any, force_autohinter bool) { //gd:TextServer.font_set_modulate_color_glyphs
+func (self class) FontSetModulateColorGlyphs(font_rid RID.Any, modulate bool) { //gd:TextServer.font_set_modulate_color_glyphs
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_set_modulate_color_glyphs, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
-		font_rid         RID.Any
-		force_autohinter bool
-	}{font_rid, force_autohinter})
+		font_rid RID.Any
+		modulate bool
+	}{font_rid, modulate})
 }
 func (self class) FontIsModulateColorGlyphs(font_rid RID.Any) bool { //gd:TextServer.font_is_modulate_color_glyphs
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.font_is_modulate_color_glyphs, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ font_rid RID.Any }{font_rid})
 	var ret = r_ret
 	return ret
+}
+func (self class) FontGetPaletteCount(font_rid RID.Any) int64 { //gd:TextServer.font_get_palette_count
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.font_get_palette_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ font_rid RID.Any }{font_rid})
+	var ret = r_ret
+	return ret
+}
+func (self class) FontGetPaletteName(font_rid RID.Any, index int64) String.Readable { //gd:TextServer.font_get_palette_name
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.font_get_palette_name, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		font_rid RID.Any
+		index    int64
+	}{font_rid, index})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+func (self class) FontGetPaletteColors(font_rid RID.Any, index int64) Packed.Array[Color.RGBA] { //gd:TextServer.font_get_palette_colors
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.font_get_palette_colors, gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		font_rid RID.Any
+		index    int64
+	}{font_rid, index})
+	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
+func (self class) FontSetPaletteCustomColors(font_rid RID.Any, colors Packed.Array[Color.RGBA]) { //gd:TextServer.font_set_palette_custom_colors
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_set_palette_custom_colors, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), &struct {
+		font_rid RID.Any
+		colors   gdextension.PackedArray[Color.RGBA]
+	}{font_rid, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))})
+}
+func (self class) FontGetPaletteCustomColors(font_rid RID.Any) Packed.Array[Color.RGBA] { //gd:TextServer.font_get_palette_custom_colors
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.font_get_palette_custom_colors, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ font_rid RID.Any }{font_rid})
+	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
+func (self class) FontGetUsedPalette(font_rid RID.Any) int64 { //gd:TextServer.font_get_used_palette
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.font_get_used_palette, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ font_rid RID.Any }{font_rid})
+	var ret = r_ret
+	return ret
+}
+func (self class) FontSetUsedPalette(font_rid RID.Any, index int64) { //gd:TextServer.font_set_used_palette
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_set_used_palette, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		font_rid RID.Any
+		index    int64
+	}{font_rid, index})
 }
 func (self class) FontSetHinting(font_rid RID.Any, hinting Hinting) { //gd:TextServer.font_set_hinting
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_set_hinting, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
@@ -3624,6 +3788,14 @@ func (self class) ShapedGetRunText(shaped RID.Any, index int64) String.Readable 
 }
 func (self class) ShapedGetRunRange(shaped RID.Any, index int64) Vector2i.XY { //gd:TextServer.shaped_get_run_range
 	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.shaped_get_run_range, gdextension.SizeVector2i|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		shaped RID.Any
+		index  int64
+	}{shaped, index})
+	var ret = r_ret
+	return ret
+}
+func (self class) ShapedGetRunGlyphRange(shaped RID.Any, index int64) Vector2i.XY { //gd:TextServer.shaped_get_run_glyph_range
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.shaped_get_run_glyph_range, gdextension.SizeVector2i|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		shaped RID.Any
 		index  int64
 	}{shaped, index})

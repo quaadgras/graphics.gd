@@ -198,6 +198,10 @@ func DocsToGoDoc(docs string, classdb map[string]Class, className, codeblock str
 		parser.AddTag("bool", func(tag bbparser.Tag, body string) string { return "bool" })
 		parser.AddTag("String", func(tag bbparser.Tag, body string) string { return "string" })
 		parser.AddTag("Callable", func(tag bbparser.Tag, body string) string { return "func" })
+		parser.AddTag("Signal", func(tag bbparser.Tag, body string) string {
+			parser_links["Signal.Any"] = "https://pkg.go.dev/graphics.gd/variant/Signal#Any"
+			return "[Signal.Any]"
+		})
 		parser.AddTag("Variant", func(tag bbparser.Tag, body string) string { return "any" })
 		parser.AddTag("Vector2", func(tag bbparser.Tag, body string) string {
 			parser_links["Vector2.XY"] = "https://pkg.go.dev/graphics.gd/variant/Vector2#XY"
@@ -218,6 +222,10 @@ func DocsToGoDoc(docs string, classdb map[string]Class, className, codeblock str
 		parser.AddTag("Vector4", func(tag bbparser.Tag, body string) string {
 			parser_links["Vector4.XYZW"] = "https://pkg.go.dev/graphics.gd/variant/Vector4#XYZW"
 			return "[Vector4.XYZW]"
+		})
+		parser.AddTag("Vector4i", func(tag bbparser.Tag, body string) string {
+			parser_links["Vector4i.XYZW"] = "https://pkg.go.dev/graphics.gd/variant/Vector4i#XYZW"
+			return "[Vector4i.XYZW]"
 		})
 
 		parser.AddTag("Quaternion", func(tag bbparser.Tag, body string) string {
@@ -241,6 +249,10 @@ func DocsToGoDoc(docs string, classdb map[string]Class, className, codeblock str
 		parser.AddTag("PackedVector3Array", func(tag bbparser.Tag, body string) string {
 			parser_links["Vector3.XYZ"] = "https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ"
 			return "[][Vector3.XYZ]"
+		})
+		parser.AddTag("PackedVector4Array", func(tag bbparser.Tag, body string) string {
+			parser_links["Vector4.XYZW"] = "https://pkg.go.dev/graphics.gd/variant/Vector4#XYZW"
+			return "[][Vector4.XYZW]"
 		})
 		parser.AddTag("PackedColorArray", func(tag bbparser.Tag, body string) string {
 			parser_links["Color.RGBA"] = "https://pkg.go.dev/graphics.gd/variant/Color#RGBA"

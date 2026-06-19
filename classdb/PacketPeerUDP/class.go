@@ -222,6 +222,24 @@ Waits for a packet to arrive on the bound address. See [Bind].
 
 Note: [Wait] can't be interrupted once it has been called. This can be worked around by allowing the other party to send a specific "death pill" packet like this:
 
+	package main
+
+	import "graphics.gd/classdb/PacketPeerUDP"
+
+	func ExamplePacketPeerUDPWait(socket PacketPeerUDP.Instance) {
+		// Server
+		socket.SetDestAddress("127.0.0.1", 789)
+		socket.AsPacketPeer().PutPacket([]byte("Time to stop"))
+
+		// Client
+		for socket.Wait() == nil {
+			var data = string(socket.AsPacketPeer().GetPacket())
+			if data == "Time to stop" {
+				return
+			}
+		}
+	}
+
 [Bind]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.Bind
 [Wait]: https://pkg.go.dev/graphics.gd/classdb/PacketPeerUDP#Instance.Wait
 */
@@ -369,7 +387,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.PacketPeerUDP{gdclass.NewPacketPeerUDP(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

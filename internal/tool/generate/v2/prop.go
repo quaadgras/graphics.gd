@@ -27,9 +27,10 @@ func (classDB ClassDB) new(file io.Writer, class gdjson.Class) {
 	}
 `, class.Name)
 	fmt.Fprintf(file, "\tcasted := Instance([1]gdclass.%[1]s{gdclass.New%[1]s(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})\n", class.Name)
-	if class.IsRefcounted {
-		fmt.Fprintf(file, "\tcasted.AsRefCounted()[0].InitRef()\n")
-	}
+	// Note: no InitRef here for RefCounted classes — classdb_construct_object3
+	// (Objects.Make) already establishes the initial reference (refcount=1) via
+	// ClassDB::instantiate_without_postinitialization_with_refcount. Calling
+	// InitRef again would leave refcount=2 and leak the object.
 	fmt.Fprintf(file, "\tgd.ObjectNotification(casted.AsObject()[0], 0, false)\n")
 	fmt.Fprintf(file, "\treturn casted\n")
 	fmt.Fprintf(file, "}\n")

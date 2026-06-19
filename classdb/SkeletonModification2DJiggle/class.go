@@ -119,6 +119,7 @@ var methods struct {
 	get_use_colliders            gdextension.MethodForClass `hash:"36873697"`
 	set_collision_mask           gdextension.MethodForClass `hash:"1286410249"`
 	get_collision_mask           gdextension.MethodForClass `hash:"3905245786"`
+	reset                        gdextension.MethodForClass `hash:"3218959716"`
 	set_jiggle_joint_bone2d_node gdextension.MethodForClass `hash:"2761262315"`
 	get_jiggle_joint_bone2d_node gdextension.MethodForClass `hash:"408788394"`
 	set_jiggle_joint_bone_index  gdextension.MethodForClass `hash:"3937882851"`
@@ -189,6 +190,13 @@ Returns the collision mask used by the Jiggle modifier when collisions are enabl
 */
 func (self Instance) GetCollisionMask() int { //gd:SkeletonModification2DJiggle.get_collision_mask
 	return int(int(Advanced(self).GetCollisionMask()))
+}
+
+/*
+Resets the internal jiggle simulation state to the current bone positions, clearing velocity, acceleration, and accumulated forces.
+*/
+func (self Instance) Reset() { //gd:SkeletonModification2DJiggle.reset
+	Advanced(self).Reset()
 }
 
 /*
@@ -373,7 +381,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.SkeletonModification2DJiggle{gdclass.NewSkeletonModification2DJiggle(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -542,6 +549,9 @@ func (self class) GetCollisionMask() int64 { //gd:SkeletonModification2DJiggle.g
 	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
+}
+func (self class) Reset() { //gd:SkeletonModification2DJiggle.reset
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, &struct{}{})
 }
 func (self class) SetJiggleJointBone2dNode(joint_idx int64, bone2d_node Path.ToNode) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jiggle_joint_bone2d_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), &struct {

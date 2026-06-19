@@ -99,8 +99,8 @@ type Instance [1]gdclass.ScriptEditorBase
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	get_base_editor        gdextension.MethodForClass `hash:"2783021301"`
 	add_syntax_highlighter gdextension.MethodForClass `hash:"1092774468"`
+	get_base_editor        gdextension.MethodForClass `hash:"2783021301"`
 }
 
 func init() {
@@ -124,6 +124,15 @@ type Any interface {
 }
 
 /*
+Adds an [EditorSyntaxHighlighter] to the open script.
+
+[EditorSyntaxHighlighter]: https://pkg.go.dev/graphics.gd/classdb/EditorSyntaxHighlighter
+*/
+func (self Instance) AddSyntaxHighlighter(highlighter EditorSyntaxHighlighter.Instance) { //gd:ScriptEditorBase.add_syntax_highlighter
+	Advanced(self).AddSyntaxHighlighter(highlighter)
+}
+
+/*
 Returns the underlying [Control] used for editing scripts. For text scripts, this is a [CodeEdit].
 
 [CodeEdit]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit
@@ -131,15 +140,6 @@ Returns the underlying [Control] used for editing scripts. For text scripts, thi
 */
 func (self Instance) GetBaseEditor() Control.Instance { //gd:ScriptEditorBase.get_base_editor
 	return Control.Instance(Advanced(self).GetBaseEditor())
-}
-
-/*
-Adds an [EditorSyntaxHighlighter] to the open script.
-
-[EditorSyntaxHighlighter]: https://pkg.go.dev/graphics.gd/classdb/EditorSyntaxHighlighter
-*/
-func (self Instance) AddSyntaxHighlighter(highlighter EditorSyntaxHighlighter.Instance) { //gd:ScriptEditorBase.add_syntax_highlighter
-	Advanced(self).AddSyntaxHighlighter(highlighter)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -184,13 +184,13 @@ func New() Instance {
 	return casted
 }
 
+func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ highlighter gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorSyntaxHighlighter(highlighter[0])[0]))})
+}
 func (self class) GetBaseEditor() [1]gdclass.Control { //gd:ScriptEditorBase.get_base_editor
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_editor, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gdclass.NewControl(gdreference.LetObject(r_ret))}
 	return ret
-}
-func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ highlighter gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetEditorSyntaxHighlighter(highlighter[0])[0]))})
 }
 
 /*
@@ -223,6 +223,38 @@ func (self Instance) OnEditedScriptChanged(cb func(), flags ...Signal.Flags) Ins
 
 func (self class) EditedScriptChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`edited_script_changed`))))
+}
+
+/*
+Emitted when the user request to search text in the file system.
+*/
+func (self Instance) OnSearchInFilesRequested(cb func(text string), flags ...Signal.Flags) Instance {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("search_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
+	return self
+}
+
+func (self class) SearchInFilesRequested() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`search_in_files_requested`))))
+}
+
+/*
+Emitted when the user contextual goto and the item is in the same script.
+*/
+func (self Instance) OnRequestSaveHistory(cb func(), flags ...Signal.Flags) Instance {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("request_save_history"), gd.NewCallable(cb), int64(flags_together))
+	return self
+}
+
+func (self class) RequestSaveHistory() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`request_save_history`))))
 }
 
 /*
@@ -260,38 +292,6 @@ func (self class) RequestOpenScriptAtLine() Signal.Any {
 }
 
 /*
-Emitted when the user contextual goto and the item is in the same script.
-*/
-func (self Instance) OnRequestSaveHistory(cb func(), flags ...Signal.Flags) Instance {
-	var flags_together Signal.Flags
-	for _, flag := range flags {
-		flags_together |= flag
-	}
-	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("request_save_history"), gd.NewCallable(cb), int64(flags_together))
-	return self
-}
-
-func (self class) RequestSaveHistory() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`request_save_history`))))
-}
-
-/*
-Emitted when the user changes current script or moves caret by 10 or more columns within the same script.
-*/
-func (self Instance) OnRequestSavePreviousState(cb func(state map[any]any), flags ...Signal.Flags) Instance {
-	var flags_together Signal.Flags
-	for _, flag := range flags {
-		flags_together |= flag
-	}
-	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), int64(flags_together))
-	return self
-}
-
-func (self class) RequestSavePreviousState() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`request_save_previous_state`))))
-}
-
-/*
 Emitted when the user requests a specific documentation page.
 */
 func (self Instance) OnGoToHelp(cb func(what string), flags ...Signal.Flags) Instance {
@@ -308,19 +308,19 @@ func (self class) GoToHelp() Signal.Any {
 }
 
 /*
-Emitted when the user request to search text in the file system.
+Emitted when the user changes current script or moves caret by 10 or more columns within the same script.
 */
-func (self Instance) OnSearchInFilesRequested(cb func(text string), flags ...Signal.Flags) Instance {
+func (self Instance) OnRequestSavePreviousState(cb func(state map[any]any), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag
 	}
-	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("search_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), int64(flags_together))
 	return self
 }
 
-func (self class) SearchInFilesRequested() Signal.Any {
-	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`search_in_files_requested`))))
+func (self class) RequestSavePreviousState() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`request_save_previous_state`))))
 }
 
 /*

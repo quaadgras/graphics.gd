@@ -14,44 +14,43 @@ Example: Contact a REST API and print one of its returned fields:
 	package main
 
 	import (
-		"encoding/json"
-
-		"graphics.gd/classdb/Engine"
 		"graphics.gd/classdb/HTTPClient"
 		"graphics.gd/classdb/HTTPRequest"
+		"graphics.gd/classdb/JSON"
 		"graphics.gd/classdb/Node"
-		"graphics.gd/variant/Signal"
 	)
 
-	type ExampleHTTP struct {
-		Node.Extension[ExampleHTTP]
+	type httpRequestExample struct {
+		Node.Extension[httpRequestExample]
 	}
 
-	func (n *ExampleHTTP) Ready() {
+	func (n httpRequestExample) Ready() {
 		// Create an HTTP request node and connect its completion signal.
 		var httpRequest = HTTPRequest.New()
 		n.AsNode().AddChild(httpRequest.AsNode())
-		httpRequest.OnRequestCompleted(func(result HTTPRequest.Result, response_code int, headers []string, body []byte) {
-			var Response struct {
-				Headers map[string]string
-			}
-			json.Unmarshal(body, &Response)
-			// Will print the user agent string used by the HTTPRequest node (as recognized by httpbin.org).
-			println(Response.Headers["User-Agent"])
+		httpRequest.OnRequestCompleted(n.httpRequestCompleted)
 
-			// Perform a POST request. The URL below returns JSON as of writing.
-			body, _ = json.Marshal(map[string]string{"name": "Godette"})
-			var err = httpRequest.MoreArgs().Request("https://httpbin.org/post", nil, HTTPClient.MethodPost, string(body))
-			if err != nil {
-				Engine.Raise(err)
-			}
-		}, Signal.OneShot)
 		// Perform a GET request. The URL below returns JSON as of writing.
-		var err = httpRequest.MoreArgs().Request("https://httpbin.org/get", nil, HTTPClient.MethodGet, "")
-		if err != nil {
-			Engine.Raise(err)
+		if err := httpRequest.Request("https://httpbin.org/get"); err != nil {
+			// An error occurred in the HTTP request.
 		}
+
+		// Perform a POST request. The URL below returns JSON as of writing.
 		// Note: Don't make simultaneous requests using a single HTTPRequest node.
+		var body = JSON.Stringify(map[string]any{"name": "Godette"}, "", false)
+		if err := httpRequest.MoreArgs().Request("https://httpbin.org/post", nil, HTTPClient.MethodPost, body); err != nil {
+			// An error occurred in the HTTP request.
+		}
+	}
+
+	// Called when the HTTP request is completed.
+	func (n httpRequestExample) httpRequestCompleted(result HTTPRequest.Result, responseCode int, headers []string, body []byte) {
+		var json = JSON.New()
+		json.Parse(string(body))
+		var response = json.Data()
+		_ = response
+		// Will print the user agent string used by the HTTPRequest node (as recognized by httpbin.org).
+		// fmt.Println(response["headers"]["User-Agent"])
 	}
 
 Example: Load an image using [HTTPRequest] and display it:
@@ -59,45 +58,44 @@ Example: Load an image using [HTTPRequest] and display it:
 	package main
 
 	import (
-		"errors"
-
-		"graphics.gd/classdb/Engine"
 		"graphics.gd/classdb/HTTPRequest"
 		"graphics.gd/classdb/Image"
 		"graphics.gd/classdb/ImageTexture"
 		"graphics.gd/classdb/Node"
 		"graphics.gd/classdb/TextureRect"
-		"graphics.gd/variant/Signal"
 	)
 
-	type ExampleDownloadImage struct {
-		Node.Extension[ExampleDownloadImage]
+	type httpImageRequestExample struct {
+		Node.Extension[httpImageRequestExample]
 	}
 
-	func (n ExampleDownloadImage) Ready() {
-		var http_request = HTTPRequest.New()
-		n.AsNode().AddChild(http_request.AsNode())
-		http_request.AsHTTPRequest().OnRequestCompleted(func(result HTTPRequest.Result, response_code int, headers []string, body []byte) {
-			if result != HTTPRequest.ResultSuccess {
-				Engine.Raise(errors.New("Image couldn't be downloaded. Try a different image."))
-			}
-			var image = Image.New()
-			var err = image.LoadPngFromBuffer(body)
-			if err != nil {
-				Engine.Raise(errors.New("Couldn't load the image."))
-			}
-			var texture = ImageTexture.CreateFromImage(image)
+	func (n httpImageRequestExample) Ready() {
+		// Create an HTTP request node and connect its completion signal.
+		var httpRequest = HTTPRequest.New()
+		n.AsNode().AddChild(httpRequest.AsNode())
+		httpRequest.OnRequestCompleted(n.httpRequestCompleted)
 
-			// Display the image in a TextureRect node.
-			var texture_rect = TextureRect.New()
-			texture_rect.AsTextureRect().SetTexture(texture.AsTexture2D())
-			n.AsNode().AddChild(texture_rect.AsNode())
-		}, Signal.OneShot)
 		// Perform the HTTP request. The URL below returns a PNG image as of writing.
-		var error = http_request.Request("https://placehold.co/512")
-		if error != nil {
-			panic("An error occurred in the HTTP request.")
+		if err := httpRequest.Request("https://placehold.co/512.png"); err != nil {
+			// An error occurred in the HTTP request.
 		}
+	}
+
+	// Called when the HTTP request is completed.
+	func (n httpImageRequestExample) httpRequestCompleted(result HTTPRequest.Result, responseCode int, headers []string, body []byte) {
+		if result != HTTPRequest.ResultSuccess {
+			// Image couldn't be downloaded. Try a different image.
+		}
+		var image = Image.New()
+		if err := image.LoadPngFromBuffer(body); err != nil {
+			// Couldn't load the image.
+		}
+		var texture = ImageTexture.CreateFromImage(image)
+
+		// Display the image in a TextureRect node.
+		var textureRect = TextureRect.New()
+		n.AsNode().AddChild(textureRect.AsNode())
+		textureRect.SetTexture(texture.AsTexture2D())
 	}
 
 Note: [HTTPRequest] nodes will automatically handle decompression of response bodies. An Accept-Encoding header will be automatically added to each of your requests, unless one is already specified. Any response with a Content-Encoding: gzip header will automatically be decompressed and delivered to you as uncompressed bytes.

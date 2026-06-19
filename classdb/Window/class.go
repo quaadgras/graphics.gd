@@ -134,8 +134,13 @@ var methods struct {
 	get_mode                         gdextension.MethodForClass `hash:"2566346114"`
 	set_flag                         gdextension.MethodForClass `hash:"3426449779"`
 	get_flag                         gdextension.MethodForClass `hash:"3062752289"`
+	set_hdr_output_requested         gdextension.MethodForClass `hash:"2586408642"`
+	is_hdr_output_requested          gdextension.MethodForClass `hash:"36873697"`
+	get_output_max_linear_value      gdextension.MethodForClass `hash:"1740695150"`
 	is_maximize_allowed              gdextension.MethodForClass `hash:"36873697"`
 	request_attention                gdextension.MethodForClass `hash:"3218959716"`
+	set_taskbar_progress_value       gdextension.MethodForClass `hash:"373806689"`
+	set_taskbar_progress_state       gdextension.MethodForClass `hash:"824071031"`
 	move_to_foreground               gdextension.MethodForClass `hash:"3218959716"`
 	set_visible                      gdextension.MethodForClass `hash:"2586408642"`
 	is_visible                       gdextension.MethodForClass `hash:"36873697"`
@@ -343,6 +348,53 @@ func (self Instance) GetSizeWithDecorations() Vector2i.XY { //gd:Window.get_size
 }
 
 /*
+Returns the maximum value for linear color components that can be displayed in this window, regardless of SDR or HDR output. Returns 1.0 if HDR is not enabled or not supported. The [OnOutputMaxLinearValueChanged] signal will be emitted whenever this value changes.
+
+This value is used by tonemapping and other [Environment] effects to ensure that bright colors are presented in the range that can be displayed by this window. When using this maximum linear value in your project, it should only be used to present colors directly to the screen without tonemapping and without influencing lighting, post-processing effects, or surrounding color. The following is an example that produces the brightest purple color that the screen can produce:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Window"
+		"graphics.gd/variant/Color"
+		"graphics.gd/variant/Float"
+	)
+
+	func exampleWindowOutputMaxLinear(window Window.Instance) {
+		// output_max_linear_value may change often, so do this every frame.
+		var maxLinearValue = window.GetOutputMaxLinearValue()
+		// Replace this with your color:
+		var originalColor = Color.W3C.Purple
+		// Normalize to maxLinearValue to produce the brightest color possible,
+		// regardless of SDR or HDR output:
+		var brightColor = normalizeColor(originalColor, maxLinearValue)
+		_ = brightColor
+	}
+
+	func normalizeColor(srgbColor Color.RGBA, maxLinearValue Float.X) Color.RGBA {
+		// Color must be linear-encoded to use math operations.
+		var linearColor = Color.ToLinear(srgbColor)
+		var maxRgbValue = max(linearColor.R, max(linearColor.G, linearColor.B))
+		var brightnessScale = maxLinearValue / maxRgbValue
+		linearColor.R *= brightnessScale
+		linearColor.G *= brightnessScale
+		linearColor.B *= brightnessScale
+		// Undo changes to the alpha channel, which should not be modified.
+		linearColor.A = srgbColor.A
+		// Convert back to nonlinear sRGB encoding.
+		return Color.ToSRGB(linearColor)
+	}
+
+Note: You will need to convert sRGB colors to linear before multiplying by this value to get correct results.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
+[OnOutputMaxLinearValueChanged]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.OnOutputMaxLinearValueChanged
+*/
+func (self Instance) GetOutputMaxLinearValue() Float.X { //gd:Window.get_output_max_linear_value
+	return Float.X(Float.X(Advanced(self).GetOutputMaxLinearValue()))
+}
+
+/*
 Returns true if the window can be maximized (the maximize button is enabled).
 */
 func (self Instance) IsMaximizeAllowed() bool { //gd:Window.is_maximize_allowed
@@ -356,6 +408,36 @@ Tells the OS that the [Window] needs an attention. This makes the window stand o
 */
 func (self Instance) RequestAttention() { //gd:Window.request_attention
 	Advanced(self).RequestAttention()
+}
+
+/*
+Creates a progress bar on the taskbar/dock icon of the [Window] if it does not exist, sets the progress of the icon.
+
+'value' acts as a relative percentage value, ranges from 0.0 (lowest) to 1.0 (highest).
+
+Note: This method is implemented only on Windows and macOS.
+
+Returns 'self' to enable method chaining.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
+func (self Instance) SetTaskbarProgressValue(value Float.X) Instance { //gd:Window.set_taskbar_progress_value
+	Advanced(self).SetTaskbarProgressValue(float64(value))
+	return self
+}
+
+/*
+Sets the type and state of the progress bar on the taskbar/dock icon of the [Window]. See [DisplayServer.ProgressState] for possible values and how each mode behaves.
+
+Note: This method is implemented only on Windows and macOS.
+
+Returns 'self' to enable method chaining.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
+func (self Instance) SetTaskbarProgressState(state DisplayServer.ProgressState) Instance { //gd:Window.set_taskbar_progress_state
+	Advanced(self).SetTaskbarProgressState(state)
+	return self
 }
 
 /*
@@ -1998,6 +2080,24 @@ func (self Instance) SetContentScaleFactor(value Float.X) Instance { //gd:Window
 }
 
 /*
+If true, requests HDR output for the [Window], falling back to SDR if not supported, and automatically switching between HDR and SDR as the window moves between screens, screen capabilities change, or system settings are modified. This will internally force [Viewport.UseHdr2d] to be enabled on the main [Viewport]. All other [SubViewport] of this [Window] must have their [Viewport.UseHdr2d] property enabled to produce HDR output.
+
+[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+[Viewport.UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
+func (self Instance) HdrOutputRequested() bool { //gd:Window.hdr_output_requested
+	return bool(class(self).IsHdrOutputRequested())
+}
+
+// SetHdrOutputRequested sets the property returned by [IsHdrOutputRequested]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetHdrOutputRequested(value bool) Instance { //gd:Window.hdr_output_requested
+	class(self).SetHdrOutputRequested(value)
+	return self
+}
+
+/*
 Toggles if any text should automatically change to its translated version depending on the current locale.
 */
 func (self Instance) AutoTranslate() bool { //gd:Window.auto_translate
@@ -2169,6 +2269,19 @@ func (self class) GetFlag(flag Flags) bool { //gd:Window.get_flag
 	var ret = r_ret
 	return ret
 }
+func (self class) SetHdrOutputRequested(requested bool) { //gd:Window.set_hdr_output_requested
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hdr_output_requested, 0|(gdextension.SizeBool<<4), &struct{ requested bool }{requested})
+}
+func (self class) IsHdrOutputRequested() bool { //gd:Window.is_hdr_output_requested
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hdr_output_requested, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetOutputMaxLinearValue() float64 { //gd:Window.get_output_max_linear_value
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_output_max_linear_value, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) IsMaximizeAllowed() bool { //gd:Window.is_maximize_allowed
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_maximize_allowed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
@@ -2176,6 +2289,12 @@ func (self class) IsMaximizeAllowed() bool { //gd:Window.is_maximize_allowed
 }
 func (self class) RequestAttention() { //gd:Window.request_attention
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_attention, 0, &struct{}{})
+}
+func (self class) SetTaskbarProgressValue(value float64) { //gd:Window.set_taskbar_progress_value
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_taskbar_progress_value, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
+}
+func (self class) SetTaskbarProgressState(state DisplayServer.ProgressState) { //gd:Window.set_taskbar_progress_state
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_taskbar_progress_state, 0|(gdextension.SizeInt<<4), &struct{ state DisplayServer.ProgressState }{state})
 }
 func (self class) MoveToForeground() { //gd:Window.move_to_foreground
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_to_foreground, 0, &struct{}{})
@@ -2941,6 +3060,24 @@ func (self class) TitleChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`title_changed`))))
 }
 
+/*
+Emitted when the output max linear value returned by [Window.GetOutputMaxLinearValue] has changed. This occurs when HDR output is enabled or disabled and when any HDR output luminance values of the window have changed, such as when the player adjusts their screen brightness setting or moves the window to a different screen. 'output_max_linear_value' is the new value.
+
+[Window.GetOutputMaxLinearValue]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetOutputMaxLinearValue
+*/
+func (self Instance) OnOutputMaxLinearValueChanged(cb func(output_max_linear_value Float.X), flags ...Signal.Flags) Instance {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("output_max_linear_value_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
+}
+
+func (self class) OutputMaxLinearValueChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`output_max_linear_value_changed`))))
+}
+
 func (o class) AsWindow() Advanced                    { return Advanced(o) }
 func (o Instance) AsWindow() Instance                 { return o }
 func (o *Extension[T]) AsWindow() Instance            { return o.Super() }
@@ -3026,14 +3163,20 @@ type Flags int64 //gd:Window.Flags
 const (
 	// The window can't be resized by dragging its resize grip. It's still possible to resize the window using [Size]. This flag is ignored for full screen windows. Set with [Unresizable].
 	//
+	// Note: This flag is implemented on Linux (X11), macOS, Windows, and embedded windows.
+	//
 	// [Size]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Size
 	// [Unresizable]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Unresizable
 	FlagResizeDisabled Flags = 0
 	// The window do not have native title bar and other decorations. This flag is ignored for full-screen windows. Set with [Borderless].
 	//
+	// Note: This flag is implemented on Linux (X11/Wayland), macOS, Windows, and embedded windows.
+	//
 	// [Borderless]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Borderless
 	FlagBorderless Flags = 1
 	// The window is floating on top of all other windows. This flag is ignored for full-screen windows. Set with [AlwaysOnTop].
+	//
+	// Note: This flag is implemented on Linux (X11), macOS, Windows, and embedded windows.
 	//
 	// [AlwaysOnTop]: https://pkg.go.dev/graphics.gd/classdb/#Instance.AlwaysOnTop
 	FlagAlwaysOnTop Flags = 2
@@ -3041,17 +3184,21 @@ const (
 	//
 	// Note: This flag has no effect if either [ProjectSettings] "display/window/per_pixel_transparency/allowed", or the window's [Viewport.TransparentBg] is set to false.
 	//
+	// Note: Transparency support is implemented on Linux (X11/Wayland), macOS, Windows, and embedded windows.
+	//
 	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	// [Transparent]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Transparent
 	// [Viewport.TransparentBg]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.TransparentBg
 	FlagTransparent Flags = 3
 	// The window can't be focused. No-focus window will ignore all input, except mouse clicks. Set with [Unfocusable].
 	//
+	// Note: This flag is implemented on Linux (X11), macOS, Windows, and embedded windows.
+	//
 	// [Unfocusable]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Unfocusable
 	FlagNoFocus Flags = 4
 	// Window is part of menu or [OptionButton] dropdown. This flag can't be changed when the window is visible. An active popup window will exclusively receive all input, without stealing focus from its parent. Popup windows are automatically closed when uses click outside it, or when an application is switched. Popup window must have transient parent set (see [Transient]).
 	//
-	// Note: This flag has no effect in embedded windows (unless said window is a [Popup]).
+	// Note: This flag is implemented on Linux (X11/Wayland), macOS, Windows, and embedded [Popup] windows.
 	//
 	// [OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
 	// [Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
@@ -3059,15 +3206,17 @@ const (
 	FlagPopup Flags = 5
 	// Window content is expanded to the full size of the window. Unlike borderless window, the frame is left intact and can be used to resize the window, title bar is transparent, but have minimize/maximize/close buttons. Set with [ExtendToTitle].
 	//
-	// Note: This flag is implemented only on macOS.
-	//
 	// Note: This flag has no effect in embedded windows.
+	//
+	// Note: This flag is implemented only on macOS.
 	//
 	// [ExtendToTitle]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ExtendToTitle
 	FlagExtendToTitle Flags = 6
 	// All mouse events are passed to the underlying window of the same application.
 	//
 	// Note: This flag has no effect in embedded windows.
+	//
+	// Note: This flag is implemented on Linux (X11), macOS, Windows.
 	FlagMousePassthrough Flags = 7
 	// Window style is overridden, forcing sharp corners.
 	//
@@ -3088,14 +3237,22 @@ const (
 	// [DisplayServer.ScreenGetPixel]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#ScreenGetPixel
 	FlagExcludeFromCapture Flags = 9
 	// Signals the window manager that this window is supposed to be an implementation-defined "popup" (usually a floating, borderless, untileable and immovable child window).
+	//
+	// Note: This flag has no effect in embedded windows.
+	//
+	// Note: This flag is implemented on Linux (Wayland).
 	FlagPopupWmHint Flags = 10
 	// Window minimize button is disabled.
 	//
-	// Note: This flag is implemented on macOS and Windows.
+	// Note: This flag has no effect in embedded windows.
+	//
+	// Note: This flag is implemented on Linux (X11), macOS, and Windows.
 	FlagMinimizeDisabled Flags = 11
 	// Window maximize button is disabled.
 	//
-	// Note: This flag is implemented on macOS and Windows.
+	// Note: This flag has no effect in embedded windows.
+	//
+	// Note: This flag is implemented on Linux (X11), macOS, and Windows.
 	FlagMaximizeDisabled Flags = 12
 	// Max value of the [Flags].
 	FlagMax Flags = 13

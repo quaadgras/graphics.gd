@@ -495,11 +495,11 @@ type Interface interface {
 	Forward3dForceDrawOverViewport(viewport_control Control.Instance)
 	// Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
 	//
-	// For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
+	// For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "Asset Store" buttons.
 	GetPluginName() string
 	// Override this method in your plugin to return a [Texture2D] in order to give it an icon.
 	//
-	// For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
+	// For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "Asset Store" buttons.
 	//
 	// Ideally, the plugin icon should be white with a transparent background and 16×16 pixels in size.
 	//
@@ -541,7 +541,7 @@ type Interface interface {
 	//
 	// [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 	GetPluginIcon() Texture2D.Instance
-	// Returns true if this is a main screen editor plugin (it goes in the workspace selector together with 2D, 3D, Script, Game, and AssetLib).
+	// Returns true if this is a main screen editor plugin (it goes in the workspace selector together with 2D, 3D, Script, Game, and Asset Store).
 	//
 	// When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [EditorInterface.GetEditorMainScreen] and made visible inside [MakeVisible].
 	//
@@ -843,6 +843,27 @@ Called when there is a root node in the current edited scene, [Handles] is imple
 
 This method must return false in order to forward the [InputEvent] to other Editor classes.
 
+	package main
+
+	import (
+		"graphics.gd/classdb/EditorPlugin"
+		"graphics.gd/classdb/InputEvent"
+		"graphics.gd/classdb/InputEventMouseMotion"
+		"graphics.gd/variant/Object"
+	)
+
+	type editorPluginForwardCanvasGuiInput struct {
+		EditorPlugin.Extension[editorPluginForwardCanvasGuiInput]
+	}
+
+	// Consumes InputEventMouseMotion and forwards other InputEvent types.
+	func (n editorPluginForwardCanvasGuiInput) ForwardCanvasGuiInput(event InputEvent.Instance) bool {
+		if _, ok := Object.As[InputEventMouseMotion.Instance](event); ok {
+			return true
+		}
+		return false
+	}
+
 [EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
 [Handles]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
@@ -915,6 +936,28 @@ Called when there is a root node in the current edited scene, [Handles] is imple
 
 This method must return [AfterGuiInputPass] in order to forward the [InputEvent] to other Editor classes.
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Camera3D"
+		"graphics.gd/classdb/EditorPlugin"
+		"graphics.gd/classdb/InputEvent"
+		"graphics.gd/classdb/InputEventMouseMotion"
+		"graphics.gd/variant/Object"
+	)
+
+	type editorPluginForward3DGuiInput struct {
+		EditorPlugin.Extension[editorPluginForward3DGuiInput]
+	}
+
+	// Consumes InputEventMouseMotion and forwards other InputEvent types.
+	func (n editorPluginForward3DGuiInput) Forward3dGuiInput(camera Camera3D.Instance, event InputEvent.Instance) EditorPlugin.AfterGUIInput {
+		if _, ok := Object.As[InputEventMouseMotion.Instance](event); ok {
+			return EditorPlugin.AfterGuiInputStop
+		}
+		return EditorPlugin.AfterGuiInputPass
+	}
+
 [EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
 [Handles]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
@@ -982,7 +1025,7 @@ func (Instance) _forward_3d_force_draw_over_viewport(impl func(ptr gdclass.Recei
 /*
 Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
 
-For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
+For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "Asset Store" buttons.
 */
 func (Instance) _get_plugin_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1000,7 +1043,7 @@ func (Instance) _get_plugin_name(impl func(ptr gdclass.Receiver) string) (cb gd.
 /*
 Override this method in your plugin to return a [Texture2D] in order to give it an icon.
 
-For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
+For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "Asset Store" buttons.
 
 Ideally, the plugin icon should be white with a transparent background and 16×16 pixels in size.
 
@@ -1029,7 +1072,7 @@ func (Instance) _get_plugin_icon(impl func(ptr gdclass.Receiver) Texture2D.Insta
 }
 
 /*
-Returns true if this is a main screen editor plugin (it goes in the workspace selector together with 2D, 3D, Script, Game, and AssetLib).
+Returns true if this is a main screen editor plugin (it goes in the workspace selector together with 2D, 3D, Script, Game, and Asset Store).
 
 When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [EditorInterface.GetEditorMainScreen] and made visible inside [MakeVisible].
 
@@ -1216,6 +1259,21 @@ If the user confirms saving, [SaveExternalData] will be called, before closing t
 	}
 
 If the plugin has no scene-specific changes, you can ignore the calls when closing scenes:
+
+	package main
+
+	import "graphics.gd/classdb/EditorPlugin"
+
+	type editorPluginUnsavedStatus struct {
+		EditorPlugin.Extension[editorPluginUnsavedStatus]
+	}
+
+	func (n editorPluginUnsavedStatus) GetUnsavedStatus(forScene string) string {
+		if forScene != "" {
+			return ""
+		}
+		return ""
+	}
 
 [SaveExternalData]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Interface
 */
@@ -2509,7 +2567,7 @@ func (self class) SceneClosed() Signal.Any {
 }
 
 /*
-Emitted when user changes the workspace (2D, 3D, Script, Game, AssetLib). Also works with custom screens defined by plugins.
+Emitted when user changes the workspace (2D, 3D, Script, Game, Asset Store). Also works with custom screens defined by plugins.
 */
 func (self Instance) OnMainScreenChanged(cb func(screen_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags

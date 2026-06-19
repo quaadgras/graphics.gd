@@ -110,6 +110,8 @@ var methods struct {
 	get_size_2d_override                gdextension.MethodForClass `hash:"3690982128"`
 	set_size_2d_override_stretch        gdextension.MethodForClass `hash:"2586408642"`
 	is_size_2d_override_stretch_enabled gdextension.MethodForClass `hash:"36873697"`
+	set_view_count                      gdextension.MethodForClass `hash:"1286410249"`
+	get_view_count                      gdextension.MethodForClass `hash:"3905245786"`
 	set_update_mode                     gdextension.MethodForClass `hash:"1295690030"`
 	get_update_mode                     gdextension.MethodForClass `hash:"2980171553"`
 	set_clear_mode                      gdextension.MethodForClass `hash:"2834454712"`
@@ -223,6 +225,19 @@ func (self Instance) SetSize2dOverrideStretch(value bool) Instance { //gd:SubVie
 }
 
 /*
+The number of view layers we are rendering to. Set this to 2 to enable stereo rendering.
+*/
+func (self Instance) ViewCount() int { //gd:SubViewport.view_count
+	return int(int(class(self).GetViewCount()))
+}
+
+// SetViewCount sets the property returned by [GetViewCount]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetViewCount(value int) Instance { //gd:SubViewport.view_count
+	class(self).SetViewCount(int64(value))
+	return self
+}
+
+/*
 The clear mode when the sub-viewport is used as a render target.
 
 Note: This property is intended for 2D usage.
@@ -271,6 +286,14 @@ func (self class) SetSize2dOverrideStretch(enable bool) { //gd:SubViewport.set_s
 }
 func (self class) IsSize2dOverrideStretchEnabled() bool { //gd:SubViewport.is_size_2d_override_stretch_enabled
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_size_2d_override_stretch_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetViewCount(view_count int64) { //gd:SubViewport.set_view_count
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_view_count, 0|(gdextension.SizeInt<<4), &struct{ view_count int64 }{view_count})
+}
+func (self class) GetViewCount() int64 { //gd:SubViewport.get_view_count
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

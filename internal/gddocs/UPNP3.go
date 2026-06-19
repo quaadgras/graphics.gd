@@ -11,7 +11,7 @@ func _upnp_setup(server_port):
 	var upnp = UPNP.new()
 	var err = upnp.discover()
 
-	if err != OK:
+	if err != UPNP.UPNP_RESULT_SUCCESS:
 		push_error(str(err))
 		upnp_completed.emit(err)
 		return
@@ -19,7 +19,7 @@ func _upnp_setup(server_port):
 	if upnp.get_gateway() and upnp.get_gateway().is_valid_gateway():
 		upnp.add_port_mapping(server_port, server_port, ProjectSettings.get_setting("application/config/name"), "UDP")
 		upnp.add_port_mapping(server_port, server_port, ProjectSettings.get_setting("application/config/name"), "TCP")
-		upnp_completed.emit(OK)
+		upnp_completed.emit(UPNP.UPNP_RESULT_SUCCESS)
 
 func _ready():
 	thread = Thread.new()
@@ -33,46 +33,24 @@ func _exit_tree():
 package main
 
 import (
-	"errors"
-
-	"graphics.gd/classdb/Engine"
-	"graphics.gd/classdb/Node"
-	"graphics.gd/classdb/Thread"
+	"graphics.gd/classdb/ProjectSettings"
 	"graphics.gd/classdb/UPNP"
 	"graphics.gd/classdb/UPNPDevice"
-	"graphics.gd/variant/Error"
-	"graphics.gd/variant/Signal"
 )
 
-const ServerPort = 3928 // Replace this with your own server port number between 1024 and 65535.
-
-type MyPortForwarding struct {
-	Node.Extension[MyPortForwarding]
-
-	Completed Signal.Solo[Error.Code] // Emitted when UPnP port mapping setup is completed (regardless of success or failure).
-
-	thread Thread.Instance
-}
-
-func (m *MyPortForwarding) setup(port int) {
+// Core of _upnp_setup; the surrounding Thread + upnp_completed signal are omitted.
+func exampleUPNPSetup(serverPort int) {
+	// UPNP queries take some time.
 	var upnp = UPNP.New()
-	if err := upnp.Discover(); err != 0 {
-		Engine.Raise(errors.New("error UPNP"))
-		m.Completed.Emit(1)
+	var err = upnp.Discover()
+	if UPNP.UPNPResult(err) != UPNP.UpnpResultSuccess {
+		// push_error(str(err)); upnp_completed.emit(err)
 		return
 	}
 	if gateway := upnp.GetGateway(); gateway != UPNPDevice.Nil && gateway.IsValidGateway() {
-		gateway.MoreArgs().AddPortMapping(port, port, "MyGame", "UDP", 0)
-		gateway.MoreArgs().AddPortMapping(port, port, "MyGame", "TCP", 0)
-		m.Completed.Emit(0)
+		name, _ := ProjectSettings.GetSetting("application/config/name", "").(string)
+		upnp.MoreArgs().AddPortMapping(serverPort, serverPort, name, "UDP", 0)
+		upnp.MoreArgs().AddPortMapping(serverPort, serverPort, name, "TCP", 0)
+		// upnp_completed.emit(UPNP.UpnpResultSuccess)
 	}
-}
-
-func (m *MyPortForwarding) Ready() {
-	m.thread = Thread.New()
-	m.thread.Start(func() { m.setup(ServerPort) })
-}
-
-func (m *MyPortForwarding) ExitTree() {
-	m.thread.WaitToFinish() // Wait for thread finish here to handle game exit while the thread is running.
 }

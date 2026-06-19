@@ -3,9 +3,11 @@
 /*
 [EditorFileDialog] is a [FileDialog] tweaked to work in the editor. It automatically handles favorite and recent directory lists, and synchronizes some properties with their corresponding editor settings.
 
-[EditorFileDialog] will automatically show a native dialog based on the [EditorSettings] "interface/editor/use_native_file_dialogs" editor setting and ignores [FileDialog.UseNativeDialog].
+[EditorFileDialog] will automatically show a native dialog based on the [EditorSettings] "interface/editor/appearance/use_native_file_dialogs" editor setting and ignores [FileDialog.UseNativeDialog].
 
 Note: [EditorFileDialog] is invisible by default. To make it visible, call one of the popup_* methods from [Window] on the node, such as [Window.PopupCenteredClamped].
+
+Note: On Linux and macOS, sandboxed apps always use native dialogs to access the host file system.
 
 [EditorFileDialog]: https://pkg.go.dev/graphics.gd/classdb/EditorFileDialog
 [EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings

@@ -126,7 +126,7 @@ type Interface interface {
 	//
 	// Warning: This method will be called from threads other than the main thread, possibly at the same time, so you will need to have some kind of thread-safety in your implementation of it, like a [Mutex].
 	//
-	// Note: 'script_backtraces' will not contain any captured variables, due to its prohibitively high cost. To get those you will need to capture the backtraces yourself, from within the [Logger] virtual methods, using [Engine.CaptureScriptBacktraces].
+	// Note: 'script_backtraces' will not contain any captured variables, due to its prohibitively high cost. To get those, you will need to capture the backtraces yourself, from within the [Logger] virtual methods, using [Engine.CaptureScriptBacktraces].
 	//
 	// Note: Logging errors from this method using functions like [@GlobalScope.PushError] or [@GlobalScope.PushWarning] is not supported, as it could cause infinite recursion. These errors will only show up in the console output.
 	//
@@ -167,7 +167,7 @@ Additionally, 'script_backtraces' provides backtraces for each of the script lan
 
 Warning: This method will be called from threads other than the main thread, possibly at the same time, so you will need to have some kind of thread-safety in your implementation of it, like a [Mutex].
 
-Note: 'script_backtraces' will not contain any captured variables, due to its prohibitively high cost. To get those you will need to capture the backtraces yourself, from within the [Logger] virtual methods, using [Engine.CaptureScriptBacktraces].
+Note: 'script_backtraces' will not contain any captured variables, due to its prohibitively high cost. To get those, you will need to capture the backtraces yourself, from within the [Logger] virtual methods, using [Engine.CaptureScriptBacktraces].
 
 Note: Logging errors from this method using functions like [@GlobalScope.PushError] or [@GlobalScope.PushWarning] is not supported, as it could cause infinite recursion. These errors will only show up in the console output.
 
@@ -256,7 +256,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Logger{gdclass.NewLogger(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

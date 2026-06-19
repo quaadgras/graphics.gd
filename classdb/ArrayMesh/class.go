@@ -298,12 +298,51 @@ Removes the surface at the given index from the Mesh, shifting surfaces with hig
 func (self Instance) SurfaceRemove(surf_idx int) { //gd:ArrayMesh.surface_remove
 	Advanced(self).SurfaceRemove(int64(surf_idx))
 }
+
+/*
+Updates the vertex buffer of this mesh's surface with the given 'data'. The expected data per vertex is 12 or 8 bytes (4 bytes per float, 2 floats per [Vector2.XY], and 3 floats per [Vector3.XYZ]) depending on if the mesh is using [Vector3.XYZ] or [Vector2.XY] vertices. This value can be determined with [RenderingServer.MeshSurfaceGetFormatVertexStride].
+
+The starting point of the updates can be changed with 'offset'. The value of 'offset' should be a multiple of 12 bytes in most cases to align to each vertex.
+
+A [][Vector3.XYZ] of vertex locations can be converted into a []byte using [PackedVector3Array.ToByteArray] for use in 'data'.
+
+[PackedVector3Array.ToByteArray]: https://pkg.go.dev/graphics.gd/classdb/PackedVector3Array#Instance.ToByteArray
+[RenderingServer.MeshSurfaceGetFormatVertexStride]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#MeshSurfaceGetFormatVertexStride
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
+*/
 func (self Instance) SurfaceUpdateVertexRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_vertex_region
 	Advanced(self).SurfaceUpdateVertexRegion(int64(surf_idx), int64(offset), Packed.BytesFrom(data...))
 }
+
+/*
+Updates the attribute buffer of this mesh's surface with the given 'data'. The expected data per attribute is 12 or 8 bytes (4 bytes per float, 2 floats per [Vector2.XY], and 3 floats per [Vector3.XYZ]) depending on if the mesh is using [Vector3.XYZ] or [Vector2.XY] vertices. This value can be determined with [RenderingServer.MeshSurfaceGetFormatAttributeStride].
+
+The starting point of the updates can be changed with 'offset'. The value of 'offset' should be a multiple of 12 bytes in most cases to align to each attribute.
+
+A [][Vector3.XYZ] of attribute locations can be converted into a []byte using [PackedVector3Array.ToByteArray] for use in 'data'.
+
+[PackedVector3Array.ToByteArray]: https://pkg.go.dev/graphics.gd/classdb/PackedVector3Array#Instance.ToByteArray
+[RenderingServer.MeshSurfaceGetFormatAttributeStride]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#MeshSurfaceGetFormatAttributeStride
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
+*/
 func (self Instance) SurfaceUpdateAttributeRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_attribute_region
 	Advanced(self).SurfaceUpdateAttributeRegion(int64(surf_idx), int64(offset), Packed.BytesFrom(data...))
 }
+
+/*
+Updates the skin buffer of this mesh's surface with the given 'data'. The expected data per skin is 12 or 8 bytes (4 bytes per float, 2 floats per [Vector2.XY], and 3 floats per [Vector3.XYZ]) depending on if the mesh is using [Vector3.XYZ] or [Vector2.XY] vertices. This value can be determined with [RenderingServer.MeshSurfaceGetFormatSkinStride].
+
+The starting point of the updates can be changed with 'offset'. The value of 'offset' should be a multiple of 12 bytes in most cases to align to each skin.
+
+A [][Vector3.XYZ] of skin locations can be converted into a []byte using [PackedVector3Array.ToByteArray] for use in 'data'.
+
+[PackedVector3Array.ToByteArray]: https://pkg.go.dev/graphics.gd/classdb/PackedVector3Array#Instance.ToByteArray
+[RenderingServer.MeshSurfaceGetFormatSkinStride]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#MeshSurfaceGetFormatSkinStride
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
+*/
 func (self Instance) SurfaceUpdateSkinRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_skin_region
 	Advanced(self).SurfaceUpdateSkinRegion(int64(surf_idx), int64(offset), Packed.BytesFrom(data...))
 }
@@ -430,7 +469,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.ArrayMesh{gdclass.NewArrayMesh(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

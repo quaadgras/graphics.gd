@@ -118,6 +118,8 @@ var methods struct {
 	get_drag_area_controls                   gdextension.MethodForClass `hash:"2915620761"`
 	set_touch_dragger_enabled                gdextension.MethodForClass `hash:"2586408642"`
 	is_touch_dragger_enabled                 gdextension.MethodForClass `hash:"36873697"`
+	set_drag_nested_intersections            gdextension.MethodForClass `hash:"2586408642"`
+	is_dragging_nested_intersections         gdextension.MethodForClass `hash:"36873697"`
 	get_drag_area_control                    gdextension.MethodForClass `hash:"829782337"`
 	set_split_offset                         gdextension.MethodForClass `hash:"1286410249"`
 	get_split_offset                         gdextension.MethodForClass `hash:"3905245786"`
@@ -350,6 +352,21 @@ func (self Instance) SetTouchDraggerEnabled(value bool) Instance { //gd:SplitCon
 }
 
 /*
+Adds extra draggers at the intersection of the draggers of two SplitContainers to allow dragging both at once. This must be set to true for both SplitContainers, and one needs to be a descendant of the other. They also must be orthogonal (their [Vertical] are different) and the descendant must be next to at least one of the ancestor's draggers (within theme's 'minimum_grab_thickness').
+
+[Vertical]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer#Instance.Vertical
+*/
+func (self Instance) DragNestedIntersections() bool { //gd:SplitContainer.drag_nested_intersections
+	return bool(class(self).IsDraggingNestedIntersections())
+}
+
+// SetDragNestedIntersections sets the property returned by [IsDraggingNestedIntersections]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetDragNestedIntersections(value bool) Instance { //gd:SplitContainer.drag_nested_intersections
+	class(self).SetDragNestedIntersections(value)
+	return self
+}
+
+/*
 Reduces the size of the drag area and split bar theme's 'split_bar_background' at the beginning of the container.
 */
 func (self Instance) DragAreaMarginBegin() int { //gd:SplitContainer.drag_area_margin_begin
@@ -509,6 +526,14 @@ func (self class) SetTouchDraggerEnabled(enabled bool) { //gd:SplitContainer.set
 }
 func (self class) IsTouchDraggerEnabled() bool { //gd:SplitContainer.is_touch_dragger_enabled
 	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_touch_dragger_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetDragNestedIntersections(enabled bool) { //gd:SplitContainer.set_drag_nested_intersections
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_nested_intersections, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+func (self class) IsDraggingNestedIntersections() bool { //gd:SplitContainer.is_dragging_nested_intersections
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dragging_nested_intersections, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

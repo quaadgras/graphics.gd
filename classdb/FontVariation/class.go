@@ -49,6 +49,7 @@ import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
@@ -119,20 +120,24 @@ type Instance [1]gdclass.FontVariation
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_base_font            gdextension.MethodForClass `hash:"1262170328"`
-	get_base_font            gdextension.MethodForClass `hash:"3229501585"`
-	set_variation_opentype   gdextension.MethodForClass `hash:"4155329257"`
-	get_variation_opentype   gdextension.MethodForClass `hash:"3102165223"`
-	set_variation_embolden   gdextension.MethodForClass `hash:"373806689"`
-	get_variation_embolden   gdextension.MethodForClass `hash:"1740695150"`
-	set_variation_face_index gdextension.MethodForClass `hash:"1286410249"`
-	get_variation_face_index gdextension.MethodForClass `hash:"3905245786"`
-	set_variation_transform  gdextension.MethodForClass `hash:"2761652528"`
-	get_variation_transform  gdextension.MethodForClass `hash:"3814499831"`
-	set_opentype_features    gdextension.MethodForClass `hash:"4155329257"`
-	set_spacing              gdextension.MethodForClass `hash:"3122339690"`
-	set_baseline_offset      gdextension.MethodForClass `hash:"373806689"`
-	get_baseline_offset      gdextension.MethodForClass `hash:"1740695150"`
+	set_base_font             gdextension.MethodForClass `hash:"1262170328"`
+	get_base_font             gdextension.MethodForClass `hash:"3229501585"`
+	set_variation_opentype    gdextension.MethodForClass `hash:"4155329257"`
+	get_variation_opentype    gdextension.MethodForClass `hash:"3102165223"`
+	set_variation_embolden    gdextension.MethodForClass `hash:"373806689"`
+	get_variation_embolden    gdextension.MethodForClass `hash:"1740695150"`
+	set_variation_face_index  gdextension.MethodForClass `hash:"1286410249"`
+	get_variation_face_index  gdextension.MethodForClass `hash:"3905245786"`
+	set_variation_transform   gdextension.MethodForClass `hash:"2761652528"`
+	get_variation_transform   gdextension.MethodForClass `hash:"3814499831"`
+	set_opentype_features     gdextension.MethodForClass `hash:"4155329257"`
+	set_spacing               gdextension.MethodForClass `hash:"3122339690"`
+	set_baseline_offset       gdextension.MethodForClass `hash:"373806689"`
+	get_baseline_offset       gdextension.MethodForClass `hash:"1740695150"`
+	get_palette_index         gdextension.MethodForClass `hash:"3905245786"`
+	set_palette_index         gdextension.MethodForClass `hash:"1286410249"`
+	get_palette_custom_colors gdextension.MethodForClass `hash:"1392750486"`
+	set_palette_custom_colors gdextension.MethodForClass `hash:"3546319833"`
 }
 
 func init() {
@@ -193,7 +198,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.FontVariation{gdclass.NewFontVariation(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -340,6 +344,32 @@ func (self Instance) SetBaselineOffset(value Float.X) Instance { //gd:FontVariat
 	return self
 }
 
+/*
+A palette index.
+*/
+func (self Instance) PaletteIndex() int { //gd:FontVariation.palette_index
+	return int(int(class(self).GetPaletteIndex()))
+}
+
+// SetPaletteIndex sets the property returned by [GetPaletteIndex]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPaletteIndex(value int) Instance { //gd:FontVariation.palette_index
+	class(self).SetPaletteIndex(int64(value))
+	return self
+}
+
+/*
+An array of colors to override predefined palette. Use Color(0, 0, 0, 0), to keep predefined palette color at specific position.
+*/
+func (self Instance) PaletteCustomColors() []Color.RGBA { //gd:FontVariation.palette_custom_colors
+	return []Color.RGBA(slices.Collect(class(self).GetPaletteCustomColors().Values()))
+}
+
+// SetPaletteCustomColors sets the property returned by [GetPaletteCustomColors]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPaletteCustomColors(value []Color.RGBA) Instance { //gd:FontVariation.palette_custom_colors
+	class(self).SetPaletteCustomColors(Packed.New(value...))
+	return self
+}
+
 func (self class) SetBaseFont(font [1]gdclass.Font) { //gd:FontVariation.set_base_font
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetFont(font[0])[0]))})
 }
@@ -396,6 +426,24 @@ func (self class) GetBaselineOffset() float64 { //gd:FontVariation.get_baseline_
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_baseline_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
+}
+func (self class) GetPaletteIndex() int64 { //gd:FontVariation.get_palette_index
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_palette_index, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetPaletteIndex(palette_index int64) { //gd:FontVariation.set_palette_index
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_palette_index, 0|(gdextension.SizeInt<<4), &struct{ palette_index int64 }{palette_index})
+}
+func (self class) GetPaletteCustomColors() Packed.Array[Color.RGBA] { //gd:FontVariation.get_palette_custom_colors
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_palette_custom_colors, gdextension.SizePackedArray, &struct{}{})
+	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
+func (self class) SetPaletteCustomColors(colors Packed.Array[Color.RGBA]) { //gd:FontVariation.set_palette_custom_colors
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_palette_custom_colors, 0|(gdextension.SizePackedArray<<4), &struct {
+		colors gdextension.PackedArray[Color.RGBA]
+	}{pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))})
 }
 func (o class) AsFontVariation() Advanced             { return Advanced(o) }
 func (o Instance) AsFontVariation() Instance          { return o }

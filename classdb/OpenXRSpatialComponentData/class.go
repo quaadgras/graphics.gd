@@ -92,7 +92,8 @@ type Instance [1]gdclass.OpenXRSpatialComponentData
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_capacity gdextension.MethodForClass `hash:"1286410249"`
+	set_capacity       gdextension.MethodForClass `hash:"1286410249"`
+	get_component_type gdextension.MethodForClass `hash:"3905245786"`
 }
 
 func init() {
@@ -116,7 +117,7 @@ type Any interface {
 }
 
 type Interface interface {
-	// Set the expected capacity as provided by the spatial entities query system. Buffers should be initialized with the correct storage.
+	// Sets the expected capacity as provided by the spatial entities query system. Buffers should be initialized with the correct storage.
 	SetCapacity(capacity int)
 	// Return the component type for the component we store data for.
 	GetComponentType() int
@@ -139,7 +140,7 @@ func (self implementation) GetStructureData(next int) (_ int) {
 }
 
 /*
-Set the expected capacity as provided by the spatial entities query system. Buffers should be initialized with the correct storage.
+Sets the expected capacity as provided by the spatial entities query system. Buffers should be initialized with the correct storage.
 */
 func (Instance) _set_capacity(impl func(ptr gdclass.Receiver, capacity int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -173,13 +174,22 @@ func (Instance) _get_structure_data(impl func(ptr gdclass.Receiver, next int) in
 }
 
 /*
-Set the expected capacity as provided by the spatial entities query system. Buffers should be initialized with the correct storage.
+Sets the expected capacity as provided by the spatial entities query system. Buffers should be initialized with the correct storage.
 
 Returns 'self' to enable method chaining.
 */
 func (self Instance) SetCapacity(capacity int) Instance { //gd:OpenXRSpatialComponentData.set_capacity
 	Advanced(self).SetCapacity(int64(capacity))
 	return self
+}
+
+/*
+Gets this [OpenXRSpatialComponentData]'s XrSpatialComponentTypeEXT.
+
+[OpenXRSpatialComponentData]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialComponentData
+*/
+func (self Instance) GetComponentType() int { //gd:OpenXRSpatialComponentData.get_component_type
+	return int(int(Advanced(self).GetComponentType()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -220,7 +230,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.OpenXRSpatialComponentData{gdclass.NewOpenXRSpatialComponentData(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -249,6 +258,11 @@ func (class) _get_structure_data(impl func(ptr gdclass.Receiver, next int64) int
 
 func (self class) SetCapacity(capacity int64) { //gd:OpenXRSpatialComponentData.set_capacity
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_capacity, 0|(gdextension.SizeInt<<4), &struct{ capacity int64 }{capacity})
+}
+func (self class) GetComponentType() int64 { //gd:OpenXRSpatialComponentData.get_component_type
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_component_type, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
 }
 func (o class) AsOpenXRSpatialComponentData() Advanced         { return Advanced(o) }
 func (o Instance) AsOpenXRSpatialComponentData() Instance      { return o }

@@ -104,16 +104,18 @@ type Instance [1]gdclass.CollisionPolygon2D
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_polygon                  gdextension.MethodForClass `hash:"1509147220"`
-	get_polygon                  gdextension.MethodForClass `hash:"2961356807"`
-	set_build_mode               gdextension.MethodForClass `hash:"2780803135"`
-	get_build_mode               gdextension.MethodForClass `hash:"3044948800"`
-	set_disabled                 gdextension.MethodForClass `hash:"2586408642"`
-	is_disabled                  gdextension.MethodForClass `hash:"36873697"`
-	set_one_way_collision        gdextension.MethodForClass `hash:"2586408642"`
-	is_one_way_collision_enabled gdextension.MethodForClass `hash:"36873697"`
-	set_one_way_collision_margin gdextension.MethodForClass `hash:"373806689"`
-	get_one_way_collision_margin gdextension.MethodForClass `hash:"1740695150"`
+	set_polygon                     gdextension.MethodForClass `hash:"1509147220"`
+	get_polygon                     gdextension.MethodForClass `hash:"2961356807"`
+	set_build_mode                  gdextension.MethodForClass `hash:"2780803135"`
+	get_build_mode                  gdextension.MethodForClass `hash:"3044948800"`
+	set_disabled                    gdextension.MethodForClass `hash:"2586408642"`
+	is_disabled                     gdextension.MethodForClass `hash:"36873697"`
+	set_one_way_collision           gdextension.MethodForClass `hash:"2586408642"`
+	is_one_way_collision_enabled    gdextension.MethodForClass `hash:"36873697"`
+	set_one_way_collision_margin    gdextension.MethodForClass `hash:"373806689"`
+	get_one_way_collision_margin    gdextension.MethodForClass `hash:"1740695150"`
+	set_one_way_collision_direction gdextension.MethodForClass `hash:"743155724"`
+	get_one_way_collision_direction gdextension.MethodForClass `hash:"3341600327"`
 }
 
 func init() {
@@ -228,8 +230,11 @@ If true, only edges that face up, relative to [CollisionPolygon2D]'s rotation, w
 
 Note: This property has no effect if this [CollisionPolygon2D] is a child of an [Area2D] node.
 
+Note: The one way collision direction can be configured by setting [OneWayCollisionDirection].
+
 [Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
 [CollisionPolygon2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionPolygon2D
+[OneWayCollisionDirection]: https://pkg.go.dev/graphics.gd/classdb/CollisionPolygon2D#Instance.OneWayCollisionDirection
 */
 func (self Instance) OneWayCollision() bool { //gd:CollisionPolygon2D.one_way_collision
 	return bool(class(self).IsOneWayCollisionEnabled())
@@ -251,6 +256,19 @@ func (self Instance) OneWayCollisionMargin() Float.X { //gd:CollisionPolygon2D.o
 // SetOneWayCollisionMargin sets the property returned by [GetOneWayCollisionMargin]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetOneWayCollisionMargin(value Float.X) Instance { //gd:CollisionPolygon2D.one_way_collision_margin
 	class(self).SetOneWayCollisionMargin(float64(value))
+	return self
+}
+
+/*
+The direction used for one-way collision.
+*/
+func (self Instance) OneWayCollisionDirection() Vector2.XY { //gd:CollisionPolygon2D.one_way_collision_direction
+	return Vector2.XY(class(self).GetOneWayCollisionDirection())
+}
+
+// SetOneWayCollisionDirection sets the property returned by [GetOneWayCollisionDirection]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOneWayCollisionDirection(value Vector2.XY) Instance { //gd:CollisionPolygon2D.one_way_collision_direction
+	class(self).SetOneWayCollisionDirection(Vector2.XY(value))
 	return self
 }
 
@@ -293,6 +311,14 @@ func (self class) SetOneWayCollisionMargin(margin float64) { //gd:CollisionPolyg
 }
 func (self class) GetOneWayCollisionMargin() float64 { //gd:CollisionPolygon2D.get_one_way_collision_margin
 	var r_ret = jumponly.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_one_way_collision_margin, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetOneWayCollisionDirection(direction Vector2.XY) { //gd:CollisionPolygon2D.set_one_way_collision_direction
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_way_collision_direction, 0|(gdextension.SizeVector2<<4), &struct{ direction Vector2.XY }{direction})
+}
+func (self class) GetOneWayCollisionDirection() Vector2.XY { //gd:CollisionPolygon2D.get_one_way_collision_direction
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_one_way_collision_direction, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

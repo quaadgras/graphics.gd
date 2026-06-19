@@ -63,6 +63,7 @@ import "graphics.gd/variant/Path"
 import "graphics.gd/variant/Plane"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
@@ -137,15 +138,19 @@ var methods struct {
 	texture_3d_create                                         gdextension.MethodForClass `hash:"4036838706"`
 	texture_proxy_create                                      gdextension.MethodForClass `hash:"41030802"`
 	texture_create_from_native_handle                         gdextension.MethodForClass `hash:"1682977582"`
+	texture_drawable_create                                   gdextension.MethodForClass `hash:"1993613667"`
 	texture_2d_update                                         gdextension.MethodForClass `hash:"999539803"`
 	texture_3d_update                                         gdextension.MethodForClass `hash:"684822712"`
 	texture_proxy_update                                      gdextension.MethodForClass `hash:"395945892"`
+	texture_drawable_blit_rect                                gdextension.MethodForClass `hash:"4077763890"`
 	texture_2d_placeholder_create                             gdextension.MethodForClass `hash:"529393457"`
 	texture_2d_layered_placeholder_create                     gdextension.MethodForClass `hash:"1394585590"`
 	texture_3d_placeholder_create                             gdextension.MethodForClass `hash:"529393457"`
 	texture_2d_get                                            gdextension.MethodForClass `hash:"4206205781"`
 	texture_2d_layer_get                                      gdextension.MethodForClass `hash:"2705440895"`
 	texture_3d_get                                            gdextension.MethodForClass `hash:"2684255073"`
+	texture_drawable_generate_mipmaps                         gdextension.MethodForClass `hash:"2722037293"`
+	texture_drawable_get_default_material                     gdextension.MethodForClass `hash:"2944877500"`
 	texture_replace                                           gdextension.MethodForClass `hash:"395945892"`
 	texture_set_size_override                                 gdextension.MethodForClass `hash:"4288446313"`
 	texture_set_path                                          gdextension.MethodForClass `hash:"2726140452"`
@@ -236,6 +241,7 @@ var methods struct {
 	directional_light_create                                  gdextension.MethodForClass `hash:"529393457"`
 	omni_light_create                                         gdextension.MethodForClass `hash:"529393457"`
 	spot_light_create                                         gdextension.MethodForClass `hash:"529393457"`
+	area_light_create                                         gdextension.MethodForClass `hash:"529393457"`
 	light_set_color                                           gdextension.MethodForClass `hash:"2948539648"`
 	light_set_param                                           gdextension.MethodForClass `hash:"501936875"`
 	light_set_shadow                                          gdextension.MethodForClass `hash:"1265174801"`
@@ -251,6 +257,8 @@ var methods struct {
 	light_directional_set_shadow_mode                         gdextension.MethodForClass `hash:"380462970"`
 	light_directional_set_blend_splits                        gdextension.MethodForClass `hash:"1265174801"`
 	light_directional_set_sky_mode                            gdextension.MethodForClass `hash:"2559740754"`
+	light_area_set_size                                       gdextension.MethodForClass `hash:"3201125042"`
+	light_area_set_normalize_energy                           gdextension.MethodForClass `hash:"1265174801"`
 	light_projectors_set_filter                               gdextension.MethodForClass `hash:"43944325"`
 	lightmaps_set_bicubic_filter                              gdextension.MethodForClass `hash:"2586408642"`
 	positional_soft_shadow_filter_set_quality                 gdextension.MethodForClass `hash:"3613045266"`
@@ -322,7 +330,7 @@ var methods struct {
 	particles_set_lifetime                                    gdextension.MethodForClass `hash:"1794382983"`
 	particles_set_one_shot                                    gdextension.MethodForClass `hash:"1265174801"`
 	particles_set_pre_process_time                            gdextension.MethodForClass `hash:"1794382983"`
-	particles_request_process_time                            gdextension.MethodForClass `hash:"1794382983"`
+	particles_request_process_time                            gdextension.MethodForClass `hash:"1515254041"`
 	particles_set_explosiveness_ratio                         gdextension.MethodForClass `hash:"1794382983"`
 	particles_set_randomness_ratio                            gdextension.MethodForClass `hash:"1794382983"`
 	particles_set_interp_to_end                               gdextension.MethodForClass `hash:"1794382983"`
@@ -336,6 +344,8 @@ var methods struct {
 	particles_set_fractional_delta                            gdextension.MethodForClass `hash:"1265174801"`
 	particles_set_collision_base_size                         gdextension.MethodForClass `hash:"1794382983"`
 	particles_set_transform_align                             gdextension.MethodForClass `hash:"3264971368"`
+	particles_set_transform_align_channel_filter              gdextension.MethodForClass `hash:"1303285813"`
+	particles_set_transform_align_axis                        gdextension.MethodForClass `hash:"3065310065"`
 	particles_set_trails                                      gdextension.MethodForClass `hash:"2010054925"`
 	particles_set_trail_bind_poses                            gdextension.MethodForClass `hash:"684822712"`
 	particles_is_inactive                                     gdextension.MethodForClass `hash:"3521089500"`
@@ -381,7 +391,7 @@ var methods struct {
 	camera_set_use_vertical_aspect                            gdextension.MethodForClass `hash:"1265174801"`
 	viewport_create                                           gdextension.MethodForClass `hash:"529393457"`
 	viewport_set_use_xr                                       gdextension.MethodForClass `hash:"1265174801"`
-	viewport_set_size                                         gdextension.MethodForClass `hash:"4288446313"`
+	viewport_set_size                                         gdextension.MethodForClass `hash:"3313592705"`
 	viewport_set_active                                       gdextension.MethodForClass `hash:"1265174801"`
 	viewport_set_parent_viewport                              gdextension.MethodForClass `hash:"395945892"`
 	viewport_attach_to_screen                                 gdextension.MethodForClass `hash:"1062245816"`
@@ -751,6 +761,32 @@ func TextureCreateFromNativeHandleOptions(atype TextureType, format Image.Format
 }
 
 /*
+Creates a 2-dimensional texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all texture_drawable* RenderingServer functions.
+
+Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
+
+Note: The equivalent resource is [DrawableTexture2D].
+
+[DrawableTexture2D]: https://pkg.go.dev/graphics.gd/classdb/DrawableTexture2D
+*/
+func TextureDrawableCreate(width int, height int, format TextureDrawableFormat, with_mipmaps bool) RID.Texture { //gd:RenderingServer.texture_drawable_create
+	return RID.Texture(RID.Texture(Advanced().TextureDrawableCreate(int64(width), int64(height), format, Color.RGBA(gd.Color{1, 1, 1, 1}), with_mipmaps)))
+}
+
+/*
+Creates a 2-dimensional texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all texture_drawable* RenderingServer functions.
+
+Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
+
+Note: The equivalent resource is [DrawableTexture2D].
+
+[DrawableTexture2D]: https://pkg.go.dev/graphics.gd/classdb/DrawableTexture2D
+*/
+func TextureDrawableCreateOptions(width int, height int, format TextureDrawableFormat, color Color.RGBA, with_mipmaps bool) RID.Texture { //gd:RenderingServer.texture_drawable_create
+	return RID.Texture(RID.Texture(Advanced().TextureDrawableCreate(int64(width), int64(height), format, Color.RGBA(color), with_mipmaps)))
+}
+
+/*
 Updates the texture specified by the 'texture' [Resource.ID] with the data in 'image'. A 'layer' must also be specified, which should be 0 when updating a single-layer texture ([Texture2D]).
 
 Note: The 'image' must have the same width, height and format as the current 'texture' data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height or format, use [TextureReplace] instead.
@@ -778,6 +814,15 @@ This method does nothing.
 */
 func TextureProxyUpdate(texture RID.TextureProxy, proxy_to RID.Texture) { //gd:RenderingServer.texture_proxy_update
 	Advanced().TextureProxyUpdate(RID.Any(texture), RID.Any(proxy_to))
+}
+
+/*
+Draws to 'rect' on up to 4 given Drawable 'textures', using a TextureBlit Shader from 'material'. 'modulate' and up to 4 'source_textures' are uniforms for the Shader to process with. 'to_mipmap' can specify to perform this draw to a lower mipmap level.
+
+Note: All 'textures' must be the same size and format.
+*/
+func TextureDrawableBlitRect(textures []RID.Texture, rect Rect2i.PositionSize, material RID.Material, modulate Color.RGBA, source_textures []RID.Texture, to_mipmap int) { //gd:RenderingServer.texture_drawable_blit_rect
+	Advanced().TextureDrawableBlitRect(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), Rect2i.PositionSize(rect), RID.Any(material), Color.RGBA(modulate), gd.ArrayFromSlice[Array.Contains[RID.Any]](source_textures), int64(to_mipmap))
 }
 
 /*
@@ -855,17 +900,45 @@ func Texture3dGet(texture RID.Texture3D) []Image.Instance { //gd:RenderingServer
 }
 
 /*
+Calculates new MipMaps for the given Drawable 'texture'.
+*/
+func TextureDrawableGenerateMipmaps(texture RID.Texture) { //gd:RenderingServer.texture_drawable_generate_mipmaps
+	Advanced().TextureDrawableGenerateMipmaps(RID.Any(texture))
+}
+
+/*
+Returns a ShaderMaterial with the default texture_blit Shader.
+*/
+func TextureDrawableGetDefaultMaterial() RID.Material { //gd:RenderingServer.texture_drawable_get_default_material
+	return RID.Material(RID.Material(Advanced().TextureDrawableGetDefaultMaterial()))
+}
+
+/*
 Replaces 'texture”s texture data by the texture specified by the 'by_texture' RID, without changing 'texture”s RID.
 */
 func TextureReplace(texture RID.Texture, by_texture RID.Texture) { //gd:RenderingServer.texture_replace
 	Advanced().TextureReplace(RID.Any(texture), RID.Any(by_texture))
 }
+
+/*
+Sets the size at which the texture should be displayed in 2D, ignoring its original size. This does not rescale the texture data itself, only how it is drawn in 2D. Set 'width' and 'height' to 0 to disable the size override.
+*/
 func TextureSetSizeOverride(texture RID.Texture, width int, height int) { //gd:RenderingServer.texture_set_size_override
 	Advanced().TextureSetSizeOverride(RID.Any(texture), int64(width), int64(height))
 }
+
+/*
+Sets the resource path for this texture RID. See also [TextureGetPath].
+
+Note: This is purely a hint and does not cause the texture to be automatically saved when set to a res:// path.
+*/
 func TextureSetPath(texture RID.Texture, path string) { //gd:RenderingServer.texture_set_path
 	Advanced().TextureSetPath(RID.Any(texture), String.From(path))
 }
+
+/*
+Returns the resource path (starting with res:// or uid://) for the specified texture RID. Returns an empty string if the resource is built-in. See also [TextureSetPath].
+*/
 func TextureGetPath(texture RID.Texture) string { //gd:RenderingServer.texture_get_path
 	return string(Advanced().TextureGetPath(RID.Any(texture)).String())
 }
@@ -876,6 +949,13 @@ Returns the format for the texture.
 func TextureGetFormat(texture RID.Texture) Image.Format { //gd:RenderingServer.texture_get_format
 	return Image.Format(Advanced().TextureGetFormat(RID.Any(texture)))
 }
+
+/*
+Sets whether the texture RID should force redrawing when it's visible on screen when [OS.LowProcessorUsageMode] is true. This is used by [AnimatedTexture] to force redrawing.
+
+[AnimatedTexture]: https://pkg.go.dev/graphics.gd/classdb/AnimatedTexture
+[OS.LowProcessorUsageMode]: https://pkg.go.dev/graphics.gd/classdb/OS#LowProcessorUsageMode
+*/
 func TextureSetForceRedrawIfVisible(texture RID.Texture, enable bool) { //gd:RenderingServer.texture_set_force_redraw_if_visible
 	Advanced().TextureSetForceRedrawIfVisible(RID.Any(texture), enable)
 }
@@ -1050,6 +1130,20 @@ See also [ProjectSettings] "rendering/anti_aliasing/quality/use_debanding" and [
 func MaterialSetUseDebanding(enable bool) { //gd:RenderingServer.material_set_use_debanding
 	Advanced().MaterialSetUseDebanding(enable)
 }
+
+/*
+Creates a new mesh with predefined surfaces for it and adds the mesh to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all mesh_* RenderingServer functions. This method is more efficient for creating meshes with multiple surfaces compared to creating an empty mesh with [MeshCreate] and adding surfaces one by one with [MeshAddSurface].
+
+Each element in the 'surfaces' array must follow the same structure as described in [MeshAddSurface]. The 'blend_shape_count' parameter must match the blend shape data defined in all surfaces.
+
+Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
+
+To place in a scene, attach this mesh to an instance using [InstanceSetBase] using the returned RID.
+
+Note: The equivalent resource is [Mesh].
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+*/
 func MeshCreateFromSurfaces(surfaces []Surface, blend_shape_count int) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
 	return RID.Mesh(RID.Mesh(Advanced().MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), int64(blend_shape_count))))
 }
@@ -1110,9 +1204,39 @@ Returns the stride of the index buffer for a mesh with the given 'format'.
 func MeshSurfaceGetFormatIndexStride(format ArrayFormat, vertex_count int) int { //gd:RenderingServer.mesh_surface_get_format_index_stride
 	return int(int(Advanced().MeshSurfaceGetFormatIndexStride(format, int64(vertex_count))))
 }
+
+/*
+Creates a new surface on the given 'mesh'. Equivalent to [MeshAddSurfaceFromArrays], but takes a single data structure argument instead of separate arguments. The dictionary must follow this structure:
+
+	package main
+
+See also [MeshGetSurface], which returns data in the same structure defined above.
+*/
 func MeshAddSurface(mesh RID.Mesh, surface Surface) { //gd:RenderingServer.mesh_add_surface
 	Advanced().MeshAddSurface(RID.Any(mesh), gd.DictionaryFromMap(surface))
 }
+
+/*
+Creates a new surface on the given 'mesh'. [MeshGetSurfaceCount] will become the surface index for this new surface.
+
+Surfaces are created to be rendered using a 'primitive', which may be any of the values defined in [Mesh.PrimitiveType].
+
+The 'arrays' argument is an array of arrays. Each of the [Mesh.ArrayMax] elements contains an array with some of the mesh data for this surface as described by the corresponding member of [Mesh.ArrayType] or null if it is not used by the surface. For example, arrays[0] is the array of vertices. That first vertex sub-array is always required; the others are optional. Adding an index array puts this surface into "index mode" where the vertex and other arrays become the sources of data and the index array defines the vertex order. All sub-arrays must have the same length as the vertex array (or be an exact multiple of the vertex array's length, when multiple elements of a sub-array correspond to a single vertex) or be empty, except for [Mesh.ArrayIndex] if it is used.
+
+The 'blend_shapes' argument is an array of vertex data for each blend shape. Each element is an array of the same structure as 'arrays', but [Mesh.ArrayVertex], [Mesh.ArrayNormal], and [Mesh.ArrayTangent] are set if and only if they are set in 'arrays' and all other entries are null.
+
+The 'lods' argument is a dictionary with [Float.X] keys and []int32 values. Each entry in the dictionary represents an LOD level of the surface, where the value is the [Mesh.ArrayIndex] array to use for the LOD level and the key is roughly proportional to the distance at which the LOD stats being used. I.e., increasing the key of an LOD also increases the distance that the objects has to be from the camera before the LOD is used.
+
+The 'compress_format' argument is the bitwise OR of, as required: One value of [ArrayFormat] left shifted by ARRAY_FORMAT_CUSTOMn_SHIFT for each custom channel in use, [ArrayFlagUseDynamicUpdate], [ArrayFlagUse8BoneWeights], or [ArrayFlagUsesEmptyVertexArray].
+
+See [ArrayMesh.AddSurfaceFromArrays] and [ImporterMesh.AddSurface] for higher-level equivalents of this method.
+
+Note: When using indices, it is recommended to only use points, lines, or triangles.
+
+[ArrayMesh.AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
+[ImporterMesh.AddSurface]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh#Instance.AddSurface
+*/
 func MeshAddSurfaceFromArrays(mesh RID.Mesh, primitive PrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	Advanced().MeshAddSurfaceFromArrays(RID.Any(mesh), primitive, gd.EngineArrayFromSlice(arrays), gd.EngineArrayFromSlice(blend_shapes), gd.DictionaryFromMap(lods), compress_format)
 }
@@ -1151,6 +1275,10 @@ Returns a mesh's surface's material.
 func MeshSurfaceGetMaterial(mesh RID.Mesh, surface int) RID.Material { //gd:RenderingServer.mesh_surface_get_material
 	return RID.Material(RID.Material(Advanced().MeshSurfaceGetMaterial(RID.Any(mesh), int64(surface))))
 }
+
+/*
+Returns a mesh's surface as a dictionary following the same structure as described in [MeshAddSurface].
+*/
 func MeshGetSurface(mesh RID.Mesh, surface int) Surface { //gd:RenderingServer.mesh_get_surface
 	return Surface(gd.DictionaryAs[Surface](Advanced().MeshGetSurface(RID.Any(mesh), int64(surface))))
 }
@@ -1203,12 +1331,48 @@ Removes all surfaces from a mesh.
 func MeshClear(mesh RID.Mesh) { //gd:RenderingServer.mesh_clear
 	Advanced().MeshClear(RID.Any(mesh))
 }
+
+/*
+Updates the vertex buffer of the mesh surface with the given 'data'. The expected data per vertex is 8 or 12 bytes (4 bytes per float, 2 floats per [Vector2.XY], and 3 floats per [Vector3.XYZ]) depending on if the mesh is using [Vector2.XY] or [Vector3.XYZ] vertices. This value can be determined with [MeshSurfaceGetFormatVertexStride] instead.
+
+The starting point of the updates can be changed with 'offset'. The value of 'offset' should be a multiple of 12 bytes in most cases to align to each vertex.
+
+A [][Vector3.XYZ] of vertex locations can be converted into a []byte using [PackedVector3Array.ToByteArray] for use in 'data'.
+
+[PackedVector3Array.ToByteArray]: https://pkg.go.dev/graphics.gd/classdb/PackedVector3Array#Instance.ToByteArray
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
+*/
 func MeshSurfaceUpdateVertexRegion(mesh RID.Mesh, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_vertex_region
 	Advanced().MeshSurfaceUpdateVertexRegion(RID.Any(mesh), int64(surface), int64(offset), Packed.BytesFrom(data...))
 }
+
+/*
+Updates the attribute buffer of the mesh surface with the given 'data'. The expected data per attribute is 8 or 12 bytes (4 bytes per float, 2 floats per [Vector2.XY], and 3 floats per [Vector3.XYZ]) depending on if the mesh is using [Vector2.XY] or [Vector3.XYZ] vertices. This value can be determined with [MeshSurfaceGetFormatAttributeStride] instead.
+
+The starting point of the updates can be changed with 'offset'. The value of 'offset' should be a multiple of 12 bytes in most cases to align to each attribute.
+
+A [][Vector3.XYZ] of attribute locations can be converted into a []byte using [PackedVector3Array.ToByteArray] for use in 'data'.
+
+[PackedVector3Array.ToByteArray]: https://pkg.go.dev/graphics.gd/classdb/PackedVector3Array#Instance.ToByteArray
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
+*/
 func MeshSurfaceUpdateAttributeRegion(mesh RID.Mesh, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_attribute_region
 	Advanced().MeshSurfaceUpdateAttributeRegion(RID.Any(mesh), int64(surface), int64(offset), Packed.BytesFrom(data...))
 }
+
+/*
+Updates the skin buffer of the mesh surface with the given 'data'. The expected data per skin is 8 or 12 bytes (4 bytes per float, 2 floats per [Vector2.XY], and 3 floats per [Vector3.XYZ]) depending on if the mesh is using [Vector2.XY] or [Vector3.XYZ] vertices. This value can be determined with [MeshSurfaceGetFormatSkinStride] instead.
+
+The starting point of the updates can be changed with 'offset'. The value of 'offset' should be a multiple of 12 bytes in most cases to align to each skin.
+
+A [][Vector3.XYZ] of skin locations can be converted into a []byte using [PackedVector3Array.ToByteArray] for use in 'data'.
+
+[PackedVector3Array.ToByteArray]: https://pkg.go.dev/graphics.gd/classdb/PackedVector3Array#Instance.ToByteArray
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
+*/
 func MeshSurfaceUpdateSkinRegion(mesh RID.Mesh, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_skin_region
 	Advanced().MeshSurfaceUpdateSkinRegion(RID.Any(mesh), int64(surface), int64(offset), Packed.BytesFrom(data...))
 }
@@ -1219,6 +1383,12 @@ Updates the index buffer of the mesh surface with the given 'data'. The expected
 func MeshSurfaceUpdateIndexRegion(mesh RID.Mesh, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_index_region
 	Advanced().MeshSurfaceUpdateIndexRegion(RID.Any(mesh), int64(surface), int64(offset), Packed.BytesFrom(data...))
 }
+
+/*
+Sets an optional second mesh which can be used for rendering shadows and the depth prepass. Can be used to increase performance by supplying a mesh with fused vertices and only vertex position data (without normals, UVs, colors, etc.).
+
+Note: This mesh must have exactly the same vertex positions as the source mesh (including the source mesh's LODs, if present). If vertex positions differ, then the mesh will not draw correctly.
+*/
 func MeshSetShadowMesh(mesh RID.Mesh, shadow_mesh RID.Mesh) { //gd:RenderingServer.mesh_set_shadow_mesh
 	Advanced().MeshSetShadowMesh(RID.Any(mesh), RID.Any(shadow_mesh))
 }
@@ -1238,6 +1408,10 @@ Note: The equivalent resource is [MultiMesh].
 func MultimeshCreate() RID.MultiMesh { //gd:RenderingServer.multimesh_create
 	return RID.MultiMesh(RID.MultiMesh(Advanced().MultimeshCreate()))
 }
+
+/*
+Sets up the multimesh using the specified data. The number of instances is set by 'instances'. The format of the instance transforms is set by 'transform_format', which should be set according to whether the multimesh is meant to be rendered in 2D or 3D. If 'color_format' is true, each instance will have a color associated with it. If 'custom_data_format' is true, each instance will have a custom data vector associated with it. If 'use_indirect' is true, an indirect command buffer will be created for this multimesh, allowing the instance count to be modified directly on the GPU. See also [MultimeshGetCommandBufferRdRid].
+*/
 func MultimeshAllocateData(multimesh RID.MultiMesh, instances int, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
 	Advanced().MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, color_format, custom_data_format, use_indirect)
 }
@@ -1479,12 +1653,16 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 func SkeletonCreate() RID.Skeleton { //gd:RenderingServer.skeleton_create
 	return RID.Skeleton(RID.Skeleton(Advanced().SkeletonCreate()))
 }
+
+/*
+Allocates data for this skeleton using the number of bones specified in 'bones'. If 'is_2d_skeleton' is true, the skeleton will be treated as a 2D skeleton instead of a 3D skeleton. See also [SkeletonGetBoneCount].
+*/
 func SkeletonAllocateData(skeleton RID.Skeleton, bones int, is_2d_skeleton bool) { //gd:RenderingServer.skeleton_allocate_data
 	Advanced().SkeletonAllocateData(RID.Any(skeleton), int64(bones), is_2d_skeleton)
 }
 
 /*
-Returns the number of bones allocated for this skeleton.
+Returns the number of bones allocated for this skeleton. See also [SkeletonAllocateData].
 */
 func SkeletonGetBoneCount(skeleton RID.Skeleton) int { //gd:RenderingServer.skeleton_get_bone_count
 	return int(int(Advanced().SkeletonGetBoneCount(RID.Any(skeleton))))
@@ -1525,6 +1703,12 @@ Returns the [Transform2D.OriginXY] set for a specific bone of this skeleton.
 func SkeletonBoneGetTransform2d(skeleton RID.Skeleton, bone int) Transform2D.OriginXY { //gd:RenderingServer.skeleton_bone_get_transform_2d
 	return Transform2D.OriginXY(Advanced().SkeletonBoneGetTransform2d(RID.Any(skeleton), int64(bone)))
 }
+
+/*
+Sets the base [Transform2D.OriginXY] to use for the specified skeleton.
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
+*/
 func SkeletonSetBaseTransform2d(skeleton RID.Skeleton, base_transform Transform2D.OriginXY) { //gd:RenderingServer.skeleton_set_base_transform_2d
 	Advanced().SkeletonSetBaseTransform2d(RID.Any(skeleton), Transform2D.OriginXY(base_transform))
 }
@@ -1568,6 +1752,21 @@ To place in a scene, attach this spot light to an instance using [InstanceSetBas
 */
 func SpotLightCreate() RID.Light { //gd:RenderingServer.spot_light_create
 	return RID.Light(RID.Light(Advanced().SpotLightCreate()))
+}
+
+/*
+Creates a new area light and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID can be used in most light_* RenderingServer functions.
+
+Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
+
+To place in a scene, attach this area light to an instance using [InstanceSetBase] using the returned RID.
+
+Note: The equivalent node is [AreaLight3D].
+
+[AreaLight3D]: https://pkg.go.dev/graphics.gd/classdb/AreaLight3D
+*/
+func AreaLightCreate() RID.Light { //gd:RenderingServer.area_light_create
+	return RID.Light(RID.Light(Advanced().AreaLightCreate()))
 }
 
 /*
@@ -1702,6 +1901,25 @@ If true, this light will not be used for anything except sky shaders. Use this f
 */
 func LightDirectionalSetSkyMode(light RID.Light, mode LightDirectionalSkyMode) { //gd:RenderingServer.light_directional_set_sky_mode
 	Advanced().LightDirectionalSetSkyMode(RID.Any(light), mode)
+}
+
+/*
+Sets the extents (width and height) in meters for this area light. Equivalent to [AreaLight3D.AreaSize].
+
+[AreaLight3D.AreaSize]: https://pkg.go.dev/graphics.gd/classdb/AreaLight3D#Instance.AreaSize
+*/
+func LightAreaSetSize(light RID.Light, size Vector2.XY) { //gd:RenderingServer.light_area_set_size
+	Advanced().LightAreaSetSize(RID.Any(light), Vector2.XY(size))
+}
+
+/*
+Defines whether the energy of an [AreaLight3D] is normalized (divided) by its area. If set to true, changing the size does not affect the total energy output. Equivalent to [AreaLight3D.AreaNormalizeEnergy].
+
+[AreaLight3D]: https://pkg.go.dev/graphics.gd/classdb/AreaLight3D
+[AreaLight3D.AreaNormalizeEnergy]: https://pkg.go.dev/graphics.gd/classdb/AreaLight3D#Instance.AreaNormalizeEnergy
+*/
+func LightAreaSetNormalizeEnergy(light RID.Light, enable bool) { //gd:RenderingServer.light_area_set_normalize_energy
+	Advanced().LightAreaSetNormalizeEnergy(RID.Any(light), enable)
 }
 
 /*
@@ -2028,24 +2246,54 @@ Note: The equivalent node is [VoxelGI].
 func VoxelGiCreate() RID.VoxelGI { //gd:RenderingServer.voxel_gi_create
 	return RID.VoxelGI(RID.VoxelGI(Advanced().VoxelGiCreate()))
 }
+
+/*
+Allocates and initializes the voxel GI data for the specified 'voxel_gi' RID. 'octree_cells' must be a multiple of 32. 'octree_cells' must be double the size of 'data_cells'. The allocated data can be retrieved later using the various voxel_gi_get_* methods.
+*/
 func VoxelGiAllocateData(voxel_gi RID.VoxelGI, to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3i.XYZ, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) { //gd:RenderingServer.voxel_gi_allocate_data
 	Advanced().VoxelGiAllocateData(RID.Any(voxel_gi), Transform3D.BasisOrigin(to_cell_xform), AABB.PositionSize(aabb), Vector3i.XYZ(octree_size), Packed.BytesFrom(octree_cells...), Packed.BytesFrom(data_cells...), Packed.BytesFrom(distance_field...), Packed.New(level_counts...))
 }
+
+/*
+Returns the octree size for the specified voxel GI data instance, which corresponds to the number of subdivisions per axis. This can be viewed in the editor by hovering the Bake VoxelGI button at the top of the 3D editor viewport when a [VoxelGI] node is selected and looking at the Subdivisions field in the tooltip.
+
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+*/
 func VoxelGiGetOctreeSize(voxel_gi RID.VoxelGI) Vector3i.XYZ { //gd:RenderingServer.voxel_gi_get_octree_size
 	return Vector3i.XYZ(Advanced().VoxelGiGetOctreeSize(RID.Any(voxel_gi)))
 }
+
+/*
+Returns the octree cell data for the specified voxel GI data instance. See also [VoxelGiAllocateData].
+*/
 func VoxelGiGetOctreeCells(voxel_gi RID.VoxelGI) []byte { //gd:RenderingServer.voxel_gi_get_octree_cells
 	return []byte(Advanced().VoxelGiGetOctreeCells(RID.Any(voxel_gi)).Bytes())
 }
+
+/*
+Returns the data cells for the specified voxel GI data instance. See also [VoxelGiAllocateData].
+*/
 func VoxelGiGetDataCells(voxel_gi RID.VoxelGI) []byte { //gd:RenderingServer.voxel_gi_get_data_cells
 	return []byte(Advanced().VoxelGiGetDataCells(RID.Any(voxel_gi)).Bytes())
 }
+
+/*
+Returns the distance field data for the specified voxel GI data instance. See also [VoxelGiAllocateData].
+*/
 func VoxelGiGetDistanceField(voxel_gi RID.VoxelGI) []byte { //gd:RenderingServer.voxel_gi_get_distance_field
 	return []byte(Advanced().VoxelGiGetDistanceField(RID.Any(voxel_gi)).Bytes())
 }
+
+/*
+Returns the level counts for the specified voxel GI data instance. See also [VoxelGiAllocateData].
+*/
 func VoxelGiGetLevelCounts(voxel_gi RID.VoxelGI) []int32 { //gd:RenderingServer.voxel_gi_get_level_counts
 	return []int32(slices.Collect(Advanced().VoxelGiGetLevelCounts(RID.Any(voxel_gi)).Values()))
 }
+
+/*
+Returns the transform to cell space for the specified voxel GI data instance. See also [VoxelGiAllocateData].
+*/
 func VoxelGiGetToCellXform(voxel_gi RID.VoxelGI) Transform3D.BasisOrigin { //gd:RenderingServer.voxel_gi_get_to_cell_xform
 	return Transform3D.BasisOrigin(Advanced().VoxelGiGetToCellXform(RID.Any(voxel_gi)))
 }
@@ -2157,24 +2405,55 @@ Set the textures on the given 'lightmap' GI instance to the texture array pointe
 func LightmapSetTextures(lightmap RID.Lightmap, light RID.Light, uses_sh bool) { //gd:RenderingServer.lightmap_set_textures
 	Advanced().LightmapSetTextures(RID.Any(lightmap), RID.Any(light), uses_sh)
 }
+
+/*
+Sets the bounds that this lightmap instance should visually affect, both in terms of static lightmap baking and probe-based global illumination.
+*/
 func LightmapSetProbeBounds(lightmap RID.Lightmap, bounds AABB.PositionSize) { //gd:RenderingServer.lightmap_set_probe_bounds
 	Advanced().LightmapSetProbeBounds(RID.Any(lightmap), AABB.PositionSize(bounds))
 }
+
+/*
+Sets whether the lightmap instance should be considered as interior (when 'interior' is true). If the lightmap is marked as interior, environment lighting is ignored when baking lightmaps.
+*/
 func LightmapSetProbeInterior(lightmap RID.Lightmap, interior bool) { //gd:RenderingServer.lightmap_set_probe_interior
 	Advanced().LightmapSetProbeInterior(RID.Any(lightmap), interior)
 }
+
+/*
+Sets the probe capture data for the given lightmap instance. See [LightmapGetProbeCapturePoints], [LightmapGetProbeCaptureSh], [LightmapGetProbeCaptureTetrahedra], and [LightmapGetProbeCaptureBspTree] for the expected data formats.
+*/
 func LightmapSetProbeCaptureData(lightmap RID.Lightmap, points []Vector3.XYZ, point_sh []Color.RGBA, tetrahedra []int32, bsp_tree []int32) { //gd:RenderingServer.lightmap_set_probe_capture_data
 	Advanced().LightmapSetProbeCaptureData(RID.Any(lightmap), Packed.New(points...), Packed.New(point_sh...), Packed.New(tetrahedra...), Packed.New(bsp_tree...))
 }
+
+/*
+Returns the local space positions of each lightmap probe capture point. Keep in mind the lightmap instance may have a non-zero transform, which will affect the position of the probe capture points. See also [LightmapSetProbeCaptureData].
+*/
 func LightmapGetProbeCapturePoints(lightmap RID.Lightmap) []Vector3.XYZ { //gd:RenderingServer.lightmap_get_probe_capture_points
 	return []Vector3.XYZ(slices.Collect(Advanced().LightmapGetProbeCapturePoints(RID.Any(lightmap)).Values()))
 }
+
+/*
+Returns the L0, L1, and L2 [spherical harmonics] data for each lightmap probe capture point. This is specified as 9 [Color.RGBA] values per probe, which means the size of the returned data is always 9 times the number of probe points. See also [LightmapSetProbeCaptureData].
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[spherical harmonics]: https://en.wikipedia.org/wiki/Spherical_harmonics
+*/
 func LightmapGetProbeCaptureSh(lightmap RID.Lightmap) []Color.RGBA { //gd:RenderingServer.lightmap_get_probe_capture_sh
 	return []Color.RGBA(slices.Collect(Advanced().LightmapGetProbeCaptureSh(RID.Any(lightmap)).Values()))
 }
+
+/*
+Returns the tetrahedralization data used for interpolating between lightmap probe capture points. Each tetrahedron is specified as a series of 4 numbers, each being an index into the probe capture points array returned by [LightmapGetProbeCapturePoints]. See also [LightmapSetProbeCaptureData].
+*/
 func LightmapGetProbeCaptureTetrahedra(lightmap RID.Lightmap) []int32 { //gd:RenderingServer.lightmap_get_probe_capture_tetrahedra
 	return []int32(slices.Collect(Advanced().LightmapGetProbeCaptureTetrahedra(RID.Any(lightmap)).Values()))
 }
+
+/*
+Returns the BSP tree data used for accelerating probe lookups. The BSP data is structured as a series of six signed 32-bit values per BSP node in this order: float plane_x, float plane_y, float plane_z, float plane_distance, int32_t over, int32_t under. An empty leaf is denoted by the value -2147483648 (the minimum 32-bit signed integer). See also [LightmapSetProbeCaptureData].
+*/
 func LightmapGetProbeCaptureBspTree(lightmap RID.Lightmap) []int32 { //gd:RenderingServer.lightmap_get_probe_capture_bsp_tree
 	return []int32(slices.Collect(Advanced().LightmapGetProbeCaptureBspTree(RID.Any(lightmap)).Values()))
 }
@@ -2185,6 +2464,13 @@ Used to inform the renderer what exposure normalization value was used while bak
 func LightmapSetBakedExposureNormalization(lightmap RID.Lightmap, baked_exposure Float.X) { //gd:RenderingServer.lightmap_set_baked_exposure_normalization
 	Advanced().LightmapSetBakedExposureNormalization(RID.Any(lightmap), float64(baked_exposure))
 }
+
+/*
+The framerate-independent update speed when representing dynamic object lighting from [LightmapProbe]s. Higher values make dynamic object lighting update faster. Higher values can prevent fast-moving objects from having "outdated" indirect lighting displayed on them, at the cost of possible flickering when an object moves from a bright area to a shaded area. See also [ProjectSettings] "rendering/lightmapping/probe_capture/update_speed".
+
+[LightmapProbe]: https://pkg.go.dev/graphics.gd/classdb/LightmapProbe
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func LightmapSetProbeCaptureUpdateSpeed(speed Float.X) { //gd:RenderingServer.lightmap_set_probe_capture_update_speed
 	Advanced().LightmapSetProbeCaptureUpdateSpeed(float64(speed))
 }
@@ -2280,10 +2566,12 @@ func ParticlesSetPreProcessTime(particles RID.Particles, time Float.X) { //gd:Re
 }
 
 /*
-Requests particles to process for extra process time during a single frame.
+Requests the particles to process for extra process time during a single frame.
+
+'process_time' defines the time that the particles will process while emitting is on. 'process_time_residual' defines the time that particles will process with emitting turned off for the simulation. When combined with the particles' speed scale set to 0.0, this is useful to be able to seek a particle system timeline.
 */
-func ParticlesRequestProcessTime(particles RID.Particles, time Float.X) { //gd:RenderingServer.particles_request_process_time
-	Advanced().ParticlesRequestProcessTime(RID.Any(particles), float64(time))
+func ParticlesRequestProcessTime(particles RID.Particles, process_time Float.X, process_time_residual Float.X) { //gd:RenderingServer.particles_request_process_time
+	Advanced().ParticlesRequestProcessTime(RID.Any(particles), float64(process_time), float64(process_time_residual))
 }
 
 /*
@@ -2368,6 +2656,12 @@ Sets the frame rate that the particle system rendering will be fixed to. Equival
 func ParticlesSetFixedFps(particles RID.Particles, fps int) { //gd:RenderingServer.particles_set_fixed_fps
 	Advanced().ParticlesSetFixedFps(RID.Any(particles), int64(fps))
 }
+
+/*
+Sets whether particles should use interpolation between fixed steps. Equivalent to [GPUParticles3D.Interpolate].
+
+[GPUParticles3D.Interpolate]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Interpolate
+*/
 func ParticlesSetInterpolate(particles RID.Particles, enable bool) { //gd:RenderingServer.particles_set_interpolate
 	Advanced().ParticlesSetInterpolate(RID.Any(particles), enable)
 }
@@ -2380,11 +2674,37 @@ If true, uses fractional delta which smooths the movement of the particles. Equi
 func ParticlesSetFractionalDelta(particles RID.Particles, enable bool) { //gd:RenderingServer.particles_set_fractional_delta
 	Advanced().ParticlesSetFractionalDelta(RID.Any(particles), enable)
 }
+
+/*
+Sets the base size for particle collision. Equivalent to [GPUParticles3D.CollisionBaseSize].
+
+[GPUParticles3D.CollisionBaseSize]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.CollisionBaseSize
+*/
 func ParticlesSetCollisionBaseSize(particles RID.Particles, size Float.X) { //gd:RenderingServer.particles_set_collision_base_size
 	Advanced().ParticlesSetCollisionBaseSize(RID.Any(particles), float64(size))
 }
+
+/*
+Sets the transform alignment for the particle system. Equivalent to [GPUParticles3D.TransformAlign].
+
+[GPUParticles3D.TransformAlign]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.TransformAlign
+*/
 func ParticlesSetTransformAlign(particles RID.Particles, align ParticlesTransformAlign) { //gd:RenderingServer.particles_set_transform_align
 	Advanced().ParticlesSetTransformAlign(RID.Any(particles), align)
+}
+
+/*
+When using Z-Billboarding, which CUSTOM channel to read from.
+*/
+func ParticlesSetTransformAlignChannelFilter(particles RID.Particles, channel_filter ParticlesTransformAlignCustomSrc) { //gd:RenderingServer.particles_set_transform_align_channel_filter
+	Advanced().ParticlesSetTransformAlignChannelFilter(RID.Any(particles), channel_filter)
+}
+
+/*
+Sets which axis to use for transform alignment.
+*/
+func ParticlesSetTransformAlignAxis(particles RID.Particles, rotation_axis ParticlesTransformAlignAxis) { //gd:RenderingServer.particles_set_transform_align_axis
+	Advanced().ParticlesSetTransformAlignAxis(RID.Any(particles), rotation_axis)
 }
 
 /*
@@ -2396,6 +2716,17 @@ If 'enable' is true, enables trails for the 'particles' with the specified 'leng
 func ParticlesSetTrails(particles RID.Particles, enable bool, length_sec Float.X) { //gd:RenderingServer.particles_set_trails
 	Advanced().ParticlesSetTrails(RID.Any(particles), enable, float64(length_sec))
 }
+
+/*
+Sets the trail bind poses for the particle system. This specified as an array of [Transform3D.BasisOrigin]s representing the bind pose for each draw pass. See [GPUParticles3D.DrawSkin], [Skin.GetBindCount], and [Skin.GetBindPose]. Set the value for each draw pass to [Transform3d.Identity] to use the default behavior, which is what built-in trails use ([RibbonTrailMesh] and [TubeTrailMesh]).
+
+[GPUParticles3D.DrawSkin]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawSkin
+[RibbonTrailMesh]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh
+[Skin.GetBindCount]: https://pkg.go.dev/graphics.gd/classdb/Skin#Instance.GetBindCount
+[Skin.GetBindPose]: https://pkg.go.dev/graphics.gd/classdb/Skin#Instance.GetBindPose
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
+[TubeTrailMesh]: https://pkg.go.dev/graphics.gd/classdb/TubeTrailMesh
+*/
 func ParticlesSetTrailBindPoses(particles RID.Particles, bind_poses []Transform3D.BasisOrigin) { //gd:RenderingServer.particles_set_trail_bind_poses
 	Advanced().ParticlesSetTrailBindPoses(RID.Any(particles), gd.ArrayFromSlice[Array.Contains[Transform3D.BasisOrigin]](bind_poses))
 }
@@ -2422,6 +2753,12 @@ Reset the particles on the next update. Equivalent to [GPUParticles3D.Restart].
 func ParticlesRestart(particles RID.Particles) { //gd:RenderingServer.particles_restart
 	Advanced().ParticlesRestart(RID.Any(particles))
 }
+
+/*
+Sets the subemitter particles for the particle system. Equivalent to [GPUParticles3D.SubEmitter].
+
+[GPUParticles3D.SubEmitter]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.SubEmitter
+*/
 func ParticlesSetSubemitter(particles RID.Particles, subemitter_particles RID.Particles) { //gd:RenderingServer.particles_set_subemitter
 	Advanced().ParticlesSetSubemitter(RID.Any(particles), RID.Any(subemitter_particles))
 }
@@ -2649,9 +2986,17 @@ Note: The equivalent node is [VisibleOnScreenNotifier3D].
 func VisibilityNotifierCreate() RID.VisibilityNotifier { //gd:RenderingServer.visibility_notifier_create
 	return RID.VisibilityNotifier(RID.VisibilityNotifier(Advanced().VisibilityNotifierCreate()))
 }
+
+/*
+Sets the AABB of the specified visibility notifier.
+*/
 func VisibilityNotifierSetAabb(notifier RID.VisibilityNotifier, aabb AABB.PositionSize) { //gd:RenderingServer.visibility_notifier_set_aabb
 	Advanced().VisibilityNotifierSetAabb(RID.Any(notifier), AABB.PositionSize(aabb))
 }
+
+/*
+Sets the methods to be called when the notifier enters or exits the view.
+*/
 func VisibilityNotifierSetCallbacks(notifier RID.VisibilityNotifier, enter_callable func(), exit_callable func()) { //gd:RenderingServer.visibility_notifier_set_callbacks
 	Advanced().VisibilityNotifierSetCallbacks(RID.Any(notifier), Callable.New(enter_callable), Callable.New(exit_callable))
 }
@@ -2784,10 +3129,17 @@ func ViewportSetUseXr(viewport RID.Viewport, use_xr bool) { //gd:RenderingServer
 }
 
 /*
-Sets the viewport's width and height in pixels.
+Sets the viewport's 'width' and 'height' in pixels. Optionally the 'view_count' can be set to increase the number of view layers for stereo rendering.
 */
 func ViewportSetSize(viewport RID.Viewport, width int, height int) { //gd:RenderingServer.viewport_set_size
-	Advanced().ViewportSetSize(RID.Any(viewport), int64(width), int64(height))
+	Advanced().ViewportSetSize(RID.Any(viewport), int64(width), int64(height), int64(1))
+}
+
+/*
+Sets the viewport's 'width' and 'height' in pixels. Optionally the 'view_count' can be set to increase the number of view layers for stereo rendering.
+*/
+func ViewportSetSizeOptions(viewport RID.Viewport, width int, height int, view_count int) { //gd:RenderingServer.viewport_set_size
+	Advanced().ViewportSetSize(RID.Any(viewport), int64(width), int64(height), int64(view_count))
 }
 
 /*
@@ -2862,6 +3214,8 @@ func ViewportSetFsrSharpness(viewport RID.Viewport, sharpness Float.X) { //gd:Re
 Affects the final texture sharpness by reading from a lower or higher mipmap (also called "texture LOD bias"). Negative values make mipmapped textures sharper but grainier when viewed at a distance, while positive values make mipmapped textures blurrier (even when up close). To get sharper textures at a distance without introducing too much graininess, set this between -0.75 and 0.0. Enabling temporal antialiasing ([ProjectSettings] "rendering/anti_aliasing/quality/use_taa") can help reduce the graininess visible when using negative mipmap bias.
 
 Note: When the 3D scaling mode is set to FSR 1.0, this value is used to adjust the automatic mipmap bias which is calculated internally based on the scale factor. The formula for this is -log2(1.0 / scale) + mipmap_bias.
+
+Note: This method is only supported in the Forward+ and Mobile renderers, not Compatibility. In Compatibility, this method is always treated as if 'mipmap_bias' was set to 0.0.
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
@@ -3522,8 +3876,8 @@ Sets the variables to be used with the volumetric fog post-process effect. See [
 
 [Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
-func EnvironmentSetVolumetricFog(env RID.Environment, enable bool, density Float.X, albedo Color.RGBA, emission Color.RGBA, emission_energy Float.X, anisotropy Float.X, length Float.X, p_detail_spread Float.X, gi_inject Float.X, temporal_reprojection bool, temporal_reprojection_amount Float.X, ambient_inject Float.X, sky_affect Float.X) { //gd:RenderingServer.environment_set_volumetric_fog
-	Advanced().EnvironmentSetVolumetricFog(RID.Any(env), enable, float64(density), Color.RGBA(albedo), Color.RGBA(emission), float64(emission_energy), float64(anisotropy), float64(length), float64(p_detail_spread), float64(gi_inject), temporal_reprojection, float64(temporal_reprojection_amount), float64(ambient_inject), float64(sky_affect))
+func EnvironmentSetVolumetricFog(env RID.Environment, enable bool, density Float.X, albedo Color.RGBA, emission Color.RGBA, emission_energy Float.X, anisotropy Float.X, length Float.X, detail_spread Float.X, gi_inject Float.X, temporal_reprojection bool, temporal_reprojection_amount Float.X, ambient_inject Float.X, sky_affect Float.X) { //gd:RenderingServer.environment_set_volumetric_fog
+	Advanced().EnvironmentSetVolumetricFog(RID.Any(env), enable, float64(density), Color.RGBA(albedo), Color.RGBA(emission), float64(emission_energy), float64(anisotropy), float64(length), float64(detail_spread), float64(gi_inject), temporal_reprojection, float64(temporal_reprojection_amount), float64(ambient_inject), float64(sky_affect))
 }
 
 /*
@@ -3693,6 +4047,14 @@ The normalization factor can be calculated from exposure value (EV100) as follow
 	}
 
 The exposure value can be calculated from aperture (in f-stops), shutter speed (in seconds), and sensitivity (in ISO) as follows:
+
+	package main
+
+	import "math"
+
+	func getExposure(aperture, shutterSpeed, sensitivity float64) float64 {
+		return math.Log((aperture*aperture)/shutterSpeed*(100.0/sensitivity)) / math.Log(2)
+	}
 */
 func CameraAttributesSetExposure(camera_attributes RID.CameraAttributes, multiplier Float.X, normalization Float.X) { //gd:RenderingServer.camera_attributes_set_exposure
 	Advanced().CameraAttributesSetExposure(RID.Any(camera_attributes), float64(multiplier), float64(normalization))
@@ -3905,7 +4267,7 @@ func InstanceSetVisibilityParent(instance RID.VisualInstance, parent RID.VisualI
 }
 
 /*
-If true, ignores both frustum and occlusion culling on the specified 3D geometry instance. This is not the same as [GeometryInstance3D.IgnoreOcclusionCulling], which only ignores occlusion culling and leaves frustum culling intact.
+If true, ignores all culling on the specified 3D geometry instance, including frustum culling, occlusion culling, and layer culling. This is not the same as [GeometryInstance3D.IgnoreOcclusionCulling], which only ignores occlusion culling but leaves frustum and layer culling intact.
 
 [GeometryInstance3D.IgnoreOcclusionCulling]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.IgnoreOcclusionCulling
 */
@@ -4103,6 +4465,20 @@ Modulates all colors in the given canvas.
 func CanvasSetModulate(canvas RID.Canvas, color Color.RGBA) { //gd:RenderingServer.canvas_set_modulate
 	Advanced().CanvasSetModulate(RID.Any(canvas), Color.RGBA(color))
 }
+
+/*
+If 'disable' is true, makes 2D rendering ignore the canvas scale defined for each canvas layer. This affects [CanvasLayer]s with the [CanvasLayer.FollowViewportEnabled] property set to true.
+
+In the editor, this is set to true by default, and set to false when View > Preview Canvas Scale is enabled at the top of the 2D editor viewport.
+
+Note: Setting this to true does not impact the behavior of [CanvasLayer.Scale], [Node2D.Scale], or [Control.Scale].
+
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+[CanvasLayer.FollowViewportEnabled]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer#Instance.FollowViewportEnabled
+[CanvasLayer.Scale]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer#Instance.Scale
+[Control.Scale]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.Scale
+[Node2D.Scale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Scale
+*/
 func CanvasSetDisableScale(disable bool) { //gd:RenderingServer.canvas_set_disable_scale
 	Advanced().CanvasSetDisableScale(disable)
 }
@@ -5015,6 +5391,10 @@ Sets a light occluder's polygon.
 func CanvasLightOccluderSetPolygon(occluder RID.CanvasLightOccluder, polygon RID.CanvasLightOccluderPolygon) { //gd:RenderingServer.canvas_light_occluder_set_polygon
 	Advanced().CanvasLightOccluderSetPolygon(RID.Any(occluder), RID.Any(polygon))
 }
+
+/*
+Enables or disables using the light occluder as a signed distance field for 2D particle collision.
+*/
 func CanvasLightOccluderSetAsSdfCollision(occluder RID.CanvasLightOccluder, enable bool) { //gd:RenderingServer.canvas_light_occluder_set_as_sdf_collision
 	Advanced().CanvasLightOccluderSetAsSdfCollision(RID.Any(occluder), enable)
 }
@@ -5356,7 +5736,7 @@ func HasOsFeature(feature string) bool { //gd:RenderingServer.has_os_feature
 /*
 If 'generate' is true, generates debug wireframes for all meshes that are loaded when using the Compatibility renderer. By default, the engine does not generate debug wireframes at runtime, since they slow down loading of assets and take up VRAM.
 
-Note: You must call this method before loading any meshes when using the Compatibility renderer, otherwise wireframes will not be used.
+Note: You must call this method before loading any meshes when using the Compatibility renderer. Otherwise, wireframes will not be used.
 */
 func SetDebugGenerateWireframes(generate bool) { //gd:RenderingServer.set_debug_generate_wireframes
 	Advanced().SetDebugGenerateWireframes(generate)
@@ -5517,6 +5897,18 @@ func (self class) TextureCreateFromNativeHandle(atype TextureType, format Image.
 	var ret = r_ret
 	return ret
 }
+func (self class) TextureDrawableCreate(width int64, height int64, format TextureDrawableFormat, color Color.RGBA, with_mipmaps bool) RID.Any { //gd:RenderingServer.texture_drawable_create
+	once.Do(singleton)
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.texture_drawable_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), &struct {
+		width        int64
+		height       int64
+		format       TextureDrawableFormat
+		color        Color.RGBA
+		with_mipmaps bool
+	}{width, height, format, color, with_mipmaps})
+	var ret = r_ret
+	return ret
+}
 func (self class) Texture2dUpdate(texture RID.Any, image [1]gdclass.Image, layer int64) { //gd:RenderingServer.texture_2d_update
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.texture_2d_update, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), &struct {
@@ -5538,6 +5930,17 @@ func (self class) TextureProxyUpdate(texture RID.Any, proxy_to RID.Any) { //gd:R
 		texture  RID.Any
 		proxy_to RID.Any
 	}{texture, proxy_to})
+}
+func (self class) TextureDrawableBlitRect(textures Array.Contains[RID.Any], rect Rect2i.PositionSize, material RID.Any, modulate Color.RGBA, source_textures Array.Contains[RID.Any], to_mipmap int64) { //gd:RenderingServer.texture_drawable_blit_rect
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.texture_drawable_blit_rect, 0|(gdextension.SizeArray<<4)|(gdextension.SizeRect2i<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeArray<<20)|(gdextension.SizeInt<<24), &struct {
+		textures        gdextension.Array
+		rect            Rect2i.PositionSize
+		material        RID.Any
+		modulate        Color.RGBA
+		source_textures gdextension.Array
+		to_mipmap       int64
+	}{pointers.Get(gd.InternalArray(textures)), rect, material, modulate, pointers.Get(gd.InternalArray(source_textures)), to_mipmap})
 }
 func (self class) Texture2dPlaceholderCreate() RID.Any { //gd:RenderingServer.texture_2d_placeholder_create
 	once.Do(singleton)
@@ -5576,6 +5979,16 @@ func (self class) Texture3dGet(texture RID.Any) Array.Contains[[1]gdclass.Image]
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.texture_3d_get, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+func (self class) TextureDrawableGenerateMipmaps(texture RID.Any) { //gd:RenderingServer.texture_drawable_generate_mipmaps
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.texture_drawable_generate_mipmaps, 0|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
+}
+func (self class) TextureDrawableGetDefaultMaterial() RID.Any { //gd:RenderingServer.texture_drawable_get_default_material
+	once.Do(singleton)
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.texture_drawable_get_default_material, gdextension.SizeRID, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (self class) TextureReplace(texture RID.Any, by_texture RID.Any) { //gd:RenderingServer.texture_replace
@@ -6251,6 +6664,12 @@ func (self class) SpotLightCreate() RID.Any { //gd:RenderingServer.spot_light_cr
 	var ret = r_ret
 	return ret
 }
+func (self class) AreaLightCreate() RID.Any { //gd:RenderingServer.area_light_create
+	once.Do(singleton)
+	var r_ret = noescape.Call[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.area_light_create, gdextension.SizeRID, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) LightSetColor(light RID.Any, color Color.RGBA) { //gd:RenderingServer.light_set_color
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.light_set_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
@@ -6359,6 +6778,20 @@ func (self class) LightDirectionalSetSkyMode(light RID.Any, mode LightDirectiona
 		light RID.Any
 		mode  LightDirectionalSkyMode
 	}{light, mode})
+}
+func (self class) LightAreaSetSize(light RID.Any, size Vector2.XY) { //gd:RenderingServer.light_area_set_size
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.light_area_set_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), &struct {
+		light RID.Any
+		size  Vector2.XY
+	}{light, size})
+}
+func (self class) LightAreaSetNormalizeEnergy(light RID.Any, enable bool) { //gd:RenderingServer.light_area_set_normalize_energy
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.light_area_set_normalize_energy, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+		light  RID.Any
+		enable bool
+	}{light, enable})
 }
 func (self class) LightProjectorsSetFilter(filter LightProjectorFilter) { //gd:RenderingServer.light_projectors_set_filter
 	once.Do(singleton)
@@ -6831,12 +7264,13 @@ func (self class) ParticlesSetPreProcessTime(particles RID.Any, time float64) { 
 		time      float64
 	}{particles, time})
 }
-func (self class) ParticlesRequestProcessTime(particles RID.Any, time float64) { //gd:RenderingServer.particles_request_process_time
+func (self class) ParticlesRequestProcessTime(particles RID.Any, process_time float64, process_time_residual float64) { //gd:RenderingServer.particles_request_process_time
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.particles_request_process_time, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
-		particles RID.Any
-		time      float64
-	}{particles, time})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.particles_request_process_time, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+		particles             RID.Any
+		process_time          float64
+		process_time_residual float64
+	}{particles, process_time, process_time_residual})
 }
 func (self class) ParticlesSetExplosivenessRatio(particles RID.Any, ratio float64) { //gd:RenderingServer.particles_set_explosiveness_ratio
 	once.Do(singleton)
@@ -6928,6 +7362,20 @@ func (self class) ParticlesSetTransformAlign(particles RID.Any, align ParticlesT
 		particles RID.Any
 		align     ParticlesTransformAlign
 	}{particles, align})
+}
+func (self class) ParticlesSetTransformAlignChannelFilter(particles RID.Any, channel_filter ParticlesTransformAlignCustomSrc) { //gd:RenderingServer.particles_set_transform_align_channel_filter
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.particles_set_transform_align_channel_filter, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		particles      RID.Any
+		channel_filter ParticlesTransformAlignCustomSrc
+	}{particles, channel_filter})
+}
+func (self class) ParticlesSetTransformAlignAxis(particles RID.Any, rotation_axis ParticlesTransformAlignAxis) { //gd:RenderingServer.particles_set_transform_align_axis
+	once.Do(singleton)
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.particles_set_transform_align_axis, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		particles     RID.Any
+		rotation_axis ParticlesTransformAlignAxis
+	}{particles, rotation_axis})
 }
 func (self class) ParticlesSetTrails(particles RID.Any, enable bool, length_sec float64) { //gd:RenderingServer.particles_set_trails
 	once.Do(singleton)
@@ -7242,13 +7690,14 @@ func (self class) ViewportSetUseXr(viewport RID.Any, use_xr bool) { //gd:Renderi
 		use_xr   bool
 	}{viewport, use_xr})
 }
-func (self class) ViewportSetSize(viewport RID.Any, width int64, height int64) { //gd:RenderingServer.viewport_set_size
+func (self class) ViewportSetSize(viewport RID.Any, width int64, height int64, view_count int64) { //gd:RenderingServer.viewport_set_size
 	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.viewport_set_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
-		viewport RID.Any
-		width    int64
-		height   int64
-	}{viewport, width, height})
+	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.viewport_set_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
+		viewport   RID.Any
+		width      int64
+		height     int64
+		view_count int64
+	}{viewport, width, height, view_count})
 }
 func (self class) ViewportSetActive(viewport RID.Any, active bool) { //gd:RenderingServer.viewport_set_active
 	once.Do(singleton)
@@ -7868,7 +8317,7 @@ func (self class) EnvironmentSetSdfgi(env RID.Any, enable bool, cascades int64, 
 		probe_bias      float64
 	}{env, enable, cascades, min_cell_size, y_scale, use_occlusion, bounce_feedback, read_sky, energy, normal_bias, probe_bias})
 }
-func (self class) EnvironmentSetVolumetricFog(env RID.Any, enable bool, density float64, albedo Color.RGBA, emission Color.RGBA, emission_energy float64, anisotropy float64, length float64, p_detail_spread float64, gi_inject float64, temporal_reprojection bool, temporal_reprojection_amount float64, ambient_inject float64, sky_affect float64) { //gd:RenderingServer.environment_set_volumetric_fog
+func (self class) EnvironmentSetVolumetricFog(env RID.Any, enable bool, density float64, albedo Color.RGBA, emission Color.RGBA, emission_energy float64, anisotropy float64, length float64, detail_spread float64, gi_inject float64, temporal_reprojection bool, temporal_reprojection_amount float64, ambient_inject float64, sky_affect float64) { //gd:RenderingServer.environment_set_volumetric_fog
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.environment_set_volumetric_fog, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeFloat<<48)|(gdextension.SizeFloat<<52)|(gdextension.SizeFloat<<56), &struct {
 		env                          RID.Any
@@ -7879,13 +8328,13 @@ func (self class) EnvironmentSetVolumetricFog(env RID.Any, enable bool, density 
 		emission_energy              float64
 		anisotropy                   float64
 		length                       float64
-		p_detail_spread              float64
+		detail_spread                float64
 		gi_inject                    float64
 		temporal_reprojection        bool
 		temporal_reprojection_amount float64
 		ambient_inject               float64
 		sky_affect                   float64
-	}{env, enable, density, albedo, emission, emission_energy, anisotropy, length, p_detail_spread, gi_inject, temporal_reprojection, temporal_reprojection_amount, ambient_inject, sky_affect})
+	}{env, enable, density, albedo, emission, emission_energy, anisotropy, length, detail_spread, gi_inject, temporal_reprojection, temporal_reprojection_amount, ambient_inject, sky_affect})
 }
 func (self class) EnvironmentGlowSetUseBicubicUpscale(enable bool) { //gd:RenderingServer.environment_glow_set_use_bicubic_upscale
 	once.Do(singleton)
@@ -9406,6 +9855,21 @@ const (
 	CubemapLayerBack CubeMapLayer = 5
 )
 
+type TextureDrawableFormat int64 //gd:RenderingServer.TextureDrawableFormat
+
+const (
+	// OpenGL texture format RGBA with four components, each with a bitdepth of 8.
+	TextureDrawableFormatRgba8 TextureDrawableFormat = 0
+	// OpenGL texture format RGBA with four components, each with a bitdepth of 8.
+	//
+	// When drawn to, an sRGB to linear color space conversion is performed.
+	TextureDrawableFormatRgba8Srgb TextureDrawableFormat = 1
+	// OpenGL texture format GL_RGBA16F where there are four components, each a 16-bit "half-precision" floating-point value.
+	TextureDrawableFormatRgbah TextureDrawableFormat = 2
+	// OpenGL texture format GL_RGBA32F where there are four components, each a 32-bit floating-point value.
+	TextureDrawableFormatRgbaf TextureDrawableFormat = 3
+)
+
 type ShaderMode int64 //gd:RenderingServer.ShaderMode
 
 const (
@@ -9419,8 +9883,10 @@ const (
 	ShaderSky ShaderMode = 3
 	// Shader is a 3D fog shader.
 	ShaderFog ShaderMode = 4
+	// Shader is a texture_blit shader.
+	ShaderTextureBlit ShaderMode = 5
 	// Represents the size of the [ShaderMode] enum.
-	ShaderMax ShaderMode = 5
+	ShaderMax ShaderMode = 6
 )
 
 type ArrayType int64 //gd:RenderingServer.ArrayType
@@ -9637,6 +10103,10 @@ const (
 	//
 	// [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 	LightSpot LightType = 2
+	// Area light (see [AreaLight3D]).
+	//
+	// [AreaLight3D]: https://pkg.go.dev/graphics.gd/classdb/AreaLight3D
+	LightArea LightType = 3
 )
 
 type LightParam int64 //gd:RenderingServer.LightParam
@@ -9871,10 +10341,40 @@ const (
 type ParticlesTransformAlign int64 //gd:RenderingServer.ParticlesTransformAlign
 
 const (
-	ParticlesTransformAlignDisabled              ParticlesTransformAlign = 0
-	ParticlesTransformAlignZBillboard            ParticlesTransformAlign = 1
-	ParticlesTransformAlignYToVelocity           ParticlesTransformAlign = 2
+	// Do not align particle transforms relative to the camera or velocity.
+	ParticlesTransformAlignDisabled ParticlesTransformAlign = 0
+	// Align each particle's Z axis to face the camera.
+	ParticlesTransformAlignZBillboard ParticlesTransformAlign = 1
+	// Align each particle's Y axis to the velocity vector.
+	ParticlesTransformAlignYToVelocity ParticlesTransformAlign = 2
+	// Align each particle's Z axis to face the camera and Y axis to the velocity vector.
 	ParticlesTransformAlignZBillboardYToVelocity ParticlesTransformAlign = 3
+	// Billboard each particles around a local axis.
+	ParticlesTransformAlignLocalBillboard ParticlesTransformAlign = 4
+)
+
+type ParticlesTransformAlignCustomSrc int64 //gd:RenderingServer.ParticlesTransformAlignCustomSrc
+
+const (
+	// Do not read from CUSTOM when performing billboarding.
+	ParticlesAlignChannelFilterDisabled ParticlesTransformAlignCustomSrc = 0
+	// Read from CUSTOM.x when performing billboarding and use it as an angle, in radians.
+	ParticlesAlignChannelFilterX ParticlesTransformAlignCustomSrc = 1
+	// Read from CUSTOM.y when performing billboarding and use it as an angle, in radians.
+	ParticlesAlignChannelFilterY ParticlesTransformAlignCustomSrc = 2
+	// Read from CUSTOM.z when performing billboarding and use it as an angle, in radians.
+	ParticlesAlignChannelFilterZ ParticlesTransformAlignCustomSrc = 3
+	// Read from CUSTOM.w when performing billboarding and use it as an angle, in radians.
+	ParticlesAlignChannelFilterW ParticlesTransformAlignCustomSrc = 4
+)
+
+type ParticlesTransformAlignAxis int64 //gd:RenderingServer.ParticlesTransformAlignAxis
+
+const (
+	// Use the X axis for local billboarding.
+	ParticlesAlignAxisX ParticlesTransformAlignAxis = 0
+	// Use the Y axis for local billboarding.
+	ParticlesAlignAxisY ParticlesTransformAlignAxis = 1
 )
 
 type ParticlesDrawOrder int64 //gd:RenderingServer.ParticlesDrawOrder
@@ -9893,23 +10393,69 @@ const (
 type ParticlesCollisionType int64 //gd:RenderingServer.ParticlesCollisionType
 
 const (
-	ParticlesCollisionTypeSphereAttract      ParticlesCollisionType = 0
-	ParticlesCollisionTypeBoxAttract         ParticlesCollisionType = 1
+	// Sphere attractor type for [GPUParticles3D] (see [GPUParticlesAttractorSphere3D]).
+	//
+	// [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+	// [GPUParticlesAttractorSphere3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorSphere3D
+	ParticlesCollisionTypeSphereAttract ParticlesCollisionType = 0
+	// Box attractor type for [GPUParticles3D] (see [GPUParticlesAttractorBox3D]).
+	//
+	// [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+	// [GPUParticlesAttractorBox3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorBox3D
+	ParticlesCollisionTypeBoxAttract ParticlesCollisionType = 1
+	// Vector field attractor type for [GPUParticles3D] (see [GPUParticlesAttractorVectorField3D]).
+	//
+	// [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+	// [GPUParticlesAttractorVectorField3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorVectorField3D
 	ParticlesCollisionTypeVectorFieldAttract ParticlesCollisionType = 2
-	ParticlesCollisionTypeSphereCollide      ParticlesCollisionType = 3
-	ParticlesCollisionTypeBoxCollide         ParticlesCollisionType = 4
-	ParticlesCollisionTypeSdfCollide         ParticlesCollisionType = 5
+	// Sphere collision type for [GPUParticles3D] (see [GPUParticlesCollisionSphere3D]).
+	//
+	// [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+	// [GPUParticlesCollisionSphere3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSphere3D
+	ParticlesCollisionTypeSphereCollide ParticlesCollisionType = 3
+	// Box collision type for [GPUParticles3D] (see [GPUParticlesCollisionBox3D]).
+	//
+	// [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+	// [GPUParticlesCollisionBox3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionBox3D
+	ParticlesCollisionTypeBoxCollide ParticlesCollisionType = 4
+	// Signed distance field collision type for [GPUParticles3D] (see [GPUParticlesCollisionSDF3D]).
+	//
+	// [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+	// [GPUParticlesCollisionSDF3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D
+	ParticlesCollisionTypeSdfCollide ParticlesCollisionType = 5
+	// Heightfield collision type for [GPUParticles3D] (see [GPUParticlesCollisionHeightField3D]).
+	//
+	// [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+	// [GPUParticlesCollisionHeightField3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D
 	ParticlesCollisionTypeHeightfieldCollide ParticlesCollisionType = 6
 )
 
 type ParticlesCollisionHeightfieldResolution int64 //gd:RenderingServer.ParticlesCollisionHeightfieldResolution
 
 const (
-	ParticlesCollisionHeightfieldResolution256  ParticlesCollisionHeightfieldResolution = 0
-	ParticlesCollisionHeightfieldResolution512  ParticlesCollisionHeightfieldResolution = 1
+	// 256×256 heightfield resolution for [GPUParticlesCollisionHeightField3D].
+	//
+	// [GPUParticlesCollisionHeightField3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D
+	ParticlesCollisionHeightfieldResolution256 ParticlesCollisionHeightfieldResolution = 0
+	// 512×512 heightfield resolution for [GPUParticlesCollisionHeightField3D].
+	//
+	// [GPUParticlesCollisionHeightField3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D
+	ParticlesCollisionHeightfieldResolution512 ParticlesCollisionHeightfieldResolution = 1
+	// 1024×1024 heightfield resolution for [GPUParticlesCollisionHeightField3D].
+	//
+	// [GPUParticlesCollisionHeightField3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D
 	ParticlesCollisionHeightfieldResolution1024 ParticlesCollisionHeightfieldResolution = 2
+	// 2048×2048 heightfield resolution for [GPUParticlesCollisionHeightField3D].
+	//
+	// [GPUParticlesCollisionHeightField3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D
 	ParticlesCollisionHeightfieldResolution2048 ParticlesCollisionHeightfieldResolution = 3
+	// 4096×4096 heightfield resolution for [GPUParticlesCollisionHeightField3D].
+	//
+	// [GPUParticlesCollisionHeightField3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D
 	ParticlesCollisionHeightfieldResolution4096 ParticlesCollisionHeightfieldResolution = 4
+	// 8192×8192 heightfield resolution for [GPUParticlesCollisionHeightField3D].
+	//
+	// [GPUParticlesCollisionHeightField3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D
 	ParticlesCollisionHeightfieldResolution8192 ParticlesCollisionHeightfieldResolution = 5
 	// Represents the size of the [ParticlesCollisionHeightfieldResolution] enum.
 	ParticlesCollisionHeightfieldResolutionMax ParticlesCollisionHeightfieldResolution = 6
@@ -9969,8 +10515,14 @@ const (
 	//
 	// [Viewport.Scaling3dScale]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Scaling3dScale
 	ViewportScaling3dModeMetalfxTemporal ViewportScaling3DMode = 4
+	// Use nearest-neighbor filtering for the viewport's 3D buffer. This looks crisper than [ViewportScaling3dModeBilinear] and has no additional rendering cost. The amount of scaling can be set using [Viewport.Scaling3dScale]. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
+	//
+	// Note: When using the Nearest scaling mode, to avoid uneven pixel scaling, it's highly recommended to use a value equal to an integer divisor with a dividend of 1. For example, it's best to use a scale of 0.5 (1/2), 0.3333 (1/3), 0.25 (1/4), 0.2 (1/5), and so on.
+	//
+	// [Viewport.Scaling3dScale]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Scaling3dScale
+	ViewportScaling3dModeNearest ViewportScaling3DMode = 5
 	// Represents the size of the [ViewportScaling3DMode] enum.
-	ViewportScaling3dModeMax ViewportScaling3DMode = 5
+	ViewportScaling3dModeMax ViewportScaling3DMode = 6
 )
 
 type ViewportUpdateMode int64 //gd:RenderingServer.ViewportUpdateMode
@@ -10142,6 +10694,8 @@ const (
 	// Debug draw draws objects in wireframe.
 	//
 	// Note: [SetDebugGenerateWireframes] must be called before loading any meshes for wireframes to be visible when using the Compatibility renderer.
+	//
+	// Note: In the Compatibility renderer, backfaces are always visible when using wireframe rendering. In the Forward+ and Mobile renderers, wireframes follow the material's backface culling properties instead.
 	//
 	// [SetDebugGenerateWireframes]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetDebugGenerateWireframes
 	ViewportDebugDrawWireframe ViewportDebugDraw = 4
@@ -10402,15 +10956,24 @@ const (
 type EnvironmentGlowBlendMode int64 //gd:RenderingServer.EnvironmentGlowBlendMode
 
 const (
-	// Additive glow blending mode. Mostly used for particles, glows (bloom), lens flare, bright sources.
+	// Adds the glow effect to the scene.
 	EnvGlowBlendModeAdditive EnvironmentGlowBlendMode = 0
-	// Screen glow blending mode. Increases brightness, used frequently with bloom.
+	// Adds the glow effect to the scene after modifying the glow influence based on the scene value; dark values will be highly influenced by glow and bright values will not be influenced by glow. This approach avoids bright values becoming overly bright from the glow effect. [Environment.TonemapWhite] is used to determine the maximum scene value where the glow should have no influence. When [Environment.TonemapMode] is set to [Environment.ToneMapperLinear] and [Viewport.UseHdr2d] is true, the parent window's [Window.GetOutputMaxLinearValue] will be used as the maximum scene value.
+	//
+	// [Environment.TonemapMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapMode
+	// [Environment.TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapWhite
+	// [Viewport.UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
+	// [Window.GetOutputMaxLinearValue]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetOutputMaxLinearValue
 	EnvGlowBlendModeScreen EnvironmentGlowBlendMode = 1
-	// Soft light glow blending mode. Modifies contrast, exposes shadows and highlights (vivid bloom).
+	// Adds the glow effect to the tonemapped image after modifying the glow influence based on the image value; dark values and bright values will not be influenced by glow and mid-range values will be highly influenced by glow. This approach avoids bright values becoming overly bright from the glow effect. The glow will have the largest influence on image values of 0.25 and will have no influence when applied to image values greater than 1.0.
+	//
+	// Note: This blend mode does not support HDR output because expects a maximum output value of 1.0. It is recommended to use a different blend mode when rendering to an HDR screen.
 	EnvGlowBlendModeSoftlight EnvironmentGlowBlendMode = 2
-	// Replace glow blending mode. Replaces all pixels' color by the glow value. This can be used to simulate a full-screen blur effect by tweaking the glow parameters to match the original image's brightness.
+	// Replaces all pixels' color by the glow effect. This can be used to simulate a full-screen blur effect by tweaking the glow parameters to match the original image's brightness or to preview glow configuration in the editor.
 	EnvGlowBlendModeReplace EnvironmentGlowBlendMode = 3
-	// Mixes the glow with the underlying color to avoid increasing brightness as much while still maintaining a glow effect.
+	// Mixes the glow image with the scene image. Best used with [Environment.GlowBloom] to avoid darkening the scene.
+	//
+	// [Environment.GlowBloom]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.GlowBloom
 	EnvGlowBlendModeMix EnvironmentGlowBlendMode = 4
 )
 
@@ -10435,10 +10998,14 @@ const (
 	// [Environment.TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapWhite
 	EnvToneMapperReinhard EnvironmentToneMapper = 1
 	// Uses a film-like tonemapping curve to prevent clipping of bright values and provide better contrast than [EnvToneMapperReinhard]. Slightly slower than [EnvToneMapperReinhard].
+	//
+	// Note: This tonemapper does not support HDR output because it produces output in the SDR range. It is recommended to use a different tonemapper when rendering to an HDR screen.
 	EnvToneMapperFilmic EnvironmentToneMapper = 2
 	// Uses a high-contrast film-like tonemapping curve and desaturates bright values for a more realistic appearance. Slightly slower than [EnvToneMapperFilmic].
 	//
 	// Note: This tonemapping operator is called "ACES Fitted" in Godot 3.x.
+	//
+	// Note: This tonemapper does not support HDR output because it produces output in the SDR range. It is recommended to use a different tonemapper when rendering to an HDR screen.
 	EnvToneMapperAces EnvironmentToneMapper = 3
 	// Uses an adjustable film-like tonemapping curve and desaturates bright values for a more realistic appearance. Better than other tonemappers at maintaining the hue of colors as they become brighter. The slowest tonemapping option.
 	EnvToneMapperAgx EnvironmentToneMapper = 4

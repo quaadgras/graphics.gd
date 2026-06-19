@@ -128,7 +128,7 @@ var methods struct {
 	set_speed_scale                gdextension.MethodForClass `hash:"373806689"`
 	set_collision_base_size        gdextension.MethodForClass `hash:"373806689"`
 	set_interp_to_end              gdextension.MethodForClass `hash:"373806689"`
-	request_particles_process      gdextension.MethodForClass `hash:"373806689"`
+	request_particles_process      gdextension.MethodForClass `hash:"2019720106"`
 	is_emitting                    gdextension.MethodForClass `hash:"36873697"`
 	get_amount                     gdextension.MethodForClass `hash:"3905245786"`
 	get_lifetime                   gdextension.MethodForClass `hash:"1740695150"`
@@ -201,13 +201,23 @@ type Any interface {
 /*
 Requests the particles to process for extra process time during a single frame.
 
-Useful for particle playback, if used in combination with [UseFixedSeed] or by calling [Restart] with parameter keep_seed set to true.
+'process_time' defines the time that the particles will process while emitting is on. 'process_time_residual' defines the time that particles will process with emitting turned off for the simulation. When combined with [SpeedScale] set to 0.0, this is useful to be able to seek a particle system timeline.
 
-[Restart]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D#Instance.Restart
-[UseFixedSeed]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D#Instance.UseFixedSeed
+[SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D#Instance.SpeedScale
 */
 func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:GPUParticles2D.request_particles_process
-	Advanced(self).RequestParticlesProcess(float64(process_time))
+	Advanced(self).RequestParticlesProcess(float64(process_time), float64(0))
+}
+
+/*
+Requests the particles to process for extra process time during a single frame.
+
+'process_time' defines the time that the particles will process while emitting is on. 'process_time_residual' defines the time that particles will process with emitting turned off for the simulation. When combined with [SpeedScale] set to 0.0, this is useful to be able to seek a particle system timeline.
+
+[SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D#Instance.SpeedScale
+*/
+func (self MoreArgs) RequestParticlesProcess(process_time Float.X, process_time_residual Float.X) { //gd:GPUParticles2D.request_particles_process
+	Advanced(self).RequestParticlesProcess(float64(process_time), float64(process_time_residual))
 }
 
 /*
@@ -773,8 +783,11 @@ func (self class) SetCollisionBaseSize(size float64) { //gd:GPUParticles2D.set_c
 func (self class) SetInterpToEnd(interp float64) { //gd:GPUParticles2D.set_interp_to_end
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interp_to_end, 0|(gdextension.SizeFloat<<4), &struct{ interp float64 }{interp})
 }
-func (self class) RequestParticlesProcess(process_time float64) { //gd:GPUParticles2D.request_particles_process
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4), &struct{ process_time float64 }{process_time})
+func (self class) RequestParticlesProcess(process_time float64, process_time_residual float64) { //gd:GPUParticles2D.request_particles_process
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
+		process_time          float64
+		process_time_residual float64
+	}{process_time, process_time_residual})
 }
 func (self class) IsEmitting() bool { //gd:GPUParticles2D.is_emitting
 	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emitting, gdextension.SizeBool, &struct{}{})

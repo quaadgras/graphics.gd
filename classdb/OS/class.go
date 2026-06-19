@@ -500,6 +500,15 @@ For example, to retrieve a list of the working directory's contents:
 
 If you wish to access a shell built-in or execute a composite command, a platform-specific shell can be invoked. For example:
 
+	package main
+
+	import "graphics.gd/classdb/OS"
+
+	func ExampleOSExecute() {
+		output, _ := OS.Execute("CMD.exe", []string{"/C", "cd %TEMP% && dir"}, false, false)
+		_ = output
+	}
+
 Note: This method is implemented on Android, Linux, macOS, and Windows.
 
 Note: To execute a Windows command interpreter built-in command, specify cmd.exe in 'path', /c as the first argument, and the desired command as the second argument.
@@ -645,7 +654,7 @@ Requests the OS to open a resource identified by 'uri' with the most appropriate
 
 - OS.shell_open("https://godotengine.org") opens the default web browser on the official Godot website.
 
-- OS.shell_open("mailto:example@example.com") opens the default email client with the "To" field set to example@example.com. See [RFC 2368 - The [code]mailto[/code] URL scheme] for a list of fields that can be added.
+- OS.shell_open("mailto:example@example.com") opens the default email client with the "To" field set to example@example.com. See [RFC 2368 - The mailto URL scheme] for a list of fields that can be added.
 
 Use [ProjectSettings.GlobalizePath] to convert a res:// or user:// project path into a system path for use with this method.
 
@@ -654,9 +663,8 @@ Note: Use [String.UriEncode] to encode characters within URLs in a URL-safe, por
 Note: This method is implemented on Android, iOS, Web, Linux, macOS and Windows.
 
 [ProjectSettings.GlobalizePath]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings#GlobalizePath
+[RFC 2368 - The mailto URL scheme]: https://datatracker.ietf.org/doc/html/rfc2368
 [String.UriEncode]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.UriEncode
-
-[RFC 2368 - The [code]mailto[/code] URL scheme]: https://datatracker.ietf.org/doc/html/rfc2368
 */
 func ShellOpen(uri string) error { //gd:OS.shell_open
 	return error(gd.ToError(Advanced().ShellOpen(String.From(uri))))
@@ -858,6 +866,29 @@ You can also incorporate environment variables using the [GetEnvironment] method
 You can set [ProjectSettings] "editor/run/main_run_args" to define command-line arguments to be passed by the editor when running the project.
 
 Example: Parse command-line arguments into a data structure using the --key=value form for arguments:
+
+	package main
+
+	import (
+		"strings"
+
+		"graphics.gd/classdb/OS"
+	)
+
+	func ExampleOSGetCmdlineArgs() {
+		arguments := map[string]string{}
+		for _, argument := range OS.GetCmdlineArgs() {
+			if strings.Contains(argument, "=") {
+				keyValue := strings.Split(argument, "=")
+				arguments[strings.TrimPrefix(keyValue[0], "--")] = keyValue[1]
+			} else {
+				// Options without an argument will be present in the map,
+				// with the value set to an empty string.
+				arguments[strings.TrimPrefix(argument, "--")] = ""
+			}
+		}
+		_ = arguments
+	}
 
 Note: Passing custom user arguments directly is not recommended, as the engine may discard or modify them. Instead, pass the standard UNIX double dash (--) and then the custom arguments, which the engine will ignore by design. These can be read via [GetCmdlineUserArgs].
 
@@ -1946,6 +1977,7 @@ func (self class) RemoveLogger(logger [1]gdclass.Logger) { //gd:OS.remove_logger
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetLogger(logger[0])[0]))})
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
@@ -1966,11 +1998,11 @@ func init() {
 type RenderingDriver int64 //gd:OS.RenderingDriver
 
 const (
-	// The Vulkan rendering driver. It requires Vulkan 1.0 support and automatically uses features from Vulkan 1.1 and 1.2 if available.
+	// The Vulkan rendering driver. It requires Vulkan 1.0 support and automatically uses features from Vulkan 1.1, 1.2, and 1.3 if available.
 	RenderingDriverVulkan RenderingDriver = 0
 	// The OpenGL 3 rendering driver. It uses OpenGL 3.3 Core Profile on desktop platforms, OpenGL ES 3.0 on mobile devices, and WebGL 2.0 on Web.
 	RenderingDriverOpengl3 RenderingDriver = 1
-	// The Direct3D 12 rendering driver.
+	// The Direct3D 12 rendering driver. It requires the 12_0 feature level and Shader Model 6.0 support.
 	RenderingDriverD3d12 RenderingDriver = 2
 	// The Metal rendering driver.
 	RenderingDriverMetal RenderingDriver = 3

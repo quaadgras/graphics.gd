@@ -45,6 +45,7 @@ import "graphics.gd/variant/RID"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
+import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
 
@@ -108,40 +109,42 @@ type Instance [1]gdclass.CollisionObject2D
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	get_rid                                  gdextension.MethodForClass `hash:"2944877500"`
-	set_collision_layer                      gdextension.MethodForClass `hash:"1286410249"`
-	get_collision_layer                      gdextension.MethodForClass `hash:"3905245786"`
-	set_collision_mask                       gdextension.MethodForClass `hash:"1286410249"`
-	get_collision_mask                       gdextension.MethodForClass `hash:"3905245786"`
-	set_collision_layer_value                gdextension.MethodForClass `hash:"300928843"`
-	get_collision_layer_value                gdextension.MethodForClass `hash:"1116898809"`
-	set_collision_mask_value                 gdextension.MethodForClass `hash:"300928843"`
-	get_collision_mask_value                 gdextension.MethodForClass `hash:"1116898809"`
-	set_collision_priority                   gdextension.MethodForClass `hash:"373806689"`
-	get_collision_priority                   gdextension.MethodForClass `hash:"1740695150"`
-	set_disable_mode                         gdextension.MethodForClass `hash:"1919204045"`
-	get_disable_mode                         gdextension.MethodForClass `hash:"3172846349"`
-	set_pickable                             gdextension.MethodForClass `hash:"2586408642"`
-	is_pickable                              gdextension.MethodForClass `hash:"36873697"`
-	create_shape_owner                       gdextension.MethodForClass `hash:"3429307534"`
-	remove_shape_owner                       gdextension.MethodForClass `hash:"1286410249"`
-	get_shape_owners                         gdextension.MethodForClass `hash:"969006518"`
-	shape_owner_set_transform                gdextension.MethodForClass `hash:"30160968"`
-	shape_owner_get_transform                gdextension.MethodForClass `hash:"3836996910"`
-	shape_owner_get_owner                    gdextension.MethodForClass `hash:"3332903315"`
-	shape_owner_set_disabled                 gdextension.MethodForClass `hash:"300928843"`
-	is_shape_owner_disabled                  gdextension.MethodForClass `hash:"1116898809"`
-	shape_owner_set_one_way_collision        gdextension.MethodForClass `hash:"300928843"`
-	is_shape_owner_one_way_collision_enabled gdextension.MethodForClass `hash:"1116898809"`
-	shape_owner_set_one_way_collision_margin gdextension.MethodForClass `hash:"1602489585"`
-	get_shape_owner_one_way_collision_margin gdextension.MethodForClass `hash:"2339986948"`
-	shape_owner_add_shape                    gdextension.MethodForClass `hash:"2077425081"`
-	shape_owner_get_shape_count              gdextension.MethodForClass `hash:"923996154"`
-	shape_owner_get_shape                    gdextension.MethodForClass `hash:"3106725749"`
-	shape_owner_get_shape_index              gdextension.MethodForClass `hash:"3175239445"`
-	shape_owner_remove_shape                 gdextension.MethodForClass `hash:"3937882851"`
-	shape_owner_clear_shapes                 gdextension.MethodForClass `hash:"1286410249"`
-	shape_find_owner                         gdextension.MethodForClass `hash:"923996154"`
+	get_rid                                     gdextension.MethodForClass `hash:"2944877500"`
+	set_collision_layer                         gdextension.MethodForClass `hash:"1286410249"`
+	get_collision_layer                         gdextension.MethodForClass `hash:"3905245786"`
+	set_collision_mask                          gdextension.MethodForClass `hash:"1286410249"`
+	get_collision_mask                          gdextension.MethodForClass `hash:"3905245786"`
+	set_collision_layer_value                   gdextension.MethodForClass `hash:"300928843"`
+	get_collision_layer_value                   gdextension.MethodForClass `hash:"1116898809"`
+	set_collision_mask_value                    gdextension.MethodForClass `hash:"300928843"`
+	get_collision_mask_value                    gdextension.MethodForClass `hash:"1116898809"`
+	set_collision_priority                      gdextension.MethodForClass `hash:"373806689"`
+	get_collision_priority                      gdextension.MethodForClass `hash:"1740695150"`
+	set_disable_mode                            gdextension.MethodForClass `hash:"1919204045"`
+	get_disable_mode                            gdextension.MethodForClass `hash:"3172846349"`
+	set_pickable                                gdextension.MethodForClass `hash:"2586408642"`
+	is_pickable                                 gdextension.MethodForClass `hash:"36873697"`
+	create_shape_owner                          gdextension.MethodForClass `hash:"3429307534"`
+	remove_shape_owner                          gdextension.MethodForClass `hash:"1286410249"`
+	get_shape_owners                            gdextension.MethodForClass `hash:"969006518"`
+	shape_owner_set_transform                   gdextension.MethodForClass `hash:"30160968"`
+	shape_owner_get_transform                   gdextension.MethodForClass `hash:"3836996910"`
+	shape_owner_get_owner                       gdextension.MethodForClass `hash:"3332903315"`
+	shape_owner_set_disabled                    gdextension.MethodForClass `hash:"300928843"`
+	is_shape_owner_disabled                     gdextension.MethodForClass `hash:"1116898809"`
+	shape_owner_set_one_way_collision           gdextension.MethodForClass `hash:"300928843"`
+	is_shape_owner_one_way_collision_enabled    gdextension.MethodForClass `hash:"1116898809"`
+	shape_owner_set_one_way_collision_margin    gdextension.MethodForClass `hash:"1602489585"`
+	get_shape_owner_one_way_collision_margin    gdextension.MethodForClass `hash:"2339986948"`
+	get_shape_owner_one_way_collision_direction gdextension.MethodForClass `hash:"2299179447"`
+	shape_owner_set_one_way_collision_direction gdextension.MethodForClass `hash:"163021252"`
+	shape_owner_add_shape                       gdextension.MethodForClass `hash:"2077425081"`
+	shape_owner_get_shape_count                 gdextension.MethodForClass `hash:"923996154"`
+	shape_owner_get_shape                       gdextension.MethodForClass `hash:"3106725749"`
+	shape_owner_get_shape_index                 gdextension.MethodForClass `hash:"3175239445"`
+	shape_owner_remove_shape                    gdextension.MethodForClass `hash:"3937882851"`
+	shape_owner_clear_shapes                    gdextension.MethodForClass `hash:"1286410249"`
+	shape_find_owner                            gdextension.MethodForClass `hash:"923996154"`
 }
 
 func init() {
@@ -441,6 +444,20 @@ Returns the one_way_collision_margin of the shape owner identified by given 'own
 */
 func (self Instance) GetShapeOwnerOneWayCollisionMargin(owner_id int) Float.X { //gd:CollisionObject2D.get_shape_owner_one_way_collision_margin
 	return Float.X(Float.X(Advanced(self).GetShapeOwnerOneWayCollisionMargin(int64(owner_id))))
+}
+
+/*
+Returns the one_way_collision_direction of the shape owner identified by the given 'owner_id'.
+*/
+func (self Instance) GetShapeOwnerOneWayCollisionDirection(owner_id int) Vector2.XY { //gd:CollisionObject2D.get_shape_owner_one_way_collision_direction
+	return Vector2.XY(Advanced(self).GetShapeOwnerOneWayCollisionDirection(int64(owner_id)))
+}
+
+/*
+Sets the one_way_collision_direction of the shape owner identified by the given 'owner_id' to 'direction'.
+*/
+func (self Instance) ShapeOwnerSetOneWayCollisionDirection(owner_id int, direction Vector2.XY) { //gd:CollisionObject2D.shape_owner_set_one_way_collision_direction
+	Advanced(self).ShapeOwnerSetOneWayCollisionDirection(int64(owner_id), Vector2.XY(direction))
 }
 
 /*
@@ -786,6 +803,17 @@ func (self class) GetShapeOwnerOneWayCollisionMargin(owner_id int64) float64 { /
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_shape_owner_one_way_collision_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 	var ret = r_ret
 	return ret
+}
+func (self class) GetShapeOwnerOneWayCollisionDirection(owner_id int64) Vector2.XY { //gd:CollisionObject2D.get_shape_owner_one_way_collision_direction
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_shape_owner_one_way_collision_direction, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
+	var ret = r_ret
+	return ret
+}
+func (self class) ShapeOwnerSetOneWayCollisionDirection(owner_id int64, direction Vector2.XY) { //gd:CollisionObject2D.shape_owner_set_one_way_collision_direction
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_one_way_collision_direction, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
+		owner_id  int64
+		direction Vector2.XY
+	}{owner_id, direction})
 }
 func (self class) ShapeOwnerAddShape(owner_id int64, shape [1]gdclass.Shape2D) { //gd:CollisionObject2D.shape_owner_add_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_add_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {

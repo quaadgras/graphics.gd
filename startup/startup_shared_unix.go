@@ -75,8 +75,21 @@ func (engine *engineAsSharedLibrary) Start() {
 		os.Exit(1)
 	}
 	var libgodot_create_godot_instance = C.dlsym(libgodot, (*C.char)(unsafe.Pointer(&init[0])))
+	if libgodot_create_godot_instance == nil {
+		// dlsym can return nil if the symbol is missing or, on the musl static
+		// path, if the foreign-call trampoline could not be set up (e.g. RWX
+		// memory denied on a hardened kernel). Calling through a nil pointer
+		// below would segfault, so fail with a clear message instead.
+		fmt.Fprintln(os.Stderr, "failed to resolve libgodot_create_godot_instance from libgodot"+ext)
+		os.Exit(1)
+	}
 	destroyName := []byte("libgodot_destroy_godot_instance\000")
 	var libgodot_destroy_godot_instance = C.dlsym(libgodot, (*C.char)(unsafe.Pointer(&destroyName[0])))
+	if libgodot_destroy_godot_instance == nil {
+		// Non-fatal: without the destroy symbol we simply skip engine teardown
+		// at exit. register_destroy_atexit/destroy_at_exit already guard nil.
+		fmt.Fprintln(os.Stderr, "warning: libgodot_destroy_godot_instance unavailable; skipping engine teardown at exit")
+	}
 	var cargs []*C.char
 	for _, arg := range os.Args {
 		cargs = append(cargs, C.CString(arg))

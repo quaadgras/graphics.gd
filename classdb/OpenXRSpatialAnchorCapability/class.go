@@ -23,6 +23,8 @@ import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/OpenXRAnchorTracker"
 import "graphics.gd/classdb/OpenXRExtensionWrapper"
 import "graphics.gd/classdb/OpenXRFutureResult"
+import "graphics.gd/classdb/OpenXRSpatialComponentData"
+import "graphics.gd/classdb/OpenXRStructureBase"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -96,16 +98,19 @@ type Instance [1]gdclass.OpenXRSpatialAnchorCapability
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	is_spatial_anchor_supported      gdextension.MethodForClass `hash:"2240911060"`
-	is_spatial_persistence_supported gdextension.MethodForClass `hash:"2240911060"`
-	is_persistence_scope_supported   gdextension.MethodForClass `hash:"3651771626"`
-	create_persistence_context       gdextension.MethodForClass `hash:"856276630"`
-	get_persistence_context_handle   gdextension.MethodForClass `hash:"2198884583"`
-	free_persistence_context         gdextension.MethodForClass `hash:"2722037293"`
-	create_new_anchor                gdextension.MethodForClass `hash:"607100373"`
-	remove_anchor                    gdextension.MethodForClass `hash:"3579451518"`
-	persist_anchor                   gdextension.MethodForClass `hash:"4244202513"`
-	unpersist_anchor                 gdextension.MethodForClass `hash:"4244202513"`
+	is_spatial_anchor_supported        gdextension.MethodForClass `hash:"2240911060"`
+	is_spatial_persistence_supported   gdextension.MethodForClass `hash:"2240911060"`
+	is_persistence_scope_supported     gdextension.MethodForClass `hash:"3651771626"`
+	create_default_persistence_context gdextension.MethodForClass `hash:"1401033661"`
+	create_persistence_context         gdextension.MethodForClass `hash:"856276630"`
+	get_persistence_context_handle     gdextension.MethodForClass `hash:"2198884583"`
+	free_persistence_context           gdextension.MethodForClass `hash:"2722037293"`
+	create_new_anchor                  gdextension.MethodForClass `hash:"4088043487"`
+	remove_anchor                      gdextension.MethodForClass `hash:"3579451518"`
+	persist_anchor                     gdextension.MethodForClass `hash:"4244202513"`
+	unpersist_anchor                   gdextension.MethodForClass `hash:"4244202513"`
+	start_entity_discovery             gdextension.MethodForClass `hash:"3452714169"`
+	do_entity_update                   gdextension.MethodForClass `hash:"3138044275"`
 }
 
 func init() {
@@ -159,6 +164,28 @@ func (self Instance) IsPersistenceScopeSupported(scope PersistenceScope) bool { 
 }
 
 /*
+Calls [CreatePersistenceContext] with a configuration that likely works with the XR runtime.
+
+'user_callback' is called when the context is created.
+
+[CreatePersistenceContext]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialAnchorCapability#Instance.CreatePersistenceContext
+*/
+func (self Instance) CreateDefaultPersistenceContext() OpenXRFutureResult.Instance { //gd:OpenXRSpatialAnchorCapability.create_default_persistence_context
+	return OpenXRFutureResult.Instance(Advanced(self).CreateDefaultPersistenceContext(Callable.New(Callable.Nil)))
+}
+
+/*
+Calls [CreatePersistenceContext] with a configuration that likely works with the XR runtime.
+
+'user_callback' is called when the context is created.
+
+[CreatePersistenceContext]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialAnchorCapability#Instance.CreatePersistenceContext
+*/
+func (self MoreArgs) CreateDefaultPersistenceContext(user_callback Callable.Function) OpenXRFutureResult.Instance { //gd:OpenXRSpatialAnchorCapability.create_default_persistence_context
+	return OpenXRFutureResult.Instance(Advanced(self).CreateDefaultPersistenceContext(Callable.New(user_callback)))
+}
+
+/*
 Creates a new persistence context for storing persistent data.
 
 Note: This is an asynchronous method and returns an [OpenXRFutureResult] object with which to track the status, discarding this object will not cancel the creation process. On success 'user_callback' will be called if specified. The result value for this function is the [Resource.ID] for our persistence context.
@@ -203,21 +230,25 @@ func (self Instance) FreePersistenceContext(persistence_context RID.PersistenceC
 /*
 Creates a new anchor that will be tracked by the XR runtime. The 'transform' should be a transform in the local space of your [XROrigin3D] node. If 'spatial_context' is not specified the default will be used, this requires [ProjectSettings] "xr/openxr/extensions/spatial_entity/enable_builtin_anchor_detection" to be set. The returned tracker will track the location in case our reference space changes.
 
+'next' must be a valid next object for the XrSpatialAnchorCreateInfoEXT chain.
+
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
 func (self Instance) CreateNewAnchor(transform Transform3D.BasisOrigin) OpenXRAnchorTracker.Instance { //gd:OpenXRSpatialAnchorCapability.create_new_anchor
-	return OpenXRAnchorTracker.Instance(Advanced(self).CreateNewAnchor(Transform3D.BasisOrigin(transform), RID.Any([1]RID.Any{}[0])))
+	return OpenXRAnchorTracker.Instance(Advanced(self).CreateNewAnchor(Transform3D.BasisOrigin(transform), RID.Any([1]RID.Any{}[0]), [1]OpenXRStructureBase.Instance{}[0]))
 }
 
 /*
 Creates a new anchor that will be tracked by the XR runtime. The 'transform' should be a transform in the local space of your [XROrigin3D] node. If 'spatial_context' is not specified the default will be used, this requires [ProjectSettings] "xr/openxr/extensions/spatial_entity/enable_builtin_anchor_detection" to be set. The returned tracker will track the location in case our reference space changes.
 
+'next' must be a valid next object for the XrSpatialAnchorCreateInfoEXT chain.
+
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 [XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
-func (self MoreArgs) CreateNewAnchor(transform Transform3D.BasisOrigin, spatial_context RID.SpatialContext) OpenXRAnchorTracker.Instance { //gd:OpenXRSpatialAnchorCapability.create_new_anchor
-	return OpenXRAnchorTracker.Instance(Advanced(self).CreateNewAnchor(Transform3D.BasisOrigin(transform), RID.Any(spatial_context)))
+func (self MoreArgs) CreateNewAnchor(transform Transform3D.BasisOrigin, spatial_context RID.SpatialContext, next OpenXRStructureBase.Instance) OpenXRAnchorTracker.Instance { //gd:OpenXRSpatialAnchorCapability.create_new_anchor
+	return OpenXRAnchorTracker.Instance(Advanced(self).CreateNewAnchor(Transform3D.BasisOrigin(transform), RID.Any(spatial_context), next))
 }
 
 /*
@@ -278,6 +309,86 @@ func (self MoreArgs) UnpersistAnchor(anchor_tracker OpenXRAnchorTracker.Instance
 	return OpenXRFutureResult.Instance(Advanced(self).UnpersistAnchor(anchor_tracker, RID.Any(persistence_context), Callable.New(user_callback)))
 }
 
+/*
+Calls [OpenXRSpatialEntityExtension.DiscoverSpatialEntities] and [OpenXRSpatialEntityExtension.QuerySnapshot] with the anchor entities associated with 'spatial_context'.
+
+'component_data' are the [OpenXRSpatialComponentData]s to discover for this anchor capability.
+
+If 'next_snapshot_create' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.DiscoverSpatialEntities].
+
+If 'next_snapshot_query' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.QuerySnapshot].
+
+'user_callback', when non-null, is called with two parameters usually twice. The first parameter is the [Resource.ID] of the discovery snapshot and the second parameter is a boolean where false indicates the discovery snapshot is about to be processed, and true indicates the discovery snapshot has been processed and 'component_data' has valid data. The second call is skipped if an error was encountered.
+
+The returned [OpenXRFutureResult] is identical to the return from [OpenXRSpatialEntityExtension.DiscoverSpatialEntities].
+
+[OpenXRFutureResult]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureResult
+[OpenXRSpatialComponentData]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialComponentData
+[OpenXRSpatialEntityExtension.DiscoverSpatialEntities]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.DiscoverSpatialEntities
+[OpenXRSpatialEntityExtension.QuerySnapshot]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.QuerySnapshot
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
+func (self Instance) StartEntityDiscovery(spatial_context RID.SpatialContext, component_data []OpenXRSpatialComponentData.Instance) OpenXRFutureResult.Instance { //gd:OpenXRSpatialAnchorCapability.start_entity_discovery
+	return OpenXRFutureResult.Instance(Advanced(self).StartEntityDiscovery(RID.Any(spatial_context), gd.ArrayFromSlice[Array.Contains[[1]gdclass.OpenXRSpatialComponentData]](component_data), [1]OpenXRStructureBase.Instance{}[0], [1]OpenXRStructureBase.Instance{}[0], Callable.New(Callable.Nil)))
+}
+
+/*
+Calls [OpenXRSpatialEntityExtension.DiscoverSpatialEntities] and [OpenXRSpatialEntityExtension.QuerySnapshot] with the anchor entities associated with 'spatial_context'.
+
+'component_data' are the [OpenXRSpatialComponentData]s to discover for this anchor capability.
+
+If 'next_snapshot_create' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.DiscoverSpatialEntities].
+
+If 'next_snapshot_query' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.QuerySnapshot].
+
+'user_callback', when non-null, is called with two parameters usually twice. The first parameter is the [Resource.ID] of the discovery snapshot and the second parameter is a boolean where false indicates the discovery snapshot is about to be processed, and true indicates the discovery snapshot has been processed and 'component_data' has valid data. The second call is skipped if an error was encountered.
+
+The returned [OpenXRFutureResult] is identical to the return from [OpenXRSpatialEntityExtension.DiscoverSpatialEntities].
+
+[OpenXRFutureResult]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureResult
+[OpenXRSpatialComponentData]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialComponentData
+[OpenXRSpatialEntityExtension.DiscoverSpatialEntities]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.DiscoverSpatialEntities
+[OpenXRSpatialEntityExtension.QuerySnapshot]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.QuerySnapshot
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
+func (self MoreArgs) StartEntityDiscovery(spatial_context RID.SpatialContext, component_data []OpenXRSpatialComponentData.Instance, next_snapshot_create OpenXRStructureBase.Instance, next_snapshot_query OpenXRStructureBase.Instance, user_callback Callable.Function) OpenXRFutureResult.Instance { //gd:OpenXRSpatialAnchorCapability.start_entity_discovery
+	return OpenXRFutureResult.Instance(Advanced(self).StartEntityDiscovery(RID.Any(spatial_context), gd.ArrayFromSlice[Array.Contains[[1]gdclass.OpenXRSpatialComponentData]](component_data), next_snapshot_create, next_snapshot_query, Callable.New(user_callback)))
+}
+
+/*
+Calls [OpenXRSpatialEntityExtension.UpdateSpatialEntities] and [OpenXRSpatialEntityExtension.QuerySnapshot] with the anchor entities associated with 'spatial_context'.
+
+'component_data' are the [OpenXRSpatialComponentData]s to update for this anchor capability.
+
+If 'next_snapshot_create' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.UpdateSpatialEntities].
+
+If 'next_snapshot_query' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.QuerySnapshot].
+
+[OpenXRSpatialComponentData]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialComponentData
+[OpenXRSpatialEntityExtension.QuerySnapshot]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.QuerySnapshot
+[OpenXRSpatialEntityExtension.UpdateSpatialEntities]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.UpdateSpatialEntities
+*/
+func (self Instance) DoEntityUpdate(spatial_context RID.SpatialContext, component_data []OpenXRSpatialComponentData.Instance) { //gd:OpenXRSpatialAnchorCapability.do_entity_update
+	Advanced(self).DoEntityUpdate(RID.Any(spatial_context), gd.ArrayFromSlice[Array.Contains[[1]gdclass.OpenXRSpatialComponentData]](component_data), [1]OpenXRStructureBase.Instance{}[0], [1]OpenXRStructureBase.Instance{}[0])
+}
+
+/*
+Calls [OpenXRSpatialEntityExtension.UpdateSpatialEntities] and [OpenXRSpatialEntityExtension.QuerySnapshot] with the anchor entities associated with 'spatial_context'.
+
+'component_data' are the [OpenXRSpatialComponentData]s to update for this anchor capability.
+
+If 'next_snapshot_create' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.UpdateSpatialEntities].
+
+If 'next_snapshot_query' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.QuerySnapshot].
+
+[OpenXRSpatialComponentData]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialComponentData
+[OpenXRSpatialEntityExtension.QuerySnapshot]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.QuerySnapshot
+[OpenXRSpatialEntityExtension.UpdateSpatialEntities]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.UpdateSpatialEntities
+*/
+func (self MoreArgs) DoEntityUpdate(spatial_context RID.SpatialContext, component_data []OpenXRSpatialComponentData.Instance, next_snapshot_create OpenXRStructureBase.Instance, next_snapshot_query OpenXRStructureBase.Instance) { //gd:OpenXRSpatialAnchorCapability.do_entity_update
+	Advanced(self).DoEntityUpdate(RID.Any(spatial_context), gd.ArrayFromSlice[Array.Contains[[1]gdclass.OpenXRSpatialComponentData]](component_data), next_snapshot_create, next_snapshot_query)
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.OpenXRSpatialAnchorCapability
@@ -335,6 +446,11 @@ func (self class) IsPersistenceScopeSupported(scope PersistenceScope) bool { //g
 	var ret = r_ret
 	return ret
 }
+func (self class) CreateDefaultPersistenceContext(user_callback Callable.Function) [1]gdclass.OpenXRFutureResult { //gd:OpenXRSpatialAnchorCapability.create_default_persistence_context
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_default_persistence_context, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ user_callback gdextension.Callable }{pointers.Get(gd.InternalCallable(user_callback))})
+	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
+	return ret
+}
 func (self class) CreatePersistenceContext(scope PersistenceScope, user_callback Callable.Function) [1]gdclass.OpenXRFutureResult { //gd:OpenXRSpatialAnchorCapability.create_persistence_context
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_persistence_context, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
 		scope         PersistenceScope
@@ -351,11 +467,12 @@ func (self class) GetPersistenceContextHandle(persistence_context RID.Any) int64
 func (self class) FreePersistenceContext(persistence_context RID.Any) { //gd:OpenXRSpatialAnchorCapability.free_persistence_context
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_persistence_context, 0|(gdextension.SizeRID<<4), &struct{ persistence_context RID.Any }{persistence_context})
 }
-func (self class) CreateNewAnchor(transform Transform3D.BasisOrigin, spatial_context RID.Any) [1]gdclass.OpenXRAnchorTracker { //gd:OpenXRSpatialAnchorCapability.create_new_anchor
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_new_anchor, gdextension.SizeObject|(gdextension.SizeTransform3D<<4)|(gdextension.SizeRID<<8), &struct {
+func (self class) CreateNewAnchor(transform Transform3D.BasisOrigin, spatial_context RID.Any, next [1]gdclass.OpenXRStructureBase) [1]gdclass.OpenXRAnchorTracker { //gd:OpenXRSpatialAnchorCapability.create_new_anchor
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_new_anchor, gdextension.SizeObject|(gdextension.SizeTransform3D<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeObject<<12), &struct {
 		transform       Transform3D.BasisOrigin
 		spatial_context RID.Any
-	}{gd.Transposed(transform), spatial_context})
+		next            gdextension.Object
+	}{gd.Transposed(transform), spatial_context, gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next[0])[0]))})
 	var ret = [1]gdclass.OpenXRAnchorTracker{gdclass.NewOpenXRAnchorTracker(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
@@ -379,6 +496,25 @@ func (self class) UnpersistAnchor(anchor_tracker [1]gdclass.OpenXRAnchorTracker,
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRAnchorTracker(anchor_tracker[0])[0])), persistence_context, pointers.Get(gd.InternalCallable(user_callback))})
 	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
+}
+func (self class) StartEntityDiscovery(spatial_context RID.Any, component_data Array.Contains[[1]gdclass.OpenXRSpatialComponentData], next_snapshot_create [1]gdclass.OpenXRStructureBase, next_snapshot_query [1]gdclass.OpenXRStructureBase, user_callback Callable.Function) [1]gdclass.OpenXRFutureResult { //gd:OpenXRSpatialAnchorCapability.start_entity_discovery
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.start_entity_discovery, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeObject<<16)|(gdextension.SizeCallable<<20), &struct {
+		spatial_context      RID.Any
+		component_data       gdextension.Array
+		next_snapshot_create gdextension.Object
+		next_snapshot_query  gdextension.Object
+		user_callback        gdextension.Callable
+	}{spatial_context, pointers.Get(gd.InternalArray(component_data)), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next_snapshot_create[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next_snapshot_query[0])[0])), pointers.Get(gd.InternalCallable(user_callback))})
+	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
+	return ret
+}
+func (self class) DoEntityUpdate(spatial_context RID.Any, component_data Array.Contains[[1]gdclass.OpenXRSpatialComponentData], next_snapshot_create [1]gdclass.OpenXRStructureBase, next_snapshot_query [1]gdclass.OpenXRStructureBase) { //gd:OpenXRSpatialAnchorCapability.do_entity_update
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.do_entity_update, 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeObject<<16), &struct {
+		spatial_context      RID.Any
+		component_data       gdextension.Array
+		next_snapshot_create gdextension.Object
+		next_snapshot_query  gdextension.Object
+	}{spatial_context, pointers.Get(gd.InternalArray(component_data)), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next_snapshot_create[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next_snapshot_query[0])[0]))})
 }
 func (o class) AsOpenXRSpatialAnchorCapability() Advanced         { return Advanced(o) }
 func (o Instance) AsOpenXRSpatialAnchorCapability() Instance      { return o }

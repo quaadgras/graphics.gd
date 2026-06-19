@@ -5,6 +5,10 @@ Controls camera-specific attributes such as auto-exposure, depth of field, and e
 
 When used in a [WorldEnvironment] it provides default settings for exposure, auto-exposure, and depth of field that will be used by all cameras without their own [CameraAttributes], including the editor camera. When used in a [Camera3D] it will override any [CameraAttributes] set in the [WorldEnvironment]. When used in [VoxelGI] or [LightmapGI], only the exposure settings will be used.
 
+Note: Depth of field blur is only supported in the Forward+ and Mobile rendering methods, not Compatibility.
+
+Note: Auto-exposure is only supported in the Forward+ rendering method, not Mobile or Compatibility.
+
 [Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 [CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
 [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
@@ -180,7 +184,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.CameraAttributesPractical{gdclass.NewCameraAttributesPractical(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

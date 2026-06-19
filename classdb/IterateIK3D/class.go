@@ -5,6 +5,8 @@ Base class of [SkeletonModifier3D] to approach the goal by repeating small rotat
 
 Each bone chain (setting) has one effector, which is processed in order of the setting list. You can set some limitations for each joint.
 
+Note: All the methods in this class take an index parameter. This parameter specifies which setting list entry to return if the IK has multiple entries (e.g. settings/<index>/target_node).
+
 [SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
 */
 package IterateIK3D
@@ -168,14 +170,15 @@ func (self Instance) GetTargetNode(index int) string { //gd:IterateIK3D.get_targ
 /*
 Sets the rotation axis at 'joint' in the bone chain's joint list.
 
-The axes are based on the [Skeleton3D.GetBoneRest]'s space, if 'axis' is [Skeletonmodifier3d.RotationAxisCustom], you can specify any axis.
+The axes are based on the reference pose's space, if 'axis' is [Skeletonmodifier3d.RotationAxisCustom], you can specify any axis.
+
+In here, the reference pose is the bone pose immediately before processing IK.
 
 Note: The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [ChainIK3D] does not factor in twisting forces.
 
 Returns 'self' to enable method chaining.
 
 [ChainIK3D]: https://pkg.go.dev/graphics.gd/classdb/ChainIK3D
-[Skeleton3D.GetBoneRest]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBoneRest
 */
 func (self Instance) SetJointRotationAxis(index int, joint int, axis SkeletonModifier3D.RotationAxis) Instance { //gd:IterateIK3D.set_joint_rotation_axis
 	Advanced(self).SetJointRotationAxis(int64(index), int64(joint), axis)
@@ -276,7 +279,9 @@ Rotation is done in the local space which is constructed by the bone direction (
 
 If the +X and +Y axes are not orthogonal, the +X axis is implicitly modified to make it orthogonal.
 
-Also, if the length of [GetJointLimitationRightAxisVector] is zero, the space is created by rotating the bone rest using the shortest arc that rotates the +Y axis of the bone rest to match the bone direction.
+Also, if the length of [GetJointLimitationRightAxisVector] is zero, the space is created by rotating the reference pose using the shortest arc that rotates the +Y axis of the reference pose to match the bone direction.
+
+In here, the reference pose is the bone pose immediately before processing IK.
 
 Returns 'self' to enable method chaining.
 
@@ -294,7 +299,9 @@ Rotation is done in the local space which is constructed by the bone direction (
 
 If the +X and +Y axes are not orthogonal, the +X axis is implicitly modified to make it orthogonal.
 
-Also, if the length of [GetJointLimitationRightAxisVector] is zero, the space is created by rotating the bone rest using the shortest arc that rotates the +Y axis of the bone rest to match the bone direction.
+Also, if the length of [GetJointLimitationRightAxisVector] is zero, the space is created by rotating the reference pose using the shortest arc that rotates the +Y axis of the reference pose to match the bone direction.
+
+In here, the reference pose is the bone pose immediately before processing IK.
 
 [GetJointLimitationRightAxisVector]: https://pkg.go.dev/graphics.gd/classdb/IterateIK3D#Instance.GetJointLimitationRightAxisVector
 */

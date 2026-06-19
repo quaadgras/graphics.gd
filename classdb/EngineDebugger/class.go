@@ -486,6 +486,7 @@ func (self class) ClearBreakpoints() { //gd:EngineDebugger.clear_breakpoints
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.clear_breakpoints, 0, &struct{}{})
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

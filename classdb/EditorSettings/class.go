@@ -224,6 +224,29 @@ Adds a custom property info to a property. The dictionary must contain:
 - type: int (see [Variant.Type])
 
 - optionally hint: int (see [PropertyHint]) and hint_string: string
+
+	package main
+
+	import (
+		"reflect"
+
+		"graphics.gd/classdb/EditorInterface"
+		"graphics.gd/variant/Object"
+	)
+
+	func ExampleEditorSettingsAddPropertyInfo() {
+		var settings = EditorInterface.GetEditorSettings()
+		settings.SetSetting("category/property_name", 0)
+
+		var propertyInfo = Object.PropertyInfo{
+			Name:       "category/property_name",
+			Type:       reflect.TypeFor[int](),
+			Hint:       2, // PROPERTY_HINT_ENUM
+			HintString: "one,two,three",
+		}
+
+		settings.AddPropertyInfo(propertyInfo)
+	}
 */
 func (self Instance) AddPropertyInfo(info Object.PropertyInfo) { //gd:EditorSettings.add_property_info
 	Advanced(self).AddPropertyInfo(gd.DictionaryFromMap(info))
@@ -315,6 +338,31 @@ The 'path' determines how the shortcut is organized and displayed in the editor'
 - "category/name/extra" (multiple slashes): Extra path components are ignored, so this behaves the same as "category/name".
 
 Note: Shortcuts are only saved to the editor settings if they differ from their original/default state. This means empty shortcuts that were originally empty will not persist between editor sessions and must be re-added. If a shortcut with the same 'path' already exists, this method will update it with the new 'shortcut' instead of creating a duplicate.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/EditorInterface"
+		"graphics.gd/classdb/Input"
+		"graphics.gd/classdb/InputEvent"
+		"graphics.gd/classdb/InputEventKey"
+		"graphics.gd/classdb/Shortcut"
+	)
+
+	func ExampleEditorSettingsAddShortcut() {
+		// Add a custom shortcut for a plugin action.
+		var myShortcut = Shortcut.New()
+		var inputEvent = InputEventKey.New()
+		inputEvent.SetKeycode(Input.KeyF5)
+		inputEvent.AsInputEventWithModifiers().SetCtrlPressed(true)
+		myShortcut.SetEvents([]InputEvent.Instance{inputEvent.AsInputEvent()})
+
+		// This will appear under the "My Plugin" category as "Reload Data".
+		EditorInterface.GetEditorSettings().AddShortcut("my_plugin/reload_data", myShortcut)
+
+		// This will appear under the "Test Action" category as "Test Action".
+		EditorInterface.GetEditorSettings().AddShortcut("test_action", myShortcut)
+	}
 */
 func (self Instance) AddShortcut(path string, shortcut Shortcut.Instance) { //gd:EditorSettings.add_shortcut
 	Advanced(self).AddShortcut(String.From(path), shortcut)
@@ -419,7 +467,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.EditorSettings{gdclass.NewEditorSettings(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

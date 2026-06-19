@@ -376,7 +376,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Environment{gdclass.NewEnvironment(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -617,9 +616,13 @@ The white reference value for tonemapping, which indicates where bright white is
 
 Note: [TonemapWhite] must be set to 2.0 or lower on the Mobile renderer to produce bright images.
 
+Note: [TonemapWhite] is ignored when using [ToneMapperLinear] and will be dynamically adjusted at runtime to never be less than the parent window's [Window.GetOutputMaxLinearValue] when using [ToneMapperReinhardt] with [Viewport.UseHdr2d].
+
 [TonemapAgxWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapAgxWhite
 [TonemapExposure]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapExposure
 [TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapWhite
+[Viewport.UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
+[Window.GetOutputMaxLinearValue]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetOutputMaxLinearValue
 */
 func (self Instance) TonemapWhite() Float.X { //gd:Environment.tonemap_white
 	return Float.X(Float.X(class(self).GetTonemapWhite()))
@@ -634,12 +637,13 @@ func (self Instance) SetTonemapWhite(value Float.X) Instance { //gd:Environment.
 /*
 The white reference value for tonemapping, which indicates where bright white is located in the scale of values provided to the tonemapper. For photorealistic lighting, it is recommended to set [TonemapAgxWhite] to at least 6.0. Higher values result in less blown out highlights, but may make the scene appear lower contrast. [TonemapAgxWhite] is the same as [TonemapWhite], but is only effective with the [ToneMapperAgx] tonemapper. See also [TonemapExposure].
 
-Note: When using the Mobile renderer with [Viewport.UseHdr2d] disabled, [TonemapAgxWhite] is ignored and a white value of 2.0 will always be used instead.
+Note: When using the Mobile renderer with [Viewport.UseHdr2d] disabled, [TonemapAgxWhite] is ignored and a white value of 2.0 will always be used instead. Otherwise, [TonemapAgxWhite] will be dynamically adjusted at runtime by multiplying it by the parent window's [Window.GetOutputMaxLinearValue] when using [Viewport.UseHdr2d] to ensure good behavior with both SDR and HDR output.
 
 [TonemapAgxWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapAgxWhite
 [TonemapExposure]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapExposure
 [TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapWhite
 [Viewport.UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
+[Window.GetOutputMaxLinearValue]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetOutputMaxLinearValue
 */
 func (self Instance) TonemapAgxWhite() Float.X { //gd:Environment.tonemap_agx_white
 	return Float.X(Float.X(class(self).GetTonemapAgxWhite()))
@@ -1802,6 +1806,8 @@ func (self Instance) SetAdjustmentSaturation(value Float.X) Instance { //gd:Envi
 /*
 The [Texture2D] or [Texture3D] lookup table (LUT) to use for the built-in post-process color grading. Can use a [GradientTexture1D] for a 1-dimensional LUT, or a [Texture3D] for a more complex LUT. Effective only if [AdjustmentEnabled] is true.
 
+Note: Color correction does not currently support HDR output due to only supporting values in the SDR (0.0 to 1.0) range.
+
 [AdjustmentEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.AdjustmentEnabled
 [GradientTexture1D]: https://pkg.go.dev/graphics.gd/classdb/GradientTexture1D
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
@@ -2664,10 +2670,14 @@ const (
 	// [TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/#Instance.TonemapWhite
 	ToneMapperReinhardt ToneMapper = 1
 	// Uses a film-like tonemapping curve to prevent clipping of bright values and provide better contrast than [ToneMapperReinhardt]. Slightly slower than [ToneMapperReinhardt].
+	//
+	// Note: This tonemapper does not support HDR output because it produces output in the SDR range. It is recommended to use a different tonemapper when rendering to an HDR screen.
 	ToneMapperFilmic ToneMapper = 2
 	// Uses a high-contrast film-like tonemapping curve and desaturates bright values for a more realistic appearance. Slightly slower than [ToneMapperFilmic].
 	//
 	// Note: This tonemapping operator is called "ACES Fitted" in Godot 3.x.
+	//
+	// Note: This tonemapper does not support HDR output because it produces output in the SDR range. It is recommended to use a different tonemapper when rendering to an HDR screen.
 	ToneMapperAces ToneMapper = 3
 	// Uses an adjustable film-like tonemapping curve and desaturates bright values for a more realistic appearance. Better than other tonemappers at maintaining the hue of colors as they become brighter. The slowest tonemapping option.
 	ToneMapperAgx ToneMapper = 4
@@ -2678,12 +2688,16 @@ type GlowBlendMode int64 //gd:Environment.GlowBlendMode
 const (
 	// Adds the glow effect to the scene.
 	GlowBlendModeAdditive GlowBlendMode = 0
-	// Adds the glow effect to the scene after modifying the glow influence based on the scene value; dark values will be highly influenced by glow and bright values will not be influenced by glow. This approach avoids bright values becoming overly bright from the glow effect. [TonemapWhite] is used to determine the maximum scene value where the glow should have no influence. When [TonemapMode] is set to [ToneMapperLinear], a value of 1.0 will be used as the maximum scene value.
+	// Adds the glow effect to the scene after modifying the glow influence based on the scene value; dark values will be highly influenced by glow and bright values will not be influenced by glow. This approach avoids bright values becoming overly bright from the glow effect. [TonemapWhite] is used to determine the maximum scene value where the glow should have no influence. When [TonemapMode] is set to [ToneMapperLinear] and [Viewport.UseHdr2d] is true, the parent window's [Window.GetOutputMaxLinearValue] will be used as the maximum scene value.
 	//
 	// [TonemapMode]: https://pkg.go.dev/graphics.gd/classdb/#Instance.TonemapMode
 	// [TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/#Instance.TonemapWhite
+	// [Viewport.UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
+	// [Window.GetOutputMaxLinearValue]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetOutputMaxLinearValue
 	GlowBlendModeScreen GlowBlendMode = 1
 	// Adds the glow effect to the tonemapped image after modifying the glow influence based on the image value; dark values and bright values will not be influenced by glow and mid-range values will be highly influenced by glow. This approach avoids bright values becoming overly bright from the glow effect. The glow will have the largest influence on image values of 0.25 and will have no influence when applied to image values greater than 1.0.
+	//
+	// Note: This blend mode does not support HDR output because expects a maximum output value of 1.0. It is recommended to use a different blend mode when rendering to an HDR screen.
 	GlowBlendModeSoftlight GlowBlendMode = 2
 	// Replaces all pixels' color by the glow effect. This can be used to simulate a full-screen blur effect by tweaking the glow parameters to match the original image's brightness or to preview glow configuration in the editor.
 	GlowBlendModeReplace GlowBlendMode = 3

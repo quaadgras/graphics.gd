@@ -185,6 +185,7 @@ var methods struct {
 	set_object_edited                gdextension.MethodForClass `hash:"1462101905"`
 	is_object_edited                 gdextension.MethodForClass `hash:"397768994"`
 	get_open_scenes                  gdextension.MethodForClass `hash:"1139954409"`
+	get_unsaved_scenes               gdextension.MethodForClass `hash:"1139954409"`
 	get_open_scene_roots             gdextension.MethodForClass `hash:"3995934104"`
 	get_edited_scene_root            gdextension.MethodForClass `hash:"3160264692"`
 	add_root_node                    gdextension.MethodForClass `hash:"1078189570"`
@@ -401,7 +402,7 @@ func GetEditorViewport3d(idx int) SubViewport.Instance { //gd:EditorInterface.ge
 }
 
 /*
-Sets the editor's current main screen to the one specified in 'name'. 'name' must match the title of the tab in question exactly (e.g. 2D, 3D, Script, Game, or AssetLib for default tabs).
+Sets the editor's current main screen to the one specified in 'name'. 'name' must match the title of the tab in question exactly (e.g. 2D, 3D, Script, Game, or Asset Store for default tabs).
 */
 func SetMainScreenEditor(name string) { //gd:EditorInterface.set_main_screen_editor
 	Advanced().SetMainScreenEditor(String.From(name))
@@ -412,7 +413,7 @@ Returns true if multiple window support is enabled in the editor. Multiple windo
 
 - [EditorSettings] "interface/multi_window/enable" is true.
 
-- [EditorSettings] "interface/editor/single_window_mode" is false.
+- [EditorSettings] "interface/editor/display/single_window_mode" is false.
 
 - [Viewport.GuiEmbedSubwindows] is false. This is forced to true on platforms that don't support multiple windows such as Web, or when the --single-window [command line argument] is used.
 
@@ -427,7 +428,7 @@ func IsMultiWindowEnabled() bool { //gd:EditorInterface.is_multi_window_enabled
 /*
 Returns the actual scale of the editor UI (1.0 being 100% scale). This can be used to adjust position and dimensions of the UI added by plugins.
 
-Note: This value is set via the [EditorSettings] "interface/editor/display_scale" and [EditorSettings] "interface/editor/custom_display_scale" settings. The editor must be restarted for changes to be properly applied.
+Note: This value is set via the [EditorSettings] "interface/editor/appearance/display_scale" and [EditorSettings] "interface/editor/appearance/custom_display_scale" settings. The editor must be restarted for changes to be properly applied.
 
 [EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
 */
@@ -576,6 +577,30 @@ Pops up an editor dialog for selecting a [Node] from the edited scene. The 'call
 
 Example: Display the node selection dialog as soon as this node is added to the tree for the first time:
 
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/EditorInterface"
+		"graphics.gd/classdb/Engine"
+		"graphics.gd/classdb/Node"
+	)
+
+	func ExamplePopupNodeSelector() {
+		if Engine.IsEditorHint() {
+			EditorInterface.PopupNodeSelector(onNodeSelected, []string{"Button"}, Node.Nil)
+		}
+	}
+
+	func onNodeSelected(nodePath string) {
+		if nodePath == "" {
+			fmt.Println("node selection canceled")
+		} else {
+			fmt.Println("selected ", nodePath)
+		}
+	}
+
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 */
 func PopupNodeSelector(callback func(selected string), valid_types []string, current_value Node.Instance) { //gd:EditorInterface.popup_node_selector
@@ -584,6 +609,30 @@ func PopupNodeSelector(callback func(selected string), valid_types []string, cur
 
 /*
 Pops up an editor dialog for selecting properties from 'object'. The 'callback' must take a single argument of type node path. It is called on the selected property path (see [NodePath.GetAsPropertyPath]) or the empty path ^"" if the dialog is canceled. If 'type_filter' is provided, the dialog will only show properties that match one of the listed [Variant.Type] values. If 'current_value' is provided, the property will be selected automatically in the property list, if it exists.
+
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/EditorInterface"
+		"graphics.gd/classdb/Engine"
+		"graphics.gd/variant/Object"
+	)
+
+	func ExamplePopupPropertySelector(self Object.Instance) {
+		if Engine.IsEditorHint() {
+			EditorInterface.PopupPropertySelector(self, onPropertySelected, []int32{2}, "") // 2 = TYPE_INT
+		}
+	}
+
+	func onPropertySelected(propertyPath string) {
+		if propertyPath == "" {
+			fmt.Println("property selection canceled")
+		} else {
+			fmt.Println("selected ", propertyPath)
+		}
+	}
 
 [NodePath.GetAsPropertyPath]: https://pkg.go.dev/graphics.gd/classdb/NodePath#Instance.GetAsPropertyPath
 */
@@ -737,7 +786,7 @@ func OpenSceneFromPath(scene_filepath string, set_inherited bool) { //gd:EditorI
 }
 
 /*
-Reloads the scene at the given path.
+Reloads the scene at the given path. Fails if the scene is not open.
 */
 func ReloadSceneFromPath(scene_filepath string) { //gd:EditorInterface.reload_scene_from_path
 	Advanced().ReloadSceneFromPath(String.From(scene_filepath))
@@ -768,6 +817,13 @@ Returns an array with the file paths of the currently opened scenes.
 */
 func GetOpenScenes() []string { //gd:EditorInterface.get_open_scenes
 	return []string(Advanced().GetOpenScenes().Strings())
+}
+
+/*
+Returns an array of file paths of currently unsaved scenes.
+*/
+func GetUnsavedScenes() []string { //gd:EditorInterface.get_unsaved_scenes
+	return []string(Advanced().GetUnsavedScenes().Strings())
 }
 
 /*
@@ -1266,6 +1322,12 @@ func (self class) GetOpenScenes() Packed.Strings { //gd:EditorInterface.get_open
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
+func (self class) GetUnsavedScenes() Packed.Strings { //gd:EditorInterface.get_unsaved_scenes
+	once.Do(singleton)
+	var r_ret = noescape.Call[gd.PackedPointers](gdreference.GetObject(self.AsObject()[0]), methods.get_unsaved_scenes, gdextension.SizePackedArray, &struct{}{})
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
 func (self class) GetOpenSceneRoots() Array.Contains[[1]gdclass.Node] { //gd:EditorInterface.get_open_scene_roots
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.get_open_scene_roots, gdextension.SizeArray, &struct{}{})
@@ -1347,6 +1409,7 @@ func (self class) IsMovieMakerEnabled() bool { //gd:EditorInterface.is_movie_mak
 	var ret = r_ret
 	return ret
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

@@ -98,38 +98,42 @@ type Instance [1]gdclass.OpenXRInterface
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	get_session_state                   gdextension.MethodForClass `hash:"896364779"`
-	get_display_refresh_rate            gdextension.MethodForClass `hash:"1740695150"`
-	set_display_refresh_rate            gdextension.MethodForClass `hash:"373806689"`
-	get_render_target_size_multiplier   gdextension.MethodForClass `hash:"1740695150"`
-	set_render_target_size_multiplier   gdextension.MethodForClass `hash:"373806689"`
-	is_foveation_supported              gdextension.MethodForClass `hash:"36873697"`
-	get_foveation_level                 gdextension.MethodForClass `hash:"3905245786"`
-	set_foveation_level                 gdextension.MethodForClass `hash:"1286410249"`
-	get_foveation_dynamic               gdextension.MethodForClass `hash:"36873697"`
-	set_foveation_dynamic               gdextension.MethodForClass `hash:"2586408642"`
-	is_action_set_active                gdextension.MethodForClass `hash:"3927539163"`
-	set_action_set_active               gdextension.MethodForClass `hash:"2678287736"`
-	get_action_sets                     gdextension.MethodForClass `hash:"3995934104"`
-	get_available_display_refresh_rates gdextension.MethodForClass `hash:"3995934104"`
-	set_motion_range                    gdextension.MethodForClass `hash:"855158159"`
-	get_motion_range                    gdextension.MethodForClass `hash:"3955838114"`
-	get_hand_tracking_source            gdextension.MethodForClass `hash:"4092421202"`
-	get_hand_joint_flags                gdextension.MethodForClass `hash:"720567706"`
-	get_hand_joint_rotation             gdextension.MethodForClass `hash:"1974618321"`
-	get_hand_joint_position             gdextension.MethodForClass `hash:"3529194242"`
-	get_hand_joint_radius               gdextension.MethodForClass `hash:"901522724"`
-	get_hand_joint_linear_velocity      gdextension.MethodForClass `hash:"3529194242"`
-	get_hand_joint_angular_velocity     gdextension.MethodForClass `hash:"3529194242"`
-	is_hand_tracking_supported          gdextension.MethodForClass `hash:"2240911060"`
-	is_hand_interaction_supported       gdextension.MethodForClass `hash:"36873697"`
-	is_eye_gaze_interaction_supported   gdextension.MethodForClass `hash:"2240911060"`
-	get_vrs_min_radius                  gdextension.MethodForClass `hash:"1740695150"`
-	set_vrs_min_radius                  gdextension.MethodForClass `hash:"373806689"`
-	get_vrs_strength                    gdextension.MethodForClass `hash:"1740695150"`
-	set_vrs_strength                    gdextension.MethodForClass `hash:"373806689"`
-	set_cpu_level                       gdextension.MethodForClass `hash:"2940842095"`
-	set_gpu_level                       gdextension.MethodForClass `hash:"2940842095"`
+	get_session_state                    gdextension.MethodForClass `hash:"896364779"`
+	is_user_presence_supported           gdextension.MethodForClass `hash:"36873697"`
+	is_user_present                      gdextension.MethodForClass `hash:"36873697"`
+	get_display_refresh_rate             gdextension.MethodForClass `hash:"1740695150"`
+	set_display_refresh_rate             gdextension.MethodForClass `hash:"373806689"`
+	get_render_target_size_multiplier    gdextension.MethodForClass `hash:"1740695150"`
+	set_render_target_size_multiplier    gdextension.MethodForClass `hash:"373806689"`
+	is_foveation_supported               gdextension.MethodForClass `hash:"36873697"`
+	get_foveation_level                  gdextension.MethodForClass `hash:"3905245786"`
+	set_foveation_level                  gdextension.MethodForClass `hash:"1286410249"`
+	get_foveation_dynamic                gdextension.MethodForClass `hash:"36873697"`
+	set_foveation_dynamic                gdextension.MethodForClass `hash:"2586408642"`
+	get_foveation_with_subsampled_images gdextension.MethodForClass `hash:"36873697"`
+	set_foveation_with_subsampled_images gdextension.MethodForClass `hash:"2586408642"`
+	is_action_set_active                 gdextension.MethodForClass `hash:"3927539163"`
+	set_action_set_active                gdextension.MethodForClass `hash:"2678287736"`
+	get_action_sets                      gdextension.MethodForClass `hash:"3995934104"`
+	get_available_display_refresh_rates  gdextension.MethodForClass `hash:"3995934104"`
+	set_motion_range                     gdextension.MethodForClass `hash:"855158159"`
+	get_motion_range                     gdextension.MethodForClass `hash:"3955838114"`
+	get_hand_tracking_source             gdextension.MethodForClass `hash:"4092421202"`
+	get_hand_joint_flags                 gdextension.MethodForClass `hash:"720567706"`
+	get_hand_joint_rotation              gdextension.MethodForClass `hash:"1974618321"`
+	get_hand_joint_position              gdextension.MethodForClass `hash:"3529194242"`
+	get_hand_joint_radius                gdextension.MethodForClass `hash:"901522724"`
+	get_hand_joint_linear_velocity       gdextension.MethodForClass `hash:"3529194242"`
+	get_hand_joint_angular_velocity      gdextension.MethodForClass `hash:"3529194242"`
+	is_hand_tracking_supported           gdextension.MethodForClass `hash:"2240911060"`
+	is_hand_interaction_supported        gdextension.MethodForClass `hash:"36873697"`
+	is_eye_gaze_interaction_supported    gdextension.MethodForClass `hash:"2240911060"`
+	get_vrs_min_radius                   gdextension.MethodForClass `hash:"1740695150"`
+	set_vrs_min_radius                   gdextension.MethodForClass `hash:"373806689"`
+	get_vrs_strength                     gdextension.MethodForClass `hash:"1740695150"`
+	set_vrs_strength                     gdextension.MethodForClass `hash:"373806689"`
+	set_cpu_level                        gdextension.MethodForClass `hash:"2940842095"`
+	set_gpu_level                        gdextension.MethodForClass `hash:"2940842095"`
 }
 
 func init() {
@@ -157,6 +161,22 @@ Returns the current state of our OpenXR session.
 */
 func (self Instance) GetSessionState() SessionState { //gd:OpenXRInterface.get_session_state
 	return SessionState(Advanced(self).GetSessionState())
+}
+
+/*
+Returns true if OpenXR's user presence extension is supported and enabled.
+
+Note: This only returns a valid value after OpenXR has been initialized.
+*/
+func (self Instance) IsUserPresenceSupported() bool { //gd:OpenXRInterface.is_user_presence_supported
+	return bool(Advanced(self).IsUserPresenceSupported())
+}
+
+/*
+Returns true if system has detected the presence of a user in the XR experience.
+*/
+func (self Instance) IsUserPresent() bool { //gd:OpenXRInterface.is_user_present
+	return bool(Advanced(self).IsUserPresent())
 }
 
 /*
@@ -358,7 +378,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.OpenXRInterface{gdclass.NewOpenXRInterface(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -391,8 +410,6 @@ func (self Instance) SetRenderTargetSizeMultiplier(value Float.X) Instance { //g
 
 /*
 The foveation level, from 0 (off) to 3 (high). The interface must be initialized before this is accessible.
-
-Note: Only works on the Compatibility renderer.
 */
 func (self Instance) FoveationLevel() int { //gd:OpenXRInterface.foveation_level
 	return int(int(class(self).GetFoveationLevel()))
@@ -407,8 +424,6 @@ func (self Instance) SetFoveationLevel(value int) Instance { //gd:OpenXRInterfac
 /*
 If true, enables dynamic foveation adjustment. The interface must be initialized before this is accessible. If enabled, foveation will automatically be adjusted between low and [FoveationLevel].
 
-Note: Only works on the Compatibility renderer.
-
 [FoveationLevel]: https://pkg.go.dev/graphics.gd/classdb/OpenXRInterface#Instance.FoveationLevel
 */
 func (self Instance) FoveationDynamic() bool { //gd:OpenXRInterface.foveation_dynamic
@@ -418,6 +433,19 @@ func (self Instance) FoveationDynamic() bool { //gd:OpenXRInterface.foveation_dy
 // SetFoveationDynamic sets the property returned by [GetFoveationDynamic]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetFoveationDynamic(value bool) Instance { //gd:OpenXRInterface.foveation_dynamic
 	class(self).SetFoveationDynamic(value)
+	return self
+}
+
+/*
+If true, enables subsampled images with foveation, which can provide a performance boost on Vulkan.
+*/
+func (self Instance) FoveationWithSubsampledImages() bool { //gd:OpenXRInterface.foveation_with_subsampled_images
+	return bool(class(self).GetFoveationWithSubsampledImages())
+}
+
+// SetFoveationWithSubsampledImages sets the property returned by [GetFoveationWithSubsampledImages]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFoveationWithSubsampledImages(value bool) Instance { //gd:OpenXRInterface.foveation_with_subsampled_images
+	class(self).SetFoveationWithSubsampledImages(value)
 	return self
 }
 
@@ -460,6 +488,16 @@ func (self class) GetSessionState() SessionState { //gd:OpenXRInterface.get_sess
 	var ret = r_ret
 	return ret
 }
+func (self class) IsUserPresenceSupported() bool { //gd:OpenXRInterface.is_user_presence_supported
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_user_presence_supported, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) IsUserPresent() bool { //gd:OpenXRInterface.is_user_present
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_user_present, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) GetDisplayRefreshRate() float64 { //gd:OpenXRInterface.get_display_refresh_rate
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_display_refresh_rate, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
@@ -496,6 +534,14 @@ func (self class) GetFoveationDynamic() bool { //gd:OpenXRInterface.get_foveatio
 }
 func (self class) SetFoveationDynamic(foveation_dynamic bool) { //gd:OpenXRInterface.set_foveation_dynamic
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_foveation_dynamic, 0|(gdextension.SizeBool<<4), &struct{ foveation_dynamic bool }{foveation_dynamic})
+}
+func (self class) GetFoveationWithSubsampledImages() bool { //gd:OpenXRInterface.get_foveation_with_subsampled_images
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_foveation_with_subsampled_images, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetFoveationWithSubsampledImages(enabled bool) { //gd:OpenXRInterface.set_foveation_with_subsampled_images
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_foveation_with_subsampled_images, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) IsActionSetActive(name String.Readable) bool { //gd:OpenXRInterface.is_action_set_active
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_set_active, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
@@ -796,6 +842,24 @@ func (self Instance) OnGpuLevelChanged(cb func(sub_domain int, from_level int, t
 
 func (self class) GpuLevelChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`gpu_level_changed`))))
+}
+
+/*
+Signal emitted when the user presence value changes.
+
+Note: This signal will not be emitted during application startup and application shutdown. Developers should assume user presence is gained on startup and lost on shutdown.
+*/
+func (self Instance) OnUserPresenceChanged(cb func(is_user_present bool), flags ...Signal.Flags) Instance {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	gd.ObjectConnect(self.AsObject()[0], gd.NewStringName("user_presence_changed"), gd.NewCallable(cb), int64(flags_together))
+	return self
+}
+
+func (self class) UserPresenceChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`user_presence_changed`))))
 }
 
 func (o class) AsOpenXRInterface() Advanced                 { return Advanced(o) }

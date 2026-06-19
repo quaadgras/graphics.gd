@@ -353,10 +353,8 @@ func (self Instance) SetUseSecondaryRotation(value bool) Instance { //gd:LookAtM
 /*
 The relative option. If true, the rotation is applied relative to the pose. If false, the rotation is applied relative to the rest. It means to replace the current pose with the [LookAtModifier3D]'s result.
 
-Note: This option affects the base angle for [UseAngleLimitation] unlike [IterateIK3D]'s [JointLimitation3D]. Since the [LookAtModifier3D] relies strongly on Euler rotation, the axis that determines the limitation and the actual rotation are strongly tied together.
+Note: This option affects the base angle for [UseAngleLimitation]. Since the [LookAtModifier3D] relies strongly on Euler rotation, the axis that determines the limitation and the actual rotation are strongly tied together.
 
-[IterateIK3D]: https://pkg.go.dev/graphics.gd/classdb/IterateIK3D
-[JointLimitation3D]: https://pkg.go.dev/graphics.gd/classdb/JointLimitation3D
 [LookAtModifier3D]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D
 [UseAngleLimitation]: https://pkg.go.dev/graphics.gd/classdb/LookAtModifier3D#Instance.UseAngleLimitation
 */

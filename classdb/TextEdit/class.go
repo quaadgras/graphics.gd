@@ -307,6 +307,7 @@ var methods struct {
 	get_scroll_pos_for_line                           gdextension.MethodForClass `hash:"3929084198"`
 	set_line_as_first_visible                         gdextension.MethodForClass `hash:"2230941749"`
 	get_first_visible_line                            gdextension.MethodForClass `hash:"3905245786"`
+	is_line_in_viewport                               gdextension.MethodForClass `hash:"1116898809"`
 	set_line_as_center_visible                        gdextension.MethodForClass `hash:"2230941749"`
 	set_line_as_last_visible                          gdextension.MethodForClass `hash:"2230941749"`
 	get_last_full_visible_line                        gdextension.MethodForClass `hash:"3905245786"`
@@ -1243,6 +1244,8 @@ Returns true if the caret is visible, false otherwise. A caret will be considere
 
 Note: [IsCaretVisible] does not account for a caret being off-screen if it is still within the scrollable area. It will return true even if the caret is off-screen as long as it meets [TextEdit]'s own conditions for being visible. This includes uses of [ScrollFitContentWidth] and [ScrollFitContentHeight] that cause the [TextEdit] to expand beyond the viewport's bounds.
 
+Note: This method does not guarantee an accurate visibility check immediately after setting the caret position. The correct value may only be available in the next frame after the [TextEdit] has finished drawing. This also applies to any operation that causes the [TextEdit] to change in size.
+
 [IsCaretVisible]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.IsCaretVisible
 [ScrollFitContentHeight]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.ScrollFitContentHeight
 [ScrollFitContentWidth]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.ScrollFitContentWidth
@@ -1256,6 +1259,8 @@ func (self Instance) IsCaretVisible() bool { //gd:TextEdit.is_caret_visible
 Returns true if the caret is visible, false otherwise. A caret will be considered hidden if it is outside the scrollable area when scrolling is enabled.
 
 Note: [IsCaretVisible] does not account for a caret being off-screen if it is still within the scrollable area. It will return true even if the caret is off-screen as long as it meets [TextEdit]'s own conditions for being visible. This includes uses of [ScrollFitContentWidth] and [ScrollFitContentHeight] that cause the [TextEdit] to expand beyond the viewport's bounds.
+
+Note: This method does not guarantee an accurate visibility check immediately after setting the caret position. The correct value may only be available in the next frame after the [TextEdit] has finished drawing. This also applies to any operation that causes the [TextEdit] to change in size.
 
 [IsCaretVisible]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.IsCaretVisible
 [ScrollFitContentHeight]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.ScrollFitContentHeight
@@ -1849,6 +1854,13 @@ Returns the first visible line.
 */
 func (self Instance) GetFirstVisibleLine() int { //gd:TextEdit.get_first_visible_line
 	return int(int(Advanced(self).GetFirstVisibleLine()))
+}
+
+/*
+Returns true if the given line is within the scope of the scrollable area of the viewport.
+*/
+func (self Instance) IsLineInViewport(line int) bool { //gd:TextEdit.is_line_in_viewport
+	return bool(Advanced(self).IsLineInViewport(int64(line)))
 }
 
 /*
@@ -2720,9 +2732,9 @@ func (self Instance) SetScrollHorizontal(value int) Instance { //gd:TextEdit.scr
 }
 
 /*
-If true, [TextEdit] will disable vertical scroll and fit minimum height to the number of visible lines. When both this property and [ScrollFitContentWidth] are true, no scrollbars will be displayed.
+If true, [TextEdit] fits its minimum height to the number of visible lines instead of scrolling vertically. If a maximum height is set (for example via [Control.CustomMaximumSize]) and content exceeds it, a vertical scrollbar is shown.
 
-[ScrollFitContentWidth]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.ScrollFitContentWidth
+[Control.CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
 func (self Instance) ScrollFitContentHeight() bool { //gd:TextEdit.scroll_fit_content_height
@@ -2736,9 +2748,9 @@ func (self Instance) SetScrollFitContentHeight(value bool) Instance { //gd:TextE
 }
 
 /*
-If true, [TextEdit] will disable horizontal scroll and fit minimum width to the widest line in the text. When both this property and [ScrollFitContentHeight] are true, no scrollbars will be displayed.
+If true, [TextEdit] fits its minimum width to the widest line instead of scrolling horizontally. If a maximum width is set (for example via [Control.CustomMaximumSize]) and content exceeds it, a horizontal scrollbar is shown.
 
-[ScrollFitContentHeight]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.ScrollFitContentHeight
+[Control.CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
 [TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
 func (self Instance) ScrollFitContentWidth() bool { //gd:TextEdit.scroll_fit_content_width
@@ -3941,6 +3953,11 @@ func (self class) SetLineAsFirstVisible(line int64, wrap_index int64) { //gd:Tex
 }
 func (self class) GetFirstVisibleLine() int64 { //gd:TextEdit.get_first_visible_line
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_first_visible_line, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) IsLineInViewport(line int64) bool { //gd:TextEdit.is_line_in_viewport
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_in_viewport, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }

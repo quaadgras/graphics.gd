@@ -178,7 +178,9 @@ type Any interface {
 }
 
 /*
-Returns the body's velocity at the given relative position, including both translation and rotation.
+Returns the body's velocity at the given relative position.
+
+'local_position' is the offset from the body origin in global coordinates.
 */
 func (self Instance) GetVelocityAtLocalPosition(local_position Vector3.XYZ) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_velocity_at_local_position
 	return Vector3.XYZ(Advanced(self).GetVelocityAtLocalPosition(Vector3.XYZ(local_position)))

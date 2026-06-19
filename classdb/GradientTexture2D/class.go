@@ -182,7 +182,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.GradientTexture2D{gdclass.NewGradientTexture2D(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -387,6 +386,8 @@ const (
 	FillRadial Fill = 1
 	// The colors are linearly interpolated in a square pattern.
 	FillSquare Fill = 2
+	// The colors are linearly interpolated in a cone pattern.
+	FillConic Fill = 3
 )
 
 type Repeat int64 //gd:GradientTexture2D.Repeat

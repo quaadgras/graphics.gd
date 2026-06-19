@@ -221,6 +221,8 @@ var methods struct {
 	get_texture_repeat                      gdextension.MethodForClass `hash:"2667158319"`
 	set_clip_children_mode                  gdextension.MethodForClass `hash:"1319393776"`
 	get_clip_children_mode                  gdextension.MethodForClass `hash:"3581808349"`
+	set_oversampling_with_scale             gdextension.MethodForClass `hash:"872218804"`
+	get_oversampling_with_scale             gdextension.MethodForClass `hash:"2026097197"`
 }
 
 func init() {
@@ -1530,6 +1532,21 @@ func (self Instance) SetClipChildren(value ClipChildrenMode) Instance { //gd:Can
 }
 
 /*
+If enabled, oversampling for this [CanvasItem] is automatically adjusted with scale.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+*/
+func (self Instance) OversamplingWithScale() OversamplingWithScale { //gd:CanvasItem.oversampling_with_scale
+	return OversamplingWithScale(class(self).GetOversamplingWithScale())
+}
+
+// SetOversamplingWithScale sets the property returned by [GetOversamplingWithScale]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetOversamplingWithScale(value OversamplingWithScale) Instance { //gd:CanvasItem.oversampling_with_scale
+	class(self).SetOversamplingWithScale(value)
+	return self
+}
+
+/*
 The rendering layers in which this [CanvasItem] responds to [Light2D] nodes.
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
@@ -2251,6 +2268,14 @@ func (self class) GetClipChildrenMode() ClipChildrenMode { //gd:CanvasItem.get_c
 	var ret = r_ret
 	return ret
 }
+func (self class) SetOversamplingWithScale(enabled OversamplingWithScale) { //gd:CanvasItem.set_oversampling_with_scale
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_oversampling_with_scale, 0|(gdextension.SizeInt<<4), &struct{ enabled OversamplingWithScale }{enabled})
+}
+func (self class) GetOversamplingWithScale() OversamplingWithScale { //gd:CanvasItem.get_oversampling_with_scale
+	var r_ret = noescape.Call[OversamplingWithScale](gd.ObjectChecked(self.AsObject()), methods.get_oversampling_with_scale, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 
 /*
 Emitted when the [CanvasItem] must redraw, after the related [NotificationDraw] notification, and before [Draw] is called.
@@ -2404,7 +2429,7 @@ const (
 type TextureRepeat int64 //gd:CanvasItem.TextureRepeat
 
 const (
-	// The [CanvasItem] will inherit the filter from its parent.
+	// The [CanvasItem] will inherit the repeat mode from its parent.
 	//
 	// [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 	TextureRepeatParentNode TextureRepeat = 0
@@ -2429,6 +2454,27 @@ const (
 	ClipChildrenAndDraw ClipChildrenMode = 2
 	// Represents the size of the [ClipChildrenMode] enum.
 	ClipChildrenMax ClipChildrenMode = 3
+)
+
+type OversamplingWithScale int64 //gd:CanvasItem.OversamplingWithScale
+
+const (
+	// The [CanvasItem] will inherit the oversampling mode from its parent.
+	//
+	// [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+	OversamplingWithScaleParentNode OversamplingWithScale = 0
+	// The oversampling is not affected by [CanvasItem] scale, and is equal to the [Viewport] oversampling.
+	//
+	// [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+	OversamplingWithScaleDisabled OversamplingWithScale = 1
+	// The oversampling is a product of [CanvasItem] scale and [Viewport] oversampling.
+	//
+	// [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+	OversamplingWithScaleEnabled OversamplingWithScale = 2
+	// Represents the size of the [OversamplingWithScale] enum.
+	OversamplingWithScaleMax OversamplingWithScale = 3
 )
 const NotificationTransformChanged Object.Notification = 2000    //gd:CanvasItem.NOTIFICATION_TRANSFORM_CHANGED
 const NotificationLocalTransformChanged Object.Notification = 35 //gd:CanvasItem.NOTIFICATION_LOCAL_TRANSFORM_CHANGED

@@ -180,7 +180,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.InputEventMouseMotion{gdclass.NewInputEventMouseMotion(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -273,7 +272,7 @@ The mouse velocity in pixels per second.
 
 Note: [Velocity] is automatically scaled according to the content scale factor, which is defined by the project's stretch mode settings. That means mouse sensitivity may appear different depending on resolution.
 
-Note: Use [ScreenRelative] for mouse aiming using the [Input.MouseModeCaptured] mouse mode.
+Note: In [Input.MouseModeCaptured] mode, [Velocity] returns (0, 0) because the mouse cursor is hidden and locked. Use [ScreenRelative] for mouse aiming using the [Input.MouseModeCaptured] mouse mode.
 
 [ScreenRelative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.ScreenRelative
 [Velocity]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.Velocity
@@ -291,10 +290,11 @@ func (self Instance) SetVelocity(value Vector2.XY) Instance { //gd:InputEventMou
 /*
 The unscaled mouse velocity in pixels per second in screen coordinates. This velocity is not scaled according to the content scale factor or calls to [InputEvent.XformedBy].
 
-Note: Use [ScreenRelative] for mouse aiming using the [Input.MouseModeCaptured] mouse mode.
+Note: In [Input.MouseModeCaptured] mode, [ScreenVelocity] returns (0, 0) because the mouse cursor is hidden and locked. Use [ScreenRelative] for mouse aiming using the [Input.MouseModeCaptured] mouse mode.
 
 [InputEvent.XformedBy]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.XformedBy
 [ScreenRelative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.ScreenRelative
+[ScreenVelocity]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.ScreenVelocity
 */
 func (self Instance) ScreenVelocity() Vector2.XY { //gd:InputEventMouseMotion.screen_velocity
 	return Vector2.XY(class(self).GetScreenVelocity())

@@ -117,8 +117,8 @@ type Any interface {
 type Interface interface {
 	GetData(r_buffer Packed.Bytes, r_received Engine.Pointer[int32]) error
 	GetPartialData(r_buffer Packed.Bytes, r_received Engine.Pointer[int32]) error
-	PutData(p_data Packed.Bytes, r_sent Engine.Pointer[int32]) error
-	PutPartialData(p_data Packed.Bytes, r_sent Engine.Pointer[int32]) error
+	PutData(data Packed.Bytes, r_sent Engine.Pointer[int32]) error
+	PutPartialData(data Packed.Bytes, r_sent Engine.Pointer[int32]) error
 	GetAvailableBytes() int
 }
 
@@ -133,10 +133,10 @@ func (self implementation) GetData(r_buffer Packed.Bytes, r_received Engine.Poin
 func (self implementation) GetPartialData(r_buffer Packed.Bytes, r_received Engine.Pointer[int32]) (_ error) {
 	return
 }
-func (self implementation) PutData(p_data Packed.Bytes, r_sent Engine.Pointer[int32]) (_ error) {
+func (self implementation) PutData(data Packed.Bytes, r_sent Engine.Pointer[int32]) (_ error) {
 	return
 }
-func (self implementation) PutPartialData(p_data Packed.Bytes, r_sent Engine.Pointer[int32]) (_ error) {
+func (self implementation) PutPartialData(data Packed.Bytes, r_sent Engine.Pointer[int32]) (_ error) {
 	return
 }
 func (self implementation) GetAvailableBytes() (_ int) {
@@ -176,15 +176,15 @@ func (Instance) _get_partial_data(impl func(ptr gdclass.Receiver, r_buffer Packe
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _put_data(impl func(ptr gdclass.Receiver, p_data Packed.Bytes, r_sent Engine.Pointer[int32]) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _put_data(impl func(ptr gdclass.Receiver, data Packed.Bytes, r_sent Engine.Pointer[int32]) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var p_data_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
-		var p_bytes = gd.UnsafeGet[int64](p_args, 1)
+		var data_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_sent = gdmemory.WrapPointer[int32](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
 		defer gdmemory.Barrier()
-		var p_data = Packed.Bytes{Array: Packed.Array[byte](gdmemory.ArrayContains[byte](p_data_ptr, int(p_bytes)))}
+		var data = Packed.Bytes{Array: Packed.Array[byte](gdmemory.ArrayContains[byte](data_ptr, int(bytes)))}
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, p_data, r_sent)
+		ret := impl(self, data, r_sent)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
 		if !ok {
@@ -193,15 +193,15 @@ func (Instance) _put_data(impl func(ptr gdclass.Receiver, p_data Packed.Bytes, r
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _put_partial_data(impl func(ptr gdclass.Receiver, p_data Packed.Bytes, r_sent Engine.Pointer[int32]) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _put_partial_data(impl func(ptr gdclass.Receiver, data Packed.Bytes, r_sent Engine.Pointer[int32]) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var p_data_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
-		var p_bytes = gd.UnsafeGet[int64](p_args, 1)
+		var data_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
+		var bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_sent = gdmemory.WrapPointer[int32](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
 		defer gdmemory.Barrier()
-		var p_data = Packed.Bytes{Array: Packed.Array[byte](gdmemory.ArrayContains[byte](p_data_ptr, int(p_bytes)))}
+		var data = Packed.Bytes{Array: Packed.Array[byte](gdmemory.ArrayContains[byte](data_ptr, int(bytes)))}
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, p_data, r_sent)
+		ret := impl(self, data, r_sent)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
 		if !ok {
@@ -256,7 +256,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.StreamPeerExtension{gdclass.NewStreamPeerExtension(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -292,14 +291,14 @@ func (class) _get_partial_data(impl func(ptr gdclass.Receiver, r_buffer Engine.P
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _put_data(impl func(ptr gdclass.Receiver, p_data Engine.Pointer[byte], p_bytes int64, r_sent Engine.Pointer[int32]) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_data(impl func(ptr gdclass.Receiver, data Engine.Pointer[byte], bytes int64, r_sent Engine.Pointer[int32]) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var p_data = gdmemory.WrapPointer[byte](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		var data = gdmemory.WrapPointer[byte](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
 		defer gdmemory.Barrier()
-		var p_bytes = gd.UnsafeGet[int64](p_args, 1)
+		var bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_sent = gdmemory.WrapPointer[int32](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, p_data, p_bytes, r_sent)
+		ret := impl(self, data, bytes, r_sent)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
 		if !ok {
@@ -308,14 +307,14 @@ func (class) _put_data(impl func(ptr gdclass.Receiver, p_data Engine.Pointer[byt
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _put_partial_data(impl func(ptr gdclass.Receiver, p_data Engine.Pointer[byte], p_bytes int64, r_sent Engine.Pointer[int32]) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_partial_data(impl func(ptr gdclass.Receiver, data Engine.Pointer[byte], bytes int64, r_sent Engine.Pointer[int32]) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var p_data = gdmemory.WrapPointer[byte](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		var data = gdmemory.WrapPointer[byte](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
 		defer gdmemory.Barrier()
-		var p_bytes = gd.UnsafeGet[int64](p_args, 1)
+		var bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_sent = gdmemory.WrapPointer[int32](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, p_data, p_bytes, r_sent)
+		ret := impl(self, data, bytes, r_sent)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
 		if !ok {

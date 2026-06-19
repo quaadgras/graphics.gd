@@ -101,17 +101,21 @@ type Instance [1]gdclass.DPITexture
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	create_from_string gdextension.MethodForClass `hash:"755140520"`
-	set_source         gdextension.MethodForClass `hash:"83702148"`
-	get_source         gdextension.MethodForClass `hash:"201670096"`
-	set_base_scale     gdextension.MethodForClass `hash:"373806689"`
-	get_base_scale     gdextension.MethodForClass `hash:"1740695150"`
-	set_saturation     gdextension.MethodForClass `hash:"373806689"`
-	get_saturation     gdextension.MethodForClass `hash:"1740695150"`
-	set_color_map      gdextension.MethodForClass `hash:"4155329257"`
-	get_color_map      gdextension.MethodForClass `hash:"3102165223"`
-	set_size_override  gdextension.MethodForClass `hash:"1130785943"`
-	get_scaled_rid     gdextension.MethodForClass `hash:"2944877500"`
+	create_from_string   gdextension.MethodForClass `hash:"755140520"`
+	set_source           gdextension.MethodForClass `hash:"83702148"`
+	get_source           gdextension.MethodForClass `hash:"201670096"`
+	set_fix_alpha_border gdextension.MethodForClass `hash:"2586408642"`
+	get_fix_alpha_border gdextension.MethodForClass `hash:"36873697"`
+	set_premult_alpha    gdextension.MethodForClass `hash:"2586408642"`
+	get_premult_alpha    gdextension.MethodForClass `hash:"36873697"`
+	set_base_scale       gdextension.MethodForClass `hash:"373806689"`
+	get_base_scale       gdextension.MethodForClass `hash:"1740695150"`
+	set_saturation       gdextension.MethodForClass `hash:"373806689"`
+	get_saturation       gdextension.MethodForClass `hash:"1740695150"`
+	set_color_map        gdextension.MethodForClass `hash:"4155329257"`
+	get_color_map        gdextension.MethodForClass `hash:"3102165223"`
+	set_size_override    gdextension.MethodForClass `hash:"1130785943"`
+	get_scaled_rid       gdextension.MethodForClass `hash:"2944877500"`
 }
 
 func init() {
@@ -248,9 +252,43 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.DPITexture{gdclass.NewDPITexture(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
+}
+
+/*
+If true, puts pixels of the same surrounding color in transition from transparent to opaque areas. For textures displayed with bilinear filtering, this helps to reduce the outline effect when exporting images from an image editor.
+*/
+func (self Instance) FixAlphaBorder() bool { //gd:DPITexture.fix_alpha_border
+	return bool(class(self).GetFixAlphaBorder())
+}
+
+// SetFixAlphaBorder sets the property returned by [GetFixAlphaBorder]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetFixAlphaBorder(value bool) Instance { //gd:DPITexture.fix_alpha_border
+	class(self).SetFixAlphaBorder(value)
+	return self
+}
+
+/*
+An alternative to fixing darkened borders with [FixAlphaBorder] is to use premultiplied alpha. By enabling this option, the texture will be converted to this format. A premultiplied alpha texture requires specific materials to be displayed correctly:
+
+- In 2D, a [CanvasItemMaterial] will need to be created and configured to use the [Canvasitemmaterial.BlendModePremultAlpha] blend mode on [CanvasItem]s that use this texture. In custom canvas_item shaders, render_mode blend_premul_alpha; should be used.
+
+- In 3D, a [BaseMaterial3D] will need to be created and configured to use the [Basematerial3d.BlendModePremultAlpha] blend mode on materials that use this texture. In custom spatial shaders, render_mode blend_premul_alpha; should be used.
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItemMaterial]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial
+[FixAlphaBorder]: https://pkg.go.dev/graphics.gd/classdb/DPITexture#Instance.FixAlphaBorder
+*/
+func (self Instance) PremultAlpha() bool { //gd:DPITexture.premult_alpha
+	return bool(class(self).GetPremultAlpha())
+}
+
+// SetPremultAlpha sets the property returned by [GetPremultAlpha]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetPremultAlpha(value bool) Instance { //gd:DPITexture.premult_alpha
+	class(self).SetPremultAlpha(value)
+	return self
 }
 
 /*
@@ -350,6 +388,22 @@ func (self class) SetSource(source String.Readable) { //gd:DPITexture.set_source
 func (self class) GetSource() String.Readable { //gd:DPITexture.get_source
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+func (self class) SetFixAlphaBorder(fix_alpha_border bool) { //gd:DPITexture.set_fix_alpha_border
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fix_alpha_border, 0|(gdextension.SizeBool<<4), &struct{ fix_alpha_border bool }{fix_alpha_border})
+}
+func (self class) GetFixAlphaBorder() bool { //gd:DPITexture.get_fix_alpha_border
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_fix_alpha_border, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetPremultAlpha(premult_alpha bool) { //gd:DPITexture.set_premult_alpha
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_premult_alpha, 0|(gdextension.SizeBool<<4), &struct{ premult_alpha bool }{premult_alpha})
+}
+func (self class) GetPremultAlpha() bool { //gd:DPITexture.get_premult_alpha
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_premult_alpha, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (self class) SetBaseScale(base_scale float64) { //gd:DPITexture.set_base_scale

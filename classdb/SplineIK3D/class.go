@@ -11,6 +11,8 @@ If the root bone joint and the start point of the [Curve3D] are separated, it as
 
 If the end bone joint exceeds the path length, it is bent as close as possible to the end point of the [Curve3D].
 
+Note: All the methods in this class take an index parameter. This parameter specifies which setting list entry to return if the IK has multiple entries (e.g. settings/<index>/root_bone_name).
+
 [Curve3D]: https://pkg.go.dev/graphics.gd/classdb/Curve3D
 [Curve3D.BakeInterval]: https://pkg.go.dev/graphics.gd/classdb/Curve3D#Instance.BakeInterval
 [Curve3D.GetPointTilt]: https://pkg.go.dev/graphics.gd/classdb/Curve3D#Instance.GetPointTilt

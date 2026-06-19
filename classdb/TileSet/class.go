@@ -161,6 +161,7 @@ var methods struct {
 	add_terrain                          gdextension.MethodForClass `hash:"1230568737"`
 	move_terrain                         gdextension.MethodForClass `hash:"1649997291"`
 	remove_terrain                       gdextension.MethodForClass `hash:"3937882851"`
+	clear_terrains                       gdextension.MethodForClass `hash:"1286410249"`
 	set_terrain_name                     gdextension.MethodForClass `hash:"2285447957"`
 	get_terrain_name                     gdextension.MethodForClass `hash:"1391810591"`
 	set_terrain_color                    gdextension.MethodForClass `hash:"3733378741"`
@@ -585,6 +586,13 @@ func (self Instance) RemoveTerrain(terrain_set int, terrain_index int) { //gd:Ti
 }
 
 /*
+Clears all terrain properties for the given terrain set.
+*/
+func (self Instance) ClearTerrains(terrain_set int) { //gd:TileSet.clear_terrains
+	Advanced(self).ClearTerrains(int64(terrain_set))
+}
+
+/*
 Sets a terrain's name.
 
 Returns 'self' to enable method chaining.
@@ -820,8 +828,8 @@ Proxied tiles can be automatically replaced in TileMapLayer nodes using the edit
 
 Returns 'self' to enable method chaining.
 */
-func (self Instance) SetCoordsLevelTileProxy(p_source_from int, coords_from Vector2i.XY, source_to int, coords_to Vector2i.XY) Instance { //gd:TileSet.set_coords_level_tile_proxy
-	Advanced(self).SetCoordsLevelTileProxy(int64(p_source_from), Vector2i.XY(coords_from), int64(source_to), Vector2i.XY(coords_to))
+func (self Instance) SetCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY, source_to int, coords_to Vector2i.XY) Instance { //gd:TileSet.set_coords_level_tile_proxy
+	Advanced(self).SetCoordsLevelTileProxy(int64(source_from), Vector2i.XY(coords_from), int64(source_to), Vector2i.XY(coords_to))
 	return self
 }
 
@@ -1003,7 +1011,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.TileSet{gdclass.NewTileSet(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -1309,6 +1316,9 @@ func (self class) RemoveTerrain(terrain_set int64, terrain_index int64) { //gd:T
 		terrain_index int64
 	}{terrain_set, terrain_index})
 }
+func (self class) ClearTerrains(terrain_set int64) { //gd:TileSet.clear_terrains
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_terrains, 0|(gdextension.SizeInt<<4), &struct{ terrain_set int64 }{terrain_set})
+}
 func (self class) SetTerrainName(terrain_set int64, terrain_index int64, name String.Readable) { //gd:TileSet.set_terrain_name
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_terrain_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		terrain_set   int64
@@ -1450,13 +1460,13 @@ func (self class) HasSourceLevelTileProxy(source_from int64) bool { //gd:TileSet
 func (self class) RemoveSourceLevelTileProxy(source_from int64) { //gd:TileSet.remove_source_level_tile_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_source_level_tile_proxy, 0|(gdextension.SizeInt<<4), &struct{ source_from int64 }{source_from})
 }
-func (self class) SetCoordsLevelTileProxy(p_source_from int64, coords_from Vector2i.XY, source_to int64, coords_to Vector2i.XY) { //gd:TileSet.set_coords_level_tile_proxy
+func (self class) SetCoordsLevelTileProxy(source_from int64, coords_from Vector2i.XY, source_to int64, coords_to Vector2i.XY) { //gd:TileSet.set_coords_level_tile_proxy
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_coords_level_tile_proxy, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2i<<16), &struct {
-		p_source_from int64
-		coords_from   Vector2i.XY
-		source_to     int64
-		coords_to     Vector2i.XY
-	}{p_source_from, coords_from, source_to, coords_to})
+		source_from int64
+		coords_from Vector2i.XY
+		source_to   int64
+		coords_to   Vector2i.XY
+	}{source_from, coords_from, source_to, coords_to})
 }
 func (self class) GetCoordsLevelTileProxy(source_from int64, coords_from Vector2i.XY) Array.Any { //gd:TileSet.get_coords_level_tile_proxy
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_coords_level_tile_proxy, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), &struct {

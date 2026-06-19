@@ -117,12 +117,12 @@ type Any interface {
 
 type Interface interface {
 	GetPacket(r_buffer Engine.Pointer[Engine.Pointer[byte]], r_buffer_size Engine.Pointer[int32]) error
-	PutPacket(p_buffer Engine.Pointer[byte], p_buffer_size int) error
+	PutPacket(buffer Engine.Pointer[byte], buffer_size int) error
 	GetAvailablePacketCount() int
 	GetMaxPacketSize() int
 	Poll() error
 	Close()
-	SetWriteMode(p_write_mode WebRTCDataChannel.WriteMode)
+	SetWriteMode(write_mode WebRTCDataChannel.WriteMode)
 	GetWriteMode() WebRTCDataChannel.WriteMode
 	WasStringPacket() bool
 	GetReadyState() WebRTCDataChannel.ChannelState
@@ -144,7 +144,7 @@ type implementation struct{}
 func (self implementation) GetPacket(r_buffer Engine.Pointer[Engine.Pointer[byte]], r_buffer_size Engine.Pointer[int32]) (_ error) {
 	return
 }
-func (self implementation) PutPacket(p_buffer Engine.Pointer[byte], p_buffer_size int) (_ error) {
+func (self implementation) PutPacket(buffer Engine.Pointer[byte], buffer_size int) (_ error) {
 	return
 }
 func (self implementation) GetAvailablePacketCount() (_ int) {
@@ -158,7 +158,7 @@ func (self implementation) Poll() (_ error) {
 }
 func (self implementation) Close() {
 }
-func (self implementation) SetWriteMode(p_write_mode WebRTCDataChannel.WriteMode) {
+func (self implementation) SetWriteMode(write_mode WebRTCDataChannel.WriteMode) {
 }
 func (self implementation) GetWriteMode() (_ WebRTCDataChannel.WriteMode) {
 	return
@@ -209,13 +209,13 @@ func (Instance) _get_packet(impl func(ptr gdclass.Receiver, r_buffer Engine.Poin
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer Engine.Pointer[byte], p_buffer_size int) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _put_packet(impl func(ptr gdclass.Receiver, buffer Engine.Pointer[byte], buffer_size int) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var p_buffer = gdmemory.WrapPointer[byte](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		var buffer = gdmemory.WrapPointer[byte](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
 		defer gdmemory.Barrier()
-		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
+		var buffer_size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, p_buffer, int(p_buffer_size))
+		ret := impl(self, buffer, int(buffer_size))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
 		if !ok {
@@ -256,11 +256,11 @@ func (Instance) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCal
 		impl(self)
 	}
 }
-func (Instance) _set_write_mode(impl func(ptr gdclass.Receiver, p_write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_write_mode(impl func(ptr gdclass.Receiver, write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var p_write_mode = gd.UnsafeGet[WebRTCDataChannel.WriteMode](p_args, 0)
+		var write_mode = gd.UnsafeGet[WebRTCDataChannel.WriteMode](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, p_write_mode)
+		impl(self, write_mode)
 	}
 }
 func (Instance) _get_write_mode(impl func(ptr gdclass.Receiver) WebRTCDataChannel.WriteMode) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -389,7 +389,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.WebRTCDataChannelExtension{gdclass.NewWebRTCDataChannelExtension(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -408,13 +407,13 @@ func (class) _get_packet(impl func(ptr gdclass.Receiver, r_buffer Engine.Pointer
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (class) _put_packet(impl func(ptr gdclass.Receiver, p_buffer Engine.Pointer[byte], p_buffer_size int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_packet(impl func(ptr gdclass.Receiver, buffer Engine.Pointer[byte], buffer_size int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var p_buffer = gdmemory.WrapPointer[byte](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
+		var buffer = gdmemory.WrapPointer[byte](gd.UnsafeGet[gdextension.Pointer](p_args, 0))
 		defer gdmemory.Barrier()
-		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
+		var buffer_size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, p_buffer, p_buffer_size)
+		ret := impl(self, buffer, buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
 		if !ok {
@@ -455,11 +454,11 @@ func (class) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVi
 		impl(self)
 	}
 }
-func (class) _set_write_mode(impl func(ptr gdclass.Receiver, p_write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_write_mode(impl func(ptr gdclass.Receiver, write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
-		var p_write_mode = gd.UnsafeGet[WebRTCDataChannel.WriteMode](p_args, 0)
+		var write_mode = gd.UnsafeGet[WebRTCDataChannel.WriteMode](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, p_write_mode)
+		impl(self, write_mode)
 	}
 }
 func (class) _get_write_mode(impl func(ptr gdclass.Receiver) WebRTCDataChannel.WriteMode) (cb gd.ExtensionClassCallVirtualFunc) {

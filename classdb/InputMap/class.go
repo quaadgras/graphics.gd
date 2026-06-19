@@ -386,6 +386,27 @@ func (self class) LoadFromProjectSettings() { //gd:InputMap.load_from_project_se
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.load_from_project_settings, 0, &struct{}{})
 }
+
+/*
+Emitted when the [ProjectSettings] [InputMap] has been loaded.
+
+[InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
+func OnProjectSettingsLoaded(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	once.Do(singleton)
+	gd.ObjectConnect(gdclass.GetInputMap(self[0])[0], gd.NewStringName("project_settings_loaded"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ProjectSettingsLoaded() Signal.Any {
+	once.Do(singleton)
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`project_settings_loaded`))))
+}
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

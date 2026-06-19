@@ -122,6 +122,7 @@ var methods struct {
 	emit_changed             gdextension.MethodForClass `hash:"3218959716"`
 	duplicate                gdextension.MethodForClass `hash:"482882304"`
 	duplicate_deep           gdextension.MethodForClass `hash:"905779109"`
+	copy_from_resource       gdextension.MethodForClass `hash:"3338311164"`
 }
 
 func init() {
@@ -477,6 +478,13 @@ func (self MoreArgs) DuplicateDeep(deep_subresources_mode DeepDuplicateMode) Ins
 	return Instance(Advanced(self).DuplicateDeep(deep_subresources_mode))
 }
 
+/*
+Copies the data from 'resource' into this resource. Both resources must share the same class.
+*/
+func (self Instance) CopyFromResource(resource Instance) error { //gd:Resource.copy_from_resource
+	return error(gd.ToError(Advanced(self).CopyFromResource(resource)))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.Resource
@@ -515,7 +523,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.Resource{gdclass.NewResource(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -571,7 +578,7 @@ func (self Instance) SetResourceName(value string) Instance { //gd:Resource.reso
 }
 
 /*
-A unique identifier relative to the this resource's scene. If left empty, the ID is automatically generated when this resource is saved inside a [PackedScene]. If the resource is not inside a scene, this property is empty by default.
+A unique identifier relative to this resource's scene. If left empty, the ID is automatically generated when this resource is saved inside a [PackedScene]. If the resource is not inside a scene, this property is empty by default.
 
 Note: When the [PackedScene] is saved, if multiple resources in the same scene use the same ID, only the earliest resource in the scene hierarchy keeps the original ID. The other resources are assigned new IDs from [GenerateSceneUniqueId].
 
@@ -707,6 +714,11 @@ func (self class) DuplicateDeep(deep_subresources_mode DeepDuplicateMode) [1]gdc
 	var ret = [1]gdclass.Resource{gdclass.NewResource(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
+func (self class) CopyFromResource(resource [1]gdclass.Resource) Error.Code { //gd:Resource.copy_from_resource
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.copy_from_resource, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
+	var ret = Error.Code(r_ret)
+	return ret
+}
 
 /*
 Emitted when the resource changes, usually when one of its properties is modified. See also [EmitChanged].
@@ -789,7 +801,7 @@ func init() {
 type DeepDuplicateMode int64 //gd:Resource.DeepDuplicateMode
 
 const (
-	// No subresorces at all are duplicated. This is useful even in a deep duplication to have all the arrays and dictionaries duplicated but still pointing to the original resources.
+	// No subresources at all are duplicated. This is useful even in a deep duplication to have all the arrays and dictionaries duplicated but still pointing to the original resources.
 	DeepDuplicateNone DeepDuplicateMode = 0
 	// Only subresources without a path or with a scene-local path will be duplicated.
 	DeepDuplicateInternal DeepDuplicateMode = 1

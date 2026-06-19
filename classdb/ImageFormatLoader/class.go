@@ -152,7 +152,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.ImageFormatLoader{gdclass.NewImageFormatLoader(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -184,7 +183,12 @@ func init() {
 type LoaderFlags int64 //gd:ImageFormatLoader.LoaderFlags
 
 const (
-	FlagNone          LoaderFlags = 0
-	FlagForceLinear   LoaderFlags = 1
+	// Default loading behavior. No processing is applied to the image.
+	FlagNone LoaderFlags = 0
+	// If set, the image is converted from sRGB to linear encoding.
+	FlagForceLinear LoaderFlags = 1
+	// If set, a predefined color map is applied to the image. Used when [ResourceImporterTexture] "editor/convert_colors_with_editor_theme" is true.
+	//
+	// [ResourceImporterTexture]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterTexture
 	FlagConvertColors LoaderFlags = 2
 )

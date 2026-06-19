@@ -173,6 +173,10 @@ type Interface interface {
 	// [HandlesFile]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter#Interface
 	// [MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
 	HandlesFile(path string) bool
+	// Returns the list of supported filename extensions for movies written with this [MovieWriter].
+	//
+	// [MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
+	GetSupportedExtensions() []string
 	// Called once before the engine starts writing video and audio data. 'movie_size' is the width and height of the video to save. 'fps' is the number of frames per second specified in the project settings or using the --fixed-fps <fps> [command line argument].
 	//
 	// [command line argument]: https://docs.godotengine.org/tutorials/editor/command_line_tutorial.html
@@ -200,6 +204,9 @@ func (self implementation) GetAudioSpeakerMode() (_ AudioServer.SpeakerMode) {
 	return
 }
 func (self implementation) HandlesFile(path string) (_ bool) {
+	return
+}
+func (self implementation) GetSupportedExtensions() (_ []string) {
 	return
 }
 func (self implementation) WriteBegin(movie_size Vector2i.XY, fps int, base_path string) (_ error) {
@@ -254,6 +261,24 @@ func (Instance) _handles_file(impl func(ptr gdclass.Receiver, path string) bool)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String())
 		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Returns the list of supported filename extensions for movies written with this [MovieWriter].
+
+[MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
+*/
+func (Instance) _get_supported_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
 	}
 }
 
@@ -391,6 +416,18 @@ func (class) _handles_file(impl func(ptr gdclass.Receiver, path String.Readable)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
+func (class) _get_supported_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
 func (class) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i.XY, fps int64, base_path String.Readable) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var movie_size = gd.UnsafeGet[Vector2i.XY](p_args, 0)
@@ -446,6 +483,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_audio_speaker_mode)
 	case "_handles_file":
 		return reflect.ValueOf(self._handles_file)
+	case "_get_supported_extensions":
+		return reflect.ValueOf(self._get_supported_extensions)
 	case "_write_begin":
 		return reflect.ValueOf(self._write_begin)
 	case "_write_frame":
@@ -465,6 +504,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_audio_speaker_mode)
 	case "_handles_file":
 		return reflect.ValueOf(self._handles_file)
+	case "_get_supported_extensions":
+		return reflect.ValueOf(self._get_supported_extensions)
 	case "_write_begin":
 		return reflect.ValueOf(self._write_begin)
 	case "_write_frame":

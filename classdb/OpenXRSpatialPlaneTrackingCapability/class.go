@@ -21,6 +21,9 @@ import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/OpenXRExtensionWrapper"
+import "graphics.gd/classdb/OpenXRFutureResult"
+import "graphics.gd/classdb/OpenXRSpatialComponentData"
+import "graphics.gd/classdb/OpenXRStructureBase"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -93,7 +96,8 @@ type Instance [1]gdclass.OpenXRSpatialPlaneTrackingCapability
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	is_supported gdextension.MethodForClass `hash:"2240911060"`
+	is_supported           gdextension.MethodForClass `hash:"2240911060"`
+	start_entity_discovery gdextension.MethodForClass `hash:"3452714169"`
 }
 
 func init() {
@@ -108,6 +112,13 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.OpenXRSpatialPlaneTrackingCapability
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
+
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
 
@@ -121,6 +132,52 @@ Returns true if plane tracking is supported by the current device.
 */
 func (self Instance) IsSupported() bool { //gd:OpenXRSpatialPlaneTrackingCapability.is_supported
 	return bool(Advanced(self).IsSupported())
+}
+
+/*
+Calls [OpenXRSpatialEntityExtension.DiscoverSpatialEntities] and [OpenXRSpatialEntityExtension.QuerySnapshot] with the plane entities associated with 'spatial_context'.
+
+'component_data' are the [OpenXRSpatialComponentData]s to discover for this plane capability.
+
+If 'next_snapshot_create' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.DiscoverSpatialEntities].
+
+If 'next_snapshot_query' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.QuerySnapshot].
+
+'user_callback', when non-null, is called with two parameters usually twice. The first parameter is the [Resource.ID] of the discovery snapshot and the second parameter is a boolean where false indicates the discovery snapshot is about to be processed, and true indicates the discovery snapshot has been processed and 'component_data' has valid data. The second call is skipped if an error was encountered.
+
+The returned [OpenXRFutureResult] is identical to the return from [OpenXRSpatialEntityExtension.DiscoverSpatialEntities].
+
+[OpenXRFutureResult]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureResult
+[OpenXRSpatialComponentData]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialComponentData
+[OpenXRSpatialEntityExtension.DiscoverSpatialEntities]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.DiscoverSpatialEntities
+[OpenXRSpatialEntityExtension.QuerySnapshot]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.QuerySnapshot
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
+func (self Instance) StartEntityDiscovery(spatial_context RID.SpatialContext, component_data []OpenXRSpatialComponentData.Instance) OpenXRFutureResult.Instance { //gd:OpenXRSpatialPlaneTrackingCapability.start_entity_discovery
+	return OpenXRFutureResult.Instance(Advanced(self).StartEntityDiscovery(RID.Any(spatial_context), gd.ArrayFromSlice[Array.Contains[[1]gdclass.OpenXRSpatialComponentData]](component_data), [1]OpenXRStructureBase.Instance{}[0], [1]OpenXRStructureBase.Instance{}[0], Callable.New(Callable.Nil)))
+}
+
+/*
+Calls [OpenXRSpatialEntityExtension.DiscoverSpatialEntities] and [OpenXRSpatialEntityExtension.QuerySnapshot] with the plane entities associated with 'spatial_context'.
+
+'component_data' are the [OpenXRSpatialComponentData]s to discover for this plane capability.
+
+If 'next_snapshot_create' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.DiscoverSpatialEntities].
+
+If 'next_snapshot_query' is non-null, then pass this to the next parameter in [OpenXRSpatialEntityExtension.QuerySnapshot].
+
+'user_callback', when non-null, is called with two parameters usually twice. The first parameter is the [Resource.ID] of the discovery snapshot and the second parameter is a boolean where false indicates the discovery snapshot is about to be processed, and true indicates the discovery snapshot has been processed and 'component_data' has valid data. The second call is skipped if an error was encountered.
+
+The returned [OpenXRFutureResult] is identical to the return from [OpenXRSpatialEntityExtension.DiscoverSpatialEntities].
+
+[OpenXRFutureResult]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureResult
+[OpenXRSpatialComponentData]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialComponentData
+[OpenXRSpatialEntityExtension.DiscoverSpatialEntities]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.DiscoverSpatialEntities
+[OpenXRSpatialEntityExtension.QuerySnapshot]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialEntityExtension#Instance.QuerySnapshot
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
+func (self MoreArgs) StartEntityDiscovery(spatial_context RID.SpatialContext, component_data []OpenXRSpatialComponentData.Instance, next_snapshot_create OpenXRStructureBase.Instance, next_snapshot_query OpenXRStructureBase.Instance, user_callback Callable.Function) OpenXRFutureResult.Instance { //gd:OpenXRSpatialPlaneTrackingCapability.start_entity_discovery
+	return OpenXRFutureResult.Instance(Advanced(self).StartEntityDiscovery(RID.Any(spatial_context), gd.ArrayFromSlice[Array.Contains[[1]gdclass.OpenXRSpatialComponentData]](component_data), next_snapshot_create, next_snapshot_query, Callable.New(user_callback)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -168,6 +225,17 @@ func New() Instance {
 func (self class) IsSupported() bool { //gd:OpenXRSpatialPlaneTrackingCapability.is_supported
 	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
+	return ret
+}
+func (self class) StartEntityDiscovery(spatial_context RID.Any, component_data Array.Contains[[1]gdclass.OpenXRSpatialComponentData], next_snapshot_create [1]gdclass.OpenXRStructureBase, next_snapshot_query [1]gdclass.OpenXRStructureBase, user_callback Callable.Function) [1]gdclass.OpenXRFutureResult { //gd:OpenXRSpatialPlaneTrackingCapability.start_entity_discovery
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.start_entity_discovery, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeObject<<16)|(gdextension.SizeCallable<<20), &struct {
+		spatial_context      RID.Any
+		component_data       gdextension.Array
+		next_snapshot_create gdextension.Object
+		next_snapshot_query  gdextension.Object
+		user_callback        gdextension.Callable
+	}{spatial_context, pointers.Get(gd.InternalArray(component_data)), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next_snapshot_create[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next_snapshot_query[0])[0])), pointers.Get(gd.InternalCallable(user_callback))})
+	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (o class) AsOpenXRSpatialPlaneTrackingCapability() Advanced         { return Advanced(o) }

@@ -5,6 +5,8 @@ This modifier limits bone rotation angular velocity by comparing poses between p
 
 You can add bone chains by specifying their root and end bones, then add the bones between them to a list. Modifier processes either that list or the bones excluding those in the list depending on the option [Exclude].
 
+Note: Most methods in this class take an index parameter. This parameter specifies which setting list entry to return if the IK has multiple entries (e.g. settings/<index>/root_bone_name).
+
 [Exclude]: https://pkg.go.dev/graphics.gd/classdb/LimitAngularVelocityModifier3D#Instance.Exclude
 */
 package LimitAngularVelocityModifier3D

@@ -107,7 +107,7 @@ var methods struct {
 	save_zip_patch            gdextension.MethodForClass `hash:"1485052307"`
 	gen_export_flags          gdextension.MethodForClass `hash:"2976483270"`
 	export_project_files      gdextension.MethodForClass `hash:"1063735070"`
-	export_project            gdextension.MethodForClass `hash:"3879521245"`
+	export_project            gdextension.MethodForClass `hash:"1201906210"`
 	export_pack               gdextension.MethodForClass `hash:"3879521245"`
 	export_zip                gdextension.MethodForClass `hash:"3879521245"`
 	export_pack_patch         gdextension.MethodForClass `hash:"608021658"`
@@ -258,17 +258,21 @@ func (self MoreArgs) ExportProjectFiles(preset EditorExportPreset.Instance, debu
 }
 
 /*
-Creates a full project at 'path' for the specified 'preset'.
+Creates a full project at 'path' for the specified 'preset'. If 'notify' is true, plugins using [EditorExportPlugin.ExportBegin] will be called during the process.
+
+[EditorExportPlugin.ExportBegin]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.ExportBegin
 */
 func (self Instance) ExportProject(preset EditorExportPreset.Instance, debug bool, path string) error { //gd:EditorExportPlatform.export_project
-	return error(gd.ToError(Advanced(self).ExportProject(preset, debug, String.From(path), 0)))
+	return error(gd.ToError(Advanced(self).ExportProject(preset, debug, String.From(path), 0, true)))
 }
 
 /*
-Creates a full project at 'path' for the specified 'preset'.
+Creates a full project at 'path' for the specified 'preset'. If 'notify' is true, plugins using [EditorExportPlugin.ExportBegin] will be called during the process.
+
+[EditorExportPlugin.ExportBegin]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.ExportBegin
 */
-func (self MoreArgs) ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags DebugFlags) error { //gd:EditorExportPlatform.export_project
-	return error(gd.ToError(Advanced(self).ExportProject(preset, debug, String.From(path), flags)))
+func (self MoreArgs) ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags DebugFlags, notify bool) error { //gd:EditorExportPlatform.export_project
+	return error(gd.ToError(Advanced(self).ExportProject(preset, debug, String.From(path), flags, notify)))
 }
 
 /*
@@ -476,7 +480,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -553,13 +556,14 @@ func (self class) ExportProjectFiles(preset [1]gdclass.EditorExportPreset, debug
 	var ret = Error.Code(r_ret)
 	return ret
 }
-func (self class) ExportProject(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags DebugFlags) Error.Code { //gd:EditorExportPlatform.export_project
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.export_project, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), &struct {
+func (self class) ExportProject(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags DebugFlags, notify bool) Error.Code { //gd:EditorExportPlatform.export_project
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.export_project, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), &struct {
 		preset gdextension.Object
 		debug  bool
 		path   gdextension.String
 		flags  DebugFlags
-	}{gdextension.Object(gdreference.GetObject(gdclass.GetEditorExportPreset(preset[0])[0])), debug, pointers.Get(gd.InternalString(path)), flags})
+		notify bool
+	}{gdextension.Object(gdreference.GetObject(gdclass.GetEditorExportPreset(preset[0])[0])), debug, pointers.Get(gd.InternalString(path)), flags, notify})
 	var ret = Error.Code(r_ret)
 	return ret
 }

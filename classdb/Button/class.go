@@ -27,12 +27,11 @@ Example: Create a button and connect a method that will be called when the butto
 
 See also [BaseButton] which contains common properties and methods associated with this node.
 
-Note: Buttons do not detect touch input and therefore don't support multitouch, since mouse emulation can only press one button at a given time. Use [TouchScreenButton] for buttons that trigger gameplay movement or actions.
+Note: Buttons support multitouch via touch input, allowing multiple buttons to be pressed at the same time. Otherwise, mouse input is used, limiting interaction to one button press at a time.
 
 [BaseButton]: https://pkg.go.dev/graphics.gd/classdb/BaseButton
 [Button]: https://pkg.go.dev/graphics.gd/classdb/Button
 [Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
-[TouchScreenButton]: https://pkg.go.dev/graphics.gd/classdb/TouchScreenButton
 */
 package Button
 

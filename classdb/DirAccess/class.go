@@ -152,6 +152,7 @@ var methods struct {
 	get_directories_at          gdextension.MethodForClass `hash:"3538744774"`
 	get_drive_count             gdextension.MethodForClass `hash:"2455072627"`
 	get_drive_name              gdextension.MethodForClass `hash:"990163283"`
+	get_drive_label             gdextension.MethodForClass `hash:"990163283"`
 	get_current_drive           gdextension.MethodForClass `hash:"2455072627"`
 	change_dir                  gdextension.MethodForClass `hash:"166001499"`
 	get_current_dir             gdextension.MethodForClass `hash:"1287308131"`
@@ -373,11 +374,21 @@ On Linux, returns the path to the mounted volume or GTK 3 bookmark passed as an 
 
 On Android (API level 30+), returns the path to the mounted volume as an argument.
 
-On other platforms, or if the requested drive does not exist, the method returns an empty String.
+On other platforms, or if the requested drive does not exist, returns an empty String.
 */
 func GetDriveName(idx int) string { //gd:DirAccess.get_drive_name
 	self := Instance{}
 	return string(Advanced(self).GetDriveName(int64(idx)).String())
+}
+
+/*
+On Windows, returns the label of the drive (partition) passed as an argument.
+
+On other platforms, or if the requested drive does not exist, returns an empty String.
+*/
+func GetDriveLabel(idx int) string { //gd:DirAccess.get_drive_label
+	self := Instance{}
+	return string(Advanced(self).GetDriveLabel(int64(idx)).String())
 }
 
 /*
@@ -681,7 +692,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.DirAccess{gdclass.NewDirAccess(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -786,6 +796,11 @@ func (self class) GetDriveCount() int64 { //gd:DirAccess.get_drive_count
 }
 func (self class) GetDriveName(idx int64) String.Readable { //gd:DirAccess.get_drive_name
 	var r_ret = noescape.CallStatic[gdextension.String](methods.get_drive_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+func (self class) GetDriveLabel(idx int64) String.Readable { //gd:DirAccess.get_drive_label
+	var r_ret = noescape.CallStatic[gdextension.String](methods.get_drive_label, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

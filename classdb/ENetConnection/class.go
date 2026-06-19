@@ -414,7 +414,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.ENetConnection{gdclass.NewENetConnection(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

@@ -40,15 +40,13 @@ To add a translatable string associated with a context, plural, comment, or sour
 
 	package main
 
-	func ExampleEditorTranslationParserPlugin() {
-		ret := [][]string{}
-		// This will add a message with msgid "Test 1", msgctxt "context", msgid_plural "test 1 plurals", and comment "test 1 comment".
-		ret = append(ret, []string{"Test 1", "context", "test 1 plurals", "test 1 comment"})
-		// This will add a message with msgid "A test without context" and msgid_plural "plurals".
-		ret = append(ret, []string{"A test without context", "", "plurals"})
-		// This will add a message with msgid "Only with context" and msgctxt "a friendly context".
-		ret = append(ret, []string{"Only with context", "a friendly context"})
-		_ = ret
+	func ExampleEditorTranslationParserParse(ret *[][]string) {
+		// Adds msgid "Test 1", msgctxt "context", msgid_plural "test 1 plurals", comment "test 1 comment", source line "7".
+		*ret = append(*ret, []string{"Test 1", "context", "test 1 plurals", "test 1 comment", "7"})
+		// Adds msgid "A test without context" and msgid_plural "plurals".
+		*ret = append(*ret, []string{"A test without context", "", "plurals"})
+		// Adds msgid "Only with context" and msgctxt "a friendly context".
+		*ret = append(*ret, []string{"Only with context", "a friendly context"})
 	}
 
 Note: If you override parsing logic for standard script types (GDScript, C#, etc.), it would be better to load the path argument using [ResourceLoader.Load]. This is because built-in scripts are loaded as [Resource] type, not [FileAccess] type. For example:
@@ -78,8 +76,11 @@ Note: If you override parsing logic for standard script types (GDScript, C#, etc
 		return []string{"gd"}
 	}
 
+Alternatively, the plugin can directly modify the final list of strings, by implementing [CustomizeStrings].
+
 To use [EditorTranslationParserPlugin], register it using the [EditorPlugin.AddTranslationParserPlugin] method first.
 
+[CustomizeStrings]: https://pkg.go.dev/graphics.gd/classdb/EditorTranslationParserPlugin#Interface
 [EditorPlugin.AddTranslationParserPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin#Instance.AddTranslationParserPlugin
 [EditorTranslationParserPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorTranslationParserPlugin
 [FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
@@ -203,6 +204,36 @@ type Interface interface {
 	ParseFile(path string) [][]string
 	// Gets the list of file extensions to associate with this parser, e.g. ["csv"].
 	GetRecognizedExtensions() []string
+	// Called after parsing all files. You can modify the 'strings' array to add or remove entries from the final list of strings, then return it after modifications. Each entry is a []string like explained in the [EditorTranslationParserPlugin]'s description.
+	//
+	//
+	//
+	// @tool
+	//
+	// extends EditorTranslationParserPlugin
+	//
+	//
+	//
+	// func _customize_strings(strings):
+	//
+	// 	# Add new string.
+	//
+	// 	strings.append(["Test 1", "context", "test 1 plurals", "test 1 comment"])
+	//
+	//
+	//
+	// 	# Remove all strings that begin with $.
+	//
+	// 	strings = strings.filter(func(s): return not s[0].begins_with("$"))
+	//
+	//
+	//
+	// 	return strings
+	//
+	//
+	//
+	// [EditorTranslationParserPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorTranslationParserPlugin
+	CustomizeStrings(strings [][]string) [][]string
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -214,6 +245,9 @@ func (self implementation) ParseFile(path string) (_ [][]string) {
 	return
 }
 func (self implementation) GetRecognizedExtensions() (_ []string) {
+	return
+}
+func (self implementation) CustomizeStrings(strings [][]string) (_ [][]string) {
 	return
 }
 
@@ -248,6 +282,52 @@ func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []str
 			return
 		}
 		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Called after parsing all files. You can modify the 'strings' array to add or remove entries from the final list of strings, then return it after modifications. Each entry is a []string like explained in the [EditorTranslationParserPlugin]'s description.
+
+	package main
+
+	import (
+		"strings"
+
+		"graphics.gd/classdb/EditorTranslationParserPlugin"
+	)
+
+	type editorTranslationParserCustomizeStrings struct {
+		EditorTranslationParserPlugin.Extension[editorTranslationParserCustomizeStrings]
+	}
+
+	func (n editorTranslationParserCustomizeStrings) CustomizeStrings(list [][]string) [][]string {
+		// Add new string.
+		list = append(list, []string{"Test 1", "context", "test 1 plurals", "test 1 comment"})
+
+		// Remove all strings that begin with $.
+		var filtered [][]string
+		for _, s := range list {
+			if len(s) > 0 && !strings.HasPrefix(s[0], "$") {
+				filtered = append(filtered, s)
+			}
+		}
+		return filtered
+	}
+
+[EditorTranslationParserPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorTranslationParserPlugin
+*/
+func (Instance) _customize_strings(impl func(ptr gdclass.Receiver, strings [][]string) [][]string) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var strings = Array.Through(gd.ArrayProxy[Packed.Strings]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0)))))
+		defer pointers.End(gd.InternalArray(strings))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, gd.ArrayAs[[][]string](gd.InternalArray(strings)))
+		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Packed.Strings]](ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
 
@@ -289,7 +369,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.EditorTranslationParserPlugin{gdclass.NewEditorTranslationParserPlugin(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -319,6 +398,20 @@ func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.S
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
+func (class) _customize_strings(impl func(ptr gdclass.Receiver, strings Array.Contains[Packed.Strings]) Array.Contains[Packed.Strings]) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var strings = Array.Through(gd.ArrayProxy[Packed.Strings]{}, pointers.Pack(pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0)))))
+		defer pointers.End(gd.InternalArray(strings))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, strings)
+		ptr, ok := pointers.End(gd.InternalArray(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeReplaceArray(p_back, ptr)
+	}
+}
 
 func (o class) AsEditorTranslationParserPlugin() Advanced         { return Advanced(o) }
 func (o Instance) AsEditorTranslationParserPlugin() Instance      { return o }
@@ -333,6 +426,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._parse_file)
 	case "_get_recognized_extensions":
 		return reflect.ValueOf(self._get_recognized_extensions)
+	case "_customize_strings":
+		return reflect.ValueOf(self._customize_strings)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -344,6 +439,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._parse_file)
 	case "_get_recognized_extensions":
 		return reflect.ValueOf(self._get_recognized_extensions)
+	case "_customize_strings":
+		return reflect.ValueOf(self._customize_strings)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

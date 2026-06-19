@@ -1158,7 +1158,7 @@ Emitted when [CurrentAnimation] changes.
 
 [CurrentAnimation]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.CurrentAnimation
 */
-func (self Instance) OnCurrentAnimationChanged(cb func(name string), flags ...Signal.Flags) Instance {
+func (self Instance) OnCurrentAnimationChanged(cb func(anim_name string), flags ...Signal.Flags) Instance {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag

@@ -114,6 +114,8 @@ var methods struct {
 	get_fallback_image_quality         gdextension.MethodForClass `hash:"1740695150"`
 	set_root_node_mode                 gdextension.MethodForClass `hash:"463633402"`
 	get_root_node_mode                 gdextension.MethodForClass `hash:"948057992"`
+	set_texture_map_mode               gdextension.MethodForClass `hash:"3144426102"`
+	get_texture_map_mode               gdextension.MethodForClass `hash:"2113256994"`
 	set_visibility_mode                gdextension.MethodForClass `hash:"2803579218"`
 	get_visibility_mode                gdextension.MethodForClass `hash:"3885445962"`
 	append_from_file                   gdextension.MethodForClass `hash:"866380864"`
@@ -360,7 +362,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.GLTFDocument{gdclass.NewGLTFDocument(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -444,6 +445,21 @@ func (self Instance) SetRootNodeMode(value RootNodeMode) Instance { //gd:GLTFDoc
 }
 
 /*
+How to handle texture maps during import. The default and recommended value is [TextureMapModeRemapToStandardMaterial], which automatically remaps from glTF's flexible texture map system to the more specific texture map slots in Godot's [StandardMaterial3D] class. Alternatively, [TextureMapModeDoNotRemap] can be used to preserve the original texture maps from the glTF file, which may be desirable if using the glTF file with custom shaders, but may not display correctly with Godot's built-in materials.
+
+[StandardMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/StandardMaterial3D
+*/
+func (self Instance) TextureMapMode() TextureMapMode { //gd:GLTFDocument.texture_map_mode
+	return TextureMapMode(class(self).GetTextureMapMode())
+}
+
+// SetTextureMapMode sets the property returned by [GetTextureMapMode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetTextureMapMode(value TextureMapMode) Instance { //gd:GLTFDocument.texture_map_mode
+	class(self).SetTextureMapMode(value)
+	return self
+}
+
+/*
 How to deal with node visibility during export. This setting does nothing if all nodes are visible. The default and recommended value is [VisibilityModeIncludeRequired], which uses the KHR_node_visibility extension.
 */
 func (self Instance) VisibilityMode() VisibilityMode { //gd:GLTFDocument.visibility_mode
@@ -493,6 +509,14 @@ func (self class) SetRootNodeMode(root_node_mode RootNodeMode) { //gd:GLTFDocume
 }
 func (self class) GetRootNodeMode() RootNodeMode { //gd:GLTFDocument.get_root_node_mode
 	var r_ret = jumponly.Call[RootNodeMode](gd.ObjectChecked(self.AsObject()), methods.get_root_node_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetTextureMapMode(texture_map_mode TextureMapMode) { //gd:GLTFDocument.set_texture_map_mode
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_map_mode, 0|(gdextension.SizeInt<<4), &struct{ texture_map_mode TextureMapMode }{texture_map_mode})
+}
+func (self class) GetTextureMapMode() TextureMapMode { //gd:GLTFDocument.get_texture_map_mode
+	var r_ret = noescape.Call[TextureMapMode](gd.ObjectChecked(self.AsObject()), methods.get_texture_map_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -626,6 +650,17 @@ const (
 	RootNodeModeMultiRoot RootNodeMode = 2
 )
 
+type TextureMapMode int64 //gd:GLTFDocument.TextureMapMode
+
+const (
+	// Import the texture maps in the glTF file as they are, without trying to fit them into specific texture slots suitable for Godot's built-in materials. This may be desirable if using the glTF file with custom shaders, but may not display correctly with Godot's built-in materials. This is equivalent to the behavior in Godot 4.6 and earlier.
+	TextureMapModeDoNotRemap TextureMapMode = 0
+	// Import the texture maps in the glTF file remapped to the most suitable texture slots based on Godot's [StandardMaterial3D] class. This is the default behavior.
+	//
+	// [StandardMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/StandardMaterial3D
+	TextureMapModeRemapToStandardMaterial TextureMapMode = 1
+)
+
 type VisibilityMode int64 //gd:GLTFDocument.VisibilityMode
 
 const (
@@ -635,4 +670,35 @@ const (
 	VisibilityModeIncludeOptional VisibilityMode = 1
 	// If the scene contains any non-visible nodes, do not include them in the export. This is the same as the behavior in Godot 4.4 and earlier. Downside: Invisible nodes will not exist in the exported file.
 	VisibilityModeExclude VisibilityMode = 2
+)
+
+type ImportFlags int64 //gd:GLTFDocument.ImportFlags
+
+const (
+	// If true, generate vertex tangents using [Mikktspace] if the input meshes don't have tangent data. When possible, it's recommended to let the 3D modeling software generate tangents on export instead of relying on this option. Tangents are required for correct display of normal and height maps, along with any material/shader features that require tangents.
+	//
+	// If you don't need material features that require tangents, disabling this can reduce output file size and speed up importing if the source 3D file doesn't contain tangents.
+	//
+	// [Mikktspace]: http://www.mikktspace.com/
+	ImportFlagGenerateTangentArrays ImportFlags = 8
+	// If checked, use named [Skin]s for animation. The [MeshInstance3D] node contains 3 properties of relevance here: a skeleton node path pointing to the [Skeleton3D] node (usually ..), a mesh, and a skin:
+	//
+	// - The [Skeleton3D] node contains a list of bones with names, their pose and rest, a name, and a parent bone.
+	//
+	// - The mesh is all of the raw vertex data needed to display a mesh. In terms of the mesh, it knows how vertices are weight-painted and uses some internal numbering often imported from 3D modeling software.
+	//
+	// - The skin contains the information necessary to bind this mesh onto this Skeleton3D. For each of the internal bone IDs chosen by the 3D modeling software, it contains two things. Firstly, a matrix known as the Bind Pose Matrix, Inverse Bind Matrix, or IBM for short. Secondly, the [Skin] contains each bone's name (if this flag is enabled), or the bone's index within the [Skeleton3D] list (if this flag is disabled).
+	//
+	// Together, this information is enough to tell Godot how to use the bone poses in the [Skeleton3D] node to render the mesh from each [MeshInstance3D]. Note that each [MeshInstance3D] may share binds, as is common in models exported from Blender, or each [MeshInstance3D] may use a separate [Skin] object, as is common in models exported from other tools such as Maya.
+	//
+	// [MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+	// [Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
+	// [Skin]: https://pkg.go.dev/graphics.gd/classdb/Skin
+	ImportFlagUseNamedSkinBinds ImportFlags = 16
+	// Ignore meshes and materials on import. When importing a scene as an [AnimationLibrary], this flag is always enabled.
+	//
+	// [AnimationLibrary]: https://pkg.go.dev/graphics.gd/classdb/AnimationLibrary
+	ImportFlagDiscardMeshesAndMaterials ImportFlags = 32
+	// If true, mesh compression will not be used. Consider enabling if you notice blocky artifacts in your mesh normals or UVs, or if you have meshes that are larger than a few thousand meters in each direction.
+	ImportFlagForceDisableMeshCompression ImportFlags = 64
 )

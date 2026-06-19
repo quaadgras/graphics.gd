@@ -230,7 +230,7 @@ func New() Instance {
 }
 
 /*
-If true, the container will becomes folded and will hide all its children.
+If true, the container will become folded and will hide all its children.
 */
 func (self Instance) Folded() bool { //gd:FoldableContainer.folded
 	return bool(class(self).IsFolded())

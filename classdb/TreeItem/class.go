@@ -131,6 +131,8 @@ var methods struct {
 	get_text_direction                        gdextension.MethodForClass `hash:"4235602388"`
 	set_autowrap_mode                         gdextension.MethodForClass `hash:"3633006561"`
 	get_autowrap_mode                         gdextension.MethodForClass `hash:"2902757236"`
+	set_autowrap_trim_flags                   gdextension.MethodForClass `hash:"2186029660"`
+	get_autowrap_trim_flags                   gdextension.MethodForClass `hash:"3513056523"`
 	set_text_overrun_behavior                 gdextension.MethodForClass `hash:"1940772195"`
 	get_text_overrun_behavior                 gdextension.MethodForClass `hash:"3782727860"`
 	set_structured_text_bidi_override         gdextension.MethodForClass `hash:"868756907"`
@@ -175,7 +177,7 @@ var methods struct {
 	set_selectable                            gdextension.MethodForClass `hash:"300928843"`
 	is_selectable                             gdextension.MethodForClass `hash:"1116898809"`
 	is_selected                               gdextension.MethodForClass `hash:"3067735520"`
-	select_                                   gdextension.MethodForClass `hash:"1286410249"`
+	select_                                   gdextension.MethodForClass `hash:"972357352"`
 	deselect                                  gdextension.MethodForClass `hash:"1286410249"`
 	set_editable                              gdextension.MethodForClass `hash:"300928843"`
 	is_editable                               gdextension.MethodForClass `hash:"3067735520"`
@@ -214,6 +216,8 @@ var methods struct {
 	get_expand_right                          gdextension.MethodForClass `hash:"1116898809"`
 	set_disable_folding                       gdextension.MethodForClass `hash:"2586408642"`
 	is_folding_disabled                       gdextension.MethodForClass `hash:"36873697"`
+	set_accept_children                       gdextension.MethodForClass `hash:"2586408642"`
+	is_accepting_children                     gdextension.MethodForClass `hash:"36873697"`
 	create_child                              gdextension.MethodForClass `hash:"954243986"`
 	add_child                                 gdextension.MethodForClass `hash:"1819951137"`
 	remove_child                              gdextension.MethodForClass `hash:"1819951137"`
@@ -443,6 +447,23 @@ Returns the text autowrap mode in the given 'column'. By default it is [Textserv
 */
 func (self Instance) GetAutowrapMode(column int) TextServer.AutowrapMode { //gd:TreeItem.get_autowrap_mode
 	return TextServer.AutowrapMode(Advanced(self).GetAutowrapMode(int64(column)))
+}
+
+/*
+Sets the autowrap trim flags for the given 'column'. These flags control whether leading and trailing spaces are trimmed on wrapped lines. Set to 0 to disable all trimming.
+
+Returns 'self' to enable method chaining.
+*/
+func (self Instance) SetAutowrapTrimFlags(column int, flags TextServer.LineBreakFlag) Instance { //gd:TreeItem.set_autowrap_trim_flags
+	Advanced(self).SetAutowrapTrimFlags(int64(column), flags)
+	return self
+}
+
+/*
+Returns the autowrap trim flags for the given 'column'. By default, both [Textserver.BreakTrimStartEdgeSpaces] and [Textserver.BreakTrimEndEdgeSpaces] are enabled.
+*/
+func (self Instance) GetAutowrapTrimFlags(column int) TextServer.LineBreakFlag { //gd:TreeItem.get_autowrap_trim_flags
+	return TextServer.LineBreakFlag(Advanced(self).GetAutowrapTrimFlags(int64(column)))
 }
 
 /*
@@ -721,9 +742,12 @@ Sets the given column's custom draw callback. Use an empty func (Callable()) to 
 
 The 'callback' should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2.PositionSize].
 
+To draw custom content over the native style, please use [Tree.GetCustomDrawingCanvasItem].
+
 Returns 'self' to enable method chaining.
 
 [Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
+[Tree.GetCustomDrawingCanvasItem]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.GetCustomDrawingCanvasItem
 [TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
 */
 func (self Instance) SetCustomDrawCallback(column int, callback func(item Instance, rect Rect2.PositionSize)) Instance { //gd:TreeItem.set_custom_draw_callback
@@ -838,10 +862,23 @@ func (self Instance) IsSelected(column int) bool { //gd:TreeItem.is_selected
 }
 
 /*
-Selects the given 'column'.
+Selects the given 'column'. If 'set_as_cursor' is true, the [Tree]'s cursor will be moved to this item (only matters if [Tree.SelectMode] is set to [Tree.SelectMulti]).
+
+[Tree]: https://pkg.go.dev/graphics.gd/classdb/Tree
+[Tree.SelectMode]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.SelectMode
 */
 func (self Instance) Select(column int) { //gd:TreeItem.select
-	Advanced(self).Select(int64(column))
+	Advanced(self).Select(int64(column), true)
+}
+
+/*
+Selects the given 'column'. If 'set_as_cursor' is true, the [Tree]'s cursor will be moved to this item (only matters if [Tree.SelectMode] is set to [Tree.SelectMulti]).
+
+[Tree]: https://pkg.go.dev/graphics.gd/classdb/Tree
+[Tree.SelectMode]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.SelectMode
+*/
+func (self MoreArgs) Select(column int, set_as_cursor bool) { //gd:TreeItem.select
+	Advanced(self).Select(int64(column), set_as_cursor)
 }
 
 /*
@@ -1177,6 +1214,27 @@ Returns true if expand_right is set.
 */
 func (self Instance) GetExpandRight(column int) bool { //gd:TreeItem.get_expand_right
 	return bool(Advanced(self).GetExpandRight(int64(column)))
+}
+
+/*
+Sets [TreeItem]'s ability to accept children.
+
+Returns 'self' to enable method chaining.
+
+[TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
+*/
+func (self Instance) SetAcceptChildren(allowed bool) Instance { //gd:TreeItem.set_accept_children
+	Advanced(self).SetAcceptChildren(allowed)
+	return self
+}
+
+/*
+Returns true if this [TreeItem] is allowed to accept children.
+
+[TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
+*/
+func (self Instance) IsAcceptingChildren() bool { //gd:TreeItem.is_accepting_children
+	return bool(Advanced(self).IsAcceptingChildren())
 }
 
 /*
@@ -1591,6 +1649,17 @@ func (self class) GetAutowrapMode(column int64) TextServer.AutowrapMode { //gd:T
 	var ret = r_ret
 	return ret
 }
+func (self class) SetAutowrapTrimFlags(column int64, flags TextServer.LineBreakFlag) { //gd:TreeItem.set_autowrap_trim_flags
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_trim_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		column int64
+		flags  TextServer.LineBreakFlag
+	}{column, flags})
+}
+func (self class) GetAutowrapTrimFlags(column int64) TextServer.LineBreakFlag { //gd:TreeItem.get_autowrap_trim_flags
+	var r_ret = noescape.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_trim_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
+	var ret = r_ret
+	return ret
+}
 func (self class) SetTextOverrunBehavior(column int64, overrun_behavior TextServer.OverrunBehavior) { //gd:TreeItem.set_text_overrun_behavior
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		column           int64
@@ -1822,8 +1891,11 @@ func (self class) IsSelected(column int64) bool { //gd:TreeItem.is_selected
 	var ret = r_ret
 	return ret
 }
-func (self class) Select(column int64) { //gd:TreeItem.select_
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_, 0|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
+func (self class) Select(column int64, set_as_cursor bool) { //gd:TreeItem.select_
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+		column        int64
+		set_as_cursor bool
+	}{column, set_as_cursor})
 }
 func (self class) Deselect(column int64) { //gd:TreeItem.deselect
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect, 0|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
@@ -2046,6 +2118,14 @@ func (self class) SetDisableFolding(disable bool) { //gd:TreeItem.set_disable_fo
 }
 func (self class) IsFoldingDisabled() bool { //gd:TreeItem.is_folding_disabled
 	var r_ret = jumponly.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_folding_disabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetAcceptChildren(allowed bool) { //gd:TreeItem.set_accept_children
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accept_children, 0|(gdextension.SizeBool<<4), &struct{ allowed bool }{allowed})
+}
+func (self class) IsAcceptingChildren() bool { //gd:TreeItem.is_accepting_children
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_accepting_children, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,7 @@
 /*
 The base [Resource] for every audio effect. In the editor, an audio effect can be added to the current bus layout through the Audio panel. At run-time, it is also possible to manipulate audio effects through [AudioServer.AddBusEffect], [AudioServer.RemoveBusEffect], and [AudioServer.GetBusEffect].
 
-When applied on a bus, an audio effect creates a corresponding [AudioEffectInstance]. The instance is directly responsible for manipulating the sound, based on the original audio effect's properties.
+When applied on a bus, an audio effect creates a corresponding [AudioEffectInstance]. The instance is directly responsible for manipulating sound, based on the original audio effect's properties.
 
 [AudioEffectInstance]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectInstance
 [AudioServer.AddBusEffect]: https://pkg.go.dev/graphics.gd/classdb/AudioServer#AddBusEffect
@@ -244,7 +244,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.AudioEffect{gdclass.NewAudioEffect(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

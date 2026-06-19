@@ -99,31 +99,32 @@ type Instance [1]gdclass.OpenXRSpatialEntityExtension
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	supports_capability          gdextension.MethodForClass `hash:"1940837202"`
-	supports_component_type      gdextension.MethodForClass `hash:"26842779"`
-	create_spatial_context       gdextension.MethodForClass `hash:"1874506473"`
-	get_spatial_context_ready    gdextension.MethodForClass `hash:"4155700596"`
-	free_spatial_context         gdextension.MethodForClass `hash:"2722037293"`
-	get_spatial_context_handle   gdextension.MethodForClass `hash:"2198884583"`
-	discover_spatial_entities    gdextension.MethodForClass `hash:"2252833536"`
-	update_spatial_entities      gdextension.MethodForClass `hash:"3446086438"`
-	free_spatial_snapshot        gdextension.MethodForClass `hash:"2722037293"`
-	get_spatial_snapshot_handle  gdextension.MethodForClass `hash:"2198884583"`
-	get_spatial_snapshot_context gdextension.MethodForClass `hash:"3814569979"`
-	query_snapshot               gdextension.MethodForClass `hash:"641015484"`
-	get_string                   gdextension.MethodForClass `hash:"1464764419"`
-	get_uint8_buffer             gdextension.MethodForClass `hash:"3570600051"`
-	get_uint16_buffer            gdextension.MethodForClass `hash:"3393655756"`
-	get_uint32_buffer            gdextension.MethodForClass `hash:"3393655756"`
-	get_float_buffer             gdextension.MethodForClass `hash:"2313216651"`
-	get_vector2_buffer           gdextension.MethodForClass `hash:"110850971"`
-	get_vector3_buffer           gdextension.MethodForClass `hash:"1166453791"`
-	find_spatial_entity          gdextension.MethodForClass `hash:"937000113"`
-	add_spatial_entity           gdextension.MethodForClass `hash:"2256026069"`
-	make_spatial_entity          gdextension.MethodForClass `hash:"2233757277"`
-	get_spatial_entity_id        gdextension.MethodForClass `hash:"2198884583"`
-	get_spatial_entity_context   gdextension.MethodForClass `hash:"3814569979"`
-	free_spatial_entity          gdextension.MethodForClass `hash:"2722037293"`
+	supports_capability                           gdextension.MethodForClass `hash:"1940837202"`
+	supports_component_type                       gdextension.MethodForClass `hash:"26842779"`
+	create_spatial_context                        gdextension.MethodForClass `hash:"1874506473"`
+	get_spatial_context_ready                     gdextension.MethodForClass `hash:"4155700596"`
+	free_spatial_context                          gdextension.MethodForClass `hash:"2722037293"`
+	get_spatial_context_handle                    gdextension.MethodForClass `hash:"2198884583"`
+	discover_spatial_entities_with_component_data gdextension.MethodForClass `hash:"1830928590"`
+	discover_spatial_entities                     gdextension.MethodForClass `hash:"2252833536"`
+	update_spatial_entities                       gdextension.MethodForClass `hash:"3446086438"`
+	free_spatial_snapshot                         gdextension.MethodForClass `hash:"2722037293"`
+	get_spatial_snapshot_handle                   gdextension.MethodForClass `hash:"2198884583"`
+	get_spatial_snapshot_context                  gdextension.MethodForClass `hash:"3814569979"`
+	query_snapshot                                gdextension.MethodForClass `hash:"641015484"`
+	get_string                                    gdextension.MethodForClass `hash:"1464764419"`
+	get_uint8_buffer                              gdextension.MethodForClass `hash:"3570600051"`
+	get_uint16_buffer                             gdextension.MethodForClass `hash:"3393655756"`
+	get_uint32_buffer                             gdextension.MethodForClass `hash:"3393655756"`
+	get_float_buffer                              gdextension.MethodForClass `hash:"2313216651"`
+	get_vector2_buffer                            gdextension.MethodForClass `hash:"110850971"`
+	get_vector3_buffer                            gdextension.MethodForClass `hash:"1166453791"`
+	find_spatial_entity                           gdextension.MethodForClass `hash:"937000113"`
+	add_spatial_entity                            gdextension.MethodForClass `hash:"2256026069"`
+	make_spatial_entity                           gdextension.MethodForClass `hash:"2233757277"`
+	get_spatial_entity_id                         gdextension.MethodForClass `hash:"2198884583"`
+	get_spatial_entity_context                    gdextension.MethodForClass `hash:"3814569979"`
+	free_spatial_entity                           gdextension.MethodForClass `hash:"2722037293"`
 }
 
 func init() {
@@ -220,6 +221,24 @@ Note: This method is intended to be used from GDExtensions that implement spatia
 */
 func (self Instance) GetSpatialContextHandle(spatial_context RID.SpatialContext) int { //gd:OpenXRSpatialEntityExtension.get_spatial_context_handle
 	return int(int(Advanced(self).GetSpatialContextHandle(RID.Any(spatial_context))))
+}
+
+/*
+Convenience method when the caller only has an slice of [OpenXRSpatialComponentData] and needs to discover spatial entities.
+
+[OpenXRSpatialComponentData]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialComponentData
+*/
+func (self Instance) DiscoverSpatialEntitiesWithComponentData(spatial_context RID.SpatialContext, component_data []OpenXRSpatialComponentData.Instance) OpenXRFutureResult.Instance { //gd:OpenXRSpatialEntityExtension.discover_spatial_entities_with_component_data
+	return OpenXRFutureResult.Instance(Advanced(self).DiscoverSpatialEntitiesWithComponentData(RID.Any(spatial_context), gd.ArrayFromSlice[Array.Contains[[1]gdclass.OpenXRSpatialComponentData]](component_data), [1]OpenXRStructureBase.Instance{}[0], Callable.New(Callable.Nil)))
+}
+
+/*
+Convenience method when the caller only has an slice of [OpenXRSpatialComponentData] and needs to discover spatial entities.
+
+[OpenXRSpatialComponentData]: https://pkg.go.dev/graphics.gd/classdb/OpenXRSpatialComponentData
+*/
+func (self MoreArgs) DiscoverSpatialEntitiesWithComponentData(spatial_context RID.SpatialContext, component_data []OpenXRSpatialComponentData.Instance, next OpenXRStructureBase.Instance, user_callback Callable.Function) OpenXRFutureResult.Instance { //gd:OpenXRSpatialEntityExtension.discover_spatial_entities_with_component_data
+	return OpenXRFutureResult.Instance(Advanced(self).DiscoverSpatialEntitiesWithComponentData(RID.Any(spatial_context), gd.ArrayFromSlice[Array.Contains[[1]gdclass.OpenXRSpatialComponentData]](component_data), next, Callable.New(user_callback)))
 }
 
 /*
@@ -486,6 +505,16 @@ func (self class) FreeSpatialContext(spatial_context RID.Any) { //gd:OpenXRSpati
 func (self class) GetSpatialContextHandle(spatial_context RID.Any) int64 { //gd:OpenXRSpatialEntityExtension.get_spatial_context_handle
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_spatial_context_handle, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ spatial_context RID.Any }{spatial_context})
 	var ret = r_ret
+	return ret
+}
+func (self class) DiscoverSpatialEntitiesWithComponentData(spatial_context RID.Any, component_data Array.Contains[[1]gdclass.OpenXRSpatialComponentData], next [1]gdclass.OpenXRStructureBase, user_callback Callable.Function) [1]gdclass.OpenXRFutureResult { //gd:OpenXRSpatialEntityExtension.discover_spatial_entities_with_component_data
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.discover_spatial_entities_with_component_data, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeCallable<<16), &struct {
+		spatial_context RID.Any
+		component_data  gdextension.Array
+		next            gdextension.Object
+		user_callback   gdextension.Callable
+	}{spatial_context, pointers.Get(gd.InternalArray(component_data)), gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRStructureBase(next[0])[0])), pointers.Get(gd.InternalCallable(user_callback))})
+	var ret = [1]gdclass.OpenXRFutureResult{gdclass.NewOpenXRFutureResult(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret
 }
 func (self class) DiscoverSpatialEntities(spatial_context RID.Any, component_types Packed.Array[int64], next [1]gdclass.OpenXRStructureBase, user_callback Callable.Function) [1]gdclass.OpenXRFutureResult { //gd:OpenXRSpatialEntityExtension.discover_spatial_entities

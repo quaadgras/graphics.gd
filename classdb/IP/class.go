@@ -314,6 +314,7 @@ func (self class) ClearCache(hostname String.Readable) { //gd:IP.clear_cache
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.clear_cache, 0|(gdextension.SizeString<<4), &struct{ hostname gdextension.String }{pointers.Get(gd.InternalString(hostname))})
 }
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:

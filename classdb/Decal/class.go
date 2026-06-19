@@ -276,12 +276,19 @@ Note: Unlike [BaseMaterial3D] whose filter mode can be adjusted on a per-materia
 
 Note: Setting this texture alone will not result in a visible decal, as [TextureAlbedo] must also be set. To create an ORM-only decal, load an albedo texture into [TextureAlbedo] and set [AlbedoMix] to 0.0. The albedo texture's alpha channel will be used to determine where the underlying surface's ORM map should be overridden (and its intensity).
 
+Note: Due to technical limitations, modifying the underlying surface's roughness using [TextureOrm] does not affect screen-space reflections ([Environment.SsrEnabled]), reflections from [VoxelGI], and reflections from SDFGI ([Environment.SdfgiEnabled]). Only reflections from [ReflectionProbe]s are affected.
+
 [AlbedoMix]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.AlbedoMix
 [BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
 [Decal]: https://pkg.go.dev/graphics.gd/classdb/Decal
+[Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
+[Environment.SsrEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SsrEnabled
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 [TextureAlbedo]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureAlbedo
+[TextureOrm]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureOrm
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
 func (self Instance) TextureOrm() Texture2D.Instance { //gd:Decal.texture_orm
 	return Texture2D.Instance(class(self).GetTexture(2))

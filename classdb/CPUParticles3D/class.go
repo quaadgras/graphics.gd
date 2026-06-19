@@ -141,7 +141,7 @@ var methods struct {
 	set_seed                       gdextension.MethodForClass `hash:"1286410249"`
 	get_seed                       gdextension.MethodForClass `hash:"3905245786"`
 	restart                        gdextension.MethodForClass `hash:"107499316"`
-	request_particles_process      gdextension.MethodForClass `hash:"373806689"`
+	request_particles_process      gdextension.MethodForClass `hash:"66938510"`
 	capture_aabb                   gdextension.MethodForClass `hash:"1068685055"`
 	set_direction                  gdextension.MethodForClass `hash:"3460891852"`
 	get_direction                  gdextension.MethodForClass `hash:"3360562783"`
@@ -246,13 +246,23 @@ func (self MoreArgs) Restart(keep_seed bool) { //gd:CPUParticles3D.restart
 /*
 Requests the particles to process for extra process time during a single frame.
 
-Useful for particle playback, if used in combination with [UseFixedSeed] or by calling [Restart] with parameter keep_seed set to true.
+'process_time' defines the time that the particles will process while emitting is on. 'process_time_residual' defines the time that particles will process with emitting turned off for the simulation. When combined with [SpeedScale] set to 0.0, this is useful to be able to seek a particle system timeline.
 
-[Restart]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D#Instance.Restart
-[UseFixedSeed]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D#Instance.UseFixedSeed
+[SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D#Instance.SpeedScale
 */
 func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:CPUParticles3D.request_particles_process
-	Advanced(self).RequestParticlesProcess(float64(process_time))
+	Advanced(self).RequestParticlesProcess(float64(process_time), float64(0.0))
+}
+
+/*
+Requests the particles to process for extra process time during a single frame.
+
+'process_time' defines the time that the particles will process while emitting is on. 'process_time_residual' defines the time that particles will process with emitting turned off for the simulation. When combined with [SpeedScale] set to 0.0, this is useful to be able to seek a particle system timeline.
+
+[SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D#Instance.SpeedScale
+*/
+func (self MoreArgs) RequestParticlesProcess(process_time Float.X, process_time_residual Float.X) { //gd:CPUParticles3D.request_particles_process
+	Advanced(self).RequestParticlesProcess(float64(process_time), float64(process_time_residual))
 }
 
 /*
@@ -1535,8 +1545,11 @@ func (self class) GetSeed() int64 { //gd:CPUParticles3D.get_seed
 func (self class) Restart(keep_seed bool) { //gd:CPUParticles3D.restart
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.restart, 0|(gdextension.SizeBool<<4), &struct{ keep_seed bool }{keep_seed})
 }
-func (self class) RequestParticlesProcess(process_time float64) { //gd:CPUParticles3D.request_particles_process
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4), &struct{ process_time float64 }{process_time})
+func (self class) RequestParticlesProcess(process_time float64, process_time_residual float64) { //gd:CPUParticles3D.request_particles_process
+	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
+		process_time          float64
+		process_time_residual float64
+	}{process_time, process_time_residual})
 }
 func (self class) CaptureAabb() AABB.PositionSize { //gd:CPUParticles3D.capture_aabb
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.capture_aabb, gdextension.SizeAABB, &struct{}{})

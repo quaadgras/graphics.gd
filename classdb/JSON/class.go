@@ -202,6 +202,8 @@ Warning: Non-finite numbers are not supported in JSON. Any occurrences of [@Gdsc
 
 Example output:
 
+	package main
+
 [Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 */
 func Stringify(data any, indent string, full_precision bool) string { //gd:JSON.stringify
@@ -221,6 +223,8 @@ The 'indent' parameter controls if and how something is indented; its contents w
 Warning: Non-finite numbers are not supported in JSON. Any occurrences of [@Gdscript.Inf] will be replaced with 1e99999, and negative [@Gdscript.Inf] will be replaced with -1e99999, but they will be interpreted correctly as infinity by most JSON parsers. [@Gdscript.Nan] will be replaced with null, and it will not be interpreted as NaN in JSON parsers. If you expect non-finite numbers, consider passing your data through [FromNative] first.
 
 Example output:
+
+	package main
 
 [Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 */
@@ -306,6 +310,14 @@ Converts a native engine type to a JSON-compliant value.
 By default, objects are ignored for security reasons, unless 'full_objects' is true.
 
 You can convert a native value to a JSON string like this:
+
+	package main
+
+	import "graphics.gd/classdb/JSON"
+
+	func encodeData(value any, fullObjects bool) string {
+		return JSON.Stringify(JSON.FromNative(value, fullObjects), "", false)
+	}
 */
 func FromNative(v any, full_objects bool) any { //gd:JSON.from_native
 	self := Instance{}
@@ -318,6 +330,14 @@ Converts a JSON-compliant value that was created with [FromNative] back to nativ
 By default, objects are ignored for security reasons, unless 'allow_objects' is true.
 
 You can convert a JSON string back to a native value like this:
+
+	package main
+
+	import "graphics.gd/classdb/JSON"
+
+	func decodeData(jsonString string, allowObjects bool) any {
+		return JSON.ToNative(JSON.ParseString(jsonString), allowObjects)
+	}
 */
 func ToNative(json any, allow_objects bool) any { //gd:JSON.to_native
 	self := Instance{}
@@ -362,7 +382,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.JSON{gdclass.NewJSON(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

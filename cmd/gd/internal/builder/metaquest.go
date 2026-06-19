@@ -204,8 +204,10 @@ var metaQuestVendorSo []byte
 // informational), but the config file itself MUST be packaged in the
 // .pck or Godot's GodotPlugin registration fails to wire the plugin
 // up, with:
-//   ERROR: Error loading GDExtension configuration file:
-//     'res://addons/godotopenxrvendors/plugin.gdextension'.
+//
+//	ERROR: Error loading GDExtension configuration file:
+//	  'res://addons/godotopenxrvendors/plugin.gdextension'.
+//
 // Drop this file into res://addons/godotopenxrvendors/ just before
 // `godot --export-release`, then clean up after.
 //

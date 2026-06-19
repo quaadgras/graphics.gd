@@ -24,16 +24,17 @@ Using [Search], you can find the pattern within the given text. If a pattern is 
 	package main
 
 	import (
+		"fmt"
+
 		"graphics.gd/classdb/RegEx"
 		"graphics.gd/classdb/RegExMatch"
 	)
 
 	func ExampleRegExSearch() {
-		var regex = RegEx.New()
-		regex.Compile(`\w-(\d+)`)
-		result := regex.Search("abc n-0123")
+		var regex = RegEx.CreateFromString(`\w-(\d+)`)
+		var result = regex.Search("abc n-0123")
 		if result != RegExMatch.Nil {
-			print(result.GetString()) // Would print n-0123
+			fmt.Println(result.GetString()) // Prints "n-0123"
 		}
 	}
 
@@ -44,16 +45,17 @@ This version of RegEx also supports named capturing groups, and the names can be
 	package main
 
 	import (
+		"fmt"
+
 		"graphics.gd/classdb/RegEx"
 		"graphics.gd/classdb/RegExMatch"
 	)
 
-	func ExampleRegExCapture() {
-		var regex = RegEx.New()
-		regex.Compile(`d(?<digit>[0-9]+)|x(?<digit>[0-9a-f]+)`)
-		result := regex.Search("the number is x2f")
+	func ExampleRegExNamedGroup() {
+		var regex = RegEx.CreateFromString("d(?<digit>[0-9]+)|x(?<digit>[0-9a-f]+)")
+		var result = regex.Search("the number is x2f")
 		if result != RegExMatch.Nil {
-			result.MoreArgs().GetString("digit") // Would print 2f
+			fmt.Println(result.MoreArgs().GetString("digit")) // Prints "2f"
 		}
 	}
 
@@ -62,14 +64,15 @@ If you need to process multiple results, [SearchAll] generates a list of all non
 	package main
 
 	import (
+		"fmt"
+
 		"graphics.gd/classdb/RegEx"
 	)
 
-	func ExampleRegExSearchAll() {
-		var regex = RegEx.New()
-		regex.Compile(`d(?<digit>[0-9]+)|x(?<digit>[0-9a-f]+)`)
-		for _, result := range regex.SearchAll("the numbers are d42 and x2f") {
-			result.MoreArgs().GetString("digit")
+	func ExampleRegExSearchAllNamed(regex RegEx.Instance) {
+		// Prints "01 03 0 3f 42"
+		for _, result := range regex.SearchAll("d01, d03, d0c, x3f and x42") {
+			fmt.Println(result.MoreArgs().GetString("digit"))
 		}
 	}
 
@@ -83,14 +86,13 @@ Example: Split a string using a RegEx:
 		"graphics.gd/classdb/RegEx"
 	)
 
-	func ExampleRegExSplit() {
-		var regex = RegEx.New()
-		regex.Compile(`\S+`) // Negated whitespace character class.
-		var results = []string{}
-		for _, result := range regex.SearchAll("One	 Two \n\tThree") {
+	func ExampleRegExSearchAll() {
+		var regex = RegEx.CreateFromString(`\S+`) // Negated whitespace character class.
+		var results []string
+		for _, result := range regex.SearchAll("One  Two \n\tThree") {
 			results = append(results, result.GetString())
 		}
-		fmt.Println(results)
+		fmt.Println(results) // Prints ["One" "Two" "Three"]
 	}
 
 Note: Godot's regex implementation is based on the [PCRE2] library. You can view the full pattern reference [here].
@@ -407,7 +409,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.RegEx{gdclass.NewRegEx(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }

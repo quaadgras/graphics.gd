@@ -98,8 +98,10 @@ type Instance [1]gdclass.Container
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	queue_sort        gdextension.MethodForClass `hash:"3218959716"`
-	fit_child_in_rect gdextension.MethodForClass `hash:"1993438598"`
+	queue_sort               gdextension.MethodForClass `hash:"3218959716"`
+	fit_child_in_rect        gdextension.MethodForClass `hash:"1993438598"`
+	set_accessibility_region gdextension.MethodForClass `hash:"2586408642"`
+	is_accessibility_region  gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -236,6 +238,21 @@ func New() Instance {
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
+
+/*
+If true, this container is marked as a region for accessibility. Use [Control.AccessibilityName] to give the region a descriptive name. Screen readers can navigate between regions using landmark navigation.
+
+[Control.AccessibilityName]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.AccessibilityName
+*/
+func (self Instance) AccessibilityRegion() bool { //gd:Container.accessibility_region
+	return bool(class(self).IsAccessibilityRegion())
+}
+
+// SetAccessibilityRegion sets the property returned by [IsAccessibilityRegion]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetAccessibilityRegion(value bool) Instance { //gd:Container.accessibility_region
+	class(self).SetAccessibilityRegion(value)
+	return self
+}
 func (class) _get_allowed_size_flags_horizontal(impl func(ptr gdclass.Receiver) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -269,6 +286,14 @@ func (self class) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSi
 		child gdextension.Object
 		rect  Rect2.PositionSize
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetControl(child[0])[0])), rect})
+}
+func (self class) SetAccessibilityRegion(region bool) { //gd:Container.set_accessibility_region
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_region, 0|(gdextension.SizeBool<<4), &struct{ region bool }{region})
+}
+func (self class) IsAccessibilityRegion() bool { //gd:Container.is_accessibility_region
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_accessibility_region, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
 }
 
 /*

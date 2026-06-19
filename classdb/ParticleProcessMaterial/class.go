@@ -122,6 +122,18 @@ var methods struct {
 	get_param_texture                   gdextension.MethodForClass `hash:"3489372978"`
 	set_color                           gdextension.MethodForClass `hash:"2920490490"`
 	get_color                           gdextension.MethodForClass `hash:"3444240500"`
+	set_use_scale_3d                    gdextension.MethodForClass `hash:"2586408642"`
+	is_using_scale_3d                   gdextension.MethodForClass `hash:"36873697"`
+	set_scale_3d_min                    gdextension.MethodForClass `hash:"3460891852"`
+	get_scale_3d_min                    gdextension.MethodForClass `hash:"3360562783"`
+	set_scale_3d_max                    gdextension.MethodForClass `hash:"3460891852"`
+	get_scale_3d_max                    gdextension.MethodForClass `hash:"3360562783"`
+	set_use_rotation_3d                 gdextension.MethodForClass `hash:"2586408642"`
+	is_using_rotation_3d                gdextension.MethodForClass `hash:"36873697"`
+	set_rotation_3d_min                 gdextension.MethodForClass `hash:"3460891852"`
+	get_rotation_3d_min                 gdextension.MethodForClass `hash:"3360562783"`
+	set_rotation_3d_max                 gdextension.MethodForClass `hash:"3460891852"`
+	get_rotation_3d_max                 gdextension.MethodForClass `hash:"3360562783"`
 	set_color_ramp                      gdextension.MethodForClass `hash:"4051416890"`
 	get_color_ramp                      gdextension.MethodForClass `hash:"3635182373"`
 	set_alpha_curve                     gdextension.MethodForClass `hash:"4051416890"`
@@ -200,6 +212,14 @@ var methods struct {
 	get_collision_friction              gdextension.MethodForClass `hash:"1740695150"`
 	set_collision_bounce                gdextension.MethodForClass `hash:"373806689"`
 	get_collision_bounce                gdextension.MethodForClass `hash:"1740695150"`
+	set_using_rotation_velocity_3d      gdextension.MethodForClass `hash:"2586408642"`
+	is_using_rotation_velocity_3d       gdextension.MethodForClass `hash:"36873697"`
+	set_rotation_velocity_3d_max        gdextension.MethodForClass `hash:"3460891852"`
+	get_rotation_velocity_3d_max        gdextension.MethodForClass `hash:"3360562783"`
+	set_rotation_velocity_3d_min        gdextension.MethodForClass `hash:"3460891852"`
+	get_rotation_velocity_3d_min        gdextension.MethodForClass `hash:"3360562783"`
+	set_rotation_velocity_3d_curve      gdextension.MethodForClass `hash:"4051416890"`
+	get_rotation_velocity_3d_curve      gdextension.MethodForClass `hash:"3635182373"`
 }
 
 func init() {
@@ -260,7 +280,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.ParticleProcessMaterial{gdclass.NewParticleProcessMaterial(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -331,6 +350,23 @@ func (self Instance) ParticleFlagDampingAsFriction() bool { //gd:ParticleProcess
 // SetParticleFlagDampingAsFriction sets the property returned by [GetParticleFlag]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetParticleFlagDampingAsFriction(value bool) Instance { //gd:ParticleProcessMaterial.particle_flag_damping_as_friction
 	class(self).SetParticleFlag(3, value)
+	return self
+}
+
+/*
+If true, particles will inherit the scale of the emitter.
+
+Note: This has no effect when [GPUParticles3D.LocalCoords] is true, since particles in local space are already affected by the emitter's scale.
+
+[GPUParticles3D.LocalCoords]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.LocalCoords
+*/
+func (self Instance) ParticleFlagInheritEmitterScale() bool { //gd:ParticleProcessMaterial.particle_flag_inherit_emitter_scale
+	return bool(class(self).GetParticleFlag(4))
+}
+
+// SetParticleFlagInheritEmitterScale sets the property returned by [GetParticleFlag]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetParticleFlagInheritEmitterScale(value bool) Instance { //gd:ParticleProcessMaterial.particle_flag_inherit_emitter_scale
+	class(self).SetParticleFlag(4, value)
 	return self
 }
 
@@ -599,6 +635,52 @@ func (self Instance) AngleCurve() Texture2D.Instance { //gd:ParticleProcessMater
 // SetAngleCurve sets the property returned by [GetParamTexture]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAngleCurve(value Texture2D.Instance) Instance { //gd:ParticleProcessMaterial.angle_curve
 	class(self).SetParamTexture(7, value)
+	return self
+}
+
+/*
+Enable the usage of [Rotation3dMin] and [Rotation3dMax].
+
+[Rotation3dMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.Rotation3dMax
+[Rotation3dMin]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.Rotation3dMin
+*/
+func (self Instance) UseRotation3d() bool { //gd:ParticleProcessMaterial.use_rotation_3d
+	return bool(class(self).IsUsingRotation3d())
+}
+
+// SetUseRotation3d sets the property returned by [IsUsingRotation3d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseRotation3d(value bool) Instance { //gd:ParticleProcessMaterial.use_rotation_3d
+	class(self).SetUseRotation3d(value)
+	return self
+}
+
+/*
+The minimum 3D orientation, in degrees. Works only in 3D and if [UseRotation3d] is enabled.
+
+[UseRotation3d]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.UseRotation3d
+*/
+func (self Instance) Rotation3dMin() Vector3.XYZ { //gd:ParticleProcessMaterial.rotation_3d_min
+	return Vector3.XYZ(class(self).GetRotation3dMin())
+}
+
+// SetRotation3dMin sets the property returned by [GetRotation3dMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotation3dMin(value Vector3.XYZ) Instance { //gd:ParticleProcessMaterial.rotation_3d_min
+	class(self).SetRotation3dMin(Vector3.XYZ(value))
+	return self
+}
+
+/*
+The maximum 3D orientation, in degrees. Works only in 3D and if [UseRotation3d] is enabled.
+
+[UseRotation3d]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.UseRotation3d
+*/
+func (self Instance) Rotation3dMax() Vector3.XYZ { //gd:ParticleProcessMaterial.rotation_3d_max
+	return Vector3.XYZ(class(self).GetRotation3dMax())
+}
+
+// SetRotation3dMax sets the property returned by [GetRotation3dMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotation3dMax(value Vector3.XYZ) Instance { //gd:ParticleProcessMaterial.rotation_3d_max
+	class(self).SetRotation3dMax(Vector3.XYZ(value))
 	return self
 }
 
@@ -982,6 +1064,64 @@ func (self Instance) SetVelocityLimitCurve(value Texture2D.Instance) Instance { 
 }
 
 /*
+Enable 3D rotation velocity.
+*/
+func (self Instance) UseRotationVelocity3d() bool { //gd:ParticleProcessMaterial.use_rotation_velocity_3d
+	return bool(class(self).IsUsingRotationVelocity3d())
+}
+
+// SetUseRotationVelocity3d sets the property returned by [IsUsingRotationVelocity3d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseRotationVelocity3d(value bool) Instance { //gd:ParticleProcessMaterial.use_rotation_velocity_3d
+	class(self).SetUsingRotationVelocity3d(value)
+	return self
+}
+
+/*
+Minimum 3D rotation velocity on the particle's local axis. Enable [UseRotationVelocity3d] to use this.
+
+[UseRotationVelocity3d]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.UseRotationVelocity3d
+*/
+func (self Instance) RotationVelocity3dMin() Vector3.XYZ { //gd:ParticleProcessMaterial.rotation_velocity_3d_min
+	return Vector3.XYZ(class(self).GetRotationVelocity3dMin())
+}
+
+// SetRotationVelocity3dMin sets the property returned by [GetRotationVelocity3dMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationVelocity3dMin(value Vector3.XYZ) Instance { //gd:ParticleProcessMaterial.rotation_velocity_3d_min
+	class(self).SetRotationVelocity3dMin(Vector3.XYZ(value))
+	return self
+}
+
+/*
+Maximum 3D rotation velocity on the particle's local axis. Enable [UseRotationVelocity3d] to use this.
+
+[UseRotationVelocity3d]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.UseRotationVelocity3d
+*/
+func (self Instance) RotationVelocity3dMax() Vector3.XYZ { //gd:ParticleProcessMaterial.rotation_velocity_3d_max
+	return Vector3.XYZ(class(self).GetRotationVelocity3dMax())
+}
+
+// SetRotationVelocity3dMax sets the property returned by [GetRotationVelocity3dMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationVelocity3dMax(value Vector3.XYZ) Instance { //gd:ParticleProcessMaterial.rotation_velocity_3d_max
+	class(self).SetRotationVelocity3dMax(Vector3.XYZ(value))
+	return self
+}
+
+/*
+Rotation velocity curve over lifetime, per-axis. Enable [UseRotationVelocity3d] to use this.
+
+[UseRotationVelocity3d]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.UseRotationVelocity3d
+*/
+func (self Instance) RotationVelocity3dCurve() Texture2D.Instance { //gd:ParticleProcessMaterial.rotation_velocity_3d_curve
+	return Texture2D.Instance(class(self).GetRotationVelocity3dCurve())
+}
+
+// SetRotationVelocity3dCurve sets the property returned by [GetRotationVelocity3dCurve]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetRotationVelocity3dCurve(value Texture2D.Instance) Instance { //gd:ParticleProcessMaterial.rotation_velocity_3d_curve
+	class(self).SetRotationVelocity3dCurve(value)
+	return self
+}
+
+/*
 Gravity applied to every particle.
 */
 func (self Instance) Gravity() Vector3.XYZ { //gd:ParticleProcessMaterial.gravity
@@ -1219,6 +1359,56 @@ func (self Instance) AttractorInteractionEnabled() bool { //gd:ParticleProcessMa
 // SetAttractorInteractionEnabled sets the property returned by [IsAttractorInteractionEnabled]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetAttractorInteractionEnabled(value bool) Instance { //gd:ParticleProcessMaterial.attractor_interaction_enabled
 	class(self).SetAttractorInteractionEnabled(value)
+	return self
+}
+
+/*
+Enable the usage of [Scale3dMin] and [Scale3dMax].
+
+[Scale3dMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.Scale3dMax
+[Scale3dMin]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.Scale3dMin
+*/
+func (self Instance) UseScale3d() bool { //gd:ParticleProcessMaterial.use_scale_3d
+	return bool(class(self).IsUsingScale3d())
+}
+
+// SetUseScale3d sets the property returned by [IsUsingScale3d]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetUseScale3d(value bool) Instance { //gd:ParticleProcessMaterial.use_scale_3d
+	class(self).SetUseScale3d(value)
+	return self
+}
+
+/*
+The minimum value of the random scale vector for each particle.
+
+Works only if [UseScale3d] is enabled.
+
+[UseScale3d]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.UseScale3d
+*/
+func (self Instance) Scale3dMin() Vector3.XYZ { //gd:ParticleProcessMaterial.scale_3d_min
+	return Vector3.XYZ(class(self).GetScale3dMin())
+}
+
+// SetScale3dMin sets the property returned by [GetScale3dMin]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScale3dMin(value Vector3.XYZ) Instance { //gd:ParticleProcessMaterial.scale_3d_min
+	class(self).SetScale3dMin(Vector3.XYZ(value))
+	return self
+}
+
+/*
+The maximum value of the random scale vector for each particle.
+
+Works only if [UseScale3d] is enabled.
+
+[UseScale3d]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.UseScale3d
+*/
+func (self Instance) Scale3dMax() Vector3.XYZ { //gd:ParticleProcessMaterial.scale_3d_max
+	return Vector3.XYZ(class(self).GetScale3dMax())
+}
+
+// SetScale3dMax sets the property returned by [GetScale3dMax]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetScale3dMax(value Vector3.XYZ) Instance { //gd:ParticleProcessMaterial.scale_3d_max
+	class(self).SetScale3dMax(Vector3.XYZ(value))
 	return self
 }
 
@@ -2056,6 +2246,54 @@ func (self class) GetColor() Color.RGBA { //gd:ParticleProcessMaterial.get_color
 	var ret = r_ret
 	return ret
 }
+func (self class) SetUseScale3d(using_scale_3d bool) { //gd:ParticleProcessMaterial.set_use_scale_3d
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_scale_3d, 0|(gdextension.SizeBool<<4), &struct{ using_scale_3d bool }{using_scale_3d})
+}
+func (self class) IsUsingScale3d() bool { //gd:ParticleProcessMaterial.is_using_scale_3d
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_scale_3d, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetScale3dMin(scale_3d_min Vector3.XYZ) { //gd:ParticleProcessMaterial.set_scale_3d_min
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_3d_min, 0|(gdextension.SizeVector3<<4), &struct{ scale_3d_min Vector3.XYZ }{scale_3d_min})
+}
+func (self class) GetScale3dMin() Vector3.XYZ { //gd:ParticleProcessMaterial.get_scale_3d_min
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_scale_3d_min, gdextension.SizeVector3, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetScale3dMax(scale_3d_max Vector3.XYZ) { //gd:ParticleProcessMaterial.set_scale_3d_max
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_3d_max, 0|(gdextension.SizeVector3<<4), &struct{ scale_3d_max Vector3.XYZ }{scale_3d_max})
+}
+func (self class) GetScale3dMax() Vector3.XYZ { //gd:ParticleProcessMaterial.get_scale_3d_max
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_scale_3d_max, gdextension.SizeVector3, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetUseRotation3d(using_rotation_3d bool) { //gd:ParticleProcessMaterial.set_use_rotation_3d
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_rotation_3d, 0|(gdextension.SizeBool<<4), &struct{ using_rotation_3d bool }{using_rotation_3d})
+}
+func (self class) IsUsingRotation3d() bool { //gd:ParticleProcessMaterial.is_using_rotation_3d
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_rotation_3d, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetRotation3dMin(rotation_3d_min Vector3.XYZ) { //gd:ParticleProcessMaterial.set_rotation_3d_min
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_3d_min, 0|(gdextension.SizeVector3<<4), &struct{ rotation_3d_min Vector3.XYZ }{rotation_3d_min})
+}
+func (self class) GetRotation3dMin() Vector3.XYZ { //gd:ParticleProcessMaterial.get_rotation_3d_min
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_rotation_3d_min, gdextension.SizeVector3, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetRotation3dMax(rotation_3d_max Vector3.XYZ) { //gd:ParticleProcessMaterial.set_rotation_3d_max
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_3d_max, 0|(gdextension.SizeVector3<<4), &struct{ rotation_3d_max Vector3.XYZ }{rotation_3d_max})
+}
+func (self class) GetRotation3dMax() Vector3.XYZ { //gd:ParticleProcessMaterial.get_rotation_3d_max
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_rotation_3d_max, gdextension.SizeVector3, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) SetColorRamp(ramp [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_color_ramp
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ ramp gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(ramp[0])[0]))})
 }
@@ -2371,6 +2609,38 @@ func (self class) GetCollisionBounce() float64 { //gd:ParticleProcessMaterial.ge
 	var ret = r_ret
 	return ret
 }
+func (self class) SetUsingRotationVelocity3d(use_rotation_velocity_3d bool) { //gd:ParticleProcessMaterial.set_using_rotation_velocity_3d
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_using_rotation_velocity_3d, 0|(gdextension.SizeBool<<4), &struct{ use_rotation_velocity_3d bool }{use_rotation_velocity_3d})
+}
+func (self class) IsUsingRotationVelocity3d() bool { //gd:ParticleProcessMaterial.is_using_rotation_velocity_3d
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_rotation_velocity_3d, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetRotationVelocity3dMax(rotation_velocity_3d_max Vector3.XYZ) { //gd:ParticleProcessMaterial.set_rotation_velocity_3d_max
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_velocity_3d_max, 0|(gdextension.SizeVector3<<4), &struct{ rotation_velocity_3d_max Vector3.XYZ }{rotation_velocity_3d_max})
+}
+func (self class) GetRotationVelocity3dMax() Vector3.XYZ { //gd:ParticleProcessMaterial.get_rotation_velocity_3d_max
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_rotation_velocity_3d_max, gdextension.SizeVector3, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetRotationVelocity3dMin(rotation_velocity_3d_min Vector3.XYZ) { //gd:ParticleProcessMaterial.set_rotation_velocity_3d_min
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_velocity_3d_min, 0|(gdextension.SizeVector3<<4), &struct{ rotation_velocity_3d_min Vector3.XYZ }{rotation_velocity_3d_min})
+}
+func (self class) GetRotationVelocity3dMin() Vector3.XYZ { //gd:ParticleProcessMaterial.get_rotation_velocity_3d_min
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_rotation_velocity_3d_min, gdextension.SizeVector3, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) SetRotationVelocity3dCurve(rotation_velocity_3d_curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_rotation_velocity_3d_curve
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_velocity_3d_curve, 0|(gdextension.SizeObject<<4), &struct{ rotation_velocity_3d_curve gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTexture2D(rotation_velocity_3d_curve[0])[0]))})
+}
+func (self class) GetRotationVelocity3dCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_rotation_velocity_3d_curve
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_rotation_velocity_3d_curve, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.Texture2D{gdclass.NewTexture2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
+	return ret
+}
 
 /*
 Emitted when this material's emission shape is changed in any way. This includes changes to [EmissionShape], [EmissionShapeScale], or [EmissionSphereRadius], and any other property that affects the emission shape's offset, size, scale, or orientation.
@@ -2552,10 +2822,11 @@ const (
 	//
 	// [ParticleFlagDisableZ]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ParticleFlagDisableZ
 	// [SetParticleFlag]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParticleFlag
-	ParticleFlagDisableZ          ParticleFlags = 2
-	ParticleFlagDampingAsFriction ParticleFlags = 3
+	ParticleFlagDisableZ            ParticleFlags = 2
+	ParticleFlagDampingAsFriction   ParticleFlags = 3
+	ParticleFlagInheritEmitterScale ParticleFlags = 4
 	// Represents the size of the [ParticleFlags] enum.
-	ParticleFlagMax ParticleFlags = 4
+	ParticleFlagMax ParticleFlags = 5
 )
 
 type EmissionShape int64 //gd:ParticleProcessMaterial.EmissionShape
@@ -2589,11 +2860,18 @@ const (
 type SubEmitterMode int64 //gd:ParticleProcessMaterial.SubEmitterMode
 
 const (
-	SubEmitterDisabled    SubEmitterMode = 0
-	SubEmitterConstant    SubEmitterMode = 1
-	SubEmitterAtEnd       SubEmitterMode = 2
+	// The subemitter is disabled.
+	SubEmitterDisabled SubEmitterMode = 0
+	// The submitter is emitted on the constant interval defined by [SubEmitterFrequency].
+	//
+	// [SubEmitterFrequency]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SubEmitterFrequency
+	SubEmitterConstant SubEmitterMode = 1
+	// The subemitter is emitted at the end of the particle's lifetime.
+	SubEmitterAtEnd SubEmitterMode = 2
+	// The subemitter is emitted when the particle collides.
 	SubEmitterAtCollision SubEmitterMode = 3
-	SubEmitterAtStart     SubEmitterMode = 4
+	// The subemitter is emitted when the particle spawns.
+	SubEmitterAtStart SubEmitterMode = 4
 	// Represents the size of the [SubEmitterMode] enum.
 	SubEmitterMax SubEmitterMode = 5
 )

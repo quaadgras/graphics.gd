@@ -292,7 +292,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.EditorContextMenuPlugin{gdclass.NewEditorContextMenuPlugin(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -427,4 +426,9 @@ const (
 	// [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 	// [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/#Instance.PopupMenu
 	ContextSlot2dEditor ContextMenuSlot = 6
+	// Context menu of the inspectors right-click menu. [PopupMenu] will be called with an array of two items: The first will be the object's ID, the second will be the property name. An object can be retrieved from it's ID via [@GlobalScope.InstanceFromId] after converting it to an int. The option callback will receive the EditorProperty directly.
+	//
+	// [@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+	// [PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/#Instance.PopupMenu
+	ContextSlotInspectorProperty ContextMenuSlot = 7
 )

@@ -93,6 +93,7 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	has_valid_configuration gdextension.MethodForClass `hash:"36873697"`
+	get_configuration       gdextension.MethodForClass `hash:"2455072627"`
 }
 
 func init() {
@@ -169,6 +170,15 @@ func (self Instance) HasValidConfiguration() bool { //gd:OpenXRSpatialCapability
 	return bool(Advanced(self).HasValidConfiguration())
 }
 
+/*
+Gets a pointer to the XrSpatialCapabilityConfigurationBaseHeaderEXT struct.
+
+Note: This method is intended to be used from GDExtensions.
+*/
+func (self Instance) GetConfiguration() int { //gd:OpenXRSpatialCapabilityConfigurationBaseHeader.get_configuration
+	return int(int(Advanced(self).GetConfiguration()))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.OpenXRSpatialCapabilityConfigurationBaseHeader
@@ -207,7 +217,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.OpenXRSpatialCapabilityConfigurationBaseHeader{gdclass.NewOpenXRSpatialCapabilityConfigurationBaseHeader(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -228,6 +237,11 @@ func (class) _get_configuration(impl func(ptr gdclass.Receiver) int64) (cb gd.Ex
 
 func (self class) HasValidConfiguration() bool { //gd:OpenXRSpatialCapabilityConfigurationBaseHeader.has_valid_configuration
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_valid_configuration, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+func (self class) GetConfiguration() int64 { //gd:OpenXRSpatialCapabilityConfigurationBaseHeader.get_configuration
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_configuration, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

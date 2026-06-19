@@ -163,7 +163,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.RDShaderSPIRV{gdclass.NewRDShaderSPIRV(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -234,6 +233,71 @@ func (self Instance) SetBytecodeCompute(value []byte) Instance { //gd:RDShaderSP
 }
 
 /*
+The SPIR-V bytecode for the ray generation shader stage.
+*/
+func (self Instance) BytecodeRaygen() []byte { //gd:RDShaderSPIRV.bytecode_raygen
+	return []byte(class(self).GetStageBytecode(5).Bytes())
+}
+
+// SetBytecodeRaygen sets the property returned by [GetStageBytecode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBytecodeRaygen(value []byte) Instance { //gd:RDShaderSPIRV.bytecode_raygen
+	class(self).SetStageBytecode(5, Packed.BytesFrom(value...))
+	return self
+}
+
+/*
+The SPIR-V bytecode for the any hit shader stage.
+*/
+func (self Instance) BytecodeAnyHit() []byte { //gd:RDShaderSPIRV.bytecode_any_hit
+	return []byte(class(self).GetStageBytecode(6).Bytes())
+}
+
+// SetBytecodeAnyHit sets the property returned by [GetStageBytecode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBytecodeAnyHit(value []byte) Instance { //gd:RDShaderSPIRV.bytecode_any_hit
+	class(self).SetStageBytecode(6, Packed.BytesFrom(value...))
+	return self
+}
+
+/*
+The SPIR-V bytecode for the closest hit shader stage.
+*/
+func (self Instance) BytecodeClosestHit() []byte { //gd:RDShaderSPIRV.bytecode_closest_hit
+	return []byte(class(self).GetStageBytecode(7).Bytes())
+}
+
+// SetBytecodeClosestHit sets the property returned by [GetStageBytecode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBytecodeClosestHit(value []byte) Instance { //gd:RDShaderSPIRV.bytecode_closest_hit
+	class(self).SetStageBytecode(7, Packed.BytesFrom(value...))
+	return self
+}
+
+/*
+The SPIR-V bytecode for the miss shader stage.
+*/
+func (self Instance) BytecodeMiss() []byte { //gd:RDShaderSPIRV.bytecode_miss
+	return []byte(class(self).GetStageBytecode(8).Bytes())
+}
+
+// SetBytecodeMiss sets the property returned by [GetStageBytecode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBytecodeMiss(value []byte) Instance { //gd:RDShaderSPIRV.bytecode_miss
+	class(self).SetStageBytecode(8, Packed.BytesFrom(value...))
+	return self
+}
+
+/*
+The SPIR-V bytecode for the intersection shader stage.
+*/
+func (self Instance) BytecodeIntersection() []byte { //gd:RDShaderSPIRV.bytecode_intersection
+	return []byte(class(self).GetStageBytecode(9).Bytes())
+}
+
+// SetBytecodeIntersection sets the property returned by [GetStageBytecode]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetBytecodeIntersection(value []byte) Instance { //gd:RDShaderSPIRV.bytecode_intersection
+	class(self).SetStageBytecode(9, Packed.BytesFrom(value...))
+	return self
+}
+
+/*
 The compilation error message for the vertex shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
 */
 func (self Instance) CompileErrorVertex() string { //gd:RDShaderSPIRV.compile_error_vertex
@@ -295,6 +359,71 @@ func (self Instance) CompileErrorCompute() string { //gd:RDShaderSPIRV.compile_e
 // SetCompileErrorCompute sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetCompileErrorCompute(value string) Instance { //gd:RDShaderSPIRV.compile_error_compute
 	class(self).SetStageCompileError(4, String.From(value))
+	return self
+}
+
+/*
+The compilation error message for the ray generation shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
+*/
+func (self Instance) CompileErrorRaygen() string { //gd:RDShaderSPIRV.compile_error_raygen
+	return string(class(self).GetStageCompileError(5).String())
+}
+
+// SetCompileErrorRaygen sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCompileErrorRaygen(value string) Instance { //gd:RDShaderSPIRV.compile_error_raygen
+	class(self).SetStageCompileError(5, String.From(value))
+	return self
+}
+
+/*
+The compilation error message for the any hit shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
+*/
+func (self Instance) CompileErrorAnyHit() string { //gd:RDShaderSPIRV.compile_error_any_hit
+	return string(class(self).GetStageCompileError(6).String())
+}
+
+// SetCompileErrorAnyHit sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCompileErrorAnyHit(value string) Instance { //gd:RDShaderSPIRV.compile_error_any_hit
+	class(self).SetStageCompileError(6, String.From(value))
+	return self
+}
+
+/*
+The compilation error message for the closest hit shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
+*/
+func (self Instance) CompileErrorClosestHit() string { //gd:RDShaderSPIRV.compile_error_closest_hit
+	return string(class(self).GetStageCompileError(7).String())
+}
+
+// SetCompileErrorClosestHit sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCompileErrorClosestHit(value string) Instance { //gd:RDShaderSPIRV.compile_error_closest_hit
+	class(self).SetStageCompileError(7, String.From(value))
+	return self
+}
+
+/*
+The compilation error message for the miss shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
+*/
+func (self Instance) CompileErrorMiss() string { //gd:RDShaderSPIRV.compile_error_miss
+	return string(class(self).GetStageCompileError(8).String())
+}
+
+// SetCompileErrorMiss sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCompileErrorMiss(value string) Instance { //gd:RDShaderSPIRV.compile_error_miss
+	class(self).SetStageCompileError(8, String.From(value))
+	return self
+}
+
+/*
+The compilation error message for the intersection shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
+*/
+func (self Instance) CompileErrorIntersection() string { //gd:RDShaderSPIRV.compile_error_intersection
+	return string(class(self).GetStageCompileError(9).String())
+}
+
+// SetCompileErrorIntersection sets the property returned by [GetStageCompileError]. Returns the instance, so that property settings can be chained.
+func (self Instance) SetCompileErrorIntersection(value string) Instance { //gd:RDShaderSPIRV.compile_error_intersection
+	class(self).SetStageCompileError(9, String.From(value))
 	return self
 }
 

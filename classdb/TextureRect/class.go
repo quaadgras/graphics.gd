@@ -340,6 +340,12 @@ const (
 	// Scale to fit the node's bounding rectangle.
 	StretchScale StretchMode = 0
 	// Tile inside the node's bounding rectangle.
+	//
+	// Note: [StretchTile] mode is not supported for [Texture] set to an [AtlasTexture] with non-zero [AtlasTexture.Margin].
+	//
+	// [AtlasTexture]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture
+	// [AtlasTexture.Margin]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture#Instance.Margin
+	// [Texture]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Texture
 	StretchTile StretchMode = 1
 	// The texture keeps its original size and stays in the bounding rectangle's top-left corner.
 	StretchKeep StretchMode = 2

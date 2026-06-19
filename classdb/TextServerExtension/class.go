@@ -242,6 +242,22 @@ type Interface interface {
 	FontSetModulateColorGlyphs(font_rid RID.Font, modulate bool)
 	// Returns true if color modulation is applied when drawing the font's colored glyphs.
 	FontIsModulateColorGlyphs(font_rid RID.Font) bool
+	// Returns the number of predefined color palettes. Palette contains all colors used to render font glyphs. Each palette has the same number of colors.
+	FontGetPaletteCount(font_rid RID.Font) int
+	// Returns the name of the predefined color palette at 'index'. Palette contains all colors used to render font glyphs. Each palette has the same number of colors.
+	FontGetPaletteName(font_rid RID.Font, index int) string
+	// Returns the array in the predefined color palette at 'index'. Palette contains all colors used to render font glyphs. Each palette has the same number of colors. Colors can be overridden using [FontSetPaletteCustomColors].
+	//
+	// [FontSetPaletteCustomColors]: https://pkg.go.dev/graphics.gd/classdb/TextServerExtension#Interface
+	FontGetPaletteColors(font_rid RID.Font, index int) []Color.RGBA
+	// Sets array of custom colors to override predefined palette. Set to empty array to reset overrides. Use Color(0, 0, 0, 0), to keep predefined palette color at specific position.
+	FontSetPaletteCustomColors(font_rid RID.Font, colors []Color.RGBA)
+	// Returns array of custom colors to override predefined palette.
+	FontGetPaletteCustomColors(font_rid RID.Font) []Color.RGBA
+	// Returns used palette index.
+	FontGetUsedPalette(font_rid RID.Font) int
+	// Sets used palette index.
+	FontSetUsedPalette(font_rid RID.Font, index int)
 	// Sets font hinting mode. Used by dynamic fonts only.
 	FontSetHinting(font_rid RID.Font, hinting TextServer.Hinting)
 	// Returns the font hinting mode. Used by dynamic fonts only.
@@ -511,6 +527,8 @@ type Interface interface {
 	ShapedGetRunText(shaped RID.TextBuffer, index int) string
 	// Returns the source text range of the 'index' text run (in visual order).
 	ShapedGetRunRange(shaped RID.TextBuffer, index int) Vector2i.XY
+	// Returns the glyph range of the 'index' text run (in visual order).
+	ShapedGetRunGlyphRange(shaped RID.TextBuffer, index int) Vector2i.XY
 	// Returns the font RID of the 'index' text run (in visual order).
 	ShapedGetRunFontRid(shaped RID.TextBuffer, index int) RID.Font
 	// Returns the font size of the 'index' text run (in visual order).
@@ -584,7 +602,7 @@ type Interface interface {
 	// Returns dominant direction of in the range of text.
 	ShapedTextGetDominantDirectionInRange(shaped RID.TextBuffer, start int, end int) int
 	// Returns shapes of the carets corresponding to the character offset 'position' in the text. Returned caret shape is 1 pixel wide rectangle.
-	ShapedTextGetCarets(shaped RID.TextBuffer, position int, caret Engine.Pointer[CaretInfo])
+	ShapedTextGetCarets(shaped RID.TextBuffer, position int, r_caret Engine.Pointer[CaretInfo])
 	// Returns selection rectangles for the specified character range.
 	ShapedTextGetSelection(shaped RID.TextBuffer, start int, end int) []Vector2.XY
 	// Returns grapheme index at the specified pixel offset at the baseline, or -1 if none is found.
@@ -792,6 +810,25 @@ func (self implementation) FontSetModulateColorGlyphs(font_rid RID.Font, modulat
 }
 func (self implementation) FontIsModulateColorGlyphs(font_rid RID.Font) (_ bool) {
 	return
+}
+func (self implementation) FontGetPaletteCount(font_rid RID.Font) (_ int) {
+	return
+}
+func (self implementation) FontGetPaletteName(font_rid RID.Font, index int) (_ string) {
+	return
+}
+func (self implementation) FontGetPaletteColors(font_rid RID.Font, index int) (_ []Color.RGBA) {
+	return
+}
+func (self implementation) FontSetPaletteCustomColors(font_rid RID.Font, colors []Color.RGBA) {
+}
+func (self implementation) FontGetPaletteCustomColors(font_rid RID.Font) (_ []Color.RGBA) {
+	return
+}
+func (self implementation) FontGetUsedPalette(font_rid RID.Font) (_ int) {
+	return
+}
+func (self implementation) FontSetUsedPalette(font_rid RID.Font, index int) {
 }
 func (self implementation) FontSetHinting(font_rid RID.Font, hinting TextServer.Hinting) {
 }
@@ -1110,6 +1147,9 @@ func (self implementation) ShapedGetRunText(shaped RID.TextBuffer, index int) (_
 func (self implementation) ShapedGetRunRange(shaped RID.TextBuffer, index int) (_ Vector2i.XY) {
 	return
 }
+func (self implementation) ShapedGetRunGlyphRange(shaped RID.TextBuffer, index int) (_ Vector2i.XY) {
+	return
+}
 func (self implementation) ShapedGetRunFontRid(shaped RID.TextBuffer, index int) (_ RID.Font) {
 	return
 }
@@ -1217,7 +1257,7 @@ func (self implementation) ShapedTextGetUnderlineThickness(shaped RID.TextBuffer
 func (self implementation) ShapedTextGetDominantDirectionInRange(shaped RID.TextBuffer, start int, end int) (_ int) {
 	return
 }
-func (self implementation) ShapedTextGetCarets(shaped RID.TextBuffer, position int, caret Engine.Pointer[CaretInfo]) {
+func (self implementation) ShapedTextGetCarets(shaped RID.TextBuffer, position int, r_caret Engine.Pointer[CaretInfo]) {
 }
 func (self implementation) ShapedTextGetSelection(shaped RID.TextBuffer, start int, end int) (_ []Vector2.XY) {
 	return
@@ -2000,6 +2040,110 @@ func (Instance) _font_is_modulate_color_glyphs(impl func(ptr gdclass.Receiver, f
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+Returns the number of predefined color palettes. Palette contains all colors used to render font glyphs. Each palette has the same number of colors.
+*/
+func (Instance) _font_get_palette_count(impl func(ptr gdclass.Receiver, font_rid RID.Font) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, RID.Font(font_rid))
+		gd.UnsafeSet(p_back, int64(ret))
+	}
+}
+
+/*
+Returns the name of the predefined color palette at 'index'. Palette contains all colors used to render font glyphs. Each palette has the same number of colors.
+*/
+func (Instance) _font_get_palette_name(impl func(ptr gdclass.Receiver, font_rid RID.Font, index int) string) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		var index = gd.UnsafeGet[int64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, RID.Font(font_rid), int(index))
+		ptr, ok := pointers.End(gd.InternalString(String.From(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Returns the array in the predefined color palette at 'index'. Palette contains all colors used to render font glyphs. Each palette has the same number of colors. Colors can be overridden using [FontSetPaletteCustomColors].
+
+[FontSetPaletteCustomColors]: https://pkg.go.dev/graphics.gd/classdb/TextServerExtension#Interface
+*/
+func (Instance) _font_get_palette_colors(impl func(ptr gdclass.Receiver, font_rid RID.Font, index int) []Color.RGBA) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		var index = gd.UnsafeGet[int64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, RID.Font(font_rid), int(index))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](Packed.New(ret...)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Sets array of custom colors to override predefined palette. Set to empty array to reset overrides. Use Color(0, 0, 0, 0), to keep predefined palette color at specific position.
+*/
+func (Instance) _font_set_palette_custom_colors(impl func(ptr gdclass.Receiver, font_rid RID.Font, colors []Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		var colors = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, RID.Font(font_rid), slices.Collect(colors.Values()))
+	}
+}
+
+/*
+Returns array of custom colors to override predefined palette.
+*/
+func (Instance) _font_get_palette_custom_colors(impl func(ptr gdclass.Receiver, font_rid RID.Font) []Color.RGBA) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, RID.Font(font_rid))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](Packed.New(ret...)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Returns used palette index.
+*/
+func (Instance) _font_get_used_palette(impl func(ptr gdclass.Receiver, font_rid RID.Font) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, RID.Font(font_rid))
+		gd.UnsafeSet(p_back, int64(ret))
+	}
+}
+
+/*
+Sets used palette index.
+*/
+func (Instance) _font_set_used_palette(impl func(ptr gdclass.Receiver, font_rid RID.Font, index int)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		var index = gd.UnsafeGet[int64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, RID.Font(font_rid), int(index))
 	}
 }
 
@@ -3736,6 +3880,19 @@ func (Instance) _shaped_get_run_range(impl func(ptr gdclass.Receiver, shaped RID
 }
 
 /*
+Returns the glyph range of the 'index' text run (in visual order).
+*/
+func (Instance) _shaped_get_run_glyph_range(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer, index int) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
+		var index = gd.UnsafeGet[int64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, RID.TextBuffer(shaped), int(index))
+		gd.UnsafeSet(p_back, Vector2i.XY(ret))
+	}
+}
+
+/*
 Returns the font RID of the 'index' text run (in visual order).
 */
 func (Instance) _shaped_get_run_font_rid(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer, index int) RID.Font) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -4230,14 +4387,14 @@ func (Instance) _shaped_text_get_dominant_direction_in_range(impl func(ptr gdcla
 /*
 Returns shapes of the carets corresponding to the character offset 'position' in the text. Returned caret shape is 1 pixel wide rectangle.
 */
-func (Instance) _shaped_text_get_carets(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer, position int, caret Engine.Pointer[CaretInfo])) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_carets(impl func(ptr gdclass.Receiver, shaped RID.TextBuffer, position int, r_caret Engine.Pointer[CaretInfo])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var position = gd.UnsafeGet[int64](p_args, 1)
-		var caret = gdmemory.WrapPointer[CaretInfo](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
+		var r_caret = gdmemory.WrapPointer[CaretInfo](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
 		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, RID.TextBuffer(shaped), int(position), caret)
+		impl(self, RID.TextBuffer(shaped), int(position), r_caret)
 	}
 }
 
@@ -4715,7 +4872,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.TextServerExtension{gdclass.NewTextServerExtension(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -5198,6 +5354,80 @@ func (class) _font_is_modulate_color_glyphs(impl func(ptr gdclass.Receiver, font
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
+	}
+}
+func (class) _font_get_palette_count(impl func(ptr gdclass.Receiver, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+func (class) _font_get_palette_name(impl func(ptr gdclass.Receiver, font_rid RID.Any, index int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		var index = gd.UnsafeGet[int64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, font_rid, index)
+		ptr, ok := pointers.End(gd.InternalString(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+func (class) _font_get_palette_colors(impl func(ptr gdclass.Receiver, font_rid RID.Any, index int64) Packed.Array[Color.RGBA]) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		var index = gd.UnsafeGet[int64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, font_rid, index)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+func (class) _font_set_palette_custom_colors(impl func(ptr gdclass.Receiver, font_rid RID.Any, colors Packed.Array[Color.RGBA])) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		var colors = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		defer pointers.End(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, font_rid, colors)
+	}
+}
+func (class) _font_get_palette_custom_colors(impl func(ptr gdclass.Receiver, font_rid RID.Any) Packed.Array[Color.RGBA]) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, font_rid)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+func (class) _font_get_used_palette(impl func(ptr gdclass.Receiver, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+func (class) _font_set_used_palette(impl func(ptr gdclass.Receiver, font_rid RID.Any, index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		var index = gd.UnsafeGet[int64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, font_rid, index)
 	}
 }
 func (class) _font_set_hinting(impl func(ptr gdclass.Receiver, font_rid RID.Any, hinting TextServer.Hinting)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -6419,6 +6649,15 @@ func (class) _shaped_get_run_range(impl func(ptr gdclass.Receiver, shaped RID.An
 		gd.UnsafeSet(p_back, ret)
 	}
 }
+func (class) _shaped_get_run_glyph_range(impl func(ptr gdclass.Receiver, shaped RID.Any, index int64) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
+		var index = gd.UnsafeGet[int64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, shaped, index)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
 func (class) _shaped_get_run_font_rid(impl func(ptr gdclass.Receiver, shaped RID.Any, index int64) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -6767,14 +7006,14 @@ func (class) _shaped_text_get_dominant_direction_in_range(impl func(ptr gdclass.
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (class) _shaped_text_get_carets(impl func(ptr gdclass.Receiver, shaped RID.Any, position int64, caret Engine.Pointer[CaretInfo])) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_carets(impl func(ptr gdclass.Receiver, shaped RID.Any, position int64, r_caret Engine.Pointer[CaretInfo])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var position = gd.UnsafeGet[int64](p_args, 1)
-		var caret = gdmemory.WrapPointer[CaretInfo](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
+		var r_caret = gdmemory.WrapPointer[CaretInfo](gd.UnsafeGet[gdextension.Pointer](p_args, 2))
 		defer gdmemory.Barrier()
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, position, caret)
+		impl(self, shaped, position, r_caret)
 	}
 }
 func (class) _shaped_text_get_selection(impl func(ptr gdclass.Receiver, shaped RID.Any, start int64, end int64) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -7228,6 +7467,20 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._font_set_modulate_color_glyphs)
 	case "_font_is_modulate_color_glyphs":
 		return reflect.ValueOf(self._font_is_modulate_color_glyphs)
+	case "_font_get_palette_count":
+		return reflect.ValueOf(self._font_get_palette_count)
+	case "_font_get_palette_name":
+		return reflect.ValueOf(self._font_get_palette_name)
+	case "_font_get_palette_colors":
+		return reflect.ValueOf(self._font_get_palette_colors)
+	case "_font_set_palette_custom_colors":
+		return reflect.ValueOf(self._font_set_palette_custom_colors)
+	case "_font_get_palette_custom_colors":
+		return reflect.ValueOf(self._font_get_palette_custom_colors)
+	case "_font_get_used_palette":
+		return reflect.ValueOf(self._font_get_used_palette)
+	case "_font_set_used_palette":
+		return reflect.ValueOf(self._font_set_used_palette)
 	case "_font_set_hinting":
 		return reflect.ValueOf(self._font_set_hinting)
 	case "_font_get_hinting":
@@ -7472,6 +7725,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._shaped_get_run_text)
 	case "_shaped_get_run_range":
 		return reflect.ValueOf(self._shaped_get_run_range)
+	case "_shaped_get_run_glyph_range":
+		return reflect.ValueOf(self._shaped_get_run_glyph_range)
 	case "_shaped_get_run_font_rid":
 		return reflect.ValueOf(self._shaped_get_run_font_rid)
 	case "_shaped_get_run_font_size":
@@ -7717,6 +7972,20 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._font_set_modulate_color_glyphs)
 	case "_font_is_modulate_color_glyphs":
 		return reflect.ValueOf(self._font_is_modulate_color_glyphs)
+	case "_font_get_palette_count":
+		return reflect.ValueOf(self._font_get_palette_count)
+	case "_font_get_palette_name":
+		return reflect.ValueOf(self._font_get_palette_name)
+	case "_font_get_palette_colors":
+		return reflect.ValueOf(self._font_get_palette_colors)
+	case "_font_set_palette_custom_colors":
+		return reflect.ValueOf(self._font_set_palette_custom_colors)
+	case "_font_get_palette_custom_colors":
+		return reflect.ValueOf(self._font_get_palette_custom_colors)
+	case "_font_get_used_palette":
+		return reflect.ValueOf(self._font_get_used_palette)
+	case "_font_set_used_palette":
+		return reflect.ValueOf(self._font_set_used_palette)
 	case "_font_set_hinting":
 		return reflect.ValueOf(self._font_set_hinting)
 	case "_font_get_hinting":
@@ -7961,6 +8230,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._shaped_get_run_text)
 	case "_shaped_get_run_range":
 		return reflect.ValueOf(self._shaped_get_run_range)
+	case "_shaped_get_run_glyph_range":
+		return reflect.ValueOf(self._shaped_get_run_glyph_range)
 	case "_shaped_get_run_font_rid":
 		return reflect.ValueOf(self._shaped_get_run_font_rid)
 	case "_shaped_get_run_font_size":

@@ -334,6 +334,11 @@ func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) Instance 
 
 /*
 If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the node's bounding rectangle. If you resize the node, it will change its height automatically to show all the text.
+
+Note: Labels with autowrapping enabled must have a custom maximum width configured to work correctly, either through the Label's own [Control.CustomMaximumSize] or as a result of a propagated maximum size from a parent Control with [Control.PropagateMaximumSize] enabled.
+
+[Control.CustomMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CustomMaximumSize
+[Control.PropagateMaximumSize]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.PropagateMaximumSize
 */
 func (self Instance) AutowrapMode() TextServer.AutowrapMode { //gd:Label.autowrap_mode
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())

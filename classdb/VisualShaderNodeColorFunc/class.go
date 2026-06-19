@@ -159,7 +159,6 @@ func New() Instance {
 		return placeholder
 	}
 	casted := Instance([1]gdclass.VisualShaderNodeColorFunc{gdclass.NewVisualShaderNodeColorFunc(gdreference.OwnObject(gdextension.Host.Objects.Make(sname), gd.Free))})
-	casted.AsRefCounted()[0].InitRef()
 	gd.ObjectNotification(casted.AsObject()[0], 0, false)
 	return casted
 }
@@ -264,15 +263,13 @@ const (
 	//
 	//
 	//
-	// vec3 c = clamp(c, vec3(0.0), vec3(1.0));
-	//
 	// const vec3 a = vec3(0.055f);
 	//
 	// return mix((vec3(1.0f) + a) * pow(c.rgb, vec3(1.0f / 2.4f)) - a, 12.92f * c.rgb, lessThan(c.rgb, vec3(0.0031308f)));
 	//
 	//
 	//
-	// The Compatibility renderer uses a simpler formula:
+	// The Compatibility renderer uses a simpler formula that may produce undefined behavior with negative input values:
 	//
 	//
 	//
@@ -292,7 +289,7 @@ const (
 	//
 	//
 	//
-	// The Compatibility renderer uses a simpler formula:
+	// The Compatibility renderer uses a simpler formula that behaves poorly with negative input values:
 	//
 	//
 	//

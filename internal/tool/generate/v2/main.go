@@ -506,6 +506,11 @@ func generateCasts(file io.Writer, classDB ClassDB, class gdjson.Class, singleto
 		fmt.Fprintf(file, "\nfunc (o class) As%[1]v() Advanced { return Advanced(o) }\n", class.Name)
 		fmt.Fprintf(file, "func (o Instance) As%[1]v() Instance { return o }\n", class.Name)
 		fmt.Fprintf(file, "func (o *Extension[T]) As%[1]v() Instance { return o.Super() }\n", class.Name)
+	} else {
+		// Singletons skip the As<Self> block above, so emit the leading
+		// newline here to separate the cast chain from the preceding
+		// method block (whose last method has no trailing newline).
+		fmt.Fprintf(file, "\n")
 	}
 	super := classDB[class.Inherits]
 	for super.Name != "" && super.Name != "Object" {
@@ -516,15 +521,14 @@ func generateCasts(file io.Writer, classDB ClassDB, class gdjson.Class, singleto
 		if super.Name == "RefCounted" {
 			fmt.Fprintf(file, "func (o class) AsRefCounted() ie.RC { return *(*ie.RC)(ie.As(&o)) }\n")
 			fmt.Fprintf(file, "func (o *Extension[T]) AsRefCounted() ie.RC { return o.Super().AsRefCounted() }\n")
-			if !singleton {
-				fmt.Fprintf(file, "func (o Instance) AsRefCounted() ie.RC { return *(*ie.RC)(ie.As(&o)) }\n")
-			}
+			// Instance variant must be emitted even for singletons: the
+			// class/Extension casts and the Instance.Virtual method above
+			// all reference it (Instance/Extension types exist regardless).
+			fmt.Fprintf(file, "func (o Instance) AsRefCounted() ie.RC { return *(*ie.RC)(ie.As(&o)) }\n")
 		} else {
 			fmt.Fprintf(file, "func (o class) As%[2]v() %[2]v.Advanced { return *(*%[2]v.Advanced)(ie.As(&o)) }\n", class.Name, super.Name)
 			fmt.Fprintf(file, "func (o *Extension[T]) As%[2]v() %[2]v.Instance { return o.Super().As%[2]v() }\n", class.Name, super.Name)
-			if !singleton {
-				fmt.Fprintf(file, "func (o Instance) As%[2]v() %[2]v.Instance { return *(*%[2]v.Instance)(ie.As(&o)) }\n", class.Name, super.Name)
-			}
+			fmt.Fprintf(file, "func (o Instance) As%[2]v() %[2]v.Instance { return *(*%[2]v.Instance)(ie.As(&o)) }\n", class.Name, super.Name)
 		}
 		super = classDB[super.Inherits]
 	}
