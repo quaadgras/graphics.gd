@@ -1,0 +1,66 @@
+name: Android
+
+# DRAFT — not yet verified on a real runner. Triggers on manual dispatch only so
+# it can't red-X `release`/PR CI before it has had a green run. Once it passes a
+# few manual runs, swap the trigger for the push/pull_request block below.
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: ["release", "staging"]
+  # pull_request:
+  #   branches: ["release"]
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.26"
+
+      - name: Compute week key
+        id: week
+        shell: bash
+        run: echo "week=$(date +%Y-%W)" >> $GITHUB_OUTPUT
+
+      - name: Cache ~/gd
+        uses: actions/cache@v4
+        with:
+          path: ~/gd
+          key: ${{ runner.os }}-gd-weekly-${{ steps.week.outputs.week }}
+          restore-keys: ${{ runner.os }}-gd-weekly-
+
+      - name: Command Line Tooling
+        run: |
+          cd ./cmd/gd
+          go build -o gd.exe
+
+      # The x86_64 system image only runs at usable speed with KVM. GitHub Linux
+      # runners are KVM-capable but the device isn't world-accessible by default.
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      # reactivecircus/android-emulator-runner boots an AVD (with KVM) and runs
+      # `script:` once adb is connected. arch must be x86_64 — that is the ABI
+      # PR #308 added, and the only one KVM accelerates. `-gpu swiftshader_indirect`
+      # is the Android analog of the SwiftShader WebGL2 path the web job uses.
+      # The script runs the suite on-device via `gd test` (GOOS=android) and
+      # fails the job if any test fails. See run_android_tests.sh + Android.Test.
+      - name: Android Tests (x86_64 emulator)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
+          disable-animations: true
+          script: |
+            GD="$PWD/cmd/gd/gd.exe" bash startup/internal/androidtest/run_android_tests.sh

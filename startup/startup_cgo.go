@@ -156,6 +156,10 @@ func init() {
 	gdextension.On.MainLoop.FirstFrame = func() {
 		threadcheck.Init()
 		if testing.Testing() && !toolUsed {
+			// On platforms where the process's stdout/stderr are discarded
+			// (android), route the test output somewhere the harness can read
+			// it back. No-op elsewhere. Must run before the test main starts.
+			prepareTestOutput()
 			go main()
 		}
 		Callable.Cycle()

@@ -44,7 +44,19 @@ type Android struct {
 	Graphics string
 }
 
-func (Android) Build(args ...string) error {
+func (android Android) Build(args ...string) error {
+	return android.build(false, args...)
+}
+
+// androidTestOutputFile mirrors startup.TestOutputFile: the basename, inside the
+// app's user-data dir, that `gd test` output is redirected to on-device. Read
+// back here via `adb shell run-as <pkg> cat files/<this>`.
+const androidTestOutputFile = "gdtest.log"
+
+// build compiles the project as an android c-shared library. With testing set it
+// builds a `go test` binary (run on-device under the engine via the FirstFrame
+// hook in startup_cgo.go) instead of the application.
+func (android Android) build(testing bool, args ...string) error {
 	HOME, err := os.UserHomeDir()
 	if err != nil {
 		return xray.New(err)
@@ -240,7 +252,11 @@ func (Android) Build(args ...string) error {
 			return fmt.Errorf("gd build: cannot cross-compile android/%v on %v", GOARCH, runtime.GOOS)
 		}
 	}
-	return tooling.Go.Action("build", args, "-ldflags=-checklinkname=0", "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("libandroid_%v.so", GOARCH)))
+	out := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("libandroid_%v.so", GOARCH))
+	if testing {
+		return tooling.Go.Action("test", args, "-c", "-ldflags=-checklinkname=0", "-buildmode=c-shared", "-o", out)
+	}
+	return tooling.Go.Action("build", args, "-ldflags=-checklinkname=0", "-buildmode=c-shared", "-o", out)
 }
 
 func (android Android) Run(args ...string) error {
@@ -346,8 +362,124 @@ func (android Android) Run(args ...string) error {
 	return nil
 }
 
-func (Android) Test(args ...string) error {
-	return fmt.Errorf("gd test: android not supported")
+// Test builds the suite as a c-shared android library, deploys it to the
+// connected device/emulator, runs it under the engine, and reads the result
+// back from the app's user-data dir.
+//
+// UNVERIFIED: this has not yet run on a real emulator (the dev host has no KVM).
+// Known first-run risks to shake out: (1) whether Godot's user:// resolves to
+// the app's *internal* files dir (so `run-as ... cat files/...` works) vs an
+// external dir; (2) the android export template must be installed
+// (`gd build android` once, or AssertExportTemplates); (3) -run/-v passthrough
+// is not wired — the whole suite runs (see startup_android.go), like web needed
+// the wasm_exec argv patch.
+func (android Android) Test(args ...string) error {
+	var debug_keystore string
+	switch runtime.GOOS {
+	case "linux":
+		debug_keystore = filepath.Join(os.Getenv("HOME"), ".local", "share", "godot", "keystores", "debug.keystore")
+	case "windows":
+		debug_keystore = filepath.Join(os.Getenv("APPDATA"), "Godot", "keystores", "debug.keystore")
+	case "darwin":
+		debug_keystore = filepath.Join(os.Getenv("HOME"), "Library", "Application Support", "Godot", "keystores", "debug.keystore")
+	default:
+		return fmt.Errorf("gd test: android not supported on %v", runtime.GOOS)
+	}
+	// `-test.*` flags are runtime flags; a c-shared lib loaded inside the app
+	// can't receive them as argv, so drop them here. The whole suite runs;
+	// startup_android.go sets clean args (-test.v) before the test main starts.
+	var buildArgs []string
+	for _, arg := range args {
+		if strings.HasPrefix(arg, "-test.") {
+			continue
+		}
+		buildArgs = append(buildArgs, arg)
+	}
+	if err := android.build(true, buildArgs...); err != nil {
+		return xray.New(err)
+	}
+	GOARCH := "arm64"
+	if env := os.Getenv("GOARCH"); env != "" {
+		GOARCH = env
+	}
+	adb, err := tooling.AndroidDebugBridge.Lookup()
+	if err != nil {
+		return xray.New(err)
+	}
+	if _, err := tooling.AndroidPackageSigner.Lookup(); err != nil {
+		return xray.New(err)
+	}
+	presetName, exportPath, err := pickAndroidPreset(GOARCH)
+	if err != nil {
+		return xray.New(err)
+	}
+	apkPath := filepath.Join(project.GraphicsDirectory, exportPath)
+	if err := os.MkdirAll(filepath.Dir(apkPath), 0755); err != nil {
+		return xray.New(err)
+	}
+	if err := os.Chdir(project.GraphicsDirectory); err != nil {
+		return xray.New(err)
+	}
+	if err := tooling.Godot.Exec("--headless", "--export-debug", presetName); err != nil {
+		return xray.New(err)
+	}
+	if err := tooling.AndroidPackageSigner.Exec(
+		"sign", "--ks", debug_keystore,
+		"--ks-key-alias", "androiddebugkey", "--ks-pass", "pass:android",
+		apkPath,
+	); err != nil {
+		return xray.New(err)
+	}
+	pkgOut, err := tooling.AndroidAssetPackagingTool.Output("dump", "packagename", apkPath)
+	if err != nil {
+		return xray.New(err)
+	}
+	packageName := strings.TrimSpace(pkgOut)
+	if out, err := exec.Command(adb, "install", "-r", apkPath).CombinedOutput(); err != nil {
+		return xray.New(fmt.Errorf("adb install: %w\n%s", err, out))
+	}
+	resultPath := "files/" + androidTestOutputFile // relative to /data/data/<pkg> (run-as home)
+	_ = exec.Command(adb, "shell", "run-as", packageName, "rm", "-f", resultPath).Run()
+	if out, err := exec.Command(adb, "shell", "monkey", "-p", packageName, "-c", "android.intent.category.LAUNCHER", "1").CombinedOutput(); err != nil {
+		return xray.New(fmt.Errorf("launch %s: %w\n%s", packageName, err, out))
+	}
+	// Poll the on-device result file until go test prints its terminal PASS/FAIL
+	// line, the app dies, or we time out.
+	deadline := time.Now().Add(5 * time.Minute)
+	var last string
+	for time.Now().Before(deadline) {
+		out, _ := exec.Command(adb, "shell", "run-as", packageName, "cat", resultPath).Output()
+		last = string(out)
+		if passed, done := classifyGoTest(last); done {
+			fmt.Print(last)
+			if passed {
+				return nil
+			}
+			return fmt.Errorf("gd test: android suite failed")
+		}
+		pid, _ := exec.Command(adb, "shell", "pidof", packageName).Output()
+		if len(bytes.TrimSpace(pid)) == 0 && strings.TrimSpace(last) != "" {
+			fmt.Print(last)
+			return fmt.Errorf("gd test: android app exited before the suite finished")
+		}
+		time.Sleep(time.Second)
+	}
+	fmt.Print(last)
+	return fmt.Errorf("gd test: android suite timed out after 5m")
+}
+
+// classifyGoTest scans go test output for its terminal verdict. done stays false
+// until a "PASS"/"FAIL" line appears (go test prints one as its final line).
+func classifyGoTest(s string) (passed, done bool) {
+	for _, line := range strings.Split(s, "\n") {
+		switch strings.TrimSpace(line) {
+		case "PASS":
+			return true, true
+		case "FAIL":
+			return false, true
+		}
+	}
+	return false, false
 }
 
 func (android Android) BuildMain(...string) error {
