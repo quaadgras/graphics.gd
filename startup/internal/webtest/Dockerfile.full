@@ -1,0 +1,18 @@
+# Full glibc image to verify the ENTIRE web-test flow (build gd -> build wasm ->
+# Godot web export -> headless Chromium run) the way GitHub `ubuntu-latest` would.
+# Go 1.26 + Debian's real (glibc) Chromium with SwiftShader software WebGL2.
+# Node 22 (for the runner's global WebSocket) is grafted in from the node image,
+# since Debian bookworm only ships Node 18.
+FROM docker.io/library/node:22-bookworm-slim AS node
+FROM docker.io/library/golang:1.26-bookworm
+
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        chromium ca-certificates fonts-liberation \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV CHROMIUM=/usr/bin/chromium
+WORKDIR /repo
+ENTRYPOINT []
