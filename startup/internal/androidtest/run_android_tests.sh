@@ -10,12 +10,13 @@
 # See the caveats on Android.Test in cmd/gd/internal/builder/android.go — expect
 # to iterate on the user-dir/run-as path and arg passthrough on the first runs.
 #
-# Env: PROJECT_DIR (default <repo>/testing), GD (prebuilt gd binary), GOARCH.
+# Env: PROJECT_DIR (default <repo>/internal — tracked, has an x86_64 Android
+#      preset), GD (prebuilt gd binary), GOARCH.
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO="${REPO:-$(git -C "$HERE" rev-parse --show-toplevel)}"
-PROJECT_DIR="${PROJECT_DIR:-$REPO/testing}"
+PROJECT_DIR="${PROJECT_DIR:-$REPO/internal}"
 GOARCH="${GOARCH:-amd64}"
 GD="${GD:-}"
 
