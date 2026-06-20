@@ -3,6 +3,8 @@
 package gd
 
 import (
+	"unsafe"
+
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
@@ -45,7 +47,7 @@ func (variant Variant) Call(method StringName, args ...Variant) (Variant, error)
 		converted = append(converted, gdextension.Variant(pointers.Get(args[i])))
 	}
 	var err gdextension.CallError
-	gdextension.Host.Variants.Call(pointers.Get(variant), pointers.Get(method), gdextension.CallReturns[gdextension.Variant](&raw), len(args), gdextension.CallAccepts[gdextension.Variant](&converted[0]), gdextension.CallReturns[gdextension.CallError](&err))
+	gdextension.Host.Variants.Call(pointers.Get(variant), pointers.Get(method), gdextension.CallReturns[gdextension.Variant](&raw), len(args), gdextension.CallAccepts[gdextension.Variant](unsafe.SliceData(converted)), gdextension.CallReturns[gdextension.CallError](&err))
 	return pointers.New[Variant](raw), err.Err()
 }
 

@@ -1,6 +1,7 @@
 package gd_test
 
 import (
+	"fmt"
 	"testing"
 
 	"graphics.gd/classdb"
@@ -100,6 +101,21 @@ func set_fields(testing: MyObject):
 
 		if myobject.Field1 != "Hello" || myobject.Field2 != 42 {
 			t.Errorf("Expected Field1='Hello', Field2=42, got %v, %v", myobject.Field1, myobject.Field2)
+		}
+	})
+}
+
+// TestObjectCallNoArgs is a regression test for #309: calling a built-in method
+// with zero arguments through the dynamic Object.Call path used to panic with
+// "index out of range [0] with length 0" because the empty argument slice was
+// indexed with &args[0]. get_class is a no-arg built-in method, so this call
+// goes through the variant dynamic-call fallback with no arguments.
+func TestObjectCallNoArgs(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		var object = Object.New()
+		result := Object.Call(object, "get_class")
+		if got := fmt.Sprint(result); got != "Object" {
+			t.Errorf("expected class 'Object', got %q", got)
 		}
 	})
 }
