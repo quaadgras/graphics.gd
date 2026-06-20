@@ -385,17 +385,12 @@ func (android Android) Test(args ...string) error {
 	default:
 		return fmt.Errorf("gd test: android not supported on %v", runtime.GOOS)
 	}
-	// `-test.*` flags are runtime flags; a c-shared lib loaded inside the app
-	// can't receive them as argv, so drop them here. The whole suite runs;
-	// startup_android.go sets clean args (-test.v) before the test main starts.
-	var buildArgs []string
-	for _, arg := range args {
-		if strings.HasPrefix(arg, "-test.") {
-			continue
-		}
-		buildArgs = append(buildArgs, arg)
-	}
-	if err := android.build(true, buildArgs...); err != nil {
+	// Pass the test flags straight to `go test -c`; they are consumed at compile
+	// time and are harmless. The built c-shared lib can't receive them as argv
+	// on-device anyway, so startup_android.go resets to a clean -test.v
+	// invocation and the whole suite runs (per-test -run/-v passthrough on
+	// android is a follow-up).
+	if err := android.build(true, args...); err != nil {
 		return xray.New(err)
 	}
 	GOARCH := "arm64"
