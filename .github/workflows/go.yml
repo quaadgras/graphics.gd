@@ -92,3 +92,56 @@ jobs:
       - name: Web Tests (headless browser)
         run: |
           GD="$PWD/cmd/gd/gd.exe" bash startup/internal/webtest/run_web_tests.sh -v
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.26"
+
+      - name: Compute week key
+        id: week
+        shell: bash
+        run: echo "week=$(date +%Y-%W)" >> $GITHUB_OUTPUT
+
+      - name: Cache ~/gd directory
+        uses: actions/cache@v4
+        with:
+          path: ~/gd
+          key: ${{ runner.os }}-gd-weekly-${{ steps.week.outputs.week }}
+          restore-keys: ${{ runner.os }}-gd-weekly-
+
+      - name: Command Line Tooling
+        run: |
+          cd ./cmd/gd
+          go build -o gd.exe
+
+      # The x86_64 system image only runs at usable speed with KVM. GitHub Linux
+      # runners are KVM-capable but the device isn't world-accessible by default.
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      # reactivecircus/android-emulator-runner boots an x86_64 AVD (with KVM) and
+      # runs `script:` once adb is connected. `gd test` exports the suite with
+      # --headless (no GPU/render loop, which a CI emulator lacks), installs and
+      # runs it, and fails the job on any test failure. See run_android_tests.sh
+      # + Android.Test.
+      - name: Android Tests (x86_64 emulator)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
+          disable-animations: true
+          script: |
+            GD="$PWD/cmd/gd/gd.exe" bash startup/internal/androidtest/run_android_tests.sh
