@@ -30,6 +30,7 @@ import (
 var initDone = false
 var exitDone = false
 var toolUsed = false
+var testMainStarted = false
 
 func init() {
 	gdextension.On.Engine = gdextension.CallbacksForEngine{
@@ -155,7 +156,10 @@ func (engineLoadingSharedGo) Rendering() iter.Seq[Float.X] {
 func init() {
 	gdextension.On.MainLoop.FirstFrame = func() {
 		threadcheck.Init()
-		if testing.Testing() && !toolUsed {
+		// FirstFrame can fire more than once (e.g. on android), so guard the
+		// test main: spawning it per frame would run the whole suite repeatedly.
+		if testing.Testing() && !toolUsed && !testMainStarted {
+			testMainStarted = true
 			// On platforms where the process's stdout/stderr are discarded
 			// (android), route the test output somewhere the harness can read
 			// it back. No-op elsewhere. Must run before the test main starts.

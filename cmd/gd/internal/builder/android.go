@@ -452,59 +452,63 @@ func (android Android) Test(args ...string) error {
 	if activity == "" {
 		return xray.New(fmt.Errorf("could not resolve launcher activity for %s", packageName))
 	}
-	_ = exec.Command(adb, "logcat", "-c").Run()
+	// Stop any prior instance android may still be relaunching so it can't flood
+	// the log buffer we are about to clear and read.
+	_ = exec.Command(adb, "shell", "am", "force-stop", packageName).Run()
+	_ = exec.Command(adb, "logcat", "-b", "all", "-c").Run()
 	if out, err := exec.Command(adb, "shell", "am", "start", "-n", activity).CombinedOutput(); err != nil {
 		return xray.New(fmt.Errorf("am start %s: %w\n%s", activity, err, out))
 	}
 	// Poll logcat until go test prints its terminal PASS/FAIL line, the app
 	// dies, or we time out. `-v raw` strips the logcat prefix so each line is the
 	// raw test output.
+	// android relaunches the app after os.Exit, so the suite re-runs; force-stop
+	// it on the way out. Poll logcat for the TestMain completion sentinel — a
+	// clean logd line that, unlike the piped test output, never interleaves.
+	defer func() { _ = exec.Command(adb, "shell", "am", "force-stop", packageName).Run() }()
 	deadline := time.Now().Add(8 * time.Minute)
 	var last string
 	for time.Now().Before(deadline) {
 		out, _ := exec.Command(adb, "logcat", "-d", "-s", "Go:E", "-v", "raw").Output()
 		last = string(out)
-		if passed, done := classifyGoTest(last); done {
-			fmt.Print(last)
-			if passed {
+		if code, ok := lastSentinel(last); ok {
+			printAndroidResults(last)
+			if code == 0 {
 				return nil
 			}
-			return fmt.Errorf("gd test: android suite failed")
+			return fmt.Errorf("gd test: android suite failed (exit code %d)", code)
 		}
-		pid, _ := exec.Command(adb, "shell", "pidof", packageName).Output()
-		if len(bytes.TrimSpace(pid)) == 0 && strings.TrimSpace(last) != "" {
-			fmt.Print(last)
-			// The app exited (os.Exit after the suite). The final PASS/FAIL
-			// summary line can be lost to os.Exit racing the logcat pump, so
-			// fall back to the per-test result lines, which are emitted as each
-			// test finishes.
-			if strings.Contains(last, "--- FAIL") {
-				return fmt.Errorf("gd test: android suite failed")
-			}
-			if strings.Contains(last, "--- PASS") {
-				return nil
-			}
-			return fmt.Errorf("gd test: android app exited before producing results")
-		}
-		time.Sleep(2 * time.Second)
+		time.Sleep(time.Second)
 	}
-	fmt.Print(last)
-	return fmt.Errorf("gd test: android suite timed out")
+	printAndroidResults(last)
+	return fmt.Errorf("gd test: android suite did not finish within the timeout")
 }
 
-// classifyGoTest scans go test output for its terminal verdict. done stays false
-// until a "PASS"/"FAIL" line appears (go test prints one as its final line).
-func classifyGoTest(s string) (passed, done bool) {
-	for _, line := range strings.Split(s, "\n") {
+// printAndroidResults prints each distinct go test result line once. The system
+// relaunches the app after it exits, so by the time we read the verdict the log
+// contains the suite repeated many times.
+func printAndroidResults(log string) {
+	seen := make(map[string]bool)
+	for _, line := range strings.Split(log, "\n") {
 		t := strings.TrimSpace(line)
-		switch {
-		case t == "PASS":
-			return true, true
-		case t == "FAIL" || strings.HasPrefix(t, "--- FAIL"):
-			return false, true // fail eagerly; per-test FAIL appears immediately
+		if (strings.HasPrefix(t, "--- PASS") || strings.HasPrefix(t, "--- FAIL")) && !seen[t] {
+			seen[t] = true
+			fmt.Println(t)
 		}
 	}
-	return false, false
+}
+
+// lastSentinel returns the exit code from the last "GDTEST_DONE <code>" line
+// emitted by the test binary's TestMain (see internal/main_android_test.go).
+func lastSentinel(s string) (code int, ok bool) {
+	for _, line := range strings.Split(s, "\n") {
+		if rest, found := strings.CutPrefix(strings.TrimSpace(line), "GDTEST_DONE "); found {
+			if n, err := strconv.Atoi(strings.TrimSpace(rest)); err == nil {
+				code, ok = n, true
+			}
+		}
+	}
+	return code, ok
 }
 
 func (android Android) BuildMain(...string) error {
