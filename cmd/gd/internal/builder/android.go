@@ -431,11 +431,30 @@ func (android Android) Test(args ...string) error {
 	if out, err := exec.Command(adb, "install", "-r", apkPath).CombinedOutput(); err != nil {
 		return xray.New(fmt.Errorf("adb install: %w\n%s", err, out))
 	}
-	// The test binary routes its stdout to logcat under tag "gdtest" (see
-	// startup_android.go); clear the buffer, launch, then scrape it.
+	// The test binary routes its stdout to logcat under the Go runtime's "Go"
+	// tag (see startup_android.go); clear the buffer, launch, then scrape it.
+	// Resolve the launcher activity and start it with `am start`. monkey's exit
+	// code is unreliable for a test app that exits quickly (it reports non-zero
+	// when the app it's monitoring goes away). Retry the resolve since right
+	// after install the package manager may not have it ready yet.
+	var activity string
+	for i := 0; i < 12 && activity == ""; i++ {
+		out, _ := exec.Command(adb, "shell", "cmd", "package", "resolve-activity", "--brief", "-c", "android.intent.category.LAUNCHER", packageName).Output()
+		for _, ln := range strings.Split(strings.TrimSpace(string(out)), "\n") {
+			if ln = strings.TrimSpace(ln); strings.HasPrefix(ln, packageName+"/") {
+				activity = ln
+			}
+		}
+		if activity == "" {
+			time.Sleep(2 * time.Second)
+		}
+	}
+	if activity == "" {
+		return xray.New(fmt.Errorf("could not resolve launcher activity for %s", packageName))
+	}
 	_ = exec.Command(adb, "logcat", "-c").Run()
-	if out, err := exec.Command(adb, "shell", "monkey", "-p", packageName, "-c", "android.intent.category.LAUNCHER", "1").CombinedOutput(); err != nil {
-		return xray.New(fmt.Errorf("launch %s: %w\n%s", packageName, err, out))
+	if out, err := exec.Command(adb, "shell", "am", "start", "-n", activity).CombinedOutput(); err != nil {
+		return xray.New(fmt.Errorf("am start %s: %w\n%s", activity, err, out))
 	}
 	// Poll logcat until go test prints its terminal PASS/FAIL line, the app
 	// dies, or we time out. `-v raw` strips the logcat prefix so each line is the
@@ -443,7 +462,7 @@ func (android Android) Test(args ...string) error {
 	deadline := time.Now().Add(8 * time.Minute)
 	var last string
 	for time.Now().Before(deadline) {
-		out, _ := exec.Command(adb, "logcat", "-d", "-s", "gdtest:I", "-v", "raw").Output()
+		out, _ := exec.Command(adb, "logcat", "-d", "-s", "Go:E", "-v", "raw").Output()
 		last = string(out)
 		if passed, done := classifyGoTest(last); done {
 			fmt.Print(last)
