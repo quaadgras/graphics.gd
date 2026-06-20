@@ -274,7 +274,7 @@ func gd(args ...string) error {
 				return xray.New(err)
 			}
 			// we need to make sure export templates are installed before building.
-			if err := AssertExportTemplates(tooling.Godot.Version); err != nil {
+			if err := AssertExportTemplates(tooling.Godot.Version, GOOS); err != nil {
 				return xray.New(err)
 			}
 			if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, GOOS, GOARCH), 0755); err != nil {
@@ -293,7 +293,7 @@ func gd(args ...string) error {
 			// android runs the suite as an exported APK on a device/emulator,
 			// so it needs the export template installed (like `gd build` does).
 			if GOOS == "android" {
-				if err := AssertExportTemplates(tooling.Godot.Version); err != nil {
+				if err := AssertExportTemplates(tooling.Godot.Version, GOOS); err != nil {
 					return xray.New(err)
 				}
 			}
