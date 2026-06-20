@@ -296,9 +296,10 @@ func gd(args ...string) error {
 			if !project.IncludesGo {
 				return errors.New("cannot run 'gd test' on a project that does not include Go code")
 			}
-			// android runs the suite as an exported APK on a device/emulator,
-			// so it needs the export template installed (like `gd build` does).
-			if GOOS == "android" {
+			// android/ios run the suite as an exported app on a device,
+			// emulator or simulator, so they need the export template installed
+			// (like `gd build` does).
+			if GOOS == "android" || GOOS == "ios" {
 				if err := AssertExportTemplates(tooling.Godot.Version, GOOS); err != nil {
 					return xray.New(err)
 				}
