@@ -403,6 +403,15 @@ func (android Android) Test(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
+	// Run the test app with --headless so it doesn't depend on a GPU/render loop:
+	// the test scheduler is driven by the engine's per-frame main loop, which
+	// crawls on the software GL of a CI emulator. Restore the preset afterwards so
+	// a real `gd build` for the same project is unaffected.
+	restoreHeadless, err := bakeAndroidHeadless(presetName)
+	if err != nil {
+		return xray.New(err)
+	}
+	defer restoreHeadless()
 	apkPath := filepath.Join(project.GraphicsDirectory, exportPath)
 	if err := os.MkdirAll(filepath.Dir(apkPath), 0755); err != nil {
 		return xray.New(err)
@@ -496,6 +505,55 @@ func printAndroidResults(log string) {
 			fmt.Println(t)
 		}
 	}
+}
+
+// bakeAndroidHeadless sets command_line/extra_args="--headless" on the named
+// export preset so the exported test app runs without rendering, and returns a
+// function that restores the original config (so a normal `gd build` is
+// unaffected).
+func bakeAndroidHeadless(presetName string) (restore func(), err error) {
+	cfgPath := filepath.Join(project.GraphicsDirectory, "export_presets.cfg")
+	original, err := os.ReadFile(cfgPath)
+	if err != nil {
+		return nil, err
+	}
+	// Find the [preset.N] whose name matches, then set the cmdline in its
+	// [preset.N.options] section.
+	lines := strings.Split(string(original), "\n")
+	idx, cur := "", ""
+	for _, line := range lines {
+		s := strings.TrimSpace(line)
+		if strings.HasPrefix(s, "[preset.") && !strings.HasSuffix(s, ".options]") {
+			cur = strings.TrimSuffix(strings.TrimPrefix(s, "[preset."), "]")
+		} else if name, ok := strings.CutPrefix(s, "name="); ok && strings.Trim(name, `"`) == presetName {
+			idx = cur
+			break
+		}
+	}
+	if idx == "" {
+		return nil, fmt.Errorf("preset %q not found in %s", presetName, cfgPath)
+	}
+	optionsHeader := "[preset." + idx + ".options]"
+	inOptions, set := false, false
+	for i, line := range lines {
+		s := strings.TrimSpace(line)
+		if strings.HasPrefix(s, "[") {
+			inOptions = s == optionsHeader
+			continue
+		}
+		if inOptions && strings.HasPrefix(s, "command_line/extra_args=") {
+			lines[i] = `command_line/extra_args="--headless"`
+			set = true
+			break
+		}
+	}
+	if !set {
+		return nil, fmt.Errorf("command_line/extra_args not found for preset %q", presetName)
+	}
+	if err := os.WriteFile(cfgPath, []byte(strings.Join(lines, "\n")), 0o644); err != nil {
+		return nil, err
+	}
+	return func() { _ = os.WriteFile(cfgPath, original, 0o644) }, nil
 }
 
 // lastSentinel returns the exit code from the last "GDTEST_DONE <code>" line
