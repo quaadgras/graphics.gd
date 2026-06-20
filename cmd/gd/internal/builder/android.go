@@ -48,11 +48,6 @@ func (android Android) Build(args ...string) error {
 	return android.build(false, args...)
 }
 
-// androidTestOutputFile mirrors startup.TestOutputFile: the basename, inside the
-// app's user-data dir, that `gd test` output is redirected to on-device. Read
-// back here via `adb shell run-as <pkg> cat files/<this>`.
-const androidTestOutputFile = "gdtest.log"
-
 // build compiles the project as an android c-shared library. With testing set it
 // builds a `go test` binary (run on-device under the engine via the FirstFrame
 // hook in startup_cgo.go) instead of the application.
@@ -415,7 +410,10 @@ func (android Android) Test(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-debug", presetName); err != nil {
+	// Release export: a debug export needs Godot to reach a path the local musl
+	// editor (a Go test binary) can't, and release is debuggable-independent
+	// since we read results from logcat rather than via run-as.
+	if err := tooling.Godot.Exec("--headless", "--export-release", presetName); err != nil {
 		return xray.New(err)
 	}
 	if err := tooling.AndroidPackageSigner.Exec(
@@ -433,17 +431,19 @@ func (android Android) Test(args ...string) error {
 	if out, err := exec.Command(adb, "install", "-r", apkPath).CombinedOutput(); err != nil {
 		return xray.New(fmt.Errorf("adb install: %w\n%s", err, out))
 	}
-	resultPath := "files/" + androidTestOutputFile // relative to /data/data/<pkg> (run-as home)
-	_ = exec.Command(adb, "shell", "run-as", packageName, "rm", "-f", resultPath).Run()
+	// The test binary routes its stdout to logcat under tag "gdtest" (see
+	// startup_android.go); clear the buffer, launch, then scrape it.
+	_ = exec.Command(adb, "logcat", "-c").Run()
 	if out, err := exec.Command(adb, "shell", "monkey", "-p", packageName, "-c", "android.intent.category.LAUNCHER", "1").CombinedOutput(); err != nil {
 		return xray.New(fmt.Errorf("launch %s: %w\n%s", packageName, err, out))
 	}
-	// Poll the on-device result file until go test prints its terminal PASS/FAIL
-	// line, the app dies, or we time out.
-	deadline := time.Now().Add(5 * time.Minute)
+	// Poll logcat until go test prints its terminal PASS/FAIL line, the app
+	// dies, or we time out. `-v raw` strips the logcat prefix so each line is the
+	// raw test output.
+	deadline := time.Now().Add(8 * time.Minute)
 	var last string
 	for time.Now().Before(deadline) {
-		out, _ := exec.Command(adb, "shell", "run-as", packageName, "cat", resultPath).Output()
+		out, _ := exec.Command(adb, "logcat", "-d", "-s", "gdtest:I", "-v", "raw").Output()
 		last = string(out)
 		if passed, done := classifyGoTest(last); done {
 			fmt.Print(last)
@@ -455,23 +455,34 @@ func (android Android) Test(args ...string) error {
 		pid, _ := exec.Command(adb, "shell", "pidof", packageName).Output()
 		if len(bytes.TrimSpace(pid)) == 0 && strings.TrimSpace(last) != "" {
 			fmt.Print(last)
-			return fmt.Errorf("gd test: android app exited before the suite finished")
+			// The app exited (os.Exit after the suite). The final PASS/FAIL
+			// summary line can be lost to os.Exit racing the logcat pump, so
+			// fall back to the per-test result lines, which are emitted as each
+			// test finishes.
+			if strings.Contains(last, "--- FAIL") {
+				return fmt.Errorf("gd test: android suite failed")
+			}
+			if strings.Contains(last, "--- PASS") {
+				return nil
+			}
+			return fmt.Errorf("gd test: android app exited before producing results")
 		}
-		time.Sleep(time.Second)
+		time.Sleep(2 * time.Second)
 	}
 	fmt.Print(last)
-	return fmt.Errorf("gd test: android suite timed out after 5m")
+	return fmt.Errorf("gd test: android suite timed out")
 }
 
 // classifyGoTest scans go test output for its terminal verdict. done stays false
 // until a "PASS"/"FAIL" line appears (go test prints one as its final line).
 func classifyGoTest(s string) (passed, done bool) {
 	for _, line := range strings.Split(s, "\n") {
-		switch strings.TrimSpace(line) {
-		case "PASS":
+		t := strings.TrimSpace(line)
+		switch {
+		case t == "PASS":
 			return true, true
-		case "FAIL":
-			return false, true
+		case t == "FAIL" || strings.HasPrefix(t, "--- FAIL"):
+			return false, true // fail eagerly; per-test FAIL appears immediately
 		}
 	}
 	return false, false

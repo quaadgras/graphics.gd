@@ -169,6 +169,12 @@ func gd(args ...string) error {
 		if strings.HasPrefix(version, "musl") {
 			if len(args) > 0 && args[0] == "test" {
 				build_godot = func() error {
+					// The host editor must be built for the host arch even when
+					// the test target is a cross arch (e.g. android/arm64);
+					// otherwise Musl.Test refuses to "run linux/arm64 on amd64".
+					targetARCH := os.Getenv("GOARCH")
+					os.Setenv("GOARCH", runtime.GOARCH)
+					defer os.Setenv("GOARCH", targetARCH)
 					musl_args := args
 					current, err := os.Getwd()
 					if err != nil {
