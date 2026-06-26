@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
+	"io/fs"
 	"os"
 	"os/user"
 	"path/filepath"
@@ -109,7 +110,24 @@ func (musl Musl) Build(args ...string) (err error) {
 	if err := tooling.Go.Action("build", args, "-tags", "musl", "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Zig.Exec("cc", "-target", target, "-lc++", musl.lib, libgo, "-o", musl.out); err != nil {
+	// Forward each linked package's #cgo LDFLAGS to the final link. `go build`
+	// records them in the c-archive but does not apply them when an external tool
+	// links it (zig here), so a package that statically links a C/C++ library would
+	// otherwise fail with undefined symbols. `go list -deps` expands ${SRCDIR} to
+	// absolute paths. -lc++ goes last so libc++ resolves any C++ symbols those
+	// archives pull in.
+	zigArgs := []string{"cc", "-target", target, musl.lib, libgo}
+	cgoLDFLAGS, err := tooling.Go.Output("list", "-tags", "musl", "-deps", "-f", "{{range .CgoLDFLAGS}}{{println .}}{{end}}", ".")
+	if err != nil {
+		return xray.New(err)
+	}
+	for _, flag := range strings.Split(cgoLDFLAGS, "\n") {
+		if flag = strings.TrimSpace(flag); flag != "" {
+			zigArgs = append(zigArgs, flag)
+		}
+	}
+	zigArgs = append(zigArgs, "-lc++", "-o", musl.out)
+	if err := tooling.Zig.Exec(zigArgs...); err != nil {
 		return xray.New(err)
 	}
 	return nil
@@ -137,6 +155,60 @@ func (musl Musl) patch() error {
 		return xray.New(err)
 	}
 	return nil
+}
+
+// ignoreEnabledExtensions disables every GDExtension for the duration of a musl export.
+// A static musl binary can't dlopen a shared library (graphics.gd's loader borrows the
+// host's dynamic loader), so any extension required at runtime must instead be statically
+// linked and self-registered — e.g. GDExtensionManager.load_extension_from_function. We
+// rename the project's *.gdextension files aside so Godot's import scan finds none: it then
+// drops extension_list.cfg and the export bundles no extension loaders. The returned func
+// restores everything for the editor and other-platform builds, so callers MUST defer it.
+func ignoreEnabledExtensions() (restore func(), err error) {
+	dir := project.GraphicsDirectory
+	var found []string
+	if err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+		if d.IsDir() {
+			if d.Name() == ".godot" { // huge import cache, never holds .gdextension files
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if strings.HasSuffix(path, ".gdextension") {
+			found = append(found, path)
+		}
+		return nil
+	}); err != nil {
+		return func() {}, xray.New(err)
+	}
+	var disabled []string
+	restore = func() {
+		for _, path := range disabled {
+			os.Rename(path+".disabled", path)
+		}
+	}
+	for _, path := range found {
+		if err := os.Rename(path, path+".disabled"); err != nil {
+			restore()
+			return func() {}, xray.New(err)
+		}
+		disabled = append(disabled, path)
+	}
+	// Godot regenerates extension_list.cfg from the (now-absent) .gdextension files — i.e.
+	// removes it; keep the original so the editor's loaded-extension list survives the build.
+	extList := filepath.Join(dir, ".godot", "extension_list.cfg")
+	if saved, e := os.ReadFile(extList); e == nil {
+		os.Remove(extList)
+		inner := restore
+		restore = func() {
+			inner()
+			os.WriteFile(extList, saved, 0644)
+		}
+	}
+	return restore, nil
 }
 
 func (musl Musl) BuildMain(args ...string) error {
@@ -167,6 +239,11 @@ func (musl Musl) BuildMain(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
+	restoreExtensions, err := ignoreEnabledExtensions()
+	if err != nil {
+		return xray.New(err)
+	}
+	defer restoreExtensions()
 	if err := tooling.Godot.Exec(export...); err != nil {
 		return xray.New(err)
 	}
