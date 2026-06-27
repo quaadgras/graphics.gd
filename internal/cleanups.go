@@ -38,3 +38,5 @@ func Flush() {
 		ring.Main.Flush()
 	}
 }
+
+var CrashHandlers []func()

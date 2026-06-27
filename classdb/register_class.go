@@ -819,6 +819,9 @@ func (instance *instanceImplementation) Notification(what Object.Notification, r
 			}
 		}
 		debug.PrintStack()
+		for _, handler := range gd.CrashHandlers {
+			handler()
+		}
 	}
 	if !instance.isEditor {
 		switch notify := val.(type) {
