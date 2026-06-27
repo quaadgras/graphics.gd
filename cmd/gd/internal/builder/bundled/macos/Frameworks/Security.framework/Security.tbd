@@ -11,6 +11,7 @@ exports:
     - _SecCertificateCopyData
     - _SecCertificateCreateWithData
     - _SecPolicyCreateSSL
+    - _SecTrustCopyCertificateChain
     - _SecTrustCreateWithCertificates
     - _SecTrustEvaluateWithError
     - _SecTrustGetCertificateAtIndex
