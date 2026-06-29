@@ -147,7 +147,15 @@ func gd(args ...string) error {
 			return tooling.Go.Exec(args...)
 		case "doc":
 			return doc(args[1:]...)
-		case "build", "run", "test":
+		case "help":
+			if len(args) > 1 && args[1] == "shared" {
+				return tooling.Go.Exec(append([]string{"help", "build"}, args[2:]...)...)
+			}
+			err := tooling.Go.Exec(args...)
+			fmt.Println(`gd commands:
+		shared	generate shared object/library for Godot`)
+			return err
+		case "build", "run", "test", "shared":
 		default:
 			return tooling.Go.Exec(args...)
 		}
@@ -305,6 +313,11 @@ func gd(args ...string) error {
 				}
 			}
 			return platform.Test(testArgs(args[1:]...)...)
+		case "shared":
+			if err := os.Chdir(project.Directory); err != nil {
+				return xray.New(err)
+			}
+			return platform.Build(args[1:]...)
 		}
 	}
 	return nil
