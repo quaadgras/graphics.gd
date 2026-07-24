@@ -215,7 +215,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	}
 	field.Set(converted)
 	if hasOnSetter {
-		onSetter.OnSet(name.String(), value)
+		onSetter.OnSet(name.String(), value.ConvenientInterface())
 	}
 	return true
 }
