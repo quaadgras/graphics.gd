@@ -152,15 +152,26 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 			return false
 		}
 	}
+	onSetter, hasOnSetter := val.(interface {
+		OnSet(string, any)
+	})
 	if value.Type() == gdextension.TypeNil {
-		field.Set(reflect.Zero(field.Type()))
+		nilVal := reflect.Zero(field.Type())
+		field.Set(nilVal)
+		if hasOnSetter {
+			onSetter.OnSet(name.String(), nilVal)
+		}
 		return true
 	}
 	if reflect.PointerTo(field.Type()).Implements(reflect.TypeFor[Enum.Pointer]()) {
 		if value.Type() != gdextension.TypeInt {
 			return false
 		}
-		field.Addr().Interface().(Enum.Pointer).SetInt(int(value.Int()))
+		intVal := int(value.Int())
+		field.Addr().Interface().(Enum.Pointer).SetInt(intVal)
+		if hasOnSetter {
+			onSetter.OnSet(name.String(), intVal)
+		}
 		return true
 	}
 	var isExtensionClass bool
@@ -203,10 +214,8 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		}
 	}
 	field.Set(converted)
-	if impl, ok := val.(interface {
-		OnSet(string, any)
-	}); ok {
-		impl.OnSet(name.String(), value)
+	if hasOnSetter {
+		onSetter.OnSet(name.String(), value)
 	}
 	return true
 }
