@@ -29,7 +29,7 @@ type comparableCallable struct {
 func init() {
 	gdextension.On.Callables = gdextension.CallbacksForCallables{
 		Call: func(fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], call_error gdextension.Returns[gdextension.CallError]) {
-			defer Recover()
+			defer RecoverCall(call_error)
 			callable := callables.Get(fn)
 			switch cb := callable.fn.(type) {
 			case func():

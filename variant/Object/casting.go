@@ -35,7 +35,13 @@ func As[T gd.IsClass](value gd.IsClass) (T, bool) {
 	var zero T
 	castable, ok := any(&zero).(gd.IsClassCastable)
 	if ok {
-		return zero, castable.SetObject(value.AsObject())
+		if castable.SetObject(value.AsObject()) {
+			if gd.BindStruct != nil {
+				gd.BindStruct(&zero, value.AsObject())
+			}
+			return zero, true
+		}
+		return zero, false
 	}
 	return zero, false
 }

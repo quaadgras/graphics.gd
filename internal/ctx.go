@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdmemory"
 	"graphics.gd/internal/pointers"
 )
 
@@ -30,6 +31,22 @@ var traceCrash = os.Getenv("GOTRACEBACK") == "crash"
 func Recover() {
 	if !traceCrash {
 		if err := recover(); err != nil {
+			recovery(err)
+		}
+	}
+}
+
+// RecoverCall behaves like [Recover] but is for callbacks that report their
+// outcome to the engine through a [gdextension.CallError]. The engine leaves
+// that struct uninitialized before calling us (see CallableCustomExtension::call
+// and ScriptInstanceExtension::callp), so a recovered panic that returned
+// without writing it would have the engine report a bogus second error on top
+// of the panic we already logged, such as "Method expected 4 argument(s), but
+// called with 4." Report the call as OK; the panic itself is the error.
+func RecoverCall(call_error gdextension.Returns[gdextension.CallError]) {
+	if !traceCrash {
+		if err := recover(); err != nil {
+			gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{})
 			recovery(err)
 		}
 	}

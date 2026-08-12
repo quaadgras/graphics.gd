@@ -159,8 +159,11 @@ func GetObject(obj Object) gdextension.Object {
 	// nothing. Both guards return assigned.inEngine, so the order does not
 	// change any result. The guards match AskObject exactly — a non-zero
 	// assigned id whose sentinel refers to the same object — so
-	// borrow/thread/static references still fall through.
-	if obj.sentinel != &borrowSentinel && obj.assigned.objectID != 0 && obj.sentinel.objectID == obj.assigned.objectID {
+	// borrow/thread/static references still fall through. The revision tag
+	// check excludes deferred references, whose assigned.objectID is a
+	// context (not the target) and could otherwise match a cache slot that
+	// resolved to the context object itself.
+	if obj.revision&deferredBit == 0 && obj.sentinel != &borrowSentinel && obj.assigned.objectID != 0 && obj.sentinel.objectID == obj.assigned.objectID {
 		return obj.assigned.inEngine
 	}
 	if threadcheck.Main() && obj.revision == now {
@@ -203,6 +206,9 @@ var borrowSentinel object
 
 // AskObject returns lifetime information for the object.
 func AskObject(obj Object) (gdextension.Object, Type) {
+	if obj.revision&deferredBit != 0 {
+		return resolveDeferred(obj), TypeBorrow
+	}
 	switch obj.sentinel {
 	case nil:
 		return obj.assigned.inEngine, TypeUnsafe
@@ -279,6 +285,9 @@ func CutObject(obj Object, end bool) gdextension.Object {
 // UseObject marks the object as used, preventing it from being
 // freed for one frame.
 func UseObject(obj *Object) {
+	if obj.revision&deferredBit != 0 {
+		return // deferred references do not participate in frame pooling.
+	}
 	if obj.sentinel == &obj.assigned {
 		obj.revision = 0
 		return

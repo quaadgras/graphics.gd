@@ -229,3 +229,10 @@ type IsClass interface {
 type IsClassCastable interface {
 	SetObject([1]gdreference.Object) bool
 }
+
+// BindStruct is installed by the classdb/Node package. After a successful
+// cast of a plain struct type (one that embeds a class Instance), it fills
+// the struct's remaining class-typed fields with deferred references that
+// resolve by node path relative to the object that was cast. See
+// [Object.As] and https://github.com/quaadgras/graphics.gd/discussions/283
+var BindStruct func(value any, root [1]gdreference.Object)
