@@ -189,13 +189,47 @@ func Setup(build_godot func() error) error {
 			return xray.New(err)
 		}
 	}
-	if err := SetupFile(true, filepath.Join(GraphicsDirectory, "library.gdextension"), library_gdextension, gdextension_version); err != nil {
+	if err := SetupFile(true, filepath.Join(GraphicsDirectory, "library.gdextension"), muslHostLibrary(library_gdextension), gdextension_version); err != nil {
 		return xray.New(err)
 	}
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, ".godot", "extension_list.cfg"), extension_list_cfg); err != nil {
 		return xray.New(err)
 	}
 	return nil
+}
+
+// muslHostLibrary scopes the linux entries of the library.gdextension template to
+// template_debug/template_release on musl hosts. The editor there is a static binary
+// with the project's Go code already linked in, so it must never dlopen the project's
+// own linux .so: loading one left over from an older toolchain crashes the borrowed
+// host loader mid-export, and even a fresh one is redundant. The editor (feature
+// "editor") matches none of the scoped entries, while exported linux games (feature
+// "template_*") still resolve theirs — so cross-platform and linux exports both keep
+// working. Hosts with a glibc editor are left alone: dlopen'ing the .so is how the
+// project loads there.
+func muslHostLibrary(library string) string {
+	if runtime.GOOS != "linux" {
+		return library
+	}
+	// ldd reports "musl ..." on musl systems and "ldd (GNU libc) ..." on glibc ones.
+	version, _ := tooling.ListDynamicDependencies.CombinedOutput("--version")
+	if !strings.HasPrefix(strings.TrimSpace(version), "musl") {
+		return library
+	}
+	var lines []string
+	for _, line := range strings.Split(library, "\n") {
+		if rest, ok := strings.CutPrefix(strings.TrimSpace(line), "linux."); ok {
+			if arch, lib, ok := strings.Cut(rest, "="); ok {
+				arch, lib = strings.TrimSpace(arch), strings.TrimSpace(lib)
+				lines = append(lines,
+					fmt.Sprintf("linux.template_debug.%s = %s", arch, lib),
+					fmt.Sprintf("linux.template_release.%s = %s", arch, lib))
+				continue
+			}
+		}
+		lines = append(lines, line)
+	}
+	return strings.Join(lines, "\n")
 }
 
 func SetupFile(force bool, name, embed string, args ...any) error {
