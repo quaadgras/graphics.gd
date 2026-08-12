@@ -2002,15 +2002,15 @@ func (self Instance) ShapedTextHasVisibleChars(shaped RID.TextBuffer) bool { //g
 /*
 Returns an array of glyphs in the visual order.
 */
-func (self Instance) ShapedTextGetGlyphs(shaped RID.TextBuffer) [][]Glyph { //gd:TextServer.shaped_text_get_glyphs
-	return [][]Glyph(gd.ArrayAs[[][]Glyph](gd.InternalArray(Advanced(self).ShapedTextGetGlyphs(RID.Any(shaped)))))
+func (self Instance) ShapedTextGetGlyphs(shaped RID.TextBuffer) []Glyph { //gd:TextServer.shaped_text_get_glyphs
+	return []Glyph(gd.ArrayAs[[]Glyph](gd.InternalArray(Advanced(self).ShapedTextGetGlyphs(RID.Any(shaped)))))
 }
 
 /*
 Returns text glyphs in the logical order.
 */
-func (self Instance) ShapedTextSortLogical(shaped RID.TextBuffer) [][]Glyph { //gd:TextServer.shaped_text_sort_logical
-	return [][]Glyph(gd.ArrayAs[[][]Glyph](gd.InternalArray(Advanced(self).ShapedTextSortLogical(RID.Any(shaped)))))
+func (self Instance) ShapedTextSortLogical(shaped RID.TextBuffer) []Glyph { //gd:TextServer.shaped_text_sort_logical
+	return []Glyph(gd.ArrayAs[[]Glyph](gd.InternalArray(Advanced(self).ShapedTextSortLogical(RID.Any(shaped)))))
 }
 
 /*
@@ -2086,8 +2086,8 @@ func (self Instance) ShapedTextGetEllipsisPos(shaped RID.TextBuffer) int { //gd:
 /*
 Returns array of the glyphs in the ellipsis.
 */
-func (self Instance) ShapedTextGetEllipsisGlyphs(shaped RID.TextBuffer) [][]Glyph { //gd:TextServer.shaped_text_get_ellipsis_glyphs
-	return [][]Glyph(gd.ArrayAs[[][]Glyph](gd.InternalArray(Advanced(self).ShapedTextGetEllipsisGlyphs(RID.Any(shaped)))))
+func (self Instance) ShapedTextGetEllipsisGlyphs(shaped RID.TextBuffer) []Glyph { //gd:TextServer.shaped_text_get_ellipsis_glyphs
+	return []Glyph(gd.ArrayAs[[]Glyph](gd.InternalArray(Advanced(self).ShapedTextGetEllipsisGlyphs(RID.Any(shaped)))))
 }
 
 /*

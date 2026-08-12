@@ -12,10 +12,10 @@ package main
 
 func GraphEdit_GetConnectionListFromNode() {
 	type Connection struct {
-		FromNode  string `json:"from_node"`
-		FromPort  int    `json:"from_port"`
-		ToNode    string `json:"to_node"`
-		ToPort    int    `json:"to_port"`
-		KeepAlive bool   `json:"keep_alive"`
+		FromNode  string `gd:"from_node"`
+		FromPort  int    `gd:"from_port"`
+		ToNode    string `gd:"to_node"`
+		ToPort    int    `gd:"to_port"`
+		KeepAlive bool   `gd:"keep_alive"`
 	}
 }

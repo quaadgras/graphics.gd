@@ -131,7 +131,7 @@ type Interface interface {
 	GetDocCommentDelimiters() []string
 	GetStringDelimiters() []string
 	MakeTemplate(template string, class_name string, base_class_name string) Script.Instance
-	GetBuiltInTemplates(obj string) [][]Template
+	GetBuiltInTemplates(obj string) []Template
 	IsUsingTemplates() bool
 	Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) Validation
 	ValidatePath(path string) string
@@ -177,9 +177,9 @@ type Interface interface {
 	// [ScriptLanguageExtension]: https://pkg.go.dev/graphics.gd/classdb/ScriptLanguageExtension
 	ReloadToolScript(script Script.Instance, soft_reload bool)
 	GetRecognizedExtensions() []string
-	GetPublicFunctions() [][]struct{}
+	GetPublicFunctions() []Object.MethodInfo
 	GetPublicConstants() []Constant
-	GetPublicAnnotations() [][]struct{}
+	GetPublicAnnotations() []Object.MethodInfo
 	ProfilingStart()
 	ProfilingStop()
 	ProfilingSetSaveNativeCalls(enable bool)
@@ -226,7 +226,7 @@ func (self implementation) GetStringDelimiters() (_ []string) {
 func (self implementation) MakeTemplate(template string, class_name string, base_class_name string) (_ Script.Instance) {
 	return
 }
-func (self implementation) GetBuiltInTemplates(obj string) (_ [][]Template) {
+func (self implementation) GetBuiltInTemplates(obj string) (_ []Template) {
 	return
 }
 func (self implementation) IsUsingTemplates() (_ bool) {
@@ -332,13 +332,13 @@ func (self implementation) ReloadToolScript(script Script.Instance, soft_reload 
 func (self implementation) GetRecognizedExtensions() (_ []string) {
 	return
 }
-func (self implementation) GetPublicFunctions() (_ [][]struct{}) {
+func (self implementation) GetPublicFunctions() (_ []Object.MethodInfo) {
 	return
 }
 func (self implementation) GetPublicConstants() (_ []Constant) {
 	return
 }
-func (self implementation) GetPublicAnnotations() (_ [][]struct{}) {
+func (self implementation) GetPublicAnnotations() (_ []Object.MethodInfo) {
 	return
 }
 func (self implementation) ProfilingStart() {
@@ -484,7 +484,7 @@ func (Instance) _make_template(impl func(ptr gdclass.Receiver, template string, 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_built_in_templates(impl func(ptr gdclass.Receiver, obj string) [][]Template) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_built_in_templates(impl func(ptr gdclass.Receiver, obj string) []Template) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = String.Name(String.Via(gd.WrapStringName(pointers.Pin(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0))))))
 		defer pointers.End(gd.InternalStringName(obj))
@@ -936,7 +936,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []str
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_public_functions(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_public_functions(impl func(ptr gdclass.Receiver) []Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
@@ -960,7 +960,7 @@ func (Instance) _get_public_constants(impl func(ptr gdclass.Receiver) []Constant
 		gd.UnsafeReplaceDictionary(p_back, ptr)
 	}
 }
-func (Instance) _get_public_annotations(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_public_annotations(impl func(ptr gdclass.Receiver) []Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		ret := impl(self)

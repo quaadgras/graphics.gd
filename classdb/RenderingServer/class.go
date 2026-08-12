@@ -1297,8 +1297,8 @@ func MeshSurfaceGetArrays(mesh RID.Mesh, surface int) []any { //gd:RenderingServ
 /*
 Returns a mesh's surface's arrays for blend shapes.
 */
-func MeshSurfaceGetBlendShapeArrays(mesh RID.Mesh, surface int) [][][]any { //gd:RenderingServer.mesh_surface_get_blend_shape_arrays
-	return [][][]any(gd.ArrayAs[[][][]any](gd.InternalArray(Advanced().MeshSurfaceGetBlendShapeArrays(RID.Any(mesh), int64(surface)))))
+func MeshSurfaceGetBlendShapeArrays(mesh RID.Mesh, surface int) [][]any { //gd:RenderingServer.mesh_surface_get_blend_shape_arrays
+	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(Advanced().MeshSurfaceGetBlendShapeArrays(RID.Any(mesh), int64(surface)))))
 }
 
 /*

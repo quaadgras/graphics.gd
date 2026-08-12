@@ -795,9 +795,9 @@ var Structables = map[string]reflect.Type{
 	"TextServer.font_supported_variation_list.":                         reflect.TypeFor[map[int]Vector3i.XYZ](),
 	"TextServer.shaped_text_add_string.opentype_features":               reflect.TypeFor[map[string]uint32](),
 	"TextServer.shaped_set_span_update_font.opentype_features":          reflect.TypeFor[map[string]uint32](),
-	"TextServer.shaped_text_get_glyphs.":                                reflect.TypeFor[[]Glyph](),
-	"TextServer.shaped_text_sort_logical.":                              reflect.TypeFor[[]Glyph](),
-	"TextServer.shaped_text_get_ellipsis_glyphs.":                       reflect.TypeFor[[]Glyph](),
+	"TextServer.shaped_text_get_glyphs.":                                reflect.TypeFor[Glyph](),
+	"TextServer.shaped_text_sort_logical.":                              reflect.TypeFor[Glyph](),
+	"TextServer.shaped_text_get_ellipsis_glyphs.":                       reflect.TypeFor[Glyph](),
 	"TextServer.shaped_text_get_carets.":                                reflect.TypeFor[Carets](),
 	"TextServerManager.get_interfaces.":                                 reflect.TypeFor[map[int]string](),
 	"Time.get_datetime_dict_from_unix_time.":                            reflect.TypeFor[Date](),
@@ -821,11 +821,11 @@ var Structables = map[string]reflect.Type{
 	"XRServer.get_interfaces.":                                          reflect.TypeFor[map[int]string](),
 
 	"AnimationNode._get_child_nodes.":                        reflect.MapOf(reflect.TypeFor[string](), TypeFromString("graphics.gd/classdb/Node", "Instance")),
-	"AudioStream._get_parameter_list.":                       reflect.SliceOf(TypeFromString("Object", "PropertyInfo")),
-	"CodeEdit._filter_code_completion_candidates.candidates": reflect.TypeFor[[]CompletionInfo](),
-	"CodeEdit._filter_code_completion_candidates.":           reflect.TypeFor[[]CompletionInfo](),
+	"AudioStream._get_parameter_list.":                       TypeFromString("Object", "PropertyInfo"),
+	"CodeEdit._filter_code_completion_candidates.candidates": reflect.TypeFor[CompletionInfo](),
+	"CodeEdit._filter_code_completion_candidates.":           reflect.TypeFor[CompletionInfo](),
 
-	"EditorExportPlatformExtension._get_export_options.": SliceOf(Named[struct {
+	"EditorExportPlatformExtension._get_export_options.": Named[struct {
 		Hint             int    `gd:"hint"`
 		HintString       string `gd:"hint_string"`
 		Usage            int    `gd:"usage"`
@@ -833,19 +833,19 @@ var Structables = map[string]reflect.Type{
 		DefaultValue     any    `gd:"default_value"`
 		UpdateVisibility bool   `gd:"update_visibility"`
 		Required         bool   `gd:"required"`
-	}]("Option")),
-	"EditorExportPlugin._get_export_options.": SliceOf(Named[struct {
+	}]("Option"),
+	"EditorExportPlugin._get_export_options.": Named[struct {
 		Option           any  `gd:"option" type:"Object.PropertyInfo"`
 		DefaultValue     any  `gd:"default_value"`
 		UpdateVisibility bool `gd:"update_visibility"`
-	}]("Option")),
-	"EditorImportPlugin._get_import_options.": SliceOf(Named[struct {
+	}]("Option"),
+	"EditorImportPlugin._get_import_options.": Named[struct {
 		Name         string `gd:"name"`
 		DefaultValue any    `gd:"default_value"`
 		PropertyHint int    `gd:"property_hint"`
 		HintString   string `gd:"hint_string"`
 		Usage        int    `gd:"usage"`
-	}]("Option")),
+	}]("Option"),
 	"EditorImportPlugin._get_option_visibility.options":                                                               reflect.TypeFor[map[string]any](),
 	"EditorImportPlugin._import.options":                                                                              reflect.TypeFor[map[string]any](),
 	"EditorPlugin._get_state.":                                                                                        reflect.TypeFor[map[any]any](),
@@ -854,10 +854,10 @@ var Structables = map[string]reflect.Type{
 	"EditorResourcePreviewGenerator._generate_from_path.metadata":                                                     reflect.TypeFor[map[string]any](),
 	"EditorResourceTooltipPlugin._make_tooltip_for_path.metadata":                                                     reflect.TypeFor[map[string]any](),
 	"EditorSceneFormatImporter._import_scene.options":                                                                 reflect.TypeFor[map[string]any](),
-	"EditorVCSInterface._get_modified_files_data.":                                                                    reflect.TypeFor[[]StatusFile](),
-	"EditorVCSInterface._get_diff.":                                                                                   reflect.TypeFor[[]DiffFile](),
-	"EditorVCSInterface._get_previous_commits.":                                                                       reflect.TypeFor[[]Commit](),
-	"EditorVCSInterface._get_line_diff.":                                                                              reflect.TypeFor[[]DiffLine](),
+	"EditorVCSInterface._get_modified_files_data.":                                                                    reflect.TypeFor[StatusFile](),
+	"EditorVCSInterface._get_diff.":                                                                                   reflect.TypeFor[DiffFile](),
+	"EditorVCSInterface._get_previous_commits.":                                                                       reflect.TypeFor[Commit](),
+	"EditorVCSInterface._get_line_diff.":                                                                              reflect.TypeFor[DiffLine](),
 	"GLTFDocumentExtension._parse_node_extensions.extensions":                                                         reflect.TypeFor[map[string]any](),
 	"GLTFDocumentExtension._parse_texture_json.texture_json":                                                          reflect.TypeFor[map[string]any](),
 	"GLTFDocumentExtension._import_node.json":                                                                         reflect.TypeFor[map[string]any](),
@@ -872,14 +872,14 @@ var Structables = map[string]reflect.Type{
 	"OpenXRExtensionWrapperExtension._get_viewport_composition_layer_extension_property_defaults.":                    reflect.TypeFor[map[string]any](),
 	"ResourceFormatLoader._rename_dependencies.renames":                                                               reflect.TypeFor[map[string]string](),
 
-	"ScriptExtension._get_documentation.":        reflect.TypeFor[[]ClassDoc](),
+	"ScriptExtension._get_documentation.":        reflect.TypeFor[ClassDoc](),
 	"ScriptExtension._get_method_info.":          TypeFromString("Object", "MethodInfo"),
-	"ScriptExtension._get_script_signal_list.":   reflect.SliceOf(TypeFromString("Object", "MethodInfo")),
-	"ScriptExtension._get_script_method_list.":   reflect.SliceOf(TypeFromString("Object", "MethodInfo")),
-	"ScriptExtension._get_script_property_list.": reflect.SliceOf(TypeFromString("Object", "PropertyInfo")),
+	"ScriptExtension._get_script_signal_list.":   TypeFromString("Object", "MethodInfo"),
+	"ScriptExtension._get_script_method_list.":   TypeFromString("Object", "MethodInfo"),
+	"ScriptExtension._get_script_property_list.": TypeFromString("Object", "PropertyInfo"),
 	"ScriptExtension._get_constants.":            reflect.TypeFor[map[string]any](),
 
-	"ScriptLanguageExtension._get_built_in_templates.":        reflect.TypeFor[[]Template](),
+	"ScriptLanguageExtension._get_built_in_templates.":        reflect.TypeFor[Template](),
 	"ScriptLanguageExtension._validate.":                      reflect.TypeFor[Validation](),
 	"ScriptLanguageExtension._complete_code.":                 reflect.TypeFor[Completion](),
 	"ScriptLanguageExtension._lookup_code.":                   reflect.TypeFor[Code](),
@@ -887,9 +887,9 @@ var Structables = map[string]reflect.Type{
 	"ScriptLanguageExtension._debug_get_stack_level_members.": reflect.TypeFor[StackLevelMembers](),
 	"ScriptLanguageExtension._debug_get_globals.":             reflect.TypeFor[Globals](),
 	"ScriptLanguageExtension._debug_get_current_stack_info.":  reflect.TypeFor[StackInfo](),
-	"ScriptLanguageExtension._get_public_functions.":          reflect.SliceOf(TypeFromString("Object", "MethodInfo")),
+	"ScriptLanguageExtension._get_public_functions.":          TypeFromString("Object", "MethodInfo"),
 	"ScriptLanguageExtension._get_public_constants.":          reflect.TypeFor[[]Constant](),
-	"ScriptLanguageExtension._get_public_annotations.":        reflect.SliceOf(TypeFromString("Object", "MethodInfo")),
+	"ScriptLanguageExtension._get_public_annotations.":        TypeFromString("Object", "MethodInfo"),
 	"ScriptLanguageExtension._get_global_class_name.":         reflect.TypeFor[ClassName](),
 
 	"SyntaxHighlighter._get_line_syntax_highlighting.": reflect.TypeFor[map[int]Entry](),
@@ -913,7 +913,7 @@ var Structables = map[string]reflect.Type{
 	"Animation.method_track_get_params.":                                                   reflect.TypeFor[[]any](),
 	"AnimationNode._get_parameter_list.":                                                   reflect.SliceOf(TypeFromString("Object", "PropertyInfo")),
 	"ArrayMesh.add_surface_from_arrays.arrays":                                             reflect.TypeFor[[]any](),
-	"ArrayMesh.add_surface_from_arrays.blend_shapes":                                       reflect.TypeFor[[][]any](),
+	"ArrayMesh.add_surface_from_arrays.blend_shapes":                                       reflect.TypeFor[[]any](),
 	"CameraFeed.get_formats.":                                                              reflect.TypeFor[[]Format](),
 	"Control._structured_text_parser.args":                                                 reflect.TypeFor[[]any](),
 	"EditorDebuggerPlugin._capture.data":                                                   reflect.TypeFor[[]any](),
@@ -932,7 +932,7 @@ var Structables = map[string]reflect.Type{
 	"GridMapEditorPlugin.get_selected_cells.":                                              reflect.TypeFor[[]Vector3i.XYZ](),
 	"IP.get_resolve_item_addresses.":                                                       reflect.TypeFor[[]string](),
 	"ImporterMesh.add_surface.arrays":                                                      reflect.TypeFor[[]any](),
-	"ImporterMesh.add_surface.blend_shapes":                                                reflect.TypeFor[[][]any](),
+	"ImporterMesh.add_surface.blend_shapes":                                                reflect.TypeFor[[]any](),
 	"ImporterMesh.get_surface_arrays.":                                                     reflect.TypeFor[[]any](),
 	"ImporterMesh.get_surface_blend_shape_arrays.":                                         reflect.TypeFor[[][]any](),
 	"ImporterMesh.generate_lods.bone_transform_array":                                      reflect.TypeFor[[]Transform3D.BasisOrigin](),
@@ -945,9 +945,9 @@ var Structables = map[string]reflect.Type{
 	"LinkButton.set_structured_text_bidi_override_options.args":                            reflect.TypeFor[[]any](),
 	"LinkButton.get_structured_text_bidi_override_options.":                                reflect.TypeFor[[]any](),
 	"Mesh._surface_get_arrays.":                                                            reflect.TypeFor[[]any](),
-	"Mesh._surface_get_blend_shape_arrays.":                                                reflect.TypeFor[[][]any](),
+	"Mesh._surface_get_blend_shape_arrays.":                                                reflect.TypeFor[[]any](),
 	"Mesh.surface_get_arrays.":                                                             reflect.TypeFor[[]any](),
-	"Mesh.surface_get_blend_shape_arrays.":                                                 reflect.TypeFor[[][]any](),
+	"Mesh.surface_get_blend_shape_arrays.":                                                 reflect.TypeFor[[]any](),
 	"MeshLibrary.set_item_shapes.shapes":                                                   SliceOf(TypeFromString("Shape3D", "Instance")),
 	"MeshLibrary.get_item_shapes.":                                                         SliceOf(TypeFromString("Shape3D", "Instance")),
 	"MultiplayerAPI.rpc.arguments":                                                         reflect.TypeFor[[]any](),
@@ -960,8 +960,8 @@ var Structables = map[string]reflect.Type{
 	"Node.propagate_call.args":                                                             reflect.TypeFor[[]any](),
 	"Object.add_user_signal.arguments":                                                     reflect.TypeFor[[]any](),
 	"Object.callv.arg_array":                                                               reflect.TypeFor[[]any](),
-	"OggPacketSequence.set_packet_data.packet_data":                                        reflect.TypeFor[[][]any](),
-	"OggPacketSequence.get_packet_data.":                                                   reflect.TypeFor[[][]any](),
+	"OggPacketSequence.set_packet_data.packet_data":                                        reflect.TypeFor[[]any](),
+	"OggPacketSequence.get_packet_data.":                                                   reflect.TypeFor[[]any](),
 	"OpenXRAPIExtension.xr_result.args":                                                    reflect.TypeFor[[]any](),
 	"OpenXRActionMap.set_action_sets.action_sets":                                          SliceOf(TypeFromString("OpenXRActionSet", "Instance")),
 	"OpenXRActionMap.get_action_sets.":                                                     SliceOf(TypeFromString("OpenXRActionSet", "Instance")),
@@ -985,7 +985,7 @@ var Structables = map[string]reflect.Type{
 	"RenderingServer.mesh_add_surface_from_arrays.arrays":                                  reflect.TypeFor[[]any](),
 	"RenderingServer.mesh_add_surface_from_arrays.blend_shapes":                            reflect.TypeFor[[][]any](),
 	"RenderingServer.mesh_surface_get_arrays.":                                             reflect.TypeFor[[]any](),
-	"RenderingServer.mesh_surface_get_blend_shape_arrays.":                                 reflect.TypeFor[[][]any](),
+	"RenderingServer.mesh_surface_get_blend_shape_arrays.":                                 reflect.TypeFor[[]any](),
 
 	"RichTextLabel.set_structured_text_bidi_override_options.args": reflect.TypeFor[[]any](),
 	"RichTextLabel.get_structured_text_bidi_override_options.":     reflect.TypeFor[[]any](),
@@ -1032,12 +1032,12 @@ var Structables = map[string]reflect.Type{
 	"DPITexture.create_from_string.color_map":           reflect.TypeFor[map[Color.RGBA]Color.RGBA](),
 	"DPITexture.set_color_map.color_map":                reflect.TypeFor[map[Color.RGBA]Color.RGBA](),
 	"DPITexture.get_color_map.":                         reflect.TypeFor[map[Color.RGBA]Color.RGBA](),
-	"GraphEdit.get_connection_list_from_node.":          reflect.TypeFor[[]Connection](),
+	"GraphEdit.get_connection_list_from_node.":          reflect.TypeFor[Connection](),
 	"GraphEdit.set_type_names.type_names":               reflect.TypeFor[map[int]string](),
 	"GraphEdit.get_type_names.":                         reflect.TypeFor[map[int]string](),
 	"OpenXRExtensionWrapper._get_requested_extensions.": reflect.TypeFor[map[string]*bool](),
 	"OpenXRExtensionWrapper._set_viewport_composition_layer_and_get_next_pointer.property_values":            TypeFromString("Object", "PropertyInfo"),
-	"OpenXRExtensionWrapper._get_viewport_composition_layer_extension_properties.":                           reflect.SliceOf(TypeFromString("Object", "PropertyInfo")),
+	"OpenXRExtensionWrapper._get_viewport_composition_layer_extension_properties.":                           TypeFromString("Object", "PropertyInfo"),
 	"OpenXRExtensionWrapper._get_viewport_composition_layer_extension_property_defaults.":                    reflect.TypeFor[map[string]any](),
 	"OpenXRExtensionWrapper._set_android_surface_swapchain_create_info_and_get_next_pointer.property_values": TypeFromString("Object", "PropertyInfo"),
 	"TextServer.font_get_size_cache_info.":                                                                   reflect.TypeFor[FontSizeCacheInfo](),

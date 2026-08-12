@@ -254,11 +254,7 @@ type Interface interface {
 	//
 	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 	// [OnObject.PropertyListChanged]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.OnObject.PropertyListChanged
-	GetExportOptions(platform EditorExportPlatform.Instance) [][]struct {
-		Option           any  "gd:\"option\" type:\"Object.PropertyInfo\""
-		DefaultValue     any  "gd:\"default_value\""
-		UpdateVisibility bool "gd:\"update_visibility\""
-	}
+	GetExportOptions(platform EditorExportPlatform.Instance) []Option
 	// Return a data structure of override values for export options, that will be used instead of user-provided values. Overridden options will be hidden from the user interface.
 	//
 	//
@@ -401,11 +397,7 @@ func (self implementation) EndCustomizeScenes() {
 }
 func (self implementation) EndCustomizeResources() {
 }
-func (self implementation) GetExportOptions(platform EditorExportPlatform.Instance) (_ [][]struct {
-	Option           any  "gd:\"option\" type:\"Object.PropertyInfo\""
-	DefaultValue     any  "gd:\"default_value\""
-	UpdateVisibility bool "gd:\"update_visibility\""
-}) {
+func (self implementation) GetExportOptions(platform EditorExportPlatform.Instance) (_ []Option) {
 	return
 }
 func (self implementation) GetExportOptionsOverrides(platform EditorExportPlatform.Instance) (_ map[string]any) {
@@ -690,11 +682,7 @@ Each element in the return value is a data structure with the following keys:
 [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 [OnObject.PropertyListChanged]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.OnObject.PropertyListChanged
 */
-func (Instance) _get_export_options(impl func(ptr gdclass.Receiver, platform EditorExportPlatform.Instance) [][]struct {
-	Option           any  "gd:\"option\" type:\"Object.PropertyInfo\""
-	DefaultValue     any  "gd:\"default_value\""
-	UpdateVisibility bool "gd:\"update_visibility\""
-}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_options(impl func(ptr gdclass.Receiver, platform EditorExportPlatform.Instance) []Option) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{gdclass.NewEditorExportPlatform(gdreference.OwnObject(gd.UnsafeGet[gdextension.Object](p_args, 0), gd.Free))}
 
@@ -1841,4 +1829,10 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	gdclass.Register("EditorExportPlugin", func(ptr gdreference.Object) any { return Instance{gdclass.NewEditorExportPlugin(ptr)} })
+}
+
+type Option struct {
+	Option           Object.PropertyInfo `gd:"option"`
+	DefaultValue     any                 `gd:"default_value"`
+	UpdateVisibility bool                `gd:"update_visibility"`
 }

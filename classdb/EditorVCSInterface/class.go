@@ -136,7 +136,7 @@ type Interface interface {
 	// Returns an slice of data structure items (see [CreateStatusFile]), each containing the status data of every modified file in the project folder.
 	//
 	// [CreateStatusFile]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateStatusFile
-	GetModifiedFilesData() [][]StatusFile
+	GetModifiedFilesData() []StatusFile
 	// Stages the file present at 'file_path' to the staged area.
 	StageFile(file_path string)
 	// Unstages the file present at 'file_path' from the staged area to the unstaged area.
@@ -154,7 +154,7 @@ type Interface interface {
 	// [CreateDiffFile]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateDiffFile
 	// [CreateDiffHunk]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateDiffHunk
 	// [CreateDiffLine]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateDiffLine
-	GetDiff(identifier string, area int) [][]DiffFile
+	GetDiff(identifier string, area int) []DiffFile
 	// Shuts down VCS plugin instance. Called when the user either closes the editor or shuts down the VCS plugin through the editor UI.
 	ShutDown() bool
 	// Returns the name of the underlying VCS provider.
@@ -162,7 +162,7 @@ type Interface interface {
 	// Returns an slice of data structure items (see [CreateCommit]), each containing the data for a past commit.
 	//
 	// [CreateCommit]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateCommit
-	GetPreviousCommits(max_commits int) [][]Commit
+	GetPreviousCommits(max_commits int) []Commit
 	// Gets an instance of an slice of strings containing available branch names in the VCS.
 	GetBranchList() []string
 	// Returns an slice of strings, each containing the name of a remote configured in the VCS.
@@ -188,7 +188,7 @@ type Interface interface {
 	// Returns an slice of data structure items (see [CreateDiffHunk]), each containing a line diff between a file at 'file_path' and the 'text' which is passed in.
 	//
 	// [CreateDiffHunk]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateDiffHunk
-	GetLineDiff(file_path string, text string) [][]DiffLine
+	GetLineDiff(file_path string, text string) []DiffLine
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -201,7 +201,7 @@ func (self implementation) Initialize(project_path string) (_ bool) {
 }
 func (self implementation) SetCredentials(username string, password string, ssh_public_key_path string, ssh_private_key_path string, ssh_passphrase string) {
 }
-func (self implementation) GetModifiedFilesData() (_ [][]StatusFile) {
+func (self implementation) GetModifiedFilesData() (_ []StatusFile) {
 	return
 }
 func (self implementation) StageFile(file_path string) {
@@ -215,7 +215,7 @@ func (self implementation) Commit(msg string, amend bool) {
 func (self implementation) AllowAmends() (_ bool) {
 	return
 }
-func (self implementation) GetDiff(identifier string, area int) (_ [][]DiffFile) {
+func (self implementation) GetDiff(identifier string, area int) (_ []DiffFile) {
 	return
 }
 func (self implementation) ShutDown() (_ bool) {
@@ -224,7 +224,7 @@ func (self implementation) ShutDown() (_ bool) {
 func (self implementation) GetVcsName() (_ string) {
 	return
 }
-func (self implementation) GetPreviousCommits(max_commits int) (_ [][]Commit) {
+func (self implementation) GetPreviousCommits(max_commits int) (_ []Commit) {
 	return
 }
 func (self implementation) GetBranchList() (_ []string) {
@@ -253,7 +253,7 @@ func (self implementation) Push(remote string, force bool) {
 }
 func (self implementation) Fetch(remote string) {
 }
-func (self implementation) GetLineDiff(file_path string, text string) (_ [][]DiffLine) {
+func (self implementation) GetLineDiff(file_path string, text string) (_ []DiffLine) {
 	return
 }
 
@@ -295,7 +295,7 @@ Returns an slice of data structure items (see [CreateStatusFile]), each containi
 
 [CreateStatusFile]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateStatusFile
 */
-func (Instance) _get_modified_files_data(impl func(ptr gdclass.Receiver) [][]StatusFile) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_modified_files_data(impl func(ptr gdclass.Receiver) []StatusFile) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
@@ -377,7 +377,7 @@ Returns an array of data structure items (see [CreateDiffFile], [CreateDiffHunk]
 [CreateDiffHunk]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateDiffHunk
 [CreateDiffLine]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateDiffLine
 */
-func (Instance) _get_diff(impl func(ptr gdclass.Receiver, identifier string, area int) [][]DiffFile) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_diff(impl func(ptr gdclass.Receiver, identifier string, area int) []DiffFile) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var identifier = String.Via(gd.WrapString(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(identifier))
@@ -425,7 +425,7 @@ Returns an slice of data structure items (see [CreateCommit]), each containing t
 
 [CreateCommit]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateCommit
 */
-func (Instance) _get_previous_commits(impl func(ptr gdclass.Receiver, max_commits int) [][]Commit) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_previous_commits(impl func(ptr gdclass.Receiver, max_commits int) []Commit) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var max_commits = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.ReceiverOf(class)
@@ -592,7 +592,7 @@ Returns an slice of data structure items (see [CreateDiffHunk]), each containing
 
 [CreateDiffHunk]: https://pkg.go.dev/graphics.gd/classdb/EditorVCSInterface#Instance.CreateDiffHunk
 */
-func (Instance) _get_line_diff(impl func(ptr gdclass.Receiver, file_path string, text string) [][]DiffLine) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_line_diff(impl func(ptr gdclass.Receiver, file_path string, text string) []DiffLine) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var file_path = String.Via(gd.WrapString(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(file_path))

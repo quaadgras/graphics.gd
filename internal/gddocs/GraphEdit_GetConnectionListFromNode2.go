@@ -24,13 +24,11 @@ import "graphics.gd/classdb/GraphEdit"
 func getConnectionListFromPort(self GraphEdit.Instance, node string, port int) []map[string]any {
 	var connections = self.GetConnectionListFromNode(node)
 	var result []map[string]any
-	for _, group := range connections {
-		for _, connection := range group {
-			if connection.FromNode == node && connection.FromPort == port {
-				result = append(result, map[string]any{"node": connection.ToNode, "port": connection.ToPort, "type": "left"})
-			} else if connection.ToNode == node && connection.ToPort == port {
-				result = append(result, map[string]any{"node": connection.FromNode, "port": connection.FromPort, "type": "right"})
-			}
+	for _, connection := range connections {
+		if connection.FromNode == node && connection.FromPort == port {
+			result = append(result, map[string]any{"node": connection.ToNode, "port": connection.ToPort, "type": "left"})
+		} else if connection.ToNode == node && connection.ToPort == port {
+			result = append(result, map[string]any{"node": connection.FromNode, "port": connection.FromPort, "type": "right"})
 		}
 	}
 	return result

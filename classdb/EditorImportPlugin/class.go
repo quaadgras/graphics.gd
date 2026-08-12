@@ -196,13 +196,7 @@ type Interface interface {
 	// Gets the list of file extensions to associate with this loader (case-insensitive). e.g. ["obj"].
 	GetRecognizedExtensions() []string
 	// Gets the options and default values for the preset at this index. Returns an Array of Dictionaries with the following keys: name, default_value, property_hint (optional), hint_string (optional), usage (optional).
-	GetImportOptions(path string, preset_index int) [][]struct {
-		Name         string "gd:\"name\""
-		DefaultValue any    "gd:\"default_value\""
-		PropertyHint int    "gd:\"property_hint\""
-		HintString   string "gd:\"hint_string\""
-		Usage        int    "gd:\"usage\""
-	}
+	GetImportOptions(path string, preset_index int) []Option
 	// Gets the extension used to save this resource in the .godot/imported directory (see [ProjectSettings] "application/config/use_hidden_project_data_directory").
 	//
 	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
@@ -301,13 +295,7 @@ func (self implementation) GetPresetName(preset_index int) (_ string) {
 func (self implementation) GetRecognizedExtensions() (_ []string) {
 	return
 }
-func (self implementation) GetImportOptions(path string, preset_index int) (_ [][]struct {
-	Name         string "gd:\"name\""
-	DefaultValue any    "gd:\"default_value\""
-	PropertyHint int    "gd:\"property_hint\""
-	HintString   string "gd:\"hint_string\""
-	Usage        int    "gd:\"usage\""
-}) {
+func (self implementation) GetImportOptions(path string, preset_index int) (_ []Option) {
 	return
 }
 func (self implementation) GetSaveExtension() (_ string) {
@@ -419,13 +407,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []str
 /*
 Gets the options and default values for the preset at this index. Returns an Array of Dictionaries with the following keys: name, default_value, property_hint (optional), hint_string (optional), usage (optional).
 */
-func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string, preset_index int) [][]struct {
-	Name         string "gd:\"name\""
-	DefaultValue any    "gd:\"default_value\""
-	PropertyHint int    "gd:\"property_hint\""
-	HintString   string "gd:\"hint_string\""
-	Usage        int    "gd:\"usage\""
-}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string, preset_index int) []Option) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.WrapString(pointers.Pin(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0)))))
 		defer pointers.End(gd.InternalString(path))
@@ -917,4 +899,12 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	gdclass.Register("EditorImportPlugin", func(ptr gdreference.Object) any { return Instance{gdclass.NewEditorImportPlugin(ptr)} })
+}
+
+type Option struct {
+	Name         string `gd:"name"`
+	DefaultValue any    `gd:"default_value"`
+	PropertyHint int    `gd:"property_hint"`
+	HintString   string `gd:"hint_string"`
+	Usage        int    `gd:"usage"`
 }

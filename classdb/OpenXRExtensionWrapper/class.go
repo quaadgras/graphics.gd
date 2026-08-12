@@ -320,7 +320,7 @@ type Interface interface {
 	//
 	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 	// [OpenXRCompositionLayer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer
-	GetViewportCompositionLayerExtensionProperties() [][]struct{}
+	GetViewportCompositionLayerExtensionProperties() []Object.PropertyInfo
 	// Gets a data structure containing the default values for the properties returned by [GetViewportCompositionLayerExtensionProperties].
 	//
 	// [GetViewportCompositionLayerExtensionProperties]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
@@ -448,7 +448,7 @@ func (self implementation) OnEventPolled(event Engine.Pointer[OpenXR.EventDataBu
 func (self implementation) SetViewportCompositionLayerAndGetNextPointer(layer Engine.Pointer[OpenXR.CompositionLayer], property_values Object.PropertyInfo, next_pointer Engine.Pointer[OpenXR.Extension]) (_ int) {
 	return
 }
-func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ [][]struct{}) {
+func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ []Object.PropertyInfo) {
 	return
 }
 func (self implementation) GetViewportCompositionLayerExtensionPropertyDefaults() (_ map[string]any) {
@@ -1045,7 +1045,7 @@ Note: This virtual method will be called on the render thread.
 [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 [OpenXRCompositionLayer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer
 */
-func (Instance) _get_viewport_composition_layer_extension_properties(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_viewport_composition_layer_extension_properties(impl func(ptr gdclass.Receiver) []Object.PropertyInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		ret := impl(self)

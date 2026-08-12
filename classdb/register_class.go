@@ -647,6 +647,23 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	// This prevents the issue where extension classes inheriting from other extension
 	// classes would trigger multiple calls to set_instance_binding on the same object.
 	var super *gdreference.Object = (*gdreference.Object)(value.UnsafePointer())
+	// A custom constructor may have already instantiated the engine side of
+	// this value: calling any method on the object before returning it does
+	// that (through Extension.createObject). Registering the value again
+	// would orphan the first registration while its dispatch word is still
+	// pinned — leaking the pin (a fatal runtime.Pinner finalizer panic once
+	// the orphan is collected) and an engine object — so hand back the
+	// existing instance instead.
+	if raw := gdreference.GetObject(*super); raw != 0 {
+		if id := gdextension.Host.Objects.Extension.Fetch(raw); id != 0 {
+			if existing := instances.Get(id); existing != nil {
+				if add_root {
+					existing.strong, _ = reflect.TypeAssert[gdclass.Pointer](value)
+				}
+				return [1]gdreference.Object{*super}
+			}
+		}
+	}
 	// Objects.Make is classdb_construct_object3, which already establishes the
 	// initial reference (refcount=1) for RefCounted built-in ancestors. This also
 	// satisfies the create_instance3 contract (Godot expects the creation func to

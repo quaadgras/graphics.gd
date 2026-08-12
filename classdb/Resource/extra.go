@@ -137,8 +137,3 @@ func load(path String.Unicode, type_hint String.Unicode, cache_mode int) [1]gdcl
 func Duplicate[T Any](res T) T {
 	return Object.To[T](res.AsResource().Duplicate())
 }
-
-func Library[T any]() *T {
-	var library T
-	return &library
-}

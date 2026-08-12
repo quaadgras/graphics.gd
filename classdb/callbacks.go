@@ -243,7 +243,7 @@ func init() {
 				gdreference.Barrier()
 			},
 			DynamicCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], call_err gdextension.Returns[gdextension.CallError]) {
-				defer gd.Recover()
+				defer gd.RecoverCall(call_err)
 				var receiver *instanceImplementation
 				if instance != 0 {
 					receiver = instances.Get(instance)

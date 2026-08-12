@@ -171,7 +171,7 @@ type Interface interface {
 	// Virtual method to override the blend shape arrays for a custom class extending [Mesh].
 	//
 	// [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-	SurfaceGetBlendShapeArrays(index int) [][][]any
+	SurfaceGetBlendShapeArrays(index int) [][]any
 	// Virtual method to override the surface LODs for a custom class extending [Mesh].
 	//
 	// [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
@@ -228,7 +228,7 @@ func (self implementation) SurfaceGetArrayIndexLen(index int) (_ int) {
 func (self implementation) SurfaceGetArrays(index int) (_ []any) {
 	return
 }
-func (self implementation) SurfaceGetBlendShapeArrays(index int) (_ [][][]any) {
+func (self implementation) SurfaceGetBlendShapeArrays(index int) (_ [][]any) {
 	return
 }
 func (self implementation) SurfaceGetLods(index int) (_ map[float32][]int32) {
@@ -322,7 +322,7 @@ Virtual method to override the blend shape arrays for a custom class extending [
 
 [Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
-func (Instance) _surface_get_blend_shape_arrays(impl func(ptr gdclass.Receiver, index int) [][][]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _surface_get_blend_shape_arrays(impl func(ptr gdclass.Receiver, index int) [][]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.ReceiverOf(class)
@@ -521,8 +521,8 @@ func (self Instance) SurfaceGetArrays(surf_idx int) []any { //gd:Mesh.surface_ge
 /*
 Returns the blend shape arrays for the requested surface.
 */
-func (self Instance) SurfaceGetBlendShapeArrays(surf_idx int) [][][]any { //gd:Mesh.surface_get_blend_shape_arrays
-	return [][][]any(gd.ArrayAs[[][][]any](gd.InternalArray(Advanced(self).SurfaceGetBlendShapeArrays(int64(surf_idx)))))
+func (self Instance) SurfaceGetBlendShapeArrays(surf_idx int) [][]any { //gd:Mesh.surface_get_blend_shape_arrays
+	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(Advanced(self).SurfaceGetBlendShapeArrays(int64(surf_idx)))))
 }
 
 /*

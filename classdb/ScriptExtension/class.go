@@ -133,7 +133,7 @@ type Interface interface {
 	SetSourceCode(code string)
 	Reload(keep_state bool) error
 	GetDocClassName() string
-	GetDocumentation() [][]ClassDoc
+	GetDocumentation() []ClassDoc
 	GetClassIconPath() string
 	HasMethod(method string) bool
 	HasStaticMethod(method string) bool
@@ -146,12 +146,12 @@ type Interface interface {
 	IsAbstract() bool
 	GetLanguage() ScriptLanguage.Instance
 	HasScriptSignal(signal string) bool
-	GetScriptSignalList() [][]struct{}
+	GetScriptSignalList() []Object.MethodInfo
 	HasPropertyDefaultValue(property string) bool
 	GetPropertyDefaultValue(property string) any
 	UpdateExports()
-	GetScriptMethodList() [][]struct{}
-	GetScriptPropertyList() [][]struct{}
+	GetScriptMethodList() []Object.MethodInfo
+	GetScriptPropertyList() []Object.PropertyInfo
 	GetMemberLine(member string) int
 	GetConstants() map[string]any
 	GetMembers() []string
@@ -205,7 +205,7 @@ func (self implementation) Reload(keep_state bool) (_ error) {
 func (self implementation) GetDocClassName() (_ string) {
 	return
 }
-func (self implementation) GetDocumentation() (_ [][]ClassDoc) {
+func (self implementation) GetDocumentation() (_ []ClassDoc) {
 	return
 }
 func (self implementation) GetClassIconPath() (_ string) {
@@ -238,7 +238,7 @@ func (self implementation) GetLanguage() (_ ScriptLanguage.Instance) {
 func (self implementation) HasScriptSignal(signal string) (_ bool) {
 	return
 }
-func (self implementation) GetScriptSignalList() (_ [][]struct{}) {
+func (self implementation) GetScriptSignalList() (_ []Object.MethodInfo) {
 	return
 }
 func (self implementation) HasPropertyDefaultValue(property string) (_ bool) {
@@ -249,10 +249,10 @@ func (self implementation) GetPropertyDefaultValue(property string) (_ any) {
 }
 func (self implementation) UpdateExports() {
 }
-func (self implementation) GetScriptMethodList() (_ [][]struct{}) {
+func (self implementation) GetScriptMethodList() (_ []Object.MethodInfo) {
 	return
 }
-func (self implementation) GetScriptPropertyList() (_ [][]struct{}) {
+func (self implementation) GetScriptPropertyList() (_ []Object.PropertyInfo) {
 	return
 }
 func (self implementation) GetMemberLine(member string) (_ int) {
@@ -421,7 +421,7 @@ func (Instance) _get_doc_class_name(impl func(ptr gdclass.Receiver) string) (cb 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_documentation(impl func(ptr gdclass.Receiver) [][]ClassDoc) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_documentation(impl func(ptr gdclass.Receiver) []ClassDoc) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
@@ -541,7 +541,7 @@ func (Instance) _has_script_signal(impl func(ptr gdclass.Receiver, signal string
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_script_signal_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_signal_list(impl func(ptr gdclass.Receiver) []Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
@@ -582,7 +582,7 @@ func (Instance) _update_exports(impl func(ptr gdclass.Receiver)) (cb gd.Extensio
 		impl(self)
 	}
 }
-func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) []Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
@@ -594,7 +594,7 @@ func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) [][]stru
 		gd.UnsafeReplaceArray(p_back, ptr)
 	}
 }
-func (Instance) _get_script_property_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_property_list(impl func(ptr gdclass.Receiver) []Object.PropertyInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		ret := impl(self)

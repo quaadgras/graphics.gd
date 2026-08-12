@@ -167,7 +167,7 @@ type Interface interface {
 	// Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [Object.GetPropertyList]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 	//
 	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
-	GetParameterList() [][]struct{}
+	GetParameterList() []Object.PropertyInfo
 	// Override this method to return true if this stream has a loop.
 	HasLoop() bool
 	// Override this method to return the bar beats of this stream.
@@ -200,7 +200,7 @@ func (self implementation) GetBeatCount() (_ int) {
 func (self implementation) GetTags() (_ map[string]any) {
 	return
 }
-func (self implementation) GetParameterList() (_ [][]struct{}) {
+func (self implementation) GetParameterList() (_ []Object.PropertyInfo) {
 	return
 }
 func (self implementation) HasLoop() (_ bool) {
@@ -325,7 +325,7 @@ Return the controllable parameters of this stream. This array contains dictionar
 
 [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 */
-func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) []Object.PropertyInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		ret := impl(self)

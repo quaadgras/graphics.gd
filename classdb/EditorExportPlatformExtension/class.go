@@ -160,15 +160,7 @@ type Interface interface {
 	// [GetExportOptionVisibility]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 	// [HasValidExportConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
-	GetExportOptions() [][]struct {
-		Hint             int    "gd:\"hint\""
-		HintString       string "gd:\"hint_string\""
-		Usage            int    "gd:\"usage\""
-		ClassName        string "gd:\"class_name\""
-		DefaultValue     any    "gd:\"default_value\""
-		UpdateVisibility bool   "gd:\"update_visibility\""
-		Required         bool   "gd:\"required\""
-	}
+	GetExportOptions() []Option
 	// Returns true if export options list is changed and presets should be updated.
 	ShouldUpdateExportOptions() bool
 	// Validates 'option' and returns visibility for the specified 'preset'. Default implementation return true for all options.
@@ -273,15 +265,7 @@ func (self implementation) GetPresetFeatures(preset EditorExportPreset.Instance)
 func (self implementation) IsExecutable(path string) (_ bool) {
 	return
 }
-func (self implementation) GetExportOptions() (_ [][]struct {
-	Hint             int    "gd:\"hint\""
-	HintString       string "gd:\"hint_string\""
-	Usage            int    "gd:\"usage\""
-	ClassName        string "gd:\"class_name\""
-	DefaultValue     any    "gd:\"default_value\""
-	UpdateVisibility bool   "gd:\"update_visibility\""
-	Required         bool   "gd:\"required\""
-}) {
+func (self implementation) GetExportOptions() (_ []Option) {
 	return
 }
 func (self implementation) ShouldUpdateExportOptions() (_ bool) {
@@ -424,15 +408,7 @@ See also [Object.GetPropertyList].
 [HasValidExportConfiguration]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatformExtension#Interface
 [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 */
-func (Instance) _get_export_options(impl func(ptr gdclass.Receiver) [][]struct {
-	Hint             int    "gd:\"hint\""
-	HintString       string "gd:\"hint_string\""
-	Usage            int    "gd:\"usage\""
-	ClassName        string "gd:\"class_name\""
-	DefaultValue     any    "gd:\"default_value\""
-	UpdateVisibility bool   "gd:\"update_visibility\""
-	Required         bool   "gd:\"required\""
-}) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_options(impl func(ptr gdclass.Receiver) []Option) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.ReceiverOf(class)
 		ret := impl(self)
@@ -1618,4 +1594,14 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	gdclass.Register("EditorExportPlatformExtension", func(ptr gdreference.Object) any { return Instance{gdclass.NewEditorExportPlatformExtension(ptr)} })
+}
+
+type Option struct {
+	Hint             int    `gd:"hint"`
+	HintString       string `gd:"hint_string"`
+	Usage            int    `gd:"usage"`
+	ClassName        string `gd:"class_name"`
+	DefaultValue     any    `gd:"default_value"`
+	UpdateVisibility bool   `gd:"update_visibility"`
+	Required         bool   `gd:"required"`
 }

@@ -263,7 +263,7 @@ type Interface interface {
 	// Both 'candidates' and the return is an slice of data structure, see [GetCodeCompletionOption] for data structure content.
 	//
 	// [GetCodeCompletionOption]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GetCodeCompletionOption
-	FilterCodeCompletionCandidates(candidates [][]CompletionInfo) [][]CompletionInfo
+	FilterCodeCompletionCandidates(candidates []CompletionInfo) []CompletionInfo
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -275,7 +275,7 @@ func (self implementation) ConfirmCodeCompletion(replace bool) {
 }
 func (self implementation) RequestCodeCompletion(force bool) {
 }
-func (self implementation) FilterCodeCompletionCandidates(candidates [][]CompletionInfo) (_ [][]CompletionInfo) {
+func (self implementation) FilterCodeCompletionCandidates(candidates []CompletionInfo) (_ []CompletionInfo) {
 	return
 }
 
@@ -308,12 +308,12 @@ Both 'candidates' and the return is an slice of data structure, see [GetCodeComp
 
 [GetCodeCompletionOption]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GetCodeCompletionOption
 */
-func (Instance) _filter_code_completion_candidates(impl func(ptr gdclass.Receiver, candidates [][]CompletionInfo) [][]CompletionInfo) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _filter_code_completion_candidates(impl func(ptr gdclass.Receiver, candidates []CompletionInfo) []CompletionInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var candidates = Array.Through(gd.WrapArray[Dictionary.Any](pointers.Pin(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0)))))
 		defer pointers.End(gd.InternalArray(candidates))
 		self := gdclass.ReceiverOf(class)
-		ret := impl(self, gd.ArrayAs[[][]CompletionInfo](gd.InternalArray(candidates)))
+		ret := impl(self, gd.ArrayAs[[]CompletionInfo](gd.InternalArray(candidates)))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
 		if !ok {

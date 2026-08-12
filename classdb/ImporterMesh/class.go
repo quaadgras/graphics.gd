@@ -274,7 +274,7 @@ Note: When using indices, it is recommended to only use points, lines, or triang
 [Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 [Mesh.GetSurfaceCount]: https://pkg.go.dev/graphics.gd/classdb/Mesh#Instance.GetSurfaceCount
 */
-func (self MoreArgs) AddSurface(primitive Mesh.PrimitiveType, arrays []any, blend_shapes [][][]any, lods map[float32][]int32, material Material.Instance, name string, flags int) { //gd:ImporterMesh.add_surface
+func (self MoreArgs) AddSurface(primitive Mesh.PrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, material Material.Instance, name string, flags int) { //gd:ImporterMesh.add_surface
 	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]](blend_shapes), gd.DictionaryFromMap(lods), material, String.From(name), int64(flags))
 }
 

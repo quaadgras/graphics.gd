@@ -549,11 +549,11 @@ Returns an slice containing a list of all connections for 'node'.
 A connection is represented as a data structure in the form of:
 
 	type Connection struct {
-		FromNode  string `json:"from_node"`
-		FromPort  int    `json:"from_port"`
-		ToNode    string `json:"to_node"`
-		ToPort    int    `json:"to_port"`
-		KeepAlive bool   `json:"keep_alive"`
+		FromNode  string `gd:"from_node"`
+		FromPort  int    `gd:"from_port"`
+		ToNode    string `gd:"to_node"`
+		ToPort    int    `gd:"to_port"`
+		KeepAlive bool   `gd:"keep_alive"`
 	}
 
 Example: Get all connections on a specific port:
@@ -565,20 +565,18 @@ Example: Get all connections on a specific port:
 	func getConnectionListFromPort(self GraphEdit.Instance, node string, port int) []map[string]any {
 		var connections = self.GetConnectionListFromNode(node)
 		var result []map[string]any
-		for _, group := range connections {
-			for _, connection := range group {
-				if connection.FromNode == node && connection.FromPort == port {
-					result = append(result, map[string]any{"node": connection.ToNode, "port": connection.ToPort, "type": "left"})
-				} else if connection.ToNode == node && connection.ToPort == port {
-					result = append(result, map[string]any{"node": connection.FromNode, "port": connection.FromPort, "type": "right"})
-				}
+		for _, connection := range connections {
+			if connection.FromNode == node && connection.FromPort == port {
+				result = append(result, map[string]any{"node": connection.ToNode, "port": connection.ToPort, "type": "left"})
+			} else if connection.ToNode == node && connection.ToPort == port {
+				result = append(result, map[string]any{"node": connection.FromNode, "port": connection.FromPort, "type": "right"})
 			}
 		}
 		return result
 	}
 */
-func (self Instance) GetConnectionListFromNode(node string) [][]Connection { //gd:GraphEdit.get_connection_list_from_node
-	return [][]Connection(gd.ArrayAs[[][]Connection](gd.InternalArray(Advanced(self).GetConnectionListFromNode(String.Name(String.From(node))))))
+func (self Instance) GetConnectionListFromNode(node string) []Connection { //gd:GraphEdit.get_connection_list_from_node
+	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(Advanced(self).GetConnectionListFromNode(String.Name(String.From(node))))))
 }
 
 /*
