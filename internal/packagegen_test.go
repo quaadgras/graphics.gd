@@ -4,6 +4,7 @@ package gd_test
 
 import (
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -12,7 +13,19 @@ import (
 	"graphics.gd/internal/packagegen"
 )
 
+// packagegen walks the graphics directory on the filesystem, it is a build-time
+// tool that runs on the host. The browser has no such filesystem: t.TempDir
+// isn't implemented under js/wasm and res:// lives inside the packed .pck, so
+// there is nothing for these tests to walk.
+func skipWithoutFilesystem(t *testing.T) {
+	t.Helper()
+	if runtime.GOOS == "js" {
+		t.Skip("packagegen is a host-side tool, js/wasm has no filesystem to generate from")
+	}
+}
+
 func TestGraphicsPackageGeneration(t *testing.T) {
+	skipWithoutFilesystem(t)
 	dir := t.TempDir()
 	scene := makeSceneMain(t)
 	if err := ResourceSaver.Save(scene.AsResource(), filepath.Join(dir, "main.tscn"), 0); err != nil {
@@ -47,6 +60,7 @@ func TestGraphicsPackageGeneration(t *testing.T) {
 // project's own graphics directory, exercising res:// loading of imported
 // resources (icon.svg has no direct loader, only its import remap).
 func TestGraphicsPackageGenerationProject(t *testing.T) {
+	skipWithoutFilesystem(t)
 	source, err := packagegen.Directory(ProjectSettings.GlobalizePath("res://"), "res://", "graphics")
 	if err != nil {
 		t.Fatal(err)

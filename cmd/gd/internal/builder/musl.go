@@ -327,6 +327,12 @@ func (musl Musl) Test(args ...string) error {
 	}
 	tooling.Godot.Path = filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")
 
+	// project.Setup imports the graphics directory after this callback returns,
+	// which is too late for the suite we are about to run — now that there is an
+	// editor to do it with, import anything still waiting for it.
+	if err := project.Import(); err != nil {
+		return xray.New(err)
+	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}

@@ -40,10 +40,13 @@ func init() {
 			if startup == nil {
 				startup = engineLoadingSharedGo{}
 				// little hack to enable `gd test` to work, we strip away the headless flag
-				// so that 'go test' doesn't complain on startup.
+				// so that 'go test' doesn't complain on startup. The engine has already
+				// taken its own copy of the arguments by now, so it still sees them —
+				// this only keeps them away from the testing package's flag parsing,
+				// which is what lets the test editor also serve as the importer.
 				for i := 0; i < len(os.Args); i++ {
 					switch os.Args[i] {
-					case "--headless", "-race":
+					case "--headless", "--import", "-race":
 						os.Args = append(os.Args[:i], os.Args[i+1:]...)
 						i--
 					}

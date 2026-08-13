@@ -164,6 +164,11 @@ func Setup(build_godot func() error) error {
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, ".gitignore"), gitignore); err != nil {
 		return xray.New(err)
 	}
+	// The icon is part of every project, not just the ones being packaged, so
+	// it is written here rather than only by the icon builder.
+	if err := SetupIcon(); err != nil {
+		return xray.New(err)
+	}
 	if err := build_godot(); err != nil {
 		return xray.New(err)
 	}
@@ -174,20 +179,8 @@ func Setup(build_godot func() error) error {
 	if tooling.Godot.Name == "blazium" {
 		gdextension_version = "4.1.0"
 	}
-	if _, err := os.Stat(filepath.Join(GraphicsDirectory, ".godot")); os.IsNotExist(err) {
-		current, err := os.Getwd()
-		if err != nil {
-			return xray.New(err)
-		}
-		if err := os.Chdir(GraphicsDirectory); err != nil {
-			return xray.New(err)
-		}
-		if err := tooling.Godot.Exec("--import", "--headless"); err != nil {
-			return xray.New(err)
-		}
-		if err := os.Chdir(current); err != nil {
-			return xray.New(err)
-		}
+	if err := Import(); err != nil {
+		return xray.New(err)
 	}
 	if err := SetupFile(true, filepath.Join(GraphicsDirectory, "library.gdextension"), muslHostLibrary(library_gdextension), gdextension_version); err != nil {
 		return xray.New(err)
@@ -246,6 +239,35 @@ func SetupFile(force bool, name, embed string, args ...any) error {
 
 func SetupIcon() error {
 	return SetupFile(false, filepath.Join(GraphicsDirectory, "icon.svg"), icon)
+}
+
+// Import runs Godot's importer over the graphics directory when something in
+// there has yet to be imported. Outside the editor a resource is only reachable
+// through the remap the importer writes beside it — res://icon.svg resolves to
+// its imported .ctex, and without one loading it fails with "No loader found" —
+// so this has to happen before the engine runs. It is a no-op once everything
+// is imported, and safe to call more than once.
+//
+// [Setup] calls this itself, but on musl hosts the whole test suite runs inside
+// the build_godot callback (it is the static editor that runs the tests), which
+// is too early: [builder.Musl] calls this again once it has an editor to run.
+func Import() error {
+	_, missing_godot_dir := os.Stat(filepath.Join(GraphicsDirectory, ".godot"))
+	_, missing_icon_remap := os.Stat(filepath.Join(GraphicsDirectory, "icon.svg.import"))
+	if !os.IsNotExist(missing_godot_dir) && !os.IsNotExist(missing_icon_remap) {
+		return nil
+	}
+	current, err := os.Getwd()
+	if err != nil {
+		return xray.New(err)
+	}
+	if err := os.Chdir(GraphicsDirectory); err != nil {
+		return xray.New(err)
+	}
+	if err := tooling.Godot.Exec("--import", "--headless"); err != nil {
+		return xray.New(err)
+	}
+	return xray.New(os.Chdir(current))
 }
 
 // SetupFiles writes the contents of an embed.FS to the target directory on the OS filesystem.

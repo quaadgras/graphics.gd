@@ -20,6 +20,13 @@ var debug = os.Getenv("DEBUG_CMD") != ""
 
 // GOTOOLCHAIN=local will disable automatic toolchain downloads.
 
+// Local reports whether the user has opted out of automatic downloads, they
+// install and manage the toolchains (and anything else gd would fetch, such as
+// the Godot export templates) themselves.
+func Local() bool {
+	return os.Getenv("GOTOOLCHAIN") == "local" || os.Getenv("GDTOOLCHAIN") == "local"
+}
+
 type toolchain struct {
 	Name          string                       // as found in $PATH
 	Version       string                       // expected version
@@ -156,6 +163,44 @@ func (exe *toolchain) Lookup() (string, error) {
 	return exe.LookupPlatform(runtime.GOOS, runtime.GOARCH)
 }
 
+// InstalledVersion returns the dotted numeric version reported by the toolchain
+// that will actually be used, ie. "4.7.1" for a `godot --version` of
+// "4.7.1.stable.official.abcdef123". [toolchain.Version] is only what gd would
+// download; when a user brings their own install (GDTOOLCHAIN=local, or any
+// build matching VersionPrefix) it can be a different patch release, and things
+// keyed by version — such as where Godot keeps its export templates — have to
+// follow the engine in use rather than the version gd wanted. Falls back to
+// [toolchain.Version] when the toolchain cannot be found or does not report a
+// version.
+func (exe *toolchain) InstalledVersion() string {
+	path, err := exe.Lookup()
+	if err != nil {
+		return exe.Version
+	}
+	out, err := exec.Command(path, exe.VersionFlags...).CombinedOutput()
+	if err != nil {
+		return exe.Version
+	}
+	if version := dottedVersionPrefix(string(out)); version != "" {
+		return version
+	}
+	return exe.Version
+}
+
+// dottedVersionPrefix keeps the leading numeric, dot-separated components of a
+// reported version, dropping the trailing labels ("4.7.1.stable.official.abc"
+// becomes "4.7.1"). Returns "" when there is no leading number.
+func dottedVersionPrefix(reported string) string {
+	var numbers []string
+	for _, field := range strings.Split(strings.TrimSpace(reported), ".") {
+		if field == "" || strings.TrimLeft(field, "0123456789") != "" {
+			break
+		}
+		numbers = append(numbers, field)
+	}
+	return strings.Join(numbers, ".")
+}
+
 func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 	if exe.Path != "" {
 		return exe.Path, nil
@@ -227,7 +272,7 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 	}
 	// some users (ie. NixOS) don't want things to be automatically installed, they
 	// can set their toolchain to local and download/install everything themselves.
-	if os.Getenv("GOTOOLCHAIN") == "local" || os.Getenv("GDTOOLCHAIN") == "local" || GDPATH == "" {
+	if Local() || GDPATH == "" {
 		path, err := exec.LookPath(name)
 		if err != nil {
 			return "", fmt.Errorf(

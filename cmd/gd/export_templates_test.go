@@ -17,7 +17,7 @@ func TestTemplateSelectiveExtract(t *testing.T) {
 	if os.Getenv("GD_TEST_NETWORK") == "" {
 		t.Skip("set GD_TEST_NETWORK=1 to run (downloads from github.com)")
 	}
-	const url = "https://github.com/godotengine/godot/releases/download/4.7-stable/Godot_v4.7-stable_export_templates.tpz"
+	const url = "https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_export_templates.tpz"
 
 	size, err := remoteSize(url)
 	if err != nil {
@@ -80,8 +80,8 @@ func TestTemplateSelectiveExtract(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(string(data), "4.7") {
-		t.Errorf("version.txt = %q, want it to mention 4.7", data)
+	if !strings.Contains(string(data), "4.7.1") {
+		t.Errorf("version.txt = %q, want it to mention 4.7.1", data)
 	}
 
 	// Extract icudt_godot.dat (tens of MB) to exercise multi-block reads through

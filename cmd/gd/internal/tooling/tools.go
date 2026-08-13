@@ -2,9 +2,9 @@ package tooling
 
 var Godot = toolchain{
 	Name:          "godot",
-	Version:       "4.7",
+	Version:       "4.7.1",
 	VersionFlags:  []string{"--version"},
-	VersionPrefix: "4.7.",
+	VersionPrefix: "4.7.", // any 4.7.x install is acceptable, see [toolchain.InstalledVersion].
 	DownloadHint:  "https://godotengine.org/download",
 	DownloadURL:   "https://github.com/godotengine/godot/releases/download/$(VERSION)-stable/Godot_v$(VERSION)-stable_$(OS).zip",
 	DownloadOS:    map[string]string{"windows": "win64.exe", "linux": "linux.$(ARCH)", "darwin": "macos.universal"},

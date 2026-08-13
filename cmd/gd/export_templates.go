@@ -68,6 +68,9 @@ func AssertExportTemplates(version string, goos string) error {
 		if _, err := os.Stat(filepath.Join(location, spec.marker)); err == nil {
 			return nil // already installed for this platform
 		}
+		if tooling.Local() {
+			return missingTemplates(version, location)
+		}
 		if err := extractTemplatesForPlatform(url, location, spec); err != nil {
 			fmt.Printf("gd: per-platform template fetch failed (%v); falling back to full download\n", err)
 			return fullDownloadTemplates(version, url, location)
@@ -78,7 +81,23 @@ func AssertExportTemplates(version string, goos string) error {
 	if _, err := os.Stat(location); err == nil {
 		return nil
 	}
+	if tooling.Local() {
+		return missingTemplates(version, location)
+	}
 	return fullDownloadTemplates(version, url, location)
+}
+
+// missingTemplates reports that the export templates are not installed, without
+// downloading them, for users who manage their own toolchain. Godot itself
+// reports a clear error if the export really does need them, so this only warns
+// and lets the export proceed.
+func missingTemplates(version, location string) error {
+	fmt.Printf(
+		"gd: export templates for %v not found in %v and automatic-downloads are disabled, "+
+			"install them from the editor (Editor > Manage Export Templates) or %v\n",
+		version, location, "https://godotengine.org/download",
+	)
+	return nil
 }
 
 func wantTemplateFile(base string, spec templateSpec) bool {
