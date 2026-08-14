@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"crypto"
@@ -20,6 +21,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 
@@ -486,22 +488,30 @@ func (android Android) Test(args ...string) error {
 	// Stop any prior instance android may still be relaunching so it can't flood
 	// the log buffer we are about to clear and read.
 	_ = exec.Command(adb, "shell", "am", "force-stop", packageName).Run()
+	_ = exec.Command(adb, "logcat", "-G", "16M").Run() // headroom for a suite that relaunches for minutes
 	_ = exec.Command(adb, "logcat", "-b", "all", "-c").Run()
+	// Follow logcat for the whole run rather than dumping it at the end. The
+	// device buffer is small and logd prunes chatty UIDs, so a suite that
+	// relaunches for eight minutes loses its earliest output — which is where a
+	// crash report is. That cost us the goroutine stack of a real failure: the
+	// panic line survived to the end of the run, every frame under it did not.
+	// `-v raw` strips the logcat prefix so each line is the raw test output.
+	// android relaunches the app after os.Exit, so the suite re-runs; force-stop
+	// it on the way out. Watch for the TestMain completion sentinel — a clean
+	// logd line that, unlike the piped test output, never interleaves.
+	defer func() { _ = exec.Command(adb, "shell", "am", "force-stop", packageName).Run() }()
+	logs, stopFollowing, err := followAndroidLog(adb)
+	if err != nil {
+		return xray.New(err)
+	}
+	defer stopFollowing()
 	if out, err := exec.Command(adb, "shell", "am", "start", "-n", activity).CombinedOutput(); err != nil {
 		return xray.New(fmt.Errorf("am start %s: %w\n%s", activity, err, out))
 	}
-	// Poll logcat until go test prints its terminal PASS/FAIL line, the app
-	// dies, or we time out. `-v raw` strips the logcat prefix so each line is the
-	// raw test output.
-	// android relaunches the app after os.Exit, so the suite re-runs; force-stop
-	// it on the way out. Poll logcat for the TestMain completion sentinel — a
-	// clean logd line that, unlike the piped test output, never interleaves.
-	defer func() { _ = exec.Command(adb, "shell", "am", "force-stop", packageName).Run() }()
 	deadline := time.Now().Add(8 * time.Minute)
 	var last string
 	for time.Now().Before(deadline) {
-		out, _ := exec.Command(adb, "logcat", "-d", "-s", "Go:E", "-v", "raw").Output()
-		last = string(out)
+		last = logs()
 		if code, ok := lastSentinel(last); ok {
 			crashed := printAndroidResults(last)
 			if code == 0 {
@@ -520,6 +530,42 @@ func (android Android) Test(args ...string) error {
 	}
 	printAndroidResults(last)
 	return fmt.Errorf("gd test: android suite did not finish within the timeout")
+}
+
+// followAndroidLog starts tailing the test app's logcat output and returns a
+// function giving everything captured so far, plus one to stop the tail. The
+// output is accumulated on this side so it survives the device evicting it.
+func followAndroidLog(adb string) (read func() string, stop func(), err error) {
+	tail := exec.Command(adb, "logcat", "-s", "Go:E", "-v", "raw")
+	out, err := tail.StdoutPipe()
+	if err != nil {
+		return nil, nil, xray.New(err)
+	}
+	if err := tail.Start(); err != nil {
+		return nil, nil, xray.New(err)
+	}
+	var (
+		mutex sync.Mutex
+		lines strings.Builder
+	)
+	go func() {
+		scanner := bufio.NewScanner(out)
+		scanner.Buffer(make([]byte, 64*1024), 4*1024*1024) // stack frames can be long
+		for scanner.Scan() {
+			mutex.Lock()
+			lines.WriteString(scanner.Text())
+			lines.WriteByte('\n')
+			mutex.Unlock()
+		}
+	}()
+	return func() string {
+			mutex.Lock()
+			defer mutex.Unlock()
+			return lines.String()
+		}, func() {
+			_ = tail.Process.Kill()
+			_ = tail.Wait()
+		}, nil
 }
 
 // printAndroidResults prints each distinct go test result line once, and the
