@@ -203,7 +203,10 @@ func gd(args ...string) error {
 	// GD_NO_RELOAD=1 to opt out. Cross-compile targets keep their
 	// native builds (mergeTags ignores GD_EXTRA_TAGS off the allowed
 	// list, and the env is only set for the local development flow).
-	reloadMode := len(args) == 0 && os.Getenv("GD_NO_RELOAD") == "" && os.Getenv("GOOS") == ""
+	// No reload mode on-device (Termux): the reloads host rebuilds the guest
+	// with the Go toolchain, which the Godot Android Editor app that loads
+	// the extension does not have.
+	reloadMode := len(args) == 0 && os.Getenv("GD_NO_RELOAD") == "" && os.Getenv("GOOS") == "" && runtime.GOOS != "android"
 	if reloadMode {
 		// The reloads host is the project built with the reloads tag; on
 		// musl hosts the build happens inside project.Setup via the musl
@@ -338,8 +341,18 @@ func gd(args ...string) error {
 		if os.Getenv("RUNNING_INSIDE_GODOT") != "" {
 			return nil
 		}
+		if runtime.GOOS == "android" {
+			return openAndroidEditorApp(editorArgs)
+		}
 		return tooling.Godot.Exec(append([]string{"-e"}, editorArgs...)...)
 	default:
+		// On-device (Termux) these all need godot to run headless (--import,
+		// --export-*), and the Godot Android Editor app strips command-line
+		// arguments from external intents by design — so there is no way to
+		// drive it. Only the plain `gd` editor flow works there.
+		if runtime.GOOS == "android" {
+			return fmt.Errorf("gd %[1]s is not supported on android (Termux): the Godot editor app cannot run headless exports.\nRun 'gd' to open the project in the editor and use its play/export buttons, or run 'gd %[1]s android' from a desktop", args[0])
+		}
 		switch args[0] {
 		case "build":
 			if err := os.Chdir(project.Directory); err != nil {
@@ -373,6 +386,43 @@ func gd(args ...string) error {
 			return platform.Test(testArgs(args[1:]...)...)
 		}
 	}
+	return nil
+}
+
+// openAndroidEditorApp opens the staged project in the Godot Android Editor
+// app (the Termux flow, where there is no godot binary to exec). Arbitrary
+// engine arguments cannot be passed: the editor strips the command-line extra
+// from intents sent by other apps, but its exported ProjectManager activity
+// accepts an ACTION_VIEW intent on a project.godot file and opens that project
+// in the editor.
+func openAndroidEditorApp(editorArgs []string) error {
+	if len(editorArgs) > 0 {
+		fmt.Fprintln(os.Stderr, "gd: ignoring", strings.Join(editorArgs, " "), "— the Godot editor app does not accept command-line arguments from other apps")
+	}
+	am, err := exec.LookPath("am")
+	if err != nil {
+		am = "/system/bin/am"
+	}
+	component := os.Getenv("GD_ANDROID_EDITOR")
+	if component == "" {
+		component = "org.godotengine.editor.v4/org.godotengine.editor.ProjectManager"
+	}
+	uri := "file://" + filepath.Join(project.GraphicsDirectory, "project.godot")
+	out, err := exec.Command(am, "start", "-a", "android.intent.action.VIEW", "-n", component, "-d", uri).CombinedOutput()
+	os.Stdout.Write(out)
+	// `am start` reports failures like a missing activity on stdout with a
+	// zero exit status, so scan the output as well.
+	if err != nil || strings.Contains(string(out), "Error") {
+		fmt.Fprintln(os.Stderr, "gd: could not open the Godot editor app.")
+		fmt.Fprintln(os.Stderr, "	1. install the Godot Editor 4.x app: https://godotengine.org/download/android/")
+		fmt.Fprintln(os.Stderr, "	2. grant it 'All files access' so it can open "+project.GraphicsDirectory)
+		fmt.Fprintln(os.Stderr, "	(installed under a different package name? set GD_ANDROID_EDITOR=<package>/<activity>)")
+		if err == nil {
+			err = errors.New(strings.TrimSpace(string(out)))
+		}
+		return err
+	}
+	fmt.Println("gd: project staged at", project.GraphicsDirectory, "— edits made in the editor live there")
 	return nil
 }
 

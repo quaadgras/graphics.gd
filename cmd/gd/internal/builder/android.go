@@ -54,10 +54,6 @@ func (android Android) Build(args ...string) error {
 // builds a `go test` binary (run on-device under the engine via the FirstFrame
 // hook in startup_cgo.go) instead of the application.
 func (android Android) build(testing bool, args ...string) error {
-	HOME, err := os.UserHomeDir()
-	if err != nil {
-		return xray.New(err)
-	}
 	var debug_keystore string
 	switch runtime.GOOS {
 	case "linux":
@@ -66,8 +62,100 @@ func (android Android) build(testing bool, args ...string) error {
 		debug_keystore = filepath.Join(os.Getenv("APPDATA"), "Godot", "keystores", "debug.keystore")
 	case "darwin":
 		debug_keystore = filepath.Join(os.Getenv("HOME"), "Library", "Application Support", "Godot", "keystores", "debug.keystore")
+	case "android":
+		// Building on-device (e.g. under Termux): the Godot Android Editor
+		// app opens the compiled extension directly, so no signing keystore,
+		// java stub, or SDK scaffolding is needed — skip straight to the
+		// compile.
 	default:
 		return nil
+	}
+	if debug_keystore != "" {
+		if err := setupHostExportTools(debug_keystore); err != nil {
+			return xray.New(err)
+		}
+	}
+	if !project.IncludesGo {
+		return nil
+	}
+	var GOARCH = "arm64"
+	if goarch := os.Getenv("GOARCH"); goarch != "" {
+		GOARCH = goarch
+	}
+	if runtime.GOOS != "android" || runtime.GOARCH != GOARCH {
+		zig, err := tooling.Zig.Lookup()
+		if err != nil {
+			return xray.New(err)
+		}
+		if err := project.SetupFiles(android_sdk, "bundled/android", filepath.Join(project.ReleasesDirectory, "android", "sdk")); err != nil {
+			return xray.New(err)
+		}
+		ANDROID_SDK, err := filepath.Abs(filepath.Join(project.ReleasesDirectory, "android", "sdk"))
+		if err != nil {
+			return xray.New(err)
+		}
+		var target string
+		switch GOARCH {
+		case "arm64":
+			target = "aarch64-linux-android"
+		case "amd64":
+			target = "x86_64-linux-android"
+		default:
+			return fmt.Errorf("gd build: cannot cross-compile android/%v on %v", GOARCH, runtime.GOOS)
+		}
+		// Stub libraries for `-l` flags naming libraries that only exist
+		// on-device: with -nostdlib zig has nothing to resolve -lm or
+		// -lpthread against (zig 0.15 ships no bundled libc for android
+		// targets), so compile stubs from the bundled sources for the
+		// linker to find. See the .c files for why they stay empty.
+		buildStub := func(name string) error {
+			args := append([]string{"cc", "-target", target, "-shared", "-nostdlib"}, tooling.CGOCFlags()...)
+			args = append(args,
+				"-Wl,-soname,"+name+".so",
+				"-o", filepath.Join(ANDROID_SDK, "usr", "lib", name+".so"),
+				filepath.Join(ANDROID_SDK, "usr", "lib", name+".c"),
+			)
+			if err := exec.Command(zig, args...).Run(); err != nil {
+				return fmt.Errorf("build %s stub for %s: %w", name, GOARCH, err)
+			}
+			return nil
+		}
+		if err := buildStub("libm"); err != nil {
+			return xray.New(err)
+		}
+		if err := buildStub("libpthread"); err != nil {
+			return xray.New(err)
+		}
+		if GOARCH != "arm64" {
+			// The bundled liblog.so (no-op shims the dynamic linker
+			// substitutes with the device's real liblog.so at runtime)
+			// is prebuilt for aarch64 only; rebuild it from source for
+			// other targets.
+			if err := buildStub("liblog"); err != nil {
+				return xray.New(err)
+			}
+		}
+		if err := os.Setenv("CC", zig+" cc -target "+target+" -nostdlib -I"+ANDROID_SDK+"/usr/include -L"+ANDROID_SDK+"/usr/lib"); err != nil {
+			return xray.New(err)
+		}
+		if err := os.Setenv("GOARCH", GOARCH); err != nil {
+			return xray.New(err)
+		}
+	}
+	out := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("libandroid_%v.so", GOARCH))
+	if testing {
+		return tooling.Go.Action("test", args, append(fastcbFlags("android", ""), "-c", "-ldflags=-checklinkname=0", "-buildmode=c-shared", "-o", out)...)
+	}
+	return tooling.Go.Action("build", args, append(fastcbFlags("android", ""), "-ldflags=-checklinkname=0", "-buildmode=c-shared", "-o", out)...)
+}
+
+// setupHostExportTools prepares everything godot's android export needs on a
+// desktop host: a debug signing keystore, a java stub, and a fake Android SDK
+// layout pointing at gd-managed tools.
+func setupHostExportTools(debug_keystore string) error {
+	HOME, err := os.UserHomeDir()
+	if err != nil {
+		return xray.New(err)
 	}
 	if err := os.MkdirAll(filepath.Dir(debug_keystore), 0755); err != nil {
 		return xray.New(err)
@@ -198,78 +286,7 @@ func (android Android) build(testing bool, args ...string) error {
 			}
 		}
 	}
-	if !project.IncludesGo {
-		return nil
-	}
-	var GOARCH = "arm64"
-	if goarch := os.Getenv("GOARCH"); goarch != "" {
-		GOARCH = goarch
-	}
-	if runtime.GOOS != "android" || runtime.GOARCH != GOARCH {
-		zig, err := tooling.Zig.Lookup()
-		if err != nil {
-			return xray.New(err)
-		}
-		if err := project.SetupFiles(android_sdk, "bundled/android", filepath.Join(project.ReleasesDirectory, "android", "sdk")); err != nil {
-			return xray.New(err)
-		}
-		ANDROID_SDK, err := filepath.Abs(filepath.Join(project.ReleasesDirectory, "android", "sdk"))
-		if err != nil {
-			return xray.New(err)
-		}
-		var target string
-		switch GOARCH {
-		case "arm64":
-			target = "aarch64-linux-android"
-		case "amd64":
-			target = "x86_64-linux-android"
-		default:
-			return fmt.Errorf("gd build: cannot cross-compile android/%v on %v", GOARCH, runtime.GOOS)
-		}
-		// Stub libraries for `-l` flags naming libraries that only exist
-		// on-device: with -nostdlib zig has nothing to resolve -lm or
-		// -lpthread against (zig 0.15 ships no bundled libc for android
-		// targets), so compile stubs from the bundled sources for the
-		// linker to find. See the .c files for why they stay empty.
-		buildStub := func(name string) error {
-			args := append([]string{"cc", "-target", target, "-shared", "-nostdlib"}, tooling.CGOCFlags()...)
-			args = append(args,
-				"-Wl,-soname,"+name+".so",
-				"-o", filepath.Join(ANDROID_SDK, "usr", "lib", name+".so"),
-				filepath.Join(ANDROID_SDK, "usr", "lib", name+".c"),
-			)
-			if err := exec.Command(zig, args...).Run(); err != nil {
-				return fmt.Errorf("build %s stub for %s: %w", name, GOARCH, err)
-			}
-			return nil
-		}
-		if err := buildStub("libm"); err != nil {
-			return xray.New(err)
-		}
-		if err := buildStub("libpthread"); err != nil {
-			return xray.New(err)
-		}
-		if GOARCH != "arm64" {
-			// The bundled liblog.so (no-op shims the dynamic linker
-			// substitutes with the device's real liblog.so at runtime)
-			// is prebuilt for aarch64 only; rebuild it from source for
-			// other targets.
-			if err := buildStub("liblog"); err != nil {
-				return xray.New(err)
-			}
-		}
-		if err := os.Setenv("CC", zig+" cc -target "+target+" -nostdlib -I"+ANDROID_SDK+"/usr/include -L"+ANDROID_SDK+"/usr/lib"); err != nil {
-			return xray.New(err)
-		}
-		if err := os.Setenv("GOARCH", GOARCH); err != nil {
-			return xray.New(err)
-		}
-	}
-	out := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("libandroid_%v.so", GOARCH))
-	if testing {
-		return tooling.Go.Action("test", args, append(fastcbFlags("android", ""), "-c", "-ldflags=-checklinkname=0", "-buildmode=c-shared", "-o", out)...)
-	}
-	return tooling.Go.Action("build", args, append(fastcbFlags("android", ""), "-ldflags=-checklinkname=0", "-buildmode=c-shared", "-o", out)...)
+	return nil
 }
 
 func (android Android) Run(args ...string) error {

@@ -144,7 +144,23 @@ func Setup(build_godot func() error) error {
 	GraphicsDirectory = filepath.Join(wd, "graphics")
 	ReleasesDirectory = filepath.Join(wd, "releases")
 	if runtime.GOOS == "android" {
+		// The Godot Android Editor app cannot read Termux's private home
+		// directory, so the Godot project is staged on shared storage. The
+		// first time around it is seeded from the repository's graphics
+		// directory (if there is one); after that the staged copy is the
+		// project the editor works on.
+		local := GraphicsDirectory
 		GraphicsDirectory = "/sdcard/gd/" + filepath.Base(wd) // Godot project needs to be in an accessible location
+		if err := os.MkdirAll(GraphicsDirectory, 0755); err != nil {
+			return fmt.Errorf("cannot create %s (in Termux, run 'termux-setup-storage' and grant storage access): %w", GraphicsDirectory, err)
+		}
+		if _, err := os.Stat(filepath.Join(GraphicsDirectory, "project.godot")); os.IsNotExist(err) {
+			if _, err := os.Stat(filepath.Join(local, "project.godot")); err == nil {
+				if err := stageAndroidProject(local, GraphicsDirectory); err != nil {
+					return xray.New(err)
+				}
+			}
+		}
 	}
 	if err := os.MkdirAll(GraphicsDirectory, 0755); err != nil {
 		return xray.New(err)
@@ -172,17 +188,30 @@ func Setup(build_godot func() error) error {
 	if err := build_godot(); err != nil {
 		return xray.New(err)
 	}
-	gdextension_version, err := tooling.Godot.Output(tooling.Godot.VersionFlags...)
-	if err != nil {
-		return xray.New(err)
-	}
-	if tooling.Godot.Name == "blazium" {
-		gdextension_version = "4.1.0"
-	}
-	if err := Import(); err != nil {
-		return xray.New(err)
+	// On android (Termux) there is no godot binary to query or run as a
+	// subprocess: the Godot Android Editor app opens the project instead and
+	// imports resources itself when it does, so the compatibility version is
+	// the one gd targets.
+	gdextension_version := tooling.Godot.Version
+	if runtime.GOOS != "android" {
+		var err error
+		gdextension_version, err = tooling.Godot.Output(tooling.Godot.VersionFlags...)
+		if err != nil {
+			return xray.New(err)
+		}
+		if tooling.Godot.Name == "blazium" {
+			gdextension_version = "4.1.0"
+		}
+		if err := Import(); err != nil {
+			return xray.New(err)
+		}
 	}
 	if err := SetupFile(true, filepath.Join(GraphicsDirectory, "library.gdextension"), muslHostLibrary(library_gdextension), gdextension_version); err != nil {
+		return xray.New(err)
+	}
+	// On android the .godot directory is not created by Import (which is
+	// skipped there), so make sure it exists before writing into it.
+	if err := os.MkdirAll(filepath.Join(GraphicsDirectory, ".godot"), 0755); err != nil {
 		return xray.New(err)
 	}
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, ".godot", "extension_list.cfg"), extension_list_cfg); err != nil {
@@ -268,6 +297,31 @@ func Import() error {
 		return xray.New(err)
 	}
 	return xray.New(os.Chdir(current))
+}
+
+// stageAndroidProject copies the repository's graphics directory onto shared
+// storage for the Godot Android Editor app to open. Shared storage does not
+// support file modes or symlinks, so files are written plainly rather than via
+// [CopyDir], and the .godot import cache is skipped (it holds absolute paths
+// from the Termux side; the editor rebuilds it on open).
+func stageAndroidProject(src, dst string) error {
+	return fs.WalkDir(os.DirFS(src), ".", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() && d.Name() == ".godot" {
+			return fs.SkipDir
+		}
+		target := filepath.Join(dst, filepath.FromSlash(path))
+		if d.IsDir() {
+			return os.MkdirAll(target, 0755)
+		}
+		data, err := os.ReadFile(filepath.Join(src, filepath.FromSlash(path)))
+		if err != nil {
+			return err
+		}
+		return os.WriteFile(target, data, 0644)
+	})
 }
 
 // SetupFiles writes the contents of an embed.FS to the target directory on the OS filesystem.
