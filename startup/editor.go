@@ -16,9 +16,15 @@ import (
 )
 
 func editorSetup() {
-	// Setup Faux SDKs
+	// Setup Faux SDKs. Not on-device: the Godot Android Editor app has no
+	// export/android/* editor settings, so GetSetting returns nil there
+	// (asserting it crashed the whole editor in the Termux flow), and gd's
+	// faux SDKs don't apply on-device anyway.
+	if runtime.GOOS == "android" {
+		return
+	}
 	settings := EditorInterface.GetEditorSettings()
-	if settings.GetSetting("export/android/java_sdk_path").(string) == "" {
+	if java_sdk_path, _ := settings.GetSetting("export/android/java_sdk_path").(string); java_sdk_path == "" {
 		my, err := user.Current()
 		if err == nil {
 			HOME := my.HomeDir
@@ -30,7 +36,7 @@ func editorSetup() {
 		}
 	}
 	// work around godot bug on windows
-	android_sdk_path := settings.GetSetting("export/android/android_sdk_path").(string)
+	android_sdk_path, _ := settings.GetSetting("export/android/android_sdk_path").(string)
 	if runtime.GOOS == "windows" && android_sdk_path == os.Getenv("LOCALAPPDATA")+"/Android/Sdk" {
 		settings.SetSetting("export/android/java_sdk_path", filepath.Join(os.Getenv("LOCALAPPDATA"), "Android", "Sdk"))
 	}
