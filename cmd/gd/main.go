@@ -425,7 +425,7 @@ func openAndroidEditorApp(editorArgs []string) error {
 		}
 		return err
 	}
-	fmt.Println("gd: project staged at", project.GraphicsDirectory, "— edits made in the editor live there")
+	fmt.Println("gd: project synced with", project.GraphicsDirectory)
 	return nil
 }
 

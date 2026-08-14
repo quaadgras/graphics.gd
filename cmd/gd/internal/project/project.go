@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"graphics.gd/cmd/gd/internal/tooling"
 
@@ -145,21 +146,17 @@ func Setup(build_godot func() error) error {
 	ReleasesDirectory = filepath.Join(wd, "releases")
 	if runtime.GOOS == "android" {
 		// The Godot Android Editor app cannot read Termux's private home
-		// directory, so the Godot project is staged on shared storage. The
-		// first time around it is seeded from the repository's graphics
-		// directory (if there is one); after that the staged copy is the
-		// project the editor works on.
+		// directory, so the Godot project is staged on shared storage and
+		// kept in sync with the repository's graphics directory: assets
+		// added on the repository side reach the editor, and edits made in
+		// the editor come back.
 		local := GraphicsDirectory
 		GraphicsDirectory = "/sdcard/gd/" + filepath.Base(wd) // Godot project needs to be in an accessible location
 		if err := os.MkdirAll(GraphicsDirectory, 0755); err != nil {
 			return fmt.Errorf("cannot create %s (in Termux, run 'termux-setup-storage' and grant storage access): %w", GraphicsDirectory, err)
 		}
-		if _, err := os.Stat(filepath.Join(GraphicsDirectory, "project.godot")); os.IsNotExist(err) {
-			if _, err := os.Stat(filepath.Join(local, "project.godot")); err == nil {
-				if err := stageAndroidProject(local, GraphicsDirectory); err != nil {
-					return xray.New(err)
-				}
-			}
+		if err := syncAndroidProject(local, GraphicsDirectory); err != nil {
+			return xray.New(err)
 		}
 	}
 	if err := os.MkdirAll(GraphicsDirectory, 0755); err != nil {
@@ -299,28 +296,84 @@ func Import() error {
 	return xray.New(os.Chdir(current))
 }
 
-// stageAndroidProject copies the repository's graphics directory onto shared
-// storage for the Godot Android Editor app to open. Shared storage does not
-// support file modes or symlinks, so files are written plainly rather than via
-// [CopyDir], and the .godot import cache is skipped (it holds absolute paths
-// from the Termux side; the editor rebuilds it on open).
-func stageAndroidProject(src, dst string) error {
+// syncAndroidProject keeps the repository's graphics directory and the copy
+// staged on shared storage (for the Godot Android Editor app to open) in
+// sync: files missing on one side are copied there, and where both sides have
+// a file the newer one wins. Nothing is ever deleted. Both directories live
+// on the same device, so their timestamps are directly comparable; each copy
+// carries the source's modification time so a synced file compares up to date
+// on the next run. The .godot cache is skipped (each side rebuilds its own)
+// and so are compiled libraries (the build writes them where they are used).
+func syncAndroidProject(local, staged string) error {
+	if err := os.MkdirAll(local, 0755); err != nil {
+		return err
+	}
+	if err := syncNewerFiles(local, staged); err != nil {
+		return err
+	}
+	return syncNewerFiles(staged, local)
+}
+
+var syncSkipSuffixes = []string{".so", ".a", ".editor", ".dll", ".dylib", ".lib", ".exe", ".xcframework"}
+
+func syncSkip(name string, isDir bool) bool {
+	if isDir {
+		return name == ".godot" || name == ".git"
+	}
+	for _, suffix := range syncSkipSuffixes {
+		if strings.HasSuffix(name, suffix) {
+			return true
+		}
+	}
+	return false
+}
+
+// syncNewerFiles copies every file under src that is missing under dst, or
+// newer than its counterpart there (by more than the 2s resolution of shared
+// storage timestamps), into dst. Shared storage supports neither file modes
+// nor symlinks, so files are written plainly.
+func syncNewerFiles(src, dst string) error {
 	return fs.WalkDir(os.DirFS(src), ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if d.IsDir() && d.Name() == ".godot" {
-			return fs.SkipDir
+		if path == "." {
+			return nil
+		}
+		if syncSkip(d.Name(), d.IsDir()) {
+			if d.IsDir() {
+				return fs.SkipDir
+			}
+			return nil
 		}
 		target := filepath.Join(dst, filepath.FromSlash(path))
 		if d.IsDir() {
 			return os.MkdirAll(target, 0755)
 		}
+		info, err := d.Info()
+		if err != nil {
+			return err
+		}
+		existing, err := os.Stat(target)
+		if err == nil && info.ModTime().Sub(existing.ModTime()) <= 2*time.Second {
+			return nil // up to date, or the other side is newer (the reverse pass handles it)
+		}
+		if err != nil && !os.IsNotExist(err) {
+			return err
+		}
 		data, err := os.ReadFile(filepath.Join(src, filepath.FromSlash(path)))
 		if err != nil {
 			return err
 		}
-		return os.WriteFile(target, data, 0644)
+		if err := os.WriteFile(target, data, 0644); err != nil {
+			return err
+		}
+		// Carry the source time over so the file compares up to date next
+		// run; shared storage may refuse, in which case the next run copies
+		// the same content again — harmless.
+		_ = os.Chtimes(target, info.ModTime(), info.ModTime())
+		fmt.Println("gd: synced", path, "to", dst)
+		return nil
 	})
 }
 
