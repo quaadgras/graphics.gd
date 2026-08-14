@@ -503,8 +503,15 @@ func (android Android) Test(args ...string) error {
 		out, _ := exec.Command(adb, "logcat", "-d", "-s", "Go:E", "-v", "raw").Output()
 		last = string(out)
 		if code, ok := lastSentinel(last); ok {
-			printAndroidResults(last)
+			crashed := printAndroidResults(last)
 			if code == 0 {
+				if crashed {
+					// lastSentinel takes the LAST verdict, and android relaunches
+					// the app after a crash, so a run that crashed and then passed
+					// on the relaunch reported success — hiding the crash above,
+					// and with it however often this really happens.
+					return fmt.Errorf("gd test: android suite crashed, then passed when android relaunched it (see the crash above)")
+				}
 				return nil
 			}
 			return fmt.Errorf("gd test: android suite failed (exit code %d)", code)
@@ -515,40 +522,74 @@ func (android Android) Test(args ...string) error {
 	return fmt.Errorf("gd test: android suite did not finish within the timeout")
 }
 
-// printAndroidResults prints each distinct go test result line once. The system
+// printAndroidResults prints each distinct go test result line once, and the
+// first crash report in full; it reports whether it saw a crash. The system
 // relaunches the app after it exits, so by the time we read the verdict the log
 // contains the suite repeated many times. Failure details (the indented
 // "foo_test.go:12: ..." assertion lines and panics) are kept, or a --- FAIL
 // verdict is impossible to act on. The first panic's crash output (goroutine
 // stacks) is printed in full: those lines match none of the result patterns,
 // and a panic verdict without its stack is impossible to act on too.
-func printAndroidResults(log string) {
+//
+// The dying process and the relaunched one write to the same log buffer, so the
+// crash report has the next run's output interleaved into it. Ending the report
+// at the next result line therefore truncated it to nothing on exactly the runs
+// that needed it (the emulator interleaves where a local device does not) —
+// result lines are skipped instead, and the report ends at the run sentinel or
+// a line budget.
+func printAndroidResults(log string) (crashed bool) {
+	report, crashed := androidResults(log)
+	fmt.Print(report)
+	return crashed
+}
+
+// androidResults renders what [printAndroidResults] prints, so the parsing can
+// be tested without a device.
+func androidResults(log string) (report string, crashed bool) {
+	const crashReportMaxLines = 120
+	var out strings.Builder
 	seen := make(map[string]bool)
-	crash, crashPrinted := false, false
+	crash, crashPrinted, crashLines := false, false, 0
 	for _, line := range strings.Split(log, "\n") {
 		t := strings.TrimSpace(line)
 		if crash {
-			// The crash output runs until the process dies; a relaunched
-			// suite starting over (or finishing) marks where it ended.
-			if strings.HasPrefix(t, "=== RUN") || strings.HasPrefix(t, "--- PASS") || strings.HasPrefix(t, "GDTEST_DONE") {
+			switch {
+			case strings.HasPrefix(t, "GDTEST_DONE") || crashLines >= crashReportMaxLines:
 				crash, crashPrinted = false, true
-			} else {
-				fmt.Println(line)
+			case isTestResultLine(t):
+				// The relaunched suite, spliced into the report: not crash
+				// output, but still a result — fall through and report it once,
+				// leaving the crash report open around it.
+			default:
+				fmt.Fprintln(&out, line)
+				crashLines++
 				continue
 			}
 		}
 		if !crashPrinted && (strings.HasPrefix(t, "panic:") || strings.HasPrefix(t, "fatal error:")) {
-			crash = true
-			fmt.Println(t)
+			crash, crashed = true, true
+			fmt.Fprintln(&out, t)
 			continue
 		}
 		result := strings.HasPrefix(t, "--- PASS") || strings.HasPrefix(t, "--- FAIL")
 		detail := strings.Contains(t, "_test.go:") || strings.HasPrefix(t, "panic:")
 		if (result || detail) && !seen[t] {
 			seen[t] = true
-			fmt.Println(t)
+			fmt.Fprintln(&out, t)
 		}
 	}
+	return out.String(), crashed
+}
+
+// isTestResultLine reports whether the line is go test's own progress output,
+// as opposed to something a crashing process wrote.
+func isTestResultLine(line string) bool {
+	for _, prefix := range []string{"=== RUN", "=== PAUSE", "=== CONT", "--- PASS", "--- FAIL", "--- SKIP", "GDTEST_DONE"} {
+		if strings.HasPrefix(line, prefix) {
+			return true
+		}
+	}
+	return line == "PASS" || line == "FAIL"
 }
 
 // bakeAndroidHeadless sets command_line/extra_args="--headless" on the named
