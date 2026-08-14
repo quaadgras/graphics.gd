@@ -3,6 +3,7 @@
 package gd_test
 
 import (
+	"fmt"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -14,13 +15,15 @@ import (
 )
 
 // packagegen walks the graphics directory on the filesystem, it is a build-time
-// tool that runs on the host. The browser has no such filesystem: t.TempDir
-// isn't implemented under js/wasm and res:// lives inside the packed .pck, so
-// there is nothing for these tests to walk.
+// tool that runs on the host. A running game may have no such filesystem to walk:
+// under js/wasm t.TempDir isn't implemented and res:// lives inside the packed
+// .pck, and on android the suite runs from the exported .apk, where res:// has no
+// OS directory behind it and the app's sandbox has nowhere to save a scene to.
 func skipWithoutFilesystem(t *testing.T) {
 	t.Helper()
-	if runtime.GOOS == "js" {
-		t.Skip("packagegen is a host-side tool, js/wasm has no filesystem to generate from")
+	switch runtime.GOOS {
+	case "js", "android":
+		t.Skipf("packagegen is a host-side tool, %v has no project directory to generate from", runtime.GOOS)
 	}
 }
 
@@ -39,7 +42,10 @@ func TestGraphicsPackageGeneration(t *testing.T) {
 		"package graphics",
 		"var TSCN = Resource.Library[struct {",
 		"PackedScene.Is[SceneMain]",
-		"`gd:\"" + dir + "/main.tscn\"`",
+		// The tag holds a quoted Go string (reflect.StructTag.Get unquotes it),
+		// so it has to be compared in that form: on Windows dir contains
+		// backslashes, which the generator escapes and Get puts back.
+		fmt.Sprintf("`gd:%q`", dir+"/main.tscn"),
 		"type SceneMain struct {",
 		"Node2D.Instance",
 		"Bullets Node2D.Instance",
