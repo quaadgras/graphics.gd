@@ -37,6 +37,16 @@ var anchors struct {
 	keep [2][]any
 }
 
+func init() {
+	// Entries born off the main thread are additionally protected by the
+	// pointer nursery: the per-frame Cycle rescues them until they come of
+	// age, because such a goroutine can be descheduled (or parked on the
+	// cross-thread dispatch ring) across two cycles at ANY point — even
+	// between a value's creation and its first use — which would otherwise
+	// free the value out from underneath it. See pointers.OffMain.
+	pointers.OffMain = func() bool { return !threadcheck.FrameTemporaries() }
+}
+
 // CycleAnchors rotates the anchor keep-alive generations. Called on the main
 // thread once per frame, after the cross-thread dispatch ring has been
 // drained (see startup/garbage_collector.go).
@@ -75,6 +85,29 @@ func anchored[T pointers.Generic[T, P], P pointers.Size](value T) (*T, complex12
 	anchors.keep[0] = append(anchors.keep[0], anchor)
 	anchors.mu.Unlock()
 	return anchor, pointers.Pack(pinned)
+}
+
+// anchorTracked keeps a tracked engine value alive across a whole multi-call
+// operation (converting an Array or Dictionary element by element). Off the
+// main thread every element access can block on the cross-thread dispatch
+// ring for a frame or more, while a tracked temporary only survives two of
+// the main thread's pointer cycles — so a multi-element conversion outlives
+// its source value and panics with "use of an invalid reference"
+// (deterministically, once the ring is congested enough for each call to
+// park a frame). The caller must hold the returned anchor with
+// [runtime.KeepAlive] until the operation is done and use the returned
+// (pinned) value in its place. On the main thread, or for values that are
+// not tracked temporaries, the value is returned as-is with a nil anchor
+// (KeepAlive(nil) is fine).
+func anchorTracked[T pointers.Generic[T, P], P pointers.Size](value T) (*T, T) {
+	if threadcheck.FrameTemporaries() {
+		return nil, value
+	}
+	anchor, state := anchored(value)
+	if anchor == nil {
+		return nil, value
+	}
+	return anchor, pointers.Load[T](state)
 }
 
 // WrapString prepares proxy state for a [String] wrapper: tracked

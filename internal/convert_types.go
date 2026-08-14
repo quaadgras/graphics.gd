@@ -5,6 +5,7 @@ package gd
 import (
 	"fmt"
 	"reflect"
+	"runtime"
 	"slices"
 	"time"
 	"unsafe"
@@ -283,6 +284,8 @@ func convertToGoMap(rtype reflect.Type, value any) (reflect.Value, error) {
 		}
 		return mapValue, nil
 	case Dictionary:
+		anchor, dictionary := anchorTracked(dictionary)
+		defer runtime.KeepAlive(anchor)
 		var mapValue = reflect.MakeMap(rtype)
 		for _, key := range dictionary.Keys().Iter() {
 			keyValue, err := convertVariantToDesiredGoType(NewVariant(key), rtype.Key())
@@ -332,7 +335,8 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 		return structure, nil
 	case Dictionary:
 		var structure = reflect.New(rtype).Elem()
-		var dictionary = value
+		anchor, dictionary := anchorTracked(value)
+		defer runtime.KeepAlive(anchor)
 		for field, rvalue := range structure.Fields() {
 			if !field.IsExported() {
 				continue

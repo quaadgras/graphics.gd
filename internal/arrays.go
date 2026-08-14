@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"iter"
 	"reflect"
+	"runtime"
 
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/noescape"
@@ -42,8 +43,11 @@ func (a Array) Free() {
 
 func (a Array) Iter() iter.Seq2[int64, Variant] {
 	return func(yield func(int64, Variant) bool) {
-		for i := int64(0); i < a.Size(); i++ {
-			if !yield(i, a.Index(i)) {
+		anchor, array := anchorTracked(a)
+		defer runtime.KeepAlive(anchor)
+		size := array.Size()
+		for i := int64(0); i < size; i++ {
+			if !yield(i, array.Index(i)) {
 				break
 			}
 		}
@@ -55,8 +59,11 @@ func NewArray() Array {
 }
 
 func ArrayAs[S []T, T any](array Array) []T {
-	var result = make([]T, array.Size())
-	for i := 0; i < int(array.Size()); i++ {
+	anchor, array := anchorTracked(array)
+	defer runtime.KeepAlive(anchor)
+	var size = int(array.Size())
+	var result = make([]T, size)
+	for i := 0; i < size; i++ {
 		result[i] = VariantAs[T](array.Index(int64(i)))
 	}
 	return result

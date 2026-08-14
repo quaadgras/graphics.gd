@@ -45,6 +45,7 @@ import (
 	"runtime"
 	"sync"
 	"sync/atomic"
+	"time"
 	"unsafe"
 )
 
@@ -160,6 +161,9 @@ func Cycle() {
 	if mallocs <= last_allocs && !cycle_pending {
 		return
 	}
+	// Rescue the nursery before the scan below so newborn off-main entries
+	// can neither be expired nor condemned this cycle (see OffMain).
+	nurseryRescue()
 	cycle_pending = false
 	if debugCycle {
 		fmt.Printf("pointers.Cycle: scanning (mallocs=%d last=%d)\n", mallocs, last_allocs)
@@ -172,6 +176,16 @@ func Cycle() {
 				rev := revision(page[i+offsetRevision].Load())
 				if rev == revisionEOF {
 					break // end of the table.
+				}
+				if rev == revisionLocked {
+					// Mid-[malloc] (or mid-[end]/[Lay]) on another thread: the
+					// new revision is not published yet, so the slot reads as
+					// inactive — condemning it here would run the PREVIOUS
+					// tenant's free function on the free-list link stored in
+					// the pointer words and double-push the slot, poisoning
+					// the free-list. Skip it and revisit next cycle.
+					cycle_pending = true
+					continue
 				}
 				if rev.isClosed() {
 					continue
@@ -269,6 +283,96 @@ func Cycle() {
 	last_allocs = mallocs
 }
 
+// OffMain reports whether the calling goroutine's allocations must not be
+// treated as main-thread frame-temporaries. The frame-temporary model frees
+// every entry that goes two [Cycle]s without a [Get]: sound for the thread
+// that drives the frames, unsound for any other goroutine, which can be
+// descheduled (or parked on the cross-thread dispatch ring) across two
+// cycles at any point — even between creating a value and its very first
+// use — so the main thread frees the value out from underneath it ("use of
+// an invalid reference", deterministic under CPU load). Entries born while
+// OffMain reports true are therefore kept in the nursery: [Cycle] rescues
+// them every cycle until they come of age (see nurseryAge), by which point
+// any expression-scoped use has completed and longer-lived values have been
+// anchored (see gd's anchors.go) or pinned.
+//
+// Set once at startup (to the inverse of threadcheck.FrameTemporaries); nil
+// means allocations are treated as main-thread frame-temporaries.
+var OffMain func() bool
+
+// nurseryAge is how long a nursery entry is rescued from expiry, measured
+// from its birth. It bounds both the retention of off-main temporaries
+// (memory) and the goroutine-starvation window the nursery can absorb.
+const nurseryAge = time.Second
+
+type slotref struct {
+	shape uint8
+	slot  uint64
+	rev   revision
+	born  int64 // nanoseconds, from time.Now().UnixNano()
+}
+
+var nursery struct {
+	mu   sync.Mutex
+	refs []slotref
+}
+
+// nurseryKeep registers a newborn off-main entry. Called by malloc BEFORE
+// the entry's revision is published (the slot is still revisionLocked), so
+// there is no window in which a concurrent [Cycle] can expire the entry
+// before it is protected.
+func nurseryKeep(shape int, slot uint64, rev revision) {
+	ref := slotref{shape: uint8(shape), slot: slot, rev: rev, born: time.Now().UnixNano()}
+	nursery.mu.Lock()
+	nursery.refs = append(nursery.refs, ref)
+	nursery.mu.Unlock()
+}
+
+// nurseryRescue re-activates every nursery entry so the scan that follows
+// cannot expire or condemn it, and drops entries that have come of age or
+// have already been freed or reused. Called at the start of [Cycle], on the
+// same thread.
+func nurseryRescue() {
+	now := time.Now().UnixNano()
+	nursery.mu.Lock()
+	defer nursery.mu.Unlock()
+	kept := nursery.refs[:0]
+	for _, ref := range nursery.refs {
+		if now-ref.born > int64(nurseryAge) {
+			continue // of age: subject to the normal two-cycle expiry from here.
+		}
+		if nurseryActivate(ref) {
+			kept = append(kept, ref)
+		}
+	}
+	clear(nursery.refs[len(kept):])
+	nursery.refs = kept
+}
+
+// nurseryActivate marks the entry as used-this-cycle, reporting whether the
+// entry is still the one the ref was created for.
+func nurseryActivate(ref slotref) bool {
+	page, addr := ref.slot/pageSize, ref.slot%pageSize
+	arr := tables[ref.shape].Index(page)
+	for {
+		rev := revision(arr[addr+offsetRevision].Load())
+		if rev == revisionLocked {
+			// Mid-(re)allocation: keep the ref and sort it out next cycle
+			// (if the slot was reused, the new revision will mismatch).
+			return true
+		}
+		if !rev.matches(ref.rev) || rev.isClosed() {
+			return false // freed or reused: stop retaining.
+		}
+		if rev.isActive() {
+			return true
+		}
+		if arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active())) {
+			return true
+		}
+	}
+}
+
 // New manages the given pointer value discretely.
 func New[T Generic[T, P], P Size](ptr P) T {
 	return malloc(ptr, T.Free)
@@ -302,6 +406,12 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 			// in pointers.Pin) would stay pinned forever once the slot is
 			// reused, leaking it past every Cycle.
 			rev := (max(rev, 2) + 1).active().reset().unpinned()
+			if OffMain != nil && OffMain() {
+				// Register with the nursery BEFORE publishing the revision:
+				// the slot is still revisionLocked here, so a concurrent
+				// Cycle cannot expire the newborn before it is protected.
+				nurseryKeep(len(ptr), idx, rev)
+			}
 			arr[addr+offsetRevision].Store(uint64(rev))
 			//
 			// NOTE the below function extraction is somewhat unsafe and
@@ -399,8 +509,7 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 			continue
 		}
 		if !rev.matches(p.revision) {
-			//fmt.Printf("%b != %b\b", rev&0b00111111111111111111111111111111111111111111111111111111111111, p.revision&0b00111111111111111111111111111111111111111111111111111111111111)
-			panic(panicMessage)
+			panic(fmt.Sprintf("%s [get: slot=%d shape=%d table_rev=%x handle_rev=%x]", panicMessage, p.sentinal, len(p.checksum), uint64(rev), uint64(p.revision)))
 		}
 		if !rev.isActive() {
 			if live, ok := any(T(*p)).(Liveness[P]); ok && !live.IsAlive(*(*P)(unsafe.Pointer(&ptrs))) {
@@ -556,12 +665,25 @@ func Pin[T Generic[T, P], P Size](ptr T) T {
 	}
 	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
 	arr := tables[len(p.checksum)].Index(page)
-	rev := revision(arr[addr+offsetRevision].Load())
-	if !rev.matches(p.revision) {
-		panic(panicMessage)
+	for {
+		rev := revision(arr[addr+offsetRevision].Load())
+		if rev == revisionLocked {
+			continue
+		}
+		if !rev.matches(p.revision) {
+			panic(panicMessage)
+		}
+		if rev.isPinned() {
+			return ptr
+		}
+		// The CAS can lose against a concurrent activation (Get's rescue or
+		// the nursery's), so it must be retried until the pin is really set:
+		// a silently-lost pin leaves the value collectable by [Cycle] while
+		// its owner believes it pinned.
+		if arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.pinned())) {
+			return ptr
+		}
 	}
-	arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.pinned()))
-	return ptr
 }
 
 // Debug prints the current state of the pointer.
@@ -699,8 +821,7 @@ func Ask[T Generic[T, P], P Size](ptr T) (P, Kind) {
 			continue
 		}
 		if !rev.matches(p.revision) {
-			//fmt.Printf("%b != %b\b", rev&0b00111111111111111111111111111111111111111111111111111111111111, p.revision&0b00111111111111111111111111111111111111111111111111111111111111)
-			panic(panicMessage)
+			panic(fmt.Sprintf("%s [ask: slot=%d shape=%d table_rev=%x handle_rev=%x]", panicMessage, p.sentinal, len(p.checksum), uint64(rev), uint64(p.revision)))
 		}
 		if !rev.isActive() {
 			if live, ok := any(T(p)).(Liveness[P]); ok && !live.IsAlive(*(*P)(unsafe.Pointer(&ptrs))) {
