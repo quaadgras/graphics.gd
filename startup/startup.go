@@ -18,6 +18,26 @@ import (
 var mainloop MainLoopClass.Interface
 var loadingSceneWasCalled bool
 
+// engineStarted records whether the engine has been started, for the
+// startup modes where starting is a real operation: the static library
+// completes the embedded engine's setup, and the shared library creates
+// the engine instance outright. More than one path believes it is the one
+// that starts the engine — the project's own [LoadingScene] call and,
+// under -tags reloads, the host session — and doing it twice re-runs
+// setup over live singletons, or makes a second engine.
+var engineStarted bool
+
+// startingEngine reports whether this is the first attempt to start the
+// engine, marking it started. Every startup mode that really does start
+// one guards its Start with this so a second call is a no-op.
+func startingEngine() bool {
+	if engineStarted {
+		return false
+	}
+	engineStarted = true
+	return true
+}
+
 // MainLoop uses the given struct as the main loop implementation. This will take care of initialising
 // the Go runtime correctly, blocks until the main loop has shutdown.
 func MainLoop(loop MainLoopClass.Interface) {

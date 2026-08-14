@@ -26,8 +26,10 @@
 package packagegen
 
 import (
+	"errors"
 	"fmt"
 	"go/format"
+	"go/token"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -61,11 +63,16 @@ const FileName = "graphics.gen.go"
 // from directories that no longer have any. Resources are loaded through
 // their res:// paths, so the engine must be running with root mounted as
 // the project directory.
+// Directories are independent, so one that cannot be generated (an
+// unreadable file, a resource the engine refuses to load) is reported but
+// does not stop the rest of the tree from being kept up to date.
 func All(root string) error {
 	root = filepath.Clean(root)
-	return filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+	var problems []error
+	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			return err
+			problems = append(problems, err)
+			return nil
 		}
 		if !d.IsDir() {
 			return nil
@@ -74,15 +81,34 @@ func All(root string) error {
 			return fs.SkipDir
 		}
 		prefix := "res://"
-		if rel, err := filepath.Rel(root, path); err == nil && rel != "." {
+		rel, err := filepath.Rel(root, path)
+		if err == nil && rel != "." {
 			prefix += filepath.ToSlash(rel) + "/"
+			if !importable(filepath.ToSlash(rel)) {
+				// A Go package here could never be imported, so generating
+				// one only breaks ./... builds of the project. Clear any
+				// file left behind by an earlier name and move on: the
+				// resources are still reachable by their res:// paths.
+				if err := update(filepath.Join(path, FileName), ""); err != nil {
+					problems = append(problems, err)
+				}
+				return nil
+			}
 		}
 		source, err := Directory(path, prefix, packageName(path))
 		if err != nil {
-			return err
+			problems = append(problems, err)
+			return nil
 		}
-		return update(filepath.Join(path, FileName), source)
+		if err := update(filepath.Join(path, FileName), source); err != nil {
+			problems = append(problems, err)
+		}
+		return nil
 	})
+	if err != nil {
+		problems = append(problems, err)
+	}
+	return errors.Join(problems...)
 }
 
 // update writes source to target if it differs from what is already there,
@@ -110,7 +136,12 @@ func update(target, source string) error {
 // files). Each file is loaded from, and tagged with, prefix+name — pass a
 // trailing-slash "res://…/" prefix for project directories. Returns the
 // empty string if the directory contains no resources.
+//
+// pkg is the package name to declare; it is sanitized, so a directory
+// named after a Go keyword ("interface", "map") still generates a package
+// that compiles.
 func Directory(dir, prefix, pkg string) (string, error) {
+	pkg = goPackageName(pkg)
 	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return "", err
@@ -528,7 +559,43 @@ func identifier(name string) string {
 	return b.String()
 }
 
+// importable reports whether a slash-separated project-relative directory
+// path can appear inside a Go import path. Asset directories are named for
+// artists, not for the toolchain ("Normals Godot-Unity"), and a package in
+// one of those is not merely unused: it fails every ./... build of the
+// project with "malformed import path".
+func importable(rel string) bool {
+	for _, elem := range strings.Split(rel, "/") {
+		if elem == "" || elem == "." || elem == ".." {
+			return false
+		}
+		for _, r := range elem {
+			switch {
+			case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z', r >= '0' && r <= '9':
+			case r == '-' || r == '.' || r == '_' || r == '~':
+			default:
+				return false
+			}
+		}
+	}
+	return true
+}
+
 var packageClause = regexp.MustCompile(`(?m)^package\s+(\w+)`)
+
+// goPackageName makes name safe to follow a package clause: directory
+// names are not bound by Go's rules, so one that spells a keyword
+// ("interface", "map", "default") or the blank identifier gets a trailing
+// underscore rather than generating a file that cannot be parsed.
+func goPackageName(name string) string {
+	if token.IsKeyword(name) {
+		return name + "_"
+	}
+	if !token.IsIdentifier(name) { // empty, blank, or not spellable at all
+		return "graphics"
+	}
+	return name
+}
 
 // packageName returns the package name generated files in dir should use:
 // the name of any existing hand-written Go package in the directory, or

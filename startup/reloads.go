@@ -730,12 +730,84 @@ func reloadsHostYield(_ context.Context, m api.Module, stack []uint64) {
 	stack[0] = reloadsKeepRunning
 }
 
+// reloadsPrepareRuntime brings up the wasm runtime and builds the first
+// guest, leaving reloadsRuntime closed and nil if anything fails. It
+// touches nothing engine-side, so a failure can still be recovered from
+// by running the project natively.
+func reloadsPrepareRuntime() error {
+	runtimeConfig := wazero.NewRuntimeConfig()
+	if dir, err := os.UserCacheDir(); err == nil {
+		// Persist compiled wasm across runs so session startup is fast.
+		if cache, err := wazero.NewCompilationCacheWithDir(filepath.Join(dir, "graphics.gd", "reloads")); err == nil {
+			runtimeConfig = runtimeConfig.WithCompilationCache(cache)
+		}
+	}
+	reloadsRuntime = wazero.NewRuntimeWithConfig(reloadsCtx, runtimeConfig)
+	prepare := func() error {
+		if _, err := wasi_snapshot_preview1.Instantiate(reloadsCtx, reloadsRuntime); err != nil {
+			return fmt.Errorf("failed to instantiate wasi: %w", err)
+		}
+		if err := reloadsInstantiateHostModule(reloadsCtx, reloadsRuntime); err != nil {
+			return fmt.Errorf("failed to instantiate gd bridge: %w", err)
+		}
+		if err := reloadsInstantiateControl(); err != nil {
+			return fmt.Errorf("failed to instantiate reloads control: %w", err)
+		}
+		fmt.Fprintln(os.Stderr, "graphics.gd: building wasm guest...")
+		return reloadsBuildGuest()
+	}
+	if err := prepare(); err != nil {
+		reloadsRuntime.Close(reloadsCtx)
+		reloadsRuntime = nil
+		return err
+	}
+	return nil
+}
+
+// reloadsFallback gives up on hot reloading and finishes the run the way
+// a build without the reloads tag would. Nothing engine-side has been
+// touched at this point, and the host binary is the project itself, so
+// every class the project defines is compiled in and the editor (or the
+// game) stays completely usable — only live swapping is lost.
+func reloadsFallback(reason string, err error) {
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "graphics.gd: hot reloading is off (%s):\n%v\n", reason, err)
+	} else {
+		fmt.Fprintf(os.Stderr, "graphics.gd: hot reloading is off (%s)\n", reason)
+	}
+	reloadsSession = nil // Scene takes the ordinary path from here on.
+	Scene()
+}
+
 func reloadsRun() {
 	if startup == nil {
 		startup = new(engineAsSharedLibrary)
 	}
 	_, isLibrary := startup.(interface{ reloadsBase() *engineAsLibrary })
 	reloadsCShared = !isLibrary
+	if engineStarted {
+		// The project called startup.LoadingScene() before Scene(), which
+		// is its documented right: the engine is already all the way up.
+		// The host has therefore missed the scene-level initialization it
+		// has to link each guest against, and has already registered its
+		// own classes under the names the guest would claim. There is no
+		// way to install hot reloading after the fact, so run the host
+		// build, which is the whole project anyway.
+		reloadsFallback("startup.LoadingScene starts the engine before the reloads host can take it over", nil)
+		return
+	}
+	// The host binary is the project itself, compiled with the reloads
+	// tag, so its sources are known to build for this platform: a guest
+	// build that fails does so for wasip1/wasm specifically (a cgo
+	// dependency, a build constraint) and no later save will clear it.
+	// Probe it before touching the engine, so that a project which
+	// cannot target wasm runs the host's classes instead of opening an
+	// editor with none of them.
+	if err := reloadsPrepareRuntime(); err != nil {
+		reloadsFallback("the project does not build for wasip1/wasm", err)
+		return
+	}
+	defer reloadsRuntime.Close(reloadsCtx)
 	if reloadsCShared {
 		// Frame-driven fastcb residency permanently locks the engine
 		// thread on the first frame, which changes the OS-thread-lock
@@ -801,29 +873,6 @@ func reloadsRun() {
 		reloadsNeedsStart = true
 	}
 
-	runtimeConfig := wazero.NewRuntimeConfig()
-	if dir, err := os.UserCacheDir(); err == nil {
-		// Persist compiled wasm across runs so session startup is fast.
-		if cache, err := wazero.NewCompilationCacheWithDir(filepath.Join(dir, "graphics.gd", "reloads")); err == nil {
-			runtimeConfig = runtimeConfig.WithCompilationCache(cache)
-		}
-	}
-	reloadsRuntime = wazero.NewRuntimeWithConfig(reloadsCtx, runtimeConfig)
-	defer reloadsRuntime.Close(reloadsCtx)
-	if _, err := wasi_snapshot_preview1.Instantiate(reloadsCtx, reloadsRuntime); err != nil {
-		panic("graphics.gd: failed to instantiate wasi: " + err.Error())
-	}
-	if err := reloadsInstantiateHostModule(reloadsCtx, reloadsRuntime); err != nil {
-		panic("graphics.gd: failed to instantiate gd bridge: " + err.Error())
-	}
-	if err := reloadsInstantiateControl(); err != nil {
-		panic("graphics.gd: failed to instantiate reloads control: " + err.Error())
-	}
-
-	fmt.Fprintln(os.Stderr, "graphics.gd: building wasm guest...")
-	if err := reloadsBuildGuest(); err != nil {
-		fmt.Fprintln(os.Stderr, "graphics.gd: build failed, the engine runs without Go classes until the project compiles:", err)
-	}
 	go reloadsWatch()
 
 	for session := 0; ; session++ {

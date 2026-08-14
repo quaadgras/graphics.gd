@@ -73,7 +73,7 @@ func makeGraphicsPackages() {
 		return
 	}
 	if err := packagegen.All(ProjectSettings.GlobalizePath("res://")); err != nil {
-		Engine.RaiseWarning("graphics package generation: ", err)
+		Engine.RaiseWarning("graphics package generation: " + err.Error())
 		os.Stderr.WriteString("graphics package generation: " + err.Error() + "\n")
 	}
 }

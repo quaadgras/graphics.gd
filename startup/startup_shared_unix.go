@@ -60,6 +60,9 @@ import (
 )
 
 func (engine *engineAsSharedLibrary) Start() {
+	if !startingEngine() {
+		return
+	}
 	var ext string
 	switch runtime.GOOS {
 	case "linux":

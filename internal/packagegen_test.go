@@ -62,6 +62,32 @@ func TestGraphicsPackageGeneration(t *testing.T) {
 	}
 }
 
+// Asset directories are named by artists, not by Go programmers, so the
+// package name a directory implies can be a keyword. Generating "package
+// interface" makes a file that does not parse, and one such directory used
+// to abort generation for the whole project.
+func TestGraphicsPackageGenerationKeywordDirectory(t *testing.T) {
+	skipWithoutFilesystem(t)
+	dir := t.TempDir()
+	scene := makeSceneMain(t)
+	if err := ResourceSaver.Save(scene.AsResource(), filepath.Join(dir, "main.tscn"), 0); err != nil {
+		t.Fatal(err)
+	}
+	for _, name := range []string{"interface", "map", "graphics"} {
+		source, err := packagegen.Directory(dir, dir+"/", name)
+		if err != nil {
+			t.Fatalf("%s: %v", name, err)
+		}
+		want := "package " + name
+		if name != "graphics" {
+			want += "_"
+		}
+		if !strings.Contains(source, want+"\n") {
+			t.Fatalf("generated source is missing %q:\n%s", want, source)
+		}
+	}
+}
+
 // TestGraphicsPackageGenerationProject runs generation against the test
 // project's own graphics directory, exercising res:// loading of imported
 // resources (icon.svg has no direct loader, only its import remap).

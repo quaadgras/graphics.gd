@@ -49,6 +49,9 @@ type engineAsStaticLibrary struct {
 }
 
 func (engine *engineAsStaticLibrary) Start() {
+	if !startingEngine() {
+		return
+	}
 	engine.Library.Start()
 }
 

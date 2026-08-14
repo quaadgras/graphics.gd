@@ -34,6 +34,9 @@ import (
 )
 
 func (engine *engineAsSharedLibrary) Start() {
+	if !startingEngine() {
+		return
+	}
 	path := []byte("libgodot.dll\000")
 	init := []byte("libgodot_create_godot_instance\000")
 	var libgodot = C.LoadLibraryA((*C.char)(unsafe.Pointer(&path[0])))
