@@ -288,7 +288,10 @@ func gd(args ...string) error {
 		}
 	} else {
 		if zig, _ := exec.LookPath("zig"); zig != "" && os.Getenv("CC") == "" {
-			if runtime.GOOS == "darwin" {
+			// On darwin and android the native clang is the working
+			// compiler: zig can't find bionic's libc on-device (Termux)
+			// and fails with LibCRuntimeNotFound.
+			if runtime.GOOS == "darwin" || runtime.GOOS == "android" {
 				if err := os.Setenv("CC", "clang"); err != nil {
 					return xray.New(err)
 				}
