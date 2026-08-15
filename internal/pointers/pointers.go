@@ -161,17 +161,18 @@ func Cycle() {
 	if mallocs <= last_allocs && !cycle_pending {
 		return
 	}
-	// Rescue the nursery before the scan below so newborn off-main entries
-	// can neither be expired nor condemned this cycle (see OffMain).
-	nurseryRescue()
 	cycle_pending = false
 	if debugCycle {
 		fmt.Printf("pointers.Cycle: scanning (mallocs=%d last=%d)\n", mallocs, last_allocs)
 	}
+	now := time.Now().UnixNano()
 	for s := range shapesMax {
 		tab := &tables[s]
 		for j := range tab.len.Load() {
 			page := tab.Index(j)
+			// births is the page's nursery timestamps; nil when no off-main
+			// allocation ever touched this page (see born).
+			births := born[s].Peek(j)
 			for i := uint64(0); i < pageSize; i += uint64(s + 2) {
 				rev := revision(page[i+offsetRevision].Load())
 				if rev == revisionEOF {
@@ -188,6 +189,14 @@ func Cycle() {
 					continue
 				}
 				if rev.isClosed() {
+					continue
+				}
+				if births != nil && now-births[i].Load() < int64(nurseryAge) {
+					// Nursery: born off the main thread less than nurseryAge
+					// ago. The owning goroutine may be descheduled or parked
+					// on the dispatch ring across whole cycles at any point,
+					// so neither expire nor condemn it yet (see OffMain).
+					cycle_pending = true
 					continue
 				}
 				if rev.isActive() {
@@ -300,77 +309,38 @@ func Cycle() {
 // means allocations are treated as main-thread frame-temporaries.
 var OffMain func() bool
 
-// nurseryAge is how long a nursery entry is rescued from expiry, measured
-// from its birth. It bounds both the retention of off-main temporaries
-// (memory) and the goroutine-starvation window the nursery can absorb.
+// nurseryAge is how long a newborn off-main entry is protected from expiry,
+// measured from its birth. It bounds both the retention of off-main
+// temporaries (memory) and the goroutine-starvation window the nursery can
+// absorb.
 const nurseryAge = time.Second
 
-type slotref struct {
-	shape uint8
-	slot  uint64
-	rev   revision
-	born  int64 // nanoseconds, from time.Now().UnixNano()
+// born holds a birth timestamp per table slot (same page/addr addressing as
+// [tables]), written only for entries allocated while [OffMain] reports
+// true: the [Cycle] scan skips expiry and condemnation of entries younger
+// than [nurseryAge]. A single wait-free atomic store per off-main birth —
+// no lists, no locks, no per-frame sweep (the scan already walks the whole
+// table). A slot reused by a main-thread allocation keeps its stale
+// timestamp; the only consequence is that such a temporary is freed up to
+// nurseryAge late, so the main allocation path does not pay for a clear.
+var born [shapesMax]atomicSlice[[pageSize]atomic.Int64]
+
+// nurseryKeep stamps a newborn off-main entry. Called by malloc BEFORE the
+// entry's revision is published: the slot is still revisionLocked, which
+// the Cycle scan skips, so there is no window in which the newborn is
+// visible but unprotected.
+func nurseryKeep(shape int, slot uint64, now int64) {
+	born[shape].Index(slot / pageSize)[slot%pageSize].Store(now)
 }
 
-var nursery struct {
-	mu   sync.Mutex
-	refs []slotref
-}
-
-// nurseryKeep registers a newborn off-main entry. Called by malloc BEFORE
-// the entry's revision is published (the slot is still revisionLocked), so
-// there is no window in which a concurrent [Cycle] can expire the entry
-// before it is protected.
-func nurseryKeep(shape int, slot uint64, rev revision) {
-	ref := slotref{shape: uint8(shape), slot: slot, rev: rev, born: time.Now().UnixNano()}
-	nursery.mu.Lock()
-	nursery.refs = append(nursery.refs, ref)
-	nursery.mu.Unlock()
-}
-
-// nurseryRescue re-activates every nursery entry so the scan that follows
-// cannot expire or condemn it, and drops entries that have come of age or
-// have already been freed or reused. Called at the start of [Cycle], on the
-// same thread.
-func nurseryRescue() {
-	now := time.Now().UnixNano()
-	nursery.mu.Lock()
-	defer nursery.mu.Unlock()
-	kept := nursery.refs[:0]
-	for _, ref := range nursery.refs {
-		if now-ref.born > int64(nurseryAge) {
-			continue // of age: subject to the normal two-cycle expiry from here.
-		}
-		if nurseryActivate(ref) {
-			kept = append(kept, ref)
-		}
+// Peek returns the element at i, or nil if the slice has not grown that far
+// (never allocates — for readers that must not extend the table).
+func (s *atomicSlice[T]) Peek(i uint64) *T {
+	l := s.len.Load()
+	if i >= l {
+		return nil
 	}
-	clear(nursery.refs[len(kept):])
-	nursery.refs = kept
-}
-
-// nurseryActivate marks the entry as used-this-cycle, reporting whether the
-// entry is still the one the ref was created for.
-func nurseryActivate(ref slotref) bool {
-	page, addr := ref.slot/pageSize, ref.slot%pageSize
-	arr := tables[ref.shape].Index(page)
-	for {
-		rev := revision(arr[addr+offsetRevision].Load())
-		if rev == revisionLocked {
-			// Mid-(re)allocation: keep the ref and sort it out next cycle
-			// (if the slot was reused, the new revision will mismatch).
-			return true
-		}
-		if !rev.matches(ref.rev) || rev.isClosed() {
-			return false // freed or reused: stop retaining.
-		}
-		if rev.isActive() {
-			return true
-		}
-		if arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active())) {
-			return true
-		}
-	}
+	return unsafe.Slice(s.ptr.Load(), l)[i]
 }
 
 // New manages the given pointer value discretely.
@@ -407,10 +377,10 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 			// reused, leaking it past every Cycle.
 			rev := (max(rev, 2) + 1).active().reset().unpinned()
 			if OffMain != nil && OffMain() {
-				// Register with the nursery BEFORE publishing the revision:
-				// the slot is still revisionLocked here, so a concurrent
-				// Cycle cannot expire the newborn before it is protected.
-				nurseryKeep(len(ptr), idx, rev)
+				// Stamp the nursery BEFORE publishing the revision: the slot
+				// is still revisionLocked here, which the Cycle scan skips,
+				// so the newborn is never visible unprotected.
+				nurseryKeep(len(ptr), idx, time.Now().UnixNano())
 			}
 			arr[addr+offsetRevision].Store(uint64(rev))
 			//
