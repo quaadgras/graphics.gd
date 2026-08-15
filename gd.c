@@ -1155,6 +1155,10 @@ typedef struct {
     uint32_t cdrained;
     uint32_t seq[256];
     uint8_t  kind[256];
+    // executed counts kindCall entries either drain has run (loss
+    // diagnostics, mirrors ring.mpscShared.executed). Main-thread writes;
+    // atomic so Go may read it from any goroutine.
+    uint64_t executed;
 } gd_mpsc_shared;
 #ifdef __cplusplus
 static_assert(offsetof(gd_mpsc_shared, seq) == 16 && offsetof(gd_mpsc_shared, kind) == 1040,
@@ -1199,6 +1203,7 @@ static void gd_ring_drain_threads(void) {
         if (s->kind[i & 0xFF] != 0) break;
         s->cursor = i + 1;
         gd_ring_flush(gd_ring_threads_entries, i, i + 1, gd_ring_main_crash_index);
+        __atomic_fetch_add(&s->executed, 1, __ATOMIC_RELAXED);
         // released: free for the producer of index i+Size. C cannot signal the
         // Go-side cond a lapped producer parks on; cdrained defers that wake
         // to the next Go drain.

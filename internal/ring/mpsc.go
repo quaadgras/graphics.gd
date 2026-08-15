@@ -56,6 +56,14 @@ type mpscShared struct {
 	// one to preserve FIFO order. Written by the producer before publishing,
 	// ordered by seq.
 	kind [Size]uint8
+
+	// executed counts fire-and-forget (kindCall) entries executed by either
+	// drain, for loss diagnostics: compared against the producers' published
+	// count (MPSC.buffered), a lower value means a queued call vanished
+	// without running. Appended after kind so the C mirror's asserted
+	// offsets are unchanged; gd.c increments it in its drain. Both drains
+	// run on the main thread; atomic so [Counters] may read from any thread.
+	executed atomic.Uint64
 }
 
 const (
@@ -144,6 +152,10 @@ type MPSC struct {
 	// goroutines wake up and cross-thread calls become no-ops, instead of
 	// parking forever now that nothing drains.
 	closed atomic.Bool
+
+	// buffered counts fire-and-forget entries published via [Buffer], the
+	// producer side of the loss diagnostic (see mpscShared.executed).
+	buffered atomic.Uint64
 
 	mu   sync.Mutex
 	cond *sync.Cond
@@ -259,6 +271,15 @@ func (r *MPSC) Buffer(object, method uintptr, shape uint64, args unsafe.Pointer,
 	r.thunks[i&Mask] = nil
 	r.shared.kind[i&Mask] = kindCall
 	r.publish(i)
+	r.buffered.Add(1)
+}
+
+// Counters reports how many fire-and-forget entries have been published and
+// how many either drain has executed, for loss diagnostics: after a Barrier
+// (or any completed blocking call) the two are equal unless a queued call
+// vanished without running.
+func (r *MPSC) Counters() (buffered, executed uint64) {
+	return r.buffered.Load(), r.shared.executed.Load()
 }
 
 // Call records an engine call and blocks until the main thread has executed
@@ -434,6 +455,9 @@ func (r *MPSC) drain() (released bool) {
 				dispatch(unsafe.Pointer(&r.entries[0]), i, j)
 				for k := i; k != j; k++ {
 					s := k & Mask
+					if !r.parked[s] {
+						r.shared.executed.Add(1)
+					}
 					if r.parked[s] {
 						// executed: the parked goroutine reads the result
 						// out of the entry and releases the slot itself.
