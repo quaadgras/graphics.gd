@@ -35,6 +35,14 @@ func init() {
 }
 
 func TestRingNoLostCalls(t *testing.T) {
+	if runtime.GOOS == "js" {
+		// Single-threaded: every goroutine dispatches directly, so the
+		// cross-thread ring is never used (the counters are always 0/0).
+		// The barrier also wakes this final test inside the engine's frame
+		// export, making the suite exit from within it — which tears down
+		// the wasm instance mid-callback and fails the web run under -v.
+		t.Skip("the cross-thread ring is unused on js")
+	}
 	// A goroutine leaked by an earlier test may still be queueing calls, so
 	// an imbalance only counts if it survives several barriers.
 	var buffered, executed uint64
