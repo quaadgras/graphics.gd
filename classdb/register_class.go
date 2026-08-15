@@ -151,6 +151,12 @@ func Register[T Class](exports ...any) {
 		notifyfilter.Want()
 	}
 
+	// Extensions of editor-only classes can only be registered once the engine
+	// has registered its own editor classes (at the editor initialization
+	// level) and their virtual methods only ever run inside the editor, so
+	// they are implicitly tool classes.
+	var editorOnly = extendsEditorClass(superType)
+
 	var underlyingType = gdclass.GoType(([1]T{})[0])
 	var trivialExtension = classType.Size() == underlyingType.Size() && classType.NumField() == 1 && classType.Field(0).Type == underlyingType
 	if !trivialExtension && classType != underlyingType && !classType.ConvertibleTo(underlyingType) {
@@ -186,7 +192,7 @@ func Register[T Class](exports ...any) {
 		if embedded_name == "Singleton" {
 			rename = "GoSingleton" + rename
 		}
-		var tool = false
+		var tool = editorOnly
 		switch super.(type) {
 		case interface{ AsScript() Script.Instance },
 			interface {
@@ -366,6 +372,7 @@ func Register[T Class](exports ...any) {
 		}
 	}
 
+	var deferToEditor = editorOnly
 	switch super.(type) {
 	case interface{ AsScript() Script.Instance },
 		interface {
@@ -374,10 +381,17 @@ func Register[T Class](exports ...any) {
 		interface {
 			AsScriptLanguage() ScriptLanguage.Instance
 		}:
-		gd.EditorStartupFunctions = append(gd.EditorStartupFunctions, func() {
+		deferToEditor = true
+	}
+	if deferToEditor {
+		if gd.LinkedEditor {
 			maybeDefer(register)
-		})
-	default:
+		} else {
+			gd.EditorStartupFunctions = append(gd.EditorStartupFunctions, func() {
+				maybeDefer(register)
+			})
+		}
+	} else {
 		if gd.Linked {
 			maybeDefer(register)
 		} else {
@@ -385,6 +399,31 @@ func Register[T Class](exports ...any) {
 				maybeDefer(register)
 			})
 		}
+	}
+}
+
+// extendsEditorClass reports whether the given super type descends from an
+// engine class that is only available inside the editor. Such classes are
+// registered by the engine at the editor initialization level, so extensions
+// of them cannot be registered any earlier than that. Unlike
+// [findEngineClass], this works before any parent extension classes have
+// been registered, by walking the Go types alone.
+func extendsEditorClass(superType reflect.Type) bool {
+	currentType := superType
+	for {
+		iface, ok := reflect.New(currentType).Elem().Interface().(gdclass.Interface)
+		if !ok {
+			iface, ok = reflect.New(currentType).Interface().(gdclass.Interface)
+		}
+		if !ok {
+			// Not an extension class, so it's a built-in Godot class.
+			return gdclass.EditorClasses[nameOf(currentType)]
+		}
+		parentType := gdclass.SuperType(iface)
+		if parentType == nil || parentType == currentType {
+			return gdclass.EditorClasses[nameOf(currentType)]
+		}
+		currentType = parentType
 	}
 }
 

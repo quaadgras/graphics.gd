@@ -141,6 +141,19 @@ func generate() error {
 	fmt.Fprintf(out, "\t}\n")
 	fmt.Fprintf(out, "}\n")
 
+	fmt.Fprintf(all, "// EditorClasses is the set of engine classes that only exist when the editor is running,\n")
+	fmt.Fprintf(all, "// they are registered by the engine at the editor initialization level.\n")
+	fmt.Fprintf(all, "var EditorClasses = map[string]bool{\n")
+	for _, class := range spec.Classes {
+		if class.IsEphemeral {
+			continue
+		}
+		if class.APIType == "editor" {
+			fmt.Fprintf(all, "\t%q: true,\n", class.Name)
+		}
+	}
+	fmt.Fprintf(all, "}\n")
+
 	for _, class := range spec.Classes {
 		if class.IsEphemeral {
 			continue
