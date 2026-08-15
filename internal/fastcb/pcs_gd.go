@@ -38,3 +38,8 @@ func armEntry(dispatch func(instance, userdata, result, args uintptr), fallback 
 func runtimeCallC(fn, arg unsafe.Pointer) int32
 
 func initCallC() {}
+
+// The fork's runtime does not carry the frame-entry cgocall hook yet:
+// the PC stays zero and FrameCgo no-ops (the static Scene loop then runs
+// its frames through the raw asmcgocall path as before).
+var runtimeFrameCgoPC uintptr

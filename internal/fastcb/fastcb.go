@@ -53,6 +53,37 @@ func PCs() [4]uintptr { return runtimePCs }
 // (residency is a main-thread-only mode), so no synchronisation is needed.
 var resident bool
 
+// frameCgoFn is the materialised fastcbFrameCgo hook (see FrameCgo); built
+// once from runtimeFrameCgoPC by SetResident's initCallC-time wiring.
+var frameCgoFn func(on uintptr)
+
+// FrameCgoAvailable reports whether the runtime patch publishes the
+// frame-entry cgocall hook (older overlays do not).
+func FrameCgoAvailable() bool { return runtimeFrameCgoPC != 0 }
+
+// FrameCgo marks (on) or unmarks the resident thread's current outbound
+// stock cgocall as an engine frame entry: while marked, C->Go callbacks may
+// engage residency under that single enclosing cgocall, and its return path
+// restores the syscall bookkeeping. The static Scene loop brackets each
+// frame's cgo call with it so the frame is _Gsyscall for the GC (scannable
+// without suspension) outside the resident callback windows. Main thread
+// only; no-op without the patched runtime.
+func FrameCgo(on bool) {
+	if frameCgoFn == nil {
+		if runtimeFrameCgoPC == 0 {
+			return
+		}
+		fv := funcval{fn: runtimeFrameCgoPC}
+		fp := unsafe.Pointer(&fv)
+		frameCgoFn = *(*func(on uintptr))(unsafe.Pointer(&fp))
+	}
+	if on {
+		frameCgoFn(1)
+	} else {
+		frameCgoFn(0)
+	}
+}
+
 // Resident reports whether resident-callback mode is currently engaged.
 // Main thread only. When true, outbound engine calls should go through CallC
 // (with non-moving staging memory) so callbacks nested inside them take the

@@ -30,6 +30,15 @@ var runtimeCallCFastPC uintptr
 //go:linkname runtimeArmEntryPC
 var runtimeArmEntryPC uintptr
 
+// runtimeFrameCgoPC receives (same push mechanism as runtimePCs) the
+// ABIInternal PC of the overlay's fastcbFrameCgo, which marks the static
+// Scene loop's per-frame stock cgocall as a frame entry (residency may
+// engage under it and the return path rebalances). 0 when the overlay is
+// absent or older.
+//
+//go:linkname runtimeFrameCgoPC
+var runtimeFrameCgoPC uintptr
+
 // Arming state: the overlay publishes its hook PCs only at the first C->Go
 // callback, which is AFTER package init (in a c-shared build, package inits
 // run while the library loads, before the engine makes any call). armEntry

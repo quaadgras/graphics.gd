@@ -184,6 +184,27 @@ func cgocall(fn, arg unsafe.Pointer) int32 {
 
 	errno := asmcgocall(fn, arg)
 
+	// fastcb: under a frame-entry cgocall (see fastcbFrameCgo) a resident
+	// callback may have engaged residency and returned to C _Grunning with
+	// the entry's syscall state stashed. Restore it so the exitsyscall
+	// below balances, and clear the stash either way (it is per-frame here,
+	// unlike the long-lived foreign-thread stash).
+	// Only at the frame entry itself: on the resident m (the flag and the
+	// stash belong to its frame call — any other goroutine's cgocall must
+	// not touch them) and at the outermost level (ncgo == 1: nested
+	// outbound cgocalls made inside frame callbacks don't qualify either).
+	if fastcbFrameCgoFlag != 0 && fastcbM != 0 && fastcbM.ptr() == mp && mp.ncgo == 1 {
+		gp := getg()
+		if readgstatus(gp)&^_Gscan == _Grunning && fastcbSavedPC != 0 {
+			bp := uintptr(0)
+			if fastcbSavedBPDepth != 0 {
+				bp = gp.stack.hi - fastcbSavedBPDepth
+			}
+			reentersyscall(fastcbSavedPC, gp.stack.hi-fastcbSavedSPDepth, bp)
+		}
+		fastcbSavedPC, fastcbSavedSPDepth, fastcbSavedBPDepth = 0, 0, 0
+	}
+
 	// Update accounting before exitsyscall because exitsyscall may
 	// reschedule us on to a different M.
 	mp.incgo = false
@@ -370,6 +391,14 @@ var graphicsFastcbCallCFastPC uintptr
 //go:linkname graphicsFastcbArmEntryPC graphics.gd/internal/fastcb.runtimeArmEntryPC
 var graphicsFastcbArmEntryPC uintptr
 
+// graphicsFastcbFrameCgoPC aliases graphics.gd/internal/fastcb's
+// runtimeFrameCgoPC, publishing the fastcbFrameCgo hook the static Scene
+// loop uses to mark its per-frame stock cgocall (same push mechanism and
+// skew tolerance as graphicsFastcbArmEntryPC).
+//
+//go:linkname graphicsFastcbFrameCgoPC graphics.gd/internal/fastcb.runtimeFrameCgoPC
+var graphicsFastcbFrameCgoPC uintptr
+
 // Direct virtual-call entry state (see fastcb_callc_amd64.s). fastcbEntryFn
 // is the graphics.gd dispatch target; fastcbEntryFallback the stock
 // five-argument virtual entry the thunk tail-jumps to whenever the fast
@@ -472,6 +501,40 @@ func fastcbYield() {
 	fastcbYieldFlag = 1
 }
 
+// fastcbFrameCgo marks (on=1) the resident thread's current outbound STOCK
+// cgocall as a frame entry: the static (musl/archive) Scene loop drives each
+// engine frame through an ordinary cgo call, so the frame is _Gsyscall for
+// the GC — scannable without suspendG, whose async-preempt storm against a
+// _Grunning-in-C goroutine can starve the frame from ever completing under
+// CPU load (GC mark then never finishes and the process wedges). Residency
+// engagement in cgocallbackg is permitted under this one enclosing cgocall
+// (ncgo == 1), and cgocall's return path restores the entry's syscall state
+// if the last callback left the goroutine _Grunning. Only touched by the
+// resident goroutine, so a plain global suffices.
+//
+//go:linkname fastcbFrameCgo
+//go:nosplit
+func fastcbFrameCgo(on uintptr) {
+	fastcbFrameCgoFlag = on
+}
+
+var fastcbFrameCgoFlag uintptr
+
+// fastcbConsumeYield consumes a pending yield at a stock callback return,
+// declining residency engagement for that return: the stock tail's
+// reentersyscall then leaves the goroutine _Gsyscall for the rest of the
+// frame (the frame delay and host idle time), where the GC scans it without
+// suspension. This is what makes a frame cost exactly one stock-priced
+// callback: the frame's first callback engages (or, when it carries the
+// frame's yield, declines), and every other callback rides the fast path.
+// Always returns true (it only runs when a yield is pending).
+//
+//go:nosplit
+func fastcbConsumeYield() bool {
+	fastcbYieldFlag = 0
+	return true
+}
+
 // fastcbCallC runs the C function fn(arg) on the system stack via asmcgocall
 // while the calling goroutine stays _Grunning with its P wired — the resident
 // OUTBOUND path. C->Go callbacks nested inside fn therefore see _Grunning and
@@ -543,6 +606,7 @@ func cgocallbackg(fn, frame unsafe.Pointer, ctxt uintptr) {
 		graphicsFastcbPCs[3] = abi.FuncPCABIInternal(fastcbCallC)
 		graphicsFastcbCallCFastPC = fastcbCallCFastPC()
 		graphicsFastcbArmEntryPC = abi.FuncPCABIInternal(fastcbArmEntry)
+		graphicsFastcbFrameCgoPC = abi.FuncPCABIInternal(fastcbFrameCgo)
 		graphicsFastcbPCs[0] = abi.FuncPCABIInternal(fastcbSetResident)
 	}
 
@@ -672,7 +736,8 @@ func cgocallbackg(fn, frame unsafe.Pointer, ctxt uintptr) {
 	// reentersyscall. incgo stays false and the g0 bounds set by
 	// callbackUpdateSystemStack stay in place (they remain accurate for this
 	// thread).
-	if fastcbM != 0 && fastcbM.ptr() == gp.m && gp.m.ncgo == 0 {
+	if fastcbM != 0 && fastcbM.ptr() == gp.m && (gp.m.ncgo == 0 || (fastcbFrameCgoFlag != 0 && gp.m.ncgo == 1)) &&
+		!(fastcbCallCDepth == 0 && fastcbYieldFlag != 0 && fastcbConsumeYield()) {
 		unlockOSThread()
 		if gp.m != checkm {
 			throw("m changed unexpectedly in cgocallbackg")
