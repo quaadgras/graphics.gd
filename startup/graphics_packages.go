@@ -2,6 +2,7 @@ package startup
 
 import (
 	"os"
+	"testing"
 
 	"graphics.gd/classdb/EditorInterface"
 	"graphics.gd/classdb/Engine"
@@ -35,7 +36,11 @@ const GraphicsPackagesSetting = "graphics_gd/generate/graphics_packages"
 func init() {
 	gd.EditorStartupFunctions = append(gd.EditorStartupFunctions, func() {
 		Callable.Defer(Callable.New(func() {
-			if !Engine.IsEditorHint() {
+			// IsEditorHint alone is not enough: a test-harness build of the
+			// editor reports the hint while running the test suite headless,
+			// where generation would race the tests (and its own packagegen
+			// tests) on the main thread.
+			if !Engine.IsEditorHint() || testing.Testing() {
 				return
 			}
 			// Register the setting so it shows up in the project settings
@@ -51,7 +56,14 @@ func init() {
 			// change during the debounce window restarts it, so a burst of
 			// imports triggers a single regeneration.
 			var pending int
-			EditorInterface.GetResourceFilesystem().OnFilesystemChanged(func() {
+			filesystem := EditorInterface.GetResourceFilesystem()
+			if !Object.InstanceIsValid(filesystem) {
+				// Headless editor modes (--import, exports) can run with the
+				// editor hint set but no EditorInterface singletons behind
+				// it: connecting to a null object segfaults in the engine.
+				return
+			}
+			filesystem.OnFilesystemChanged(func() {
 				pending++
 				generation := pending
 				tree, ok := Object.As[SceneTree.Instance](Engine.GetMainLoop())
