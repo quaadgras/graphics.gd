@@ -20,8 +20,12 @@ import (
 // Hang watchdog: if the suite is somehow still running after ten minutes,
 // something has deadlocked — dump every goroutine stack to a file so the
 // hang is diagnosable even where outside SIGQUIT/SIGABRT are swallowed
-// (the static musl editor does this).
+// (the static musl editor does this). Not on js: the browser has no
+// filesystem to write to.
 func init() {
+	if runtime.GOOS == "js" {
+		return
+	}
 	go func() {
 		time.Sleep(10 * time.Minute)
 		buf := make([]byte, 1<<24)
