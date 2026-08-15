@@ -14,6 +14,7 @@
 package threadcheck
 
 import (
+	"runtime"
 	"sync"
 	"sync/atomic"
 )
@@ -56,12 +57,17 @@ var engineMu sync.Mutex
 // hostCalls tracks, per OS thread (m), how deeply the thread is nested
 // inside a Go-initiated engine call (see EnterCall). Open-addressed table
 // keyed by the m pointer. Slots are claimed for the lifetime of the process
-// (the number of OS threads is small and bounded); a slot's counter is only
-// ever touched by its own thread, because an m is pinned for the duration of
-// a cgo call and any engine→Go callbacks nest on that same m.
+// (the number of OS threads is small and bounded). The counter is atomic
+// and EnterCall locks the goroutine to its thread until the matching
+// LeaveCall: without the lock a preemption between the two could migrate
+// the goroutine to another m, incrementing one slot and decrementing
+// another — the drifted counters then make inHostCall misreport, and
+// Mark() misclassifies Go-owned threads as engine-owned, after which user
+// goroutines bypass the cross-thread dispatch ring and race the engine
+// directly (silently lost or corrupted calls).
 var hostCalls [512]struct {
 	m atomic.Uintptr
-	n int32
+	n atomic.Int32
 }
 
 func hostCallSlot(m uintptr, alloc bool) int {
@@ -87,10 +93,12 @@ func hostCallSlot(m uintptr, alloc bool) int {
 // EnterCall records that the current OS thread is entering the engine on
 // behalf of Go code. Any engine→Go callbacks that fire before the matching
 // LeaveCall are re-entrant on a Go-owned thread and must not Mark it as
-// engine-owned.
+// engine-owned. The goroutine stays locked to its thread until LeaveCall
+// so the pair always hits the same slot (see hostCalls).
 func EnterCall() {
+	runtime.LockOSThread()
 	if s := hostCallSlot(currentm(), true); s >= 0 {
-		hostCalls[s].n++
+		hostCalls[s].n.Add(1)
 	}
 }
 
@@ -98,13 +106,14 @@ func EnterCall() {
 // Go-initiated engine call.
 func LeaveCall() {
 	if s := hostCallSlot(currentm(), false); s >= 0 {
-		hostCalls[s].n--
+		hostCalls[s].n.Add(-1)
 	}
+	runtime.UnlockOSThread()
 }
 
 func inHostCall(m uintptr) bool {
 	s := hostCallSlot(m, false)
-	return s >= 0 && hostCalls[s].n > 0
+	return s >= 0 && hostCalls[s].n.Load() > 0
 }
 
 // Mark records the current OS thread as engine-owned. It is called on entry

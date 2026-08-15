@@ -14,6 +14,7 @@ import (
 	"runtime"
 	"runtime/debug"
 	"strings"
+	"sync/atomic"
 	"unsafe"
 	"weak"
 
@@ -658,7 +659,8 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 		if id := gdextension.Host.Objects.Extension.Fetch(raw); id != 0 {
 			if existing := instances.Get(id); existing != nil {
 				if add_root {
-					existing.strong, _ = reflect.TypeAssert[gdclass.Pointer](value)
+					s, _ := reflect.TypeAssert[gdclass.Pointer](value)
+					existing.setStrong(s)
 				}
 				return [1]gdreference.Object{*super}
 			}
@@ -676,7 +678,8 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 		roots.Insert(value, keepalive)
 	}
 	if add_root {
-		instance.strong, _ = reflect.TypeAssert[gdclass.Pointer](value)
+		s, _ := reflect.TypeAssert[gdclass.Pointer](value)
+		instance.setStrong(s)
 	}
 	instance.cleanup = runtime.AddCleanup(super, func(raw gdextension.Object) {
 		Callable.Defer(Callable.New(func() {
@@ -856,9 +859,14 @@ func (class classImplementation) getVirtual(name gd.StringName) any {
 }
 
 type instanceImplementation struct {
-	object  gdextension.Object
-	Type    reflect.Type
-	strong  gdclass.Pointer
+	object gdextension.Object
+	Type   reflect.Type
+	// strong roots the wrapper against Go's GC while the engine owns
+	// references. Accessed via strongInterface/setStrong: ownership
+	// transfers (ExtensionInstanceGoOnly) write it from user goroutines
+	// while main-thread callbacks read it, and an interface value cannot
+	// be read atomically without the box.
+	strong  atomic.Pointer[gdclass.Pointer]
 	weak    weak.Pointer[gdreference.Object]
 	cleanup runtime.Cleanup
 	signals []signalChan
@@ -889,9 +897,27 @@ type instanceImplementation struct {
 
 var lastGC int
 
+// strongInterface reads the strong root; nil when the wrapper is weakly
+// held (Go owns the object).
+func (instance *instanceImplementation) strongInterface() gdclass.Pointer {
+	if p := instance.strong.Load(); p != nil {
+		return *p
+	}
+	return nil
+}
+
+// setStrong publishes (or clears, with nil) the strong root.
+func (instance *instanceImplementation) setStrong(iface gdclass.Pointer) {
+	if iface == nil {
+		instance.strong.Store(nil)
+		return
+	}
+	instance.strong.Store(&iface)
+}
+
 func (instance *instanceImplementation) Interface() (gdclass.Pointer, bool) {
-	if instance.strong != nil {
-		return instance.strong, true
+	if s := instance.strongInterface(); s != nil {
+		return s, true
 	}
 	ptr := instance.weak.Value()
 	if ptr == nil {

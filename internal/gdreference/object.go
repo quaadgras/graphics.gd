@@ -213,7 +213,14 @@ func AskObject(obj Object) (gdextension.Object, Type) {
 	case nil:
 		return obj.assigned.inEngine, TypeUnsafe
 	case &borrowSentinel:
-		if obj.revision == now {
+		// The epoch fast path is main-thread only: `now` is written by the
+		// frame Barrier on the main thread without synchronization, and a
+		// borrow's cached pointer is only guaranteed until that Barrier — an
+		// off-main reader could validate against a stale epoch mid-frame and
+		// call through a pointer the frame GC just invalidated (silent
+		// wrong-object calls). Off the main thread, and for main borrows
+		// whose epoch has passed, resolve by object id instead.
+		if threadcheck.Main() && obj.revision == now {
 			return obj.assigned.inEngine, TypeBorrow
 		}
 		return gdextension.Host.Objects.Lookup(obj.assigned.objectID), TypeBorrow

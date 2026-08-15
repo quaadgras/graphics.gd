@@ -38,7 +38,8 @@ func adoptForReload(class gdextension.ExtensionClassID, raw gdextension.Object) 
 	// The engine owns adopted objects (they were alive before this
 	// module existed), so the wrapper is rooted strongly and no
 	// free-on-collect cleanup is attached.
-	instance.strong, _ = reflect.TypeAssert[gdclass.Pointer](value)
+	s, _ := reflect.TypeAssert[gdclass.Pointer](value)
+	instance.setStrong(s)
 	for _, field := range impl.Singletons {
 		if singleton, ok := singletons.Lookup(field.Type.Elem()); ok {
 			value.Elem().FieldByIndex(field.Index).Set(singleton)

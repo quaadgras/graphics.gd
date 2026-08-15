@@ -90,10 +90,11 @@ func init() {
 			// cleanup then frees the engine object). The engine no
 			// longer holds meaningful references, so it will not
 			// dispatch on the (now unpinned) instance word.
-			impl.strong = nil
+			impl.setStrong(nil)
 			impl.pinner.Unpin()
 		} else {
-			impl.strong, _ = impl.Interface()
+			s, _ := impl.Interface()
+			impl.setStrong(s)
 			repinInstance(impl)
 		}
 		val, ok := impl.Interface()

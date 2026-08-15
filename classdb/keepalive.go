@@ -5,6 +5,7 @@ import (
 	"os"
 	"reflect"
 	"strings"
+	"sync"
 	"unsafe"
 
 	"graphics.gd/classdb/Node"
@@ -49,9 +50,25 @@ func keep_reachable_instances_alive() {
 
 var compiled_keepalives = make(map[reflect.Type]func(reflect.Value))
 
+// compiled_keepalives_mu guards compiled_keepalives: the per-frame keepalive
+// walk on the main thread resolves interface values lazily through
+// [compile_keepalive] while any goroutine adopting a class instance
+// (adopt.go) compiles and caches new types — an unguarded map here was a
+// "concurrent map read and map write" crash under load.
+var compiled_keepalives_mu sync.Mutex
+
 var keepaliveDepth int
 
-func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
+func compile_keepalive(rtype reflect.Type) func(reflect.Value) {
+	compiled_keepalives_mu.Lock()
+	defer compiled_keepalives_mu.Unlock()
+	return compile_keepalive_locked(rtype)
+}
+
+// compile_keepalive_locked is the recursive body of [compile_keepalive];
+// compiled_keepalives_mu must be held. Closures it returns run without the
+// lock (they re-enter through the public wrapper for lazy interface values).
+func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)) {
 	if cached, ok := compiled_keepalives[rtype]; ok {
 		return cached
 	}
@@ -83,7 +100,7 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 			if is_extension_class && field.Index[0] == 0 {
 				continue
 			}
-			if keepalive := compile_keepalive(field.Type); keepalive != nil {
+			if keepalive := compile_keepalive_locked(field.Type); keepalive != nil {
 				keepalives = append(keepalives, keep_struct_field_alive{
 					rtype:  field.Type,
 					index:  field.Index[0],
@@ -123,7 +140,7 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 			}
 		}
 	case reflect.Array:
-		if keepalive := compile_keepalive(rtype.Elem()); keepalive != nil && rtype.Len() > 0 {
+		if keepalive := compile_keepalive_locked(rtype.Elem()); keepalive != nil && rtype.Len() > 0 {
 			return func(val reflect.Value) {
 				for i := 0; i < val.Len(); i++ {
 					keepalive(val.Index(i))
@@ -132,7 +149,7 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 		}
 		return nil
 	case reflect.Pointer:
-		if keepalive := compile_keepalive(rtype.Elem()); keepalive != nil {
+		if keepalive := compile_keepalive_locked(rtype.Elem()); keepalive != nil {
 			return func(val reflect.Value) {
 				if val.IsNil() {
 					return
@@ -142,7 +159,7 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 		}
 		return nil
 	case reflect.Slice:
-		if keepalive := compile_keepalive(rtype.Elem()); keepalive != nil {
+		if keepalive := compile_keepalive_locked(rtype.Elem()); keepalive != nil {
 			return func(val reflect.Value) {
 				for i := 0; i < val.Len(); i++ {
 					keepalive(val.Index(i))
@@ -151,7 +168,7 @@ func compile_keepalive(rtype reflect.Type) (keepalive func(reflect.Value)) {
 		}
 		return nil
 	case reflect.Map:
-		if keyKeepalive, valKeepalive := compile_keepalive(rtype.Key()), compile_keepalive(rtype.Elem()); keyKeepalive != nil || valKeepalive != nil {
+		if keyKeepalive, valKeepalive := compile_keepalive_locked(rtype.Key()), compile_keepalive_locked(rtype.Elem()); keyKeepalive != nil || valKeepalive != nil {
 			return func(val reflect.Value) {
 				if _, ok := skips[val]; ok {
 					return

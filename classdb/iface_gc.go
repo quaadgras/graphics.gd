@@ -4,6 +4,7 @@ package classdb
 
 import (
 	"reflect"
+	"sync/atomic"
 	"unsafe"
 
 	"graphics.gd/internal/gdclass"
@@ -23,16 +24,21 @@ type ifaceWords struct {
 }
 
 func (instance *instanceImplementation) cachedInterface(data unsafe.Pointer) (gdclass.Pointer, bool) {
-	if instance.itab == nil {
+	// Atomic: cacheInterface can run on a goroutine constructing the
+	// instance while an engine callback on the main thread reads the cache.
+	// The value is the class's static itab either way, so any published
+	// value is correct.
+	tab := atomic.LoadPointer(&instance.itab)
+	if tab == nil {
 		return nil, false
 	}
 	var iface gdclass.Pointer
-	*(*ifaceWords)(unsafe.Pointer(&iface)) = ifaceWords{tab: instance.itab, data: data}
+	*(*ifaceWords)(unsafe.Pointer(&iface)) = ifaceWords{tab: tab, data: data}
 	return iface, true
 }
 
 func (instance *instanceImplementation) cacheInterface(iface gdclass.Pointer) {
-	instance.itab = (*ifaceWords)(unsafe.Pointer(&iface)).tab
+	atomic.StorePointer(&instance.itab, (*ifaceWords)(unsafe.Pointer(&iface)).tab)
 }
 
 // instanceID mints the dispatch word for a fresh instance: the address of
@@ -51,10 +57,10 @@ func instanceID(instance *instanceImplementation, data reflect.Value) gdextensio
 // repinInstance re-establishes the dispatch-word pin when ownership of an
 // object transfers back to the engine (see ExtensionInstanceGoOnly).
 func repinInstance(instance *instanceImplementation) {
-	if instance.strong == nil {
+	iface := instance.strongInterface()
+	if iface == nil {
 		return
 	}
-	iface := instance.strong
 	instance.pinner.Pin((*ifaceWords)(unsafe.Pointer(&iface)).data)
 }
 
