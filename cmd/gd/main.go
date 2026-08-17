@@ -248,7 +248,7 @@ func gd(args ...string) error {
 		// drivers, so it is headless-only.
 		target := os.Getenv("GOOS")
 		muslHost = (args[0] == "test" && (target == "" || target == "musl")) ||
-			((args[0] == "build" || args[0] == "run") && (target == "" || target == "musl" || target == "android"))
+			((args[0] == "build" || args[0] == "run") && (target == "" || target == "musl" || target == "android" || target == "ios"))
 	}
 	if muslHost {
 		if len(args) > 0 && args[0] == "test" {
@@ -387,10 +387,11 @@ func gd(args ...string) error {
 		// editor stands in as the engine tooling: `gd test` runs the suite in
 		// it (GOOS "musl") while `gd build` and `gd run` use it to export the
 		// android project (run then installs the APK through the system
-		// package installer and launches it). Anything else cannot run
+		// package installer and launches it) or the ios one (run serves the
+		// IPA to SideStore over the local network). Anything else cannot run
 		// on-device.
 		if runtime.GOOS == "android" && GOOS != "musl" &&
-			!(GOOS == "android" && (args[0] == "build" || args[0] == "run")) {
+			!((GOOS == "android" || GOOS == "ios") && (args[0] == "build" || args[0] == "run")) {
 			return fmt.Errorf("gd %[1]s is not supported on android (Termux): the Godot editor app cannot run headless exports.\nRun 'gd' to open the project in the editor and use its play/export buttons, or run 'gd %[1]s android' from a desktop", args[0])
 		}
 		switch args[0] {
@@ -410,9 +411,9 @@ func gd(args ...string) error {
 			if err := os.Chdir(project.Directory); err != nil {
 				return xray.New(err)
 			}
-			// android runs as an exported APK, which needs the export
+			// android/ios run as an exported app, which needs the export
 			// template installed (like `gd build` does).
-			if GOOS == "android" {
+			if GOOS == "android" || GOOS == "ios" {
 				if err := AssertExportTemplates(tooling.Godot.InstalledVersion(), GOOS); err != nil {
 					return xray.New(err)
 				}

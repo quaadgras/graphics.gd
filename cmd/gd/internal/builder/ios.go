@@ -108,7 +108,7 @@ func (IOS) Build(args ...string) error {
 	if !project.IncludesGo {
 		return nil
 	}
-	GDPATH := os.Getenv("GOPATH")
+	GDPATH := os.Getenv("GDPATH")
 	if GDPATH == "" {
 		GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
 	}
@@ -194,7 +194,7 @@ func (ios IOS) BuildMain(args ...string) error {
 		return xray.New(err)
 	}
 
-	GDPATH := os.Getenv("GOPATH")
+	GDPATH := os.Getenv("GDPATH")
 	if GDPATH == "" {
 		GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
 	}
@@ -261,7 +261,7 @@ func (ios IOS) BuildMain(args ...string) error {
 		"-lswiftSpatial", "-lswiftUIKit", "-lswiftUniformTypeIdentifiers",
 		"-lswiftXPC", "-lswiftsimd",
 	)
-	if err := tooling.LLVM.Exec(append([]string{"ld64.lld"}, lld_args...)...); err != nil {
+	if err := ld64(lld_args...); err != nil {
 		return xray.New(err)
 	}
 	// Clean up temp files before packaging the .app into an IPA.
@@ -350,6 +350,28 @@ func (ios IOS) BuildMain(args ...string) error {
 	}
 
 	return nil
+}
+
+// ld64 runs LLD's Mach-O linker. Desktops use gd's bundled multi-tool llvm
+// build (invoked as `llvm ld64.lld ...`), which has no bionic compilation —
+// on-device (Termux) the distro's lld package provides ld64.lld directly, so
+// install and exec that instead.
+func ld64(args ...string) error {
+	if runtime.GOOS != "android" {
+		return tooling.LLVM.Exec(append([]string{"ld64.lld"}, args...)...)
+	}
+	path, err := exec.LookPath("ld64.lld")
+	if err != nil {
+		if err := termuxPkgInstall("lld"); err != nil {
+			return fmt.Errorf("ld64.lld is required to link iOS builds on-device: %w", err)
+		}
+		if path, err = exec.LookPath("ld64.lld"); err != nil {
+			return xray.New(err)
+		}
+	}
+	cmd := exec.Command(path, args...)
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	return cmd.Run()
 }
 
 func GetLocalIP() (net.IP, error) {
