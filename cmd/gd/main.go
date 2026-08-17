@@ -218,52 +218,64 @@ func gd(args ...string) error {
 		}
 	}
 	var build_godot = func() error { return nil }
+	var muslHost bool
 	if runtime.GOOS == "linux" {
 		version, err := tooling.ListDynamicDependencies.CombinedOutput("--version")
-		if strings.HasPrefix(version, "musl") {
-			if len(args) > 0 && args[0] == "test" {
-				build_godot = func() error {
-					// The host editor must be built for the host arch even when
-					// the test target is a cross arch (e.g. android/arm64);
-					// otherwise Musl.Test refuses to "run linux/arm64 on amd64".
-					targetARCH := os.Getenv("GOARCH")
-					os.Setenv("GOARCH", runtime.GOARCH)
-					defer os.Setenv("GOARCH", targetARCH)
-					musl_args := args
-					current, err := os.Getwd()
-					if err != nil {
-						return xray.New(err)
-					}
-					os.Chdir(project.Directory)
-					defer os.Chdir(current)
-					var faster_compile = []string{"-gcflags=graphics.gd/classdb/...=-N -l"}
-					if slices.Contains(musl_args, "-bench") {
-						faster_compile = nil
-					}
-					if GOOS != "musl" && GOOS != "" {
-						musl_args = []string{"test", "-test.skip", "."}
-					}
-					return builder.Musl{}.Test(append(faster_compile, testArgs(musl_args[1:]...)...)...)
-				}
-			} else {
-				build_godot = func() error {
-					GOARCH := os.Getenv("GOARCH")
-					os.Setenv("GOARCH", runtime.GOARCH)
-					defer os.Setenv("GOARCH", GOARCH)
-					current, err := os.Getwd()
-					if err != nil {
-						return xray.New(err)
-					}
-					os.Chdir(project.Directory)
-					defer os.Chdir(current)
-					return builder.Musl{}.Build("-gcflags=graphics.gd/classdb/...=-N -l")
-				}
-			}
-			if os.Getenv("GOOS") == "" {
-				GOOS = "musl"
-			}
-		} else if err != nil {
+		muslHost = strings.HasPrefix(version, "musl")
+		if !muslHost && err != nil {
 			return xray.New(err)
+		}
+	} else if runtime.GOOS == "android" && len(args) > 0 && (args[0] == "test" || args[0] == "build") &&
+		(os.Getenv("GOOS") == "" || os.Getenv("GOOS") == "musl") {
+		// On-device (Termux) there is no godot binary for android hosts, but
+		// the statically-linked musl arm64 editor runs on the Android kernel,
+		// so `gd test` and `gd build` follow the musl-host flow. The plain
+		// `gd` editor flow keeps using the Godot Android Editor app: the
+		// static editor cannot load the device's bionic GPU drivers, so it
+		// is headless-only.
+		muslHost = true
+	}
+	if muslHost {
+		if len(args) > 0 && args[0] == "test" {
+			build_godot = func() error {
+				// The host editor must be built for the host arch even when
+				// the test target is a cross arch (e.g. android/arm64);
+				// otherwise Musl.Test refuses to "run linux/arm64 on amd64".
+				targetARCH := os.Getenv("GOARCH")
+				os.Setenv("GOARCH", runtime.GOARCH)
+				defer os.Setenv("GOARCH", targetARCH)
+				musl_args := args
+				current, err := os.Getwd()
+				if err != nil {
+					return xray.New(err)
+				}
+				os.Chdir(project.Directory)
+				defer os.Chdir(current)
+				var faster_compile = []string{"-gcflags=graphics.gd/classdb/...=-N -l"}
+				if slices.Contains(musl_args, "-bench") {
+					faster_compile = nil
+				}
+				if GOOS != "musl" && GOOS != "" {
+					musl_args = []string{"test", "-test.skip", "."}
+				}
+				return builder.Musl{}.Test(append(faster_compile, testArgs(musl_args[1:]...)...)...)
+			}
+		} else {
+			build_godot = func() error {
+				GOARCH := os.Getenv("GOARCH")
+				os.Setenv("GOARCH", runtime.GOARCH)
+				defer os.Setenv("GOARCH", GOARCH)
+				current, err := os.Getwd()
+				if err != nil {
+					return xray.New(err)
+				}
+				os.Chdir(project.Directory)
+				defer os.Chdir(current)
+				return builder.Musl{}.Build("-gcflags=graphics.gd/classdb/...=-N -l")
+			}
+		}
+		if os.Getenv("GOOS") == "" {
+			GOOS = "musl"
 		}
 	}
 	var platform = builderFor(GOOS)
@@ -352,8 +364,11 @@ func gd(args ...string) error {
 		// On-device (Termux) these all need godot to run headless (--import,
 		// --export-*), and the Godot Android Editor app strips command-line
 		// arguments from external intents by design — so there is no way to
-		// drive it. Only the plain `gd` editor flow works there.
-		if runtime.GOOS == "android" {
+		// drive it. `gd test` and `gd build` route through the statically-linked
+		// musl editor instead (GOOS resolved to "musl" above); everything else —
+		// including `gd run`, which needs a renderer the headless-only static
+		// editor does not have — cannot run on-device.
+		if runtime.GOOS == "android" && GOOS != "musl" {
 			return fmt.Errorf("gd %[1]s is not supported on android (Termux): the Godot editor app cannot run headless exports.\nRun 'gd' to open the project in the editor and use its play/export buttons, or run 'gd %[1]s android' from a desktop", args[0])
 		}
 		switch args[0] {

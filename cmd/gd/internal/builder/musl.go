@@ -61,15 +61,20 @@ func (musl Musl) Build(args ...string) (err error) {
 	}
 	if musl.out == "" {
 		musl.out = filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")
+		// The static editor is the engine binary on hosts that have no other:
+		// musl linux systems, and android (Termux), where it runs headless on
+		// the Android kernel.
+		hostRunsStaticEditor := runtime.GOOS == "android"
 		if runtime.GOOS == "linux" {
 			version, _ := tooling.ListDynamicDependencies.CombinedOutput("--version")
-			if strings.HasPrefix(version, "musl") {
-				defer func() {
-					if err == nil {
-						tooling.Godot.Path = musl.out
-					}
-				}()
-			}
+			hostRunsStaticEditor = strings.HasPrefix(version, "musl")
+		}
+		if hostRunsStaticEditor {
+			defer func() {
+				if err == nil {
+					tooling.Godot.Path = musl.out
+				}
+			}()
 		}
 	}
 	if err := project.SetupFiles(musl_sdk, "bundled/musl", filepath.Join(gdpaths.Lib, "musl")); err != nil {
@@ -213,8 +218,19 @@ func (musl Musl) BuildMain(args ...string) error {
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
 	}
+	// The export preset's custom_template/release points at this arch-suffixed
+	// name, so the two must agree (see graphics/export_presets.cfg).
+	var arch string
+	switch GOARCH {
+	case "amd64":
+		arch = "x86_64"
+	case "arm64":
+		arch = "arm64"
+	default:
+		return fmt.Errorf("gd export: cannot export musl %v", GOARCH)
+	}
 	var err error
-	musl.out = filepath.Join(project.GraphicsDirectory, ".godot", "godot.musl.template_release.x86_64")
+	musl.out = filepath.Join(project.GraphicsDirectory, ".godot", "godot.musl.template_release."+arch)
 	musl.lib, err = tooling.LibGodot.LookupPlatform("musl", GOARCH)
 	if err != nil {
 		return xray.New(err)
@@ -223,15 +239,7 @@ func (musl Musl) BuildMain(args ...string) error {
 	if err := musl.Build(args...); err != nil {
 		return xray.New(err)
 	}
-	var export []string
-	switch GOARCH {
-	case "amd64":
-		export = []string{"--headless", "--export-release", "Musl x86_64"}
-	case "arm64":
-		export = []string{"--headless", "--export-release", "Musl arm64"}
-	default:
-		return fmt.Errorf("gd export: cannot export musl %v", GOARCH)
-	}
+	export := []string{"--headless", "--export-release", "Musl " + arch}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
@@ -278,7 +286,8 @@ func (musl Musl) Test(args ...string) error {
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
 	}
-	if runtime.GOOS != "linux" || runtime.GOARCH != GOARCH {
+	// A static musl binary also runs on the Android kernel (Termux), headless.
+	if (runtime.GOOS != "linux" && runtime.GOOS != "android") || runtime.GOARCH != GOARCH {
 		return fmt.Errorf("gd test: cannot run linux/%v tests on %v/%v", GOARCH, runtime.GOOS, runtime.GOARCH)
 	}
 	zig, err := tooling.Zig.Lookup()

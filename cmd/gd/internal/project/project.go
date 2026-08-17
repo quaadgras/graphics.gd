@@ -151,12 +151,25 @@ func Setup(build_godot func() error) error {
 		// added on the repository side reach the editor, and edits made in
 		// the editor come back.
 		local := GraphicsDirectory
-		GraphicsDirectory = "/sdcard/gd/" + filepath.Base(wd) // Godot project needs to be in an accessible location
-		if err := os.MkdirAll(GraphicsDirectory, 0755); err != nil {
-			return fmt.Errorf("cannot create %s (in Termux, run 'termux-setup-storage' and grant storage access): %w", GraphicsDirectory, err)
-		}
-		if err := syncAndroidProject(local, GraphicsDirectory); err != nil {
-			return xray.New(err)
+		staged := "/sdcard/gd/" + filepath.Base(wd) // Godot project needs to be in an accessible location
+		if termuxHeadlessCommand() {
+			// The headless verbs run in the repository copy, but still pick
+			// up edits made in the editor app when a staged copy exists;
+			// they never create one (a pure headless workflow needs no
+			// storage access).
+			if _, err := os.Stat(staged); err == nil {
+				if err := syncAndroidProject(local, staged); err != nil {
+					return xray.New(err)
+				}
+			}
+		} else {
+			GraphicsDirectory = staged
+			if err := os.MkdirAll(GraphicsDirectory, 0755); err != nil {
+				return fmt.Errorf("cannot create %s (in Termux, run 'termux-setup-storage' and grant storage access): %w", GraphicsDirectory, err)
+			}
+			if err := syncAndroidProject(local, GraphicsDirectory); err != nil {
+				return xray.New(err)
+			}
 		}
 	}
 	if err := os.MkdirAll(GraphicsDirectory, 0755); err != nil {
@@ -185,12 +198,14 @@ func Setup(build_godot func() error) error {
 	if err := build_godot(); err != nil {
 		return xray.New(err)
 	}
-	// On android (Termux) there is no godot binary to query or run as a
-	// subprocess: the Godot Android Editor app opens the project instead and
+	// On android (Termux) there is normally no godot binary to query or run as
+	// a subprocess: the Godot Android Editor app opens the project instead and
 	// imports resources itself when it does, so the compatibility version is
-	// the one gd targets.
+	// the one gd targets. The exception is the headless verbs, where
+	// build_godot has produced the static musl editor and pointed
+	// tooling.Godot at it — then the normal query/import path applies.
 	gdextension_version := tooling.Godot.Version
-	if runtime.GOOS != "android" {
+	if runtime.GOOS != "android" || tooling.Godot.Path != "" {
 		var err error
 		gdextension_version, err = tooling.Godot.Output(tooling.Godot.VersionFlags...)
 		if err != nil {
@@ -294,6 +309,17 @@ func Import() error {
 		return xray.New(err)
 	}
 	return xray.New(os.Chdir(current))
+}
+
+// termuxHeadlessCommand reports whether this on-device (Termux) invocation is
+// a go verb (`gd build/run/test`, always os.Args[1]) rather than the plain
+// `gd` editor flow. The verbs run headless through the statically-linked musl
+// editor, a Termux process that reads the repository's graphics directory
+// directly — staging on shared storage is only needed for the Godot Android
+// Editor app, and /sdcard is mounted noexec, so the built editor binary could
+// not run from the staged copy anyway.
+func termuxHeadlessCommand() bool {
+	return len(os.Args) > 1 && (os.Args[1] == "build" || os.Args[1] == "run" || os.Args[1] == "test")
 }
 
 // syncAndroidProject keeps the repository's graphics directory and the copy

@@ -36,9 +36,11 @@ var Zig = toolchain{
 	VersionFlags: []string{"version"},
 	DownloadHint: "https://ziglang.org/download/",
 	DownloadURL:  "https://ziglang.org/download/$(VERSION)/zig-$(ARCH)-$(OS)-$(VERSION)$(EXT)",
-	DownloadOS:   map[string]string{"windows": "windows", "darwin": "macos", "linux": "linux"},
+	// zig's linux binaries are statically linked (musl), so the linux download
+	// also runs on the Android kernel under Termux.
+	DownloadOS:   map[string]string{"windows": "windows", "darwin": "macos", "linux": "linux", "android": "linux"},
 	DownloadARCH: map[string]string{"amd64": "x86_64", "arm64": "aarch64"},
-	DownloadEXT:  map[string]string{"windows": ".zip", "darwin": ".tar.xz", "linux": ".tar.xz"},
+	DownloadEXT:  map[string]string{"windows": ".zip", "darwin": ".tar.xz", "linux": ".tar.xz", "android": ".tar.xz"},
 	RequiredFor:  "cross-compiling",
 }
 
