@@ -392,7 +392,7 @@ func gd(args ...string) error {
 		// on-device.
 		if runtime.GOOS == "android" && GOOS != "musl" &&
 			!((GOOS == "android" || GOOS == "ios") && (args[0] == "build" || args[0] == "run")) {
-			return fmt.Errorf("gd %[1]s is not supported on android (Termux): the Godot editor app cannot run headless exports.\nRun 'gd' to open the project in the editor and use its play/export buttons, or run 'gd %[1]s android' from a desktop", args[0])
+			return fmt.Errorf("gd %[1]s is not supported for GOOS=%[2]s on android (Termux).\nOn-device, gd %[1]s supports the android and ios targets (GOOS=ios gd %[1]s), and `gd test` runs the suite in the static musl editor.\nRun 'gd' to open the project in the editor app, or use a desktop for other targets", args[0], GOOS)
 		}
 		switch args[0] {
 		case "build":
