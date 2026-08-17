@@ -1083,7 +1083,14 @@ func (android Android) exportOnDevice(args ...string) (apkPath string, signed bo
 	}
 	apksigner, err := exec.LookPath("apksigner")
 	if err != nil {
-		return apkPath, false, nil
+		// Termux packages it; a seamless first run installs it rather than
+		// leaving an unsigned APK and instructions behind.
+		if termuxPkgInstall("apksigner") == nil {
+			apksigner, err = exec.LookPath("apksigner")
+		}
+		if err != nil {
+			return apkPath, false, nil
+		}
 	}
 	cmd := exec.Command(apksigner,
 		"sign", "--ks", debug_keystore,
@@ -1199,14 +1206,19 @@ func (android Android) runOnDevice(args ...string) error {
 	before, _ := exec.Command(pm, "path", packageName).Output()
 	opener, err := exec.LookPath("termux-open")
 	if err != nil {
-		return fmt.Errorf("gd run: termux-open not found to hand %s to the system package installer — install the termux-tools package, or install the APK manually", apkPath)
+		if termuxPkgInstall("termux-tools") == nil {
+			opener, err = exec.LookPath("termux-open")
+		}
+		if err != nil {
+			return fmt.Errorf("gd run: termux-open not found to hand %s to the system package installer — install the termux-tools package, or install the APK manually", apkPath)
+		}
 	}
 	// The Termux content provider refuses to serve files to other apps —
 	// including the package installer — until the user opts in, and the
 	// installer surfaces that refusal as a bogus "There was a problem
-	// parsing the package", so check up front.
-	if !termuxAllowsExternalApps() {
-		return fmt.Errorf("gd run: Termux does not let other apps read its files, so the package installer cannot receive the APK. Opt in with:\n\n\tmkdir -p ~/.termux && echo \"allow-external-apps = true\" >> ~/.termux/termux.properties && termux-reload-settings\n\nand rerun gd run. (This also lets apps you explicitly grant Termux permissions interact with it — see the Termux wiki.)")
+	// parsing the package", so opt in for them (transparently) up front.
+	if err := ensureTermuxExternalApps(); err != nil {
+		return fmt.Errorf("gd run: Termux does not let other apps read its files, so the package installer cannot receive the APK, and gd could not opt in for you (%w). Opt in with:\n\n\tmkdir -p ~/.termux && echo \"allow-external-apps = true\" >> ~/.termux/termux.properties && termux-reload-settings\n\nand rerun gd run. (This also lets apps you explicitly grant Termux permissions interact with it — see the Termux wiki.)", err)
 	}
 	if out, err := exec.Command(opener, apkPath).CombinedOutput(); err != nil {
 		return xray.New(fmt.Errorf("termux-open %s: %w\n%s", apkPath, err, out))
@@ -1262,6 +1274,58 @@ func (android Android) runOnDevice(args ...string) error {
 	}
 	fmt.Println("gd: launched", packageName, "— engine logs are not readable from Termux; use wireless adb logcat from another machine to follow them")
 	return nil
+}
+
+// termuxPkgInstall installs Termux packages non-interactively, so a first
+// `gd run` on-device completes without the user copying setup commands
+// around. Quietly does nothing outside Termux (no `pkg` on PATH).
+func termuxPkgInstall(packages ...string) error {
+	pkg, err := exec.LookPath("pkg")
+	if err != nil {
+		return err
+	}
+	fmt.Println("gd: installing", strings.Join(packages, " "), "(pkg install)...")
+	cmd := exec.Command(pkg, append([]string{"install", "-y"}, packages...)...)
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	return cmd.Run()
+}
+
+// ensureTermuxExternalApps opts Termux into serving files to other apps when
+// the user has not decided either way, telling them what changed and why.
+// The property also lets apps the user explicitly grants Termux permissions
+// interact with it, which is why the change is announced rather than silent.
+func ensureTermuxExternalApps() error {
+	if termuxAllowsExternalApps() {
+		return nil
+	}
+	HOME, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+	dir := filepath.Join(HOME, ".termux")
+	if err := os.MkdirAll(dir, 0700); err != nil {
+		return err
+	}
+	file, err := os.OpenFile(filepath.Join(dir, "termux.properties"), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		return err
+	}
+	// java.util.Properties takes the last occurrence, so appending wins over
+	// the commented-out line in the stock template.
+	_, err = file.WriteString("\n# added by gd: lets the system package installer read exported APKs out of Termux\nallow-external-apps = true\n")
+	if closeErr := file.Close(); err == nil {
+		err = closeErr
+	}
+	if err != nil {
+		return err
+	}
+	fmt.Println("gd: enabled allow-external-apps in ~/.termux/termux.properties so the package")
+	fmt.Println("    installer can read the exported APK (see the Termux wiki to learn more)")
+	reload, err := exec.LookPath("termux-reload-settings")
+	if err != nil {
+		return fmt.Errorf("termux-reload-settings not found to apply the change")
+	}
+	return exec.Command(reload).Run()
 }
 
 // termuxAllowsExternalApps reports whether termux.properties sets
