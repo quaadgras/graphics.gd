@@ -1201,6 +1201,13 @@ func (android Android) runOnDevice(args ...string) error {
 	if err != nil {
 		return fmt.Errorf("gd run: termux-open not found to hand %s to the system package installer — install the termux-tools package, or install the APK manually", apkPath)
 	}
+	// The Termux content provider refuses to serve files to other apps —
+	// including the package installer — until the user opts in, and the
+	// installer surfaces that refusal as a bogus "There was a problem
+	// parsing the package", so check up front.
+	if !termuxAllowsExternalApps() {
+		return fmt.Errorf("gd run: Termux does not let other apps read its files, so the package installer cannot receive the APK. Opt in with:\n\n\tmkdir -p ~/.termux && echo \"allow-external-apps = true\" >> ~/.termux/termux.properties && termux-reload-settings\n\nand rerun gd run. (This also lets apps you explicitly grant Termux permissions interact with it — see the Termux wiki.)")
+	}
 	if out, err := exec.Command(opener, apkPath).CombinedOutput(); err != nil {
 		return xray.New(fmt.Errorf("termux-open %s: %w\n%s", apkPath, err, out))
 	}
@@ -1255,6 +1262,33 @@ func (android Android) runOnDevice(args ...string) error {
 	}
 	fmt.Println("gd: launched", packageName, "— engine logs are not readable from Termux; use wireless adb logcat from another machine to follow them")
 	return nil
+}
+
+// termuxAllowsExternalApps reports whether termux.properties sets
+// allow-external-apps = true (the stock template carries the line commented
+// out). Without it the Termux content provider throws on openFile and the
+// system installer shows a generic parse error.
+func termuxAllowsExternalApps() bool {
+	HOME, err := os.UserHomeDir()
+	if err != nil {
+		return true // cannot tell; let the flow proceed
+	}
+	for _, path := range []string{
+		filepath.Join(HOME, ".termux", "termux.properties"),
+		filepath.Join(HOME, ".config", "termux", "termux.properties"),
+	} {
+		data, err := os.ReadFile(path)
+		if err != nil {
+			continue
+		}
+		for _, line := range strings.Split(string(data), "\n") {
+			key, value, ok := strings.Cut(line, "=")
+			if ok && strings.TrimSpace(key) == "allow-external-apps" && strings.TrimSpace(value) == "true" {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // androidPackageName resolves the applicationId the exported APK will carry
