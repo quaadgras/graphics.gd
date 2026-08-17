@@ -426,7 +426,15 @@ func (ios IOS) Run(args ...string) error {
 	fmt.Println("Scan the following QRCode with your iOS device to install the app: (you will need SideStore installed: https://sidestore.io)")
 	fmt.Println(sidestore_url.String())
 
-	qrterminal.Generate(sidestore_url.String(), qrterminal.L, os.Stdout)
+	if runtime.GOOS == "android" {
+		// The standard rendering spends two terminal columns per QR module,
+		// which wraps into an unscannable mess at phone-terminal widths —
+		// half-blocks pack a module per column and two rows per line.
+		qrterminal.GenerateHalfBlock(sidestore_url.String(), qrterminal.L, os.Stdout)
+	} else {
+		qrterminal.Generate(sidestore_url.String(), qrterminal.L, os.Stdout)
+	}
+	fmt.Println("(no QR? in SideStore: + > Add via URL >", values.Get("url"), ")")
 
 	return http.ListenAndServe(":4431", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Serving", project.AppleSafePackageName(project.Name)+".ipa", "to", r.RemoteAddr)
