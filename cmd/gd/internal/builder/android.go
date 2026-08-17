@@ -259,24 +259,24 @@ func setupHostExportTools(debug_keystore string) error {
 		default_sdk_path = filepath.Join(HOME, "Library", "Android", "Sdk")
 	}
 	if default_sdk_path != "" {
+		// On-device (Termux) GDPATH holds no desktop adb/apksigner to
+		// point at; link the Termux packages when installed, otherwise a
+		// stub — the unsigned template export only checks these exist.
+		fauxTool := func(name, dest string) error {
+			if runtime.GOOS != "android" {
+				return os.Symlink(filepath.Join(GDPATH, "bin", name), dest)
+			}
+			if path, err := exec.LookPath(name); err == nil {
+				return os.Symlink(path, dest)
+			}
+			return os.WriteFile(dest, []byte(name+" stub"), 0755)
+		}
 		if _, err := os.Stat(default_sdk_path); os.IsNotExist(err) {
 			if err := os.MkdirAll(filepath.Join(default_sdk_path, "platform-tools"), 0755); err != nil {
 				return xray.New(err)
 			}
 			if err := os.MkdirAll(filepath.Join(default_sdk_path, "build-tools", "35"), 0755); err != nil {
 				return xray.New(err)
-			}
-			// On-device (Termux) GDPATH holds no desktop adb/apksigner to
-			// point at; link the Termux packages when installed, otherwise a
-			// stub — the unsigned template export only checks these exist.
-			fauxTool := func(name, dest string) error {
-				if runtime.GOOS != "android" {
-					return os.Symlink(filepath.Join(GDPATH, "bin", name), dest)
-				}
-				if path, err := exec.LookPath(name); err == nil {
-					return os.Symlink(path, dest)
-				}
-				return os.WriteFile(dest, []byte(name+" stub"), 0755)
 			}
 			if runtime.GOOS == "windows" {
 				if err := project.CopyFile(filepath.Join(GDPATH, "bin", "AdbWinApi.dll"), filepath.Join(default_sdk_path, "platform-tools", "AdbWinApi.dll")); err != nil {
@@ -299,6 +299,25 @@ func setupHostExportTools(debug_keystore string) error {
 				}
 			} else {
 				if err := fauxTool("apksigner", filepath.Join(default_sdk_path, "build-tools", "35", "apksigner")); err != nil {
+					return xray.New(err)
+				}
+			}
+		}
+		// On-device the faux SDK entries point at Termux packages, which
+		// come and go with pkg install/uninstall — refresh them every run so
+		// a tool installed after the SDK was first created replaces its
+		// stub, and a removed one does not linger as a dangling symlink for
+		// godot's export to trip over.
+		if runtime.GOOS == "android" {
+			for name, dest := range map[string]string{
+				"adb":       filepath.Join(default_sdk_path, "platform-tools", "adb"),
+				"apksigner": filepath.Join(default_sdk_path, "build-tools", "35", "apksigner"),
+			} {
+				if err := os.MkdirAll(filepath.Dir(dest), 0755); err != nil {
+					return xray.New(err)
+				}
+				os.Remove(dest)
+				if err := fauxTool(name, dest); err != nil {
 					return xray.New(err)
 				}
 			}
@@ -1046,6 +1065,15 @@ func (android Android) exportOnDevice(args ...string) (apkPath string, signed bo
 	if err != nil {
 		return "", false, xray.New(err)
 	}
+	// Install apksigner before anything references it: godot itself signs
+	// during the export when the preset asks for it (package/signed defaults
+	// to true in godot, and pre-existing presets carry that), and
+	// setupHostExportTools links the faux SDK's apksigner entry at whatever
+	// is on PATH right now.
+	apksigner, signerErr := exec.LookPath("apksigner")
+	if signerErr != nil && termuxPkgInstall("apksigner") == nil {
+		apksigner, signerErr = exec.LookPath("apksigner")
+	}
 	// The exporting editor is a linuxbsd build, so the keystore and faux SDK
 	// it may validate live at the linux locations under Termux's HOME.
 	debug_keystore := filepath.Join(HOME, ".local", "share", "godot", "keystores", "debug.keystore")
@@ -1081,16 +1109,8 @@ func (android Android) exportOnDevice(args ...string) (apkPath string, signed bo
 	if _, err := os.Stat(apkPath); err != nil {
 		return "", false, fmt.Errorf("gd: godot did not produce %s — see its export errors above", apkPath)
 	}
-	apksigner, err := exec.LookPath("apksigner")
-	if err != nil {
-		// Termux packages it; a seamless first run installs it rather than
-		// leaving an unsigned APK and instructions behind.
-		if termuxPkgInstall("apksigner") == nil {
-			apksigner, err = exec.LookPath("apksigner")
-		}
-		if err != nil {
-			return apkPath, false, nil
-		}
+	if signerErr != nil {
+		return apkPath, false, nil
 	}
 	cmd := exec.Command(apksigner,
 		"sign", "--ks", debug_keystore,
