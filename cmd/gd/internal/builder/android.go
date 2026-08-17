@@ -807,7 +807,12 @@ func (android Android) BuildMain(...string) error {
 	if err := tooling.Godot.Exec("--headless", "--export-release", presetName); err != nil {
 		return xray.New(err)
 	}
-	// Now that we have the .apk, we also want an .aab that can be uploaded to the Play Store.
+	return android.packageAab(apkPath)
+}
+
+// packageAab converts the exported .apk into an .aab that can be uploaded to
+// the Play Store, offering to sign it with a passphrase-derived upload key.
+func (android Android) packageAab(apkPath string) error {
 	if err := errors.Join(
 		os.RemoveAll(filepath.Join(project.ReleasesDirectory, "android", "decompiled")),
 		os.RemoveAll(filepath.Join(project.ReleasesDirectory, "android", "recompiled")),
@@ -1044,12 +1049,45 @@ func (android Android) buildMainOnDevice() error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if !signed {
+	if signed {
+		fmt.Println("gd: built and debug-signed", apkPath)
+	} else {
 		fmt.Println("gd: built", apkPath)
 		fmt.Println("gd: the APK is unsigned and will not install — run 'pkg install apksigner' and rebuild to have gd debug-sign it")
-		return nil
 	}
-	fmt.Println("gd: built and debug-signed", apkPath)
+	if err := setupOnDeviceAabTools(); err != nil {
+		return xray.New(err)
+	}
+	return android.packageAab(apkPath)
+}
+
+// setupOnDeviceAabTools points the aab pipeline's toolchain entries at what
+// can actually run on bionic: Termux packages for the native pieces (aapt2,
+// and a JRE to run the jars) and the stock apktool/bundletool jars from the
+// release bucket — the desktop downloads are GraalVM native-image
+// compilations of those same jars, and native-image cannot target bionic.
+func setupOnDeviceAabTools() error {
+	if _, err := exec.LookPath("java"); err != nil {
+		if err := termuxPkgInstall("openjdk-17"); err != nil {
+			return fmt.Errorf("java is required to build the .aab on-device: %w", err)
+		}
+	}
+	if _, err := exec.LookPath("aapt2"); err != nil {
+		if err := termuxPkgInstall("aapt2"); err != nil {
+			return fmt.Errorf("aapt2 is required to build the .aab on-device: %w", err)
+		}
+	}
+	aapt2, err := exec.LookPath("aapt2")
+	if err != nil {
+		return xray.New(err)
+	}
+	tooling.AndroidAssetPackagingTool.Path = aapt2
+	tooling.AndroidPackageKitTool.Name = "apktool.jar"
+	tooling.AndroidPackageKitTool.DownloadURL = "https://release.graphics.gd/apktool.jar"
+	tooling.AndroidPackageKitTool.Jar = true
+	tooling.BundleTool.Name = "bundletool.jar"
+	tooling.BundleTool.DownloadURL = "https://release.graphics.gd/bundletool.jar"
+	tooling.BundleTool.Jar = true
 	return nil
 }
 

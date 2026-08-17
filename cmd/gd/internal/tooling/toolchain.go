@@ -50,7 +50,27 @@ type toolchain struct {
 
 	IsLibrary bool
 
+	// Jar tools are plain java archives executed through a JRE on PATH
+	// rather than directly — the android (Termux) aab pipeline runs the
+	// stock apktool/bundletool jars this way, since their native-image
+	// desktop compilations cannot target bionic. Like a library, a jar is
+	// trusted by presence (no version probe: it is not directly executable).
+	Jar bool
+
 	Path string // cached by [toolchain.Lookup]
+}
+
+// command builds the exec.Cmd for an invocation of the tool at path,
+// wrapping jar tools in a `java -jar` launch.
+func (exe toolchain) command(path string, args ...string) (*exec.Cmd, error) {
+	if !exe.Jar {
+		return exec.Command(path, args...), nil
+	}
+	java, err := exec.LookPath("java")
+	if err != nil {
+		return nil, fmt.Errorf("'java' not found in $PATH, required to run %v (install a JRE, e.g. in Termux: pkg install openjdk-17)", exe.Name)
+	}
+	return exec.Command(java, append([]string{"-jar", path}, args...)...), nil
 }
 
 func (exe toolchain) PathToCommand() string {
@@ -89,7 +109,10 @@ func (exe toolchain) Exec(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
-	cmd := exec.Command(path, args...)
+	cmd, err := exe.command(path, args...)
+	if err != nil {
+		return xray.New(err)
+	}
 	if debug {
 		fmt.Println(path, strings.Join(args, " "))
 	}
@@ -119,7 +142,10 @@ func (exe toolchain) Action(name string, suffix_args []string, args ...string) e
 		return xray.New(err)
 	}
 	args = append(append([]string{name}, args...), suffix...)
-	cmd := exec.Command(path, args...)
+	cmd, err := exe.command(path, args...)
+	if err != nil {
+		return xray.New(err)
+	}
 	if debug {
 		fmt.Println(path, strings.Join(args, " "))
 	}
@@ -137,7 +163,11 @@ func (exe toolchain) Output(args ...string) (string, error) {
 	if debug {
 		fmt.Println(path, strings.Join(args, " "))
 	}
-	out, err := exec.Command(path, args...).Output()
+	cmd, err := exe.command(path, args...)
+	if err != nil {
+		return "", err
+	}
+	out, err := cmd.Output()
 	if err != nil {
 		return "", err
 	}
@@ -152,7 +182,11 @@ func (exe toolchain) CombinedOutput(args ...string) (string, error) {
 	if debug {
 		fmt.Println(path, strings.Join(args, " "))
 	}
-	out, err := exec.Command(path, args...).CombinedOutput()
+	cmd, err := exe.command(path, args...)
+	if err != nil {
+		return "", err
+	}
+	out, err := cmd.CombinedOutput()
 	if debug {
 		fmt.Println(string(out))
 	}
@@ -250,7 +284,8 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 	}
 	// always prefer the GDPATH-installed version if it matches the expected version.
 	if _, err := os.Stat(install_path); err == nil {
-		if exe.IsLibrary {
+		if exe.IsLibrary || exe.Jar {
+			exe.Path = install_path
 			return install_path, nil
 		}
 		var exe_path = install_path
@@ -283,7 +318,7 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 		exe.Path = path
 		return exe.PathToCommand(), nil
 	}
-	if !exe.IsLibrary {
+	if !exe.IsLibrary && !exe.Jar {
 		// if the expected version of the tool is already installed in $PATH, then we can
 		// just use it.
 		if path, err := exec.LookPath(name); err == nil {
