@@ -234,12 +234,18 @@ func setupHostExportTools(debug_keystore string) error {
 	if runtime.GOOS == "windows" {
 		exe = ".exe"
 	}
+	// On-device (Termux) nothing else has created GDPATH/bin yet.
+	if err := os.MkdirAll(filepath.Join(GDPATH, "bin"), 0755); err != nil {
+		return xray.New(err)
+	}
 	if err := os.WriteFile(filepath.Join(GDPATH, "bin", "java"+exe), []byte("java stub"), 0755); err != nil {
 		return xray.New(err)
 	}
 	var default_sdk_path string
 	switch runtime.GOOS {
-	case "linux":
+	case "linux", "android":
+		// android: the exporting editor on-device is a linuxbsd build, so it
+		// reads the linux default SDK location under Termux's HOME.
 		default_sdk_path = filepath.Join(HOME, "Android", "Sdk")
 	case "windows":
 		default_sdk_path = filepath.Join(os.Getenv("LOCALAPPDATA"), "Android", "Sdk")
@@ -260,6 +266,18 @@ func setupHostExportTools(debug_keystore string) error {
 			if err := os.MkdirAll(filepath.Join(default_sdk_path, "build-tools", "35"), 0755); err != nil {
 				return xray.New(err)
 			}
+			// On-device (Termux) GDPATH holds no desktop adb/apksigner to
+			// point at; link the Termux packages when installed, otherwise a
+			// stub — the unsigned template export only checks these exist.
+			fauxTool := func(name, dest string) error {
+				if runtime.GOOS != "android" {
+					return os.Symlink(filepath.Join(GDPATH, "bin", name), dest)
+				}
+				if path, err := exec.LookPath(name); err == nil {
+					return os.Symlink(path, dest)
+				}
+				return os.WriteFile(dest, []byte(name+" stub"), 0755)
+			}
 			if runtime.GOOS == "windows" {
 				if err := project.CopyFile(filepath.Join(GDPATH, "bin", "AdbWinApi.dll"), filepath.Join(default_sdk_path, "platform-tools", "AdbWinApi.dll")); err != nil {
 					return xray.New(err)
@@ -271,7 +289,7 @@ func setupHostExportTools(debug_keystore string) error {
 					return xray.New(err)
 				}
 			} else {
-				if err := os.Symlink(filepath.Join(GDPATH, "bin", "adb"), filepath.Join(default_sdk_path, "platform-tools", "adb")); err != nil {
+				if err := fauxTool("adb", filepath.Join(default_sdk_path, "platform-tools", "adb")); err != nil {
 					return xray.New(err)
 				}
 			}
@@ -280,7 +298,7 @@ func setupHostExportTools(debug_keystore string) error {
 					return xray.New(err)
 				}
 			} else {
-				if err := os.Symlink(filepath.Join(GDPATH, "bin", "apksigner"), filepath.Join(default_sdk_path, "build-tools", "35", "apksigner")); err != nil {
+				if err := fauxTool("apksigner", filepath.Join(default_sdk_path, "build-tools", "35", "apksigner")); err != nil {
 					return xray.New(err)
 				}
 			}
@@ -718,6 +736,9 @@ func lastSentinel(s string) (code int, ok bool) {
 }
 
 func (android Android) BuildMain(...string) error {
+	if runtime.GOOS == "android" {
+		return android.buildMainOnDevice()
+	}
 	if err := android.Build(); err != nil {
 		return xray.New(err)
 	}
@@ -990,6 +1011,66 @@ func (android Android) BuildMain(...string) error {
 	if err := patch.Apply(aab, filepath.Join(project.ReleasesDirectory, "android", project.Name+".aab")); err != nil {
 		return xray.New(err)
 	}
+	return nil
+}
+
+// buildMainOnDevice exports the android APK on-device (Termux). The static
+// musl editor built as tooling by gd's main flow performs the headless
+// export; the desktop .aab/Play-Store pipeline is skipped because its java
+// tooling (apktool/aapt2/bundletool) does not run on bionic. The preset
+// exports the APK unsigned (package/signed=false), so gd debug-signs it
+// afterwards when a Termux apksigner is installed.
+func (android Android) buildMainOnDevice() error {
+	if err := android.Build(); err != nil {
+		return xray.New(err)
+	}
+	HOME, err := os.UserHomeDir()
+	if err != nil {
+		return xray.New(err)
+	}
+	// The exporting editor is a linuxbsd build, so the keystore and faux SDK
+	// it may validate live at the linux locations under Termux's HOME.
+	debug_keystore := filepath.Join(HOME, ".local", "share", "godot", "keystores", "debug.keystore")
+	if err := setupHostExportTools(debug_keystore); err != nil {
+		return xray.New(err)
+	}
+	GOARCH := "arm64"
+	if env := os.Getenv("GOARCH"); env != "" {
+		GOARCH = env
+	}
+	presetName, exportPath, err := pickAndroidPreset(GOARCH)
+	if err != nil {
+		return xray.New(err)
+	}
+	apkPath := filepath.Join(project.GraphicsDirectory, exportPath)
+	if err := os.MkdirAll(filepath.Dir(apkPath), 0755); err != nil {
+		return xray.New(err)
+	}
+	if err := ensureProjectIcon(); err != nil {
+		return xray.New(err)
+	}
+	if err := os.Chdir(project.GraphicsDirectory); err != nil {
+		return xray.New(err)
+	}
+	if err := tooling.Godot.Exec("--headless", "--export-release", presetName); err != nil {
+		return xray.New(err)
+	}
+	apksigner, err := exec.LookPath("apksigner")
+	if err != nil {
+		fmt.Println("gd: built", apkPath)
+		fmt.Println("gd: the APK is unsigned and will not install — run 'pkg install apksigner' and rebuild to have gd debug-sign it")
+		return nil
+	}
+	cmd := exec.Command(apksigner,
+		"sign", "--ks", debug_keystore,
+		"--ks-key-alias", "androiddebugkey", "--ks-pass", "pass:android",
+		apkPath,
+	)
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	if err := cmd.Run(); err != nil {
+		return xray.New(err)
+	}
+	fmt.Println("gd: built and debug-signed", apkPath)
 	return nil
 }
 

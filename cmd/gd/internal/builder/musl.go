@@ -35,6 +35,7 @@ func (musl Musl) Build(args ...string) (err error) {
 	goos := os.Getenv("GOOS")
 	os.Setenv("GOOS", "linux")
 	defer os.Setenv("GOOS", goos)
+	defer restoreCC()()
 	if built_musl {
 		return nil
 	}
@@ -132,6 +133,21 @@ func (musl Musl) Build(args ...string) (err error) {
 		return xray.New(err)
 	}
 	return nil
+}
+
+// restoreCC returns a func that restores CC to its value at the time of the
+// call. The musl builder points CC at zig targeting musl for its own compile;
+// when it runs as tooling for another target (the on-device android extension
+// build relies on the ambient CC) that must not leak out.
+func restoreCC() func() {
+	cc, ok := os.LookupEnv("CC")
+	return func() {
+		if ok {
+			os.Setenv("CC", cc)
+		} else {
+			os.Unsetenv("CC")
+		}
+	}
 }
 
 func (musl Musl) patch() error {
@@ -282,6 +298,7 @@ func (musl Musl) Test(args ...string) error {
 	goos := os.Getenv("GOOS")
 	os.Setenv("GOOS", "linux")
 	defer os.Setenv("GOOS", goos)
+	defer restoreCC()()
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch

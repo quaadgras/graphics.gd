@@ -40,6 +40,10 @@ func exportTemplatesDir(version string) (string, bool) {
 	switch runtime.GOOS {
 	case "linux":
 		return filepath.Join(os.Getenv("HOME"), ".local", "share", "godot", "export_templates", version+".stable"), true
+	case "android":
+		// On-device (Termux) the exporting editor is the static musl
+		// (linuxbsd) build, which reads the XDG data dir under Termux's HOME.
+		return filepath.Join(os.Getenv("HOME"), ".local", "share", "godot", "export_templates", version+".stable"), true
 	case "windows":
 		return filepath.Join(os.Getenv("APPDATA"), "Godot", "export_templates", version+".stable"), true
 	case "darwin":
@@ -61,6 +65,11 @@ func AssertExportTemplates(version string, goos string) error {
 	// js/web uses graphics.gd's own web template (handled by the browser
 	// builder), not the stock Godot web templates.
 	if goos == "js" || goos == "web" {
+		return nil
+	}
+	// musl exports embed gd's own statically-linked engine via the preset's
+	// custom_template, so the stock Godot templates are never read.
+	if goos == "musl" {
 		return nil
 	}
 	url := "https://github.com/godotengine/godot/releases/download/" + version + "-stable/Godot_v" + version + "-stable_export_templates.tpz"

@@ -225,15 +225,18 @@ func gd(args ...string) error {
 		if !muslHost && err != nil {
 			return xray.New(err)
 		}
-	} else if runtime.GOOS == "android" && len(args) > 0 && (args[0] == "test" || args[0] == "build") &&
-		(os.Getenv("GOOS") == "" || os.Getenv("GOOS") == "musl") {
+	} else if runtime.GOOS == "android" && len(args) > 0 {
 		// On-device (Termux) there is no godot binary for android hosts, but
 		// the statically-linked musl arm64 editor runs on the Android kernel,
-		// so `gd test` and `gd build` follow the musl-host flow. The plain
-		// `gd` editor flow keeps using the Godot Android Editor app: the
-		// static editor cannot load the device's bionic GPU drivers, so it
-		// is headless-only.
-		muslHost = true
+		// so it stands in as the engine tooling: `gd test` runs the suite in
+		// it headless (the musl-host flow) and `gd build` uses it for the
+		// headless android export while the project itself is compiled for
+		// android. The plain `gd` editor flow keeps using the Godot Android
+		// Editor app: the static editor cannot load the device's bionic GPU
+		// drivers, so it is headless-only.
+		target := os.Getenv("GOOS")
+		muslHost = (args[0] == "test" && (target == "" || target == "musl")) ||
+			(args[0] == "build" && (target == "" || target == "musl" || target == "android"))
 	}
 	if muslHost {
 		if len(args) > 0 && args[0] == "test" {
@@ -276,6 +279,11 @@ func gd(args ...string) error {
 		}
 		if os.Getenv("GOOS") == "" {
 			GOOS = "musl"
+			if runtime.GOOS == "android" && len(args) > 0 && args[0] == "build" {
+				// The default on-device build target is android; musl is
+				// only the tooling that performs the headless export.
+				GOOS = "android"
+			}
 		}
 	}
 	var platform = builderFor(GOOS)
@@ -363,12 +371,13 @@ func gd(args ...string) error {
 	default:
 		// On-device (Termux) these all need godot to run headless (--import,
 		// --export-*), and the Godot Android Editor app strips command-line
-		// arguments from external intents by design — so there is no way to
-		// drive it. `gd test` and `gd build` route through the statically-linked
-		// musl editor instead (GOOS resolved to "musl" above); everything else —
-		// including `gd run`, which needs a renderer the headless-only static
-		// editor does not have — cannot run on-device.
-		if runtime.GOOS == "android" && GOOS != "musl" {
+		// arguments from external intents by design — so the static musl
+		// editor stands in as the engine tooling: `gd test` runs the suite in
+		// it (GOOS "musl") and `gd build` uses it to export the android
+		// project. Everything else — including `gd run`, which needs a
+		// renderer the headless-only static editor does not have — cannot run
+		// on-device.
+		if runtime.GOOS == "android" && GOOS != "musl" && !(GOOS == "android" && args[0] == "build") {
 			return fmt.Errorf("gd %[1]s is not supported on android (Termux): the Godot editor app cannot run headless exports.\nRun 'gd' to open the project in the editor and use its play/export buttons, or run 'gd %[1]s android' from a desktop", args[0])
 		}
 		switch args[0] {

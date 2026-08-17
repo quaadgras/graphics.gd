@@ -242,12 +242,19 @@ func Setup(build_godot func() error) error {
 // working. Hosts with a glibc editor are left alone: dlopen'ing the .so is how the
 // project loads there.
 func muslHostLibrary(library string) string {
-	if runtime.GOOS != "linux" {
-		return library
-	}
-	// ldd reports "musl ..." on musl systems and "ldd (GNU libc) ..." on glibc ones.
-	version, _ := tooling.ListDynamicDependencies.CombinedOutput("--version")
-	if !strings.HasPrefix(strings.TrimSpace(version), "musl") {
+	switch runtime.GOOS {
+	case "android":
+		// On-device (Termux) the only engine binary matching the linux
+		// feature set is the static musl editor doing headless work — same
+		// deal as a musl host. The editor app and exported games match the
+		// android entries, which are left untouched.
+	case "linux":
+		// ldd reports "musl ..." on musl systems and "ldd (GNU libc) ..." on glibc ones.
+		version, _ := tooling.ListDynamicDependencies.CombinedOutput("--version")
+		if !strings.HasPrefix(strings.TrimSpace(version), "musl") {
+			return library
+		}
+	default:
 		return library
 	}
 	var lines []string
