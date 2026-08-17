@@ -378,21 +378,9 @@ func ld64(args ...string) error {
 func GetLocalIP() (net.IP, error) {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
-		// Android denies unprivileged processes the netlink interface dump
-		// ("route ip+net: netlinkrib: permission denied"), so ask the kernel
-		// to route a UDP "connection" instead and read the source address it
-		// picks — connecting a datagram socket sends no packet, and the
-		// destination just needs a route (the hotspot's default route works
-		// whether or not it reaches the internet).
-		conn, err := net.Dial("udp4", "8.8.8.8:53")
-		if err != nil {
-			return nil, err
-		}
-		defer conn.Close()
-		if addr, ok := conn.LocalAddr().(*net.UDPAddr); ok && addr.IP.To4() != nil && !addr.IP.IsLoopback() {
-			return addr.IP, nil
-		}
-		return nil, fmt.Errorf("no non-loopback IPv4 address found")
+		// Android denies unprivileged processes the netlink interface dumps
+		// ("route ip+net: netlinkrib: permission denied").
+		return androidLocalIP()
 	}
 
 	for _, addr := range addrs {
@@ -400,6 +388,34 @@ func GetLocalIP() (net.IP, error) {
 			if ipnet.IP.To4() != nil { // Check if it's an IPv4 address
 				return ipnet.IP, nil
 			}
+		}
+	}
+	return nil, fmt.Errorf("no non-loopback IPv4 address found")
+}
+
+// androidLocalIP resolves a serving address without the netlink dumps
+// android denies to apps. When this device hosts the network (a hotspot with
+// the iOS device as a client — the topology that keeps SideStore happy, since
+// an active iOS Personal Hotspot interferes with its install VPN), the
+// access-point interface is never the default route, so the common AP
+// interface names are probed first through the still-permitted SIOCGIFADDR
+// ioctl. Otherwise a connected UDP socket — which sends nothing, and only
+// needs a route to exist — reveals the default route's source address.
+func androidLocalIP() (net.IP, error) {
+	for _, name := range []string{"swlan0", "ap0", "softap0"} {
+		if ip := interfaceIPv4(name); ip != nil && !ip.IsLoopback() {
+			return ip, nil
+		}
+	}
+	if conn, err := net.Dial("udp4", "8.8.8.8:53"); err == nil {
+		defer conn.Close()
+		if addr, ok := conn.LocalAddr().(*net.UDPAddr); ok && addr.IP.To4() != nil && !addr.IP.IsLoopback() {
+			return addr.IP, nil
+		}
+	}
+	for _, name := range []string{"wlan1", "wlan0"} {
+		if ip := interfaceIPv4(name); ip != nil && !ip.IsLoopback() {
+			return ip, nil
 		}
 	}
 	return nil, fmt.Errorf("no non-loopback IPv4 address found")
