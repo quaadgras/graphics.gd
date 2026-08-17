@@ -378,7 +378,21 @@ func ld64(args ...string) error {
 func GetLocalIP() (net.IP, error) {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
-		return nil, err
+		// Android denies unprivileged processes the netlink interface dump
+		// ("route ip+net: netlinkrib: permission denied"), so ask the kernel
+		// to route a UDP "connection" instead and read the source address it
+		// picks — connecting a datagram socket sends no packet, and the
+		// destination just needs a route (the hotspot's default route works
+		// whether or not it reaches the internet).
+		conn, err := net.Dial("udp4", "8.8.8.8:53")
+		if err != nil {
+			return nil, err
+		}
+		defer conn.Close()
+		if addr, ok := conn.LocalAddr().(*net.UDPAddr); ok && addr.IP.To4() != nil && !addr.IP.IsLoopback() {
+			return addr.IP, nil
+		}
+		return nil, fmt.Errorf("no non-loopback IPv4 address found")
 	}
 
 	for _, addr := range addrs {
