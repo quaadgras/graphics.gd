@@ -316,6 +316,8 @@ func (android Android) Run(args ...string) error {
 		debug_keystore = filepath.Join(os.Getenv("APPDATA"), "Godot", "keystores", "debug.keystore")
 	case "darwin":
 		debug_keystore = filepath.Join(os.Getenv("HOME"), "Library", "Application Support", "Godot", "keystores", "debug.keystore")
+	case "android":
+		return android.runOnDevice(args...)
 	default:
 		return nil
 	}
@@ -1017,22 +1019,38 @@ func (android Android) BuildMain(...string) error {
 // buildMainOnDevice exports the android APK on-device (Termux). The static
 // musl editor built as tooling by gd's main flow performs the headless
 // export; the desktop .aab/Play-Store pipeline is skipped because its java
-// tooling (apktool/aapt2/bundletool) does not run on bionic. The preset
-// exports the APK unsigned (package/signed=false), so gd debug-signs it
-// afterwards when a Termux apksigner is installed.
+// tooling (apktool/aapt2/bundletool) does not run on bionic.
 func (android Android) buildMainOnDevice() error {
-	if err := android.Build(); err != nil {
+	apkPath, signed, err := android.exportOnDevice()
+	if err != nil {
 		return xray.New(err)
+	}
+	if !signed {
+		fmt.Println("gd: built", apkPath)
+		fmt.Println("gd: the APK is unsigned and will not install — run 'pkg install apksigner' and rebuild to have gd debug-sign it")
+		return nil
+	}
+	fmt.Println("gd: built and debug-signed", apkPath)
+	return nil
+}
+
+// exportOnDevice compiles the extension, exports the APK with the static
+// musl editor and debug-signs it. The preset exports the APK unsigned
+// (package/signed=false), so signing happens afterwards when a Termux
+// apksigner is installed; signed reports whether it was.
+func (android Android) exportOnDevice(args ...string) (apkPath string, signed bool, err error) {
+	if err := android.Build(args...); err != nil {
+		return "", false, xray.New(err)
 	}
 	HOME, err := os.UserHomeDir()
 	if err != nil {
-		return xray.New(err)
+		return "", false, xray.New(err)
 	}
 	// The exporting editor is a linuxbsd build, so the keystore and faux SDK
 	// it may validate live at the linux locations under Termux's HOME.
 	debug_keystore := filepath.Join(HOME, ".local", "share", "godot", "keystores", "debug.keystore")
 	if err := setupHostExportTools(debug_keystore); err != nil {
-		return xray.New(err)
+		return "", false, xray.New(err)
 	}
 	GOARCH := "arm64"
 	if env := os.Getenv("GOARCH"); env != "" {
@@ -1040,26 +1058,24 @@ func (android Android) buildMainOnDevice() error {
 	}
 	presetName, exportPath, err := pickAndroidPreset(GOARCH)
 	if err != nil {
-		return xray.New(err)
+		return "", false, xray.New(err)
 	}
-	apkPath := filepath.Join(project.GraphicsDirectory, exportPath)
+	apkPath = filepath.Join(project.GraphicsDirectory, exportPath)
 	if err := os.MkdirAll(filepath.Dir(apkPath), 0755); err != nil {
-		return xray.New(err)
+		return "", false, xray.New(err)
 	}
 	if err := ensureProjectIcon(); err != nil {
-		return xray.New(err)
+		return "", false, xray.New(err)
 	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
-		return xray.New(err)
+		return "", false, xray.New(err)
 	}
 	if err := tooling.Godot.Exec("--headless", "--export-release", presetName); err != nil {
-		return xray.New(err)
+		return "", false, xray.New(err)
 	}
 	apksigner, err := exec.LookPath("apksigner")
 	if err != nil {
-		fmt.Println("gd: built", apkPath)
-		fmt.Println("gd: the APK is unsigned and will not install — run 'pkg install apksigner' and rebuild to have gd debug-sign it")
-		return nil
+		return apkPath, false, nil
 	}
 	cmd := exec.Command(apksigner,
 		"sign", "--ks", debug_keystore,
@@ -1068,10 +1084,98 @@ func (android Android) buildMainOnDevice() error {
 	)
 	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 	if err := cmd.Run(); err != nil {
+		return "", false, xray.New(err)
+	}
+	return apkPath, true, nil
+}
+
+// runOnDevice exports, installs and launches the project on the device gd
+// itself is running on (Termux). Android offers no silent install to a
+// terminal app, so the APK is handed to the system package installer via
+// termux-open and the user confirms it on screen; gd watches the package
+// manager until the install lands and then launches the app with am. Termux
+// cannot read other apps' logcat (READ_LOGS is a privileged permission), so
+// engine logs need wireless adb from another machine.
+func (android Android) runOnDevice(args ...string) error {
+	apkPath, signed, err := android.exportOnDevice(args...)
+	if err != nil {
 		return xray.New(err)
 	}
-	fmt.Println("gd: built and debug-signed", apkPath)
+	if !signed {
+		return fmt.Errorf("gd run: %s is unsigned and cannot be installed — install apksigner ('pkg install apksigner') and try again", apkPath)
+	}
+	GOARCH := "arm64"
+	if env := os.Getenv("GOARCH"); env != "" {
+		GOARCH = env
+	}
+	packageName, err := androidPackageName(GOARCH)
+	if err != nil {
+		return xray.New(err)
+	}
+	// Termux ships wrappers for the platform tools; fall back to the system
+	// binaries when they are not on PATH (same as openAndroidEditorApp).
+	systemTool := func(name string) string {
+		if path, err := exec.LookPath(name); err == nil {
+			return path
+		}
+		return "/system/bin/" + name
+	}
+	pm := systemTool("pm")
+	// Every successful install moves the package to a fresh /data/app path,
+	// so a change in `pm path` — including from empty on a first install —
+	// means the user accepted the prompt.
+	before, _ := exec.Command(pm, "path", packageName).Output()
+	opener, err := exec.LookPath("termux-open")
+	if err != nil {
+		return fmt.Errorf("gd run: termux-open not found to hand %s to the system package installer — install the termux-tools package, or install the APK manually", apkPath)
+	}
+	if out, err := exec.Command(opener, apkPath).CombinedOutput(); err != nil {
+		return xray.New(fmt.Errorf("termux-open %s: %w\n%s", apkPath, err, out))
+	}
+	fmt.Println("gd: accept the install prompt on the device...")
+	deadline := time.Now().Add(5 * time.Minute)
+	installed := false
+	for time.Now().Before(deadline) {
+		after, _ := exec.Command(pm, "path", packageName).Output()
+		if trimmed := bytes.TrimSpace(after); len(trimmed) > 0 && !bytes.Equal(trimmed, bytes.TrimSpace(before)) {
+			installed = true
+			break
+		}
+		time.Sleep(2 * time.Second)
+	}
+	if !installed {
+		fmt.Fprintln(os.Stderr, "gd: could not confirm the install — if the installer refused an update (e.g. a signature mismatch with a build installed over adb), uninstall", packageName, "first; launching whatever is installed")
+	}
+	// Godot's exported APKs always name their launcher activity
+	// com.godot.game.GodotApp, whatever the applicationId.
+	component := packageName + "/com.godot.game.GodotApp"
+	out, err := exec.Command(systemTool("am"), "start", "-n", component).CombinedOutput()
+	os.Stdout.Write(out)
+	// `am start` reports failures like a missing activity on stdout with a
+	// zero exit status, so scan the output as well.
+	if err != nil || strings.Contains(string(out), "Error") {
+		if err == nil {
+			err = errors.New(strings.TrimSpace(string(out)))
+		}
+		return xray.New(err)
+	}
+	fmt.Println("gd: launched", packageName, "— engine logs are not readable from Termux; use wireless adb logcat from another machine to follow them")
 	return nil
+}
+
+// androidPackageName resolves the applicationId the exported APK will carry
+// from the preset's package/unique_name — on-device there is no aapt2 to
+// dump it from the APK itself.
+func androidPackageName(GOARCH string) (string, error) {
+	preset, err := androidPresetFor(GOARCH)
+	if err != nil {
+		return "", xray.New(err)
+	}
+	name := preset.uniqueName
+	if name == "" || strings.Contains(name, "$") {
+		return "", fmt.Errorf("gd run: set a literal package/unique_name for preset %q in graphics/export_presets.cfg (found %q)", preset.name, name)
+	}
+	return name, nil
 }
 
 // pickAndroidPreset chooses the Godot export preset for the current
@@ -1086,39 +1190,48 @@ func (android Android) buildMainOnDevice() error {
 // Returns the preset name (passed to godot --export-*) and the
 // project-relative export_path declared by that preset.
 func pickAndroidPreset(GOARCH string) (name, exportPath string, err error) {
+	preset, err := androidPresetFor(GOARCH)
+	if err != nil {
+		return "", "", err
+	}
+	return preset.name, preset.exportPath, nil
+}
+
+// androidPresetFor implements [pickAndroidPreset], returning the whole preset.
+func androidPresetFor(GOARCH string) (androidPreset, error) {
 	abi := "arm64-v8a"
 	if GOARCH == "amd64" {
 		abi = "x86_64"
 	}
 	presets, err := loadAndroidPresets()
 	if err != nil {
-		return "", "", xray.New(err)
+		return androidPreset{}, xray.New(err)
 	}
 	if want := os.Getenv("GD_ANDROID_PRESET"); want != "" {
 		for _, p := range presets {
 			if p.name == want {
-				return p.name, p.exportPath, nil
+				return p, nil
 			}
 		}
-		return "", "", fmt.Errorf("gd build: GD_ANDROID_PRESET=%q not found in graphics/export_presets.cfg", want)
+		return androidPreset{}, fmt.Errorf("gd build: GD_ANDROID_PRESET=%q not found in graphics/export_presets.cfg", want)
 	}
 	want := "Android " + abi
 	for _, p := range presets {
 		if p.name == want {
-			return p.name, p.exportPath, nil
+			return p, nil
 		}
 	}
 	for _, p := range presets {
 		if p.platform == "Android" && p.archs[abi] {
-			return p.name, p.exportPath, nil
+			return p, nil
 		}
 	}
-	return "", "", fmt.Errorf("gd build: no Android preset for %s in graphics/export_presets.cfg", abi)
+	return androidPreset{}, fmt.Errorf("gd build: no Android preset for %s in graphics/export_presets.cfg", abi)
 }
 
 type androidPreset struct {
-	name, platform, exportPath string
-	archs                      map[string]bool
+	name, platform, exportPath, uniqueName string
+	archs                                  map[string]bool
 }
 
 func loadAndroidPresets() ([]androidPreset, error) {
@@ -1154,6 +1267,8 @@ func loadAndroidPresets() ([]androidPreset, error) {
 			cur.platform = val
 		case "export_path":
 			cur.exportPath = val
+		case "package/unique_name":
+			cur.uniqueName = val
 		default:
 			if abi, ok := strings.CutPrefix(key, "architectures/"); ok && val == "true" {
 				cur.archs[abi] = true

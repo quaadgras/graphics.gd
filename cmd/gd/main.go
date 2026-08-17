@@ -236,7 +236,7 @@ func gd(args ...string) error {
 		// drivers, so it is headless-only.
 		target := os.Getenv("GOOS")
 		muslHost = (args[0] == "test" && (target == "" || target == "musl")) ||
-			(args[0] == "build" && (target == "" || target == "musl" || target == "android"))
+			((args[0] == "build" || args[0] == "run") && (target == "" || target == "musl" || target == "android"))
 	}
 	if muslHost {
 		if len(args) > 0 && args[0] == "test" {
@@ -279,8 +279,8 @@ func gd(args ...string) error {
 		}
 		if os.Getenv("GOOS") == "" {
 			GOOS = "musl"
-			if runtime.GOOS == "android" && len(args) > 0 && args[0] == "build" {
-				// The default on-device build target is android; musl is
+			if runtime.GOOS == "android" && len(args) > 0 && (args[0] == "build" || args[0] == "run") {
+				// The default on-device build/run target is android; musl is
 				// only the tooling that performs the headless export.
 				GOOS = "android"
 			}
@@ -373,11 +373,12 @@ func gd(args ...string) error {
 		// --export-*), and the Godot Android Editor app strips command-line
 		// arguments from external intents by design — so the static musl
 		// editor stands in as the engine tooling: `gd test` runs the suite in
-		// it (GOOS "musl") and `gd build` uses it to export the android
-		// project. Everything else — including `gd run`, which needs a
-		// renderer the headless-only static editor does not have — cannot run
+		// it (GOOS "musl") while `gd build` and `gd run` use it to export the
+		// android project (run then installs the APK through the system
+		// package installer and launches it). Anything else cannot run
 		// on-device.
-		if runtime.GOOS == "android" && GOOS != "musl" && !(GOOS == "android" && args[0] == "build") {
+		if runtime.GOOS == "android" && GOOS != "musl" &&
+			!(GOOS == "android" && (args[0] == "build" || args[0] == "run")) {
 			return fmt.Errorf("gd %[1]s is not supported on android (Termux): the Godot editor app cannot run headless exports.\nRun 'gd' to open the project in the editor and use its play/export buttons, or run 'gd %[1]s android' from a desktop", args[0])
 		}
 		switch args[0] {
@@ -396,6 +397,13 @@ func gd(args ...string) error {
 		case "run":
 			if err := os.Chdir(project.Directory); err != nil {
 				return xray.New(err)
+			}
+			// android runs as an exported APK, which needs the export
+			// template installed (like `gd build` does).
+			if GOOS == "android" {
+				if err := AssertExportTemplates(tooling.Godot.InstalledVersion(), GOOS); err != nil {
+					return xray.New(err)
+				}
 			}
 			return platform.Run(append([]string{"-gcflags=graphics.gd/classdb/...=-N -l"}, args[1:]...)...)
 		case "test":
