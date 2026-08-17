@@ -183,6 +183,18 @@ func gd(args ...string) error {
 			return tooling.Go.Exec(args...)
 		}
 	}
+	// On-device (Termux) there is no /tmp; the engine and other tooling honor
+	// TMPDIR, which Termux sets in its own sessions but which may be missing
+	// in stripped-down environments (ssh with a bare command, cron).
+	if runtime.GOOS == "android" && os.Getenv("TMPDIR") == "" {
+		tmp := "/data/data/com.termux/files/usr/tmp"
+		if prefix := os.Getenv("PREFIX"); prefix != "" {
+			tmp = filepath.Join(prefix, "tmp")
+		}
+		if err := os.MkdirAll(tmp, 0755); err == nil {
+			os.Setenv("TMPDIR", tmp)
+		}
+	}
 	var GOARCH = runtime.GOARCH
 	var GOOS = runtime.GOOS
 	if goos := os.Getenv("GOOS"); goos != "" {

@@ -1076,6 +1076,11 @@ func (android Android) exportOnDevice(args ...string) (apkPath string, signed bo
 	if err := tooling.Godot.Exec("--headless", "--export-release", presetName); err != nil {
 		return "", false, xray.New(err)
 	}
+	// Godot exits 0 even when it printed "Project export failed", so trust
+	// the artifact rather than the exit status.
+	if _, err := os.Stat(apkPath); err != nil {
+		return "", false, fmt.Errorf("gd: godot did not produce %s — see its export errors above", apkPath)
+	}
 	apksigner, err := exec.LookPath("apksigner")
 	if err != nil {
 		return apkPath, false, nil
@@ -1134,8 +1139,18 @@ func ensureExportEditorSettings() error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if strings.Contains(string(data), key) {
-		return nil
+	// The editor persists its full defaults on shutdown, so the key is
+	// usually already present — as the invalid empty string, which must be
+	// replaced. Only a non-empty value counts as user-set.
+	lines := strings.Split(string(data), "\n")
+	for i, l := range lines {
+		if strings.HasPrefix(strings.TrimSpace(l), key) {
+			if strings.TrimSpace(l) != key+` = ""` {
+				return nil
+			}
+			lines[i] = line
+			return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+		}
 	}
 	// The [resource] section runs to the end of the file, so appending keeps
 	// the setting inside it even when the marker line has unexpected spacing.
@@ -1190,22 +1205,44 @@ func (android Android) runOnDevice(args ...string) error {
 		return xray.New(fmt.Errorf("termux-open %s: %w\n%s", apkPath, err, out))
 	}
 	fmt.Println("gd: accept the install prompt on the device...")
+	fmt.Println("    (no prompt? Termux needs the 'Install unknown apps' permission in Android's")
+	fmt.Println("    settings, and android only shows the prompt while Termux is in the foreground)")
 	deadline := time.Now().Add(5 * time.Minute)
 	installed := false
+	lastOpen := time.Now()
 	for time.Now().Before(deadline) {
 		after, _ := exec.Command(pm, "path", packageName).Output()
 		if trimmed := bytes.TrimSpace(after); len(trimmed) > 0 && !bytes.Equal(trimmed, bytes.TrimSpace(before)) {
 			installed = true
 			break
 		}
+		// Android only shows the installer while Termux is in the
+		// foreground, and silently drops the request otherwise (the export
+		// takes minutes, plenty of time to have switched away) — re-hand the
+		// APK over periodically so returning to Termux still pops the prompt.
+		if time.Since(lastOpen) > 45*time.Second {
+			_ = exec.Command(opener, apkPath).Run()
+			lastOpen = time.Now()
+		}
 		time.Sleep(2 * time.Second)
 	}
 	if !installed {
-		fmt.Fprintln(os.Stderr, "gd: could not confirm the install — if the installer refused an update (e.g. a signature mismatch with a build installed over adb), uninstall", packageName, "first; launching whatever is installed")
+		fmt.Fprintln(os.Stderr, "gd: could not confirm the install; launching whatever is installed. Usual causes:")
+		fmt.Fprintln(os.Stderr, "    - Termux lacks the 'Install unknown apps' permission (Android settings > Apps > Termux)")
+		fmt.Fprintln(os.Stderr, "    - the installer refused an update over a build signed with a different key")
+		fmt.Fprintln(os.Stderr, "      (e.g. installed over adb from a desktop) — uninstall", packageName, "first")
 	}
-	// Godot's exported APKs always name their launcher activity
-	// com.godot.game.GodotApp, whatever the applicationId.
-	component := packageName + "/com.godot.game.GodotApp"
+	// Godot's exported APKs expose com.godot.game.GodotAppLauncher as the
+	// (only exported) launcher activity, whatever the applicationId; resolve
+	// it from the package manager anyway so a template rename keeps working.
+	component := packageName + "/com.godot.game.GodotAppLauncher"
+	if resolved, err := exec.Command(systemTool("cmd"), "package", "resolve-activity", "--brief", "-c", "android.intent.category.LAUNCHER", packageName).Output(); err == nil {
+		for _, ln := range strings.Split(strings.TrimSpace(string(resolved)), "\n") {
+			if ln = strings.TrimSpace(ln); strings.HasPrefix(ln, packageName+"/") {
+				component = ln
+			}
+		}
+	}
 	out, err := exec.Command(systemTool("am"), "start", "-n", component).CombinedOutput()
 	os.Stdout.Write(out)
 	// `am start` reports failures like a missing activity on stdout with a
