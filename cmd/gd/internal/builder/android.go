@@ -1052,6 +1052,9 @@ func (android Android) exportOnDevice(args ...string) (apkPath string, signed bo
 	if err := setupHostExportTools(debug_keystore); err != nil {
 		return "", false, xray.New(err)
 	}
+	if err := ensureExportEditorSettings(); err != nil {
+		return "", false, xray.New(err)
+	}
 	GOARCH := "arm64"
 	if env := os.Getenv("GOARCH"); env != "" {
 		GOARCH = env
@@ -1087,6 +1090,60 @@ func (android Android) exportOnDevice(args ...string) (apkPath string, signed bo
 		return "", false, xray.New(err)
 	}
 	return apkPath, true, nil
+}
+
+// ensureExportEditorSettings seeds the static musl editor's settings with the
+// faux java SDK path: godot refuses android exports without a valid one
+// ("A valid Java SDK path is required in Editor Settings"). On desktops the
+// startup editorSetup plugin fills it in, but that runs on the first editor
+// frame, which a headless --export invocation never reaches — and on-device
+// the plain `gd` flow opens the editor APK, whose settings are a different
+// store entirely, so the musl editor's settings start empty. The path points
+// at GDPATH, whose bin/java stub setupHostExportTools has already written —
+// the same layout editorSetup configures. A value the user has set themselves
+// is left alone.
+func ensureExportEditorSettings() error {
+	HOME, err := os.UserHomeDir()
+	if err != nil {
+		return xray.New(err)
+	}
+	GDPATH := os.Getenv("GDPATH")
+	if GDPATH == "" {
+		GDPATH = filepath.Join(HOME, "gd")
+	}
+	config := os.Getenv("XDG_CONFIG_HOME")
+	if config == "" {
+		config = filepath.Join(HOME, ".config")
+	}
+	// Godot names the settings file after the minor version, e.g.
+	// editor_settings-4.7.tres; the musl editor is always the gd-pinned build.
+	minor := tooling.Godot.Version
+	if parts := strings.SplitN(minor, ".", 3); len(parts) >= 2 {
+		minor = parts[0] + "." + parts[1]
+	}
+	path := filepath.Join(config, "godot", "editor_settings-"+minor+".tres")
+	const key = "export/android/java_sdk_path"
+	line := key + ` = "` + GDPATH + `"`
+	data, err := os.ReadFile(path)
+	if os.IsNotExist(err) {
+		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+			return xray.New(err)
+		}
+		return os.WriteFile(path, []byte("[gd_resource type=\"EditorSettings\" format=3]\n\n[resource]\n"+line+"\n"), 0644)
+	}
+	if err != nil {
+		return xray.New(err)
+	}
+	if strings.Contains(string(data), key) {
+		return nil
+	}
+	// The [resource] section runs to the end of the file, so appending keeps
+	// the setting inside it even when the marker line has unexpected spacing.
+	text := strings.Replace(string(data), "[resource]\n", "[resource]\n"+line+"\n", 1)
+	if text == string(data) {
+		text = strings.TrimRight(string(data), "\n") + "\n" + line + "\n"
+	}
+	return os.WriteFile(path, []byte(text), 0644)
 }
 
 // runOnDevice exports, installs and launches the project on the device gd
