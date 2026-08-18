@@ -76,23 +76,40 @@ framework, no SDK.
 iOS allows neither `exec` nor JIT, but it allows everything this
 actually needs:
 
-1. **Go compilation in-process** — compiler.gd already runs compile and
-   link inside one process; embed it with a pre-populated build cache
-   for std and graphics.gd so only user packages compile on-device.
-2. **Linking in-process** — `ld64.lld` via `lld::safeLldMain` (LLVM
-   supports being embedded; one link per build stays inside its
-   envelope). The engine archive + gd.c are release-constant, so they
-   pre-link on desktop with `ld -r` into one relocatable blob.
-3. **Shell tools in-process** — the `ios_system` (BSD-3) dispatcher:
-   commands are frameworks, `exec` becomes dlopen + call main on a
-   thread. git via go-git (pure Go) or libgit2.
+1. **Go compilation in-process — proven.** `internal/buildkit` runs
+   `cmd/compile` and `cmd/link`, cross-compiled to wasip1, as wazero
+   modules inside this process: zero spawns, and a fresh module
+   instance per invocation makes the (globally-stateful, single-shot)
+   toolchain re-entrant and crash-isolated by construction. wazero's
+   interpreter needs no JIT, so this is iOS-legal; cross-targeting is
+   just `GOOS=ios GOARCH=arm64` in the guest env. The opt-in test
+   (`GD_HARNESS_WASMTC_TEST=1`) builds and links a program this way
+   twice on one runner and runs the result. Still to build: a mini
+   cmd/go (module graph → importcfg → compile order) and a shipped
+   pre-built export-data cache for std + graphics.gd targeting ios, so
+   only user packages compile on-device.
+2. **Linking real games** — Go refuses internal linking for ios, and a
+   graphics.gd game links against the libgodot C++ archive regardless,
+   so the final Mach-O link needs `ld64.lld`: either the same wasm
+   treatment (LLVM builds to wasm; a fresh instance per link sidesteps
+   lld's re-entrancy problems identically) or lld embedded natively
+   via `lld::safeLldMain`. The engine archive + gd.c are
+   release-constant, so they pre-link on desktop with `ld -r` into one
+   relocatable blob and ship with the app.
+3. **Shell tools in-process** — the built-in Go userland already covers
+   the basics; the `ios_system` (BSD-3) dispatcher can add real ports,
+   and git comes via go-git (pure Go).
 4. **Install** — the built IPA is served on loopback and handed to
    SideStore (`sidestore://install?url=...`), which signs and installs
-   on-device under the user's own Apple ID.
+   on-device under the user's own Apple ID — the same handoff the
+   remote kit uses today.
 5. **Preview** — the graphics.gd web target in a WKWebView: wasm in
    WebKit is the one sanctioned JIT on iOS, so live preview is
    Store-legal even where running native output is not.
 
-C compilation on-device is a later tier: libtcc for plain C at near-zero
-size cost, embedded clang (the zig approach) for everything including
-C++.
+Measured on a desktop (wazero compiling runtime): hello-world compile
+13s, link 3s. The iOS interpreter is slower; mitigations are per-package
+incremental compiles, the wasm-module cache, and optionally borrowing
+JIT via StikDebug. C compilation on-device is a later tier: libtcc for
+plain C at near-zero size cost, embedded clang (the zig approach — or
+clang-as-wasm) for everything including C++.
