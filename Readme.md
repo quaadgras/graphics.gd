@@ -59,6 +59,12 @@ framework, no SDK.
 - `internal/agent` — the loop: send conversation → print text → run
   tool calls → repeat. Pure `net/http` against the Anthropic Messages
   API. Six tools: read, write, edit, ls, run, gd.
+- `internal/buildkit` — the in-process toolchain: `cmd/compile`,
+  `cmd/link`, and `ld64.lld`, cross-compiled to wasm and run under
+  wazero with zero process spawns. `Toolchain` exposes `Compile`,
+  `LinkGo` (pure-Go internal link) and `LinkMachO` (the full game link
+  against libgodot). Modules load from `GD_HARNESS_WASMTC_DIR` or a
+  per-user cache; build them per `patches/` and `patches/lld-wasm/`.
 - `internal/toolchain` — a `Kit` interface (read, write, list, shell,
   gd) with three implementations:
   - **exec tier** (`!ios`): shells out to the `gd` command, which

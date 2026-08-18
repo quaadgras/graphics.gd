@@ -3,23 +3,41 @@
 package toolchain
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
+
+	"graphics.gd/harness/internal/buildkit"
 )
 
 // iOS forbids process creation, so Shell here is a small built-in
 // userland (pure Go, runs in-process) rather than /bin/sh: enough for
 // the agent to look around and manage files. No pipes, no quoting —
-// one command per line, whitespace-separated. Compilation is the next
-// tier: compiler.gd for Go and lld's library entry point for the
-// Mach-O link, per the Readme roadmap.
-
+// one command per line, whitespace-separated.
+//
+// Building runs the in-process toolchain (internal/buildkit): the Go
+// compiler and linker, and ld64.lld for the Mach-O link, all as wasm
+// under wazero. The wasm modules are proven and callable (see
+// buildkit's tests); GD reports precisely which tier is staged so the
+// remaining integration (a module-graph driver and a shipped export
+// cache) has an honest surface rather than a flat "not implemented".
 func (t *Toolchain) GD(verb string, goos string) error {
-	return errors.New("building on iOS needs the in-process toolchain, which is not implemented yet (see Readme roadmap)")
+	ctx := context.Background()
+	dir := buildkit.ModulesDir()
+	tc, err := buildkit.Load(ctx, dir)
+	if err != nil {
+		return fmt.Errorf("on-device build unavailable: %w", err)
+	}
+	tc.Close(ctx)
+	linker := "Mach-O linker (ld64.lld) NOT staged"
+	if tc.CanLinkMachO() {
+		linker = "Mach-O linker (ld64.lld) ready"
+	}
+	return fmt.Errorf("on-device %s is not fully wired yet: the wasm toolchain is loaded from %s (Go compiler+linker ready, %s), but building a project still needs the module-graph driver and the shipped ios export cache — use /remote to build on another machine meanwhile", verb, dir, linker)
 }
 
 func (t *Toolchain) Shell(command string, timeout time.Duration) (string, error) {
