@@ -1,0 +1,65 @@
+#pragma once
+#include <__mutex/once_flag.h> // libc++ provides a no-threads once_flag/call_once
+// Single-threaded no-op <mutex> for LLVM under wasi/wazero: the build
+// disables LLVM threads and wasi libc++ omits std::mutex entirely, but
+// a handful of LLVM files use std::mutex unconditionally.
+namespace std {
+struct mutex {
+    void lock() {}
+    void unlock() {}
+    bool try_lock() { return true; }
+};
+struct recursive_mutex {
+    void lock() {}
+    void unlock() {}
+    bool try_lock() { return true; }
+};
+struct adopt_lock_t { explicit adopt_lock_t() = default; };
+struct defer_lock_t { explicit defer_lock_t() = default; };
+struct try_to_lock_t { explicit try_to_lock_t() = default; };
+inline constexpr adopt_lock_t adopt_lock{};
+inline constexpr defer_lock_t defer_lock{};
+inline constexpr try_to_lock_t try_to_lock{};
+template <class M> class lock_guard {
+    M &m;
+public:
+    explicit lock_guard(M &mu) : m(mu) { m.lock(); }
+    lock_guard(M &mu, adopt_lock_t) : m(mu) {}
+    lock_guard(const lock_guard &) = delete;
+    ~lock_guard() { m.unlock(); }
+};
+template <class M> class unique_lock {
+    M *m = nullptr;
+    bool owns = false;
+public:
+    unique_lock() = default;
+    explicit unique_lock(M &mu) : m(&mu), owns(true) { m->lock(); }
+    unique_lock(M &mu, defer_lock_t) : m(&mu) {}
+    unique_lock(M &mu, adopt_lock_t) : m(&mu), owns(true) {}
+    unique_lock(unique_lock &&o) : m(o.m), owns(o.owns) { o.m = nullptr; o.owns = false; }
+    unique_lock &operator=(unique_lock &&o) {
+        if (owns)
+            m->unlock();
+        m = o.m;
+        owns = o.owns;
+        o.m = nullptr;
+        o.owns = false;
+        return *this;
+    }
+    unique_lock(const unique_lock &) = delete;
+    unique_lock &operator=(const unique_lock &) = delete;
+    ~unique_lock() { if (owns) m->unlock(); }
+    void lock() { m->lock(); owns = true; }
+    void unlock() { m->unlock(); owns = false; }
+    bool owns_lock() const { return owns; }
+};
+template <class... M> class scoped_lock {
+public:
+    explicit scoped_lock(M &...) {}
+};
+template <class L1, class L2, class... Ln> void lock(L1 &l1, L2 &l2, Ln &...ln) {
+    l1.lock();
+    l2.lock();
+    (ln.lock(), ...);
+}
+} // namespace std

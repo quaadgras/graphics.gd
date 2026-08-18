@@ -97,14 +97,16 @@ actually needs:
    *running* iPhone executable. Verified end-to-end on an iPhone 8:
    compile.wasm + link.wasm under wazero → .app → dev-sign →
    ideviceinstaller → ran and wrote its proof file on-device.
-3. **Linking real games** — a graphics.gd game links against the
-   libgodot C++ archive, which internal linking can't do, so the full
-   game link needs `ld64.lld`: either the same wasm treatment (LLVM
-   builds to wasm; a fresh instance per link sidesteps lld's
-   re-entrancy problems identically) or lld embedded natively via
-   `lld::safeLldMain`. The engine archive + gd.c are release-constant,
-   so they pre-link on desktop with `ld -r` into one relocatable blob
-   and ship with the app.
+3. **Linking real games — proven.** A graphics.gd game links against
+   the libgodot C++ archive, which internal linking can't do, so the
+   full link needs `ld64.lld` — and lld builds to `wasm32-wasip1` and
+   runs under wazero just like the Go toolchain, a fresh instance per
+   link sidestepping its global-state re-entrancy problems. Verified:
+   lld.wasm under wazero linked the full iOS game (MoltenVK + libgodot
+   + libgo + faux-SDK frameworks, gd's exact ld64 args) to a 124MB
+   arm64 Mach-O **byte-identical to the native linker except its
+   LC_UUID**. Patches + recipe: `internal/buildkit/patches/lld-wasm/`.
+   clang.wasm (future cgo tier) builds from the same tree.
 4. **Shell tools in-process** — the built-in Go userland already covers
    the basics; the `ios_system` (BSD-3) dispatcher can add real ports,
    and git comes via go-git (pure Go).

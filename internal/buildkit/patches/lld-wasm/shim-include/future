@@ -1,0 +1,84 @@
+#pragma once
+// Synchronous <future> for single-threaded LLVM under wasi/wazero:
+// async runs its callable immediately; futures are boxed values.
+#include <chrono>
+#include <functional>
+#include <memory>
+#include <type_traits>
+#include <utility>
+namespace std {
+enum class launch { async = 1, deferred = 2 };
+constexpr launch operator|(launch a, launch b) { return launch(int(a) | int(b)); }
+enum class future_status { ready, timeout, deferred };
+
+template <class T> struct __future_state { T value; };
+template <> struct __future_state<void> {};
+
+template <class T> class shared_future;
+
+template <class T> class future {
+public:
+    shared_ptr<__future_state<T>> state;
+    future() = default;
+    explicit future(shared_ptr<__future_state<T>> s) : state(std::move(s)) {}
+    bool valid() const { return static_cast<bool>(state); }
+    void wait() const {}
+    template <class R, class P>
+    future_status wait_for(const chrono::duration<R, P> &) const {
+        return future_status::ready;
+    }
+    T get() {
+        auto s = std::move(state);
+        if constexpr (!is_void_v<T>)
+            return std::move(s->value);
+    }
+    shared_future<T> share();
+};
+
+template <class T> class shared_future {
+public:
+    shared_ptr<__future_state<T>> state;
+    shared_future() = default;
+    shared_future(future<T> f) : state(std::move(f.state)) {}
+    bool valid() const { return static_cast<bool>(state); }
+    void wait() const {}
+    T get() const {
+        if constexpr (!is_void_v<T>)
+            return state->value;
+    }
+};
+template <class T> shared_future<T> future<T>::share() {
+    return shared_future<T>(std::move(*this));
+}
+
+template <class T> class promise {
+    shared_ptr<__future_state<T>> state = make_shared<__future_state<T>>();
+public:
+    future<T> get_future() { return future<T>(state); }
+    void set_value(const T &v) { state->value = v; }
+    void set_value(T &&v) { state->value = std::move(v); }
+};
+template <> class promise<void> {
+    shared_ptr<__future_state<void>> state = make_shared<__future_state<void>>();
+public:
+    future<void> get_future() { return future<void>(state); }
+    void set_value() {}
+};
+
+template <class F, class... A> auto async(launch, F &&f, A &&...a) {
+    using R = invoke_result_t<F, A...>;
+    promise<R> p;
+    if constexpr (is_void_v<R>) {
+        std::invoke(std::forward<F>(f), std::forward<A>(a)...);
+        p.set_value();
+    } else {
+        p.set_value(std::invoke(std::forward<F>(f), std::forward<A>(a)...));
+    }
+    return p.get_future();
+}
+template <class F, class... A,
+          class = enable_if_t<!is_same_v<remove_cv_t<remove_reference_t<F>>, launch>>>
+auto async(F &&f, A &&...a) {
+    return std::async(launch::deferred, std::forward<F>(f), std::forward<A>(a)...);
+}
+} // namespace std

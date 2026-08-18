@@ -1,0 +1,26 @@
+#pragma once
+// Single-threaded no-op <condition_variable> for LLVM under wasi/wazero:
+// with no second thread, a wait could never be satisfied — waits with a
+// predicate spin it once; bare waits are programming errors here.
+#include <mutex>
+#include <chrono>
+namespace std {
+enum class cv_status { no_timeout, timeout };
+struct condition_variable {
+    void notify_one() {}
+    void notify_all() {}
+    void wait(unique_lock<mutex> &) { __builtin_trap(); }
+    template <class Pred> void wait(unique_lock<mutex> &, Pred p) {
+        if (!p()) __builtin_trap();
+    }
+    template <class Rep, class Period>
+    cv_status wait_for(unique_lock<mutex> &, const chrono::duration<Rep, Period> &) {
+        return cv_status::timeout;
+    }
+    template <class Rep, class Period, class Pred>
+    bool wait_for(unique_lock<mutex> &, const chrono::duration<Rep, Period> &, Pred p) {
+        return p();
+    }
+};
+struct condition_variable_any : condition_variable {};
+} // namespace std

@@ -1,0 +1,458 @@
+diff --git a/lld/Common/Filesystem.cpp b/lld/Common/Filesystem.cpp
+index c2d364419..6c0e07555 100644
+--- a/lld/Common/Filesystem.cpp
++++ b/lld/Common/Filesystem.cpp
+@@ -75,6 +75,9 @@ void lld::unlinkAsync(StringRef path) {
+       sys::fs::remove(tmpName);
+   }
+   sys::fs::remove(path);
++#elif defined(__wasi__)
++  // patched: no threads on wasi — remove synchronously.
++  sys::fs::remove(path);
+ #else
+   if (parallel::strategy.ThreadsRequested == 1)
+     return;
+diff --git a/llvm/cmake/modules/AddLLVM.cmake b/llvm/cmake/modules/AddLLVM.cmake
+index 83772ed8d..557121f0e 100644
+--- a/llvm/cmake/modules/AddLLVM.cmake
++++ b/llvm/cmake/modules/AddLLVM.cmake
+@@ -2553,7 +2553,7 @@ function(llvm_setup_rpath name)
+       set_property(TARGET ${name} APPEND_STRING PROPERTY
+                    LINK_FLAGS " -Wl,-z,origin ")
+     endif()
+-    if(LLVM_LINKER_IS_GNULD AND NOT ${LLVM_LIBRARY_OUTPUT_INTDIR} STREQUAL "")
++    if(LLVM_LINKER_IS_GNULD AND NOT WASI AND NOT ${LLVM_LIBRARY_OUTPUT_INTDIR} STREQUAL "") # patched: wasm-ld rejects -rpath-link
+       # $ORIGIN is not interpreted at link time by ld.bfd
+       set_property(TARGET ${name} APPEND_STRING PROPERTY
+                    LINK_FLAGS " -Wl,-rpath-link,${LLVM_LIBRARY_OUTPUT_INTDIR} ")
+diff --git a/llvm/include/llvm/ADT/bit.h b/llvm/include/llvm/ADT/bit.h
+index d6e33c3e6..b42d1def5 100644
+--- a/llvm/include/llvm/ADT/bit.h
++++ b/llvm/include/llvm/ADT/bit.h
+@@ -30,7 +30,8 @@
+ 
+ #if defined(__linux__) || defined(__GNU__) || defined(__HAIKU__) ||            \
+     defined(__Fuchsia__) || defined(__EMSCRIPTEN__) || defined(__NetBSD__) ||  \
+-    defined(__OpenBSD__) || defined(__DragonFly__) || defined(__managarm__)
++    defined(__OpenBSD__) || defined(__DragonFly__) || defined(__managarm__) || \
++    defined(__wasi__) /* patched: wasi-libc provides endian.h */
+ #include <endian.h>
+ #elif defined(_AIX)
+ #include <sys/machine.h>
+diff --git a/llvm/lib/Support/CrashRecoveryContext.cpp b/llvm/lib/Support/CrashRecoveryContext.cpp
+index 1ba0c2383..b5b8c524c 100644
+--- a/llvm/lib/Support/CrashRecoveryContext.cpp
++++ b/llvm/lib/Support/CrashRecoveryContext.cpp
+@@ -329,6 +329,14 @@ static void uninstallExceptionOrSignalHandlers() {
+   }
+ }
+ 
++#elif defined(__wasi__)
++
++// patched: wasi has no signals to catch; a crash traps out to the wasm
++// host, which provides the isolation this file exists for.
++#include <signal.h> // emulated raise() for the common code below
++static void installExceptionOrSignalHandlers() {}
++static void uninstallExceptionOrSignalHandlers() {}
++
+ #else // !_WIN32
+ 
+ // Generic POSIX implementation.
+diff --git a/llvm/lib/Support/LockFileManager.cpp b/llvm/lib/Support/LockFileManager.cpp
+index cdded5110..88ba22e38 100644
+--- a/llvm/lib/Support/LockFileManager.cpp
++++ b/llvm/lib/Support/LockFileManager.cpp
+@@ -111,7 +111,7 @@ static std::error_code getHostID(SmallVectorImpl<char> &HostID) {
+ }
+ 
+ bool LockFileManager::processStillExecuting(StringRef HostID, int PID) {
+-#if LLVM_ON_UNIX && !defined(__ANDROID__)
++#if LLVM_ON_UNIX && !defined(__ANDROID__) && !defined(__wasi__) // patched: no sessions on wasi
+   SmallString<256> StoredHostID;
+   if (getHostID(StoredHostID))
+     return true; // Conservatively assume it's executing on error.
+diff --git a/llvm/lib/Support/ProgramStack.cpp b/llvm/lib/Support/ProgramStack.cpp
+index 66f74ff66..f0203a380 100644
+--- a/llvm/lib/Support/ProgramStack.cpp
++++ b/llvm/lib/Support/ProgramStack.cpp
+@@ -42,7 +42,7 @@ uintptr_t llvm::getStackPointer() {
+ }
+ 
+ unsigned llvm::getDefaultStackSize() {
+-#ifdef LLVM_ON_UNIX
++#if defined(LLVM_ON_UNIX) && !defined(__wasi__) // patched: no rlimits on wasi
+   rlimit RL;
+   getrlimit(RLIMIT_STACK, &RL);
+   return RL.rlim_cur;
+diff --git a/llvm/lib/Support/Unix/Path.inc b/llvm/lib/Support/Unix/Path.inc
+index 277247e3c..444d4d53f 100644
+--- a/llvm/lib/Support/Unix/Path.inc
++++ b/llvm/lib/Support/Unix/Path.inc
+@@ -28,7 +28,9 @@
+ #endif
+ 
+ #include <dirent.h>
++#ifndef __wasi__ // patched
+ #include <pwd.h>
++#endif
+ 
+ #ifdef __APPLE__
+ #include <copyfile.h>
+@@ -321,7 +323,7 @@ std::string getMainExecutable(const char *argv0, void *MainAddr) {
+       return std::string(real_path);
+     break; // Found entry, but realpath failed.
+   }
+-#elif defined(HAVE_DLOPEN)
++#elif defined(HAVE_DLOPEN) && !defined(__wasi__) // patched: no dladdr on wasi
+   // Use dladdr to get executable path if available.
+   Dl_info DLInfo;
+   int err = dladdr(MainAddr, &DLInfo);
+@@ -333,6 +335,8 @@ std::string getMainExecutable(const char *argv0, void *MainAddr) {
+   char link_path[PATH_MAX];
+   if (realpath(DLInfo.dli_fname, link_path))
+     return link_path;
++#elif defined(__wasi__)
++  // patched: argv[0] is all wasi has; callers handle an empty result.
+ #else
+ #error GetMainExecutable is not implemented on this host yet.
+ #endif
+@@ -555,6 +559,9 @@ static bool is_local_impl(struct STATVFS &Vfs) {
+   // The file system can have an arbitrary structure on z/OS; must go with the
+   // conservative answer.
+   return false;
++#elif defined(__wasi__)
++  // patched: every wasi preopen behaves as a local filesystem.
++  return true;
+ #else
+   return !!(STATVFS_F_FLAG(Vfs) & MNT_LOCAL);
+ #endif
+@@ -675,6 +682,10 @@ static void expandTildeExpr(SmallVectorImpl<char> &Path) {
+ 
+   // This is a string of the form ~username/, look up this user's entry in the
+   // password database.
++#ifdef __wasi__
++  // patched: no passwd database on wasi; leave the path unexpanded.
++  return;
++#else
+   std::unique_ptr<char[]> Buf;
+   long BufSize = sysconf(_SC_GETPW_R_SIZE_MAX);
+   if (BufSize <= 0)
+@@ -694,6 +705,7 @@ static void expandTildeExpr(SmallVectorImpl<char> &Path) {
+   Path.clear();
+   Path.append(Entry->pw_dir, Entry->pw_dir + strlen(Entry->pw_dir));
+   llvm::sys::path::append(Path, Storage);
++#endif // patched
+ }
+ 
+ void expand_tilde(const Twine &path, SmallVectorImpl<char> &dest) {
+@@ -770,11 +782,15 @@ std::error_code status(int FD, file_status &Result) {
+ }
+ 
+ unsigned getUmask() {
++#ifdef __wasi__ // patched: no umask on wasi
++  return 0;
++#else
+   // Chose arbitary new mask and reset the umask to the old mask.
+   // umask(2) never fails so ignore the return of the second call.
+   unsigned Mask = ::umask(0);
+   (void)::umask(Mask);
+   return Mask;
++#endif
+ }
+ 
+ std::error_code setPermissions(const Twine &Path, perms Permissions) {
+@@ -1224,6 +1240,16 @@ Expected<size_t> readNativeFileSlice(file_t FD, MutableArrayRef<char> Buf,
+   return NumRead;
+ }
+ 
++#ifdef __wasi__
++// patched: wasi has no advisory file locks; a single-instance wazero
++// guest cannot race itself, so locking succeeds trivially.
++std::error_code tryLockFile(int FD, std::chrono::milliseconds Timeout) {
++  (void)FD; (void)Timeout;
++  return std::error_code();
++}
++std::error_code lockFile(int FD) { (void)FD; return std::error_code(); }
++std::error_code unlockFile(int FD) { (void)FD; return std::error_code(); }
++#else
+ std::error_code tryLockFile(int FD, std::chrono::milliseconds Timeout) {
+   auto Start = std::chrono::steady_clock::now();
+   auto End = Start + Timeout;
+@@ -1266,6 +1292,7 @@ std::error_code unlockFile(int FD) {
+     return std::error_code();
+   return errnoAsErrorCode();
+ }
++#endif // !__wasi__ (patched)
+ 
+ std::error_code closeFile(file_t &F) {
+   file_t TmpF = F;
+@@ -1336,11 +1363,16 @@ std::error_code real_path(const Twine &path, SmallVectorImpl<char> &dest,
+ }
+ 
+ std::error_code changeFileOwnership(int FD, uint32_t Owner, uint32_t Group) {
++#ifdef __wasi__ // patched: no ownership on wasi
++  (void)FD; (void)Owner; (void)Group;
++  return std::error_code();
++#else
+   auto FChown = [&]() { return ::fchown(FD, Owner, Group); };
+   // Retry if fchown call fails due to interruption.
+   if ((sys::RetryAfterSignal(-1, FChown)) < 0)
+     return errnoAsErrorCode();
+   return std::error_code();
++#endif // patched
+ }
+ 
+ } // end namespace fs
+@@ -1350,6 +1382,7 @@ namespace path {
+ bool home_directory(SmallVectorImpl<char> &result) {
+   std::unique_ptr<char[]> Buf;
+   char *RequestedDir = getenv("HOME");
++#ifndef __wasi__ // patched: no passwd database on wasi
+   if (!RequestedDir) {
+     long BufSize = sysconf(_SC_GETPW_R_SIZE_MAX);
+     if (BufSize <= 0)
+@@ -1361,6 +1394,7 @@ bool home_directory(SmallVectorImpl<char> &result) {
+     if (pw && pw->pw_dir)
+       RequestedDir = pw->pw_dir;
+   }
++#endif // patched
+   if (!RequestedDir)
+     return false;
+ 
+diff --git a/llvm/lib/Support/Unix/Process.inc b/llvm/lib/Support/Unix/Process.inc
+index c6e79af44..341cb5fb0 100644
+--- a/llvm/lib/Support/Unix/Process.inc
++++ b/llvm/lib/Support/Unix/Process.inc
+@@ -19,7 +19,9 @@
+ #include <optional>
+ #include <fcntl.h>
+ #include <sys/time.h>
++#ifndef __wasi__ // patched
+ #include <sys/resource.h>
++#endif
+ #include <sys/stat.h>
+ #include <signal.h>
+ #if defined(HAVE_MALLINFO) || defined(HAVE_MALLINFO2)
+@@ -48,7 +50,7 @@ using namespace sys;
+ 
+ static std::pair<std::chrono::microseconds, std::chrono::microseconds>
+ getRUsageTimes() {
+-#if defined(HAVE_GETRUSAGE)
++#if defined(HAVE_GETRUSAGE) && !defined(__wasi__) // patched
+   struct rusage RU;
+   ::getrusage(RUSAGE_SELF, &RU);
+   return {toDuration(RU.ru_utime), toDuration(RU.ru_stime)};
+@@ -136,6 +138,10 @@ void Process::GetTimeUsage(TimePoint<> &elapsed,
+ // their operation. To prevent the disk from filling up, this function
+ // does what's necessary to prevent their generation.
+ void Process::PreventCoreFiles() {
++#ifdef __wasi__ // patched: no core files on wasi
++  coreFilesPrevented = true;
++  return;
++#else
+   struct rlimit rlim;
+   getrlimit(RLIMIT_CORE, &rlim);
+ #ifdef __linux__
+@@ -188,6 +194,7 @@ void Process::PreventCoreFiles() {
+ #endif
+ 
+   coreFilesPrevented = true;
++#endif // patched
+ }
+ 
+ std::optional<std::string> Process::GetEnv(StringRef Name) {
+@@ -217,6 +224,18 @@ private:
+ };
+ } // namespace
+ 
++#ifdef __wasi__
++// patched: fds 0-2 are host-provided under wasi and signals don't exist.
++std::error_code Process::FixupStandardFileDescriptors() {
++  return std::error_code();
++}
++
++std::error_code Process::SafelyCloseFileDescriptor(int FD) {
++  if (::close(FD) < 0)
++    return errnoAsErrorCode();
++  return std::error_code();
++}
++#else
+ std::error_code Process::FixupStandardFileDescriptors() {
+   int NullFD = -1;
+   FDCloser FDC(NullFD);
+@@ -285,6 +304,7 @@ std::error_code Process::SafelyCloseFileDescriptor(int FD) {
+     return std::error_code(ErrnoFromClose, std::generic_category());
+   return std::error_code(EC, std::generic_category());
+ }
++#endif // !__wasi__ (patched)
+ 
+ bool Process::StandardInIsUserInput() {
+   return FileDescriptorIsDisplayed(STDIN_FILENO);
+@@ -320,7 +340,7 @@ static unsigned getColumns(int FileID) {
+   // instead if it isn't available.
+   unsigned Columns = 0;
+ 
+-#if defined(HAVE_SYS_IOCTL_H) && !defined(__sun__)
++#if defined(HAVE_SYS_IOCTL_H) && !defined(__sun__) && !defined(__wasi__) // patched
+   struct winsize ws;
+   if (ioctl(FileID, TIOCGWINSZ, &ws) == 0)
+     Columns = ws.ws_col;
+diff --git a/llvm/lib/Support/Unix/Program.inc b/llvm/lib/Support/Unix/Program.inc
+index 4f17b2257..4b10669b1 100644
+--- a/llvm/lib/Support/Unix/Program.inc
++++ b/llvm/lib/Support/Unix/Program.inc
+@@ -29,7 +29,9 @@
+ #include "llvm/Support/SystemZ/zOSSupport.h"
+ #include "llvm/Support/raw_ostream.h"
+ #include <sys/stat.h>
++#ifndef __wasi__ // patched
+ #include <sys/resource.h>
++#endif
+ #include <signal.h>
+ #include <fcntl.h>
+ #if HAVE_UNISTD_H
+@@ -88,6 +90,35 @@ ErrorOr<std::string> sys::findProgramByName(StringRef Name,
+   return errc::no_such_file_or_directory;
+ }
+ 
++#ifdef __wasi__
++// patched: wasi has no processes; the linker never spawns any on the
++// wazero path, so Execute/Wait only need to fail cleanly if reached.
++static bool Execute(ProcessInfo &PI, StringRef Program,
++                    ArrayRef<StringRef> Args,
++                    std::optional<ArrayRef<StringRef>> Env,
++                    ArrayRef<std::optional<StringRef>> Redirects,
++                    unsigned MemoryLimit, std::string *ErrMsg,
++                    BitVector *AffinityMask, bool DetachProcess) {
++  (void)PI; (void)Program; (void)Args; (void)Env; (void)Redirects;
++  (void)MemoryLimit; (void)AffinityMask; (void)DetachProcess;
++  if (ErrMsg)
++    *ErrMsg = "process execution is not available on wasi";
++  return false;
++}
++
++ProcessInfo llvm::sys::Wait(const ProcessInfo &PI,
++                            std::optional<unsigned> SecondsToWait,
++                            std::string *ErrMsg,
++                            std::optional<ProcessStatistics> *ProcStat,
++                            bool Polling) {
++  (void)SecondsToWait; (void)ProcStat; (void)Polling;
++  if (ErrMsg)
++    *ErrMsg = "process waiting is not available on wasi";
++  ProcessInfo WaitResult = PI;
++  WaitResult.ReturnCode = -1;
++  return WaitResult;
++}
++#else
+ static bool RedirectIO(std::optional<StringRef> Path, int FD, std::string *ErrMsg) {
+   if (!Path) // Noop
+     return false;
+@@ -501,6 +532,7 @@ ProcessInfo llvm::sys::Wait(const ProcessInfo &PI,
+   }
+   return WaitResult;
+ }
++#endif // !__wasi__ (patched)
+ 
+ std::error_code llvm::sys::ChangeStdinMode(fs::OpenFlags Flags) {
+   if (!(Flags & fs::OF_Text))
+diff --git a/llvm/lib/Support/Unix/Signals.inc b/llvm/lib/Support/Unix/Signals.inc
+index 6cd38aabc..b2c4ab6e0 100644
+--- a/llvm/lib/Support/Unix/Signals.inc
++++ b/llvm/lib/Support/Unix/Signals.inc
+@@ -32,6 +32,40 @@
+ //
+ //===----------------------------------------------------------------------===//
+ 
++#ifdef __wasi__
++// patched: wasi delivers no signals; the wazero host provides crash
++// isolation, and there are no child processes or terminals. Every hook
++// keeps the header contract as a no-op.
++#include "llvm/Support/Signals.h"
++#include "llvm/Support/raw_ostream.h"
++
++void sys::unregisterHandlers() {}
++void sys::CleanupOnSignal(uintptr_t Context) { (void)Context; }
++void llvm::sys::RunInterruptHandlers() {}
++void llvm::sys::SetInterruptFunction(void (*IF)()) { (void)IF; }
++void llvm::sys::SetInfoSignalFunction(void (*Handler)()) { (void)Handler; }
++void llvm::sys::SetOneShotPipeSignalFunction(void (*Handler)()) { (void)Handler; }
++void llvm::sys::DefaultOneShotPipeSignalHandler() {}
++bool llvm::sys::RemoveFileOnSignal(StringRef Filename, std::string *ErrMsg) {
++  (void)Filename;
++  (void)ErrMsg;
++  return false;
++}
++void llvm::sys::DontRemoveFileOnSignal(StringRef Filename) { (void)Filename; }
++void llvm::sys::AddSignalHandler(sys::SignalHandlerCallback FnPtr, void *Cookie) {
++  insertSignalHandler(FnPtr, Cookie);
++}
++void llvm::sys::PrintStackTrace(raw_ostream &OS, int Depth) {
++  (void)Depth;
++  OS << "(stack traces are unavailable on wasi)\n";
++}
++void llvm::sys::DisableSystemDialogsOnCrash() {}
++void llvm::sys::PrintStackTraceOnErrorSignal(StringRef Argv0, bool DisableCrashReporting) {
++  (void)Argv0;
++  (void)DisableCrashReporting;
++}
++#else // !__wasi__ (patched)
++
+ #include "Unix.h"
+ #include "llvm/ADT/STLExtras.h"
+ #include "llvm/Config/config.h"
+@@ -941,3 +975,4 @@ void llvm::sys::PrintStackTraceOnErrorSignal(StringRef Argv0,
+   }
+ #endif
+ }
++#endif // !__wasi__ (patched)
+diff --git a/llvm/lib/Support/Unix/Unix.h b/llvm/lib/Support/Unix/Unix.h
+index a1d44c69a..75fba9aae 100644
+--- a/llvm/lib/Support/Unix/Unix.h
++++ b/llvm/lib/Support/Unix/Unix.h
+@@ -30,7 +30,9 @@
+ #include <cstring>
+ #include <string>
+ #include <sys/types.h>
++#ifndef __wasi__ // patched: no sys/wait.h on wasi
+ #include <sys/wait.h>
++#endif
+ 
+ #ifdef HAVE_UNISTD_H
+ #include <unistd.h>
+diff --git a/llvm/lib/Support/Unix/Watchdog.inc b/llvm/lib/Support/Unix/Watchdog.inc
+index b33e52d88..123d36053 100644
+--- a/llvm/lib/Support/Unix/Watchdog.inc
++++ b/llvm/lib/Support/Unix/Watchdog.inc
+@@ -19,13 +19,13 @@
+ namespace llvm {
+ namespace sys {
+ Watchdog::Watchdog(unsigned int seconds) {
+-#ifdef HAVE_UNISTD_H
++#if defined(HAVE_UNISTD_H) && !defined(__wasi__) // patched: no alarm on wasi
+   alarm(seconds);
+ #endif
+ }
+ 
+ Watchdog::~Watchdog() {
+-#ifdef HAVE_UNISTD_H
++#if defined(HAVE_UNISTD_H) && !defined(__wasi__) // patched
+   alarm(0);
+ #endif
+ }
+diff --git a/llvm/lib/Support/raw_socket_stream.cpp b/llvm/lib/Support/raw_socket_stream.cpp
+index fd1c68167..1066d0826 100644
+--- a/llvm/lib/Support/raw_socket_stream.cpp
++++ b/llvm/lib/Support/raw_socket_stream.cpp
+@@ -1,3 +1,6 @@
++#ifdef __wasi__
++// patched: no sockets on wasi; nothing in lld uses raw_socket_stream.
++#else
+ //===-- llvm/Support/raw_socket_stream.cpp - Socket streams --*- C++ -*-===//
+ //
+ // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+@@ -356,3 +359,5 @@ ssize_t raw_socket_stream::read(char *Ptr, size_t Size,
+   }
+   return raw_fd_stream::read(Ptr, Size);
+ }
++
++#endif // !__wasi__ (patched)

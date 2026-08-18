@@ -1,0 +1,12 @@
+#pragma once
+// Single-threaded <thread> surface for LLVM under wasi/wazero.
+#include <chrono>
+namespace std {
+namespace this_thread {
+template <class Rep, class Period>
+inline void sleep_for(const chrono::duration<Rep, Period> &) {}
+template <class Clock, class Duration>
+inline void sleep_until(const chrono::time_point<Clock, Duration> &) {}
+inline void yield() {}
+} // namespace this_thread
+} // namespace std
