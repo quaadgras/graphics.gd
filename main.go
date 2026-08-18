@@ -55,7 +55,7 @@ func main() {
 
 	console.Print("[color=#50fa7b]graphics.gd harness[/color] — project: " + term.Escape(kit().Describe()))
 	if !ai.Ready() {
-		console.System("no API key: set one with /key sk-ant-... to enable agent chat (! and / still work).")
+		console.System("no API key: /provider to pick an AI (anthropic, grok, qwen, openai), /key to set its key.")
 	}
 	console.System("/help for commands")
 
@@ -102,7 +102,9 @@ func command(line string, console *term.Console, kit func() toolchain.Kit, remot
 	var err error
 	switch verb {
 	case "help":
-		console.System("/key sk-ant-... — set and remember the Anthropic API key")
+		console.System("/provider [name] — list AI providers, or switch (anthropic, grok, qwen, openai, custom)")
+		console.System("/model <name> — override the model for the current provider")
+		console.System("/key <key> — set and remember the API key for the current provider")
 		console.System("/remote user@host[:port] /path/to/project — build via SSH on another machine")
 		console.System("/remote off — back to the local project")
 		console.System("/build — gd build for the host")
@@ -113,9 +115,40 @@ func command(line string, console *term.Console, kit func() toolchain.Kit, remot
 		console.System("/quit — exit")
 		console.System("!command — run a shell command in the project")
 		console.System("anything else — talk to the agent")
+	case "provider":
+		switch {
+		case rest == "":
+			for _, line := range ai.Status() {
+				console.System(line)
+			}
+		case strings.HasPrefix(rest, "custom"):
+			fields := strings.Fields(rest)
+			if len(fields) != 3 {
+				console.Error("usage: /provider custom <base-url> <model>")
+				break
+			}
+			if err = ai.SetCustomProvider(fields[1], fields[2]); err == nil {
+				console.System("custom provider set: " + fields[1] + " / " + fields[2] + " — set its key with /key")
+			}
+		default:
+			if err = ai.SetProvider(rest); err == nil {
+				console.System("provider: " + rest)
+				if !ai.Ready() {
+					console.System("no key yet — set one with /key <key>")
+				}
+			}
+		}
+	case "model":
+		if rest == "" {
+			console.Error("usage: /model <name>")
+			break
+		}
+		if err = ai.SetModel(rest); err == nil {
+			console.System("model: " + rest)
+		}
 	case "key":
 		if rest == "" {
-			console.Error("usage: /key sk-ant-...")
+			console.Error("usage: /key <key>")
 			break
 		}
 		if err = ai.SetKey(rest); err == nil {

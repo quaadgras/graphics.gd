@@ -1,192 +1,168 @@
-// Package agent is a minimal coding-agent loop over the Anthropic
-// Messages API: send the conversation, print text, execute tool calls,
-// repeat until the model stops asking for tools. Pure net/http, no SDK.
+// Package agent is a minimal coding-agent loop: send the conversation,
+// print text, execute tool calls, repeat until the model stops asking
+// for tools. Pure net/http, no SDK. The model backend is pluggable —
+// Anthropic's Messages API or any OpenAI-compatible endpoint (xAI Grok,
+// Qwen/DashScope, OpenAI, a local server) — selected in settings.
 package agent
 
 import (
-	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
-	"graphics.gd/harness/internal/term"
 	"graphics.gd/harness/internal/toolchain"
 )
 
 const (
-	apiURL       = "https://api.anthropic.com/v1/messages"
-	apiVersion   = "2023-06-01"
-	defaultModel = "claude-sonnet-5"
 	maxTokens    = 8192
 	maxToolTurns = 50
 )
 
+// Console is the sink the agent writes to. term.Console satisfies it;
+// keeping it an interface lets the agent's tests run without linking the
+// engine.
+type Console interface {
+	// Printf prints escaped plain text (model prose, tool output).
+	Printf(format string, args ...any)
+	// System prints a dim status line.
+	System(msg string)
+	// Error prints an error line.
+	Error(msg string)
+}
+
 type Agent struct {
 	stateDir string
 	kit      func() toolchain.Kit
-	console  *term.Console
+	console  Console
 
-	key   string
-	model string
-	httpc *http.Client
-	msgs  []message
-}
-
-type message struct {
-	Role    string  `json:"role"`
-	Content []block `json:"content"`
-}
-
-type block struct {
-	Type string `json:"type"`
-	// text
-	Text string `json:"text,omitempty"`
-	// tool_use (from the model)
-	ID    string          `json:"id,omitempty"`
-	Name  string          `json:"name,omitempty"`
-	Input json.RawMessage `json:"input,omitempty"`
-	// tool_result (from us)
-	ToolUseID string `json:"tool_use_id,omitempty"`
-	Content   string `json:"content,omitempty"`
-	IsError   bool   `json:"is_error,omitempty"`
-}
-
-type request struct {
-	Model     string    `json:"model"`
-	MaxTokens int       `json:"max_tokens"`
-	System    string    `json:"system"`
-	Messages  []message `json:"messages"`
-	Tools     []tool    `json:"tools"`
-}
-
-type response struct {
-	Content    []block `json:"content"`
-	StopReason string  `json:"stop_reason"`
-	Error      *struct {
-		Type    string `json:"type"`
-		Message string `json:"message"`
-	} `json:"error"`
+	cfg     *Config
+	httpc   *http.Client
+	history []entry
 }
 
 // New builds an agent whose tools operate through kit — a function so
 // the caller can swap between local and remote kits at runtime.
-// stateDir holds harness state such as the saved API key.
-func New(stateDir string, kit func() toolchain.Kit, console *term.Console) *Agent {
-	model := os.Getenv("GD_HARNESS_MODEL")
-	if model == "" {
-		model = defaultModel
-	}
-	a := &Agent{
+// stateDir holds harness state (settings, keys).
+func New(stateDir string, kit func() toolchain.Kit, console Console) *Agent {
+	return &Agent{
 		stateDir: stateDir,
 		kit:      kit,
 		console:  console,
-		key:      os.Getenv("ANTHROPIC_API_KEY"),
-		model:    model,
+		cfg:      loadConfig(stateDir),
 		httpc:    &http.Client{Timeout: 5 * time.Minute},
 	}
-	if a.key == "" {
-		if saved, err := os.ReadFile(a.keyFile()); err == nil {
-			a.key = strings.TrimSpace(string(saved))
+}
+
+// Ready reports whether the current provider has an API key.
+func (a *Agent) Ready() bool { return a.cfg.key() != "" }
+
+// SetKey stores the API key for the current provider.
+func (a *Agent) SetKey(key string) error {
+	a.cfg.Keys[a.cfg.Provider] = strings.TrimSpace(key)
+	return a.cfg.save(a.stateDir)
+}
+
+// SetProvider switches to a named preset provider.
+func (a *Agent) SetProvider(name string) error {
+	name = strings.TrimSpace(name)
+	if name != "custom" {
+		if _, ok := builtinProviders[name]; !ok {
+			return fmt.Errorf("unknown provider %q — try: %s, custom", name, strings.Join(providerOrder(), ", "))
 		}
 	}
-	return a
+	a.cfg.Provider = name
+	a.cfg.Model = "" // clear any per-provider model override
+	return a.cfg.save(a.stateDir)
 }
 
-func (a *Agent) Ready() bool { return a.key != "" }
-
-func (a *Agent) keyFile() string {
-	return filepath.Join(a.stateDir, "key")
-}
-
-// SetKey stores the API key for this and future sessions. On platforms
-// without environment variables (iOS) this is the only way in.
-func (a *Agent) SetKey(key string) error {
-	a.key = strings.TrimSpace(key)
-	if err := os.MkdirAll(filepath.Dir(a.keyFile()), 0o700); err != nil {
-		return err
+// SetCustomProvider configures and selects a custom OpenAI-compatible
+// endpoint.
+func (a *Agent) SetCustomProvider(baseURL, model string) error {
+	a.cfg.Custom = &Provider{
+		Name: "custom", BaseURL: strings.TrimRight(strings.TrimSpace(baseURL), "/"),
+		Model: strings.TrimSpace(model), Format: "openai",
 	}
-	return os.WriteFile(a.keyFile(), []byte(a.key+"\n"), 0o600)
+	a.cfg.Provider = "custom"
+	a.cfg.Model = ""
+	return a.cfg.save(a.stateDir)
+}
+
+// SetModel overrides the model for the current provider.
+func (a *Agent) SetModel(model string) error {
+	a.cfg.Model = strings.TrimSpace(model)
+	return a.cfg.save(a.stateDir)
+}
+
+// Status returns provider/model/key lines for the /provider command.
+func (a *Agent) Status() []string {
+	var lines []string
+	for _, name := range providerOrder() {
+		mark := "  "
+		if name == a.cfg.Provider {
+			mark = "▸ "
+		}
+		have := "no key"
+		if a.cfg.Keys[name] != "" {
+			have = "key set"
+		}
+		p := builtinProviders[name]
+		lines = append(lines, fmt.Sprintf("%s%-9s %-10s (%s) — %s", mark, name, p.Model, have, p.KeyHint))
+	}
+	if a.cfg.Custom != nil {
+		mark := "  "
+		if a.cfg.Provider == "custom" {
+			mark = "▸ "
+		}
+		lines = append(lines, fmt.Sprintf("%scustom    %-10s %s", mark, a.cfg.Custom.Model, a.cfg.Custom.BaseURL))
+	}
+	if p, err := a.cfg.provider(); err == nil {
+		lines = append(lines, fmt.Sprintf("using %s / %s", p.Name, p.Model))
+	}
+	return lines
 }
 
 // Reset clears the conversation.
-func (a *Agent) Reset() { a.msgs = nil }
+func (a *Agent) Reset() { a.history = nil }
 
 // Turn runs one user turn to completion, executing tool calls as the
 // model requests them. Call from a single worker goroutine.
 func (a *Agent) Turn(input string) {
-	if !a.Ready() {
-		a.console.Error("ANTHROPIC_API_KEY is not set — export it and restart, or use ! shell commands.")
+	p, err := a.cfg.provider()
+	if err != nil {
+		a.console.Error(err.Error())
 		return
 	}
-	a.msgs = append(a.msgs, message{Role: "user", Content: []block{{Type: "text", Text: input}}})
+	if !a.Ready() {
+		a.console.Error(fmt.Sprintf("no API key for %s — set one with /key <key> (from %s), or /provider to switch.", p.Name, p.KeyHint))
+		return
+	}
+	ctx := context.Background()
+	a.history = append(a.history, entry{role: "user", text: input})
 	for range maxToolTurns {
-		res, err := a.call()
+		res, err := complete(ctx, a.httpc, p, a.cfg.key(), a.systemPrompt(), a.history, toolDefinitions)
 		if err != nil {
-			a.console.Error("api: " + err.Error())
+			a.console.Error(p.Name + ": " + err.Error())
 			return
 		}
-		a.msgs = append(a.msgs, message{Role: "assistant", Content: res.Content})
-		var results []block
-		for _, b := range res.Content {
-			switch b.Type {
-			case "text":
-				a.console.Print(term.Escape(b.Text))
-			case "tool_use":
-				a.console.System("⚙ " + b.Name + " " + summarize(b.Input))
-				out, isErr := a.dispatch(b.Name, b.Input)
-				results = append(results, block{
-					Type: "tool_result", ToolUseID: b.ID, Content: out, IsError: isErr,
-				})
-			}
+		if res.text != "" {
+			a.console.Printf("%s", res.text)
 		}
-		if res.StopReason != "tool_use" || len(results) == 0 {
+		a.history = append(a.history, entry{role: "assistant", text: res.text, calls: res.calls})
+		if len(res.calls) == 0 {
 			return
 		}
-		a.msgs = append(a.msgs, message{Role: "user", Content: results})
+		var results []toolResult
+		for _, c := range res.calls {
+			a.console.System("⚙ " + c.name + " " + summarize(c.input))
+			out, isErr := a.dispatch(c.name, c.input)
+			results = append(results, toolResult{id: c.id, output: out, isError: isErr})
+		}
+		a.history = append(a.history, entry{role: "user", results: results})
 	}
 	a.console.Error("stopping: too many tool calls in one turn")
-}
-
-func (a *Agent) call() (*response, error) {
-	body, err := json.Marshal(request{
-		Model:     a.model,
-		MaxTokens: maxTokens,
-		System:    a.systemPrompt(),
-		Messages:  a.msgs,
-		Tools:     toolDefinitions,
-	})
-	if err != nil {
-		return nil, err
-	}
-	req, err := http.NewRequest("POST", apiURL, bytes.NewReader(body))
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("content-type", "application/json")
-	req.Header.Set("x-api-key", a.key)
-	req.Header.Set("anthropic-version", apiVersion)
-	httpRes, err := a.httpc.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer httpRes.Body.Close()
-	data, err := io.ReadAll(httpRes.Body)
-	if err != nil {
-		return nil, err
-	}
-	var res response
-	if err := json.Unmarshal(data, &res); err != nil {
-		return nil, fmt.Errorf("bad response (%s): %.200s", httpRes.Status, data)
-	}
-	if res.Error != nil {
-		return nil, fmt.Errorf("%s: %s", res.Error.Type, res.Error.Message)
-	}
-	return &res, nil
 }
 
 func (a *Agent) systemPrompt() string {

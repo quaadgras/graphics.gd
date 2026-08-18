@@ -17,13 +17,33 @@ ANTHROPIC_API_KEY=... gd run
 ```
 
 The harness operates on the project named by `GD_HARNESS_PROJECT`
-(default: its working directory). `GD_HARNESS_MODEL` overrides the
-model (default `claude-sonnet-5`).
+(default: its working directory).
 
 Type to talk to the agent. `!command` runs a shell command. `/help`
 lists local commands — `/deploy` runs `GOOS=ios gd run`, which builds
 the project, exports the IPA, serves it, and prints a SideStore QR
 right into the scrollback (it is monospace half-block art, so it scans).
+
+## Choosing an AI
+
+The agent works with any of several backends — Anthropic (Claude), xAI
+(Grok), Qwen/DashScope, OpenAI, or any OpenAI-compatible endpoint —
+selected at runtime and remembered in `.harness/config.json`:
+
+```
+/provider              list providers and which one is active
+/provider grok         switch to Grok (or anthropic / qwen / openai)
+/provider custom https://host/v1 my-model   any OpenAI-compatible server
+/model grok-4-fast     override the model for the current provider
+/key <key>             set the API key for the current provider
+```
+
+Keys are also seeded from the environment on first run
+(`ANTHROPIC_API_KEY`, `XAI_API_KEY`, `DASHSCOPE_API_KEY`,
+`OPENAI_API_KEY`), and `GD_HARNESS_PROVIDER` / `GD_HARNESS_MODEL` set the
+initial choice. Anthropic uses its Messages API; everyone else speaks
+the OpenAI chat-completions API, so one format covers Grok, Qwen,
+OpenAI, and local servers alike.
 
 ## The iPhone loop, today
 
@@ -57,8 +77,11 @@ framework, no SDK.
   LineEdit prompt. Goroutines write into a channel; the frame loop
   drains it. Engine nodes are only touched on the main thread.
 - `internal/agent` — the loop: send conversation → print text → run
-  tool calls → repeat. Pure `net/http` against the Anthropic Messages
-  API. Six tools: read, write, edit, ls, run, gd.
+  tool calls → repeat. Pure `net/http`, no SDK. A neutral conversation
+  is serialized by a `Provider` to either the Anthropic Messages or the
+  OpenAI chat-completions wire format (`config.go`/`provider.go`), so
+  Claude, Grok, Qwen, OpenAI and local servers all work. Six tools:
+  read, write, edit, ls, run, gd.
 - `internal/buildkit` — the in-process toolchain: `cmd/compile`,
   `cmd/link`, and `ld64.lld`, cross-compiled to wasm and run under
   wazero with zero process spawns. `Toolchain` exposes `Compile`,
