@@ -25,16 +25,11 @@ import (
 )
 
 func main() {
-	project := os.Getenv("GD_HARNESS_PROJECT")
-	if project == "" {
-		project, _ = os.Getwd()
-	}
-	project, err := filepath.Abs(project)
+	startup.LoadingScene()
+	project, err := filepath.Abs(defaultProject())
 	if err != nil {
 		panic(err)
 	}
-
-	startup.LoadingScene()
 	console := term.New()
 	SceneTree.Add(console.Root())
 	console.Focus()
@@ -44,7 +39,7 @@ func main() {
 
 	console.Print("[color=#50fa7b]graphics.gd harness[/color] — project: " + term.Escape(project))
 	if !ai.Ready() {
-		console.System("ANTHROPIC_API_KEY is not set: agent chat is disabled, ! and / still work.")
+		console.System("no API key: set one with /key sk-ant-... to enable agent chat (! and / still work).")
 	}
 	console.System("/help for commands")
 
@@ -86,10 +81,11 @@ func worker(inbox <-chan string, console *term.Console, tools *toolchain.Toolcha
 }
 
 func command(line string, console *term.Console, tools *toolchain.Toolchain, ai *agent.Agent) {
-	verb, _, _ := strings.Cut(strings.TrimPrefix(line, "/"), " ")
+	verb, rest, _ := strings.Cut(strings.TrimPrefix(line, "/"), " ")
 	var err error
 	switch verb {
 	case "help":
+		console.System("/key sk-ant-... — set and remember the Anthropic API key")
 		console.System("/build — gd build for the host")
 		console.System("/test — gd test")
 		console.System("/deploy — GOOS=ios gd run: build, export and serve a SideStore install")
@@ -98,6 +94,14 @@ func command(line string, console *term.Console, tools *toolchain.Toolchain, ai 
 		console.System("/quit — exit")
 		console.System("!command — run a shell command in the project")
 		console.System("anything else — talk to the agent")
+	case "key":
+		if strings.TrimSpace(rest) == "" {
+			console.Error("usage: /key sk-ant-...")
+			break
+		}
+		if err = ai.SetKey(rest); err == nil {
+			console.System("API key saved — agent chat enabled")
+		}
 	case "build":
 		err = tools.GD("build", "")
 	case "test":

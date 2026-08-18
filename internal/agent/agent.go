@@ -10,6 +10,8 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
+	"strings"
 	"time"
 
 	"graphics.gd/harness/internal/term"
@@ -76,7 +78,7 @@ func New(project string, tc *toolchain.Toolchain, console *term.Console) *Agent 
 	if model == "" {
 		model = defaultModel
 	}
-	return &Agent{
+	a := &Agent{
 		project: project,
 		tc:      tc,
 		console: console,
@@ -84,9 +86,29 @@ func New(project string, tc *toolchain.Toolchain, console *term.Console) *Agent 
 		model:   model,
 		httpc:   &http.Client{Timeout: 5 * time.Minute},
 	}
+	if a.key == "" {
+		if saved, err := os.ReadFile(a.keyFile()); err == nil {
+			a.key = strings.TrimSpace(string(saved))
+		}
+	}
+	return a
 }
 
 func (a *Agent) Ready() bool { return a.key != "" }
+
+func (a *Agent) keyFile() string {
+	return filepath.Join(a.project, ".harness", "key")
+}
+
+// SetKey stores the API key for this and future sessions. On platforms
+// without environment variables (iOS) this is the only way in.
+func (a *Agent) SetKey(key string) error {
+	a.key = strings.TrimSpace(key)
+	if err := os.MkdirAll(filepath.Dir(a.keyFile()), 0o700); err != nil {
+		return err
+	}
+	return os.WriteFile(a.keyFile(), []byte(a.key+"\n"), 0o600)
+}
 
 // Reset clears the conversation.
 func (a *Agent) Reset() { a.msgs = nil }

@@ -1,3 +1,4 @@
+/.harness/
 /graphics/.godot/
 /graphics/*.a
 /graphics/*.so

@@ -1,0 +1,20 @@
+[configuration]
+
+entry_symbol = "cgo_extension_init"
+compatibility_minimum = "4.7.stable.custom_build.4923e4443"
+
+[libraries]
+
+windows.x86_64 = "windows_amd64.dll"
+windows.arm64  = "windows_arm64.dll"
+macos.release  = "darwin_universal.dylib"
+macos.debug    = "darwin_universal.dylib"
+macos.arm64    = "darwin_arm64.dylib"
+macos.amd64    = "darwin_amd64.dylib"
+ios.arm64      = "go.xcframework"
+android.arm64  = "libandroid_arm64.so"
+android.x86_64 = "libandroid_amd64.so"
+linux.template_debug.x86_64 = "linux_amd64.so"
+linux.template_release.x86_64 = "linux_amd64.so"
+linux.template_debug.arm64 = "linux_arm64.so"
+linux.template_release.arm64 = "linux_arm64.so"

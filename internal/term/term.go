@@ -8,6 +8,7 @@ package term
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"sync"
 
@@ -37,6 +38,12 @@ func New() *Console {
 	mono := SystemFont.New()
 	mono.SetFontNames([]string{"JetBrains Mono", "Cascadia Mono", "Menlo", "monospace"})
 
+	// Phone screens are dense; desktop keeps the theme default.
+	fontSize := 0
+	if runtime.GOOS == "ios" || runtime.GOOS == "android" {
+		fontSize = 28
+	}
+
 	c.root = VBoxContainer.New()
 	c.root.AsControl().SetAnchorsPreset(Control.PresetFullRect)
 
@@ -46,18 +53,28 @@ func New() *Console {
 	c.log.SetSelectionEnabled(true)
 	c.log.AsControl().SetSizeFlagsVertical(Control.SizeExpandFill)
 	c.log.AsControl().AddThemeFontOverride("normal_font", mono.AsFont())
+	if fontSize > 0 {
+		c.log.AsControl().AddThemeFontSizeOverride("normal_font_size", fontSize)
+	}
 	c.root.AsNode().AddChild(c.log.AsNode())
 
 	c.input = LineEdit.New()
 	c.input.SetPlaceholderText("talk to the agent, !command for shell, /help for commands")
 	c.input.AsControl().AddThemeFontOverride("font", mono.AsFont())
+	if fontSize > 0 {
+		c.input.AsControl().AddThemeFontSizeOverride("font_size", fontSize)
+	}
 	c.input.OnTextSubmitted(func(text string) {
 		c.input.SetText("")
 		line := strings.TrimSpace(text)
 		if line == "" {
 			return
 		}
-		c.Print("[color=#8be9fd]> " + Escape(line) + "[/color]")
+		echo := line
+		if strings.HasPrefix(echo, "/key ") { // never render secrets into the scrollback
+			echo = "/key ••••"
+		}
+		c.Print("[color=#8be9fd]> " + Escape(echo) + "[/color]")
 		c.mu.Lock()
 		submit := c.submit
 		c.mu.Unlock()
