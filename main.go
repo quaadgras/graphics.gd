@@ -39,6 +39,11 @@ func main() {
 	console := term.New()
 	SceneTree.Add(console.Root())
 	console.Focus()
+	// Drain the console once per frame from the engine's own frame
+	// signal, which fires on the main thread however frames are driven
+	// (our Go loop on desktop, the OS run loop on iOS). Relying on the
+	// Rendering() loop body alone left the scrollback empty on iOS.
+	SceneTree.Get(console.Root().AsNode()).OnProcessFrame(func() { console.Flush() })
 
 	local := toolchain.New(project, console)
 	remote, _ := toolchain.LoadRemote(stateDir, console)
@@ -89,9 +94,7 @@ func main() {
 		}
 	})
 
-	for range startup.Rendering() {
-		console.Flush()
-	}
+	startup.Scene()
 }
 
 // command handles a /verb line and returns the (possibly changed)

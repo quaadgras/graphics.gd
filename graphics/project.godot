@@ -13,5 +13,9 @@ config/name="graphics.gd-harness"
 run/main_scene="res://main.tscn"
 run/main_loop_type="GoMainLoop"
 
+[display]
+
+window/handheld/orientation=1
+
 [rendering]
 textures/vram_compression/import_etc2_astc=true
