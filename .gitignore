@@ -1,0 +1,9 @@
+/graphics/.godot/
+/graphics/*.a
+/graphics/*.so
+/graphics/*.editor
+/graphics/*.gen.go
+/releases/
+*.apk
+*.aab
+*.ipa
