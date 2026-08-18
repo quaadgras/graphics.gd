@@ -1,0 +1,78 @@
+--- a/src/internal/platform/supported.go
++++ b/src/internal/platform/supported.go
+@@ -114,9 +114,7 @@
+ 			return true
+ 		}
+ 	case "ios":
+-		if goarch == "arm64" {
+-			return true
+-		}
++		// patched: allow internal linking for the wasm-hosted toolchain PoC.
+ 	}
+ 	return false
+ }
+@@ -167,7 +165,7 @@
+ 		case "linux/amd64", "linux/arm", "linux/arm64", "linux/loong64", "linux/386", "linux/ppc64le", "linux/riscv64", "linux/s390x",
+ 			"android/amd64", "android/arm", "android/arm64", "android/386",
+ 			"freebsd/amd64",
+-			"darwin/amd64", "darwin/arm64",
++			"darwin/amd64", "darwin/arm64", "ios/arm64", // patched: PoC
+ 			"windows/amd64", "windows/386", "windows/arm64",
+ 			"wasip1/wasm":
+ 			return true
+@@ -205,7 +203,7 @@
+ 		switch platform {
+ 		case "linux/amd64", "linux/arm", "linux/arm64", "linux/386", "linux/loong64", "linux/riscv64", "linux/s390x", "linux/ppc64le",
+ 			"android/amd64", "android/386",
+-			"darwin/amd64", "darwin/arm64",
++			"darwin/amd64", "darwin/arm64", "ios/arm64", // patched: PoC
+ 			"freebsd/amd64":
+ 			return true
+ 		}
+@@ -219,7 +217,7 @@
+ func InternalLinkPIESupported(goos, goarch string) bool {
+ 	switch goos + "/" + goarch {
+ 	case "android/arm64",
+-		"darwin/amd64", "darwin/arm64",
++		"darwin/amd64", "darwin/arm64", "ios/arm64", // patched: PoC
+ 		"linux/amd64", "linux/arm64", "linux/loong64", "linux/ppc64le",
+ 		"windows/386", "windows/amd64", "windows/arm64":
+ 		return true
+--- a/src/cmd/link/internal/ld/macho.go
++++ b/src/cmd/link/internal/ld/macho.go
+@@ -427,7 +427,7 @@
+ 		if buildcfg.GOOS == "ios" {
+ 			machoPlatform = PLATFORM_IOS
+ 		}
+-		if ctxt.LinkMode == LinkInternal && machoPlatform == PLATFORM_MACOS {
++		if ctxt.LinkMode == LinkInternal && (machoPlatform == PLATFORM_MACOS || machoPlatform == PLATFORM_IOS) {
+ 			var version uint32
+ 			switch ctxt.Arch.Family {
+ 			case sys.ARM64, sys.AMD64:
+@@ -439,6 +439,11 @@
+ 				// supported macOS version could cause new problems.
+ 				version = 12<<16 | 0<<8 | 0<<0 // 12.0.0
+ 			}
++			if machoPlatform == PLATFORM_IOS {
++				// patched: iOS refuses binaries without a declared
++				// minimum OS version.
++				version = 15 << 16 // 15.0.0
++			}
+ 			ml := newMachoLoad(ctxt.Arch, imacho.LC_BUILD_VERSION, 4)
+ 			ml.data[0] = uint32(machoPlatform)
+ 			ml.data[1] = version // OS version
+--- a/src/runtime/rt0_ios_arm64.s
++++ b/src/runtime/rt0_ios_arm64.s
+@@ -5,9 +5,10 @@
+ #include "textflag.h"
+ 
+ // internal linking executable entry point.
+-// ios/arm64 only supports external linking.
++// patched: real entry for the internal-linking PoC — same as darwin,
++// dyld hands argc/argv in R0/R1.
+ TEXT _rt0_arm64_ios(SB),NOSPLIT|NOFRAME,$0
+-	UNDEF
++	JMP	runtime·rt0_go(SB)
+ 
+ // library entry point.
+ TEXT _rt0_arm64_ios_lib(SB),NOSPLIT|NOFRAME,$0
