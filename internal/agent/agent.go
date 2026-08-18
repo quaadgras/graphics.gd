@@ -27,9 +27,9 @@ const (
 )
 
 type Agent struct {
-	project string
-	tc      *toolchain.Toolchain
-	console *term.Console
+	stateDir string
+	kit      func() toolchain.Kit
+	console  *term.Console
 
 	key   string
 	model string
@@ -73,18 +73,21 @@ type response struct {
 	} `json:"error"`
 }
 
-func New(project string, tc *toolchain.Toolchain, console *term.Console) *Agent {
+// New builds an agent whose tools operate through kit — a function so
+// the caller can swap between local and remote kits at runtime.
+// stateDir holds harness state such as the saved API key.
+func New(stateDir string, kit func() toolchain.Kit, console *term.Console) *Agent {
 	model := os.Getenv("GD_HARNESS_MODEL")
 	if model == "" {
 		model = defaultModel
 	}
 	a := &Agent{
-		project: project,
-		tc:      tc,
-		console: console,
-		key:     os.Getenv("ANTHROPIC_API_KEY"),
-		model:   model,
-		httpc:   &http.Client{Timeout: 5 * time.Minute},
+		stateDir: stateDir,
+		kit:      kit,
+		console:  console,
+		key:      os.Getenv("ANTHROPIC_API_KEY"),
+		model:    model,
+		httpc:    &http.Client{Timeout: 5 * time.Minute},
 	}
 	if a.key == "" {
 		if saved, err := os.ReadFile(a.keyFile()); err == nil {
@@ -97,7 +100,7 @@ func New(project string, tc *toolchain.Toolchain, console *term.Console) *Agent 
 func (a *Agent) Ready() bool { return a.key != "" }
 
 func (a *Agent) keyFile() string {
-	return filepath.Join(a.project, ".harness", "key")
+	return filepath.Join(a.stateDir, "key")
 }
 
 // SetKey stores the API key for this and future sessions. On platforms
@@ -190,10 +193,10 @@ func (a *Agent) systemPrompt() string {
 	return "You are the graphics.gd harness, a coding agent embedded in a " +
 		"terminal rendered by the very engine your user builds games with. " +
 		"You edit and build the graphics.gd (Go bindings for Godot 4) project " +
-		"rooted at " + a.project + ". Paths in tool calls are relative to that " +
-		"root. Use the gd tool to build, test or run the project (goos ios " +
-		"exports and serves a SideStore install for an iPhone). Be direct and " +
-		"keep output brief: it renders in a small scrollback."
+		"at " + a.kit().Describe() + ". Paths in tool calls are relative to " +
+		"that root. Use the gd tool to build, test or run the project (goos " +
+		"ios exports and serves a SideStore install for an iPhone). Be direct " +
+		"and keep output brief: it renders in a small scrollback."
 }
 
 // summarize renders tool input compactly for the scrollback.

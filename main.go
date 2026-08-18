@@ -6,8 +6,12 @@
 //
 //	ANTHROPIC_API_KEY=... gd run
 //
-// It operates on the project named by GD_HARNESS_PROJECT, defaulting to
-// the harness's own working directory (it can work on itself).
+// It operates on the project named by GD_HARNESS_PROJECT (default: the
+// working directory; on iOS, the app sandbox). With /remote configured
+// it instead operates on another machine's checkout over SSH — which is
+// how an iPhone gets a full build loop today: the remote runs
+// GOOS=ios gd run, and the harness opens the served SideStore install
+// link on-device.
 package main
 
 import (
@@ -30,14 +34,26 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	stateDir := filepath.Join(project, ".harness")
+
 	console := term.New()
 	SceneTree.Add(console.Root())
 	console.Focus()
 
-	tools := toolchain.New(project, console)
-	ai := agent.New(project, tools, console)
+	local := toolchain.New(project, console)
+	remote, _ := toolchain.LoadRemote(stateDir, console)
+	if remote != nil {
+		remote.OnURL = installURL(console)
+	}
+	kit := func() toolchain.Kit {
+		if remote != nil {
+			return remote
+		}
+		return local
+	}
+	ai := agent.New(stateDir, kit, console)
 
-	console.Print("[color=#50fa7b]graphics.gd harness[/color] — project: " + term.Escape(project))
+	console.Print("[color=#50fa7b]graphics.gd harness[/color] — project: " + term.Escape(kit().Describe()))
 	if !ai.Ready() {
 		console.System("no API key: set one with /key sk-ant-... to enable agent chat (! and / still work).")
 	}
@@ -46,7 +62,24 @@ func main() {
 	// One worker goroutine owns the agent and every blocking operation;
 	// the main thread only renders and forwards input.
 	inbox := make(chan string, 16)
-	go worker(inbox, console, tools, ai)
+	go func() {
+		for line := range inbox {
+			switch {
+			case strings.HasPrefix(line, "!"):
+				out, err := kit().Shell(strings.TrimPrefix(line, "!"), 5*time.Minute)
+				if out != "" {
+					console.Printf("%s", out)
+				}
+				if err != nil {
+					console.Error(err.Error())
+				}
+			case strings.HasPrefix(line, "/"):
+				remote = command(line, console, kit, remote, stateDir, ai)
+			default:
+				ai.Turn(line)
+			}
+		}
+	}()
 
 	console.OnSubmit(func(line string) {
 		select {
@@ -61,55 +94,61 @@ func main() {
 	}
 }
 
-func worker(inbox <-chan string, console *term.Console, tools *toolchain.Toolchain, ai *agent.Agent) {
-	for line := range inbox {
-		switch {
-		case strings.HasPrefix(line, "!"):
-			out, err := tools.Shell(strings.TrimPrefix(line, "!"), 5*time.Minute)
-			if out != "" {
-				console.Printf("%s", out)
-			}
-			if err != nil {
-				console.Error(err.Error())
-			}
-		case strings.HasPrefix(line, "/"):
-			command(line, console, tools, ai)
-		default:
-			ai.Turn(line)
-		}
-	}
-}
-
-func command(line string, console *term.Console, tools *toolchain.Toolchain, ai *agent.Agent) {
+// command handles a /verb line and returns the (possibly changed)
+// remote kit.
+func command(line string, console *term.Console, kit func() toolchain.Kit, remote *toolchain.Remote, stateDir string, ai *agent.Agent) *toolchain.Remote {
 	verb, rest, _ := strings.Cut(strings.TrimPrefix(line, "/"), " ")
+	rest = strings.TrimSpace(rest)
 	var err error
 	switch verb {
 	case "help":
 		console.System("/key sk-ant-... — set and remember the Anthropic API key")
+		console.System("/remote user@host[:port] /path/to/project — build via SSH on another machine")
+		console.System("/remote off — back to the local project")
 		console.System("/build — gd build for the host")
 		console.System("/test — gd test")
 		console.System("/deploy — GOOS=ios gd run: build, export and serve a SideStore install")
-		console.System("/android — GOOS=android gd run: build, install and launch on this device")
+		console.System("/android — GOOS=android gd run: build, install and launch on that device")
 		console.System("/clear — forget the conversation")
 		console.System("/quit — exit")
 		console.System("!command — run a shell command in the project")
 		console.System("anything else — talk to the agent")
 	case "key":
-		if strings.TrimSpace(rest) == "" {
+		if rest == "" {
 			console.Error("usage: /key sk-ant-...")
 			break
 		}
 		if err = ai.SetKey(rest); err == nil {
 			console.System("API key saved — agent chat enabled")
 		}
+	case "remote":
+		if rest == "off" || rest == "" {
+			toolchain.ForgetRemote(stateDir)
+			if rest == "off" {
+				console.System("remote cleared — using the local project")
+			} else {
+				console.Error("usage: /remote user@host[:port] /path/to/project (or /remote off)")
+			}
+			return nil
+		}
+		next, err := toolchain.NewRemote(rest, stateDir, console)
+		if err != nil {
+			console.Error(err.Error())
+			return remote
+		}
+		next.OnURL = installURL(console)
+		console.System("remote set: " + next.Describe())
+		console.System("authorize it by adding this key to the remote's ~/.ssh/authorized_keys:")
+		console.Printf("%s", next.PublicKey())
+		return next
 	case "build":
-		err = tools.GD("build", "")
+		err = kit().GD("build", "")
 	case "test":
-		err = tools.GD("test", "")
+		err = kit().GD("test", "")
 	case "deploy":
-		err = tools.GD("run", "ios")
+		err = kit().GD("run", "ios")
 	case "android":
-		err = tools.GD("run", "android")
+		err = kit().GD("run", "android")
 	case "clear":
 		ai.Reset()
 		console.System("conversation cleared")
@@ -120,5 +159,14 @@ func command(line string, console *term.Console, tools *toolchain.Toolchain, ai 
 	}
 	if err != nil {
 		console.Error(err.Error())
+	}
+	return remote
+}
+
+// installURL reacts to a sidestore:// link appearing in remote build
+// output: on iOS it opens SideStore to install onto this device.
+func installURL(console *term.Console) func(string) {
+	return func(url string) {
+		openURL(console, url)
 	}
 }

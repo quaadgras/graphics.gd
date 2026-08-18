@@ -2,9 +2,6 @@ package agent
 
 import (
 	"encoding/json"
-	"fmt"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 )
@@ -53,7 +50,8 @@ var toolDefinitions = []tool{
 	},
 }
 
-// dispatch executes one tool call, returning output and whether it errored.
+// dispatch executes one tool call through the active kit, returning
+// output and whether it errored.
 func (a *Agent) dispatch(name string, input json.RawMessage) (string, bool) {
 	var args struct {
 		Path      string `json:"path"`
@@ -67,14 +65,11 @@ func (a *Agent) dispatch(name string, input json.RawMessage) (string, bool) {
 	if err := json.Unmarshal(input, &args); err != nil {
 		return "bad tool input: " + err.Error(), true
 	}
+	kit := a.kit()
 	fail := func(err error) (string, bool) { return err.Error(), true }
 	switch name {
 	case "read":
-		path, err := a.resolve(args.Path)
-		if err != nil {
-			return fail(err)
-		}
-		data, err := os.ReadFile(path)
+		data, err := kit.ReadFile(args.Path)
 		if err != nil {
 			return fail(err)
 		}
@@ -84,23 +79,12 @@ func (a *Agent) dispatch(name string, input json.RawMessage) (string, bool) {
 		}
 		return string(data), false
 	case "write":
-		path, err := a.resolve(args.Path)
-		if err != nil {
-			return fail(err)
-		}
-		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
-			return fail(err)
-		}
-		if err := os.WriteFile(path, []byte(args.Content), 0o644); err != nil {
+		if err := kit.WriteFile(args.Path, []byte(args.Content)); err != nil {
 			return fail(err)
 		}
 		return "wrote " + args.Path, false
 	case "edit":
-		path, err := a.resolve(args.Path)
-		if err != nil {
-			return fail(err)
-		}
-		data, err := os.ReadFile(path)
+		data, err := kit.ReadFile(args.Path)
 		if err != nil {
 			return fail(err)
 		}
@@ -113,52 +97,27 @@ func (a *Agent) dispatch(name string, input json.RawMessage) (string, bool) {
 			return "old_string matches more than once in " + args.Path, true
 		}
 		text = strings.Replace(text, args.OldString, args.NewString, 1)
-		if err := os.WriteFile(path, []byte(text), 0o644); err != nil {
+		if err := kit.WriteFile(args.Path, []byte(text)); err != nil {
 			return fail(err)
 		}
 		return "edited " + args.Path, false
 	case "ls":
-		path, err := a.resolve(args.Path)
+		listing, err := kit.List(args.Path)
 		if err != nil {
 			return fail(err)
 		}
-		entries, err := os.ReadDir(path)
-		if err != nil {
-			return fail(err)
-		}
-		var b strings.Builder
-		for _, e := range entries {
-			if e.IsDir() {
-				fmt.Fprintf(&b, "%s/\n", e.Name())
-			} else {
-				fmt.Fprintf(&b, "%s\n", e.Name())
-			}
-		}
-		return b.String(), false
+		return listing, false
 	case "run":
-		out, err := a.tc.Shell(args.Command, 5*time.Minute)
+		out, err := kit.Shell(args.Command, 5*time.Minute)
 		if err != nil {
 			return out + "\nerror: " + err.Error(), true
 		}
 		return out, false
 	case "gd":
-		if err := a.tc.GD(args.Verb, args.Goos); err != nil {
+		if err := kit.GD(args.Verb, args.Goos); err != nil {
 			return fail(err)
 		}
 		return "gd " + args.Verb + " succeeded", false
 	}
 	return "unknown tool " + name, true
-}
-
-// resolve joins a tool-supplied path onto the project root and refuses
-// to escape it.
-func (a *Agent) resolve(path string) (string, error) {
-	if path == "" {
-		path = "."
-	}
-	joined := filepath.Clean(filepath.Join(a.project, path))
-	if joined != a.project && !strings.HasPrefix(joined, a.project+string(filepath.Separator)) {
-		return "", fmt.Errorf("path escapes the project: %s", path)
-	}
-	return joined, nil
 }

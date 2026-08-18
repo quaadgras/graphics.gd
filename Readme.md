@@ -25,6 +25,29 @@ lists local commands — `/deploy` runs `GOOS=ios gd run`, which builds
 the project, exports the IPA, serves it, and prints a SideStore QR
 right into the scrollback (it is monospace half-block art, so it scans).
 
+## The iPhone loop, today
+
+The harness runs on iOS now (its own IPA installs via the usual
+`GOOS=ios gd run` from any machine with gd). On-device it has agent
+chat, file tools and a small built-in shell — and with a remote
+configured it has builds too:
+
+```
+/key sk-ant-...
+/remote user@fold:8022 /path/to/your/project
+   (add the printed key to the remote's ~/.ssh/authorized_keys)
+/deploy
+```
+
+`/remote` turns the harness into a thin client on that machine's
+checkout: the agent's read/write/edit/ls/run all travel over SSH, and
+`/deploy` runs `GOOS=ios gd run` there. When the served
+`sidestore://install?url=...` link appears in the build output, the
+harness opens it on-device — SideStore installs the freshly built app
+onto the same iPhone you edited it from. Phone in your pocket builds,
+phone in your hand ships. The in-process toolchain below will replace
+the SSH hop without changing the interface.
+
 ## Design
 
 Lightweight on purpose, in the spirit of pi: one file per concern, no
@@ -36,12 +59,17 @@ framework, no SDK.
 - `internal/agent` — the loop: send conversation → print text → run
   tool calls → repeat. Pure `net/http` against the Anthropic Messages
   API. Six tools: read, write, edit, ls, run, gd.
-- `internal/toolchain` — how things build, behind two build tags:
+- `internal/toolchain` — a `Kit` interface (read, write, list, shell,
+  gd) with three implementations:
   - **exec tier** (`!ios`): shells out to the `gd` command, which
     already handles every target including on-device Android (Termux)
     and iOS-over-SideStore.
-  - **ios tier** (`ios`): stubs. iOS forbids process creation, so this
-    tier must run everything in-process — see the roadmap.
+  - **ios tier** (`ios`): a built-in pure-Go userland for the shell
+    (iOS forbids process creation); building needs a remote or the
+    roadmap's in-process tier.
+  - **remote** (all platforms): the same operations over SSH against
+    another machine's checkout — pure-Go `x/crypto/ssh`, generated
+    ed25519 key, host key pinned on first connection.
 
 ## Roadmap: the iOS tier
 
