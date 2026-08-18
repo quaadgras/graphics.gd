@@ -63,11 +63,22 @@ func (s String) String() string {
 	if s.Length() == 0 {
 		return ""
 	}
-	var buf = make([]byte, s.Length())
-	gdextension.Host.Strings.Encode.UTF8(pointers.Get(s), buf)
-	// string(buf) copies; unsafe.String would alias buf without keeping it
+	// Godot's String.Length() counts characters, but the UTF-8 encoding of a
+	// non-ASCII string can need up to 4 bytes per character, and
+	// string_to_utf8_chars writes at most len(buf) bytes. A character-counted
+	// buffer therefore truncates multibyte sequences mid-character and yields
+	// invalid UTF-8 (Godot then reports "Unicode parsing error" when the
+	// string is handed back). Size the buffer for the worst-case byte length
+	// and slice by the number of bytes actually written (which includes the
+	// NUL terminator when the string fits, so drop a trailing NUL).
+	var buf = make([]byte, s.Length()*4+1)
+	n := gdextension.Host.Strings.Encode.UTF8(pointers.Get(s), buf)
+	if n > 0 && buf[n-1] == 0 {
+		n--
+	}
+	// string(buf[:n]) copies; unsafe.String would alias buf without keeping it
 	// alive for the GC, so the returned value could dangle after collection.
-	return string(buf)
+	return string(buf[:n])
 }
 
 func StringFromStringName(s StringName) String {
