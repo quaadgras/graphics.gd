@@ -40,6 +40,18 @@ func (t *Toolchain) GD(verb string, goos string) error {
 	return fmt.Errorf("on-device %s is not fully wired yet: the wasm toolchain is loaded from %s (Go compiler+linker ready, %s), but building a project still needs the module-graph driver and the shipped ios export cache — use /remote to build on another machine meanwhile", verb, dir, linker)
 }
 
+// Grep reuses the built-in recursive grep userland.
+func (t *Toolchain) Grep(pattern, path string) (string, error) {
+	if pattern == "" {
+		return "", fmt.Errorf("grep needs a pattern")
+	}
+	args := []string{"-r", pattern}
+	if path != "" {
+		args = append(args, path)
+	}
+	return builtinGrep(t.Project, args)
+}
+
 func (t *Toolchain) Shell(command string, timeout time.Duration) (string, error) {
 	args := strings.Fields(command)
 	if len(args) == 0 {

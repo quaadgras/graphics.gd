@@ -80,8 +80,10 @@ framework, no SDK.
   tool calls → repeat. Pure `net/http`, no SDK. A neutral conversation
   is serialized by a `Provider` to either the Anthropic Messages or the
   OpenAI chat-completions wire format (`config.go`/`provider.go`), so
-  Claude, Grok, Qwen, OpenAI and local servers all work. Six tools:
-  read, write, edit, ls, run, gd.
+  Claude, Grok, Qwen, OpenAI and local servers all work. Editing tools:
+  `read`, `write`, `edit` (literal, replace-all option, whitespace-
+  mismatch hints), `replace` (regex/sed-like with capture backrefs),
+  `grep` (project search), `ls`, `run`, `gd`.
 - `internal/buildkit` — the in-process toolchain: `cmd/compile`,
   `cmd/link`, and `ld64.lld`, cross-compiled to wasm and run under
   wazero with zero process spawns. `Toolchain` exposes `Compile`,

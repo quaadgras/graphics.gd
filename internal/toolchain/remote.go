@@ -274,6 +274,22 @@ func (r *Remote) WriteFile(p string, data []byte) error {
 	return nil
 }
 
+func (r *Remote) Grep(pattern, p string) (string, error) {
+	if pattern == "" {
+		return "", fmt.Errorf("grep needs a pattern")
+	}
+	resolved, err := r.resolve(p)
+	if err != nil {
+		return "", err
+	}
+	// -F literal, -I skip binary, -rn recursive with line numbers; grep
+	// exits 1 on no matches, so ignore the shell error and return output.
+	cmd := "grep -rnI -F --exclude-dir=.git --exclude-dir=.godot --exclude-dir=node_modules --exclude-dir=releases -- " +
+		quote(pattern) + " " + quote(resolved) + " | head -" + fmt.Sprint(grepMaxMatches)
+	out, _ := r.Shell(cmd, time.Minute)
+	return out, nil
+}
+
 func (r *Remote) List(p string) (string, error) {
 	resolved, err := r.resolve(p)
 	if err != nil {

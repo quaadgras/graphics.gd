@@ -11,6 +11,7 @@
 package toolchain
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"os"
@@ -33,7 +34,17 @@ type Kit interface {
 	ReadFile(path string) ([]byte, error)
 	WriteFile(path string, data []byte) error
 	List(path string) (string, error)
+	// Grep searches text files under path (default the project root)
+	// for a literal substring, returning file:line:text lines.
+	Grep(pattern, path string) (string, error)
 }
+
+// grepSkipDirs are directories Grep never descends into.
+var grepSkipDirs = map[string]bool{
+	".git": true, ".godot": true, "node_modules": true, "releases": true,
+}
+
+const grepMaxMatches = 200
 
 // Toolchain is the local Kit, rooted at Project.
 type Toolchain struct {
@@ -93,6 +104,50 @@ func (t *Toolchain) List(path string) (string, error) {
 		} else {
 			b.WriteString(e.Name() + "\n")
 		}
+	}
+	return b.String(), nil
+}
+
+func (t *Toolchain) Grep(pattern, path string) (string, error) {
+	if pattern == "" {
+		return "", fmt.Errorf("grep needs a pattern")
+	}
+	root, err := t.resolve(path)
+	if err != nil {
+		return "", err
+	}
+	var b strings.Builder
+	matches := 0
+	filepath.WalkDir(root, func(p string, d os.DirEntry, err error) error {
+		if err != nil {
+			return nil
+		}
+		if d.IsDir() {
+			if p != root && grepSkipDirs[d.Name()] {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if matches >= grepMaxMatches {
+			return filepath.SkipAll
+		}
+		data, err := os.ReadFile(p)
+		if err != nil || bytes.IndexByte(data, 0) >= 0 { // unreadable or binary
+			return nil
+		}
+		rel, _ := filepath.Rel(t.Project, p)
+		for i, line := range strings.Split(string(data), "\n") {
+			if strings.Contains(line, pattern) {
+				fmt.Fprintf(&b, "%s:%d:%s\n", rel, i+1, strings.TrimSpace(line))
+				if matches++; matches >= grepMaxMatches {
+					break
+				}
+			}
+		}
+		return nil
+	})
+	if matches >= grepMaxMatches {
+		b.WriteString("(truncated at " + fmt.Sprint(grepMaxMatches) + " matches)\n")
 	}
 	return b.String(), nil
 }
