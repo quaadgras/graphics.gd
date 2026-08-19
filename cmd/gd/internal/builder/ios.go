@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strings"
 	"time"
@@ -282,7 +283,12 @@ func (ios IOS) BuildMain(args ...string) error {
 		"$(MARKETING_VERSION)", "v0.1.0",
 		"$(CURRENT_PROJECT_VERSION)", "1",
 	)
-	if err := os.WriteFile(filepath.Join(apple_name+".app", "Info.plist"), []byte(replacer.Replace(string(info))), 0o644); err != nil {
+	// Honor display/window/handheld/orientation from the project. The
+	// engine's own iOS exporter substitutes these arrays from the
+	// setting, but gd re-assembles the plist here, so enforce the same
+	// mapping directly rather than trust whatever value came through.
+	plist := enforceOrientation(replacer.Replace(string(info)), readOrientation(project.GraphicsDirectory))
+	if err := os.WriteFile(filepath.Join(apple_name+".app", "Info.plist"), []byte(plist), 0o644); err != nil {
 		return xray.New(err)
 	}
 	if err := project.CopyFile(project.Name+".pck", filepath.Join(apple_name+".app", apple_name+".pck")); err != nil {
@@ -460,4 +466,62 @@ func (ios IOS) Run(args ...string) error {
 
 func (IOS) Test(args ...string) error {
 	return fmt.Errorf("gd test: ios not supported")
+}
+
+// readOrientation returns display/window/handheld/orientation from the
+// project's project.godot, defaulting to 0 (SCREEN_LANDSCAPE, the
+// engine default) when unset or unreadable.
+func readOrientation(graphicsDir string) int {
+	data, err := os.ReadFile(filepath.Join(graphicsDir, "project.godot"))
+	if err != nil {
+		return 0
+	}
+	for _, line := range strings.Split(string(data), "\n") {
+		line = strings.TrimSpace(line)
+		if rest, ok := strings.CutPrefix(line, "window/handheld/orientation="); ok {
+			var v int
+			if _, err := fmt.Sscanf(strings.TrimSpace(rest), "%d", &v); err == nil {
+				return v
+			}
+		}
+	}
+	return 0
+}
+
+var (
+	iphoneOrientationsRe = regexp.MustCompile(`(?s)(<key>UISupportedInterfaceOrientations</key>\s*<array>).*?(</array>)`)
+	ipadOrientationsRe   = regexp.MustCompile(`(?s)(<key>UISupportedInterfaceOrientations~ipad</key>\s*<array>).*?(</array>)`)
+)
+
+// enforceOrientation rewrites the plist's supported-orientation arrays
+// to match the project's handheld orientation setting, mirroring the
+// engine's own iOS exporter (SCREEN_* enum → UIInterfaceOrientation*).
+// iPhone and iPad differ only in which single landscape edge they pick.
+func enforceOrientation(plist string, orientation int) string {
+	const (
+		left  = "\t\t<string>UIInterfaceOrientationLandscapeLeft</string>\n"
+		right = "\t\t<string>UIInterfaceOrientationLandscapeRight</string>\n"
+		up    = "\t\t<string>UIInterfaceOrientationPortrait</string>\n"
+		down  = "\t\t<string>UIInterfaceOrientationPortraitUpsideDown</string>\n"
+	)
+	var iphone, ipad string
+	switch orientation {
+	case 1: // SCREEN_PORTRAIT
+		iphone, ipad = up, up
+	case 2: // SCREEN_REVERSE_LANDSCAPE
+		iphone, ipad = right, left
+	case 3: // SCREEN_REVERSE_PORTRAIT
+		iphone, ipad = down, down
+	case 4: // SCREEN_SENSOR_LANDSCAPE
+		iphone, ipad = left+right, left+right
+	case 5: // SCREEN_SENSOR_PORTRAIT
+		iphone, ipad = up+down, up+down
+	case 6: // SCREEN_SENSOR
+		iphone, ipad = left+right+up+down, left+right+up+down
+	default: // 0 SCREEN_LANDSCAPE
+		iphone, ipad = left, right
+	}
+	plist = iphoneOrientationsRe.ReplaceAllString(plist, "${1}\n"+iphone+"\t${2}")
+	plist = ipadOrientationsRe.ReplaceAllString(plist, "${1}\n"+ipad+"\t${2}")
+	return plist
 }
