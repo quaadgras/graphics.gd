@@ -727,7 +727,7 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	instance := class.reloadInstance(value, super)
 	id := instances.New(instance, value)
 	gdextension.Host.Objects.Extension.Setup(gdreference.GetObject(*super), pointers.Get(class.Name), id)
-	if keepalive := compile_keepalive(reflect.PointerTo(class.Type)); keepalive != nil {
+	if keepalive := compile_keepalive_for_class(reflect.PointerTo(class.Type)); keepalive != nil {
 		roots.Insert(value, keepalive)
 	}
 	if add_root {

@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"sort"
 	"strings"
 	"sync"
+	"time"
 	"unsafe"
 
 	"graphics.gd/classdb/Node"
@@ -30,6 +32,17 @@ var roots threadsafe.Map[reflect.Value, func(reflect.Value)]
 
 var skips = make(map[reflect.Value]struct{}) // only accessed from [keep_reachable_instances_alive]
 
+// debugKeepaliveCost accumulates per-root-type walk time and dumps a
+// sorted table every few hundred frames. Toggle with GDDEBUG=keepalive-cost.
+var debugKeepaliveCost = strings.Contains(os.Getenv("GDDEBUG"), "keepalive-cost")
+
+var (
+	costByType   = map[reflect.Type]time.Duration{}
+	costRoots    = map[reflect.Type]int{}
+	costFrames   int
+	costInterval = 300
+)
+
 //go:linkname keep_reachable_instances_alive
 func keep_reachable_instances_alive() {
 	clear(skips)
@@ -40,6 +53,42 @@ func keep_reachable_instances_alive() {
 			fmt.Fprintf(os.Stderr, "[keepalive] root: %v keepalive=%v\n", ptr.Type(), keepalive != nil)
 		}
 		fmt.Fprintf(os.Stderr, "[keepalive] === frame: %d roots ===\n", count)
+	}
+	if debugKeepaliveCost {
+		for ptr, keepalive := range roots.Iter() {
+			if keepalive == nil {
+				continue
+			}
+			start := time.Now()
+			keepalive(ptr)
+			costByType[ptr.Type()] += time.Since(start)
+			costRoots[ptr.Type()]++
+		}
+		costFrames++
+		if costFrames%costInterval == 0 {
+			type row struct {
+				t reflect.Type
+				d time.Duration
+			}
+			rows := make([]row, 0, len(costByType))
+			total := time.Duration(0)
+			for t, d := range costByType {
+				rows = append(rows, row{t, d})
+				total += d
+			}
+			sort.Slice(rows, func(i, j int) bool { return rows[i].d > rows[j].d })
+			fmt.Fprintf(os.Stderr, "[keepalive-cost] %v/frame over %d frames\n", total/time.Duration(costFrames), costFrames)
+			for i, r := range rows {
+				if i >= 12 {
+					break
+				}
+				fmt.Fprintf(os.Stderr, "[keepalive-cost]   %8s %5d roots  %v\n", r.d/time.Duration(costFrames), costRoots[r.t]/costFrames, r.t)
+			}
+			clear(costByType)
+			clear(costRoots)
+			costFrames = 0
+		}
+		return
 	}
 	for ptr, keepalive := range roots.Iter() {
 		if keepalive != nil {
@@ -63,6 +112,26 @@ func compile_keepalive(rtype reflect.Type) func(reflect.Value) {
 	compiled_keepalives_mu.Lock()
 	defer compiled_keepalives_mu.Unlock()
 	return compile_keepalive_locked(rtype)
+}
+
+// compile_keepalive_for_class builds the walker for a root itself: a
+// pointer to an extension class registered in `roots`. Nested pointers
+// to adopted classes are skipped as self-rooted (see the Pointer case),
+// so the root's own walker is assembled here from the struct walker,
+// bypassing that shortcut.
+func compile_keepalive_for_class(rtype reflect.Type) func(reflect.Value) {
+	compiled_keepalives_mu.Lock()
+	defer compiled_keepalives_mu.Unlock()
+	keepalive := compile_keepalive_locked(rtype.Elem())
+	if keepalive == nil {
+		return nil
+	}
+	return func(val reflect.Value) {
+		if val.Kind() != reflect.Pointer || val.IsNil() {
+			return
+		}
+		keepalive(val.Elem())
+	}
 }
 
 // compile_keepalive_locked is the recursive body of [compile_keepalive];
@@ -113,11 +182,10 @@ func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)
 		if len(keepalives) == 0 {
 			return nil
 		}
+		// No cycle guard here: a struct reached by value cannot be
+		// reached twice except through a pointer, interface or map,
+		// and those recursion points carry the `skips` guard.
 		return func(val reflect.Value) {
-			if _, ok := skips[val]; ok {
-				return
-			}
-			skips[val] = struct{}{}
 			var can_addr = val.CanAddr()
 			if is_extension_class {
 				if can_addr {
@@ -149,11 +217,26 @@ func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)
 		}
 		return nil
 	case reflect.Pointer:
+		// A pointer to an adopted class instance never needs walking:
+		// every live instance is inserted into `roots` at construction
+		// (adopt.go, register_class.go) and keeps its own graph alive.
+		// Game code holds whole registries of these (maps of props,
+		// players, and so on), and following each one from every struct
+		// that mentions it was the bulk of the per-frame walk. The root
+		// itself compiles through [compile_keepalive_for_class], which
+		// bypasses this shortcut.
+		if rtype.Implements(reflect.TypeFor[gdclass.Interface]()) {
+			return nil
+		}
 		if keepalive := compile_keepalive_locked(rtype.Elem()); keepalive != nil {
 			return func(val reflect.Value) {
 				if val.IsNil() {
 					return
 				}
+				if _, ok := skips[val]; ok {
+					return // shared or cyclic pointer: already walked this frame
+				}
+				skips[val] = struct{}{}
 				keepalive(val.Elem())
 			}
 		}
@@ -220,6 +303,9 @@ func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)
 				return
 			}
 			val = val.Elem()
+			// No guard needed here: a boxed pointer dispatches to the
+			// pointer walker, which carries its own `skips` guard, and a
+			// boxed value cannot be reached twice.
 			if keepalive := compile_keepalive(val.Type()); keepalive != nil {
 				keepalive(val)
 			}
@@ -231,9 +317,10 @@ func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)
 
 // scratch_reusable reports whether one scratch value can be reused for
 // every entry when walking a map of this type: true unless the type's
-// keepalive (or one reachable inside an array without indirection)
-// identity-checks the value it receives against `skips`, where a shared
-// scratch address would conflate distinct entries. Indirect kinds
+// keepalive (or one reachable inside a struct or array without
+// indirection) identity-checks the value it receives against `skips` —
+// a map field's identity is its address, which inside a shared scratch
+// is the same for every entry, conflating distinct maps. Indirect kinds
 // (pointer, slice, interface) are fine — their keepalives immediately
 // resolve to memory outside the scratch. Engine Instance handles get
 // their own dedicated keepalive and never consult `skips`.

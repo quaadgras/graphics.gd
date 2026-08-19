@@ -32,7 +32,7 @@ func adoptForReload(class gdextension.ExtensionClassID, raw gdextension.Object) 
 	instance := impl.reloadInstance(value, super)
 	id := instances.New(instance, value)
 	gdextension.Host.Objects.Extension.Setup(raw, pointers.Get(impl.Name), id)
-	if keepalive := compile_keepalive(reflect.PointerTo(impl.Type)); keepalive != nil {
+	if keepalive := compile_keepalive_for_class(reflect.PointerTo(impl.Type)); keepalive != nil {
 		roots.Insert(value, keepalive)
 	}
 	// The engine owns adopted objects (they were alive before this
