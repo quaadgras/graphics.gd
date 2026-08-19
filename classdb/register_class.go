@@ -86,6 +86,20 @@ type Class = gdclass.Interface
 
 var singletons threadsafe.Map[reflect.Type, reflect.Value]
 
+// visible_fields is a cache over [reflect.VisibleFields], which walks the
+// struct type and allocates a fresh slice on every call: instance-creation
+// paths ask for the same handful of class types over and over.
+var visible_fields threadsafe.Map[reflect.Type, []reflect.StructField]
+
+func visibleFieldsCached(rtype reflect.Type) []reflect.StructField {
+	if fields, ok := visible_fields.Lookup(rtype); ok {
+		return fields
+	}
+	fields := reflect.VisibleFields(rtype)
+	visible_fields.Insert(rtype, fields)
+	return fields
+}
+
 func init() {
 	gd.RegisterCleanup(func() {
 		for _, value := range singletons.Iter() {
@@ -740,10 +754,9 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 func (class classImplementation) reloadInstance(value reflect.Value, super *gdreference.Object) *instanceImplementation {
 	value = value.Elem()
 
-	// TODO cache this check
 	var signals []signalChan
 	var chSignals []signalChan
-	for _, field := range reflect.VisibleFields(value.Type()) {
+	for _, field := range visibleFieldsCached(value.Type()) {
 		if !field.IsExported() || field.Name == "Object" {
 			continue
 		}

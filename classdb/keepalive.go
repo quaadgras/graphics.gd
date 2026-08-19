@@ -169,19 +169,46 @@ func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)
 		return nil
 	case reflect.Map:
 		if keyKeepalive, valKeepalive := compile_keepalive_locked(rtype.Key()), compile_keepalive_locked(rtype.Elem()); keyKeepalive != nil || valKeepalive != nil {
+			// Copying every entry out with MapIter.Key/Value allocates a
+			// fresh box per entry per frame — the single largest source
+			// of garbage in a running game. SetIterKey/SetIterValue reuse
+			// one addressable scratch instead (which also lets the
+			// Instance case take its no-alloc pointer path). Struct- and
+			// map-typed entries keep per-entry copies: their keepalives
+			// identity-check the value they receive against `skips`, and
+			// a shared scratch would make every entry look like the first.
+			keyType, keyReuse := rtype.Key(), scratch_reusable(rtype.Key())
+			elemType, elemReuse := rtype.Elem(), scratch_reusable(rtype.Elem())
 			return func(val reflect.Value) {
 				if _, ok := skips[val]; ok {
 					return
 				}
 				skips[val] = struct{}{}
+				var keyScratch, valScratch reflect.Value
+				if keyKeepalive != nil && keyReuse {
+					keyScratch = reflect.New(keyType).Elem()
+				}
+				if valKeepalive != nil && elemReuse {
+					valScratch = reflect.New(elemType).Elem()
+				}
 				var map_iter reflect.MapIter
 				map_iter.Reset(val)
 				for map_iter.Next() {
 					if keyKeepalive != nil {
-						keyKeepalive(map_iter.Key())
+						if keyReuse {
+							keyScratch.SetIterKey(&map_iter)
+							keyKeepalive(keyScratch)
+						} else {
+							keyKeepalive(map_iter.Key())
+						}
 					}
 					if valKeepalive != nil {
-						valKeepalive(map_iter.Value())
+						if elemReuse {
+							valScratch.SetIterValue(&map_iter)
+							valKeepalive(valScratch)
+						} else {
+							valKeepalive(map_iter.Value())
+						}
 					}
 				}
 			}
@@ -199,6 +226,28 @@ func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)
 		}
 	default:
 		return nil
+	}
+}
+
+// scratch_reusable reports whether one scratch value can be reused for
+// every entry when walking a map of this type: true unless the type's
+// keepalive (or one reachable inside an array without indirection)
+// identity-checks the value it receives against `skips`, where a shared
+// scratch address would conflate distinct entries. Indirect kinds
+// (pointer, slice, interface) are fine — their keepalives immediately
+// resolve to memory outside the scratch. Engine Instance handles get
+// their own dedicated keepalive and never consult `skips`.
+func scratch_reusable(rtype reflect.Type) bool {
+	if rtype.Name() == "Instance" && rtype.Implements(reflect.TypeFor[Object.Any]()) && rtype.Kind() == reflect.Array && rtype.Len() == 1 {
+		return true
+	}
+	switch rtype.Kind() {
+	case reflect.Struct, reflect.Map:
+		return false
+	case reflect.Array:
+		return scratch_reusable(rtype.Elem())
+	default:
+		return true
 	}
 }
 

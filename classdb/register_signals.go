@@ -18,7 +18,7 @@ import (
 // emittable by the class, when the class is instantiated, the signal field needs to injected into the field
 // so that it can be used and emitted.
 func registerSignals(class gd.StringName, rtype reflect.Type) {
-	for _, field := range reflect.VisibleFields(rtype) {
+	for _, field := range visibleFieldsCached(rtype) {
 		name := String.ToSnakeCase(field.Name)
 		if !field.IsExported() {
 			continue
