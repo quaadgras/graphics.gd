@@ -4,7 +4,7 @@
 # Node 22 (for the runner's global WebSocket) is grafted in from the node image,
 # since Debian bookworm only ships Node 18.
 FROM docker.io/library/node:22-bookworm-slim AS node
-FROM docker.io/library/golang:1.26-bookworm
+FROM docker.io/library/golang:1.27-bookworm
 
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
 

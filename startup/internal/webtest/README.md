@@ -32,7 +32,7 @@ export**, headlessly, and reports pass/fail to CI.
 
 ## Requirements
 
-- Go 1.26, Node **22+** (global `WebSocket`), and a Chrome/Chromium binary.
+- Go 1.27, Node **22+** (global `WebSocket`), and a Chrome/Chromium binary.
 - A **glibc** host. Chromium's software WebGL2 (SwiftShader) is glibc-only, so
   the browser half does not run on a musl host — use the containers below.
 - Godot web needs WebGL2; headless Chromium gets it from SwiftShader via

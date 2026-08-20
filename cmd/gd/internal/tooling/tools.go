@@ -47,9 +47,9 @@ var Zig = toolchain{
 var Go = toolchain{
 	Name:          "go",
 	VersionFlags:  []string{"version"},
-	Version:       "1.26.0",
+	Version:       "1.27.0",
 	DownloadHint:  "https://go.dev/dl/",
-	VersionPrefix: "go version go1.26.",
+	VersionPrefix: "go version go1.27.",
 	RequiredFor:   "compiling",
 
 	ConvertArguments: map[string]string{

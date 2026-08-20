@@ -65,7 +65,7 @@ var fastcbAllowed = map[string]bool{
 //	GD_NO_FASTCB        disable the patch entirely
 //	GD_OVERLAY_CGOCALL  path to an alternative replacement cgocall.go
 //
-// The bundled copy tracks the go1.26 runtime, so any other toolchain builds
+// The bundled copy tracks the go1.27 runtime, so any other toolchain builds
 // stock rather than overlaying a mismatched file.
 func fastcbCgocall(target string) string {
 	if os.Getenv("GD_NO_FASTCB") != "" {
@@ -78,8 +78,8 @@ func fastcbCgocall(target string) string {
 		return ""
 	}
 	version, err := tooling.Go.Output("env", "GOVERSION")
-	if err != nil || !strings.HasPrefix(strings.TrimSpace(version), "go1.26") {
-		fmt.Fprintf(os.Stderr, "gd: building without the resident-callback runtime patch: it tracks go1.26 and this toolchain is %q\n", strings.TrimSpace(version))
+	if err != nil || !strings.HasPrefix(strings.TrimSpace(version), "go1.27") {
+		fmt.Fprintf(os.Stderr, "gd: building without the resident-callback runtime patch: it tracks go1.27 and this toolchain is %q\n", strings.TrimSpace(version))
 		return ""
 	}
 	if p := os.Getenv("GD_OVERLAY_CGOCALL"); p != "" {
@@ -147,8 +147,9 @@ func fastcbFlags(target, baseTags string) []string {
 	// the garbage collector's scan of the extra M's goroutine (dropm's
 	// casgstatus spin) — deadlocking or killing the engine mid-frame.
 	if target == "windows" {
-		if libinit, proc, ok := fastcbWindowsRetention(goroot); ok {
+		if libinit, cgoWindows, proc, ok := fastcbWindowsRetention(goroot); ok {
 			replace[filepath.Join(goroot, "src", "runtime", "cgo", "gcc_libinit_windows.c")] = libinit
+			replace[filepath.Join(goroot, "src", "runtime", "cgo", "windows.go")] = cgoWindows
 			replace[filepath.Join(goroot, "src", "runtime", "proc.go")] = proc
 		} else {
 			fmt.Fprintf(os.Stderr, "gd: building without the resident-callback runtime patch: the windows extra-M retention patch does not apply to this toolchain\n")
@@ -235,34 +236,41 @@ func writeOverlay(name string, replace map[string]string) (string, error) {
 // mechanism with fiber-local storage and publishes the retention flag, and a
 // generated copy of proc.go drops cgoBindM's "bindm in unexpected GOOS"
 // windows guard (the only reason bindm is 'unexpected' there is that the flag
-// was assumed impossible to set).
+// was assumed impossible to set). Since go1.27 runtime/cgo declares the
+// windows _cgo_bindm as a nil pointer in its own windows.go, so that file is
+// replaced too, importing the C x_cgo_bindm the way callbacks_unix.go does.
 //
 //go:embed bundled/fastcb/gcc_libinit_windows.c.overlay
 var fastcb_libinit_windows []byte
+
+//go:embed bundled/fastcb/windows.go.overlay
+var fastcb_cgo_windows []byte
 
 // fastcbWindowsRetention writes the libinit replacement and generates the
 // patched proc.go from the active toolchain's own source, so it tracks point
 // releases; if the guard's text ever changes shape the strict single-match
 // requirement fails and the caller builds without the patch instead.
-func fastcbWindowsRetention(goroot string) (libinit, proc string, ok bool) {
+func fastcbWindowsRetention(goroot string) (libinit, cgoWindows, proc string, ok bool) {
 	src, err := os.ReadFile(filepath.Join(goroot, "src", "runtime", "proc.go"))
 	if err != nil {
-		return "", "", false
+		return "", "", "", false
 	}
 	const guard = `if GOOS == "windows" || GOOS == "plan9" {`
 	if strings.Count(string(src), guard) != 1 {
-		return "", "", false
+		return "", "", "", false
 	}
 	patched := strings.Replace(string(src), guard, `if GOOS == "plan9" {`, 1)
 	dir := filepath.Join(gdpaths.Lib, "fastcb")
 	if err := os.MkdirAll(dir, 0755); err != nil {
-		return "", "", false
+		return "", "", "", false
 	}
 	libinit = filepath.Join(dir, "gcc_libinit_windows.c")
+	cgoWindows = filepath.Join(dir, "cgo_windows.go")
 	proc = filepath.Join(dir, "proc.go")
 	if os.WriteFile(libinit, fastcb_libinit_windows, 0644) != nil ||
+		os.WriteFile(cgoWindows, fastcb_cgo_windows, 0644) != nil ||
 		os.WriteFile(proc, []byte(patched), 0644) != nil {
-		return "", "", false
+		return "", "", "", false
 	}
-	return libinit, proc, true
+	return libinit, cgoWindows, proc, true
 }

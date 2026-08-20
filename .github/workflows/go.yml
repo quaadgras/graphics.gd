@@ -18,7 +18,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.26"
+          go-version: "1.27"
 
       - name: Compute week key
         id: week
@@ -38,13 +38,6 @@ jobs:
           go build -o gd.exe
 
       - name: Test
-        env:
-          # Go 1.26's Green Tea GC emits an AVX-512 span-scan (scanSpanPackedAVX512) that
-          # faults with SIGILL on the subset of GitHub windows-latest runners whose CPU
-          # lacks AVX-512 (the gate avx512ScanPackedReqsMet doesn't check AVX512DQ, used
-          # by kmovb). Disable the experiment on Windows until upstream fixes the gate.
-          # See golang/go#77674.
-          GOEXPERIMENT: ${{ matrix.os == 'windows-latest' && 'nogreenteagc' || '' }}
         run: |
           cd ./internal
           echo "GOEXPERIMENT=$(go env GOEXPERIMENT)"
@@ -59,7 +52,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.26"
+          go-version: "1.27"
 
       # Node 22+ provides the global WebSocket the headless runner uses to talk
       # to Chromium over the DevTools protocol.
@@ -101,7 +94,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.26"
+          go-version: "1.27"
 
       - name: Compute week key
         id: week

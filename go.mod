@@ -1,6 +1,6 @@
 module graphics.gd
 
-go 1.26.1
+go 1.27
 
 require runtime.link v0.0.0-20260715222822-244f867873e6
 
