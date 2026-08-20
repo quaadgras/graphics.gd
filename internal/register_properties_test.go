@@ -8,6 +8,7 @@ import (
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/GDScript"
 	"graphics.gd/classdb/Node"
+	"graphics.gd/classdb/Resource"
 	"graphics.gd/variant/Enum"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Object"
@@ -122,6 +123,52 @@ func TestRegisterExportedProperties(t *testing.T) {
 					t.Errorf("obj.OnSet() called with value = %v, wanted %v", obj.onSetCalls[i].v, wantedOnSet[i].v)
 				}
 			}
+		}
+	})
+}
+
+type TestingSplashConfig struct {
+	Resource.Extension[TestingSplashConfig]
+
+	Countdown Float.X
+}
+
+type TestingSceneConfig struct {
+	Resource.Extension[TestingSceneConfig]
+
+	SceneData Resource.Instance
+	Typed     *TestingSplashConfig
+}
+
+func init() {
+	classdb.Register[TestingSplashConfig]()
+	classdb.Register[TestingSceneConfig]()
+}
+
+// TestSetExtensionResourceProperties covers loading a resource that embeds a
+// custom sub-resource (issue #331): the engine assigns such fields through the
+// extension Set callback and the value must land both in fields declared with
+// the concrete Go type and in fields declared with an engine class type like
+// [Resource.Instance].
+func TestSetExtensionResourceProperties(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		holder := &TestingSceneConfig{}
+		data := &TestingSplashConfig{Countdown: 5.4}
+		// Object.Set is queued in the ring buffer, the Object.Get read
+		// forces a flush so the field is populated before we check it.
+		Object.Set(holder, "scene_data", data.AsResource())
+		if got := Object.Get(holder, "scene_data"); got == nil {
+			t.Fatal("scene_data was not set")
+		}
+		if !Object.Aliases(holder.SceneData, data) {
+			t.Fatal("holder.SceneData was not set to the custom sub-resource")
+		}
+		Object.Set(holder, "typed", data.AsResource())
+		if got := Object.Get(holder, "typed"); got == nil {
+			t.Fatal("typed was not set")
+		}
+		if holder.Typed != data {
+			t.Fatal("holder.Typed was not set to the custom sub-resource")
 		}
 	})
 }

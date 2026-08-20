@@ -179,7 +179,10 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	if value.Type() == gdextension.TypeObject && field.Kind() != reflect.Uint64 { // support setting Object.ID fields with Object
 		obj := gd.VariantAsObject(value)
 		ext := gd.ExtensionInstanceLookup(gdreference.GetObject(obj))
-		if ext != nil {
+		// only assign the Go instance directly when the field can hold it,
+		// fields declared with an engine class type (e.g. Resource.Instance)
+		// need to go through the usual object conversion below instead.
+		if ext != nil && reflect.TypeOf(ext).AssignableTo(field.Type()) {
 			converted = reflect.ValueOf(ext)
 			isExtensionClass = true
 		}
