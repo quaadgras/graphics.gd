@@ -1,4 +1,4 @@
-# graphics.gd ![Go 1.27](https://img.shields.io/badge/Go-1.27-00ADD8?style=flat&logo=go&logoColor=white) ![Godot 4.7.1](https://img.shields.io/badge/Godot-4.7.1-478CBF?style=flat&logo=godotengine&logoColor=white) [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd) [![Go Report Card](https://goreportcard.com/badge/graphics.gd)](https://goreportcard.com/report/graphics.gd)
+# graphics.gd ![Go 1.27](https://img.shields.io/badge/Go-1.27-00ADD8?style=flat&logo=go&logoColor=white) ![Godot 4.7.2](https://img.shields.io/badge/Godot-4.7.2-478CBF?style=flat&logo=godotengine&logoColor=white) [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd) [![Go Report Card](https://goreportcard.com/badge/graphics.gd)](https://goreportcard.com/report/graphics.gd)
 
 A cross platform 2D/3D graphics runtime for [Go](https://go.dev/) suitable for building native mobile apps,
 gdextensions, multimedia applications, games and more.

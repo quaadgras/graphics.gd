@@ -964,18 +964,23 @@ const (
 	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	BakeDisabled BakeMode = 0
-	// Light is taken into account in static baking ([VoxelGI], [LightmapGI], SDFGI ([Environment.SdfgiEnabled])). The light can be moved around or modified, but its global illumination will not update in real-time. This is suitable for subtle changes (such as flickering torches), but generally not large changes such as toggling a light on and off.
+	// Light is taken into account in static baking ([VoxelGI], [LightmapGI], SDFGI ([Environment.SdfgiEnabled])). The light can be moved around or modified, but its global illumination will not update in real-time.
 	//
 	// Note: The light is not baked in [LightmapGI] if [EditorOnly] is true.
+	//
+	// Note: When using [LightmapGI], both the direct and indirect light are baked. Since direct light is baked, the light doesn't display a specular lobe on static lightmapped meshes. Shadows on static lightmapped meshes will also look less detailed, but the light still casts shadows that can be displayed on dynamic objects. Since real-time light computations are skipped on static lightmapped meshes, this bake mode improves runtime performance compared to [BakeDynamic] and [BakeDisabled].
 	//
 	// [EditorOnly]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EditorOnly
 	// [Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
 	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	BakeStatic BakeMode = 1
-	// Light is taken into account in dynamic baking ([VoxelGI] and SDFGI ([Environment.SdfgiEnabled]) only). The light can be moved around or modified with global illumination updating in real-time. The light's global illumination appearance will be slightly different compared to [BakeStatic]. This has a greater performance cost compared to [BakeStatic]. When using SDFGI, the update speed of dynamic lights is affected by [ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_update_lights".
+	// Light is taken into account in dynamic baking ([VoxelGI] and SDFGI ([Environment.SdfgiEnabled])). The light can be moved around or modified with global illumination updating in real-time. The light's global illumination appearance will be slightly different compared to [BakeStatic]. This has a greater performance cost compared to [BakeStatic]. When using SDFGI, the update speed of dynamic lights is affected by [ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_update_lights".
+	//
+	// Note: When using [LightmapGI], the light's indirect light is baked, but direct light and shadows remain real-time. This mode allows performing subtle changes to a light's color, energy, and position while still looking fairly correct. For example, you can use this to create flickering static torches that have their indirect light baked.
 	//
 	// [Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
+	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	BakeDynamic BakeMode = 2

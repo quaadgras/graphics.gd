@@ -1566,7 +1566,7 @@ func ScreenGetDpiOptions(screen Screen) int { //gd:DisplayServer.screen_get_dpi
 }
 
 /*
-Returns the scale factor of the specified screen by index. Returns 1.0 if 'screen' is invalid.
+Returns the scale factor of the specified screen by index. Returns 1.0 if 'screen' is invalid. See also [ScreenGetMaxScale].
 
 Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 
@@ -1581,7 +1581,7 @@ func ScreenGetScale() Float.X { //gd:DisplayServer.screen_get_scale
 }
 
 /*
-Returns the scale factor of the specified screen by index. Returns 1.0 if 'screen' is invalid.
+Returns the scale factor of the specified screen by index. Returns 1.0 if 'screen' is invalid. See also [ScreenGetMaxScale].
 
 Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 
@@ -1605,11 +1605,9 @@ func IsTouchscreenAvailable() bool { //gd:DisplayServer.is_touchscreen_available
 }
 
 /*
-Returns the greatest scale factor of all screens.
+Returns the greatest scale factor of all screens. See also [ScreenGetScale].
 
-Note: On macOS returned value is 2.0 if there is at least one hiDPI (Retina) screen in the system, and 1.0 in all other cases.
-
-Note: This method is implemented only on macOS.
+Note: On macOS, the returned value is 2.0 if there is at least one hiDPI (Retina) screen in the system, and 1.0 in all other cases.
 */
 func ScreenGetMaxScale() Float.X { //gd:DisplayServer.screen_get_max_scale
 	return Float.X(Float.X(Advanced().ScreenGetMaxScale()))

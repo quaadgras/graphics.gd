@@ -80,8 +80,8 @@ func TestTemplateSelectiveExtract(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(string(data), "4.7.1") {
-		t.Errorf("version.txt = %q, want it to mention 4.7.1", data)
+	if !strings.Contains(string(data), "4.7.2") {
+		t.Errorf("version.txt = %q, want it to mention 4.7.2", data)
 	}
 
 	// Extract icudt_godot.dat (tens of MB) to exercise multi-block reads through
