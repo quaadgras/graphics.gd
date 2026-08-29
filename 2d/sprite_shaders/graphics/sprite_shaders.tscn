@@ -1,0 +1,129 @@
+[gd_scene format=3 uid="uid://dl6ocanwim8u8"]
+
+[ext_resource type="Shader" uid="uid://didwvanllpswi" path="res://shaders/outline.gdshader" id="1"]
+[ext_resource type="Texture2D" uid="uid://dyoo5n3l3rbth" path="res://godotea.png" id="2"]
+[ext_resource type="Shader" uid="uid://c1t7wtmjxj1v8" path="res://shaders/aura.gdshader" id="3"]
+[ext_resource type="Shader" uid="uid://c2pi5rd4ikur0" path="res://shaders/blur.gdshader" id="4"]
+[ext_resource type="Shader" uid="uid://b5yalg8oee4bk" path="res://shaders/fatty.gdshader" id="5"]
+[ext_resource type="Shader" uid="uid://dutvqyhs2qth8" path="res://shaders/dropshadow.gdshader" id="6"]
+[ext_resource type="Shader" uid="uid://dh6oxlekrqvxm" path="res://shaders/offsetshadow.gdshader" id="7"]
+[ext_resource type="Shader" uid="uid://0rr5xhbk2o6w" path="res://shaders/silouette.gdshader" id="8"]
+[ext_resource type="Shader" uid="uid://cxw15j1j27i5h" path="res://shaders/glow.gdshader" id="9"]
+[ext_resource type="Shader" uid="uid://dqrfxijvh1s27" path="res://shaders/dissintegrate.gdshader" id="10"]
+
+[sub_resource type="ShaderMaterial" id="1"]
+shader = ExtResource("1")
+shader_parameter/outline_width = 2.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="2"]
+
+[sub_resource type="ShaderMaterial" id="3"]
+shader = ExtResource("1")
+shader_parameter/outline_width = 2.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="4"]
+shader = ExtResource("3")
+shader_parameter/aura_width = 2.0
+shader_parameter/aura_color = Color(0, 1, 0.486275, 1)
+
+[sub_resource type="ShaderMaterial" id="5"]
+shader = ExtResource("4")
+shader_parameter/radius = 4.0
+
+[sub_resource type="ShaderMaterial" id="6"]
+shader = ExtResource("5")
+shader_parameter/fattyness = 3.0
+
+[sub_resource type="ShaderMaterial" id="7"]
+shader = ExtResource("6")
+shader_parameter/radius = 5.0
+shader_parameter/modulate = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="8"]
+shader = ExtResource("7")
+shader_parameter/offset = Vector2(8, 8)
+shader_parameter/modulate = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="9"]
+shader = ExtResource("8")
+shader_parameter/modulate = Color(0.858824, 0.317647, 0.701961, 1)
+
+[sub_resource type="ShaderMaterial" id="10"]
+shader = ExtResource("9")
+shader_parameter/radius = 5.0
+shader_parameter/amount = 0.25
+
+[sub_resource type="ShaderMaterial" id="11"]
+shader = ExtResource("10")
+shader_parameter/amount = 4.0
+
+[node name="SpriteShaders" type="Node2D" unique_id=877250922]
+material = SubResource("1")
+position = Vector2(263.737, 179.444)
+scale = Vector2(0.3, 0.3)
+
+[node name="Normal" type="Sprite2D" parent="." unique_id=1524277786]
+texture_filter = 4
+material = SubResource("2")
+position = Vector2(-2.16144, 0)
+texture = ExtResource("2")
+
+[node name="Outline" type="Sprite2D" parent="." unique_id=1631315867]
+texture_filter = 4
+material = SubResource("3")
+position = Vector2(400, 0)
+texture = ExtResource("2")
+
+[node name="Aura" type="Sprite2D" parent="." unique_id=1358833824]
+texture_filter = 4
+material = SubResource("4")
+position = Vector2(800, 0)
+texture = ExtResource("2")
+
+[node name="Blur" type="Sprite2D" parent="." unique_id=56807845]
+texture_filter = 4
+material = SubResource("5")
+position = Vector2(1200, 0)
+texture = ExtResource("2")
+
+[node name="Fatty" type="Sprite2D" parent="." unique_id=1637613346]
+texture_filter = 4
+material = SubResource("6")
+position = Vector2(1600, 0)
+texture = ExtResource("2")
+
+[node name="DropShadow" type="Sprite2D" parent="." unique_id=1241153075]
+texture_filter = 4
+material = SubResource("7")
+position = Vector2(0, 800)
+texture = ExtResource("2")
+
+[node name="OffsetShadow" type="Sprite2D" parent="." unique_id=461908333]
+texture_filter = 4
+material = SubResource("8")
+position = Vector2(400, 800)
+texture = ExtResource("2")
+
+[node name="Silouette" type="Sprite2D" parent="." unique_id=1450982957]
+texture_filter = 4
+material = SubResource("9")
+position = Vector2(800, 800)
+texture = ExtResource("2")
+
+[node name="Glow" type="Sprite2D" parent="." unique_id=2034358500]
+texture_filter = 4
+material = SubResource("10")
+position = Vector2(1200, 800)
+texture = ExtResource("2")
+
+[node name="Disintegrate" type="Sprite2D" parent="." unique_id=580553818]
+texture_filter = 4
+material = SubResource("11")
+position = Vector2(1600, 800)
+texture = ExtResource("2")
+region_rect = Rect2(141, 115, 39, 6)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1848060329]
+offset = Vector2(248, 120)

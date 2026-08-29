@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://doq3ihbxa25aq"]
+
+[ext_resource type="Texture2D" uid="uid://dd862j3cyjndh" path="res://models/white_wood.png" id="1"]
+
+[resource]
+resource_name = "CubeMaterial"
+albedo_color = Color(1, 0.45, 0.4, 1)
+albedo_texture = ExtResource("1")
+roughness = 0.75
+texture_filter = 5

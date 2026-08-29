@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://xyu1nofmqxa2"]
+
+[ext_resource type="ArrayMesh" uid="uid://ba7dqpj07mlsy" path="res://models/cube.mesh" id="2"]
+[ext_resource type="Material" uid="uid://dmyd46k7flepi" path="res://models/white_cube_material.tres" id="4"]
+
+[sub_resource type="BoxShape3D" id="1"]
+margin = 0.001
+size = Vector3(0.9, 0.9, 0.9)
+
+[node name="Cubio" type="Cubio" unique_id=1710521899]
+
+[node name="BoxMesh" type="MeshInstance3D" parent="." unique_id=1519738648]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
+mesh = ExtResource("2")
+surface_material_override/0 = ExtResource("4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=900788700]
+shape = SubResource("1")
+
+[node name="Target" type="Node3D" parent="." unique_id=883826096]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+
+[node name="Camera3D" type="FollowCamera" parent="Target" unique_id=1184818641]
+transform = Transform3D(0.34202, -0.321394, 0.883022, 0, 0.939693, 0.34202, -0.939693, -0.116978, 0.321394, 2, 0.5, 0.913381)
+fov = 74.0
+near = 0.1
+far = 50.0
+
+[node name="WinText" type="CenterContainer" parent="." unique_id=895900386]
+visible = false
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 100.0
+grow_horizontal = 2
+
+[node name="Holder" type="Control" parent="WinText" unique_id=1243959998]
+layout_mode = 2
+
+[node name="TextLabel" type="Label" parent="WinText/Holder" unique_id=207700973]
+layout_mode = 0
+offset_left = -354.0
+offset_right = 354.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 20
+text = "Thank You, Cubio! But the Princess is in Another Demo!"
+horizontal_alignment = 1
+vertical_alignment = 1

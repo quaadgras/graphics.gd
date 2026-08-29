@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b5o82t7sqppf1"]
+
+[ext_resource type="Texture2D" uid="uid://3dlfqtj6co1p" path="res://models/white_wood.png" id="1"]
+
+[resource]
+resource_name = "Material"
+albedo_color = Color(0.564706, 0.34902, 1, 1)
+albedo_texture = ExtResource("1")
+roughness = 0.75
+texture_filter = 5

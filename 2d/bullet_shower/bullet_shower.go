@@ -9,8 +9,6 @@ import (
 	"graphics.gd/classdb/InputEventMouseMotion"
 	"graphics.gd/classdb/Node2D"
 	"graphics.gd/classdb/PhysicsServer2D"
-	"graphics.gd/classdb/Resource"
-	"graphics.gd/classdb/Texture2D"
 	"graphics.gd/classdb/World2D"
 	"graphics.gd/startup"
 	"graphics.gd/variant/Float"
@@ -18,6 +16,8 @@ import (
 	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Transform2D"
 	"graphics.gd/variant/Vector2"
+
+	"grow.graphics/eg/2d/bullet_shower/graphics"
 )
 
 const (
@@ -26,7 +26,6 @@ const (
 	SpeedMax    = 80
 )
 
-var bullet_image = Resource.Load[Texture2D.Instance]("res://bullet.png")
 
 type Bullet struct {
 	Position Vector2.XY
@@ -83,9 +82,9 @@ func (b *Bullets) PhysicsProcess(delta Float.X) {
 }
 
 func (b *Bullets) Draw() {
-	var offset = Vector2.MulX(Vector2.Neg(bullet_image.AsTexture2D().GetSize()), 0.5)
+	var offset = Vector2.MulX(Vector2.Neg(graphics.PNG.Bullet.GetSize()), 0.5)
 	for _, bullet := range b.bullets {
-		b.AsCanvasItem().DrawTexture(bullet_image.AsTexture2D(), Vector2.Add(bullet.Position, offset))
+		b.AsCanvasItem().DrawTexture(graphics.PNG.Bullet, Vector2.Add(bullet.Position, offset))
 	}
 }
 

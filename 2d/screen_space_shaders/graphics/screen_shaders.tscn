@@ -1,0 +1,335 @@
+[gd_scene format=3 uid="uid://dkxwq51hsgxnt"]
+
+[ext_resource type="Texture2D" uid="uid://ot66fdfdbktp" path="res://art/burano.jpg" id="2"]
+[ext_resource type="Texture2D" uid="uid://bwdw3gftl3fa5" path="res://art/platformer.jpg" id="3"]
+[ext_resource type="Texture2D" uid="uid://bmlv6y43cvyi5" path="res://art/mountains.jpg" id="4"]
+[ext_resource type="Texture2D" uid="uid://b8osks5hfmw1d" path="res://art/forest.jpg" id="5"]
+[ext_resource type="Shader" uid="uid://dokl6em46uwdd" path="res://shaders/vignette.gdshader" id="6"]
+[ext_resource type="Texture2D" uid="uid://dbqvmo0pgbip8" path="res://art/vignette.png" id="7"]
+[ext_resource type="Texture2D" uid="uid://chow56q3y1nfd" path="res://art/white.png" id="8"]
+[ext_resource type="Shader" uid="uid://cycsadjeb1ud8" path="res://shaders/blur.gdshader" id="9"]
+[ext_resource type="Shader" uid="uid://5pjux72j4kn5" path="res://shaders/pixelize.gdshader" id="10"]
+[ext_resource type="Shader" uid="uid://dqp55y6c3sa07" path="res://shaders/whirl.gdshader" id="11"]
+[ext_resource type="Shader" uid="uid://t0p4xd3qck1x" path="res://shaders/sepia.gdshader" id="12"]
+[ext_resource type="Shader" uid="uid://dwypfrywt3cas" path="res://shaders/negative.gdshader" id="13"]
+[ext_resource type="Shader" uid="uid://dlwklc8sqi23j" path="res://shaders/contrasted.gdshader" id="14"]
+[ext_resource type="Shader" uid="uid://cy5p57nva6ian" path="res://shaders/normalized.gdshader" id="15"]
+[ext_resource type="Shader" uid="uid://bccqpl6t74fyg" path="res://shaders/BCS.gdshader" id="16"]
+[ext_resource type="Shader" uid="uid://cfsyt8fay3dcy" path="res://shaders/mirage.gdshader" id="17"]
+[ext_resource type="Shader" uid="uid://t7x5fom7mp3b" path="res://shaders/old_film.gdshader" id="18"]
+[ext_resource type="Texture2D" uid="uid://cnc8w6wn23thd" path="res://art/filmgrain.png" id="19_mg7oc"]
+
+[sub_resource type="ShaderMaterial" id="1"]
+shader = ExtResource("6")
+shader_parameter/vignette = ExtResource("7")
+
+[sub_resource type="ShaderMaterial" id="2"]
+shader = ExtResource("9")
+shader_parameter/amount = 4.0
+
+[sub_resource type="ShaderMaterial" id="3"]
+shader = ExtResource("10")
+shader_parameter/size_x = 0.008
+shader_parameter/size_y = 0.008
+
+[sub_resource type="ShaderMaterial" id="4"]
+shader = ExtResource("11")
+shader_parameter/rotation = 3.0
+
+[sub_resource type="ShaderMaterial" id="5"]
+shader = ExtResource("12")
+shader_parameter/base = Color(0.941176, 0.647059, 0.356863, 1)
+
+[sub_resource type="ShaderMaterial" id="6"]
+shader = ExtResource("13")
+
+[sub_resource type="ShaderMaterial" id="7"]
+shader = ExtResource("14")
+
+[sub_resource type="ShaderMaterial" id="8"]
+shader = ExtResource("15")
+
+[sub_resource type="ShaderMaterial" id="9"]
+shader = ExtResource("16")
+shader_parameter/brightness = 0.8
+shader_parameter/contrast = 1.5
+shader_parameter/saturation = 1.8
+
+[sub_resource type="ShaderMaterial" id="10"]
+shader = ExtResource("17")
+shader_parameter/frequency = 60.0
+shader_parameter/depth = 0.005
+
+[sub_resource type="ShaderMaterial" id="11"]
+shader = ExtResource("18")
+shader_parameter/base = Color(0.941176, 0.647059, 0.356863, 1)
+shader_parameter/grain = ExtResource("19_mg7oc")
+shader_parameter/grain_strength = 0.5
+shader_parameter/vignette = ExtResource("7")
+shader_parameter/fps = 15.0
+shader_parameter/stretch = 0.5
+shader_parameter/flashing = 0.1
+
+[node name="ScreenShaders" type="ScreenShaders" unique_id=1133880950]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+
+[node name="Pictures" type="Control" parent="." unique_id=2103590381]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+
+[node name="Burano" type="TextureRect" parent="Pictures" unique_id=1900484814]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("2")
+stretch_mode = 6
+
+[node name="Roby" type="TextureRect" parent="Pictures" unique_id=504142552]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("3")
+stretch_mode = 6
+
+[node name="Mountains" type="TextureRect" parent="Pictures" unique_id=1273340235]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("4")
+stretch_mode = 6
+
+[node name="Forest" type="TextureRect" parent="Pictures" unique_id=74753710]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("5")
+stretch_mode = 6
+
+[node name="Effects" type="Control" parent="." unique_id=674610486]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+
+[node name="Disabled" type="Control" parent="Effects" unique_id=1310488534]
+visible = false
+layout_mode = 1
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+
+[node name="Vignette" type="TextureRect" parent="Effects" unique_id=1231984100]
+visible = false
+material = SubResource("1")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("8")
+
+[node name="Blur" type="TextureRect" parent="Effects" unique_id=993402186]
+visible = false
+material = SubResource("2")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("8")
+
+[node name="Pixelize" type="TextureRect" parent="Effects" unique_id=1885497015]
+visible = false
+material = SubResource("3")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("8")
+
+[node name="Whirl" type="TextureRect" parent="Effects" unique_id=1109611632]
+visible = false
+material = SubResource("4")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("8")
+
+[node name="Sepia" type="TextureRect" parent="Effects" unique_id=1853262873]
+visible = false
+material = SubResource("5")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 14.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("8")
+
+[node name="Negative" type="TextureRect" parent="Effects" unique_id=638717384]
+visible = false
+material = SubResource("6")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("8")
+
+[node name="Contrasted" type="TextureRect" parent="Effects" unique_id=1045013923]
+visible = false
+material = SubResource("7")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("8")
+
+[node name="Normalized" type="TextureRect" parent="Effects" unique_id=1733653258]
+visible = false
+material = SubResource("8")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("8")
+
+[node name="BCS" type="TextureRect" parent="Effects" unique_id=409151495]
+visible = false
+material = SubResource("9")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("8")
+
+[node name="Mirage" type="TextureRect" parent="Effects" unique_id=504519412]
+visible = false
+material = SubResource("10")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("8")
+
+[node name="OldFilm" type="TextureRect" parent="Effects" unique_id=1281561988]
+visible = false
+material = SubResource("11")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource("8")
+
+[node name="Picture" type="OptionButton" parent="." unique_id=1776337369]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 7.0
+offset_right = 184.0
+offset_bottom = 38.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="Effect" type="OptionButton" parent="." unique_id=1061191569]
+layout_mode = 0
+offset_left = 189.0
+offset_top = 7.0
+offset_right = 312.0
+offset_bottom = 38.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[connection signal="item_selected" from="Picture" to="." method="on_picture_item_selected"]
+[connection signal="item_selected" from="Effect" to="." method="on_effect_item_selected"]

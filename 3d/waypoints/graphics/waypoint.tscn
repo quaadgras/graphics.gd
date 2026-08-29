@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://d2uv1qu8j604u"]
+
+[ext_resource type="Texture2D" uid="uid://cnjp5mer7vvvp" path="res://waypoint.svg" id="2"]
+
+[node name="Waypoint" type="Waypoint" unique_id=2083453177]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Label" type="Label" parent="." unique_id=272321618]
+layout_mode = 0
+offset_left = -200.0
+offset_top = -44.0
+offset_right = 200.0
+offset_bottom = -15.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "Waypoint"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Marker" type="TextureRect" parent="." unique_id=2037260045]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -16.0
+offset_right = 8.0
+texture = ExtResource("2")
+expand_mode = 1

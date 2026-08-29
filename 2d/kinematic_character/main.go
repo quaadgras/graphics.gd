@@ -26,7 +26,14 @@ const (
 )
 
 func (p *Player) Ready() {
-	p.gravity = Float.X(ProjectSettings.GetSetting("physics/2d/default_gravity", 0).(int64))
+	switch g := ProjectSettings.GetSetting("physics/2d/default_gravity", 0).(type) {
+	case int:
+		p.gravity = Float.X(g)
+	case int64:
+		p.gravity = Float.X(g)
+	case float64:
+		p.gravity = Float.X(g)
+	}
 }
 
 func (p *Player) PhysicsProcess(delta Float.X) {

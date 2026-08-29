@@ -1,0 +1,132 @@
+[gd_scene format=3 uid="uid://dnxr4arl856gq"]
+
+[ext_resource type="PackedScene" uid="uid://d2uv1qu8j604u" path="res://waypoint.tscn" id="2"]
+
+[sub_resource type="StandardMaterial3D" id="5"]
+albedo_color = Color(0.25098, 0.470588, 0.996078, 1)
+
+[sub_resource type="BoxMesh" id="6"]
+material = SubResource("5")
+
+[sub_resource type="StandardMaterial3D" id="7"]
+albedo_color = Color(0.435294, 0.917647, 0.380392, 1)
+
+[sub_resource type="BoxMesh" id="8"]
+material = SubResource("7")
+
+[sub_resource type="StandardMaterial3D" id="9"]
+albedo_color = Color(0.862745, 0.764706, 0.12549, 1)
+
+[sub_resource type="BoxMesh" id="10"]
+material = SubResource("9")
+
+[sub_resource type="StandardMaterial3D" id="11"]
+albedo_color = Color(0.996078, 0.266667, 0.25098, 1)
+
+[sub_resource type="BoxMesh" id="12"]
+material = SubResource("11")
+
+[sub_resource type="StandardMaterial3D" id="1"]
+albedo_color = Color(0.6, 0.564706, 0.423529, 1)
+
+[sub_resource type="BoxMesh" id="2"]
+material = SubResource("1")
+size = Vector3(16, 2, 16)
+
+[sub_resource type="StandardMaterial3D" id="3"]
+albedo_color = Color(0.788235, 0.788235, 0.788235, 1)
+
+[sub_resource type="BoxMesh" id="4"]
+material = SubResource("3")
+size = Vector3(4, 1.5, 4)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1hqbf"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_47fsp"]
+sky_material = SubResource("ProceduralSkyMaterial_1hqbf")
+
+[sub_resource type="Environment" id="Environment_ob0ys"]
+background_mode = 2
+sky = SubResource("Sky_47fsp")
+tonemap_mode = 4
+
+[node name="Main" type="Main" unique_id=1971028105]
+
+[node name="BlueCube" type="MeshInstance3D" parent="." unique_id=2098357348]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5)
+mesh = SubResource("6")
+
+[node name="WaypointAnchor" type="Marker3D" parent="BlueCube" unique_id=1009710506]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Waypoint" parent="BlueCube/WaypointAnchor" unique_id=2056031682 instance=ExtResource("2")]
+modulate = Color(0.501961, 0.764706, 1, 1)
+text = "Blue Waypoint"
+
+[node name="GreenCube" type="MeshInstance3D" parent="." unique_id=1627014380]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5)
+mesh = SubResource("8")
+
+[node name="WaypointAnchor" type="Marker3D" parent="GreenCube" unique_id=1905473838]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Waypoint" parent="GreenCube/WaypointAnchor" unique_id=1051132247 instance=ExtResource("2")]
+modulate = Color(0.419608, 1, 0.427451, 1)
+text = "Green Waypoint"
+
+[node name="YellowCube" type="MeshInstance3D" parent="." unique_id=1688583953]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 5)
+mesh = SubResource("10")
+
+[node name="WaypointAnchor" type="Marker3D" parent="YellowCube" unique_id=2080453402]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Waypoint" parent="YellowCube/WaypointAnchor" unique_id=520078875 instance=ExtResource("2")]
+modulate = Color(1, 0.992157, 0.419608, 1)
+text = "Yellow Waypoint (non-sticky)"
+sticky = false
+
+[node name="RedCube" type="MeshInstance3D" parent="." unique_id=1393155383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -5)
+mesh = SubResource("12")
+
+[node name="WaypointAnchor" type="Marker3D" parent="RedCube" unique_id=1254431120]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Waypoint" parent="RedCube/WaypointAnchor" unique_id=1808374417 instance=ExtResource("2")]
+modulate = Color(1, 0.466667, 0.427451, 1)
+text = "Red Waypoint"
+
+[node name="Camera3D" type="Camera" parent="." unique_id=1885392552]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 8)
+
+[node name="Label" type="Label" parent="." unique_id=864309041]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 325.0
+offset_bottom = 36.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "Press Esc or F10 to toggle mouse capture"
+
+[node name="Ground" type="MeshInstance3D" parent="." unique_id=1815480665]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+mesh = SubResource("2")
+
+[node name="WhiteCube" type="MeshInstance3D" parent="." unique_id=1419508960]
+mesh = SubResource("4")
+
+[node name="Environment" type="WorldEnvironment" parent="." unique_id=1914466512]
+environment = SubResource("Environment_ob0ys")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=734301431]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+shadow_bias = 0.04
+shadow_blur = 1.5
+directional_shadow_mode = 0
+directional_shadow_fade_start = 1.0
+directional_shadow_max_distance = 40.0

@@ -1,0 +1,52 @@
+package graphics
+
+import (
+	"graphics.gd/classdb/AnimatedSprite2D"
+	"graphics.gd/classdb/Area2D"
+	"graphics.gd/classdb/CollisionShape2D"
+	"graphics.gd/classdb/Node2D"
+	"graphics.gd/classdb/PackedScene"
+	"graphics.gd/classdb/Resource"
+	"graphics.gd/classdb/Texture2D"
+)
+
+var PNG = Resource.Library[struct {
+	Bullet    Texture2D.Instance `gd:"res://bullet.png"`
+	FaceHappy Texture2D.Instance `gd:"res://face_happy.png"`
+	FaceSad   Texture2D.Instance `gd:"res://face_sad.png"`
+}]()
+
+var TSCN = Resource.Library[struct {
+	Main PackedScene.Is[SceneMain] `gd:"res://main.tscn"`
+}]()
+
+var WEBP = Resource.Library[struct {
+	Icon Texture2D.Instance `gd:"res://icon.webp"`
+}]()
+
+type SceneMain struct {
+	Node2D.Instance `gd:"res://main.tscn"`
+
+	Bullets Node2D.Instance
+	Player  struct {
+		Area2D.Instance
+
+		AnimatedSprite2D AnimatedSprite2D.Instance
+		CollisionShape2D CollisionShape2D.Instance
+	}
+}
+
+var Uniforms struct {
+}
+
+const (
+	ActionUI_Left = "ui_left"
+)
+
+const (
+	GroupTest = "Test Group"
+)
+
+const (
+	LayerDefault = 1
+)
