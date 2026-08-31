@@ -935,7 +935,9 @@ func reloadsRun() {
 			WithSysNanotime().
 			WithFSConfig(wazero.NewFSConfig().WithDirMount(reloadsProjectDir(), "/"))
 		for _, env := range os.Environ() {
-			if k, v, ok := strings.Cut(env, "="); ok {
+			// Windows keeps hidden per-drive working directories in entries
+			// named "=C:" etc, which wazero rejects as an empty key.
+			if k, v, ok := strings.Cut(env, "="); ok && k != "" {
 				config = config.WithEnv(k, v)
 			}
 		}
