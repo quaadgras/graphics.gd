@@ -76,6 +76,33 @@ func New(value any) Function {
 	}
 }
 
+// wrapObject fits an engine object reference to a class instance parameter.
+// The engine hands an object to a Go function as a bare reference, while
+// the function asks for an instance type: [Object.Instance] is a one-element
+// array of that reference, and every class instance offers SetObject to take
+// one. Without this, a func(Object.Instance) connected from Go panics in
+// reflect.Call the first time the engine invokes it.
+func wrapObject(value reflect.Value, param reflect.Type) (reflect.Value, bool) {
+	if param.Kind() == reflect.Array && param.Len() == 1 && param.Elem() == value.Type() {
+		wrapped := reflect.New(param).Elem()
+		wrapped.Index(0).Set(value)
+		return wrapped, true
+	}
+	setter, ok := reflect.PointerTo(param).MethodByName("SetObject")
+	if !ok || setter.Type.NumIn() != 2 {
+		return reflect.Value{}, false
+	}
+	arg := setter.Type.In(1)
+	if arg.Kind() != reflect.Array || arg.Len() != 1 || !value.Type().ConvertibleTo(arg.Elem()) {
+		return reflect.Value{}, false
+	}
+	packed := reflect.New(arg).Elem()
+	packed.Index(0).Set(value.Convert(arg.Elem()))
+	instance := reflect.New(param)
+	setter.Func.Call([]reflect.Value{instance, packed})
+	return instance.Elem(), true
+}
+
 type local struct {
 	value any
 	binds Array.Any
@@ -130,8 +157,12 @@ func (l *local) Call(_ complex128, args ...variant.Any) variant.Any {
 					panic(err)
 				}
 				values.SetIndex(i, converted)
-			} else if value.Type() != ftype.In(i) && value.Type().ConvertibleTo(ftype.In(i)) {
-				values.SetIndex(i, value.Convert(ftype.In(i)))
+			} else if value.Type() != ftype.In(i) {
+				if value.Type().ConvertibleTo(ftype.In(i)) {
+					values.SetIndex(i, value.Convert(ftype.In(i)))
+				} else if wrapped, ok := wrapObject(value, ftype.In(i)); ok {
+					values.SetIndex(i, wrapped)
+				}
 			}
 		}
 		result := reflect.ValueOf(l.value).Call(values.Slice())
