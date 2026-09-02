@@ -16,9 +16,15 @@ func Add(node Node.Any) {
 		if root := tree.Root(); root != Window.Nil {
 			n := node.AsNode()
 			root.AsNode().AddChild(n)
-			if !n.IsInsideTree() {
+			if n.GetParent() == Node.Nil {
 				// The engine rejects add_child while the root is busy setting
 				// up children: the deferred queue flushes once it is idle.
+				// A rejected add leaves the node without a parent. Checking
+				// IsInsideTree instead would also retry after a successful
+				// add from main, where the root itself is not in the tree
+				// yet (the engine attaches it right after the MainLoop
+				// initialize callback that resumes main), and that retry
+				// fails with "already has a parent 'root'".
 				Object.Call(root, "call_deferred", "add_child", n)
 			}
 		}
