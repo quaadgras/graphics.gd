@@ -51,10 +51,20 @@ func MainLoop(loop MainLoopClass.Interface) {
 // class registration to a hot-reloadable wasm build of the project.
 var reloadsSession func()
 
+// reloadsDone records that the reloads session has already run to
+// completion (or fallen back to a native run) on behalf of an earlier
+// [LoadingScene] call: the project's subsequent [Scene] call must then
+// be a no-op rather than a second session or a second engine.
+var reloadsDone bool
+
 // Scene starts up the SceneTree and blocks until the engine shuts down.
 func Scene() {
+	if reloadsDone {
+		return
+	}
 	if reloadsSession != nil {
 		reloadsSession()
+		reloadsDone = true
 		return
 	}
 	if !loadingSceneWasCalled {
@@ -72,6 +82,19 @@ func Scene() {
 // editor-accessible classes before calling this function if you want them to be
 // available in the editor.
 func LoadingScene() {
+	if reloadsSession != nil {
+		// A reloads host (-tags reloads) must neither start the engine
+		// nor park on it here: the session owns engine startup, the
+		// host's class registration is compiled out (the wasm guest
+		// performs it), and the project — this very call included —
+		// runs inside the guest. Starting natively would park the
+		// host's main (the c-shared Start waits for the first frame)
+		// before the session ever begins, so the guest never registers
+		// and the engine finds no GoMainLoop (#333). Run the session
+		// here instead; the project's later Scene call finds it done.
+		Scene()
+		return
+	}
 	if startup == nil {
 		startup = new(engineAsSharedLibrary)
 	}

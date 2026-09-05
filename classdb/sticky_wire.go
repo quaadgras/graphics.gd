@@ -19,6 +19,25 @@ import (
 // thunk is registered as the engine's call_virtual_with_data_func; the stock
 // cgocallback path continues to call the Called handler directly.
 func init() {
+	if registrationDisabled {
+		// Reloads host: the host registers no classes of its own, so the
+		// instance and userdata of a resident virtual call are the wasm
+		// guest's tokens, not host pointers to a pinnedVirtualFunc — the
+		// dispatch below would fault on the first _process tick. Route
+		// through On.Extension.Instance.Called, which startup/reloads.go
+		// chains to the guest forwarder.
+		forward := func(instance, userdata, result, args uintptr) {
+			gdextension.On.Extension.Instance.Called(
+				gdextension.ExtensionInstanceID(instance),
+				gdextension.Pointer(userdata),
+				gdextension.Returns[any](unsafe.Pointer(result)),
+				gdextension.Accepts[any](unsafe.Pointer(args)),
+			)
+		}
+		sticky.Dispatch = forward
+		gd.RearmVirtualDispatch(forward)
+		return
+	}
 	dispatch := func(instance, userdata, result, args uintptr) {
 		pv := (*pinnedVirtualFunc)(unsafe.Pointer(userdata))
 		if pv.tick != nil && instance != 0 {

@@ -1,4 +1,4 @@
-//go:build amd64 || arm64 || wasip1
+//go:build amd64 || arm64
 
 package gd
 

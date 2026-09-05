@@ -5,7 +5,6 @@ package startup
 
 import (
 	"context"
-	"os"
 	"sync/atomic"
 	"unsafe"
 
@@ -1368,9 +1367,7 @@ func reloadsBindGuest(mod api.Module) *reloadsGuestExports {
 var reloadsGuest atomic.Pointer[reloadsGuestExports]
 
 func reloadsCall(fn api.Function, stack []uint64) {
-	if err := fn.CallWithStack(reloadsCtx, stack); err != nil {
-		os.Stderr.WriteString("graphics.gd/startup: reloads guest call failed: " + err.Error() + "\n")
-	}
+	reloadsCallPooled(fn, stack)
 }
 
 func reloadsInstallGuestCallbacks() {

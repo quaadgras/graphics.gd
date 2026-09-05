@@ -156,6 +156,9 @@ to the editor as a plugin.
 */
 func Register[T Class](exports ...any) {
 	if registrationDisabled {
+		// Recorded so that a reloads host which gives up on hot
+		// reloading can still register the project's classes itself.
+		reloadsDeferRegistration(func() { Register[T](exports...) })
 		return
 	}
 	var superType = gdclass.SuperType(([1]T{})[0])

@@ -315,7 +315,6 @@ func generate_reloads_go() error {
 	fmt.Fprint(f, "package startup\n\n")
 	fmt.Fprint(f, "import (\n")
 	fmt.Fprint(f, "\t\"context\"\n")
-	fmt.Fprint(f, "\t\"os\"\n")
 	fmt.Fprint(f, "\t\"sync/atomic\"\n")
 	fmt.Fprint(f, "\t\"unsafe\"\n")
 	fmt.Fprint(f, "\n")
@@ -422,10 +421,10 @@ func generate_reloads_go() error {
 	fmt.Fprint(f, "\t}\n")
 	fmt.Fprint(f, "}\n\n")
 	fmt.Fprint(f, "var reloadsGuest atomic.Pointer[reloadsGuestExports]\n\n")
+	// Nested engine callbacks re-enter the same export, so the call goes
+	// through the per-export handle pool in reloads_call.go.
 	fmt.Fprint(f, "func reloadsCall(fn api.Function, stack []uint64) {\n")
-	fmt.Fprint(f, "\tif err := fn.CallWithStack(reloadsCtx, stack); err != nil {\n")
-	fmt.Fprint(f, "\t\tos.Stderr.WriteString(\"graphics.gd/startup: reloads guest call failed: \" + err.Error() + \"\\n\")\n")
-	fmt.Fprint(f, "\t}\n")
+	fmt.Fprint(f, "\treloadsCallPooled(fn, stack)\n")
 	fmt.Fprint(f, "}\n\n")
 
 	// Callback forwarders: extension-instance, callable and editor

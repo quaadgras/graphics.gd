@@ -28,6 +28,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"slices"
 	"strings"
 	"sync"
@@ -38,6 +39,7 @@ import (
 	"github.com/tetratelabs/wazero/api"
 	"github.com/tetratelabs/wazero/imports/wasi_snapshot_preview1"
 	"github.com/tetratelabs/wazero/sys"
+	"graphics.gd/classdb"
 	"graphics.gd/classdb/Startup"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
@@ -130,6 +132,23 @@ func reloadsProjectDir() string {
 		return filepath.Dir(wd)
 	}
 	return wd
+}
+
+// reloadsGuestFS is the filesystem the guest sees. The guest runs the
+// project's own code, which reaches files the way the native build does:
+// through engine paths that ProjectSettings.GlobalizePath turns into
+// absolute host paths (a ResourceFormatLoader opening its file with the
+// os package, say), and through paths relative to the working directory.
+// The host's root is therefore mounted as the guest's root — this is the
+// developer's own project in a development session — and reports true,
+// so the caller also hands the guest the host's working directory.
+// Windows has no single root to mount: the project directory stays the
+// guest's root there, as before.
+func reloadsGuestFS() (wazero.FSConfig, bool) {
+	if runtime.GOOS == "windows" {
+		return wazero.NewFSConfig().WithDirMount(reloadsProjectDir(), "/"), false
+	}
+	return wazero.NewFSConfig().WithDirMount("/", "/"), true
 }
 
 func reloadsBuildGuest() error {
@@ -767,8 +786,10 @@ func reloadsPrepareRuntime() error {
 // reloadsFallback gives up on hot reloading and finishes the run the way
 // a build without the reloads tag would. Nothing engine-side has been
 // touched at this point, and the host binary is the project itself, so
-// every class the project defines is compiled in and the editor (or the
-// game) stays completely usable — only live swapping is lost.
+// every class the project defines is compiled in: the Register calls it
+// made so far were recorded (registration is disabled in a reloads host)
+// and are replayed now, so the editor (or the game) stays completely
+// usable — only live swapping is lost.
 func reloadsFallback(reason string, err error) {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "graphics.gd: hot reloading is off (%s):\n%v\n", reason, err)
@@ -776,6 +797,7 @@ func reloadsFallback(reason string, err error) {
 		fmt.Fprintf(os.Stderr, "graphics.gd: hot reloading is off (%s)\n", reason)
 	}
 	reloadsSession = nil // Scene takes the ordinary path from here on.
+	classdb.ReloadsFallback()
 	Scene()
 }
 
@@ -932,13 +954,23 @@ func reloadsRun() {
 			WithStdin(os.Stdin).
 			WithArgs("library.wasm").
 			WithSysWalltime().
-			WithSysNanotime().
-			WithFSConfig(wazero.NewFSConfig().WithDirMount(reloadsProjectDir(), "/"))
+			WithSysNanotime()
+		fs, hostRoot := reloadsGuestFS()
+		config = config.WithFSConfig(fs)
 		for _, env := range os.Environ() {
 			// Windows keeps hidden per-drive working directories in entries
 			// named "=C:" etc, which wazero rejects as an empty key.
-			if k, v, ok := strings.Cut(env, "="); ok && k != "" {
+			if k, v, ok := strings.Cut(env, "="); ok && k != "" && !(hostRoot && k == "PWD") {
 				config = config.WithEnv(k, v)
+			}
+		}
+		if hostRoot {
+			// Go's wasip1 port takes its working directory from PWD, so
+			// hand it the host's actual one (the editor launches the game
+			// with the terminal's PWD, which is not necessarily where the
+			// process runs) and relative paths resolve as they do natively.
+			if wd, err := os.Getwd(); err == nil {
+				config = config.WithEnv("PWD", wd)
 			}
 		}
 		mod, err := reloadsRuntime.InstantiateModule(reloadsCtx, compiled, config)
@@ -948,6 +980,7 @@ func reloadsRun() {
 			}
 		}
 		reloadsGuest.Store(nil)
+		clear(reloadsCallPools) // the handles belong to the module going away
 		if mod != nil {
 			mod.Close(reloadsCtx)
 		}
