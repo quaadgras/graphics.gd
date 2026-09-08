@@ -71,7 +71,13 @@ func Set[T gdextension.AnyVariant | gdextension.CallError](frame gdextension.Poi
 	}
 }
 
+// IntoSlice copies len elements out of the engine buffer at ptr. An empty
+// packed array has no buffer (the engine's operator_index returns null for
+// it), so a zero len is answered before ptr is checked, as on native.
 func IntoSlice[T gdextension.Packable](ptr gdextension.Pointer, len int) []T {
+	if len == 0 {
+		return []T{}
+	}
 	if ptr == 0 {
 		panic("nil pointer dereference")
 	}
@@ -82,12 +88,17 @@ func IntoSlice[T gdextension.Packable](ptr gdextension.Pointer, len int) []T {
 	return slice
 }
 
+// LoadSlice copies slice into the engine buffer at ptr. An empty packed array
+// has no buffer (the engine's operator_index returns null for it, which is
+// what the Packed.*.Unsafe accessors hand back after a Resize(0)), so an
+// empty slice is a no-op before ptr is checked, as on native — otherwise
+// every empty packed argument (DrawPolygon's uvs, say) panicked here.
 func LoadSlice[T gdextension.Packable](ptr gdextension.Pointer, slice []T) {
-	if ptr == 0 {
-		panic("nil pointer dereference")
-	}
 	if len(slice) == 0 {
 		return
+	}
+	if ptr == 0 {
+		panic("nil pointer dereference")
 	}
 	off := gdextension.Pointer(0)
 	buf := unsafe.Slice((*byte)(unsafe.Pointer(&slice[0])), len(slice)*int(unsafe.Sizeof([1]T{}[0])))

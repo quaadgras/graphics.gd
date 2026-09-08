@@ -95,7 +95,7 @@ func reloadsPark() {
 // reloadsWakeWanted reports whether a parked guest session has
 // something to do.
 func reloadsWakeWanted() bool {
-	if reloadsExitCode.Load() != reloadsKeepRunning {
+	if reloadsExitCode.Load() != reloadsKeepRunning || reloadsGuestDead.Load() {
 		return true
 	}
 	return reloadsAwaitingBuild.Load() && reloadsCompiled.Load() != nil
@@ -713,6 +713,7 @@ func reloadsHostReady(_ context.Context, m api.Module, stack []uint64) {
 	for _, level := range reloadsInitLevels {
 		reloadsCall(g.on_engine_init, []uint64{uint64(level)})
 	}
+	reloadsUnwindDeadGuest()
 	reloadsAdoptFn = m.ExportedFunction("reloads_adopt")
 	if reloadsNeedsStart {
 		reloadsNeedsStart = false
@@ -730,6 +731,7 @@ func reloadsHostReady(_ context.Context, m api.Module, stack []uint64) {
 }
 
 func reloadsHostYield(_ context.Context, m api.Module, stack []uint64) {
+	reloadsUnwindDeadGuest()
 	if code := reloadsExitCode.Load(); code != reloadsKeepRunning {
 		stack[0] = uint64(code)
 		return
@@ -738,6 +740,7 @@ func reloadsHostYield(_ context.Context, m api.Module, stack []uint64) {
 		// The engine drives its own loop: park the main coroutine until
 		// the frame chain wakes us with something to do.
 		reloadsPark()
+		reloadsUnwindDeadGuest()
 		stack[0] = uint64(reloadsExitCode.Load())
 		return
 	}
@@ -746,6 +749,7 @@ func reloadsHostYield(_ context.Context, m api.Module, stack []uint64) {
 		stack[0] = reloadsShutdown
 		return
 	}
+	reloadsUnwindDeadGuest()
 	stack[0] = reloadsKeepRunning
 }
 
@@ -974,7 +978,7 @@ func reloadsRun() {
 			}
 		}
 		mod, err := reloadsRuntime.InstantiateModule(reloadsCtx, compiled, config)
-		if err != nil {
+		if err != nil && !reloadsGuestDead.Load() {
 			if exit, ok := err.(*sys.ExitError); !ok || exit.ExitCode() != 0 {
 				fmt.Fprintln(os.Stderr, "graphics.gd: wasm guest failed:", err)
 			}
@@ -983,6 +987,16 @@ func reloadsRun() {
 		clear(reloadsCallPools) // the handles belong to the module going away
 		if mod != nil {
 			mod.Close(reloadsCtx)
+		}
+		if reloadsGuestDead.Load() {
+			// The guest exited on its own (see reloadsGuestDied): its
+			// build would only die again, so drop it and run host-driven
+			// until the watcher's next successful build swaps in.
+			reloadsGuestDead.Store(false)
+			reloadsGuestExit.Store(nil)
+			reloadsCompiled.Store(nil)
+			reloadsMarkSessionStale()
+			continue
 		}
 		if reloadsExitCode.Load() != reloadsSwap {
 			break
