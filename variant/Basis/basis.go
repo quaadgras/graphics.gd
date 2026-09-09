@@ -238,6 +238,11 @@ func Determinant(m XYZ) Float.X { //gd:Basis.determinant
 // Consider using the [Basis.Quaternion] method instead, which returns a [Quaternion]
 // quaternion instead of [EulerAngles].
 func AsEulerAngles(b XYZ, order Angle.Order) Euler.Radians { //gd:Basis.get_euler
+	// The decompositions below are written against the matrix rows
+	// (as in Godot's Basis::get_euler), whereas X, Y and Z are the
+	// columns; transpose once so that b.X is row 0, b.Y row 1, b.Z
+	// row 2.
+	b = Transposed(b)
 	switch order {
 	case Angle.OrderXYZ:
 		// Euler angles in XYZ convention.
@@ -251,7 +256,7 @@ func AsEulerAngles(b XYZ, order Angle.Order) Euler.Radians { //gd:Basis.get_eule
 		if sy < (1.0 - Float.Epsilon) {
 			if sy > -(1.0 - Float.Epsilon) {
 				// is this a pure Y rotation?
-				if b.Y.X == 0 && b.X.Y == 0 && b.Y.Z == 0 && b.Z.Y == 0 && b.X.X == 1 {
+				if b.Y.X == 0 && b.X.Y == 0 && b.Y.Z == 0 && b.Z.Y == 0 && b.Y.Y == 1 {
 					// return the simplest form (human friendlier in editor and scripts)
 					euler.X = 0
 					euler.Y = Angle.Atan2(b.X.Z, b.X.X)
