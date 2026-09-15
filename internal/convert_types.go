@@ -176,6 +176,27 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
 	case reflect.Array:
+		// A raw class wrapper ([1]gdclass.Font, the element type of
+		// Array.Contains[[1]gdclass.Font]) shares its layout with
+		// [1]gdreference.Object, so any class instance converts into it
+		// by copying the object reference; this is what lets a
+		// []Font.Instance holding a FontFile pass through ArrayFromSlice.
+		if rtype.Len() == 1 && !rtype.Implements(reflect.TypeFor[IsClass]()) &&
+			rtype.Elem().Implements(reflect.TypeFor[interface{ AsObject() [1]gdreference.Object }]()) &&
+			rtype.Size() == unsafe.Sizeof([1]gdreference.Object{}) {
+			var object gdreference.Object
+			switch value := value.(type) {
+			case gdreference.Object:
+				object = value
+			case IsClass:
+				object = value.AsObject()[0]
+			default:
+				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+			}
+			var arr = reflect.New(rtype)
+			*(*[1]gdreference.Object)(arr.UnsafePointer()) = [1]gdreference.Object{object}
+			return arr.Elem(), nil
+		}
 		if rtype.Implements(reflect.TypeFor[IsClass]()) {
 			var object gdreference.Object
 			switch value := value.(type) {
