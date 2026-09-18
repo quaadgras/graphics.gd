@@ -165,9 +165,11 @@ func (musl Musl) patch() error {
 	if err != nil {
 		return xray.New(err)
 	}
-	file = bytes.Replace(file,
-		[]byte(`struct malloc_context ctx = { 0 };`),
-		[]byte(`struct malloc_context ctx = { .brk = -1 };`), 1)
+	unpatched := []byte(`struct malloc_context ctx = { 0 };`)
+	if !bytes.Contains(file, unpatched) {
+		return nil // already patched, rewriting would invalidate zig's libc cache
+	}
+	file = bytes.Replace(file, unpatched, []byte(`struct malloc_context ctx = { .brk = -1 };`), 1)
 	if err := os.WriteFile(musl_malloc, file, 0644); err != nil {
 		return xray.New(err)
 	}
