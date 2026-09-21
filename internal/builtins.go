@@ -71,42 +71,52 @@ var builtin struct {
 		resize    gdextension.MethodForBuiltinType `hash:"848867239"`
 		size      gdextension.MethodForBuiltinType `hash:"3173160232"`
 		duplicate gdextension.MethodForBuiltinType `hash:"851781288"`
+		set       gdextension.MethodForBuiltinType `hash:"3638975848"`
 	}
 	PackedColorArray struct {
 		resize gdextension.MethodForBuiltinType `hash:"848867239"`
 		size   gdextension.MethodForBuiltinType `hash:"3173160232"`
+		set    gdextension.MethodForBuiltinType `hash:"1444096570"`
 	}
 	PackedFloat32Array struct {
 		resize gdextension.MethodForBuiltinType `hash:"848867239"`
 		size   gdextension.MethodForBuiltinType `hash:"3173160232"`
+		set    gdextension.MethodForBuiltinType `hash:"1113000516"`
 	}
 	PackedFloat64Array struct {
 		resize gdextension.MethodForBuiltinType `hash:"848867239"`
 		size   gdextension.MethodForBuiltinType `hash:"3173160232"`
+		set    gdextension.MethodForBuiltinType `hash:"1113000516"`
 	}
 	PackedInt32Array struct {
 		resize gdextension.MethodForBuiltinType `hash:"848867239"`
 		size   gdextension.MethodForBuiltinType `hash:"3173160232"`
+		set    gdextension.MethodForBuiltinType `hash:"3638975848"`
 	}
 	PackedStringArray struct {
 		resize gdextension.MethodForBuiltinType `hash:"848867239"`
 		size   gdextension.MethodForBuiltinType `hash:"3173160232"`
+		set    gdextension.MethodForBuiltinType `hash:"725585539"`
 	}
 	PackedVector2Array struct {
 		resize gdextension.MethodForBuiltinType `hash:"848867239"`
 		size   gdextension.MethodForBuiltinType `hash:"3173160232"`
+		set    gdextension.MethodForBuiltinType `hash:"635767250"`
 	}
 	PackedVector3Array struct {
 		resize gdextension.MethodForBuiltinType `hash:"848867239"`
 		size   gdextension.MethodForBuiltinType `hash:"3173160232"`
+		set    gdextension.MethodForBuiltinType `hash:"3975343409"`
 	}
 	PackedVector4Array struct {
 		resize gdextension.MethodForBuiltinType `hash:"848867239"`
 		size   gdextension.MethodForBuiltinType `hash:"3173160232"`
+		set    gdextension.MethodForBuiltinType `hash:"1350366223"`
 	}
 	PackedInt64Array struct {
 		resize gdextension.MethodForBuiltinType `hash:"848867239"`
 		size   gdextension.MethodForBuiltinType `hash:"3173160232"`
+		set    gdextension.MethodForBuiltinType `hash:"3638975848"`
 	}
 	Signal struct {
 		emit            gdextension.MethodForBuiltinType `hash:"3286317445"`

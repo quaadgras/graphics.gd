@@ -58,7 +58,39 @@ func (p PackedByteArray) Index(idx Int) byte {
 }
 func (p PackedByteArray) ToByteArray() PackedByteArray { return p.Duplicate() }
 func (p PackedByteArray) SetIndex(idx Int, value byte) {
+	if packedSet(p, builtin.PackedByteArray.set, gdextension.SizeInt, idx, int64(value)) {
+		return
+	}
 	gdmemory.Set[byte](gdextension.Host.Packed.Bytes.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
+}
+
+// packedSet writes one element of a packed array through the engine's own
+// `set`, and reports whether it did. A packed array is copy-on-write: a
+// write has to move the array onto a buffer of its own first if anybody
+// else (a variant it was read out of, the engine's copy of a property)
+// shares the one it has. The engine does that to the handle it is given,
+// so the handle it is given has to be ours, and the buffer it comes back
+// holding has to be kept — a write through the [Unsafe] pointer does
+// neither, and lands in every array that shares the buffer.
+//
+// A handle that is not ours to free ([pointers.Owned]) is only another
+// name for somebody else's array. Unsharing through it would give up
+// their share of the buffer and leave us a new one that nothing frees,
+// so those are left to the caller to write in place, as the engine's
+// by-reference packed arrays would be.
+func packedSet[T pointers.Generic[T, gdextension.PackedArray[E]], E gdextension.Packable, V any](p T, set gdextension.MethodForBuiltinType, shape gdextension.Shape, idx Int, value V) bool {
+	if !pointers.Owned(p) {
+		return false
+	}
+	var ptr = pointers.Get(p)
+	callBuiltinMethod[struct{}](unsafe.Pointer(&ptr), set, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8|shape<<12, unsafe.Pointer(&struct {
+		Index int64
+		Value V
+	}{
+		int64(idx), value,
+	}))
+	pointers.Set(p, ptr)
+	return true
 }
 
 // Bytes returns a copy of the byte array as a byte slice.
@@ -94,6 +126,9 @@ func (p PackedInt32Array) Index(idx Int) int32 {
 	return gdextension.Host.Packed.Int32s.Access(pointers.Get(p), int(idx))
 }
 func (p PackedInt32Array) SetIndex(idx Int, value int32) {
+	if packedSet(p, builtin.PackedInt32Array.set, gdextension.SizeInt, idx, int64(value)) {
+		return
+	}
 	gdmemory.Set[int32](gdextension.Host.Packed.Int32s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
 }
 
@@ -113,6 +148,9 @@ func (p PackedInt64Array) Index(idx Int) int64 {
 }
 
 func (p PackedInt64Array) SetIndex(idx Int, value int64) {
+	if packedSet(p, builtin.PackedInt64Array.set, gdextension.SizeInt, idx, value) {
+		return
+	}
 	gdmemory.Set[int64](gdextension.Host.Packed.Int64s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
 }
 
@@ -130,6 +168,9 @@ func (p PackedFloat32Array) Index(idx Int) float32 {
 }
 
 func (p PackedFloat32Array) SetIndex(idx Int, value float32) {
+	if packedSet(p, builtin.PackedFloat32Array.set, gdextension.SizeFloat, idx, float64(value)) {
+		return
+	}
 	gdmemory.Set[float32](gdextension.Host.Packed.Float32s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
 }
 
@@ -147,6 +188,9 @@ func (p PackedFloat64Array) Index(idx Int) float64 {
 }
 
 func (p PackedFloat64Array) SetIndex(idx Int, value float64) {
+	if packedSet(p, builtin.PackedFloat64Array.set, gdextension.SizeFloat, idx, value) {
+		return
+	}
 	gdmemory.Set[float64](gdextension.Host.Packed.Float64s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
 }
 
@@ -178,6 +222,9 @@ func (p PackedStringArray) Index(idx Int) String {
 }
 
 func (p PackedStringArray) SetIndex(idx Int, value String) {
+	if packedSet(p, builtin.PackedStringArray.set, gdextension.SizeString, idx, pointers.Get(value)) {
+		return // the engine takes its own share of the string
+	}
 	raw, _ := pointers.End(value.Copy())
 	gdmemory.Set[gdextension.String](gdextension.Host.Packed.Strings.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(gdextension.String{})), raw)
 }
@@ -202,6 +249,9 @@ func (p PackedVector2Array) Index(idx Int) Vector2 {
 }
 
 func (p PackedVector2Array) SetIndex(idx Int, value Vector2) {
+	if packedSet(p, builtin.PackedVector2Array.set, gdextension.SizeVector2, idx, value) {
+		return
+	}
 	gdmemory.Set[Vector2](gdextension.Host.Packed.Vector2s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
 }
 
@@ -219,6 +269,9 @@ func (p PackedVector3Array) Index(idx Int) Vector3 {
 }
 
 func (p PackedVector3Array) SetIndex(idx Int, value Vector3) {
+	if packedSet(p, builtin.PackedVector3Array.set, gdextension.SizeVector3, idx, value) {
+		return
+	}
 	gdmemory.Set[Vector3](gdextension.Host.Packed.Vector3s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
 }
 
@@ -236,6 +289,9 @@ func (p PackedVector4Array) Index(idx Int) Vector4 {
 }
 
 func (p PackedVector4Array) SetIndex(idx Int, value Vector4) {
+	if packedSet(p, builtin.PackedVector4Array.set, gdextension.SizeVector4, idx, value) {
+		return
+	}
 	gdmemory.Set[Vector4](gdextension.Host.Packed.Vector4s.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
 }
 
@@ -253,6 +309,9 @@ func (p PackedColorArray) Index(idx Int) Color {
 }
 
 func (p PackedColorArray) SetIndex(idx Int, value Color) {
+	if packedSet(p, builtin.PackedColorArray.set, gdextension.SizeColor, idx, value) {
+		return
+	}
 	gdmemory.Set[Color](gdextension.Host.Packed.Colors.Unsafe(pointers.Get(p))+gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(value)), value)
 }
 
@@ -284,30 +343,66 @@ func NewPackedByteSlice(data []byte) PackedByteArray {
 // array from a Go slice (e.g. a function argument like Image.CreateFromData's
 // bytes) no longer costs one cgo call per element. Mirrors the New*Slice helpers.
 func (p PackedByteArray) CopyFromSlice(data []byte) {
+	if len(data) == 0 {
+		return
+	}
+	p.SetIndex(0, data[0]) // unshares the buffer, see [packedSet]
 	gdmemory.LoadSlice[byte](gdextension.Host.Packed.Bytes.Unsafe(pointers.Get(p)), data)
 }
 func (p PackedColorArray) CopyFromSlice(data []Color) {
+	if len(data) == 0 {
+		return
+	}
+	p.SetIndex(0, data[0]) // unshares the buffer, see [packedSet]
 	gdmemory.LoadSlice[Color](gdextension.Host.Packed.Colors.Unsafe(pointers.Get(p)), data)
 }
 func (p PackedFloat32Array) CopyFromSlice(data []float32) {
+	if len(data) == 0 {
+		return
+	}
+	p.SetIndex(0, data[0]) // unshares the buffer, see [packedSet]
 	gdmemory.LoadSlice[float32](gdextension.Host.Packed.Float32s.Unsafe(pointers.Get(p)), data)
 }
 func (p PackedFloat64Array) CopyFromSlice(data []float64) {
+	if len(data) == 0 {
+		return
+	}
+	p.SetIndex(0, data[0]) // unshares the buffer, see [packedSet]
 	gdmemory.LoadSlice[float64](gdextension.Host.Packed.Float64s.Unsafe(pointers.Get(p)), data)
 }
 func (p PackedInt32Array) CopyFromSlice(data []int32) {
+	if len(data) == 0 {
+		return
+	}
+	p.SetIndex(0, data[0]) // unshares the buffer, see [packedSet]
 	gdmemory.LoadSlice[int32](gdextension.Host.Packed.Int32s.Unsafe(pointers.Get(p)), data)
 }
 func (p PackedInt64Array) CopyFromSlice(data []int64) {
+	if len(data) == 0 {
+		return
+	}
+	p.SetIndex(0, data[0]) // unshares the buffer, see [packedSet]
 	gdmemory.LoadSlice[int64](gdextension.Host.Packed.Int64s.Unsafe(pointers.Get(p)), data)
 }
 func (p PackedVector2Array) CopyFromSlice(data []Vector2) {
+	if len(data) == 0 {
+		return
+	}
+	p.SetIndex(0, data[0]) // unshares the buffer, see [packedSet]
 	gdmemory.LoadSlice[Vector2](gdextension.Host.Packed.Vector2s.Unsafe(pointers.Get(p)), data)
 }
 func (p PackedVector3Array) CopyFromSlice(data []Vector3) {
+	if len(data) == 0 {
+		return
+	}
+	p.SetIndex(0, data[0]) // unshares the buffer, see [packedSet]
 	gdmemory.LoadSlice[Vector3](gdextension.Host.Packed.Vector3s.Unsafe(pointers.Get(p)), data)
 }
 func (p PackedVector4Array) CopyFromSlice(data []Vector4) {
+	if len(data) == 0 {
+		return
+	}
+	p.SetIndex(0, data[0]) // unshares the buffer, see [packedSet]
 	gdmemory.LoadSlice[Vector4](gdextension.Host.Packed.Vector4s.Unsafe(pointers.Get(p)), data)
 }
 

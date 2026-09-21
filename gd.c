@@ -1448,7 +1448,8 @@ uint8_t gd_packed_byte_array_access(UINT a1, UINT a2, INT i) {
 };
 uintptr_t gd_packed_color_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_color_array_operator_index(&packed_array[0], 0);
+    // Const index: writable operator_index can COW and invalidate bulk reads.
+    return (uintptr_t)gdextension_packed_color_array_operator_index_const(&packed_array[0], 0);
 };
 void gd_packed_color_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
@@ -1457,7 +1458,8 @@ void gd_packed_color_array_access(UINT a1, UINT a2, INT i, ANY result) {
 };
 uintptr_t gd_packed_float32_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_float32_array_operator_index(&packed_array[0], 0);
+    // Const index: writable operator_index can COW and invalidate bulk reads.
+    return (uintptr_t)gdextension_packed_float32_array_operator_index_const(&packed_array[0], 0);
 };
 float gd_packed_float32_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
@@ -1465,7 +1467,8 @@ float gd_packed_float32_array_access(UINT a1, UINT a2, INT i) {
 };
 uintptr_t gd_packed_float64_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_float64_array_operator_index(&packed_array[0], 0);
+    // Const index: writable operator_index can COW and invalidate bulk reads.
+    return (uintptr_t)gdextension_packed_float64_array_operator_index_const(&packed_array[0], 0);
 };
 double gd_packed_float64_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
@@ -1473,7 +1476,8 @@ double gd_packed_float64_array_access(UINT a1, UINT a2, INT i) {
 };
 uintptr_t gd_packed_int32_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_int32_array_operator_index(&packed_array[0], 0);
+    // Const index: writable operator_index can COW and invalidate bulk reads.
+    return (uintptr_t)gdextension_packed_int32_array_operator_index_const(&packed_array[0], 0);
 };
 int32_t gd_packed_int32_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
@@ -1481,7 +1485,8 @@ int32_t gd_packed_int32_array_access(UINT a1, UINT a2, INT i) {
 };
 uintptr_t gd_packed_int64_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_int64_array_operator_index(&packed_array[0], 0);
+    // Const index: writable operator_index can COW and invalidate bulk reads.
+    return (uintptr_t)gdextension_packed_int64_array_operator_index_const(&packed_array[0], 0);
 };
 void gd_packed_int64_array_access(UINT a1, UINT a2, INT i, ANY value) {
     uintptr_t packed_array[2] = {a1, a2};
@@ -1489,7 +1494,8 @@ void gd_packed_int64_array_access(UINT a1, UINT a2, INT i, ANY value) {
 };
 uintptr_t gd_packed_string_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_string_array_operator_index(&packed_array[0], 0);
+    // Const index: writable operator_index can COW and invalidate bulk reads.
+    return (uintptr_t)gdextension_packed_string_array_operator_index_const(&packed_array[0], 0);
 };
 uintptr_t gd_packed_string_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
@@ -1511,7 +1517,8 @@ void gd_array_get(uintptr_t a, INT i, ANY result) {
 };
 uintptr_t gd_packed_vector2_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_vector2_array_operator_index(&packed_array[0], 0);
+    // Const index: writable operator_index can COW and invalidate bulk reads.
+    return (uintptr_t)gdextension_packed_vector2_array_operator_index_const(&packed_array[0], 0);
 };
 void gd_packed_vector2_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
@@ -1520,7 +1527,8 @@ void gd_packed_vector2_array_access(UINT a1, UINT a2, INT i, ANY result) {
 };
 uintptr_t gd_packed_vector3_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_vector3_array_operator_index(&packed_array[0], 0);
+    // Const index: writable operator_index can COW and invalidate bulk reads.
+    return (uintptr_t)gdextension_packed_vector3_array_operator_index_const(&packed_array[0], 0);
 };
 void gd_packed_vector3_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
@@ -1529,7 +1537,8 @@ void gd_packed_vector3_array_access(UINT a1, UINT a2, INT i, ANY result) {
 };
 uintptr_t gd_packed_vector4_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_packed_vector4_array_operator_index(&packed_array[0], 0);
+    // Const index: writable operator_index can COW and invalidate bulk reads.
+    return (uintptr_t)gdextension_packed_vector4_array_operator_index_const(&packed_array[0], 0);
 };
 void gd_packed_vector4_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};

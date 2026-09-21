@@ -224,7 +224,7 @@ func Cycle() {
 					}
 					jump := uintptr(page[i+offsetFreeFunc].Load())
 					if jump == 0 {
-						end(rev, s, uint64(j*pageSize+i))
+						end(rev, s, uint64(j*pageSize+i), nil)
 					} else if page[i+offsetFreeFunc].CompareAndSwap(uint64(jump), 0) {
 						switch s {
 						case 1:
@@ -409,7 +409,10 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 	}
 }
 
-func end(rev revision, s int, p uint64) bool {
+// end closes the slot, first copying the value it holds into live (if
+// not nil): the slot is about to be threaded onto the free list, and the
+// value it held is the one the caller has to free.
+func end(rev revision, s int, p uint64, live *[3]uint64) bool {
 	if rev < 2 {
 		return false
 	}
@@ -421,6 +424,11 @@ func end(rev revision, s int, p uint64) bool {
 			return false
 		}
 		if existing != revisionLocked && arr[addr+offsetRevision].CompareAndSwap(uint64(existing), revisionLocked) {
+			if live != nil {
+				for i := range uint64(s) {
+					live[i] = arr[addr+offsetPointers+i].Load()
+				}
+			}
 			for {
 				end := writes[s].Load()
 				arr[addr+offsetPointers].Store(end)
@@ -729,15 +737,37 @@ type Liveness[S Size] interface {
 
 // End the lifetime of the pointer, returning the underlying pointer value
 // and ok=true if this is the first time the pointer has been freed.
+//
+// The value returned is the one the slot holds, not the one the handle
+// was made with: [Set] moves a slot on (a packed array that is resized,
+// or unshared by a write, comes back from the engine holding a different
+// buffer) and every handle made before that still carries the old value.
+// Freeing that one would give up a share of a buffer the handle no
+// longer has, and leak the buffer it does.
 func End[T Generic[T, Raw], Raw Size](ptr T) (Raw, bool) {
 	p := (Structure[T, Raw])(ptr)
-	if p.checksum == [1]Raw{}[0] {
-		return [1]Raw{}[0], false
-	}
-	if end(p.revision, len(p.checksum), uint64(p.sentinal)) {
-		return p.checksum, true
+	var live [3]uint64
+	if end(p.revision, len(p.checksum), uint64(p.sentinal), &live) {
+		if raw := *(*Raw)(unsafe.Pointer(&live)); raw != [1]Raw{}[0] {
+			return raw, true
+		}
 	}
 	return [1]Raw{}[0], false
+}
+
+// Owned reports whether the value behind the pointer is ours to free: a
+// pointer made with [New] that has not since been [Lay]ed. A borrowed
+// ([Let]), laid, static or raw pointer is only another name for a value
+// that somebody else holds, so nothing may be done through it that
+// gives the value up — which is what unsharing a copy-on-write buffer
+// does to the buffer it leaves behind.
+func Owned[T Generic[T, P], P Size](ptr T) bool {
+	p := (Structure[T, P])(ptr)
+	if p.revision == 0 {
+		return false
+	}
+	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
+	return tables[len(p.checksum)].Index(page)[addr+offsetFreeFunc].Load() != 0
 }
 
 // AsA unsafely converts between different pointer types of the same size.
