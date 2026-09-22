@@ -22,6 +22,7 @@ import (
 
 	"graphics.gd/cmd/gd/internal/builder"
 	"graphics.gd/cmd/gd/internal/project"
+	"graphics.gd/cmd/gd/internal/shim"
 	"graphics.gd/cmd/gd/internal/tooling"
 
 	"graphics.gd/internal/docgen"
@@ -30,6 +31,7 @@ import (
 )
 
 func main() {
+	shim.Run() // gd doubles as the compilers of the SDKs an engine build expects.
 	/*if info, ok := debug.ReadBuildInfo(); ok && info.Main.Version != "(devel)" && info.Main.Version != "" {
 	if dir, goModPath, ok := findProjectGoMod(); ok {
 		if required := readGoModGraphicsVersion(goModPath); required != "" && required != info.Main.Version {
