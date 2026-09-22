@@ -1,0 +1,10 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/usr/lib/libSystem.B.dylib'  # pthreads are part of libSystem, which Apple's own libpthread.tbd points at too.
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols: [ _pthread_create, _pthread_join, _pthread_mutex_lock, _pthread_mutex_unlock ] # cgo on darwin/amd64 links -lpthread, which libSystem.tbd already provides.
+...

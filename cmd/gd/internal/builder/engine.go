@@ -72,6 +72,11 @@ func BuildMode() string {
 
 // gdSettings returns the [gd] section of the project's project.godot.
 func gdSettings() map[string]string {
+	return projectSettings("gd")
+}
+
+// projectSettings reads the named section of the project's project.godot.
+func projectSettings(name string) map[string]string {
 	settings := map[string]string{}
 	data, err := os.ReadFile(filepath.Join(project.GraphicsDirectory, "project.godot"))
 	if err != nil {
@@ -84,7 +89,7 @@ func gdSettings() map[string]string {
 			section = line
 			continue
 		}
-		if section != "[gd]" {
+		if section != "["+name+"]" {
 			continue
 		}
 		key, value, ok := strings.Cut(line, "=")

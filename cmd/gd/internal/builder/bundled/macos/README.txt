@@ -23,7 +23,7 @@ Frameworks/*/Headers
 	the headers of Apple's SDK. A declaration has to agree with the
 	system on names, types and the values of constants, which
 	../ios-conformance checks against the real SDK: the last run found
-	every one of its 1369 values, 608 prototypes and 1754 selectors in
+	every one of its 1369 values, 608 prototypes and 1755 selectors in
 	agreement (after it caught six that were not).
 
 include/

@@ -435,6 +435,7 @@ APPKIT_EXTERN NSNotificationName const NSWorkspaceDidTerminateApplicationNotific
 - (void)openURLs:(NSArray<NSURL *> *)urls withApplicationAtURL:(NSURL *)applicationURL configuration:(NSWorkspaceOpenConfiguration *)configuration completionHandler:(void (^_Nullable)(NSRunningApplication *_Nullable app, NSError *_Nullable error))completionHandler;
 - (void)openApplicationAtURL:(NSURL *)applicationURL configuration:(NSWorkspaceOpenConfiguration *)configuration completionHandler:(void (^_Nullable)(NSRunningApplication *_Nullable app, NSError *_Nullable error))completionHandler;
 - (nullable NSRunningApplication *)launchApplicationAtURL:(NSURL *)url options:(NSWorkspaceLaunchOptions)options configuration:(NSDictionary<NSWorkspaceLaunchConfigurationKey, id> *)configuration error:(NSError **)error;
+- (BOOL)openURLs:(NSArray<NSURL *> *)urls withApplicationAtURL:(NSURL *)applicationURL options:(NSWorkspaceLaunchOptions)options configuration:(NSDictionary<NSWorkspaceLaunchConfigurationKey, id> *)configuration error:(NSError **)error;
 - (BOOL)launchApplication:(NSString *)appName;
 - (BOOL)selectFile:(nullable NSString *)fullPath inFileViewerRootedAtPath:(NSString *)rootFullPath;
 - (void)activateFileViewerSelectingURLs:(NSArray<NSURL *> *)fileURLs;

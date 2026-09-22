@@ -17,7 +17,13 @@ exports:
     - _NSPasteboardTypePNG
     - _NSPasteboardTypeTIFF
     - _NSRectFill
+    - _NSSpeechPitchBaseProperty
+    - _NSSpeechResetProperty
+    - _NSVoiceLocaleIdentifier
+    - _NSVoiceName
     - _NSWorkspaceAccessibilityDisplayOptionsDidChangeNotification
+    - _NSWorkspaceLaunchConfigurationArguments
+    - _NSWorkspaceLaunchConfigurationEnvironment
    objc-classes:
     - NSAlert
     - NSAppearance

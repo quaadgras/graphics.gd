@@ -36,5 +36,5 @@ For macOS the target is arm64-apple-macos11.0 and the Mac's compile needs
 -fmodules, as Apple's CoreHaptics only compiles that way there.
 
 Last runs: the iOS 26.5 SDK, 819 values, 331 prototypes and 1199 selectors;
-the macOS 26.5 SDK, 1369 values, 608 prototypes and 1754 selectors; all in
+the macOS 26.5 SDK, 1369 values, 608 prototypes and 1755 selectors; all in
 agreement.
