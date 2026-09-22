@@ -272,7 +272,7 @@ var sdkSum = sync.OnceValue(func() string {
 	for _, bundle := range []struct {
 		fs   embed.FS
 		root string
-	}{{android_sdk, "bundled/android"}, {ios_sdk, "bundled/ios"}, {macos_sdk, "bundled/macos"}} {
+	}{{android_sdk, "bundled/android"}, {swappy_src, "bundled/swappy"}, {ios_sdk, "bundled/ios"}, {macos_sdk, "bundled/macos"}} {
 		fs.WalkDir(bundle.fs, bundle.root, func(path string, d fs.DirEntry, err error) error {
 			if err != nil || d.IsDir() {
 				return err

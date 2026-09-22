@@ -55,11 +55,15 @@ func (custom engine) android(abi string, debug bool) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	// The frame pacing library is only distributed as binaries built against
+	// the NDK's C++ standard library, which cannot be linked with zig's, so
+	// it is built from source along with the engine.
+	if err := swappy(src, abi, triple, sdk); err != nil {
+		return "", err
+	}
 	fmt.Printf("gd: building engine %s for android/%s (%s), this will take a while\n", commit[:12], arch.GOARCH, engineTarget(debug))
-	// swappy is only distributed as binaries built against the NDK's C++
-	// standard library, which cannot be linked with zig's.
 	if err := custom.scons(src, []string{"ANDROID_HOME=" + home},
-		"platform=android", "arch="+arch.scons, "target="+engineTarget(debug), "swappy=no",
+		"platform=android", "arch="+arch.scons, "target="+engineTarget(debug), "swappy=yes",
 	); err != nil {
 		return "", fmt.Errorf("gd: failed to build the custom engine: %w", err)
 	}
