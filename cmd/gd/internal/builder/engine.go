@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"embed"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"io/fs"
 	"os"
@@ -243,20 +242,13 @@ func (custom engine) scons(src string, env []string, args ...string) error {
 
 // scons runs the engine's build system inside of src.
 func scons(src string, env []string, args ...string) error {
-	name, prefix := "scons", []string{}
-	if _, err := exec.LookPath(name); err != nil {
-		python := "python3"
-		if _, err := exec.LookPath(python); err != nil {
-			python = "python"
-		}
-		if exec.Command(python, "-c", "import SCons").Run() != nil {
-			return errors.New("gd: building a custom engine needs scons, which can be installed with 'pip install scons'\n(see https://scons.org/pages/download.html)")
-		}
-		name, prefix = python, []string{"-m", "SCons"}
+	name, prefix, python, err := tooling.SCons()
+	if err != nil {
+		return err
 	}
 	cmd := exec.Command(name, append(prefix, append(args, "-j"+strconv.Itoa(runtime.NumCPU()))...)...)
 	cmd.Dir = src
-	cmd.Env = append(os.Environ(), env...)
+	cmd.Env = append(append(os.Environ(), python...), env...)
 	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 	return cmd.Run()
 }

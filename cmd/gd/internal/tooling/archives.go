@@ -257,6 +257,19 @@ func extractTar(dest, targetFile, topDir string, tr *tar.Reader) error {
 			}
 			f.Close()
 
+		case tar.TypeSymlink:
+			// Only links that stay inside the archive's directory are made.
+			if !strings.HasPrefix(filepath.Clean(filepath.Join(filepath.Dir(target), header.Linkname)), filepath.Clean(dest)+string(filepath.Separator)) {
+				return fmt.Errorf("invalid symlink target: %s -> %s", target, header.Linkname)
+			}
+			if err := os.MkdirAll(filepath.Dir(target), 0755); err != nil {
+				return fmt.Errorf("failed to create parent directory for %s: %w", target, err)
+			}
+			os.Remove(target)
+			if err := os.Symlink(header.Linkname, target); err != nil {
+				return fmt.Errorf("failed to create symlink %s: %w", target, err)
+			}
+
 		default:
 			return fmt.Errorf("unsupported file type %v in tar archive: %s", header.Typeflag, header.Name)
 		}
