@@ -61,27 +61,69 @@ func (custom engine) linux(GOARCH string) (string, error) {
 	); err != nil {
 		return "", fmt.Errorf("gd: failed to build the custom engine: %w", err)
 	}
-	// Some engines archive everything into one libgodot (the graphics.gd
-	// fork does), otherwise the build leaves a static library per part of
-	// the engine which gd archives together.
-	pattern := ".linuxbsd." + engineTarget(false) + "." + arch
-	if combined, _ := filepath.Glob(filepath.Join(src, "bin", "libgodot"+pattern+"*.a")); len(combined) == 1 {
-		return library, copyFile(combined[0], library)
-	}
-	var parts []string
+	return library, custom.combine(zig, src, library, ".linuxbsd."+engineTarget(false)+"."+arch)
+}
+
+// combine the static libraries that a build left in src/bin into one at
+// library. The build leaves one per part of the engine under bin/obj, and
+// the platform's own in bin, named with the given infix: unless that one
+// is a combination of the parts already (which is what the graphics.gd
+// fork's linux build leaves there, by the same name).
+func (custom engine) combine(zig, src, library, infix string) error {
+	var parts, platform []string
 	if err := filepath.WalkDir(filepath.Join(src, "bin"), func(path string, d os.DirEntry, err error) error {
-		if err == nil && !d.IsDir() && strings.HasSuffix(path, ".a") && strings.Contains(path, pattern) {
+		if err != nil || d.IsDir() || !strings.HasSuffix(path, ".a") || !strings.Contains(path, infix) {
+			return err
+		}
+		if filepath.Dir(path) == filepath.Join(src, "bin") {
+			platform = append(platform, path)
+		} else {
 			parts = append(parts, path)
 		}
-		return err
+		return nil
 	}); err != nil {
-		return "", err
+		return err
+	}
+	covered := map[string]bool{}
+	for _, part := range parts {
+		members, err := members(zig, part)
+		if err != nil {
+			return err
+		}
+		for _, member := range members {
+			covered[member] = true
+		}
+	}
+	for _, archive := range platform {
+		members, err := members(zig, archive)
+		if err != nil {
+			return err
+		}
+		for _, member := range members {
+			if !covered[member] {
+				parts = append(parts, archive)
+				break
+			}
+		}
 	}
 	if len(parts) == 0 {
-		return "", fmt.Errorf("gd: the engine's build left no static libraries in %s", filepath.Join(src, "bin"))
+		return fmt.Errorf("gd: the engine's build left no static libraries in %s", filepath.Join(src, "bin"))
 	}
 	slices.Sort(parts)
-	return library, archive(zig, library, parts)
+	return archive(zig, library, parts)
+}
+
+// members of a static library, by file name.
+func members(zig, library string) ([]string, error) {
+	out, err := exec.Command(zig, "ar", "t", library).Output()
+	if err != nil {
+		return nil, fmt.Errorf("listing %s: %w", library, err)
+	}
+	var names []string
+	for line := range strings.SplitSeq(strings.TrimSpace(string(out)), "\n") {
+		names = append(names, filepath.Base(line))
+	}
+	return names, nil
 }
 
 // archive the given static libraries into one at path, with an ar script.
@@ -92,6 +134,22 @@ func archive(zig, path string, libraries []string) error {
 	var script strings.Builder
 	fmt.Fprintf(&script, "CREATE %s\n", path)
 	for _, library := range libraries {
+		// A thin archive only refers to its objects (the windows build makes
+		// them), which have to be added themselves for the result to stand
+		// on its own.
+		if header, err := os.ReadFile(library); err == nil && strings.HasPrefix(string(header[:min(8, len(header))]), "!<thin>") {
+			members, err := exec.Command(zig, "ar", "t", library).Output()
+			if err != nil {
+				return fmt.Errorf("listing %s: %w", library, err)
+			}
+			for member := range strings.SplitSeq(strings.TrimSpace(string(members)), "\n") {
+				if !filepath.IsAbs(member) {
+					member = filepath.Join(filepath.Dir(library), member)
+				}
+				fmt.Fprintf(&script, "ADDMOD %s\n", member)
+			}
+			continue
+		}
 		fmt.Fprintf(&script, "ADDLIB %s\n", library)
 	}
 	script.WriteString("SAVE\nEND\n")

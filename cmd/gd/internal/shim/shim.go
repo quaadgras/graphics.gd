@@ -63,12 +63,29 @@ type Target struct {
 var tools = map[string]string{
 	"clang":          "cc",
 	"clang++":        "c++",
+	"cc":             "cc",
+	"c++":            "c++",
+	"as":             "cc",
 	"llvm-ar":        "ar",
 	"llvm-ranlib":    "ranlib",
 	"ar":             "ar",
 	"ranlib":         "ranlib",
 	"libtool":        "libtool",
 	"swift-frontend": "swift-frontend",
+	"windres":        "windres",
+	"dlltool":        "dlltool",
+}
+
+// mingwPrefix a build for windows expects its tools to be named with, and
+// osxcrossPrefix one for macOS (arm64-apple-darwin16-cc).
+var (
+	mingwPrefix    = regexp.MustCompile(`^[a-z0-9_]+-w64-mingw32-`)
+	osxcrossPrefix = regexp.MustCompile(`^[a-z0-9_]+-apple-darwin[0-9]*-`)
+)
+
+// unprefixed name of a tool.
+func unprefixed(name string) string {
+	return osxcrossPrefix.ReplaceAllString(mingwPrefix.ReplaceAllString(name, ""), "")
 }
 
 // Install the named tools into dir, along with their config.
@@ -88,7 +105,7 @@ func Install(dir string, config Config, names ...string) error {
 		return err
 	}
 	for _, name := range names {
-		if _, ok := tools[name]; !ok {
+		if _, ok := tools[unprefixed(name)]; !ok {
 			return fmt.Errorf("gd: no shim for %q", name)
 		}
 		if runtime.GOOS == "windows" {
@@ -118,7 +135,7 @@ func Install(dir string, config Config, names ...string) error {
 
 // Run does not return if gd was started as one of its shims.
 func Run() {
-	name := strings.TrimSuffix(filepath.Base(os.Args[0]), ".exe")
+	name := unprefixed(strings.TrimSuffix(filepath.Base(os.Args[0]), ".exe"))
 	tool, ok := tools[name]
 	if !ok {
 		return
@@ -157,6 +174,8 @@ func Run() {
 	case "libtool":
 		// Apple's libtool, of which only `-static -o` is ever asked for.
 		fatal(execute(config.LLVM, append([]string{config.LLVM, "libtool-darwin"}, os.Args[1:]...), env))
+	case "windres", "dlltool":
+		fatal(execute(config.LLVM, append([]string{config.LLVM, tool}, os.Args[1:]...), env))
 	default:
 		fatal(execute(config.Zig, append([]string{config.Zig, tool}, os.Args[1:]...), env))
 	}

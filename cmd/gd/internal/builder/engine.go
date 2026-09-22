@@ -3,9 +3,11 @@ package builder
 import (
 	"bytes"
 	"crypto/sha256"
+	"embed"
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -13,6 +15,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 
 	"graphics.gd/cmd/gd/internal/gdpaths"
 	"graphics.gd/cmd/gd/internal/project"
@@ -263,11 +266,32 @@ func engineTarget(debug bool) string {
 // (flags, SDKs), so that engines built any other way are not reused.
 const engineRecipe = "r2"
 
+// sdkSum is a hash of the SDKs gd bundles, which an engine is built against.
+var sdkSum = sync.OnceValue(func() string {
+	hash := sha256.New()
+	for _, bundle := range []struct {
+		fs   embed.FS
+		root string
+	}{{android_sdk, "bundled/android"}, {ios_sdk, "bundled/ios"}, {macos_sdk, "bundled/macos"}} {
+		fs.WalkDir(bundle.fs, bundle.root, func(path string, d fs.DirEntry, err error) error {
+			if err != nil || d.IsDir() {
+				return err
+			}
+			data, _ := bundle.fs.ReadFile(path)
+			fmt.Fprintln(hash, path, len(data))
+			hash.Write(data)
+			return nil
+		})
+	}
+	return hex.EncodeToString(hash.Sum(nil))
+})
+
 // artifact returns where a built file of the engine is kept, builds are
-// only ever made once for each commit and way of building it.
+// only ever made once for each commit and way of building it (which the
+// bundled SDKs are part of).
 func (custom engine) artifact(src, commit, platform, arch string, debug bool, name string) (string, error) {
 	hash := sha256.New()
-	fmt.Fprintln(hash, engineRecipe, custom.Options)
+	fmt.Fprintln(hash, engineRecipe, custom.Options, sdkSum())
 	if custom.StripUnusedClasses {
 		profile, err := custom.profile(src)
 		if err != nil {

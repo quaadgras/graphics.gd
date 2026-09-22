@@ -44,12 +44,12 @@ func (Windows) Build(args ...string) error {
 }
 
 func (windows Windows) BuildMain(args ...string) error {
-	if BuildMode() == "libgodot" {
-		return buildModeError("windows")
-	}
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
+	}
+	if BuildMode() == "libgodot" {
+		return windows.buildMainLibgodot(GOARCH, args...)
 	}
 	if err := windows.Build(args...); err != nil {
 		return xray.New(err)
