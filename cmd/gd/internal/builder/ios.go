@@ -136,6 +136,10 @@ func (IOS) Build(args ...string) error {
 	default:
 		return fmt.Errorf("gd build: cannot cross-compile ios %v on %v", GOARCH, runtime.GOOS)
 	}
+	args, err = archiver(args)
+	if err != nil {
+		return xray.New(err)
+	}
 	if err := tooling.Go.Action("build", args, append(fastcbFlags("ios", "ios"), "-buildmode=c-archive", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("darwin_%v.a", GOARCH)))...); err != nil {
 		return xray.New(err)
 	}

@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"strings"
 
@@ -54,14 +55,45 @@ func (custom engine) linux(GOARCH string) (string, error) {
 	if err := shim.Install(bin, config, "clang", "clang++", "ar", "ranlib"); err != nil {
 		return "", err
 	}
-	fmt.Printf("gd: building engine %s for linux/%s (%s), this will take a while\n", commit[:12], GOARCH, engineTarget(false))
-	if err := custom.scons(src, []string{"PATH=" + bin + string(os.PathListSeparator) + os.Getenv("PATH")},
-		"platform=linuxbsd", "arch="+arch, "target="+engineTarget(false), "library_type=static_library",
+	args := []string{
+		"platform=linuxbsd", "arch=" + arch, "target=" + engineTarget(false), "library_type=static_library",
 		"use_llvm=yes", "use_static_cpp=yes", "execinfo=no",
-	); err != nil {
+	}
+	if runtime.GOOS != "linux" {
+		crossing, err := linuxFromElsewhere(bin)
+		if err != nil {
+			return "", err
+		}
+		args = append(args, crossing...)
+	}
+	fmt.Printf("gd: building engine %s for linux/%s (%s), this will take a while\n", commit[:12], GOARCH, engineTarget(false))
+	if err := custom.scons(src, []string{"PATH=" + bin + string(os.PathListSeparator) + os.Getenv("PATH")}, args...); err != nil {
 		return "", fmt.Errorf("gd: failed to build the custom engine: %w", err)
 	}
 	return library, custom.combine(zig, src, library, ".linuxbsd."+engineTarget(false)+"."+arch)
+}
+
+// linuxFromElsewhere returns the arguments that let the engine's linux
+// build configure on a host that is not linux. The build refuses to, on
+// two counts that nothing about a build against zig's musl depends on
+// (the system's libraries are loaded at runtime, use_sowrap): the host's
+// platform, which a SCons site directory in bin sets to linux, and
+// pkg-config being installed, which bin gets a stand-in for answering the
+// version check (the only thing asked of it with use_sowrap).
+func linuxFromElsewhere(bin string) ([]string, error) {
+	site := filepath.Join(bin, "site_scons")
+	if err := os.MkdirAll(site, 0755); err != nil {
+		return nil, err
+	}
+	if err := os.WriteFile(filepath.Join(site, "site_init.py"), []byte("import sys\nsys.platform = \"linux\"\n"), 0644); err != nil {
+		return nil, err
+	}
+	if _, err := exec.LookPath("pkg-config"); err != nil {
+		if err := os.WriteFile(filepath.Join(bin, "pkg-config"), []byte("#!/bin/sh\n# only ever asked its version, see linux_engine.go\nexit 0\n"), 0755); err != nil {
+			return nil, err
+		}
+	}
+	return []string{"--site-dir=" + site}, nil
 }
 
 // combine the static libraries that a build left in src/bin into one at

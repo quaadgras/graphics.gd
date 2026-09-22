@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"graphics.gd/cmd/gd/internal/gdpaths"
 	"graphics.gd/cmd/gd/internal/project"
 	"graphics.gd/cmd/gd/internal/tooling"
 
@@ -50,6 +51,10 @@ func (windows Windows) buildMainLibgodot(GOARCH string, args ...string) error {
 	}
 	tags := mergeTags("windows", "archive")
 	libgo := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("windows_%v.a", GOARCH))
+	args, err = archiver(args)
+	if err != nil {
+		return xray.New(err)
+	}
 	if err := tooling.Go.Action("build", args, append(fastcbFlags("windows", ""), "-tags", tags, "-buildmode=c-archive", "-o", libgo)...); err != nil {
 		return xray.New(err)
 	}
@@ -75,6 +80,9 @@ func (windows Windows) buildMainLibgodot(GOARCH string, args ...string) error {
 		}
 	}
 	link = append(link, tooling.CGOLDFlags()...)
+	// the import libraries the engine's build was given in place of the
+	// ones zig's mingw-w64 lacks (see windows_engine.go).
+	link = append(link, "-L", filepath.Join(gdpaths.Lib, "windows", "toolchain", target, "lib"))
 	for _, library := range windowsSystemLibraries {
 		link = append(link, "-l"+library)
 	}
@@ -87,6 +95,9 @@ func (windows Windows) buildMainLibgodot(GOARCH string, args ...string) error {
 		return xray.New(err)
 	}
 	if err := setPresetOption(preset, "custom_template/release", ".godot/"+filepath.Base(out)); err != nil {
+		return xray.New(err)
+	}
+	if err := setPresetOption(preset, "binary_format/architecture", arch); err != nil {
 		return xray.New(err)
 	}
 	// the Go code is in the executable, nothing is to be loaded as an extension.

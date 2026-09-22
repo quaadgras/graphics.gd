@@ -66,6 +66,12 @@ func (windows Windows) BuildMain(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
+	// presets from before gd's own said x86_64 for the arm64 one.
+	if GOARCH == "arm64" {
+		if err := setPresetOption("Windows arm64", "binary_format/architecture", "arm64"); err != nil {
+			return xray.New(err)
+		}
+	}
 	if err := tooling.Godot.Exec(export...); err != nil {
 		return xray.New(err)
 	}

@@ -171,7 +171,11 @@ func (macos MacOS) linkLibgodot(custom engine, slice macosSlice) (string, error)
 	}
 	tags := mergeTags("macos", "archive")
 	libgo := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("darwin_%v.a", slice.GOARCH))
-	if err := tooling.Go.Action("build", nil, append(fastcbFlags("macos", ""), "-tags", tags, "-buildmode=c-archive", "-o", libgo)...); err != nil {
+	args, err := archiver(nil)
+	if err != nil {
+		return "", xray.New(err)
+	}
+	if err := tooling.Go.Action("build", args, append(fastcbFlags("macos", ""), "-tags", tags, "-buildmode=c-archive", "-o", libgo)...); err != nil {
 		return "", xray.New(err)
 	}
 	// @available checks compile to __isPlatformVersionAtLeast from the

@@ -45,13 +45,22 @@ func (custom engine) windows(GOARCH string) (string, error) {
 	bin := filepath.Join(gdpaths.Lib, "windows", "toolchain", triple)
 	// mincore is an API set that forwards to kernel32 and ntdll, which zig's
 	// mingw-w64 has no import library for: an empty one satisfies the link.
+	// Nor has it sapi for arm64 (only x86), whose exports are the COM
+	// registration of the speech API, which the engine reaches through COM
+	// and the GUIDs of uuid instead.
 	lib := filepath.Join(bin, "lib")
 	if err := os.MkdirAll(lib, 0755); err != nil {
 		return "", err
 	}
-	if _, err := os.Stat(filepath.Join(lib, "libmincore.a")); err != nil {
-		if err := archive(zig, filepath.Join(lib, "libmincore.a"), nil); err != nil {
-			return "", err
+	empty := []string{"libmincore.a"}
+	if GOARCH == "arm64" {
+		empty = append(empty, "libsapi.a")
+	}
+	for _, name := range empty {
+		if _, err := os.Stat(filepath.Join(lib, name)); err != nil {
+			if err := archive(zig, filepath.Join(lib, name), nil); err != nil {
+				return "", err
+			}
 		}
 	}
 	config := shim.Config{

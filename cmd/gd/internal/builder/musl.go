@@ -108,6 +108,10 @@ func (musl Musl) Build(args ...string) (err error) {
 		return fmt.Errorf("gd build: cannot cross-compile linux %v on %v", GOARCH, runtime.GOOS)
 	}
 	libgo := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("musl_%v.a", GOARCH))
+	args, err = archiver(args)
+	if err != nil {
+		return xray.New(err)
+	}
 	if err := tooling.Go.Action("build", args, "-tags", muslTags(), "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo); err != nil {
 		return xray.New(err)
 	}
@@ -359,7 +363,12 @@ func (musl Musl) Test(args ...string) error {
 		return fmt.Errorf("gd build: cannot cross-compile linux %v on %v", GOARCH, runtime.GOOS)
 	}
 	libgo := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("musl_%v.a", GOARCH))
-	if err := tooling.Go.Action("test", args, "-c", "-tags", muslTags(), "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo); err != nil {
+	// args go on to the test binary, the archiver's flag stays with go.
+	ar, err := archiver(nil)
+	if err != nil {
+		return xray.New(err)
+	}
+	if err := tooling.Go.Action("test", args, append(ar, "-c", "-tags", muslTags(), "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo)...); err != nil {
 		return xray.New(err)
 	}
 	libgodot, err := tooling.LibGodotEditor.LookupPlatform("musl", GOARCH)

@@ -237,7 +237,7 @@ func dottedVersionPrefix(reported string) string {
 
 func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 	if exe.Path != "" {
-		return exe.Path, nil
+		return exe.PathToCommand(), nil // Path is the .app of a darwin app.
 	}
 	my, err := user.Current()
 	if err != nil {

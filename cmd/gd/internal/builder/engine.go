@@ -13,12 +13,14 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
 
 	"graphics.gd/cmd/gd/internal/gdpaths"
 	"graphics.gd/cmd/gd/internal/project"
+	"graphics.gd/cmd/gd/internal/shim"
 	"graphics.gd/cmd/gd/internal/tooling"
 )
 
@@ -334,4 +336,29 @@ func warnEngineVersion(src string) {
 	if stock != "" && custom != "" && stock != custom {
 		fmt.Fprintf(os.Stderr, "gd: warning: the custom engine is Godot %s but gd is exporting with Godot %s, these should match\n", custom, stock)
 	}
+}
+
+// archiver returns the go build arguments, with `-buildmode=c-archive`
+// told to pack its archive with zig's ar (through gd's shim) instead of
+// the host's: macOS's ar leaves the objects of other systems out of the
+// archive's index, and their linkers then find nothing in it. The flag is
+// folded into any -ldflags among the arguments, as go takes the last.
+func archiver(args []string) ([]string, error) {
+	zig, err := tooling.Zig.Lookup()
+	if err != nil {
+		return nil, err
+	}
+	bin := filepath.Join(gdpaths.Lib, "ar")
+	if err := shim.Install(bin, shim.Config{Zig: zig, Cache: filepath.Join(gdpaths.Lib, "cache")}, "ar"); err != nil {
+		return nil, err
+	}
+	extar := "-extar=" + filepath.Join(bin, "ar")
+	args = slices.Clone(args)
+	for i, arg := range args {
+		if strings.HasPrefix(arg, "-ldflags=") {
+			args[i] = arg + " " + extar
+			return args, nil
+		}
+	}
+	return append(args, "-ldflags="+extar), nil
 }
