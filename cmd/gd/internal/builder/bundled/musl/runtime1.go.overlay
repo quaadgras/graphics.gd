@@ -76,82 +76,60 @@ func args(c int32, v **byte) {
 
 func goargs() {
 	// Read command line arguments from /proc/self/cmdline for musl compatibility
-	fd := open(&procSelfCmdline[0], _O_RDONLY, 0)
-	if fd < 0 {
-		argslice = nil
-		return
-	}
-
-	// Read the cmdline file - arguments are null-separated
-	var buf [4096]byte
-	n := read(fd, noescape(unsafe.Pointer(&buf[0])), int32(len(buf)))
-	closefd(fd)
-
-	if n <= 0 {
-		argslice = nil
-		return
-	}
-
-	// Count arguments (number of null terminators)
-	argc := int32(0)
-	for i := int32(0); i < n; i++ {
-		if buf[i] == 0 {
-			argc++
-		}
-	}
-
-	// Build argument slice
-	argslice = make([]string, argc)
-	arg := 0
-	start := int32(0)
-	for i := int32(0); i < n; i++ {
-		if buf[i] == 0 {
-			argslice[arg] = string(buf[start:i])
-			arg++
-			start = i + 1
-		}
-	}
+	argslice = splitNul(readProcFile(&procSelfCmdline[0]))
 }
 
 var procSelfCmdline = []byte("/proc/self/cmdline\x00")
 
 func goenvs_unix() {
 	// Read environment from /proc/self/environ for musl and other compatibility.
-	fd := open(&procSelfEnviron[0], _O_RDONLY, 0)
+	envs = splitNul(readProcFile(&procSelfEnviron[0]))
+}
+
+// readProcFile reads the whole of a /proc file. They report no size, and a
+// single fixed-size read silently truncated a long environment (every
+// variable past the first 4KiB went missing), so read until EOF.
+func readProcFile(path *byte) []byte {
+	fd := open(path, _O_RDONLY, 0)
 	if fd < 0 {
-		envs = nil
-		return
+		return nil
 	}
-
-	// Read the environ file - environment entries are null-separated
-	var buf [4096]byte
-	n := read(fd, noescape(unsafe.Pointer(&buf[0])), int32(len(buf)))
+	var chunk [4096]byte
+	var buf []byte
+	for {
+		n := read(fd, noescape(unsafe.Pointer(&chunk[0])), int32(len(chunk)))
+		if n <= 0 {
+			break
+		}
+		buf = append(buf, chunk[:n]...)
+	}
 	closefd(fd)
+	return buf
+}
 
-	if n <= 0 {
-		envs = nil
-		return
+// splitNul splits null-terminated entries, as /proc/self/cmdline and
+// /proc/self/environ hold them.
+func splitNul(buf []byte) []string {
+	if len(buf) == 0 {
+		return nil
 	}
-
-	// Count environment variables (number of null terminators)
-	count := int32(0)
-	for i := int32(0); i < n; i++ {
-		if buf[i] == 0 {
+	count := 0
+	for _, c := range buf {
+		if c == 0 {
 			count++
 		}
 	}
-
-	// Build environment slice
-	envs = make([]string, count)
+	out := make([]string, count)
 	idx := 0
-	start := int32(0)
-	for i := int32(0); i < n; i++ {
-		if buf[i] == 0 {
-			envs[idx] = string(buf[start:i])
+	start := 0
+	for i, c := range buf {
+		if c == 0 {
+			out[idx] = string(buf[start:i])
 			idx++
 			start = i + 1
 		}
 	}
+	return out
 }
 
 func environ() []string {
