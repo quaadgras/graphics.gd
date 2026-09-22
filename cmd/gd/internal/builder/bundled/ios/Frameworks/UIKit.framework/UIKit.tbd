@@ -23,6 +23,7 @@ exports:
     - UIView
     - UITextView
     - UIWindow
+    - UIWindowScene
     - UITraitCollection
     - UIStoryboard
     - UIScreen

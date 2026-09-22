@@ -25,6 +25,8 @@ exports:
     # runtime/cgo
     - _CFBundleGetValueForInfoDictionaryKey
     - _CFBundleGetMainBundle
+    - _CFBundleCopyBundleURL
+    - _CFURLGetFileSystemRepresentation
     - _CFBundleCopyResourceURL
 
     # needed by godot
