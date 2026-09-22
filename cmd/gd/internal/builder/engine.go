@@ -1,0 +1,216 @@
+package builder
+
+import (
+	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
+	"errors"
+	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"regexp"
+	"runtime"
+	"strconv"
+	"strings"
+
+	"graphics.gd/cmd/gd/internal/gdpaths"
+	"graphics.gd/cmd/gd/internal/project"
+	"graphics.gd/cmd/gd/internal/tooling"
+)
+
+// engine is a custom build of Godot that a project asks to be exported
+// with, by naming a git repository in its project.godot:
+//
+//	[gd]
+//
+//	engine/repository="https://github.com/example/godot"
+//	engine/ref="my-branch"
+//
+// gd builds the engine from source with zig, no platform SDKs are needed
+// beyond the ones gd bundles.
+type engine struct {
+	Repository string // git URL, or a path relative to the project.
+	Ref        string // branch, tag or commit, defaults to the remote's HEAD.
+}
+
+// customEngine returns the engine configured for the project, if any.
+func customEngine() (engine, bool) {
+	var custom engine
+	data, err := os.ReadFile(filepath.Join(project.GraphicsDirectory, "project.godot"))
+	if err != nil {
+		return custom, false
+	}
+	section := ""
+	for line := range strings.SplitSeq(string(data), "\n") {
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "[") {
+			section = line
+			continue
+		}
+		if section != "[gd]" {
+			continue
+		}
+		key, value, ok := strings.Cut(line, "=")
+		if !ok {
+			continue
+		}
+		value, err := strconv.Unquote(strings.TrimSpace(value))
+		if err != nil {
+			continue
+		}
+		switch strings.TrimSpace(key) {
+		case "engine/repository":
+			custom.Repository = value
+		case "engine/ref":
+			custom.Ref = value
+		}
+	}
+	return custom, custom.Repository != ""
+}
+
+// directory name for the engine, unique to its repository.
+func (custom engine) directory() string {
+	name := strings.TrimSuffix(filepath.Base(filepath.ToSlash(custom.Repository)), ".git")
+	name = regexp.MustCompile(`[^A-Za-z0-9._-]+`).ReplaceAllString(name, "_")
+	sum := sha256.Sum256([]byte(custom.Repository))
+	return name + "-" + hex.EncodeToString(sum[:4])
+}
+
+// checkout the engine's source code, returning where it is along with
+// the commit that has been checked out.
+func (custom engine) checkout() (dir, commit string, err error) {
+	dir = filepath.Join(filepath.Dir(gdpaths.Lib), "src", custom.directory())
+	repository := custom.Repository
+	if !strings.Contains(repository, ":") && !filepath.IsAbs(repository) {
+		if repository, err = filepath.Abs(filepath.Join(project.Directory, repository)); err != nil {
+			return "", "", err
+		}
+	}
+	git := func(args ...string) (string, error) {
+		cmd := exec.Command("git", append([]string{"-C", dir}, args...)...)
+		var stderr bytes.Buffer
+		cmd.Stderr = &stderr
+		out, err := cmd.Output()
+		if err != nil {
+			return "", fmt.Errorf("git %s: %w\n%s", strings.Join(args, " "), err, stderr.String())
+		}
+		return strings.TrimSpace(string(out)), nil
+	}
+	if _, err := os.Stat(filepath.Join(dir, ".git")); err != nil {
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			return "", "", err
+		}
+		if _, err := git("init", "-q"); err != nil {
+			return "", "", err
+		}
+		if _, err := git("remote", "add", "origin", repository); err != nil {
+			return "", "", err
+		}
+	}
+	if _, err := git("remote", "set-url", "origin", repository); err != nil {
+		return "", "", err
+	}
+	head, _ := git("rev-parse", "--verify", "-q", "HEAD")
+	if head != "" && head == custom.Ref {
+		return dir, head, nil // pinned to the commit that is already checked out.
+	}
+	ref := custom.Ref
+	if ref == "" {
+		ref = "HEAD"
+	}
+	fmt.Println("gd: fetching engine", custom.Repository, custom.Ref)
+	if _, err := git("fetch", "-q", "--depth", "1", "origin", ref); err != nil {
+		if head == "" {
+			return "", "", err
+		}
+		// Most likely offline, the last checkout is the best there is.
+		fmt.Fprintln(os.Stderr, "gd: could not update the engine, continuing with", head[:12])
+		fmt.Fprintln(os.Stderr, err)
+		return dir, head, nil
+	}
+	if _, err := git("checkout", "-q", "--detach", "FETCH_HEAD"); err != nil {
+		return "", "", err
+	}
+	commit, err = git("rev-parse", "HEAD")
+	return dir, commit, err
+}
+
+// version of the engine's source code, ie. "4.7.2"
+func engineVersion(src string) string {
+	data, err := os.ReadFile(filepath.Join(src, "version.py"))
+	if err != nil {
+		return ""
+	}
+	var parts []string
+	for _, key := range []string{"major", "minor", "patch"} {
+		match := regexp.MustCompile(`(?m)^` + key + `\s*=\s*(\d+)`).FindSubmatch(data)
+		if match == nil {
+			return ""
+		}
+		parts = append(parts, string(match[1]))
+	}
+	return strings.TrimSuffix(strings.Join(parts, "."), ".0")
+}
+
+// scons runs the engine's build system inside of src.
+func scons(src string, env []string, args ...string) error {
+	name, prefix := "scons", []string{}
+	if _, err := exec.LookPath(name); err != nil {
+		python := "python3"
+		if _, err := exec.LookPath(python); err != nil {
+			python = "python"
+		}
+		if exec.Command(python, "-c", "import SCons").Run() != nil {
+			return errors.New("gd: building a custom engine needs scons, which can be installed with 'pip install scons'\n(see https://scons.org/pages/download.html)")
+		}
+		name, prefix = python, []string{"-m", "SCons"}
+	}
+	cmd := exec.Command(name, append(prefix, append(args, "-j"+strconv.Itoa(runtime.NumCPU()))...)...)
+	cmd.Dir = src
+	cmd.Env = append(os.Environ(), env...)
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	return cmd.Run()
+}
+
+// engineTarget returns the scons target to build.
+func engineTarget(debug bool) string {
+	if debug {
+		return "template_debug"
+	}
+	return "template_release"
+}
+
+// engineRecipe is incremented whenever gd changes how it builds an engine
+// (flags, SDKs), so that engines built any other way are not reused.
+const engineRecipe = "r2"
+
+// artifact returns where a built file of the engine is kept, builds are
+// only ever made once for each commit.
+func (custom engine) artifact(commit, platform, arch string, debug bool, name string) string {
+	return filepath.Join(gdpaths.Lib, "engine", custom.directory(), commit+"-"+engineRecipe, platform, arch, engineTarget(debug), name)
+}
+
+func copyFile(src, dst string) error {
+	data, err := os.ReadFile(src)
+	if err != nil {
+		return err
+	}
+	if err := os.MkdirAll(filepath.Dir(dst), 0755); err != nil {
+		return err
+	}
+	tmp := dst + ".tmp"
+	if err := os.WriteFile(tmp, data, 0755); err != nil {
+		return err
+	}
+	return os.Rename(tmp, dst)
+}
+
+// warnEngineVersion when the engine is not the version of the Godot that
+// everything else about an export (templates, the editor) comes from.
+func warnEngineVersion(src string) {
+	stock, custom := tooling.Godot.InstalledVersion(), engineVersion(src)
+	if stock != "" && custom != "" && stock != custom {
+		fmt.Fprintf(os.Stderr, "gd: warning: the custom engine is Godot %s but gd is exporting with Godot %s, these should match\n", custom, stock)
+	}
+}

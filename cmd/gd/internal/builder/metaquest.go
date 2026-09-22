@@ -125,7 +125,7 @@ func (mq MetaQuest) BuildMain(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-release", presetName); err != nil {
+	if err := exportAndroid("--export-release", presetName); err != nil {
 		return xray.New(err)
 	}
 	if err := injectMetaQuest(apk); err != nil {
@@ -164,7 +164,7 @@ func (mq MetaQuest) Run(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-debug", presetName); err != nil {
+	if err := exportAndroid("--export-debug", presetName); err != nil {
 		return xray.New(err)
 	}
 	if err := injectMetaQuest(apk); err != nil {

@@ -8,11 +8,11 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"runtime"
 	"strconv"
 	"strings"
 
 	"github.com/schollz/progressbar/v3"
+	"graphics.gd/cmd/gd/internal/gdpaths"
 	"graphics.gd/cmd/gd/internal/tooling"
 	"runtime.link/api/xray"
 )
@@ -37,19 +37,7 @@ var templateSpecs = map[string]templateSpec{
 var templateCommon = []string{"version.txt", "icudt_godot.dat"}
 
 func exportTemplatesDir(version string) (string, bool) {
-	switch runtime.GOOS {
-	case "linux":
-		return filepath.Join(os.Getenv("HOME"), ".local", "share", "godot", "export_templates", version+".stable"), true
-	case "android":
-		// On-device (Termux) the exporting editor is the static musl
-		// (linuxbsd) build, which reads the XDG data dir under Termux's HOME.
-		return filepath.Join(os.Getenv("HOME"), ".local", "share", "godot", "export_templates", version+".stable"), true
-	case "windows":
-		return filepath.Join(os.Getenv("APPDATA"), "Godot", "export_templates", version+".stable"), true
-	case "darwin":
-		return filepath.Join(os.Getenv("HOME"), "Library", "Application Support", "Godot", "export_templates", version+".stable"), true
-	}
-	return "", false
+	return gdpaths.ExportTemplates(version)
 }
 
 // AssertExportTemplates makes sure the Godot export templates needed for the

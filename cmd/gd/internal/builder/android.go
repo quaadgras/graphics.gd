@@ -87,55 +87,23 @@ func (android Android) build(testing bool, args ...string) error {
 		if err != nil {
 			return xray.New(err)
 		}
-		if err := project.SetupFiles(android_sdk, "bundled/android", filepath.Join(project.ReleasesDirectory, "android", "sdk")); err != nil {
-			return xray.New(err)
-		}
 		ANDROID_SDK, err := filepath.Abs(filepath.Join(project.ReleasesDirectory, "android", "sdk"))
 		if err != nil {
 			return xray.New(err)
 		}
-		var target string
-		switch GOARCH {
-		case "arm64":
-			target = "aarch64-linux-android"
-		case "amd64":
-			target = "x86_64-linux-android"
-		default:
+		target, err := androidTriple(GOARCH)
+		if err != nil {
 			return fmt.Errorf("gd build: cannot cross-compile android/%v on %v", GOARCH, runtime.GOOS)
 		}
-		// Stub libraries for `-l` flags naming libraries that only exist
-		// on-device: with -nostdlib zig has nothing to resolve -lm or
-		// -lpthread against (zig 0.15 ships no bundled libc for android
-		// targets), so compile stubs from the bundled sources for the
-		// linker to find. See the .c files for why they stay empty.
-		buildStub := func(name string) error {
-			args := append([]string{"cc", "-target", target, "-shared", "-nostdlib"}, tooling.CGOCFlags()...)
-			args = append(args,
-				"-Wl,-soname,"+name+".so",
-				"-o", filepath.Join(ANDROID_SDK, "usr", "lib", name+".so"),
-				filepath.Join(ANDROID_SDK, "usr", "lib", name+".c"),
-			)
-			if err := exec.Command(zig, args...).Run(); err != nil {
-				return fmt.Errorf("build %s stub for %s: %w", name, GOARCH, err)
-			}
-			return nil
-		}
-		if err := buildStub("libm"); err != nil {
+		// zig 0.15 ships no bundled libc for android targets, so the bundled
+		// SDK provides the headers along with stub libraries for the linker
+		// to resolve `-l` flags naming libraries that only exist on-device.
+		sdk, err := setupAndroidSDK(ANDROID_SDK, target)
+		if err != nil {
 			return xray.New(err)
 		}
-		if err := buildStub("libpthread"); err != nil {
-			return xray.New(err)
-		}
-		if GOARCH != "arm64" {
-			// The bundled liblog.so (no-op shims the dynamic linker
-			// substitutes with the device's real liblog.so at runtime)
-			// is prebuilt for aarch64 only; rebuild it from source for
-			// other targets.
-			if err := buildStub("liblog"); err != nil {
-				return xray.New(err)
-			}
-		}
-		if err := os.Setenv("CC", zig+" cc -target "+target+" -nostdlib -I"+ANDROID_SDK+"/usr/include -L"+ANDROID_SDK+"/usr/lib"); err != nil {
+		// -isystem, as the headers of a platform are not held to -Werror.
+		if err := os.Setenv("CC", zig+" cc -target "+target+" -nostdlib -isystem "+sdk.Include+" -isystem "+sdk.IncludeArch+" -L"+sdk.Lib); err != nil {
 			return xray.New(err)
 		}
 		if err := os.Setenv("GOARCH", GOARCH); err != nil {
@@ -368,7 +336,7 @@ func (android Android) Run(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-debug", presetName); err != nil {
+	if err := exportAndroid("--export-debug", presetName); err != nil {
 		return xray.New(err)
 	}
 	if err := tooling.AndroidPackageSigner.Exec(
@@ -502,7 +470,7 @@ func (android Android) Test(args ...string) error {
 	// Release export: a debug export needs Godot to reach a path the local musl
 	// editor (a Go test binary) can't, and release is debuggable-independent
 	// since we read results from logcat rather than via run-as.
-	if err := tooling.Godot.Exec("--headless", "--export-release", presetName); err != nil {
+	if err := exportAndroid("--export-release", presetName); err != nil {
 		return xray.New(err)
 	}
 	if err := tooling.AndroidPackageSigner.Exec(
@@ -699,14 +667,52 @@ func isTestResultLine(line string) bool {
 // function that restores the original config (so a normal `gd build` is
 // unaffected).
 func bakeAndroidHeadless(presetName string) (restore func(), err error) {
-	cfgPath := filepath.Join(project.GraphicsDirectory, "export_presets.cfg")
-	original, err := os.ReadFile(cfgPath)
+	const option = "command_line/extra_args"
+	original, err := presetOption(presetName, option)
 	if err != nil {
 		return nil, err
 	}
-	// Find the [preset.N] whose name matches, then set the cmdline in its
+	if err := setPresetOption(presetName, option, "--headless"); err != nil {
+		return nil, err
+	}
+	return func() { _ = setPresetOption(presetName, option, original) }, nil
+}
+
+// presetOption returns the value of an option of the named export preset.
+func presetOption(presetName, option string) (string, error) {
+	_, lines, i, err := findPresetOption(presetName, option)
+	if err != nil {
+		return "", err
+	}
+	_, value, _ := strings.Cut(lines[i], "=")
+	return strings.Trim(strings.TrimSpace(value), `"`), nil
+}
+
+// setPresetOption sets a string option of the named export preset.
+func setPresetOption(presetName, option, value string) error {
+	cfgPath, lines, i, err := findPresetOption(presetName, option)
+	if err != nil {
+		return err
+	}
+	line := option + "=" + strconv.Quote(value)
+	if lines[i] == line {
+		return nil
+	}
+	lines[i] = line
+	return os.WriteFile(cfgPath, []byte(strings.Join(lines, "\n")), 0o644)
+}
+
+// findPresetOption returns the lines of export_presets.cfg along with the
+// index of the line that sets the given option for the named preset.
+func findPresetOption(presetName, option string) (cfgPath string, lines []string, index int, err error) {
+	cfgPath = filepath.Join(project.GraphicsDirectory, "export_presets.cfg")
+	original, err := os.ReadFile(cfgPath)
+	if err != nil {
+		return "", nil, 0, err
+	}
+	// Find the [preset.N] whose name matches, the option is then within its
 	// [preset.N.options] section.
-	lines := strings.Split(string(original), "\n")
+	lines = strings.Split(string(original), "\n")
 	idx, cur := "", ""
 	for _, line := range lines {
 		s := strings.TrimSpace(line)
@@ -718,29 +724,21 @@ func bakeAndroidHeadless(presetName string) (restore func(), err error) {
 		}
 	}
 	if idx == "" {
-		return nil, fmt.Errorf("preset %q not found in %s", presetName, cfgPath)
+		return "", nil, 0, fmt.Errorf("preset %q not found in %s", presetName, cfgPath)
 	}
 	optionsHeader := "[preset." + idx + ".options]"
-	inOptions, set := false, false
+	inOptions := false
 	for i, line := range lines {
 		s := strings.TrimSpace(line)
 		if strings.HasPrefix(s, "[") {
 			inOptions = s == optionsHeader
 			continue
 		}
-		if inOptions && strings.HasPrefix(s, "command_line/extra_args=") {
-			lines[i] = `command_line/extra_args="--headless"`
-			set = true
-			break
+		if inOptions && strings.HasPrefix(s, option+"=") {
+			return cfgPath, lines, i, nil
 		}
 	}
-	if !set {
-		return nil, fmt.Errorf("command_line/extra_args not found for preset %q", presetName)
-	}
-	if err := os.WriteFile(cfgPath, []byte(strings.Join(lines, "\n")), 0o644); err != nil {
-		return nil, err
-	}
-	return func() { _ = os.WriteFile(cfgPath, original, 0o644) }, nil
+	return "", nil, 0, fmt.Errorf("%s not found for preset %q", option, presetName)
 }
 
 // lastSentinel returns the exit code from the last "GDTEST_DONE <code>" line
@@ -804,7 +802,7 @@ func (android Android) BuildMain(...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-release", presetName); err != nil {
+	if err := exportAndroid("--export-release", presetName); err != nil {
 		return xray.New(err)
 	}
 	return android.packageAab(apkPath)
@@ -1139,7 +1137,7 @@ func (android Android) exportOnDevice(args ...string) (apkPath string, signed bo
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return "", false, xray.New(err)
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-release", presetName); err != nil {
+	if err := exportAndroid("--export-release", presetName); err != nil {
 		return "", false, xray.New(err)
 	}
 	// Godot exits 0 even when it printed "Project export failed", so trust
