@@ -35,7 +35,10 @@ func (custom engine) android(abi string, debug bool) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	library := custom.artifact(commit, "android", arch.GOARCH, debug, "libgodot_android.so")
+	library, err := custom.artifact(src, commit, "android", arch.GOARCH, debug, "libgodot_android.so")
+	if err != nil {
+		return "", err
+	}
 	if _, err := os.Stat(library); err == nil {
 		return library, nil
 	}
@@ -55,7 +58,7 @@ func (custom engine) android(abi string, debug bool) (string, error) {
 	fmt.Printf("gd: building engine %s for android/%s (%s), this will take a while\n", commit[:12], arch.GOARCH, engineTarget(debug))
 	// swappy is only distributed as binaries built against the NDK's C++
 	// standard library, which cannot be linked with zig's.
-	if err := scons(src, []string{"ANDROID_HOME=" + home},
+	if err := custom.scons(src, []string{"ANDROID_HOME=" + home},
 		"platform=android", "arch="+arch.scons, "target="+engineTarget(debug), "swappy=no",
 	); err != nil {
 		return "", fmt.Errorf("gd: failed to build the custom engine: %w", err)

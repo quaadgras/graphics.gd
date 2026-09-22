@@ -27,7 +27,10 @@ func (custom engine) ios() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	library := custom.artifact(commit, "ios", "arm64", false, "libgodot.a")
+	library, err := custom.artifact(src, commit, "ios", "arm64", false, "libgodot.a")
+	if err != nil {
+		return "", err
+	}
 	if _, err := os.Stat(library); err == nil {
 		return library, nil
 	}
@@ -70,7 +73,7 @@ func (custom engine) ios() (string, error) {
 		return "", err
 	}
 	fmt.Printf("gd: building engine %s for ios/arm64 (%s), this will take a while\n", commit[:12], engineTarget(false))
-	if err := scons(src, []string{"OSXCROSS_IOS=1"}, // lets the build know not to look for Xcode.
+	if err := custom.scons(src, []string{"OSXCROSS_IOS=1"}, // lets the build know not to look for Xcode.
 		"platform=ios", "arch=arm64", "target="+engineTarget(false),
 		"APPLE_TOOLCHAIN_PATH="+toolchain, "APPLE_SDK_PATH="+sdk, "SWIFT_FRONTEND="+filepath.Join(bin, "swift-frontend"),
 	); err != nil {

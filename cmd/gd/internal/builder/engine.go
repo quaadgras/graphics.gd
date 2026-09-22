@@ -20,18 +20,31 @@ import (
 )
 
 // engine is a custom build of Godot that a project asks to be exported
-// with, by naming a git repository in its project.godot:
+// with, configured in the [gd] section of its project.godot:
 //
 //	[gd]
 //
 //	engine/repository="https://github.com/example/godot"
 //	engine/ref="my-branch"
+//	engine/strip_unused_classes=true
+//	engine/classes="Label,Sprite2D"
+//	engine/options="optimize=size lto=full"
+//
+// The repository (with its branch, tag or commit) is what gets built, when
+// there is none the engine is the stock Godot that the project is exported
+// with. strip_unused_classes leaves out every class the project does not
+// use (see [engine.profile]), classes names those that the project does
+// use, but in a way that cannot be detected. options are passed to scons.
 //
 // gd builds the engine from source with zig, no platform SDKs are needed
 // beyond the ones gd bundles.
 type engine struct {
 	Repository string // git URL, or a path relative to the project.
 	Ref        string // branch, tag or commit, defaults to the remote's HEAD.
+
+	StripUnusedClasses bool
+	Classes            []string // kept, regardless of what is detected.
+	Options            []string // for scons, last so that they take precedence.
 }
 
 // customEngine returns the engine configured for the project, if any.
@@ -41,7 +54,7 @@ func customEngine() (engine, bool) {
 	if err != nil {
 		return custom, false
 	}
-	section := ""
+	section, configured := "", false
 	for line := range strings.SplitSeq(string(data), "\n") {
 		line = strings.TrimSpace(line)
 		if strings.HasPrefix(line, "[") {
@@ -55,18 +68,40 @@ func customEngine() (engine, bool) {
 		if !ok {
 			continue
 		}
-		value, err := strconv.Unquote(strings.TrimSpace(value))
-		if err != nil {
-			continue
+		key, value = strings.TrimSpace(key), strings.TrimSpace(value)
+		if unquoted, err := strconv.Unquote(value); err == nil {
+			value = unquoted
 		}
-		switch strings.TrimSpace(key) {
+		switch key {
 		case "engine/repository":
 			custom.Repository = value
 		case "engine/ref":
 			custom.Ref = value
+		case "engine/strip_unused_classes":
+			custom.StripUnusedClasses = value == "true"
+		case "engine/classes":
+			custom.Classes = strings.Split(value, ",")
+		case "engine/options":
+			custom.Options = strings.Fields(value)
+		default:
+			continue
 		}
+		configured = true
 	}
-	return custom, custom.Repository != ""
+	if !configured || (custom.Repository == "" && !custom.StripUnusedClasses && len(custom.Options) == 0) {
+		return custom, false
+	}
+	if custom.Repository == "" {
+		// the stock engine, at the version everything else about an export
+		// (the templates, the editor) comes from.
+		version := tooling.Godot.InstalledVersion()
+		if version == "" {
+			return custom, false
+		}
+		custom.Repository = "https://github.com/godotengine/godot"
+		custom.Ref = version + "-stable"
+	}
+	return custom, true
 }
 
 // directory name for the engine, unique to its repository.
@@ -153,6 +188,19 @@ func engineVersion(src string) string {
 	return strings.TrimSuffix(strings.Join(parts, "."), ".0")
 }
 
+// scons runs the engine's build system inside of src, with the project's
+// build profile and options on top of the given arguments.
+func (custom engine) scons(src string, env []string, args ...string) error {
+	if custom.StripUnusedClasses {
+		profile, err := custom.profile(src)
+		if err != nil {
+			return err
+		}
+		args = append(args, "build_profile="+profile)
+	}
+	return scons(src, env, append(args, custom.Options...)...)
+}
+
 // scons runs the engine's build system inside of src.
 func scons(src string, env []string, args ...string) error {
 	name, prefix := "scons", []string{}
@@ -186,9 +234,23 @@ func engineTarget(debug bool) string {
 const engineRecipe = "r2"
 
 // artifact returns where a built file of the engine is kept, builds are
-// only ever made once for each commit.
-func (custom engine) artifact(commit, platform, arch string, debug bool, name string) string {
-	return filepath.Join(gdpaths.Lib, "engine", custom.directory(), commit+"-"+engineRecipe, platform, arch, engineTarget(debug), name)
+// only ever made once for each commit and way of building it.
+func (custom engine) artifact(src, commit, platform, arch string, debug bool, name string) (string, error) {
+	hash := sha256.New()
+	fmt.Fprintln(hash, engineRecipe, custom.Options)
+	if custom.StripUnusedClasses {
+		profile, err := custom.profile(src)
+		if err != nil {
+			return "", err
+		}
+		data, err := os.ReadFile(profile)
+		if err != nil {
+			return "", err
+		}
+		hash.Write(data)
+	}
+	variant := commit + "-" + hex.EncodeToString(hash.Sum(nil))[:8]
+	return filepath.Join(gdpaths.Lib, "engine", custom.directory(), variant, platform, arch, engineTarget(debug), name), nil
 }
 
 func copyFile(src, dst string) error {
