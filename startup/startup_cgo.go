@@ -99,8 +99,15 @@ func init() {
 //go:linkname main main.main
 func main()
 
+// createEngine is set when the Go program is the executable (musl,
+// archive builds), to create the engine on the main thread from go_main.
+var createEngine func()
+
 //export go_main
 func go_main() {
+	if createEngine != nil {
+		createEngine()
+	}
 	// libgodot calls go_main on the engine's main thread, which is not
 	// necessarily the thread that initialised the Go runtime. Adopt it now:
 	// engine calls made before the first frame (which re-runs Init) would

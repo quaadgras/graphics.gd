@@ -25,7 +25,15 @@ import (
 	"graphics.gd/internal/gdreference"
 )
 
+// The engine is created from go_main rather than here: the Go runtime of
+// a static library starts up (and runs every init) on a thread of its own,
+// while go_main is called by the C main on the process's main thread, the
+// only one AppKit will serve a display from.
 func init() {
+	createEngine = createStaticEngine
+}
+
+func createStaticEngine() {
 	var cargs []*C.char
 	for _, arg := range os.Args {
 		if arg == "--export-release" {
