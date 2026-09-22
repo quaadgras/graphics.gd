@@ -3,8 +3,10 @@ tbd-version:  4
 install-name: '/usr/lib/libc++abi.dylib'
 targets:
  - arm64-ios
+ - arm64-macos
+ - x86_64-macos
 exports:
- - targets: [ arm64-ios ]
+ - targets: [ arm64-ios, arm64-macos, x86_64-macos ]
    symbols:
     - ___gxx_personality_v0
 ...

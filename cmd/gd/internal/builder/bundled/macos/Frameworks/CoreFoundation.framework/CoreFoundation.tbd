@@ -1,54 +1,109 @@
 --- !tapi-tbd
 tbd-version:  4
-install-name: '/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation'  # expected location for the implementation on macos, see crypto/x509/internal/macos
+install-name: '/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation'
 targets:
  - x86_64-macos
  - arm64-macos
  - arm64-ios
 exports:
  - targets: [ x86_64-macos, arm64-macos, arm64-ios ]
-   symbols: # the required symbols to compile Go code, see crypto/x509/internal/macos
+   symbols:
+    - _CFAbsoluteTimeGetCurrent
     - _CFArrayAppendValue
+    - _CFArrayApplyFunction
+    - _CFArrayCreate
     - _CFArrayCreateMutable
+    - _CFArrayCreateMutableCopy
     - _CFArrayGetCount
+    - _CFArrayGetTypeID
     - _CFArrayGetValueAtIndex
+    - _CFArrayRemoveValueAtIndex
+    - _CFBundleCopyBundleURL
+    - _CFBundleCopyResourceURL
+    - _CFBundleGetMainBundle
+    - _CFBundleGetValueForInfoDictionaryKey
+    - _CFBundleGetVersionNumber
     - _CFDataCreate
     - _CFDataGetBytePtr
     - _CFDataGetLength
+    - _CFDataGetTypeID
     - _CFDateCreate
+    - _CFDictionaryAddValue
+    - _CFDictionaryCreate
+    - _CFDictionaryCreateMutable
+    - _CFDictionaryCreateMutableCopy
+    - _CFDictionaryGetTypeID
+    - _CFDictionaryGetValue
+    - _CFDictionaryGetValueIfPresent
+    - _CFDictionarySetValue
     - _CFErrorCopyDescription
     - _CFErrorGetCode
+    - _CFGetTypeID
+    - _CFNotificationCenterAddObserver
+    - _CFNotificationCenterGetDistributedCenter
+    - _CFNotificationCenterRemoveObserver
+    - _CFNumberCreate
+    - _CFNumberGetTypeID
+    - _CFNumberGetValue
     - _CFRelease
+    - _CFRetain
+    - _CFRunLoopAddObserver
+    - _CFRunLoopAddSource
+    - _CFRunLoopAddTimer
+    - _CFRunLoopGetCurrent
+    - _CFRunLoopGetMain
+    - _CFRunLoopObserverCreateWithHandler
+    - _CFRunLoopRemoveObserver
+    - _CFRunLoopRunInMode
+    - _CFRunLoopSourceCreate
+    - _CFRunLoopSourceSignal
+    - _CFRunLoopStop
+    - _CFRunLoopTimerCreateWithHandler
+    - _CFRunLoopTimerInvalidate
+    - _CFRunLoopWakeUp
+    - _CFSetGetCount
+    - _CFSetGetValues
+    - _CFStringCompare
     - _CFStringCreateExternalRepresentation
     - _CFStringCreateWithBytes
-
-    # runtime/cgo
-    - _CFBundleGetValueForInfoDictionaryKey
-    - _CFBundleGetMainBundle
-    - _CFBundleCopyBundleURL
-    - _CFURLGetFileSystemRepresentation
-    - _CFBundleCopyResourceURL
-
-    # needed by godot
-    - _kCFRunLoopDefaultMode
-    - _kCFAllocatorDefault
-    - ___NSDictionary0__
-    - ___CFConstantStringClassReference
-    - _CFURLGetString
-    - _CFStringGetLength
-    - _CFStringGetCharacterAtIndex
-    - _CFStringGetCString
     - _CFStringCreateWithCString
-    - _CFStringCompare
-    - _CFRunLoopRunInMode
-    - _CFRetain
-    - _CFNumberCreate
-    - _CFDictionaryCreateMutableCopy
-    - _CFDictionaryCreateMutable
-    - _CFDictionaryAddValue
-    - _CFBundleGetVersionNumber
-    - _CFStringGetCStringPtr
-    - _CFStringGetFastestEncoding
     - _CFStringGetBytes
+    - _CFStringGetCString
+    - _CFStringGetCStringPtr
+    - _CFStringGetCharacterAtIndex
+    - _CFStringGetFastestEncoding
+    - _CFStringGetLength
+    - _CFStringGetMaximumSizeForEncoding
+    - _CFStringGetSystemEncoding
+    - _CFStringGetTypeID
+    - _CFStringHasPrefix
+    - _CFURLGetFileSystemRepresentation
+    - _CFURLGetString
+    - _CFUUIDGetConstantUUIDWithBytes
+    - _NSDefaultRunLoopMode
+    - _NSURLIsHiddenKey
+    - _NSURLIsSystemImmutableKey
+    - _NSURLVolumeSupportsCaseSensitiveNamesKey
+    - _NSURLVolumeURLKey
+    - ___CFConstantStringClassReference
+    - ___NSDictionary0__
     - ___kCFBooleanTrue
+    - _kCFAllocatorDefault
+    - _kCFCoreFoundationVersionNumber
+    - _kCFRunLoopCommonModes
+    - _kCFRunLoopDefaultMode
+    - _kCFTypeArrayCallBacks
+    - _kCFTypeDictionaryKeyCallBacks
+    - _kCFTypeDictionaryValueCallBacks
+   objc-classes:
+    - NSArray
+    - NSData
+    - NSDate
+    - NSDictionary
+    - NSException
+    - NSLocale
+    - NSMutableArray
+    - NSMutableSet
+    - NSURL
+    - NSUserDefaults
 ...

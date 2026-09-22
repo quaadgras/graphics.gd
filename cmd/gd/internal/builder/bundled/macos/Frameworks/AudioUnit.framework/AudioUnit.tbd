@@ -1,0 +1,20 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/AudioUnit.framework/Versions/A/AudioUnit'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _AudioComponentFindNext
+    - _AudioComponentInstanceDispose
+    - _AudioComponentInstanceNew
+    - _AudioOutputUnitStart
+    - _AudioOutputUnitStop
+    - _AudioUnitGetProperty
+    - _AudioUnitInitialize
+    - _AudioUnitRender
+    - _AudioUnitSetProperty
+    - _AudioUnitUninitialize
+...

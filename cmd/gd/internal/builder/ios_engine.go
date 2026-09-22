@@ -7,9 +7,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"regexp"
 	"runtime"
 
 	"graphics.gd/cmd/gd/internal/gdpaths"
@@ -111,15 +109,7 @@ func setupIOSSDK(dir string) (string, error) {
 	if err := os.RemoveAll(dir); err != nil {
 		return "", err
 	}
-	env, err := exec.Command(zig, "env").Output()
-	if err != nil {
-		return "", err
-	}
-	lib := filepath.Join(gdpaths.Bin, "lib")
-	if match := regexp.MustCompile(`"?lib_dir"?\s*[=:]\s*"([^"]+)"`).FindSubmatch(env); match != nil {
-		lib = string(match[1])
-	}
-	if err := project.CopyDir(filepath.Join(lib, "libc", "include", "any-macos-any"), filepath.Join(dir, "usr", "include")); err != nil {
+	if err := project.CopyDir(filepath.Join(zigLibDir(zig), "libc", "include", "any-macos-any"), filepath.Join(dir, "usr", "include")); err != nil {
 		return "", fmt.Errorf("gd: cannot find zig's darwin headers: %w", err)
 	}
 	for from, to := range map[string]string{

@@ -1,0 +1,64 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _kIOMainPortDefault
+    - _kIOMasterPortDefault
+    - _IODispatchCalloutFromMessage
+    - _IOHIDDeviceClose
+    - _IOHIDDeviceCopyMatchingElements
+    - _IOHIDDeviceCreate
+    - _IOHIDDeviceGetProperty
+    - _IOHIDDeviceGetReport
+    - _IOHIDDeviceGetService
+    - _IOHIDDeviceGetValue
+    - _IOHIDDeviceOpen
+    - _IOHIDDeviceRegisterInputReportCallback
+    - _IOHIDDeviceRegisterRemovalCallback
+    - _IOHIDDeviceScheduleWithRunLoop
+    - _IOHIDDeviceSetReport
+    - _IOHIDDeviceUnscheduleFromRunLoop
+    - _IOHIDElementGetChildren
+    - _IOHIDElementGetCookie
+    - _IOHIDElementGetLogicalMax
+    - _IOHIDElementGetLogicalMin
+    - _IOHIDElementGetType
+    - _IOHIDElementGetTypeID
+    - _IOHIDElementGetUsage
+    - _IOHIDElementGetUsagePage
+    - _IOHIDManagerClose
+    - _IOHIDManagerCopyDevices
+    - _IOHIDManagerCreate
+    - _IOHIDManagerOpen
+    - _IOHIDManagerRegisterDeviceMatchingCallback
+    - _IOHIDManagerScheduleWithRunLoop
+    - _IOHIDManagerSetDeviceMatching
+    - _IOHIDManagerSetDeviceMatchingMultiple
+    - _IOHIDManagerUnscheduleFromRunLoop
+    - _IOHIDValueGetIntegerValue
+    - _IOIteratorIsValid
+    - _IOIteratorNext
+    - _IONotificationPortCreate
+    - _IONotificationPortDestroy
+    - _IONotificationPortGetMachPort
+    - _IOObjectIsEqualTo
+    - _IOObjectRelease
+    - _IOObjectRetain
+    - _IOPMAssertionCreateWithDescription
+    - _IOPMAssertionRelease
+    - _IORegistryEntryCreateCFProperties
+    - _IORegistryEntryCreateCFProperty
+    - _IORegistryEntryFromPath
+    - _IORegistryEntryGetParentEntry
+    - _IORegistryEntryGetRegistryEntryID
+    - _IORegistryEntryIDMatching
+    - _IOServiceAddMatchingNotification
+    - _IOServiceGetMatchingService
+    - _IOServiceGetMatchingServices
+    - _IOServiceMatching
+...

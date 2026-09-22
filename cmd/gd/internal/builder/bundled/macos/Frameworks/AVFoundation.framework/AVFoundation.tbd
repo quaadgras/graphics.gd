@@ -1,0 +1,23 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/AVFoundation.framework/Versions/A/AVFoundation'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _AVCaptureDeviceTypeBuiltInWideAngleCamera
+    - _AVCaptureDeviceTypeContinuityCamera
+    - _AVCaptureDeviceTypeExternal
+    - _AVCaptureDeviceTypeExternalUnknown
+    - _AVCaptureDeviceWasConnectedNotification
+    - _AVCaptureDeviceWasDisconnectedNotification
+    - _AVMediaTypeVideo
+   objc-classes:
+    - AVCaptureDevice
+    - AVCaptureDeviceDiscoverySession
+    - AVCaptureDeviceInput
+    - AVCaptureSession
+    - AVCaptureVideoDataOutput
+...

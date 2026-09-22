@@ -1,0 +1,22 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/CoreText.framework/Versions/A/CoreText'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _CTFontCopyFontDescriptor
+    - _CTFontCreateForString
+    - _CTFontCreateWithFontDescriptor
+    - _CTFontDescriptorCopyAttribute
+    - _CTFontDescriptorCreateWithAttributes
+    - _CTFontManagerCopyAvailableFontFamilyNames
+    - _kCTFontFamilyNameAttribute
+    - _kCTFontSymbolicTrait
+    - _kCTFontTraitsAttribute
+    - _kCTFontURLAttribute
+    - _kCTFontWeightTrait
+    - _kCTFontWidthTrait
+...

@@ -3,9 +3,12 @@ tbd-version:  4
 install-name: '/usr/lib/libobjc.A.dylib'
 targets:
  - arm64-ios
+ - arm64-macos
+ - x86_64-macos
 exports:
- - targets: [ arm64-ios ]
+ - targets: [ arm64-ios, arm64-macos, x86_64-macos ]
    symbols:
+    - _objc_ehtype_vtable
     - _objc_msgSend
     - _objc_msgSendSuper
     - _objc_msgSendSuper2

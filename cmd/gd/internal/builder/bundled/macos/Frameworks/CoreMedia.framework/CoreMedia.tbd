@@ -1,0 +1,11 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/CoreMedia.framework/Versions/A/CoreMedia'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _CMSampleBufferGetImageBuffer
+...

@@ -6,6 +6,7 @@
 #define GD_AUDIOTOOLBOX_H
 
 #include <CoreAudioTypes/CoreAudioTypes.h>
+#include <CoreGraphics/CoreGraphics.h> // as the umbrella brings in CoreFoundation and with it CoreGraphics.
 
 CF_EXTERN_C_BEGIN
 
@@ -52,7 +53,12 @@ enum {
 enum {
 	kAudioUnitSubType_GenericOutput = 'genr',
 	kAudioUnitSubType_VoiceProcessingIO = 'vpio',
+#if TARGET_OS_IPHONE
 	kAudioUnitSubType_RemoteIO = 'rioc',
+#endif
+	kAudioUnitSubType_HALOutput = 'ahal',
+	kAudioUnitSubType_DefaultOutput = 'def ',
+	kAudioUnitSubType_SystemOutput = 'sys ',
 };
 enum {
 	kAudioUnitScope_Global = 0,

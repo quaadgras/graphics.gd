@@ -9,6 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#if TARGET_OS_IPHONE // AVAudioSession is not part of the macOS SDK.
 // AVAudioSession
 
 typedef NSString *AVAudioSessionCategory NS_STRING_ENUM;
@@ -95,6 +96,8 @@ FOUNDATION_EXTERN NSString *const AVAudioSessionRouteChangeReasonKey;
 @property(readonly) AVAudioSessionRecordPermission recordPermission;
 - (void)requestRecordPermission:(void (^)(BOOL granted))response;
 @end
+
+#endif
 
 // AVAudioApplication
 

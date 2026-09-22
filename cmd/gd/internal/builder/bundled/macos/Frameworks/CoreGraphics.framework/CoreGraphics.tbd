@@ -1,0 +1,44 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _CGAssociateMouseAndMouseCursorPosition
+    - _CGBitmapContextCreate
+    - _CGColorSpaceCreateDeviceRGB
+    - _CGColorSpaceCreateWithName
+    - _CGColorSpaceRelease
+    - _CGContextDrawImage
+    - _CGContextRelease
+    - _CGDisplayBounds
+    - _CGDisplayCopyDisplayMode
+    - _CGDisplayHideCursor
+    - _CGDisplayModeGetRefreshRate
+    - _CGDisplayRegisterReconfigurationCallback
+    - _CGDisplayRemoveReconfigurationCallback
+    - _CGDisplayScreenSize
+    - _CGDisplayShowCursor
+    - _CGEventCreate
+    - _CGEventGetLocation
+    - _CGEventSourceCreate
+    - _CGEventSourceKeyState
+    - _CGEventSourceSetLocalEventsSuppressionInterval
+    - _CGImageGetHeight
+    - _CGImageGetWidth
+    - _CGImageRelease
+    - _CGMainDisplayID
+    - _CGPreflightScreenCaptureAccess
+    - _CGRectContainsPoint
+    - _CGRectEqualToRect
+    - _CGRectZero
+    - _CGRequestScreenCaptureAccess
+    - _CGWarpMouseCursorPosition
+    - _CGWindowListCreate
+    - _CGWindowListCreateImageFromArray
+    - _kCGColorSpaceExtendedLinearSRGB
+    - _kCGColorSpaceSRGB
+...

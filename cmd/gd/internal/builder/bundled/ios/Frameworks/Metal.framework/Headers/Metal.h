@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, MTLPixelFormat) {
 	MTLPixelFormatInvalid = 0,
+	MTLPixelFormatR8Unorm = 10,
+	MTLPixelFormatRG8Unorm = 30,
+	MTLPixelFormatRGBA8Uint = 73,
 	MTLPixelFormatRGBA8Unorm = 70,
 	MTLPixelFormatRGBA8Unorm_sRGB = 71,
 	MTLPixelFormatBGRA8Unorm = 80,
@@ -23,6 +26,11 @@ typedef NS_ENUM(NSUInteger, MTLPixelFormat) {
 	MTLPixelFormatRGBA16Float = 115,
 	MTLPixelFormatBGR10_XR = 554,
 	MTLPixelFormatBGR10_XR_sRGB = 555,
+	MTLPixelFormatDepth16Unorm = 250,
+	MTLPixelFormatDepth32Float = 252,
+	MTLPixelFormatStencil8 = 253,
+	MTLPixelFormatDepth24Unorm_Stencil8 = 255,
+	MTLPixelFormatDepth32Float_Stencil8 = 260,
 };
 
 @protocol MTLDevice <NSObject>

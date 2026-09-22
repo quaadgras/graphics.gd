@@ -1,0 +1,22 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/Carbon.framework/Versions/A/Carbon'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _LMGetKbdType
+    - _TISCopyCurrentKeyboardInputSource
+    - _TISCreateInputSourceList
+    - _TISGetInputSourceProperty
+    - _TISSelectInputSource
+    - _kTISNotifySelectedKeyboardInputSourceChanged
+    - _kTISPropertyInputSourceLanguages
+    - _kTISPropertyInputSourceType
+    - _kTISPropertyLocalizedName
+    - _kTISPropertyUnicodeKeyLayoutData
+    - _kTISTypeKeyboardInputMode
+    - _kTISTypeKeyboardLayout
+...

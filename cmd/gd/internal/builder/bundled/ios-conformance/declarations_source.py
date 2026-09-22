@@ -1,7 +1,14 @@
-import os,re
-B=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'ios')
+import os,re,sys
+# usage: declarations_source.py [ios|macos]  (after values_source.py, whose imports it reuses)
+SDK=sys.argv[1] if len(sys.argv)>1 else 'ios'
+here=os.path.dirname(os.path.abspath(__file__))
+B=os.path.join(here, '..', SDK)
 files=[]
-for d,_,fs in os.walk(B):
+roots=[B] if SDK=='ios' else [B, os.path.join(here, '..', 'ios')]
+for root in roots:
+  for d,_,fs in os.walk(root):
+    if SDK=='macos' and root.endswith('ios') and ('UIKit' in d or 'OpenGLES' in d or 'CoreMotion' in d): continue
+    if 'include/mach-o' in d or 'include/CoreFoundation' in d: continue
     if 'OpenGLES.framework/Headers/ES' in d or '/KHR' in d: continue
     files += [os.path.join(d,f) for f in fs if f.endswith('.h')]
 sels=set(); protos=[]

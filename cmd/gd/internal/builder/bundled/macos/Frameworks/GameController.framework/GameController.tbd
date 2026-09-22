@@ -1,0 +1,46 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/GameController.framework/Versions/A/GameController'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _GCControllerDidConnectNotification
+    - _GCControllerDidDisconnectNotification
+    - _GCHapticDurationInfinite
+    - _GCHapticsLocalityHandles
+    - _GCHapticsLocalityLeftHandle
+    - _GCHapticsLocalityLeftTrigger
+    - _GCHapticsLocalityRightHandle
+    - _GCHapticsLocalityRightTrigger
+    - _GCHapticsLocalityTriggers
+    - _GCInputButtonA
+    - _GCInputButtonB
+    - _GCInputButtonMenu
+    - _GCInputButtonOptions
+    - _GCInputButtonX
+    - _GCInputButtonY
+    - _GCInputDirectionPad
+    - _GCInputDualShockTouchpadButton
+    - _GCInputDualShockTouchpadOne
+    - _GCInputDualShockTouchpadTwo
+    - _GCInputLeftShoulder
+    - _GCInputLeftThumbstick
+    - _GCInputLeftThumbstickButton
+    - _GCInputLeftTrigger
+    - _GCInputRightShoulder
+    - _GCInputRightThumbstick
+    - _GCInputRightThumbstickButton
+    - _GCInputRightTrigger
+    - _GCInputXboxPaddleFour
+    - _GCInputXboxPaddleOne
+    - _GCInputXboxPaddleThree
+    - _GCInputXboxPaddleTwo
+   objc-classes:
+    - GCColor
+    - GCController
+    - GCControllerAxisInput
+    - GCControllerButtonInput
+...

@@ -8,6 +8,8 @@ targets:
 exports:
  - targets: [ x86_64-macos, arm64-macos, arm64-ios ]
    symbols:
+    - __ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEElsEPNS_15basic_streambufIcS2_EE
+    - __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2ERKS5_mmRKS4_
     - ___dynamic_cast
     - ___cxa_throw
     - ___cxa_rethrow

@@ -1,0 +1,96 @@
+// HID usage tables for graphics.gd's macOS SDK, from the USB HID Usage Tables
+// as published by the USB Implementers Forum.
+#ifndef GD_IOKIT_IOHIDUSAGETABLES_H
+#define GD_IOKIT_IOHIDUSAGETABLES_H
+
+enum {
+	kHIDPage_Undefined = 0x00,
+	kHIDPage_GenericDesktop = 0x01,
+	kHIDPage_Simulation = 0x02,
+	kHIDPage_VR = 0x03,
+	kHIDPage_Sport = 0x04,
+	kHIDPage_Game = 0x05,
+	kHIDPage_GenericDeviceControls = 0x06,
+	kHIDPage_KeyboardOrKeypad = 0x07,
+	kHIDPage_LEDs = 0x08,
+	kHIDPage_Button = 0x09,
+	kHIDPage_Ordinal = 0x0A,
+	kHIDPage_Telephony = 0x0B,
+	kHIDPage_Consumer = 0x0C,
+	kHIDPage_Digitizer = 0x0D,
+	kHIDPage_PID = 0x0F,
+	kHIDPage_Unicode = 0x10,
+	kHIDPage_VendorDefinedStart = 0xFF00,
+};
+
+enum {
+	kHIDUsage_GD_Pointer = 0x01,
+	kHIDUsage_GD_Mouse = 0x02,
+	kHIDUsage_GD_Joystick = 0x04,
+	kHIDUsage_GD_GamePad = 0x05,
+	kHIDUsage_GD_Keyboard = 0x06,
+	kHIDUsage_GD_Keypad = 0x07,
+	kHIDUsage_GD_MultiAxisController = 0x08,
+	kHIDUsage_GD_X = 0x30,
+	kHIDUsage_GD_Y = 0x31,
+	kHIDUsage_GD_Z = 0x32,
+	kHIDUsage_GD_Rx = 0x33,
+	kHIDUsage_GD_Ry = 0x34,
+	kHIDUsage_GD_Rz = 0x35,
+	kHIDUsage_GD_Slider = 0x36,
+	kHIDUsage_GD_Dial = 0x37,
+	kHIDUsage_GD_Wheel = 0x38,
+	kHIDUsage_GD_Hatswitch = 0x39,
+	kHIDUsage_GD_CountedBuffer = 0x3A,
+	kHIDUsage_GD_ByteCount = 0x3B,
+	kHIDUsage_GD_MotionWakeup = 0x3C,
+	kHIDUsage_GD_Start = 0x3D,
+	kHIDUsage_GD_Select = 0x3E,
+	kHIDUsage_GD_Vx = 0x40,
+	kHIDUsage_GD_Vy = 0x41,
+	kHIDUsage_GD_Vz = 0x42,
+	kHIDUsage_GD_Vbrx = 0x43,
+	kHIDUsage_GD_Vbry = 0x44,
+	kHIDUsage_GD_Vbrz = 0x45,
+	kHIDUsage_GD_Vno = 0x46,
+	kHIDUsage_GD_SystemControl = 0x80,
+	kHIDUsage_GD_SystemPowerDown = 0x81,
+	kHIDUsage_GD_SystemSleep = 0x82,
+	kHIDUsage_GD_SystemWakeUp = 0x83,
+	kHIDUsage_GD_SystemContextMenu = 0x84,
+	kHIDUsage_GD_SystemMainMenu = 0x85,
+	kHIDUsage_GD_SystemAppMenu = 0x86,
+	kHIDUsage_GD_SystemMenuHelp = 0x87,
+	kHIDUsage_GD_SystemMenuExit = 0x88,
+	kHIDUsage_GD_SystemMenuSelect = 0x89,
+	kHIDUsage_GD_SystemMenuRight = 0x8A,
+	kHIDUsage_GD_SystemMenuLeft = 0x8B,
+	kHIDUsage_GD_SystemMenuUp = 0x8C,
+	kHIDUsage_GD_SystemMenuDown = 0x8D,
+	kHIDUsage_GD_DPadUp = 0x90,
+	kHIDUsage_GD_DPadDown = 0x91,
+	kHIDUsage_GD_DPadRight = 0x92,
+	kHIDUsage_GD_DPadLeft = 0x93,
+};
+
+enum {
+	kHIDUsage_Sim_FlightSimulationDevice = 0x01,
+	kHIDUsage_Sim_AutomobileSimulationDevice = 0x02,
+	kHIDUsage_Sim_Aileron = 0xB0,
+	kHIDUsage_Sim_Rudder = 0xBA,
+	kHIDUsage_Sim_Throttle = 0xBB,
+	kHIDUsage_Sim_Accelerator = 0xC4,
+	kHIDUsage_Sim_Brake = 0xC5,
+	kHIDUsage_Sim_Clutch = 0xC6,
+	kHIDUsage_Sim_Shifter = 0xC7,
+	kHIDUsage_Sim_Steering = 0xC8,
+};
+
+enum {
+	kHIDUsage_Button_1 = 0x01,
+	kHIDUsage_Button_2 = 0x02,
+	kHIDUsage_Button_3 = 0x03,
+	kHIDUsage_Button_4 = 0x04,
+};
+
+#endif

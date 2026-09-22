@@ -1,0 +1,18 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/CoreVideo.framework/Versions/A/CoreVideo'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _CVPixelBufferGetBaseAddressOfPlane
+    - _CVPixelBufferGetBytesPerRowOfPlane
+    - _CVPixelBufferGetHeightOfPlane
+    - _CVPixelBufferGetPlaneCount
+    - _CVPixelBufferGetWidthOfPlane
+    - _CVPixelBufferLockBaseAddress
+    - _CVPixelBufferUnlockBaseAddress
+    - _kCVPixelBufferPixelFormatTypeKey
+...

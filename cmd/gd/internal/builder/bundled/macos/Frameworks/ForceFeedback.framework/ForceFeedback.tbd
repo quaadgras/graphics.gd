@@ -1,0 +1,23 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/ForceFeedback.framework/Versions/A/ForceFeedback'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _FFCreateDevice
+    - _FFDeviceCreateEffect
+    - _FFDeviceGetForceFeedbackCapabilities
+    - _FFDeviceGetForceFeedbackProperty
+    - _FFDeviceReleaseEffect
+    - _FFDeviceSendForceFeedbackCommand
+    - _FFDeviceSetForceFeedbackProperty
+    - _FFEffectGetEffectStatus
+    - _FFEffectSetParameters
+    - _FFEffectStart
+    - _FFEffectStop
+    - _FFIsForceFeedback
+    - _FFReleaseDevice
+...

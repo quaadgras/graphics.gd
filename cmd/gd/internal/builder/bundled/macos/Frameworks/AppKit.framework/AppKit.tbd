@@ -1,0 +1,56 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _NSApp
+    - _NSApplicationDidChangeScreenParametersNotification
+    - _NSBeep
+    - _NSDeviceRGBColorSpace
+    - _NSDeviceSize
+    - _NSFontAttributeName
+    - _NSPasteboardTypeFileURL
+    - _NSPasteboardTypePNG
+    - _NSPasteboardTypeTIFF
+    - _NSRectFill
+    - _NSWorkspaceAccessibilityDisplayOptionsDidChangeNotification
+   objc-classes:
+    - NSAlert
+    - NSAppearance
+    - NSApplication
+    - NSBezierPath
+    - NSBitmapImageRep
+    - NSButton
+    - NSColor
+    - NSColorSpace
+    - NSCursor
+    - NSEvent
+    - NSFont
+    - NSGraphicsContext
+    - NSGridView
+    - NSImage
+    - NSMenu
+    - NSMenuItem
+    - NSOpenGLContext
+    - NSOpenGLPixelFormat
+    - NSOpenGLView
+    - NSOpenPanel
+    - NSPasteboard
+    - NSPopUpButton
+    - NSRunningApplication
+    - NSSavePanel
+    - NSScreen
+    - NSSpeechSynthesizer
+    - NSStatusBar
+    - NSTextField
+    - NSTextInputContext
+    - NSTrackingArea
+    - NSView
+    - NSWindow
+    - NSWorkspace
+    - NSWorkspaceOpenConfiguration
+...

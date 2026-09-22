@@ -8,6 +8,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreGraphics/CoreGraphics.h>
 #include <os/availability.h>
+#include <dispatch/dispatch.h>
 #include <stdarg.h>
 
 #if defined(__OBJC__)
@@ -35,7 +36,6 @@
 #define NS_DESIGNATED_INITIALIZER __attribute__((objc_designated_initializer))
 #define NS_UNAVAILABLE __attribute__((unavailable))
 #define NS_REQUIRES_SUPER __attribute__((objc_requires_super))
-#define CF_CONSUMED __attribute__((cf_consumed))
 #define NS_RETURNS_RETAINED __attribute__((ns_returns_retained))
 #define NS_RETURNS_INNER_POINTER __attribute__((objc_returns_inner_pointer))
 #define NS_FORMAT_FUNCTION(F, A) __attribute__((format(__NSString__, F, A)))
@@ -248,11 +248,30 @@ typedef unsigned short unichar;
 + (instancetype)stringWithCapacity:(NSUInteger)capacity;
 @end
 
+FOUNDATION_EXPORT NSAttributedStringKey NSFontAttributeName;
+FOUNDATION_EXPORT NSAttributedStringKey NSForegroundColorAttributeName;
+FOUNDATION_EXPORT NSAttributedStringKey NSParagraphStyleAttributeName;
+
 @interface NSAttributedString : NSObject <NSCopying, NSMutableCopying, NSSecureCoding>
 @property(readonly, copy) NSString *string;
 @property(readonly) NSUInteger length;
 - (instancetype)initWithString:(NSString *)str;
 - (instancetype)initWithString:(NSString *)str attributes:(nullable NSDictionary<NSAttributedStringKey, id> *)attrs;
+- (instancetype)initWithAttributedString:(NSAttributedString *)attrStr;
+- (NSDictionary<NSAttributedStringKey, id> *)attributesAtIndex:(NSUInteger)location effectiveRange:(nullable NSRangePointer)range;
+@end
+
+@interface NSMutableAttributedString : NSAttributedString
+@property(readonly, retain) NSMutableString *mutableString;
+- (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)str;
+- (void)setAttributes:(nullable NSDictionary<NSAttributedStringKey, id> *)attrs range:(NSRange)range;
+- (void)addAttribute:(NSAttributedStringKey)name value:(id)value range:(NSRange)range;
+- (void)addAttributes:(NSDictionary<NSAttributedStringKey, id> *)attrs range:(NSRange)range;
+- (void)removeAttribute:(NSAttributedStringKey)name range:(NSRange)range;
+- (void)appendAttributedString:(NSAttributedString *)attrString;
+- (void)setAttributedString:(NSAttributedString *)attrString;
+- (void)beginEditing;
+- (void)endEditing;
 @end
 
 // NSValue & NSNumber

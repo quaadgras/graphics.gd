@@ -35,6 +35,22 @@ typedef struct CAFrameRateRange {
 @protocol CALayerDelegate <NSObject>
 @end
 
+typedef NS_OPTIONS(unsigned int, CAAutoresizingMask) {
+	kCALayerNotSizable = 0,
+	kCALayerMinXMargin = 1U << 0,
+	kCALayerWidthSizable = 1U << 1,
+	kCALayerMaxXMargin = 1U << 2,
+	kCALayerMinYMargin = 1U << 3,
+	kCALayerHeightSizable = 1U << 4,
+	kCALayerMaxYMargin = 1U << 5,
+};
+typedef NS_OPTIONS(unsigned int, CAEdgeAntialiasingMask) {
+	kCALayerLeftEdge = 1U << 0,
+	kCALayerRightEdge = 1U << 1,
+	kCALayerBottomEdge = 1U << 2,
+	kCALayerTopEdge = 1U << 3,
+};
+
 @interface CALayer : NSObject <NSSecureCoding, CAMediaTiming>
 + (instancetype)layer;
 - (instancetype)init;
@@ -64,6 +80,12 @@ typedef struct CAFrameRateRange {
 - (void)layoutSublayers;
 - (void)display;
 - (void)removeAllAnimations;
+@property CAAutoresizingMask autoresizingMask;
+@property CAEdgeAntialiasingMask edgeAntialiasingMask;
+@property BOOL needsDisplayOnBoundsChange;
+@property(nullable, copy) NSString *contentsGravity;
+@property BOOL allowsEdgeAntialiasing;
+@property BOOL allowsGroupOpacity;
 @end
 
 @interface CATransaction : NSObject

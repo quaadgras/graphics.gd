@@ -321,4 +321,8 @@ typedef NSString *GCKeyCode NS_TYPED_EXTENSIBLE_ENUM;
 
 NS_ASSUME_NONNULL_END
 
+#if __has_include(<GameController/GCController+macOS.h>)
+#import <GameController/GCController+macOS.h>
+#endif
+
 #endif

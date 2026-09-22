@@ -1,0 +1,18 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/CoreHaptics.framework/Versions/A/CoreHaptics'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _CHHapticDynamicParameterIDHapticIntensityControl
+    - _CHHapticEventParameterIDHapticIntensity
+    - _CHHapticEventTypeHapticContinuous
+   objc-classes:
+    - CHHapticDynamicParameter
+    - CHHapticEvent
+    - CHHapticEventParameter
+    - CHHapticPattern
+...

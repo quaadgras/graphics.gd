@@ -1,0 +1,11 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   objc-classes:
+    - CAMetalLayer
+...

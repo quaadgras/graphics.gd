@@ -40,11 +40,9 @@ var (
 // that exist in the Xcode toolchain but NOT as dylibs on the iOS device.
 // All other Swift overlay FORCE_LOAD symbols are resolved via .tbd stubs in
 // bundled/ios/lib/ which create proper LC_LOAD_DYLIB entries.
-const swiftForceLoadStubs = `
-void* _swift_FORCE_LOAD_$_swiftCompatibility56 = 0;
-void* _swift_FORCE_LOAD_$_swiftCompatibilityConcurrency = 0;
-void* _swift_FORCE_LOAD_$_swift_Builtin_float = 0;
-
+// platformVersionStub is the compiler-rt builtin that @available() checks
+// call, for links that zig's driver (which would supply it) is not part of.
+const platformVersionStub = `
 // compiler-rt builtin: used by @available() checks in ObjC/Swift code.
 // Normally statically linked by the compiler driver from libclang_rt.
 #include <stdint.h>
@@ -69,6 +67,14 @@ extern int32_t __isPlatformVersionAtLeast(uint32_t platform, uint32_t major, uin
     return dmin >= minor;
 }
 
+`
+
+const swiftForceLoadStubs = `
+void* _swift_FORCE_LOAD_$_swiftCompatibility56 = 0;
+void* _swift_FORCE_LOAD_$_swiftCompatibilityConcurrency = 0;
+void* _swift_FORCE_LOAD_$_swift_Builtin_float = 0;
+
+` + platformVersionStub + `
 // SDL device-type helpers: Godot vendors SDL's joypad driver but not the
 // Objective-C file that implements these, so provide them here. This build
 // only targets iPhone/iPad devices, never Apple TV.

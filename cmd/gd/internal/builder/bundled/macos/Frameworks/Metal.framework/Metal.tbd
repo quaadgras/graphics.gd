@@ -1,0 +1,14 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/Metal.framework/Versions/A/Metal'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _MTLCopyAllDevices
+    - _MTLCopyAllDevicesWithObserver
+    - _MTLCreateSystemDefaultDevice
+    - _MTLRemoveDeviceObserver
+...

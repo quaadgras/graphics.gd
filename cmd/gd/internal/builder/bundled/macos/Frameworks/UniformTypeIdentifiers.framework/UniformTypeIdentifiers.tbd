@@ -1,0 +1,13 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/UniformTypeIdentifiers.framework/Versions/A/UniformTypeIdentifiers'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _UTTypeData
+   objc-classes:
+    - UTType
+...
