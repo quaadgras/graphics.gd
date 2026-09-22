@@ -38,7 +38,7 @@ import (
 )
 
 var (
-	//go:embed bundled/android
+	//go:embed all:bundled/android
 	android_sdk embed.FS
 )
 

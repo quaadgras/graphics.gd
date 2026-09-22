@@ -68,10 +68,7 @@ typedef __float_t float_t;
 
 #define isnormal(x) __builtin_isnormal(x)
 
-#define signbit(x) \
-    ((sizeof(x) == sizeof(float)) ? __builtin_signbitf(x) \
-    : (sizeof(x) == sizeof(double)) ? __builtin_signbit(x) \
-    : __builtin_signbitl(x))
+#define signbit(x) __builtin_signbit(x)
 
 double acos(double __x);
 float acosf(float __x);
@@ -308,20 +305,6 @@ long double fmal(long double __x, long double __y, long double __z);
 #define islessgreater(x, y) __builtin_islessgreater((x), (y))
 #define isunordered(x, y) __builtin_isunordered((x), (y))
 
-/*
- * https://code.google.com/p/android/issues/detail?id=271629
- * To be fully compliant with C++, we need to not define these (C doesn't
- * specify them either). Exposing these means that isinf and isnan will have a
- * return type of int in C++ rather than bool like they're supposed to be.
- *
- * GNU libstdc++ 4.9 isn't able to handle a standard compliant C library. Its
- * <cmath> will `#undef isnan` from math.h and only adds the function overloads
- * to the std namespace, making it impossible to use both <cmath> (which gets
- * included by a lot of other standard headers) and ::isnan.
- */
-int (isinf)(double __x) __attribute_const__;
-int (isnan)(double __x) __attribute_const__;
-
 /* POSIX extensions. */
 
 extern int signgam;
@@ -362,11 +345,16 @@ double gamma(double __x);
 double scalb(double __x, double __exponent);
 double drem(double __x, double __y);
 int finite(double __x) __attribute_const__;
+int isinff(float __x) __attribute_const__;
 int isnanf(float __x) __attribute_const__;
 double gamma_r(double __x, int* _Nonnull __sign);
 double lgamma_r(double __x, int* _Nonnull __sign);
 double significand(double __x);
+
+#if __BIONIC_AVAILABILITY_GUARD(23)
 long double lgammal_r(long double __x, int* _Nonnull __sign) __INTRODUCED_IN(23);
+#endif /* __BIONIC_AVAILABILITY_GUARD(23) */
+
 long double significandl(long double __x);
 float dremf(float __x, float __y);
 int finitef(float __x) __attribute_const__;
@@ -402,6 +390,8 @@ void sincosl(long double __x, long double* _Nonnull __sin, long double* _Nonnull
 #define M_2_SQRTPIl     1.128379167095512573896158903121545172L /* 2/sqrt(pi) */
 #define M_SQRT2l        1.414213562373095048801688724209698079L /* sqrt(2) */
 #define M_SQRT1_2l      0.707106781186547524400844362104849039L /* 1/sqrt(2) */
+int isinfl(long double __x) __attribute_const__;
+int isnanl(long double __x) __attribute_const__;
 #endif
 
 __END_DECLS

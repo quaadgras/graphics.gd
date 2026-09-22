@@ -238,7 +238,7 @@
 // As we move some FORTIFY checks to be always on, __bos needs to be
 // always available.
 #if defined(__BIONIC_FORTIFY)
-#  if _FORTIFY_SOURCE == 2
+#  if _FORTIFY_SOURCE > 1
 #    define __bos_level 1
 #  else
 #    define __bos_level 0

@@ -27,11 +27,14 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+
 #ifndef _SYS_ELF_COMMON_H_
 #define	_SYS_ELF_COMMON_H_ 1
+
 /*
  * ELF definitions that are independent of architecture or word size.
  */
+
 /*
  * Note header.  The ".note" section contains an array of notes.  Each
  * begins with this header, aligned to a word boundary.  Immediately
@@ -40,6 +43,7 @@
  * padded to a word boundary.  The values of n_namesz and n_descsz do
  * not include the padding.
  */
+
 #if 0 // android-added
 #if !defined(LOCORE) && !defined(__ASSEMBLER__)
 typedef struct {
@@ -50,6 +54,7 @@ typedef struct {
 typedef Elf_Note Elf_Nhdr;
 #endif
 #endif // android-added
+
 /*
  * Option kinds.
  */
@@ -65,6 +70,7 @@ typedef Elf_Note Elf_Nhdr;
 #define	ODK_GP_GROUP	9	/* GP group for text/data sections */
 #define	ODK_IDENT	10	/* ID information */
 #define	ODK_PAGESIZE	11	/* page size information */
+
 /*
  * ODK_EXCEPTIONS info field masks.
  */
@@ -74,12 +80,14 @@ typedef Elf_Note Elf_Nhdr;
 #define	OEX_SMM		0x00020000	/* run in sequential memory mode */
 #define	OEX_PRECISEFP	0x00040000	/* run in precise FP exception mode */
 #define	OEX_DISMISS	0x00080000	/* dismiss invalid address traps */
+
 /*
  * ODK_PAD info field masks.
  */
 #define	OPAD_PREFIX	0x0001
 #define	OPAD_POSTFIX	0x0002
 #define	OPAD_SYMBOL	0x0004
+
 /*
  * ODK_HWPATCH info field masks.
  */
@@ -88,20 +96,24 @@ typedef Elf_Note Elf_Nhdr;
 #define	OHW_R5KEOP	0x00000004	/* patch for R5000 branch at end-of-page bug */
 #define	OHW_R5KCVTL	0x00000008	/* R5000 cvt.[ds].l bug: clean == 1 */
 #define	OHW_R10KLDL	0x00000010UL	/* need patch for R10000 misaligned load */
+
 /*
  * ODK_HWAND/ODK_HWOR info field and hwp_flags[12] masks.
  */
 #define	OHWA0_R4KEOP_CHECKED	0x00000001	/* object checked for R4000 end-of-page bug */
 #define	OHWA0_R4KEOP_CLEAN	0x00000002	/* object verified clean for R4000 end-of-page bug */
 #define	OHWO0_FIXADE		0x00000001	/* object requires call to fixade */
+
 /*
  * ODK_IDENT/ODK_GP_GROUP info field masks.
  */
 #define	OGP_GROUP	0x0000ffff	/* GP group number */
 #define	OGP_SELF	0x00010000	/* GP group is self-contained */
+
 /*
  * The header for GNU-style hash sections.
  */
+
 #if 0 // android-added
 #if !defined(LOCORE) && !defined(__ASSEMBLER__)
 typedef struct {
@@ -112,6 +124,7 @@ typedef struct {
 } Elf_GNU_Hash_Header;
 #endif
 #endif
+
 /* Indexes into the e_ident array.  Keep synced with
    http://www.sco.com/developers/gabi/latest/ch4.eheader.html */
 #define	EI_MAG0		0	/* Magic number, byte 0. */
@@ -126,6 +139,7 @@ typedef struct {
 #define	OLD_EI_BRAND	8	/* Start of architecture identification. */
 #define	EI_PAD		9	/* Start of padding (per SVR4 ABI). */
 #define	EI_NIDENT	16	/* Size of e_ident array. */
+
 /* Values for the magic number bytes. */
 #define	ELFMAG0		0x7f
 #define	ELFMAG1		'E'
@@ -133,17 +147,21 @@ typedef struct {
 #define	ELFMAG3		'F'
 #define	ELFMAG		"\177ELF"	/* magic string */
 #define	SELFMAG		4		/* magic string size */
+
 /* Values for e_ident[EI_VERSION] and e_version. */
 #define	EV_NONE		0
 #define	EV_CURRENT	1
+
 /* Values for e_ident[EI_CLASS]. */
 #define	ELFCLASSNONE	0	/* Unknown class. */
 #define	ELFCLASS32	1	/* 32-bit architecture. */
 #define	ELFCLASS64	2	/* 64-bit architecture. */
+
 /* Values for e_ident[EI_DATA]. */
 #define	ELFDATANONE	0	/* Unknown data format. */
 #define	ELFDATA2LSB	1	/* 2's complement little-endian. */
 #define	ELFDATA2MSB	2	/* 2's complement big-endian. */
+
 /* Values for e_ident[EI_OSABI]. */
 #define	ELFOSABI_NONE		0	/* UNIX System V ABI */
 #define	ELFOSABI_HPUX		1	/* HP-UX operating system */
@@ -167,14 +185,17 @@ typedef struct {
 #define	ELFOSABI_ARM_AEABI	64	/* ARM EABI */
 #define	ELFOSABI_ARM		97	/* ARM */
 #define	ELFOSABI_STANDALONE	255	/* Standalone (embedded) application */
+
 #define	ELFOSABI_SYSV		ELFOSABI_NONE	/* symbol used in old spec */
 #define	ELFOSABI_MONTEREY	ELFOSABI_AIX	/* Monterey */
 #define	ELFOSABI_GNU		ELFOSABI_LINUX
+
 /* e_ident */
 #define	IS_ELF(ehdr)	((ehdr).e_ident[EI_MAG0] == ELFMAG0 && \
 			 (ehdr).e_ident[EI_MAG1] == ELFMAG1 && \
 			 (ehdr).e_ident[EI_MAG2] == ELFMAG2 && \
 			 (ehdr).e_ident[EI_MAG3] == ELFMAG3)
+
 /* Values for e_type. */
 #define	ET_NONE		0	/* Unknown type. */
 #define	ET_REL		1	/* Relocatable. */
@@ -185,6 +206,7 @@ typedef struct {
 #define	ET_HIOS		0xfeff	/* Last operating system-specific. */
 #define	ET_LOPROC	0xff00	/* First processor-specific. */
 #define	ET_HIPROC	0xffff	/* Last processor-specific. */
+
 /* Values for e_machine. */
 #define	EM_NONE		0	/* Unknown machine. */
 #define	EM_M32		1	/* AT&T WE32100. */
@@ -288,11 +310,13 @@ typedef struct {
 				   and MPRC of Peking University */
 #define	EM_AARCH64	183	/* AArch64 (64-bit ARM) */
 #define	EM_RISCV	243	/* RISC-V */
+
 /* Non-standard or deprecated. */
 #define	EM_486		6	/* Intel i486. */
 #define	EM_MIPS_RS4_BE	10	/* MIPS R4000 Big-Endian */
 #define	EM_ALPHA_STD	41	/* Digital Alpha (standard value). */
 #define	EM_ALPHA	0x9026	/* Alpha (written in the absence of an ABI) */
+
 /**
  * e_flags
  */
@@ -323,6 +347,7 @@ typedef struct {
 #define	EF_ARM_ABI_FLOAT_HARD	0x00000400
 #define	EF_ARM_VFP_FLOAT	EF_ARM_ABI_FLOAT_HARD /* Pre-V5 ABI name */
 #define	EF_ARM_MAVERICK_FLOAT	0x00000800
+
 #define	EF_MIPS_NOREORDER	0x00000001
 #define	EF_MIPS_PIC		0x00000002	/* Contains PIC code */
 #define	EF_MIPS_CPIC		0x00000004	/* STD PIC calling sequence */
@@ -347,9 +372,11 @@ typedef struct {
 #define	EF_MIPS_ARCH_64		0x60000000	/* -mips64 code */
 #define	EF_MIPS_ARCH_32R2	0x70000000	/* -mips32r2 code */
 #define	EF_MIPS_ARCH_64R2	0x80000000	/* -mips64r2 code */
+
 #define	EF_PPC_EMB		0x80000000
 #define	EF_PPC_RELOCATABLE	0x00010000
 #define	EF_PPC_RELOCATABLE_LIB	0x00008000
+
 #define	EF_RISCV_RVC		0x00000001
 #define	EF_RISCV_FLOAT_ABI_MASK	0x00000006
 #define	EF_RISCV_FLOAT_ABI_SOFT	0x00000000
@@ -358,15 +385,18 @@ typedef struct {
 #define	EF_RISCV_FLOAT_ABI_QUAD	0x00000006
 #define	EF_RISCV_RVE		0x00000008
 #define	EF_RISCV_TSO		0x00000010
+
 #define	EF_SPARC_EXT_MASK	0x00ffff00
 #define	EF_SPARC_32PLUS		0x00000100
 #define	EF_SPARC_SUN_US1	0x00000200
 #define	EF_SPARC_HAL_R1		0x00000200
 #define	EF_SPARC_SUN_US3	0x00000800
+
 #define	EF_SPARCV9_MM		0x00000003
 #define	EF_SPARCV9_TSO		0x00000000
 #define	EF_SPARCV9_PSO		0x00000001
 #define	EF_SPARCV9_RMO		0x00000002
+
 /* Special section indexes. */
 #define	SHN_UNDEF	     0		/* Undefined, missing, irrelevant. */
 #define	SHN_LORESERVE	0xff00		/* First of reserved range. */
@@ -381,6 +411,7 @@ typedef struct {
 #define	SHN_COMMON	0xfff2		/* Common data. */
 #define	SHN_XINDEX	0xffff		/* Escape -- index stored elsewhere. */
 #define	SHN_HIRESERVE	0xffff		/* Last of reserved range. */
+
 /* sh_type */
 #define	SHT_NULL		0	/* inactive */
 #define	SHT_PROGBITS		1	/* program defined information */
@@ -423,11 +454,12 @@ typedef struct {
 #define	SHT_HIOS		0x6fffffff	/* Last of OS specific semantics */
 #define	SHT_LOPROC		0x70000000	/* reserved range for processor */
 #define	SHT_X86_64_UNWIND	0x70000001	/* unwind information */
-#define	SHT_AMD64_UNWIND	SHT_X86_64_UNWIND
+#define	SHT_AMD64_UNWIND	SHT_X86_64_UNWIND 
+
 #define	SHT_ARM_EXIDX		0x70000001	/* Exception index table. */
-#define	SHT_ARM_PREEMPTMAP	0x70000002	/* BPABI DLL dynamic linking
+#define	SHT_ARM_PREEMPTMAP	0x70000002	/* BPABI DLL dynamic linking 
 						   pre-emption map. */
-#define	SHT_ARM_ATTRIBUTES	0x70000003	/* Object file compatibility
+#define	SHT_ARM_ATTRIBUTES	0x70000003	/* Object file compatibility 
 						   attributes. */
 #define	SHT_ARM_DEBUGOVERLAY	0x70000004	/* See DBGOVL for details. */
 #define	SHT_ARM_OVERLAYSECTION	0x70000005	/* See DBGOVL for details. */
@@ -460,11 +492,14 @@ typedef struct {
 #define	SHT_MIPS_XLATE_OLD	0x70000028
 #define	SHT_MIPS_PDR_EXCEPTION	0x70000029
 #define	SHT_MIPS_ABIFLAGS	0x7000002a
+
 #define	SHT_SPARC_GOTDATA	0x70000000
+
 #define	SHTORDERED
 #define	SHT_HIPROC		0x7fffffff	/* specific section header types */
 #define	SHT_LOUSER		0x80000000	/* reserved range for application */
 #define	SHT_HIUSER		0xffffffff	/* specific indexes */
+
 /* Flags for sh_flags. */
 #define	SHF_WRITE		0x1	/* Section contains writable data. */
 #define	SHF_ALLOC		0x2	/* Section occupies memory. */
@@ -479,13 +514,16 @@ typedef struct {
 #define	SHF_COMPRESSED		0x800	/* Section contains compressed data. */
 #define	SHF_MASKOS	0x0ff00000	/* OS-specific semantics. */
 #define	SHF_MASKPROC	0xf0000000	/* Processor-specific semantics. */
+
 /* Flags for section groups. */
 #define	GRP_COMDAT	0x1	/* COMDAT semantics. */
+
 /*
  * Flags / mask for .gnu.versym sections.
  */
 #define	VERSYM_VERSION	0x7fff
 #define	VERSYM_HIDDEN	0x8000
+
 /* Values for p_type. */
 #define	PT_NULL		0	/* Unused entry. */
 #define	PT_LOAD		1	/* Loadable segment. */
@@ -517,17 +555,21 @@ typedef struct {
 #define	PT_MIPS_OPTIONS		0x70000002	/* MIPS e_flags value*/
 #define	PT_MIPS_ABIFLAGS	0x70000003	/* MIPS fp mode */
 #define	PT_HIPROC	0x7fffffff	/* Last processor-specific type. */
+
 #define	PT_OPENBSD_RANDOMIZE	0x65A3DBE6	/* OpenBSD random data segment */
 #define	PT_OPENBSD_WXNEEDED	0x65A3DBE7	/* OpenBSD EXEC/WRITE pages needed */
 #define	PT_OPENBSD_BOOTDATA	0x65A41BE6	/* OpenBSD section for boot args */
+
 /* Values for p_flags. */
 #define	PF_X		0x1		/* Executable. */
 #define	PF_W		0x2		/* Writable. */
 #define	PF_R		0x4		/* Readable. */
 #define	PF_MASKOS	0x0ff00000	/* Operating system-specific. */
 #define	PF_MASKPROC	0xf0000000	/* Processor-specific. */
+
 /* Extended program header index. */
 #define	PN_XNUM		0xffff
+
 /* Values for d_tag. */
 #define	DT_NULL		0	/* Terminating entry. */
 #define	DT_NEEDED	1	/* String table offset of a needed shared
@@ -588,6 +630,7 @@ typedef struct {
 #define	DT_SUNW_CAP		0x60000010	/* hardware/software */
 #define	DT_SUNW_ASLR		0x60000023	/* ASLR control */
 #define	DT_HIOS		0x6ffff000	/* Last OS-specific */
+
 /*
  * DT_* entries which fall between DT_VALRNGHI & DT_VALRNGLO use the
  * Dyn.d_un.d_val field of the Elf*_Dyn structure.
@@ -608,6 +651,7 @@ typedef struct {
 #define	DT_SYMINSZ	0x6ffffdfe	/* syminfo table size (in bytes) */
 #define	DT_SYMINENT	0x6ffffdff	/* syminfo entry size (in bytes) */
 #define	DT_VALRNGHI	0x6ffffdff
+
 /*
  * DT_* entries which fall between DT_ADDRRNGHI & DT_ADDRRNGLO use the
  * Dyn.d_un.d_ptr field of the Elf*_Dyn structure.
@@ -628,6 +672,7 @@ typedef struct {
 #define	DT_MOVETAB	0x6ffffefe	/* move table */
 #define	DT_SYMINFO	0x6ffffeff	/* syminfo table */
 #define	DT_ADDRRNGHI	0x6ffffeff
+
 #define	DT_VERSYM	0x6ffffff0	/* Address of versym section. */
 #define	DT_RELACOUNT	0x6ffffff9	/* number of RELATIVE relocations */
 #define	DT_RELCOUNT	0x6ffffffa	/* number of RELATIVE relocations */
@@ -636,14 +681,19 @@ typedef struct {
 #define	DT_VERDEFNUM	0x6ffffffd	/* Number of elems in verdef section */
 #define	DT_VERNEED	0x6ffffffe	/* Address of verneed section. */
 #define	DT_VERNEEDNUM	0x6fffffff	/* Number of elems in verneed section */
+
 #define	DT_LOPROC	0x70000000	/* First processor-specific type. */
+
 #define	DT_AARCH64_BTI_PLT		0x70000001
 #define	DT_AARCH64_PAC_PLT		0x70000003
 #define	DT_AARCH64_VARIANT_PCS		0x70000005
+
 #define	DT_ARM_SYMTABSZ			0x70000001
 #define	DT_ARM_PREEMPTMAP		0x70000002
+
 #define	DT_SPARC_REGISTER		0x70000001
 #define	DT_DEPRECATED_SPARC_REGISTER	0x7000001
+
 #define	DT_MIPS_RLD_VERSION		0x70000001
 #define	DT_MIPS_TIME_STAMP		0x70000002
 #define	DT_MIPS_ICHECKSUM		0x70000003
@@ -690,16 +740,20 @@ typedef struct {
 #define	DT_MIPS_RLD_OBJ_UPDATE		0x70000033
 #define	DT_MIPS_RWPLT			0x70000034
 #define	DT_MIPS_RLD_MAP_REL		0x70000035
+
 #define	DT_PPC_GOT			0x70000000
 #define	DT_PPC_TLSOPT			0x70000001
+
 #define	DT_PPC64_GLINK			0x70000000
 #define	DT_PPC64_OPD			0x70000001
 #define	DT_PPC64_OPDSZ			0x70000002
 #define	DT_PPC64_TLSOPT			0x70000003
+
 #define	DT_AUXILIARY	0x7ffffffd	/* shared library auxiliary name */
 #define	DT_USED		0x7ffffffe	/* ignored - same as needed */
 #define	DT_FILTER	0x7fffffff	/* shared library filter name */
 #define	DT_HIPROC	0x7fffffff	/* Last processor-specific type. */
+
 /* Values for DT_FLAGS */
 #define	DF_ORIGIN	0x0001	/* Indicates that the object being loaded may
 				   make reference to the $ORIGIN substitution
@@ -714,6 +768,7 @@ typedef struct {
 #define	DF_STATIC_TLS	0x0010	/* Indicates that the shared object or
 				   executable contains code using a static
 				   thread-local storage scheme. */
+
 /* Values for DT_FLAGS_1 */
 #define	DF_1_BIND_NOW	0x00000001	/* Same as DF_BIND_NOW */
 #define	DF_1_GLOBAL	0x00000002	/* Set the RTLD_GLOBAL for object */
@@ -724,6 +779,7 @@ typedef struct {
 #define	DF_1_INTERPOSE	0x00000400	/* Interpose all objects but main */
 #define	DF_1_NODEFLIB	0x00000800	/* Do not search default paths */
 #define	DF_1_PIE	0x08000000	/* Is position-independent executable */
+
 /* Values for l_flags. */
 #define	LL_NONE			0x0	/* no flags */
 #define	LL_EXACT_MATCH		0x1	/* require an exact match */
@@ -732,16 +788,19 @@ typedef struct {
 #define	LL_EXPORTS		0x8
 #define	LL_DELAY_LOAD		0x10
 #define	LL_DELTA		0x20
+
 /* Note section names */
 #define	ELF_NOTE_FREEBSD	"FreeBSD"
 #define	ELF_NOTE_NETBSD		"NetBSD"
 #define	ELF_NOTE_SOLARIS	"SUNW Solaris"
 #define	ELF_NOTE_GNU		"GNU"
+
 /* Values for n_type used in executables. */
 #define	NT_FREEBSD_ABI_TAG	1
 #define	NT_FREEBSD_NOINIT_TAG	2
 #define	NT_FREEBSD_ARCH_TAG	3
 #define	NT_FREEBSD_FEATURE_CTL	4
+
 /* NT_FREEBSD_FEATURE_CTL desc[0] bits */
 #define	NT_FREEBSD_FCTL_ASLR_DISABLE	0x00000001
 #define	NT_FREEBSD_FCTL_PROTMAX_DISABLE	0x00000002
@@ -749,6 +808,7 @@ typedef struct {
 #define	NT_FREEBSD_FCTL_WXNEEDED	0x00000008
 #define	NT_FREEBSD_FCTL_LA48		0x00000010
 /* was ASG_DISABLE, do not reuse	0x00000020 */
+
 /* Values for n_type.  Used in core files. */
 #define	NT_PRSTATUS	1	/* Process status. */
 #define	NT_FPREGSET	2	/* Floating point registers. */
@@ -771,20 +831,27 @@ typedef struct {
 #define	NT_ARM_VFP	0x400	/* ARM VFP registers */
 #define	NT_ARM_TLS	0x401	/* ARM TLS register */
 #define	NT_ARM_ADDR_MASK	0x406	/* arm64 address mask (e.g. for TBI) */
+
 /* GNU note types. */
 #define	NT_GNU_ABI_TAG		1
 #define	NT_GNU_HWCAP		2
 #define	NT_GNU_BUILD_ID		3
 #define	NT_GNU_GOLD_VERSION	4
 #define	NT_GNU_PROPERTY_TYPE_0	5
+
 #define	GNU_PROPERTY_LOPROC			0xc0000000
 #define	GNU_PROPERTY_HIPROC			0xdfffffff
+
 #define	GNU_PROPERTY_AARCH64_FEATURE_1_AND	0xc0000000
+
 // android-removed: #define	GNU_PROPERTY_AARCH64_FEATURE_1_BTI	0x00000001
 #define	GNU_PROPERTY_AARCH64_FEATURE_1_PAC	0x00000002
+
 #define	GNU_PROPERTY_X86_FEATURE_1_AND		0xc0000002
+
 #define	GNU_PROPERTY_X86_FEATURE_1_IBT		0x00000001
 #define	GNU_PROPERTY_X86_FEATURE_1_SHSTK	0x00000002
+
 /* Symbol Binding - ELFNN_ST_BIND - st_info */
 #define	STB_LOCAL	0	/* Local symbol */
 #define	STB_GLOBAL	1	/* Global symbol */
@@ -794,6 +861,7 @@ typedef struct {
 #define	STB_HIOS	12	/* End of operating system reserved range. */
 #define	STB_LOPROC	13	/* reserved range for processor */
 #define	STB_HIPROC	15	/*   specific semantics. */
+
 /* Symbol type - ELFNN_ST_TYPE - st_info */
 #define	STT_NOTYPE	0	/* Unspecified type. */
 #define	STT_OBJECT	1	/* Data object. */
@@ -809,6 +877,7 @@ typedef struct {
 #define	STT_LOPROC	13	/* Start of processor reserved range. */
 #define	STT_SPARC_REGISTER 13	/* SPARC register information. */
 #define	STT_HIPROC	15	/* End of processor reserved range. */
+
 /* Symbol visibility - ELFNN_ST_VISIBILITY - st_other */
 #define	STV_DEFAULT	0x0	/* Default visibility (see binding). */
 #define	STV_INTERNAL	0x1	/* Special meaning in relocatable objects. */
@@ -817,25 +886,33 @@ typedef struct {
 #define	STV_EXPORTED	0x4
 #define	STV_SINGLETON	0x5
 #define	STV_ELIMINATE	0x6
+
 /* Special symbol table indexes. */
 #define	STN_UNDEF	0	/* Undefined symbol index. */
+
 /* Symbol versioning flags. */
 #define	VER_DEF_CURRENT	1
 #define	VER_DEF_IDX(x)	VER_NDX(x)
+
 #define	VER_FLG_BASE	0x01
 #define	VER_FLG_WEAK	0x02
+
 #define	VER_NEED_CURRENT	1
 #define	VER_NEED_WEAK	(1u << 15)
 #define	VER_NEED_HIDDEN	VER_NDX_HIDDEN
 #define	VER_NEED_IDX(x)	VER_NDX(x)
+
 #define	VER_NDX_LOCAL	0
 #define	VER_NDX_GLOBAL	1
 #define	VER_NDX_GIVEN	2
+
 #define	VER_NDX_HIDDEN	(1u << 15)
 #define	VER_NDX(x)	((x) & ~(1u << 15))
+
 #define	CA_SUNW_NULL	0
 #define	CA_SUNW_HW_1	1		/* first hardware capabilities entry */
 #define	CA_SUNW_SF_1	2		/* first software capabilities entry */
+
 /*
  * Syminfo flag values
  */
@@ -851,6 +928,7 @@ typedef struct {
 					/*	directly bind to this symbol */
 #define	SYMINFO_FLG_FILTER	0x0002	/* symbol ref is associated to a */
 #define	SYMINFO_FLG_AUXILIARY	0x0040	/* 	standard or auxiliary filter */
+
 /*
  * Syminfo.si_boundto values.
  */
@@ -859,12 +937,14 @@ typedef struct {
 #define	SYMINFO_BT_NONE		0xfffd	/* no special symbol binding */
 #define	SYMINFO_BT_EXTERN	0xfffc	/* symbol defined as external */
 #define	SYMINFO_BT_LOWRESERVE	0xff00	/* beginning of reserved entries */
+
 /*
  * Syminfo version values.
  */
 #define	SYMINFO_NONE		0	/* Syminfo version */
 #define	SYMINFO_CURRENT		1
 #define	SYMINFO_NUM		2
+
 /* Values for ch_type (compressed section headers). */
 #define	ELFCOMPRESS_ZLIB	1	/* ZLIB/DEFLATE */
 #define	ELFCOMPRESS_ZSTD	2	/* Zstandard */
@@ -872,6 +952,7 @@ typedef struct {
 #define	ELFCOMPRESS_HIOS	0x6fffffff
 #define	ELFCOMPRESS_LOPROC	0x70000000	/* Processor-specific */
 #define	ELFCOMPRESS_HIPROC	0x7fffffff
+
 #if 0 // android-added
 /* Values for a_type. */
 #define	AT_NULL		0	/* Terminates the vector. */
@@ -911,14 +992,17 @@ typedef struct {
 #define	AT_KPRELOAD	34	/* Base of vdso, preloaded by rtld */
 #define	AT_USRSTACKBASE	35	/* Top of user stack */
 #define	AT_USRSTACKLIM	36	/* Grow limit of user stack */
+
 #define	AT_COUNT	37	/* Count of defined aux entry types. */
 #endif // android-added
+
 /*
  * Relocation types.
  *
  * All machine architectures are defined here to allow tools on one to
  * handle others.
  */
+
 #define	R_386_NONE		0	/* No relocation. */
 #define	R_386_32		1	/* Add symbol value. */
 #define	R_386_PC32		2	/* Add PC-relative symbol value. */
@@ -961,6 +1045,7 @@ typedef struct {
 #define	R_386_TLS_DESC		41
 #define	R_386_IRELATIVE		42	/* PLT entry resolved indirectly at runtime */
 #define	R_386_GOT32X		43
+
 #define	R_AARCH64_NONE		0	/* No relocation */
 #define	R_AARCH64_ABS64		257	/* Absolute offset */
 #define	R_AARCH64_ABS32		258	/* Absolute, 32-bit overflow check */
@@ -981,6 +1066,7 @@ typedef struct {
 #define	R_AARCH64_TLS_TPREL64 	1030
 #define	R_AARCH64_TLSDESC 	1031	/* Identify the TLS descriptor */
 #define	R_AARCH64_IRELATIVE	1032
+
 #define	R_ARM_NONE		0	/* No relocation. */
 #define	R_ARM_PC24		1
 #define	R_ARM_ABS32		2
@@ -1018,6 +1104,7 @@ typedef struct {
 #define	R_ARM_RABS32		253
 #define	R_ARM_RPC24		254
 #define	R_ARM_RBASE		255
+
 /*	Name			Value	   Field	Calculation */
 #define	R_IA_64_NONE		0	/* None */
 #define	R_IA_64_IMM14		0x21	/* immediate14	S + A */
@@ -1099,6 +1186,7 @@ typedef struct {
 #define	R_IA_64_DTPREL64MSB	0xb6	/* word64 MSB	@dtprel(S + A) */
 #define	R_IA_64_DTPREL64LSB	0xb7	/* word64 LSB	@dtprel(S + A) */
 #define	R_IA_64_LTOFF_DTPREL22	0xba	/* imm22	@ltoff(@dtprel(S+A)) */
+
 #define	R_MIPS_NONE	0	/* No reloc */
 #define	R_MIPS_16	1	/* Direct 16 bit */
 #define	R_MIPS_32	2	/* Direct 32 bit */
@@ -1125,6 +1213,7 @@ typedef struct {
 #define	R_MIPS_TLS_GD	42
 #define	R_MIPS_COPY	126
 #define	R_MIPS_JUMP_SLOT	127
+
 #define	R_PPC_NONE		0	/* No relocation. */
 #define	R_PPC_ADDR32		1
 #define	R_PPC_ADDR24		2
@@ -1163,6 +1252,7 @@ typedef struct {
 #define	R_PPC_SECTOFF_HI	35
 #define	R_PPC_SECTOFF_HA	36
 #define	R_PPC_IRELATIVE		248
+
 /*
  * 64-bit relocations
  */
@@ -1183,6 +1273,7 @@ typedef struct {
 #define	R_PPC64_DTPMOD64	68
 #define	R_PPC64_TPREL64		73
 #define	R_PPC64_DTPREL64	78
+
 /*
  * TLS relocations
  */
@@ -1210,10 +1301,12 @@ typedef struct {
 #define	R_PPC_GOT_TPREL16_LO	88
 #define	R_PPC_GOT_TPREL16_HI	89
 #define	R_PPC_GOT_TPREL16_HA	90
+
 /*
  * The remaining relocs are from the Embedded ELF ABI, and are not in the
  *  SVR4 ELF ABI.
  */
+
 #define	R_PPC_EMB_NADDR32	101
 #define	R_PPC_EMB_NADDR16	102
 #define	R_PPC_EMB_NADDR16_LO	103
@@ -1230,9 +1323,11 @@ typedef struct {
 #define	R_PPC_EMB_RELST_HA	114
 #define	R_PPC_EMB_BIT_FLD	115
 #define	R_PPC_EMB_RELSDA	116
+
 /*
  * RISC-V relocation types.
  */
+
 /* Relocation types used by the dynamic linker. */
 #define	R_RISCV_NONE		0
 #define	R_RISCV_32		1
@@ -1246,6 +1341,7 @@ typedef struct {
 #define	R_RISCV_TLS_DTPREL64	9
 #define	R_RISCV_TLS_TPREL32	10
 #define	R_RISCV_TLS_TPREL64	11
+
 /* Relocation types not used by the dynamic linker. */
 #define	R_RISCV_BRANCH		16
 #define	R_RISCV_JAL		17
@@ -1284,6 +1380,7 @@ typedef struct {
 #define	R_RISCV_SET32		56
 #define	R_RISCV_32_PCREL	57
 #define	R_RISCV_IRELATIVE	58
+
 #define	R_SPARC_NONE		0
 #define	R_SPARC_8		1
 #define	R_SPARC_16		2
@@ -1364,6 +1461,7 @@ typedef struct {
 #define	R_SPARC_TLS_DTPOFF64	77
 #define	R_SPARC_TLS_TPOFF32	78
 #define	R_SPARC_TLS_TPOFF64	79
+
 #define	R_X86_64_NONE		0	/* No relocation. */
 #define	R_X86_64_64		1	/* Add 64 bit symbol value. */
 #define	R_X86_64_PC32		2	/* PC-relative 32 bit signed sym value. */
@@ -1406,6 +1504,8 @@ typedef struct {
 /* 39 and 40 were BND-related, already decomissioned */
 #define	R_X86_64_GOTPCRELX	41
 #define	R_X86_64_REX_GOTPCRELX	42
+
 #define	ELF_BSDF_SIGFASTBLK	0x0001	/* Kernel supports fast sigblock */
 #define	ELF_BSDF_VMNOOVERCOMMIT	0x0002
+
 #endif /* !_SYS_ELF_COMMON_H_ */

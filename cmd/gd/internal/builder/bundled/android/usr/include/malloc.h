@@ -121,8 +121,19 @@ __nodiscard void* _Nullable memalign(size_t __alignment, size_t __byte_count) __
 /**
  * [malloc_usable_size(3)](https://man7.org/linux/man-pages/man3/malloc_usable_size.3.html)
  * returns the actual size of the given heap block.
+ *
+ * malloc_usable_size() and _FORTIFY_SOURCE=3 are incompatible if you are using more of the
+ * allocation than originally requested. However, malloc_usable_size() can be used to keep track
+ * of allocation/deallocation byte counts and this is an exception to the incompatible rule. In this
+ * case, you can define __BIONIC_DISABLE_MALLOC_USABLE_SIZE_FORTIFY_WARNINGS to disable the
+ * compiler error.
  */
-__nodiscard size_t malloc_usable_size(const void* _Nullable __ptr);
+__nodiscard size_t malloc_usable_size(const void* _Nullable __ptr)
+#if defined(_FORTIFY_SOURCE) && !defined(__BIONIC_DISABLE_MALLOC_USABLE_SIZE_FORTIFY_WARNINGS)
+    __clang_error_if(_FORTIFY_SOURCE == 3,
+      "malloc_usable_size() and _FORTIFY_SOURCE=3 are incompatible: see malloc_usable_size() documentation")
+#endif
+;
 
 #define __MALLINFO_BODY \
   /** Total number of non-mmapped bytes currently allocated from OS. */ \

@@ -25,16 +25,23 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+
 #pragma once
+
 /**
  * @file link.h
  * @brief Extra dynamic linker functionality (see also <dlfcn.h>).
  */
+
 #include <sys/cdefs.h>
+
 #include <stdint.h>
 #include <sys/types.h>
+
 #include <elf.h>
+
 __BEGIN_DECLS
+
 #if defined(__LP64__)
 /** Convenience macro to get the appropriate 32-bit or 64-bit <elf.h> type for the caller's bitness. */
 #define ElfW(type) Elf64_ ## type
@@ -42,6 +49,7 @@ __BEGIN_DECLS
 /** Convenience macro to get the appropriate 32-bit or 64-bit <elf.h> type for the caller's bitness. */
 #define ElfW(type) Elf32_ ## type
 #endif
+
 /**
  * Information passed by dl_iterate_phdr() to the callback.
  */
@@ -54,6 +62,7 @@ struct dl_phdr_info {
   const ElfW(Phdr)* _Nullable dlpi_phdr;
   /** Number of program headers pointed to by `dlpi_phdr`. */
   ElfW(Half) dlpi_phnum;
+
   /**
    * The total number of library load events at the time dl_iterate_phdr() was
    * called.
@@ -89,6 +98,7 @@ struct dl_phdr_info {
    */
   void* _Nullable dlpi_tls_data;
 };
+
 /**
  * [dl_iterate_phdr(3)](https://man7.org/linux/man-pages/man3/dl_iterate_phdr.3.html)
  * calls the given callback once for every loaded shared object. The size
@@ -100,10 +110,12 @@ struct dl_phdr_info {
  * Returns the value returned by the final call to the callback.
  */
 int dl_iterate_phdr(int (* _Nonnull __callback)(struct dl_phdr_info* _Nonnull __info, size_t __size, void* _Nullable __data), void* _Nullable __data);
+
 #ifdef __arm__
 typedef uintptr_t _Unwind_Ptr;
 _Unwind_Ptr dl_unwind_find_exidx(_Unwind_Ptr, int* _Nonnull);
 #endif
+
 /** Used by the dynamic linker to communicate with the debugger. */
 struct link_map {
   ElfW(Addr) l_addr;
@@ -112,6 +124,7 @@ struct link_map {
   struct link_map* _Nullable l_next;
   struct link_map* _Nullable l_prev;
 };
+
 /** Used by the dynamic linker to communicate with the debugger. */
 struct r_debug {
   int32_t r_version;
@@ -124,4 +137,5 @@ struct r_debug {
   } r_state;
   ElfW(Addr) r_ldbase;
 };
+
 __END_DECLS

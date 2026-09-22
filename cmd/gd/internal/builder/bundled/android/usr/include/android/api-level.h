@@ -31,16 +31,21 @@
 /**
  * @defgroup apilevels API Levels
  *
- * Defines functions and constants for working with Android API levels.
+ * Defines functions for working with Android API levels.
  * @{
  */
 
 /**
  * @file android/api-level.h
- * @brief Functions and constants for dealing with multiple API levels.
+ * @brief Functions for dealing with multiple API levels.
  *
- * See
- * https://android.googlesource.com/platform/bionic/+/main/docs/defines.md.
+ * See also
+ * https://developer.android.com/ndk/guides/using-newer-apis
+ * for more tutorial information on dealing with multiple API levels.
+ *
+ * See also
+ * https://android.googlesource.com/platform/bionic/+/main/docs/defines.md
+ * for when to use which `#define` when writing portable code.
  */
 
 #include <sys/cdefs.h>
@@ -96,82 +101,64 @@ __BEGIN_DECLS
 #define __ANDROID_API__ __ANDROID_API_FUTURE__
 #endif
 
-/** Names the Gingerbread API level (9), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 9. Prefer numeric API levels in new code. */
 #define __ANDROID_API_G__ 9
 
-/** Names the Ice-Cream Sandwich API level (14), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 14. Prefer numeric API levels in new code. */
 #define __ANDROID_API_I__ 14
 
-/** Names the Jellybean API level (16), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 16. Prefer numeric API levels in new code. */
 #define __ANDROID_API_J__ 16
 
-/** Names the Jellybean MR1 API level (17), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 17. Prefer numeric API levels in new code. */
 #define __ANDROID_API_J_MR1__ 17
 
-/** Names the Jellybean MR2 API level (18), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 18. Prefer numeric API levels in new code. */
 #define __ANDROID_API_J_MR2__ 18
 
-/** Names the KitKat API level (19), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 19. Prefer numeric API levels in new code. */
 #define __ANDROID_API_K__ 19
 
-/** Names the Lollipop API level (21), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 21. Prefer numeric API levels in new code. */
 #define __ANDROID_API_L__ 21
 
-/** Names the Lollipop MR1 API level (22), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 22. Prefer numeric API levels in new code. */
 #define __ANDROID_API_L_MR1__ 22
 
-/** Names the Marshmallow API level (23), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 23. Prefer numeric API levels in new code. */
 #define __ANDROID_API_M__ 23
 
-/** Names the Nougat API level (24), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 24. Prefer numeric API levels in new code. */
 #define __ANDROID_API_N__ 24
 
-/** Names the Nougat MR1 API level (25), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 25. Prefer numeric API levels in new code. */
 #define __ANDROID_API_N_MR1__ 25
 
-/** Names the Oreo API level (26), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 26. Prefer numeric API levels in new code. */
 #define __ANDROID_API_O__ 26
 
-/** Names the Oreo MR1 API level (27), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 27. Prefer numeric API levels in new code. */
 #define __ANDROID_API_O_MR1__ 27
 
-/** Names the Pie API level (28), for comparison against `__ANDROID_API__`. */
+/** Deprecated name for API level 28. Prefer numeric API levels in new code. */
 #define __ANDROID_API_P__ 28
 
-/**
- * Names the Android 10 (aka "Q" or "Quince Tart") API level (29), for
- * comparison against `__ANDROID_API__`.
- */
+/** Deprecated name for API level 29. Prefer numeric API levels in new code. */
 #define __ANDROID_API_Q__ 29
 
-/**
- * Names the Android 11 (aka "R" or "Red Velvet Cake") API level (30), for
- * comparison against `__ANDROID_API__`.
- */
+/** Deprecated name for API level 30. Prefer numeric API levels in new code. */
 #define __ANDROID_API_R__ 30
 
-/**
- * Names the Android 12 (aka "S" or "Snowcone") API level (31), for
- * comparison against `__ANDROID_API__`.
- */
+/** Deprecated name for API level 31. Prefer numeric API levels in new code. */
 #define __ANDROID_API_S__ 31
 
-/**
- * Names the Android 13 (aka "T" or "Tiramisu") API level (33), for
- * comparison against `__ANDROID_API__`.
- */
+/** Deprecated name for API level 33. Prefer numeric API levels in new code. */
 #define __ANDROID_API_T__ 33
 
-/**
- * Names the Android 14 (aka "U" or "UpsideDownCake") API level (34),
- * for comparison against `__ANDROID_API__`.
- */
+/** Deprecated name for API level 34. Prefer numeric API levels in new code. */
 #define __ANDROID_API_U__ 34
 
-/**
- * Names the Android 15 (aka "V" or "VanillaIceCream") API level (35),
- * for comparison against `__ANDROID_API__`.
- */
+/** Deprecated name for API level 35. Prefer numeric API levels in new code. */
 #define __ANDROID_API_V__ 35
 
 /* This file is included in <features.h>, and might be used from .S files. */
@@ -189,7 +176,6 @@ __BEGIN_DECLS
  *
  * Available since API level 24.
  */
-
 #if __BIONIC_AVAILABILITY_GUARD(24)
 int android_get_application_target_sdk_version() __INTRODUCED_IN(24);
 #endif /* __BIONIC_AVAILABILITY_GUARD(24) */
@@ -210,6 +196,8 @@ int android_get_application_target_sdk_version() __INTRODUCED_IN(24);
  * and is equivalent to the Java `Build.VERSION.SDK_INT` API.
  *
  * See also android_get_application_target_sdk_version().
+ *
+ * Available since API level 29.
  */
 int android_get_device_api_level() __INTRODUCED_IN(29);
 

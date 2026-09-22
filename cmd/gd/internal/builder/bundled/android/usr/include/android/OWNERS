@@ -1,0 +1,13 @@
+per-file input.h,keycodes.h = file:platform/frameworks/base:/INPUT_OWNERS
+
+# Window manager
+per-file surface_control_input_receiver.h = file:platform/frameworks/base:/services/core/java/com/android/server/wm/OWNERS
+per-file input_transfer_token.h = file:platform/frameworks/base:/services/core/java/com/android/server/wm/OWNERS
+
+# CoGS
+per-file *luts* = file:platform/frameworks/base:/graphics/java/android/graphics/OWNERS
+
+# ADPF
+per-file performance_hint.h = file:platform/frameworks/base:/ADPF_OWNERS
+per-file system_health.h = file:platform/frameworks/base:/ADPF_OWNERS
+per-file thermal.h = file:platform/frameworks/base:/ADPF_OWNERS

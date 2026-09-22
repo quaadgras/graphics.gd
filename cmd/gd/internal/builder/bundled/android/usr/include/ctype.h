@@ -73,9 +73,35 @@ __BEGIN_DECLS
 /** Internal implementation detail. Do not use. */
 extern const char* _ctype_;
 
+/**
+ * Returns the corresponding lower-case character if `ch` is upper-case, or undefined otherwise.
+ *
+ * Prefer tolower() instead.
+ */
+__BIONIC_CTYPE_INLINE int _tolower(int __ch) {
+  return __ch | 0x20;
+}
+
+/**
+ * Returns the corresponding upper-case character if `ch` is lower-case, or undefined otherwise.
+ *
+ * Prefer toupper() instead.
+ */
+__BIONIC_CTYPE_INLINE int _toupper(int __ch) {
+  // Using EOR rather than AND makes no difference on arm, but saves an
+  // instruction on arm64.
+  return __ch ^ 0x20;
+}
+
+/** Internal implementation detail. Do not use. */
+__attribute__((__no_sanitize__("unsigned-integer-overflow")))
+__BIONIC_CTYPE_INLINE int __bionic_ctype_in_range(unsigned __lo, int __ch, unsigned __hi) {
+  return (__BIONIC_CAST(static_cast, unsigned, __ch) - __lo) < (__hi - __lo + 1);
+}
+
 /** Returns true if `ch` is in `[A-Za-z]`. */
 __BIONIC_CTYPE_INLINE int isalpha(int __ch) {
-  return (__ch >= 'A' && __ch <= 'Z') || (__ch >= 'a' && __ch <= 'z');
+  return __bionic_ctype_in_range('a', _tolower(__ch), 'z');
 }
 
 /** Returns true if `ch` is a space or tab. */
@@ -90,37 +116,37 @@ __BIONIC_CTYPE_INLINE int iscntrl(int __ch) {
 
 /** Returns true if `ch` is in `[0-9]`. */
 __BIONIC_CTYPE_INLINE int isdigit(int __ch) {
-  return (__ch >= '0' && __ch <= '9');
+  return __bionic_ctype_in_range('0', __ch, '9');
 }
 
 /** Returns true if `ch` is `[A-Za-z0-9]` or punctuation. */
 __BIONIC_CTYPE_INLINE int isgraph(int __ch) {
-  return (__ch >= '!' && __ch <= '~');
+  return __bionic_ctype_in_range('!', __ch, '~');
 }
 
 /** Returns true if `ch` is in `[a-z]`. */
 __BIONIC_CTYPE_INLINE int islower(int __ch) {
-  return (__ch >= 'a' && __ch <= 'z');
+  return __bionic_ctype_in_range('a', __ch, 'z');
 }
 
 /** Returns true if `ch` is `[A-Za-z0-9]` or punctuation or space. */
 __BIONIC_CTYPE_INLINE int isprint(int __ch) {
-  return (__ch >= ' ' && __ch <= '~');
+  return __bionic_ctype_in_range(' ', __ch, '~');
 }
 
 /** Returns true if `ch` is in `[ \f\n\r\t\v]`. */
 __BIONIC_CTYPE_INLINE int isspace(int __ch) {
-  return __ch == ' ' || (__ch >= '\t' && __ch <= '\r');
+  return __ch == ' ' || __bionic_ctype_in_range('\t', __ch, '\r');
 }
 
 /** Returns true if `ch` is in `[A-Z]`. */
 __BIONIC_CTYPE_INLINE int isupper(int __ch) {
-  return (__ch >= 'A' && __ch <= 'Z');
+  return __bionic_ctype_in_range('A', __ch, 'Z');
 }
 
 /** Returns true if `ch` is in `[0-9A-Fa-f]`. */
 __BIONIC_CTYPE_INLINE int isxdigit(int __ch) {
-  return (__ch >= '0' && __ch <= '9') || (__ch >= 'a' && __ch <= 'f') || (__ch >= 'A' && __ch <= 'F');
+  return isdigit(__ch) || __bionic_ctype_in_range('a', _tolower(__ch), 'f') ;
 }
 
 /** Returns true if `ch` is in `[A-Za-z0-9]`. */
@@ -133,36 +159,14 @@ __BIONIC_CTYPE_INLINE int ispunct(int __ch) {
   return isgraph(__ch) && !isalnum(__ch);
 }
 
-/**
- * Returns the corresponding lower-case character if `ch` is upper-case, or undefined otherwise.
- *
- * Prefer tolower() instead.
- */
-__BIONIC_CTYPE_INLINE int _tolower(int __ch) {
-  return __ch | 0x20;
-}
-
 /** Returns the corresponding lower-case character if `ch` is upper-case, or `ch` otherwise. */
 __BIONIC_CTYPE_INLINE int tolower(int __ch) {
-  if (__ch >= 'A' && __ch <= 'Z') return _tolower(__ch);
-  return __ch;
-}
-
-/**
- * Returns the corresponding upper-case character if `ch` is lower-case, or undefined otherwise.
- *
- * Prefer toupper() instead.
- */
-__BIONIC_CTYPE_INLINE int _toupper(int __ch) {
-  // Using EOR rather than AND makes no difference on arm, but saves an
-  // instruction on arm64.
-  return __ch ^ 0x20;
+  return (__bionic_ctype_in_range('A', __ch, 'Z')) ? _tolower(__ch) : __ch;
 }
 
 /** Returns the corresponding upper-case character if `ch` is lower-case, or `ch` otherwise. */
 __BIONIC_CTYPE_INLINE int toupper(int __ch) {
-  if (__ch >= 'a' && __ch <= 'z') return _toupper(__ch);
-  return __ch;
+  return (__bionic_ctype_in_range('a', __ch, 'z')) ? _toupper(__ch) : __ch;
 }
 
 /** Returns true if `ch` is less than 0x80. */
