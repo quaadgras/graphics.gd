@@ -18,6 +18,7 @@ import (
 
 	"github.com/mdp/qrterminal/v3"
 
+	"graphics.gd/cmd/gd/internal/gdpaths"
 	"graphics.gd/cmd/gd/internal/project"
 	"graphics.gd/cmd/gd/internal/tooling"
 
@@ -116,11 +117,7 @@ func (IOS) Build(args ...string) error {
 	if !project.IncludesGo {
 		return nil
 	}
-	GDPATH := os.Getenv("GDPATH")
-	if GDPATH == "" {
-		GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
-	}
-	ZIG_INCLUDES := filepath.Join(GDPATH, "bin", "lib", "libc", "include", "any-macos-any")
+	ZIG_INCLUDES := filepath.Join(gdpaths.Bin, "lib", "libc", "include", "any-macos-any")
 	switch GOARCH {
 	case "arm64":
 		// CC is consumed only by go build's cgo — the iOS export no longer
@@ -204,11 +201,6 @@ func (ios IOS) BuildMain(args ...string) error {
 	// Copy the new go.xcframework
 	if err := project.CopyDir(filepath.Join(project.GraphicsDirectory, "go.xcframework"), filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name, "dylibs", "go.xcframework")); err != nil {
 		return xray.New(err)
-	}
-
-	GDPATH := os.Getenv("GDPATH")
-	if GDPATH == "" {
-		GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
 	}
 
 	apple_name := project.AppleSafePackageName(project.Name)

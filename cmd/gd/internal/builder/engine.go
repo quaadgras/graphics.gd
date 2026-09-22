@@ -240,13 +240,24 @@ func (custom engine) scons(src string, env []string, args ...string) error {
 	return scons(src, env, append(args, custom.Options...)...)
 }
 
+// scons_site is the SCons site file every engine build is given, which
+// lets a build configure on a host its build system does not expect.
+//
+//go:embed bundled/scons
+var scons_site embed.FS
+
 // scons runs the engine's build system inside of src.
 func scons(src string, env []string, args ...string) error {
 	name, prefix, python, err := tooling.SCons()
 	if err != nil {
 		return err
 	}
-	cmd := exec.Command(name, append(prefix, append(args, "-j"+strconv.Itoa(runtime.NumCPU()))...)...)
+	site := filepath.Join(gdpaths.Lib, "scons", "site_scons")
+	if err := project.SetupFiles(scons_site, "bundled/scons", site); err != nil {
+		return err
+	}
+	args = append(args, "--site-dir="+site, "-j"+strconv.Itoa(runtime.NumCPU()))
+	cmd := exec.Command(name, append(prefix, args...)...)
 	cmd.Dir = src
 	cmd.Env = append(append(os.Environ(), python...), env...)
 	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr

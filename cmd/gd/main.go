@@ -31,6 +31,12 @@ import (
 )
 
 func main() {
+	// clang builds for Apple platforms against whatever SDKROOT names, on
+	// any other host that can only be some other platform's SDK (Swift's
+	// Windows toolchain sets it machine-wide), never the one gd bundles.
+	if runtime.GOOS != "darwin" {
+		os.Unsetenv("SDKROOT")
+	}
 	shim.Run() // gd doubles as the compilers of the SDKs an engine build expects.
 	/*if info, ok := debug.ReadBuildInfo(); ok && info.Main.Version != "(devel)" && info.Main.Version != "" {
 	if dir, goModPath, ok := findProjectGoMod(); ok {
