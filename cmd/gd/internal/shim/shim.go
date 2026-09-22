@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"runtime"
@@ -32,6 +33,10 @@ type Config struct {
 
 	// Targets are keyed by zig target triple (without any version).
 	Targets map[string]Target `json:"targets"`
+
+	// Default target, for builds that never name one (a linux build expects
+	// the compiler on its PATH to know what it is for).
+	Default string `json:"default,omitempty"`
 
 	// Swift is an Objective-C source file that swift-frontend compiles
 	// in place of whatever Swift it has been asked to, zig has no Swift.
@@ -118,7 +123,16 @@ func Run() {
 	if !ok {
 		return
 	}
-	data, err := os.ReadFile(filepath.Join(filepath.Dir(os.Args[0]), ConfigName))
+	// The config sits beside the link gd was started through, which is the
+	// name alone when a build found it on the PATH (os.Executable would
+	// follow the link to gd itself).
+	link := os.Args[0]
+	if !strings.ContainsRune(link, os.PathSeparator) {
+		if found, err := exec.LookPath(link); err == nil {
+			link = found
+		}
+	}
+	data, err := os.ReadFile(filepath.Join(filepath.Dir(link), ConfigName))
 	if err != nil {
 		return
 	}
@@ -248,6 +262,10 @@ func compiler(args, original []string, config Config) ([]string, Target) {
 		var zig string
 		zig, key = apple(arch, platform, version, simulator)
 		args = append(args, "-target", zig)
+	}
+	if key == "" && config.Default != "" {
+		key = config.Default
+		args = append(args, "-target", key)
 	}
 	target := config.Targets[key]
 	for _, arg := range rest {

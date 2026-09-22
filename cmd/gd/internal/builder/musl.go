@@ -249,7 +249,11 @@ func (musl Musl) BuildMain(args ...string) error {
 	}
 	var err error
 	musl.out = filepath.Join(project.GraphicsDirectory, ".godot", "godot.musl.template_release."+arch)
-	musl.lib, err = tooling.LibGodot.LookupPlatform("musl", GOARCH)
+	if custom, ok := customEngine(); ok {
+		musl.lib, err = custom.linux(GOARCH)
+	} else {
+		musl.lib, err = tooling.LibGodot.LookupPlatform("musl", GOARCH)
+	}
 	if err != nil {
 		return xray.New(err)
 	}
@@ -266,9 +270,21 @@ func (musl Musl) BuildMain(args ...string) error {
 		return xray.New(err)
 	}
 	defer restoreExtensions()
+	// The preset exports into releases/musl (which a GOOS=linux build in
+	// libgodot mode does not create) and Godot exits 0 when an export
+	// fails, so the result is checked for.
+	exportPath := filepath.Join(project.ReleasesDirectory, "musl", GOARCH, project.Name)
+	if err := os.MkdirAll(filepath.Dir(exportPath), 0755); err != nil {
+		return xray.New(err)
+	}
+	os.Remove(exportPath)
 	if err := tooling.Godot.Exec(export...); err != nil {
 		return xray.New(err)
 	}
+	if _, err := os.Stat(exportPath); err != nil {
+		return fmt.Errorf("gd: the export of preset %q did not produce %s", "Musl "+arch, exportPath)
+	}
+	fmt.Println("gd: exported", exportPath)
 	return nil
 }
 

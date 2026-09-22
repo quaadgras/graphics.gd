@@ -44,6 +44,9 @@ func (Windows) Build(args ...string) error {
 }
 
 func (windows Windows) BuildMain(args ...string) error {
+	if BuildMode() == "libgodot" {
+		return buildModeError("windows")
+	}
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch

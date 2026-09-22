@@ -83,6 +83,11 @@ func (Linux) Build(args ...string) error {
 }
 
 func (linux Linux) BuildMain(args ...string) error {
+	if BuildMode() == "libgodot" {
+		// one executable, the Go program with the engine linked in, which
+		// the musl build has always been.
+		return Musl{}.BuildMain(args...)
+	}
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch

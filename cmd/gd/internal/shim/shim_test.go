@@ -38,6 +38,11 @@ func TestCompiler(t *testing.T) {
 			[]string{"-target", "aarch64-ios.14.0", "-c", "-Icore", "-isysroot", "/sdk", "-g0", "-isystem", "/sdk/usr/include", "-iframework", "/sdk/Frameworks"}, ""},
 	} {
 		got, target := compiler(nil, test.args, config)
+		if test.name == "other targets" {
+			if defaulted, _ := compiler(nil, []string{"-c"}, Config{Default: "x86_64-linux-musl"}); !slices.Equal(defaulted, []string{"-target", "x86_64-linux-musl", "-c", "-g0"}) {
+				t.Errorf("default target: %q", defaulted)
+			}
+		}
 		if !slices.Equal(got, test.want) {
 			t.Errorf("%s:\n got %q\nwant %q", test.name, got, test.want)
 		}

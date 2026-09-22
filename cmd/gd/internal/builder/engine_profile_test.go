@@ -91,6 +91,16 @@ func TestCustomEngine(t *testing.T) {
 	if _, ok := customEngine(); ok {
 		t.Error("an engine was configured without a [gd] section")
 	}
+	if mode := BuildMode(); mode != "c-shared" {
+		t.Errorf("default build mode %q", mode)
+	}
+	write("[gd]\n\nbuild/mode=\"libgodot\"\n")
+	if mode := BuildMode(); mode != "libgodot" {
+		t.Errorf("build mode %q", mode)
+	}
+	if _, ok := customEngine(); ok {
+		t.Error("the build mode alone configured an engine")
+	}
 	write("[application]\nconfig/name=\"x\"\n\n[gd]\n\nengine/repository=\"../godot\"\nengine/ref=\"stencil\"\nengine/strip_unused_classes=true\nengine/classes=\"Label, Sprite2D\"\nengine/options=\"optimize=size  lto=full\"\n")
 	custom, ok := customEngine()
 	if !ok {

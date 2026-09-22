@@ -47,14 +47,34 @@ type engine struct {
 	Options            []string // for scons, last so that they take precedence.
 }
 
-// customEngine returns the engine configured for the project, if any.
-func customEngine() (engine, bool) {
-	var custom engine
+// BuildMode of the project, configured in the [gd] section of its
+// project.godot:
+//
+//	[gd]
+//
+//	build/mode="libgodot"
+//
+// In the default mode ("c-shared") the Go code is built as a shared
+// library that the engine loads as an extension, and exports are the
+// stock engine (or the custom one) with that library alongside. In
+// libgodot mode the Go program is the entry point, with the engine linked
+// into it as a library: exports are one executable, which is what the
+// musl builds have always been, so that is what a linux export becomes.
+func BuildMode() string {
+	if mode := gdSettings()["build/mode"]; mode != "" {
+		return mode
+	}
+	return "c-shared"
+}
+
+// gdSettings returns the [gd] section of the project's project.godot.
+func gdSettings() map[string]string {
+	settings := map[string]string{}
 	data, err := os.ReadFile(filepath.Join(project.GraphicsDirectory, "project.godot"))
 	if err != nil {
-		return custom, false
+		return settings
 	}
-	section, configured := "", false
+	section := ""
 	for line := range strings.SplitSeq(string(data), "\n") {
 		line = strings.TrimSpace(line)
 		if strings.HasPrefix(line, "[") {
@@ -72,6 +92,16 @@ func customEngine() (engine, bool) {
 		if unquoted, err := strconv.Unquote(value); err == nil {
 			value = unquoted
 		}
+		settings[key] = value
+	}
+	return settings
+}
+
+// customEngine returns the engine configured for the project, if any.
+func customEngine() (engine, bool) {
+	var custom engine
+	configured := false
+	for key, value := range gdSettings() {
 		switch key {
 		case "engine/repository":
 			custom.Repository = value
