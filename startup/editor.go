@@ -35,10 +35,10 @@ func editorSetup() {
 			settings.SetSetting("export/android/java_sdk_path", GDPATH)
 		}
 	}
-	// work around godot bug on windows
+	// work around godot bug on windows, the default is not a native path.
 	android_sdk_path, _ := settings.GetSetting("export/android/android_sdk_path").(string)
 	if runtime.GOOS == "windows" && android_sdk_path == os.Getenv("LOCALAPPDATA")+"/Android/Sdk" {
-		settings.SetSetting("export/android/java_sdk_path", filepath.Join(os.Getenv("LOCALAPPDATA"), "Android", "Sdk"))
+		settings.SetSetting("export/android/android_sdk_path", filepath.Join(os.Getenv("LOCALAPPDATA"), "Android", "Sdk"))
 	}
 }
 

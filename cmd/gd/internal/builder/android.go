@@ -31,6 +31,7 @@ import (
 	"graphics.gd/cmd/gd/internal/cryptic/certloader"
 	"graphics.gd/cmd/gd/internal/cryptic/signjar"
 	"graphics.gd/cmd/gd/internal/cryptic/zipslicer"
+	"graphics.gd/cmd/gd/internal/gdpaths"
 	"graphics.gd/cmd/gd/internal/project"
 	"graphics.gd/cmd/gd/internal/tooling"
 
@@ -788,6 +789,12 @@ func (android Android) BuildMain(...string) error {
 	if err := os.WriteFile(filepath.Join(GDPATH, "bin", "java"+exe), []byte("java stub"), 0755); err != nil {
 		return xray.New(err)
 	}
+	// A headless export never runs the editor plugin that points the
+	// editor at the stub, on a host whose editor has never been opened
+	// it would refuse to export.
+	if err := ensureExportEditorSettings(); err != nil {
+		return xray.New(err)
+	}
 	presetName, exportPath, err := pickAndroidPreset(GOARCH)
 	if err != nil {
 		return xray.New(err)
@@ -1160,16 +1167,16 @@ func (android Android) exportOnDevice(args ...string) (apkPath string, signed bo
 	return apkPath, true, nil
 }
 
-// ensureExportEditorSettings seeds the static musl editor's settings with the
+// ensureExportEditorSettings seeds the exporting editor's settings with the
 // faux java SDK path: godot refuses android exports without a valid one
-// ("A valid Java SDK path is required in Editor Settings"). On desktops the
-// startup editorSetup plugin fills it in, but that runs on the first editor
-// frame, which a headless --export invocation never reaches — and on-device
-// the plain `gd` flow opens the editor APK, whose settings are a different
+// ("A valid Java SDK path is required in Editor Settings"). The startup
+// editorSetup plugin fills it in, but that runs on the first editor frame,
+// which a headless --export invocation never reaches — and on-device the
+// plain `gd` flow opens the editor APK, whose settings are a different
 // store entirely, so the musl editor's settings start empty. The path points
-// at GDPATH, whose bin/java stub setupHostExportTools has already written —
-// the same layout editorSetup configures. A value the user has set themselves
-// is left alone.
+// at GDPATH, whose bin/java stub has already been written — the same layout
+// editorSetup configures. A value the user has set themselves is left
+// alone, unless the export would reject it anyway.
 func ensureExportEditorSettings() error {
 	HOME, err := os.UserHomeDir()
 	if err != nil {
@@ -1179,19 +1186,13 @@ func ensureExportEditorSettings() error {
 	if GDPATH == "" {
 		GDPATH = filepath.Join(HOME, "gd")
 	}
-	config := os.Getenv("XDG_CONFIG_HOME")
-	if config == "" {
-		config = filepath.Join(HOME, ".config")
+	// the musl editor is always the gd-pinned build.
+	path, ok := gdpaths.EditorSettings(tooling.Godot.Version)
+	if !ok {
+		return nil
 	}
-	// Godot names the settings file after the minor version, e.g.
-	// editor_settings-4.7.tres; the musl editor is always the gd-pinned build.
-	minor := tooling.Godot.Version
-	if parts := strings.SplitN(minor, ".", 3); len(parts) >= 2 {
-		minor = parts[0] + "." + parts[1]
-	}
-	path := filepath.Join(config, "godot", "editor_settings-"+minor+".tres")
 	const key = "export/android/java_sdk_path"
-	line := key + ` = "` + GDPATH + `"`
+	line := key + ` = "` + strings.ReplaceAll(GDPATH, `\`, `\\`) + `"`
 	data, err := os.ReadFile(path)
 	if os.IsNotExist(err) {
 		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
@@ -1204,12 +1205,15 @@ func ensureExportEditorSettings() error {
 	}
 	// The editor persists its full defaults on shutdown, so the key is
 	// usually already present — as the invalid empty string, which must be
-	// replaced. Only a non-empty value counts as user-set.
+	// replaced. Only a value that the export would accept (its bin
+	// directory has a java) counts as user-set.
 	lines := strings.Split(string(data), "\n")
 	for i, l := range lines {
 		if strings.HasPrefix(strings.TrimSpace(l), key) {
-			if strings.TrimSpace(l) != key+` = ""` {
-				return nil
+			if value, err := strconv.Unquote(strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(l), key+" ="))); err == nil && value != "" {
+				if _, err := os.Stat(filepath.Join(value, "bin", "java"+exeSuffix())); err == nil {
+					return nil
+				}
 			}
 			lines[i] = line
 			return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
@@ -1222,6 +1226,14 @@ func ensureExportEditorSettings() error {
 		text = strings.TrimRight(string(data), "\n") + "\n" + line + "\n"
 	}
 	return os.WriteFile(path, []byte(text), 0644)
+}
+
+// exeSuffix of executables on the host.
+func exeSuffix() string {
+	if runtime.GOOS == "windows" {
+		return ".exe"
+	}
+	return ""
 }
 
 // runOnDevice exports, installs and launches the project on the device gd
