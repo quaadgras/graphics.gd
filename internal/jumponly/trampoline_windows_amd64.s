@@ -1,4 +1,4 @@
-//go:build go1.26 && windows
+//go:build go1.26 && windows && amd64
 
 #include "textflag.h"
 
