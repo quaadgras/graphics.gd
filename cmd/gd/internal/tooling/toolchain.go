@@ -77,7 +77,10 @@ func (exe toolchain) PathToCommand() string {
 	if exe.Path == "" {
 		panic("toolchain.PathToCommand: toolchain not yet looked up")
 	}
-	if exe.IsApp && runtime.GOOS == "darwin" {
+	// A tool found on $PATH is already the binary inside the bundle
+	// (ie. Godot.app/Contents/MacOS/godot), so only descend into the
+	// bundle when the path is the .app itself.
+	if exe.IsApp && runtime.GOOS == "darwin" && strings.HasSuffix(exe.Path, ".app") {
 		return filepath.Join(exe.Path, "Contents", "MacOS", exe.Name)
 	}
 	return exe.Path
@@ -325,9 +328,6 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 			version, _ := exec.Command(path, exe.VersionFlags...).CombinedOutput()
 			if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) || (exe.Version == "" && exe.VersionPrefix == "") {
 				exe.Path = path
-				if exe.IsApp {
-					exe.IsApp = false
-				}
 				return exe.PathToCommand(), nil
 			}
 		}
