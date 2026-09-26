@@ -556,10 +556,14 @@ func ObjectSet(o gdreference.Object, name StringName, value Variant) {
 }
 
 func ObjectGetMeta(o gdreference.Object, name StringName) Variant {
-	var ret = noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_meta, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
-		Name gdextension.StringName
+	// get_meta takes a default too, returned when there is no such entry:
+	// left out, the engine read whatever followed the name as a Variant
+	// and crashed on a name it did not have. A zero Variant is null.
+	var ret = noescape.Call[gdextension.Variant](gdreference.GetObject(o), object_methods.get_meta, gdextension.SizeVariant|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
+		Name    gdextension.StringName
+		Default gdextension.Variant
 	}{
-		pointers.Get(name),
+		pointers.Get(name), gdextension.Variant{},
 	}))
 	runtime.KeepAlive(o.Anchor())
 	runtime.KeepAlive(name)
@@ -575,6 +579,17 @@ func ObjectSetMeta(o gdreference.Object, name StringName, value Variant) {
 	runtime.KeepAlive(o.Anchor())
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(value)
+}
+
+func ObjectHasMeta(o gdreference.Object, name StringName) bool {
+	var ret = noescape.Call[bool](gdreference.GetObject(o), object_methods.has_meta, gdextension.SizeBool|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
+		Name gdextension.StringName
+	}{
+		pointers.Get(name),
+	}))
+	runtime.KeepAlive(o.Anchor())
+	runtime.KeepAlive(name)
+	return ret
 }
 
 func ObjectHasMethod(o gdreference.Object, name StringName) bool {

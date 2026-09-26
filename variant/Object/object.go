@@ -306,6 +306,14 @@ func (obj Instance) SetMeta(property string, value any) { //gd:Object.set_meta
 	gd.ObjectSetMeta(obj.AsObject()[0], gd.NewStringName(property), gd.NewVariant(value))
 }
 
+// Returns true if a metadata entry is found with the given name.
+//
+// Note: A metadata's name must be a valid identifier as per
+// [String.IsValidIdentifier] method.
+func (obj Instance) HasMeta(name string) bool { //gd:Object.has_meta
+	return gd.ObjectHasMeta(obj.AsObject()[0], gd.NewStringName(name))
+}
+
 // Returns the object's metadata value for the given entry name. If the entry does
 // not exist, returns default. If default is null, an error is also generated.
 //
