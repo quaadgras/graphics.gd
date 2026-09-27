@@ -122,10 +122,11 @@ func Scales(scale Vector3.XYZ) XYZ { //gd:Basis.from_scale
 
 // Outer returns the outer product with with.
 func Outer(v, with Vector3.XYZ) XYZ { //gd:Vector3.outer
+	// Element (i, j) is v[i]*with[j], so column j is v scaled by with[j].
 	return XYZ{
-		Vector3.XYZ{v.X * with.X, v.X * with.Y, v.X * with.Z},
-		Vector3.XYZ{v.Y * with.X, v.Y * with.Y, v.Y * with.Z},
-		Vector3.XYZ{v.Z * with.X, v.Z * with.Y, v.Z * with.Z},
+		Vector3.MulX(v, with.X),
+		Vector3.MulX(v, with.Y),
+		Vector3.MulX(v, with.Z),
 	}
 }
 
@@ -206,7 +207,7 @@ func RotatesAxisAngle(axis Vector3.XYZ, angle Angle.Radians) XYZ { //gd:Basis(Ve
 // If use_model_front is true, the +Z axis (asset front) is treated as forward (implies +X is left) and points toward the
 // target position. By default, the -Z axis (camera forward) is treated as forward (implies +X is right).
 func LookingAt(target, up Vector3.XYZ) XYZ { //gd:Basis.looking_at
-	vZ := Vector3.Normalized(target)                // Z column points to target
+	vZ := Vector3.Neg(Vector3.Normalized(target))   // -Z (forward) points to target
 	vX := Vector3.Normalized(Vector3.Cross(up, vZ)) // X column perpendicular
 	vY := Vector3.Cross(vZ, vX)                     // Y column completes the basis
 	return XYZ{X: vX, Y: vY, Z: vZ}
@@ -594,17 +595,17 @@ func Slerp[X Float.Any](a, b XYZ, weight X) XYZ { //gd:Basis.slerp
 
 // TransposedDotX returns the transposed dot product with the X axis of the matrix.
 func TransposedDotX(b XYZ, v Vector3.XYZ) Float.X { //gd:Basis.tdotx
-	return b.X.X*v.X + b.Y.X*v.Y + b.Z.X*v.Z
+	return Vector3.Dot(b.X, v)
 }
 
 // TransposedDotY returns the transposed dot product with the Y axis of the matrix.
 func TransposedDotY(b XYZ, v Vector3.XYZ) Float.X { //gd:Basis.tdoty
-	return b.X.Y*v.X + b.Y.Y*v.Y + b.Z.Y*v.Z
+	return Vector3.Dot(b.Y, v)
 }
 
 // TransposedDotZ returns the transposed dot product with the Z axis of the matrix.
 func TransposedDotZ(b XYZ, v Vector3.XYZ) Float.X { //gd:Basis.tdotz
-	return b.X.Z*v.X + b.Y.Z*v.Y + b.Z.Z*v.Z
+	return Vector3.Dot(b.Z, v)
 }
 
 // Transposed returns the transposed version of the matrix.
@@ -643,6 +644,10 @@ func AsQuaternion(b XYZ) quaternion { //gd:Basis.get_rotation_quaternion
 		// Ensure that the determinant is 1, such that result is a proper rotation matrix which can be represented by Euler angles.
 		m = Scaled(m, Vector3.New(-1, -1, -1))
 	}
+	// The extraction below is written against the matrix rows (as in
+	// Godot's Basis::get_quaternion), whereas X, Y and Z are the columns;
+	// read untransposed it gives the inverse rotation.
+	m = Transposed(m)
 	var (
 		trace = m.X.X + m.Y.Y + m.Z.Z
 		temp  [4]Float.X
@@ -694,8 +699,8 @@ func qSlerp[X Float.Any](a, b quaternion, weight X) quaternion {
 		cosom, sinom, scale0, scale1 Float.X
 		omega                        Angle.Radians
 	)
-	cosom = qLengthSquared(b) // calc cosine
-	if cosom < 0.0 {          // adjust signs (if necessary)
+	cosom = a.I*b.I + a.J*b.J + a.K*b.K + a.X*b.X // calc cosine
+	if cosom < 0.0 {                              // adjust signs (if necessary)
 		cosom = -cosom
 		to1 = qNeg(b)
 	} else {
@@ -735,10 +740,10 @@ func qAsBasis(q quaternion) XYZ {
 	var wx, wy, wz = q.X * xs, q.X * ys, q.X * zs
 	var xx, xy, xz = q.I * xs, q.I * ys, q.I * zs
 	var yy, yz, zz = q.J * ys, q.J * zs, q.K * zs
-	return XYZ{
-		X: Vector3.New(1.0-(yy+zz), xy-wz, xz+wy),
-		Y: Vector3.New(xy+wz, 1.0-(xx+zz), yz-wx),
-		Z: Vector3.New(xz-wy, yz+wx, 1.0-(xx+yy)),
+	return XYZ{ // columns
+		X: Vector3.New(1.0-(yy+zz), xy+wz, xz-wy),
+		Y: Vector3.New(xy-wz, 1.0-(xx+zz), yz+wx),
+		Z: Vector3.New(xz+wy, yz-wx, 1.0-(xx+yy)),
 	}
 }
 

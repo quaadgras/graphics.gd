@@ -133,7 +133,7 @@ func IsFinite(t BasisOrigin) bool { //gd:Transform3D.is_finite
 // If use_model_front is true, the +Z axis (asset front) is treated as forward (implies +X is left) and points toward the target
 // position. By default, the -Z axis (camera forward) is treated as forward (implies +X is right).
 func LookingAt(t BasisOrigin, target, up Vector3.XYZ) BasisOrigin { //gd:Transform3D.looking_at
-	t.Basis = Basis.LookingAt(target, up)
+	t.Basis = Basis.LookingAt(Vector3.Sub(target, t.Origin), up)
 	return t
 }
 

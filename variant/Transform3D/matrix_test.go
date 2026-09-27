@@ -159,3 +159,18 @@ func TestTransformAABB_NegativeScale(t *testing.T) {
 		t.Errorf("Negative scale (mirror) failed. Expected %+v, got %+v", expected, result)
 	}
 }
+
+// TestLookingAt checks the forward axis (-Z) points from the transform's
+// origin at the target, not along the target taken as a direction.
+func TestLookingAt(t *testing.T) {
+	at := Transform3D.BasisOrigin{Basis: Basis.Identity, Origin: Vector3.New(1, 2, 3)}
+	target := Vector3.New(4, 2, -1)
+	looking := Transform3D.LookingAt(at, target, Vector3.Up)
+	want := Vector3.Normalized(Vector3.Sub(target, at.Origin))
+	if got := Basis.Transform(Vector3.Forward, looking.Basis); Vector3.Distance(got, want) > 1e-4 {
+		t.Fatalf("LookingAt from %v to %v faces %v, want %v", at.Origin, target, got, want)
+	}
+	if looking.Origin != at.Origin {
+		t.Fatalf("LookingAt moved the origin to %v", looking.Origin)
+	}
+}

@@ -8,6 +8,7 @@ import (
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Euler"
+	"graphics.gd/variant/Quaternion"
 	"graphics.gd/variant/Vector3"
 )
 
@@ -69,5 +70,109 @@ func TestEulerRoundTrip(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+// rotations is a spread of unit quaternions to check conversions with,
+// including half turns (where a transposed matrix is its own inverse and
+// hides the mistake) and rotations about every axis.
+func rotations() []Quaternion.IJKX {
+	var qs []Quaternion.IJKX
+	for _, axis := range []Vector3.XYZ{Vector3.Right, Vector3.Up, Vector3.Back, Vector3.Normalized(Vector3.New(1, 2, -3)), Vector3.Normalized(Vector3.New(-0.4, 0.1, 0.9))} {
+		for _, angle := range []Angle.Radians{0.3, -1.2, Angle.Pi / 2, -Angle.Pi / 2, 2.8, Angle.Pi} {
+			s, c := Angle.Sin(angle/2), Angle.Cos(angle/2)
+			qs = append(qs, Quaternion.IJKX{I: axis.X * s, J: axis.Y * s, K: axis.Z * s, X: c})
+		}
+	}
+	return qs
+}
+
+func near(a, b Vector3.XYZ) bool { return Vector3.Distance(a, b) < 1e-4 }
+
+// TestQuaternionConversions checks that a quaternion and its basis turn
+// vectors the same way in both directions: AsQuaternion and AsBasis used
+// to read and write the matrix transposed, giving the inverse rotation.
+func TestQuaternionConversions(t *testing.T) {
+	probes := []Vector3.XYZ{Vector3.Right, Vector3.Up, Vector3.Back, Vector3.New(0.3, -2, 1.5)}
+	for _, q := range rotations() {
+		b := Quaternion.AsBasis(q)
+		scaled := Basis.RotatesScales(q, Vector3.New(1, 1, 1))
+		back := Basis.AsQuaternion(b)
+		axisAngle := Basis.RotatesAxisAngle(Vector3.Normalized(Vector3.New(q.I, q.J, q.K)), Quaternion.AngleInRadians(q))
+		for _, v := range probes {
+			want := Quaternion.Rotate(v, q)
+			if got := Basis.Transform(v, b); !near(got, want) {
+				t.Fatalf("Quaternion.AsBasis(%v) turns %v to %v, the quaternion to %v", q, v, got, want)
+			}
+			if got := Basis.Transform(v, scaled); !near(got, want) {
+				t.Fatalf("Basis.RotatesScales(%v) turns %v to %v, the quaternion to %v", q, v, got, want)
+			}
+			if got := Quaternion.Rotate(v, back); !near(got, want) {
+				t.Fatalf("Basis.AsQuaternion(%v) turns %v to %v, the basis to %v", b, v, got, want)
+			}
+			if got := Basis.Transform(v, axisAngle); !near(got, want) {
+				t.Fatalf("Basis.RotatesAxisAngle for %v turns %v to %v, the quaternion to %v", q, v, got, want)
+			}
+		}
+		// Scale must not leak into the rotation.
+		if got := Quaternion.Rotate(Vector3.Up, Basis.AsQuaternion(Basis.ScaledLocal(b, Vector3.New(2, 3, 0.5)))); !near(got, Quaternion.Rotate(Vector3.Up, q)) {
+			t.Fatalf("Basis.AsQuaternion of a scaled %v turns up to %v", q, got)
+		}
+		// And the Euler angles of the quaternion are those of its basis.
+		e := Quaternion.EulerRadians(Angle.OrderYXZ, q)
+		if got, want := Basis.Transform(Vector3.Back, Basis.FromEuler(e, Angle.OrderYXZ)), Quaternion.Rotate(Vector3.Back, q); !near(got, want) {
+			t.Fatalf("Quaternion.EulerRadians(%v) = %v turns back to %v, want %v", q, e, got, want)
+		}
+	}
+}
+
+// TestSlerp checks Basis.Slerp lands on the rotation part way between.
+func TestSlerp(t *testing.T) {
+	from := Basis.RotatesAxisAngle(Vector3.Up, 0.2)
+	to := Basis.RotatesAxisAngle(Vector3.Up, 1.4)
+	for _, w := range []float64{0, 0.25, 0.5, 1} {
+		want := Basis.Transform(Vector3.Right, Basis.RotatesAxisAngle(Vector3.Up, Angle.Radians(0.2+1.2*w)))
+		if got := Basis.Transform(Vector3.Right, Basis.Slerp(from, to, w)); !near(got, want) {
+			t.Fatalf("Slerp weight %v turns right to %v, want %v", w, got, want)
+		}
+	}
+}
+
+// TestOuter checks the outer product is v times with transposed: column
+// j is v scaled by with's j-th component.
+func TestOuter(t *testing.T) {
+	v, with := Vector3.New(1, 2, 3), Vector3.New(4, 5, 6)
+	got := Basis.Transform(Vector3.New(0.5, -1, 2), Basis.Outer(v, with))
+	want := Vector3.MulX(v, Vector3.Dot(with, Vector3.New(0.5, -1, 2)))
+	if !near(got, want) {
+		t.Fatalf("Outer(%v, %v) maps to %v, want %v", v, with, got, want)
+	}
+}
+
+// TestTransposedDot checks tdotx/y/z are the dot products with the
+// basis's columns, i.e. the transpose applied to the vector.
+func TestTransposedDot(t *testing.T) {
+	b := Basis.Mul(Basis.RotatesAxisAngle(Vector3.Normalized(Vector3.New(1, 2, 3)), 0.7), Basis.Scales(Vector3.New(1, 2, 3)))
+	v := Vector3.New(0.3, -1, 2)
+	want := Basis.Transform(v, Basis.Transposed(b))
+	got := Vector3.New(Basis.TransposedDotX(b, v), Basis.TransposedDotY(b, v), Basis.TransposedDotZ(b, v))
+	if !near(got, want) {
+		t.Fatalf("TransposedDot of %v = %v, want %v", v, got, want)
+	}
+}
+
+// TestLookingAt checks the forward axis (-Z) points at the target and
+// up stays up.
+func TestLookingAt(t *testing.T) {
+	target := Vector3.New(3, 1, -2)
+	b := Basis.LookingAt(target, Vector3.Up)
+	if got := Basis.Transform(Vector3.Forward, b); !near(got, Vector3.Normalized(target)) {
+		t.Fatalf("LookingAt(%v) points forward along %v", target, got)
+	}
+	if up := Basis.Transform(Vector3.Up, b); up.Y <= 0 || Vector3.Dot(up, target) > 1e-4 {
+		t.Fatalf("LookingAt(%v) has up %v", target, up)
+	}
+	if !Basis.IsOrthonormal(b) || Basis.Determinant(b) < 0.999 {
+		t.Fatalf("LookingAt(%v) is not a rotation: %v", target, b)
 	}
 }

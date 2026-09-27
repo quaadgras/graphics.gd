@@ -370,10 +370,10 @@ func AsBasis(q IJKX) Basis.XYZ { //gd:Basis(Quaternion)
 	var wx, wy, wz = q.X * xs, q.X * ys, q.X * zs
 	var xx, xy, xz = q.I * xs, q.I * ys, q.I * zs
 	var yy, yz, zz = q.J * ys, q.J * zs, q.K * zs
-	return Basis.XYZ{
-		X: Vector3.New(1.0-(yy+zz), xy-wz, xz+wy),
-		Y: Vector3.New(xy+wz, 1.0-(xx+zz), yz-wx),
-		Z: Vector3.New(xz-wy, yz+wx, 1.0-(xx+yy)),
+	return Basis.XYZ{ // columns
+		X: Vector3.New(1.0-(yy+zz), xy+wz, xz-wy),
+		Y: Vector3.New(xy-wz, 1.0-(xx+zz), yz+wx),
+		Z: Vector3.New(xz+wy, yz-wx, 1.0-(xx+yy)),
 	}
 }
 
