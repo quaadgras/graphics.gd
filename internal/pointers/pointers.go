@@ -169,6 +169,16 @@ func Cycle() {
 	for s := range shapesMax {
 		tab := &tables[s]
 		for j := range tab.len.Load() {
+			// A page none of whose entries is waiting on a cycle (all closed,
+			// pinned or never used) is not walked: after a load has come and
+			// gone the tables are hundreds of thousands of closed slots, and
+			// only the few pages the frame touches are worth a look.
+			flag := work[s].Index(j)
+			if !flag.Swap(false) {
+				continue
+			}
+			pending := cycle_pending
+			cycle_pending = false
 			page := tab.Index(j)
 			// births is the page's nursery timestamps; nil when no off-main
 			// allocation ever touched this page (see born).
@@ -287,6 +297,10 @@ func Cycle() {
 					}
 				}
 			}
+			if cycle_pending {
+				flag.Store(true)
+			}
+			cycle_pending = cycle_pending || pending
 		}
 	}
 	last_allocs = mallocs
@@ -324,6 +338,18 @@ const nurseryAge = time.Second
 // timestamp; the only consequence is that such a temporary is freed up to
 // nurseryAge late, so the main allocation path does not pay for a clear.
 var born [shapesMax]atomicSlice[[pageSize]atomic.Int64]
+
+// work flags each page of [tables] that holds an entry [Cycle] has yet to
+// deal with: one active and unpinned (to expire), expired (to free), mid
+// write or in the nursery. It is raised after any of those is published
+// and lowered by the scan that finds the page has none left, so a raise
+// racing the scan only costs the page another look.
+var work [shapesMax]atomicSlice[atomic.Bool]
+
+// needsCycle flags the page of a slot for [Cycle].
+func needsCycle(shape int, slot uint64) {
+	work[shape].Index(slot / pageSize).Store(true)
+}
 
 // nurseryKeep stamps a newborn off-main entry. Called by malloc BEFORE the
 // entry's revision is published: the slot is still revisionLocked, which
@@ -383,6 +409,7 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 				nurseryKeep(len(ptr), idx, time.Now().UnixNano())
 			}
 			arr[addr+offsetRevision].Store(uint64(rev))
+			needsCycle(len(ptr), idx)
 			//
 			// NOTE the below function extraction is somewhat unsafe and
 			// relies on specific assumptions on how static function pointers
@@ -506,6 +533,7 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 			if !arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active())) {
 				continue
 			}
+			needsCycle(len(p.checksum), p.sentinal)
 		}
 		return *(*P)(unsafe.Pointer(&ptrs))
 	}
@@ -536,6 +564,7 @@ func Bad[T Generic[T, P], P Size](ptr T) bool {
 		// Same rescue rule as [Get]: reporting the pointer as good requires
 		// winning the activation CAS against a concurrent [Cycle] condemn.
 		if arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active())) {
+			needsCycle(len(p.checksum), p.sentinal)
 			return false
 		}
 	}
@@ -585,6 +614,7 @@ func Set[T Generic[T, P], P Size](ptr T, val P) {
 				arr[addr+offsetPointers+uint64(i)].Store(uint64(local[i]))
 			}
 			arr[addr+offsetRevision].Store(uint64(rev.active()))
+			needsCycle(len(p.checksum), p.sentinal)
 			return
 		}
 	}
@@ -696,6 +726,7 @@ func Lay[T Generic[T, P], P Size](ptr T) T {
 		if rev != revisionLocked && arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
 			arr[addr+offsetFreeFunc].Store(0)
 			arr[addr+offsetRevision].Store(uint64(rev.active()))
+			needsCycle(len(p.checksum), p.sentinal)
 			return ptr
 		}
 	}
@@ -832,6 +863,7 @@ func Ask[T Generic[T, P], P Size](ptr T) (P, Kind) {
 			if !arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active())) {
 				continue
 			}
+			needsCycle(len(p.checksum), p.sentinal)
 		}
 		switch {
 		case rev.isPinned():
