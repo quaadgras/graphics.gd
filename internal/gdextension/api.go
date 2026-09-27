@@ -5,6 +5,8 @@ import (
 	"structs"
 	"unsafe"
 
+	_ "graphics.gd/internal/bakedenv" // variables gd run baked in on-device
+
 	"graphics.gd/variant/AABB"
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Color"

@@ -48,13 +48,14 @@ type Android struct {
 }
 
 func (android Android) Build(args ...string) error {
-	return android.build(false, args...)
+	return android.build(false, false, args...)
 }
 
 // build compiles the project as an android c-shared library. With testing set it
 // builds a `go test` binary (run on-device under the engine via the FirstFrame
-// hook in startup_cgo.go) instead of the application.
-func (android Android) build(testing bool, args ...string) error {
+// hook in startup_cgo.go) instead of the application. With bake set the
+// shell's own variables are baked into the library (bakedEnvFlags).
+func (android Android) build(testing, bake bool, args ...string) error {
 	var debug_keystore string
 	switch runtime.GOOS {
 	case "linux":
@@ -112,10 +113,14 @@ func (android Android) build(testing bool, args ...string) error {
 		}
 	}
 	out := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("libandroid_%v.so", GOARCH))
-	if testing {
-		return tooling.Go.Action("test", args, append(fastcbFlags("android", ""), "-c", "-ldflags=-checklinkname=0", "-buildmode=c-shared", "-o", out)...)
+	ldflags := "-ldflags=-checklinkname=0"
+	if bake {
+		ldflags += bakedEnvFlags()
 	}
-	return tooling.Go.Action("build", args, append(fastcbFlags("android", ""), "-ldflags=-checklinkname=0", "-buildmode=c-shared", "-o", out)...)
+	if testing {
+		return tooling.Go.Action("test", args, append(fastcbFlags("android", ""), "-c", ldflags, "-buildmode=c-shared", "-o", out)...)
+	}
+	return tooling.Go.Action("build", args, append(fastcbFlags("android", ""), ldflags, "-buildmode=c-shared", "-o", out)...)
 }
 
 // setupHostExportTools prepares everything godot's android export needs on a
@@ -431,7 +436,7 @@ func (android Android) Test(args ...string) error {
 	// on-device anyway, so startup_android.go resets to a clean -test.v
 	// invocation and the whole suite runs (per-test -run/-v passthrough on
 	// android is a follow-up).
-	if err := android.build(true, args...); err != nil {
+	if err := android.build(true, runtime.GOOS == "android", args...); err != nil {
 		return xray.New(err)
 	}
 	GOARCH := "arm64"
@@ -1050,7 +1055,7 @@ func (android Android) packageAab(apkPath string) error {
 // export; the desktop .aab/Play-Store pipeline is skipped because its java
 // tooling (apktool/aapt2/bundletool) does not run on bionic.
 func (android Android) buildMainOnDevice() error {
-	apkPath, signed, err := android.exportOnDevice()
+	apkPath, signed, err := android.exportOnDevice(false)
 	if err != nil {
 		return xray.New(err)
 	}
@@ -1099,9 +1104,10 @@ func setupOnDeviceAabTools() error {
 // exportOnDevice compiles the extension, exports the APK with the static
 // musl editor and debug-signs it. The preset exports the APK unsigned
 // (package/signed=false), so signing happens afterwards when a Termux
-// apksigner is installed; signed reports whether it was.
-func (android Android) exportOnDevice(args ...string) (apkPath string, signed bool, err error) {
-	if err := android.Build(args...); err != nil {
+// apksigner is installed; signed reports whether it was. With bake set the
+// shell's own variables go into the library (bakedEnvFlags), as for gd run.
+func (android Android) exportOnDevice(bake bool, args ...string) (apkPath string, signed bool, err error) {
+	if err := android.build(false, bake, args...); err != nil {
 		return "", false, xray.New(err)
 	}
 	HOME, err := os.UserHomeDir()
@@ -1244,7 +1250,7 @@ func exeSuffix() string {
 // cannot read other apps' logcat (READ_LOGS is a privileged permission), so
 // engine logs need wireless adb from another machine.
 func (android Android) runOnDevice(args ...string) error {
-	apkPath, signed, err := android.exportOnDevice(args...)
+	apkPath, signed, err := android.exportOnDevice(true, args...)
 	if err != nil {
 		return xray.New(err)
 	}
