@@ -78,6 +78,20 @@ func (engine *engineAsSharedLibrary) Scene() {
 		// stale instead, and the replacement module takes over.
 		return
 	}
+	reloadsCleanup()
+}
+
+// reloadsCleanedUp records that the cleanups already ran from the scene
+// level exit callback (the static host tears the engine down while this
+// module is still inside reloads_yield), so Scene must not repeat them
+// against an engine that is gone.
+var reloadsCleanedUp bool
+
+func reloadsCleanup() {
+	if reloadsCleanedUp {
+		return
+	}
+	reloadsCleanedUp = true
 	for _, cleanup := range slices.Backward(gd.Cleanups()) {
 		cleanup()
 	}
@@ -104,8 +118,15 @@ func init() {
 			}
 		},
 		Exit: func(level gdextension.InitializationLevel) {
-			// Cleanup runs at the end of Scene instead: on a module swap
-			// the engine keeps running and never fires exit callbacks.
+			// On a module swap the engine keeps running and never fires
+			// exit callbacks, so cleanup normally runs at the end of
+			// Scene. When the host does forward the scene level exit,
+			// the engine is shutting down underneath this module: clean
+			// up now, after the scene tree is gone and before the engine
+			// is, exactly where a native extension would.
+			if level == 2 {
+				reloadsCleanup()
+			}
 		},
 	}
 	gdextension.On.MainLoop.FirstFrame = func() {

@@ -664,6 +664,16 @@ func reloadsForwardCallbacks() {
 				resume_main()
 			}
 		}
+		if !reloadsCShared && level == 2 {
+			// Static path: the engine is being destroyed from inside
+			// reloads_yield (see reloadsHostYield), so the guest is
+			// still live and runs its cleanups here, after the scene
+			// tree has been finalized. Earlier, and the engine would
+			// call into classes the guest had already unregistered.
+			if g := reloadsGuest.Load(); g != nil {
+				reloadsCall(g.on_engine_exit, []uint64{uint64(level)})
+			}
+		}
 		engineExit(level)
 	}
 	firstFrame := gdextension.On.MainLoop.FirstFrame
@@ -746,6 +756,11 @@ func reloadsHostYield(_ context.Context, m api.Module, stack []uint64) {
 	}
 	if reloadsEngine().Library.Iteration() {
 		reloadsExitCode.Store(reloadsShutdown)
+		// Tear the engine down before handing control back: the guest
+		// must outlive the scene tree (its nodes call into the guest's
+		// classes as they exit), and gets its cleanups in via the scene
+		// level exit callback.
+		reloadsDestroyEngine()
 		stack[0] = reloadsShutdown
 		return
 	}
@@ -1006,8 +1021,16 @@ func reloadsRun() {
 	}
 
 	if !reloadsCShared {
-		if lib := reloadsEngine(); lib.destroy != nil {
-			lib.destroy()
-		}
+		reloadsDestroyEngine()
+	}
+}
+
+// reloadsDestroyEngine destroys the engine instance on the static path, at
+// most once.
+func reloadsDestroyEngine() {
+	lib := reloadsEngine()
+	if destroy := lib.destroy; destroy != nil {
+		lib.destroy = nil
+		destroy()
 	}
 }
