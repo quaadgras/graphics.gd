@@ -1,0 +1,70 @@
+// Copyright 2026 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package noder
+
+import (
+	"internal/pkgbits"
+
+	"cmd/compile/internal/base"
+	"cmd/compile/internal/ir"
+	"cmd/compile/internal/types"
+	"cmd/internal/obj"
+)
+
+// ExtInstInfo is what an imported package recorded about an
+// instantiated generic function whose code it provides: the same
+// information the export data records about an ordinary imported
+// function (see linker.relocFuncExt). See gc/extinst.go.
+type ExtInstInfo struct {
+	ABI      obj.ABI
+	InlKnown bool       // whether the provider analysed the function for inlining
+	Inl      *ir.Inline // nil if it cannot be inlined
+	Notes    []string   // escape analysis tags of the receiver and parameters
+}
+
+var (
+	// ExtInstFunc, if non-nil, returns what an imported package
+	// recorded about the instantiation fn, whose code that package
+	// provides, or nil if fn must be compiled by this package.
+	ExtInstFunc func(fn *ir.Func) *ExtInstInfo
+
+	// ExtInstWrapper, if non-nil, reports whether an imported package
+	// provides the code of the wrapper with the given linker name.
+	ExtInstWrapper func(name string) bool
+)
+
+// importExtInst reports whether an imported package provides the
+// code of the instantiation name, and if so sets it up like an
+// ordinary imported function, whose body is only read in order to
+// inline it (see reader.funcExt).
+func (r *reader) importExtInst(name *ir.Name, method *types.Sym) bool {
+	if ExtInstFunc == nil || name.Sym().Pkg == types.LocalPkg {
+		return false
+	}
+	fn := name.Func
+	info := ExtInstFunc(fn)
+	if info == nil {
+		return false
+	}
+
+	name.Defn = nil
+	importBodyReader[name.Sym()] = pkgReaderIndex{r.p, r.Reloc(pkgbits.SectionBody), r.dict, method, nil}
+
+	fn.ABI = info.ABI
+	for i, f := range name.Type().RecvParams() {
+		f.Note = info.Notes[i]
+	}
+	if info.Inl != nil {
+		inl := *info.Inl
+		fn.Inl = &inl
+	}
+	return true
+}
+
+// extInstWrapper reports whether an imported package provides the
+// code of the wrapper sym, so that this package need not generate it.
+func extInstWrapper(sym *types.Sym) bool {
+	return ExtInstWrapper != nil && !base.Ctxt.Flag_linkshared && ExtInstWrapper(sym.Pkg.Prefix+"."+sym.Name)
+}

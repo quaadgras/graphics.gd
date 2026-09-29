@@ -1,0 +1,366 @@
+// Copyright 2026 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package gc
+
+import (
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
+
+	"cmd/compile/internal/base"
+	"cmd/compile/internal/ir"
+	"cmd/compile/internal/noder"
+	"cmd/compile/internal/typecheck"
+	"cmd/internal/bio"
+	"cmd/internal/obj"
+)
+
+// Experiment: -d=skipextinst (see golang.org/issue/56718).
+//
+// Generic instantiations are DUPOK symbols: every package that uses
+// Foo[int] compiles its own copy and the linker throws away all but
+// one. On instantiation-heavy dependency graphs most of the compiler's
+// work is spent on functions that a dependency already compiled.
+//
+// With -d=skipextinst, each compile appends a "__.GDINST" member to
+// its output archive. It lists, one per line, the linker names of the
+// instantiation text symbols that are present in this package's
+// object file or in one of its (transitive) dependencies, each with
+// what the export data would record for an imported function: its
+// ABI, the escape analysis tags of its parameters and its inlining
+// cost. The linker ignores the member (short name, no .o extension).
+//
+// Importing compiles read those members for their DIRECT imports.
+//
+//   - At -d=skipextinst=1 they skip code generation for any function
+//     on the union of the lists: the linker resolves the symbol from
+//     the dependency that emitted it.
+//
+//   - At -d=skipextinst=3 they also stop compiling those functions in
+//     the first place: an instantiation on a list is treated exactly
+//     like a function imported from another package. Its body is not
+//     read, analysed or compiled; callers use the recorded escape tags,
+//     and the body is only read at call sites that inline it. Method
+//     wrappers on the lists are not generated either.
+//
+// Levels 2 and 4 are 1 and 3 with a diagnostic for each skip.
+//
+// Only directly imported packages are consulted. The importcfg can
+// carry packagefile entries beyond the import graph (e.g. for a
+// test-variant build, cmd/go lists the plain variant of the package
+// under test); those files are neither hashed into this action's
+// cache key nor guaranteed to be in the final link, so a claim from
+// one of them is worthless — and trusting it is unsound.
+
+const gdinstMember = "__.GDINST"
+
+// gdinstVersion is the first line of a __.GDINST member that records
+// function information; members without it list names only.
+const gdinstVersion = "gdinst v2"
+
+// An extInstEntry is what the direct imports claim about one
+// instantiation symbol.
+type extInstEntry struct {
+	from string // archive the claim came from (first, for diagnostics)
+
+	// info is what the providing package recorded about the function,
+	// or nil if nothing usable was: the claim has no information (it
+	// is a wrapper, or came from an older member), or two imports
+	// recorded different information. Code generation can still be
+	// skipped, but the function must be analysed locally.
+	info *noder.ExtInstInfo
+
+	// line is the encoded information, for comparing claims and for
+	// passing the claim on to importers of this package.
+	line string
+}
+
+var (
+	extInstAvailMap map[string]*extInstEntry
+
+	// extInstSkipped lists the instantiations this compile relied on
+	// an import for, in the order they were skipped.
+	extInstSkipped     []string
+	extInstSkippedSeen = map[string]bool{}
+)
+
+func init() {
+	noder.ExtInstFunc = func(fn *ir.Func) *noder.ExtInstInfo {
+		if base.Debug.SkipExtInst < 3 {
+			return nil
+		}
+		name := extInstName(fn)
+		e := extInstAvail()[name]
+		if e == nil || e.info == nil {
+			return nil
+		}
+		if len(e.info.Notes) != fn.Type().NumRecvs()+fn.Type().NumParams() {
+			return nil
+		}
+		// Without the provider's inlining analysis (it was compiled
+		// with -l), a compile that inlines must analyse the body itself.
+		if base.Flag.LowerL != 0 && !e.info.InlKnown {
+			return nil
+		}
+		extInstSkip(name)
+		if base.Debug.SkipExtInst == 4 {
+			base.WarnfAt(fn.Pos(), "skipextinst: importing %v (from %s)", fn, e.from)
+		}
+		return e.info
+	}
+	noder.ExtInstWrapper = func(name string) bool {
+		if base.Debug.SkipExtInst < 3 || extInstAvail()[name] == nil {
+			return false
+		}
+		extInstSkip(name)
+		return true
+	}
+}
+
+// extInstName returns the linker name of fn's text symbol, or "" if
+// fn is not an instantiation that another package could provide.
+func extInstName(fn *ir.Func) string {
+	s := fn.Sym()
+	if s == nil || s.Linkname != "" || !strings.Contains(s.Name, "[") || base.Ctxt.Flag_linkshared {
+		return ""
+	}
+	return s.Pkg.Prefix + "." + s.Name
+}
+
+func extInstSkip(name string) {
+	if !extInstSkippedSeen[name] {
+		extInstSkippedSeen[name] = true
+		extInstSkipped = append(extInstSkipped, name)
+	}
+}
+
+// extInstAvail returns the set of instantiation symbols known to be
+// available from this compile's direct imports, loading it on first
+// use.
+func extInstAvail() map[string]*extInstEntry {
+	if extInstAvailMap != nil {
+		return extInstAvailMap
+	}
+	m := make(map[string]*extInstEntry)
+	if base.Flag.Cfg.PackageFile != nil {
+		for _, p := range typecheck.Target.Imports {
+			if file, ok := base.Flag.Cfg.PackageFile[p.Path]; ok {
+				readExtInst(file, m)
+			}
+		}
+	}
+	extInstAvailMap = m
+	return m
+}
+
+// readExtInst scans the archive at file for a __.GDINST member and
+// merges its claims into m. Errors are ignored: a missing or
+// unreadable member just means nothing can be skipped on its account.
+func readExtInst(file string, m map[string]*extInstEntry) {
+	f, err := os.Open(file)
+	if err != nil {
+		return
+	}
+	defer f.Close()
+
+	var magic [8]byte
+	if _, err := io.ReadFull(f, magic[:]); err != nil || string(magic[:]) != "!<arch>\n" {
+		return
+	}
+	off := int64(8)
+	var hdr [60]byte
+	for {
+		if _, err := f.ReadAt(hdr[:], off); err != nil {
+			return
+		}
+		name := strings.TrimRight(string(hdr[0:16]), " ")
+		size, err := strconv.ParseInt(strings.TrimSpace(string(hdr[48:58])), 10, 64)
+		if err != nil {
+			return
+		}
+		if name == gdinstMember {
+			data := make([]byte, size)
+			if _, err := io.ReadFull(io.NewSectionReader(f, off+60, size), data); err != nil {
+				return
+			}
+			lines := strings.Split(string(data), "\n")
+			versioned := len(lines) > 0 && lines[0] == gdinstVersion
+			if versioned {
+				lines = lines[1:]
+			}
+			for _, line := range lines {
+				if line == "" {
+					continue
+				}
+				sym, rest, _ := strings.Cut(line, "\t")
+				if !versioned {
+					rest = ""
+				}
+				mergeExtInst(m, sym, rest, file)
+			}
+			return
+		}
+		off += 60 + size + size&1
+	}
+}
+
+// mergeExtInst records one import's claim about sym. Claims are merged
+// the same way whatever order the imports are read in: any
+// disagreement about the function's information leaves none.
+func mergeExtInst(m map[string]*extInstEntry, sym, line, from string) {
+	e := m[sym]
+	if e == nil {
+		e = &extInstEntry{from: from, line: line}
+		if line != "" {
+			info, err := decodeExtInst(line)
+			if err == nil {
+				e.info = info
+			} else {
+				e.line = ""
+			}
+		}
+		m[sym] = e
+		return
+	}
+	if e.line != line {
+		e.info = nil
+		e.line = ""
+	}
+}
+
+// encodeExtInst encodes what the export data would record about fn,
+// were it an ordinary imported function (see noder's linker.funcExt).
+func encodeExtInst(fn *ir.Func) string {
+	var b strings.Builder
+	fmt.Fprintf(&b, "%d\t", fn.ABI)
+	if base.Flag.LowerL != 0 {
+		b.WriteString("L\t")
+	} else {
+		b.WriteString("-\t")
+	}
+	if inl := fn.Inl; inl != nil {
+		fmt.Fprintf(&b, "%d,%t\t%s", inl.Cost, inl.CanDelayResults, strconv.Quote(inl.Properties))
+	} else {
+		b.WriteString("-\t\"\"")
+	}
+	for _, f := range fn.Type().RecvParams() {
+		b.WriteString("\t")
+		b.WriteString(strconv.Quote(f.Note))
+	}
+	return b.String()
+}
+
+func decodeExtInst(line string) (*noder.ExtInstInfo, error) {
+	f := strings.Split(line, "\t")
+	if len(f) < 4 {
+		return nil, fmt.Errorf("short line")
+	}
+	abi, err := strconv.ParseUint(f[0], 10, 8)
+	if err != nil {
+		return nil, err
+	}
+	info := &noder.ExtInstInfo{ABI: obj.ABI(abi), InlKnown: f[1] == "L"}
+	if f[2] != "-" {
+		costStr, delayStr, ok := strings.Cut(f[2], ",")
+		if !ok {
+			return nil, fmt.Errorf("bad inline field")
+		}
+		cost, err := strconv.ParseInt(costStr, 10, 32)
+		if err != nil {
+			return nil, err
+		}
+		delay, err := strconv.ParseBool(delayStr)
+		if err != nil {
+			return nil, err
+		}
+		props, err := strconv.Unquote(f[3])
+		if err != nil {
+			return nil, err
+		}
+		info.Inl = &ir.Inline{Cost: int32(cost), CanDelayResults: delay, Properties: props}
+	}
+	for _, q := range f[4:] {
+		note, err := strconv.Unquote(q)
+		if err != nil {
+			return nil, err
+		}
+		info.Notes = append(info.Notes, note)
+	}
+	return info, nil
+}
+
+// skipExtInstFunc reports whether an imported package provides the
+// code for fn, so that it need not be compiled.
+func skipExtInstFunc(fn *ir.Func) bool {
+	if base.Debug.SkipExtInst == 0 || len(fn.Body) == 0 {
+		return false
+	}
+	name := extInstName(fn)
+	if name == "" {
+		return false
+	}
+	e := extInstAvail()[name]
+	if e == nil {
+		return false
+	}
+	extInstSkip(name)
+	if base.Debug.SkipExtInst == 2 || base.Debug.SkipExtInst == 4 {
+		base.WarnfAt(fn.Pos(), "skipextinst: skipping %v (from %s)", fn, e.from)
+	}
+	return true
+}
+
+// dumpExtInstMember appends the __.GDINST member to a compiler
+// object archive.
+func dumpExtInstMember(bout *bio.Writer, mode int) {
+	if mode&modeCompilerObj == 0 || base.Debug.SkipExtInst == 0 {
+		return
+	}
+	start := startArchiveEntry(bout)
+	dumpExtInst(bout)
+	finishArchiveEntry(bout, start, gdinstMember)
+}
+
+// dumpExtInst writes the __.GDINST member body: every instantiation
+// text symbol this package emitted, with its information, plus every
+// one it relied on a direct import for, with that import's claim
+// (availability so propagates to importers, whose links always
+// include this package's dep closure).
+func dumpExtInst(bout *bio.Writer) {
+	local := make(map[string]*ir.Func)
+	for _, fn := range typecheck.Target.Funcs {
+		if name := extInstName(fn); name != "" {
+			local[name] = fn
+		}
+	}
+	bout.WriteString(gdinstVersion)
+	bout.WriteString("\n")
+	seen := make(map[string]bool)
+	for _, s := range base.Ctxt.Text {
+		if strings.Contains(s.Name, "[") && !seen[s.Name] {
+			seen[s.Name] = true
+			bout.WriteString(s.Name)
+			if fn := local[s.Name]; fn != nil {
+				bout.WriteString("\t")
+				bout.WriteString(encodeExtInst(fn))
+			}
+			bout.WriteString("\n")
+		}
+	}
+	avail := extInstAvail()
+	for _, name := range extInstSkipped {
+		if !seen[name] {
+			seen[name] = true
+			bout.WriteString(name)
+			if e := avail[name]; e != nil && e.line != "" {
+				bout.WriteString("\t")
+				bout.WriteString(e.line)
+			}
+			bout.WriteString("\n")
+		}
+	}
+}

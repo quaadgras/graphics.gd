@@ -214,6 +214,9 @@ func gd(args ...string) error {
 	if GOARCH != "amd64" && GOARCH != "arm64" && GOARCH != "wasm" {
 		return errors.New("gd requires an amd64, wasm, or arm64 GOARCH")
 	}
+	// Compile with a copy of the Go compiler that shares generic
+	// instantiations between packages (see builder/dedup.go).
+	builder.EnableDedup()
 	// Hot reloading is the default development experience: the editor
 	// flow (plain `gd`, no arguments) builds the project with the
 	// reloads tag, so code changes swap in live. This covers the
