@@ -21,8 +21,6 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	"graphics.gd/classdb/EditorInterface"
-	"graphics.gd/classdb/EditorPlugin"
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/MainLoop"
 	"graphics.gd/classdb/Node"
@@ -209,17 +207,7 @@ func Register[T Class](exports ...any) {
 		if embedded_name == "Singleton" {
 			rename = "GoSingleton" + rename
 		}
-		var tool = editorOnly
-		switch super.(type) {
-		case interface{ AsScript() Script.Instance },
-			interface {
-				AsEditorPlugin() EditorPlugin.Instance
-			},
-			interface {
-				AsScriptLanguage() ScriptLanguage.Instance
-			}:
-			tool = true
-		}
+		var tool = editorOnly || runsInEditor(super)
 		var isMainLoop bool
 		switch super.(type) {
 		case interface{ AsMainLoop() MainLoop.Instance }:
@@ -355,8 +343,7 @@ func Register[T Class](exports ...any) {
 			registrator.OnRegister()
 		}
 		if Engine.IsEditorHint() {
-			switch super.(type) {
-			case EditorPlugin.Any:
+			if isEditorPlugin(super) {
 				gdextension.Host.Editor.AddPlugin(pointers.Get(className))
 			}
 		}
@@ -389,17 +376,7 @@ func Register[T Class](exports ...any) {
 		}
 	}
 
-	var deferToEditor = editorOnly
-	switch super.(type) {
-	case interface{ AsScript() Script.Instance },
-		interface {
-			AsEditorPlugin() EditorPlugin.Instance
-		},
-		interface {
-			AsScriptLanguage() ScriptLanguage.Instance
-		}:
-		deferToEditor = true
-	}
+	var deferToEditor = editorOnly || runsInEditor(super)
 	if deferToEditor {
 		if gd.LinkedEditor {
 			maybeDefer(register)
@@ -1431,7 +1408,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		Node.Advanced(class.AsNode()).SetName(String.Name(String.New(field.Name)))
 		Node.Advanced(parent).AddChild(class.AsNode(), true, mode)
 		if Engine.IsEditorHint() {
-			Node.Advanced(class.AsNode()).SetOwner(EditorInterface.GetEditedSceneRoot())
+			Node.Advanced(class.AsNode()).SetOwner(editedSceneRoot())
 		}
 		return
 	}
@@ -1489,6 +1466,36 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	Node.Advanced(node).ReplaceBy(class.AsNode(), true)
 	Node.Advanced(node).QueueFree()
 	if Engine.IsEditorHint() {
-		Node.Advanced(class.AsNode()).SetOwner(EditorInterface.GetEditedSceneRoot())
+		Node.Advanced(class.AsNode()).SetOwner(editedSceneRoot())
 	}
+}
+
+// isEditorPlugin reports whether super is an EditorPlugin (or extends one). It
+// is answered from the method set, rather than by asserting to EditorPlugin.Any,
+// so that classdb does not import the editor classes into every program.
+func isEditorPlugin(super any) bool {
+	_, ok := reflect.TypeOf(super).MethodByName("AsEditorPlugin")
+	return ok
+}
+
+// runsInEditor reports whether classes extending super must run inside the editor.
+func runsInEditor(super any) bool {
+	switch super.(type) {
+	case interface{ AsScript() Script.Instance },
+		interface {
+			AsScriptLanguage() ScriptLanguage.Instance
+		}:
+		return true
+	}
+	return isEditorPlugin(super)
+}
+
+// editedSceneRoot returns EditorInterface.GetEditedSceneRoot(), called by name.
+func editedSceneRoot() Node.Instance {
+	root, _ := Object.Call(Engine.GetSingleton("EditorInterface"), "get_edited_scene_root").(Object.Any)
+	if root == nil {
+		return Node.Nil
+	}
+	node, _ := Object.As[Node.Instance](root)
+	return node
 }

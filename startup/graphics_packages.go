@@ -4,7 +4,6 @@ import (
 	"os"
 	"testing"
 
-	"graphics.gd/classdb/EditorInterface"
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/ProjectSettings"
 	"graphics.gd/classdb/SceneTree"
@@ -56,14 +55,14 @@ func init() {
 			// change during the debounce window restarts it, so a burst of
 			// imports triggers a single regeneration.
 			var pending int
-			filesystem := EditorInterface.GetResourceFilesystem()
-			if !Object.InstanceIsValid(filesystem) {
+			filesystem := editorSingleton("get_resource_filesystem")
+			if filesystem == Object.Nil || !Object.InstanceIsValid(filesystem) {
 				// Headless editor modes (--import, exports) can run with the
 				// editor hint set but no EditorInterface singletons behind
 				// it: connecting to a null object segfaults in the engine.
 				return
 			}
-			filesystem.OnFilesystemChanged(func() {
+			filesystem.Connect("filesystem_changed", func() {
 				pending++
 				generation := pending
 				tree, ok := Object.As[SceneTree.Instance](Engine.GetMainLoop())
