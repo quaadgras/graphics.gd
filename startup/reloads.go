@@ -449,6 +449,13 @@ func reloadsAdoptInstances() {
 			stale = append(stale, pending{id, info})
 		}
 	}
+	// Drop every stale entry before adopting: the new module mints its
+	// instance ids from 1 again, so an adopted instance's new id can equal
+	// the old id of a stale entry still waiting in this loop, and deleting
+	// that entry afterwards would untrack the instance just adopted.
+	for _, p := range stale {
+		delete(reloadsInstances, p.id)
+	}
 	for _, p := range stale {
 		token, ok := reloadsClassToken(p.info.class)
 		if !ok {
@@ -459,7 +466,6 @@ func reloadsAdoptInstances() {
 			fmt.Fprintln(os.Stderr, "graphics.gd: failed to adopt instance of", p.info.class+":", err)
 			continue
 		}
-		delete(reloadsInstances, p.id)
 		if newID := stack[0]; newID != 0 {
 			reloadsInstances[newID] = reloadsInstanceInfo{obj: p.info.obj, class: p.info.class, epoch: current}
 		}
