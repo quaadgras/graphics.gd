@@ -23,6 +23,7 @@ import (
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/internal/ring"
 	"graphics.gd/internal/threadcheck"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
@@ -137,6 +138,11 @@ func init() {
 	}
 	gdextension.On.MainLoop.EveryFrame = func() {
 		Callable.Cycle()
+		// Nothing drains the guest's ring at callback returns (natively
+		// gd.c does), so flush buffered calls once a frame, as the native
+		// EveryFrame does: otherwise a QueueRedraw from Process waits for
+		// the next value-returning call or a full ring (256 calls).
+		ring.Main.Flush()
 		pointers.Cycle()
 	}
 	gdextension.On.MainLoop.FinalFrame = func() {}
