@@ -72,7 +72,7 @@ var tools = map[string]string{
 	"ranlib":         "ranlib",
 	"libtool":        "libtool",
 	"swift-frontend": "swift-frontend",
-	"windres":        "windres",
+	"windres":        "rc",
 	"dlltool":        "dlltool",
 }
 
@@ -174,7 +174,13 @@ func Run() {
 	case "libtool":
 		// Apple's libtool, of which only `-static -o` is ever asked for.
 		fatal(execute(config.LLVM, append([]string{config.LLVM, "libtool-darwin"}, os.Args[1:]...), env))
-	case "windres", "dlltool":
+	case "rc":
+		args, err := windres([]string{config.Zig, "rc"}, os.Args[1:], config)
+		if err != nil {
+			fatal(err)
+		}
+		fatal(execute(config.Zig, args, env))
+	case "dlltool":
 		fatal(execute(config.LLVM, append([]string{config.LLVM, tool}, os.Args[1:]...), env))
 	default:
 		fatal(execute(config.Zig, append([]string{config.Zig, tool}, os.Args[1:]...), env))
@@ -329,6 +335,119 @@ func swift(args, original []string, config Config) ([]string, Target) {
 	target := config.Targets[key]
 	args = append(args, "-target", zig, "-fobjc-arc", "-fblocks", "-fvisibility=hidden", "-O2", "-g0", "-c", config.Swift, "-o", output)
 	return append(args, target.flags()...), target
+}
+
+// windres translates a GNU windres invocation into zig rc, which brings a
+// preprocessor of its own (llvm's windres has to find a clang to run) and
+// writes the COFF object windres would.
+func windres(args, original []string, config Config) ([]string, error) {
+	var (
+		input, output             string
+		inputFormat, outputFormat string
+		options, positional       []string
+		target                    = resourceTarget(config.Default)
+	)
+	// value of the option at original[*i], which windres accepts as
+	// "-I dir", "-Idir", "--include-dir dir" or "--include-dir=dir".
+	value := func(i *int, short, long string) (string, bool) {
+		arg := original[*i]
+		switch {
+		case arg == short || arg == long:
+			if *i+1 < len(original) {
+				*i++
+				return original[*i], true
+			}
+		case strings.HasPrefix(arg, long+"="):
+			return strings.TrimPrefix(arg, long+"="), true
+		case short != "" && strings.HasPrefix(arg, short) && !strings.HasPrefix(arg, "--"):
+			return strings.TrimPrefix(arg, short), true
+		}
+		return "", false
+	}
+	for i := 0; i < len(original); i++ {
+		if v, ok := value(&i, "-i", "--input"); ok {
+			input = v
+		} else if v, ok := value(&i, "-o", "--output"); ok {
+			output = v
+		} else if v, ok := value(&i, "-I", "--include-dir"); ok {
+			options = append(options, "/i", v)
+		} else if v, ok := value(&i, "-D", "--define"); ok {
+			options = append(options, "/d", v)
+		} else if v, ok := value(&i, "-U", "--undefine"); ok {
+			options = append(options, "/u", v)
+		} else if v, ok := value(&i, "-F", "--target"); ok {
+			target = resourceTarget(v)
+		} else if v, ok := value(&i, "-J", "--input-format"); ok {
+			inputFormat = v
+		} else if v, ok := value(&i, "-O", "--output-format"); ok {
+			outputFormat = v
+		} else if v, ok := value(&i, "-c", "--codepage"); ok {
+			options = append(options, "/c", v)
+		} else if v, ok := value(&i, "-l", "--language"); ok {
+			options = append(options, "/l", strings.TrimPrefix(v, "0x"))
+		} else if _, ok := value(&i, "", "--preprocessor"); ok {
+			// zig rc preprocesses by itself.
+		} else if _, ok := value(&i, "", "--preprocessor-arg"); ok {
+		} else {
+			switch arg := original[i]; {
+			case arg == "-v" || arg == "--verbose":
+				options = append(options, "/v")
+			case arg == "--use-temp-file" || arg == "--no-use-temp-file":
+			case strings.HasPrefix(arg, "-"):
+				return nil, fmt.Errorf("windres option %q is not supported", arg)
+			default:
+				positional = append(positional, arg)
+			}
+		}
+	}
+	if input == "" && len(positional) > 0 {
+		input, positional = positional[0], positional[1:]
+	}
+	if output == "" && len(positional) > 0 {
+		output, positional = positional[0], positional[1:]
+	}
+	if input == "" || output == "" || len(positional) > 0 {
+		return nil, fmt.Errorf("windres needs one input file and one output file")
+	}
+	if inputFormat == "" {
+		inputFormat = "rc"
+		if strings.EqualFold(filepath.Ext(input), ".res") {
+			inputFormat = "res"
+		}
+	}
+	if outputFormat == "" {
+		outputFormat = "coff"
+		if strings.EqualFold(filepath.Ext(output), ".res") {
+			outputFormat = "res"
+		}
+	}
+	if (inputFormat != "rc" && inputFormat != "res") || (outputFormat != "coff" && outputFormat != "res") {
+		return nil, fmt.Errorf("windres from %s to %s is not supported", inputFormat, outputFormat)
+	}
+	// The MinGW headers are the ones the rest of the build uses, whatever
+	// the host has installed (or set $INCLUDE to).
+	args = append(args, "/x", "/:auto-includes", "gnu", "/:target", target,
+		"/:input-format", inputFormat, "/:output-format", outputFormat)
+	args = append(args, options...)
+	// an absolute path (on unix) looks like an option to zig rc.
+	return append(args, "/fo", output, "--", input), nil
+}
+
+// resourceTarget returns the zig rc name of a windres target (pe-x86-64),
+// or the architecture of a triple (aarch64-w64-mingw32).
+func resourceTarget(windres string) string {
+	arch, _, _ := strings.Cut(strings.TrimPrefix(windres, "pe-"), "-")
+	switch {
+	case windres == "pe-x86-64" || arch == "x86_64" || arch == "amd64":
+		return "x86_64"
+	case arch == "i386" || arch == "i686" || arch == "x86":
+		return "x86"
+	case arch == "aarch64" || arch == "arm64":
+		return "aarch64"
+	case strings.HasPrefix(arch, "arm") || arch == "bigarm":
+		return "arm"
+	}
+	return "x86_64"
 }
 
 func contains(dirs []string, dir string) bool {

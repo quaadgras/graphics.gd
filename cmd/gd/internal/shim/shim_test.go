@@ -68,3 +68,44 @@ func TestSwift(t *testing.T) {
 		t.Errorf("simulator: %q %q", zig, key)
 	}
 }
+
+func TestWindres(t *testing.T) {
+	config := Config{Default: "aarch64-windows-gnu"}
+	for _, test := range []struct {
+		name string
+		args []string
+		want []string
+	}{
+		{"scons", []string{"-D_WIN32_WINNT=0x0A00", "-DNDEBUG", "--include-dir", ".", "--include-dir", "platform/windows",
+			"--target=pe-x86-64", "-i", "platform/windows/godot_res.rc", "-o", "/src/bin/godot_res.o"},
+			[]string{"/x", "/:auto-includes", "gnu", "/:target", "x86_64", "/:input-format", "rc", "/:output-format", "coff",
+				"/d", "_WIN32_WINNT=0x0A00", "/d", "NDEBUG", "/i", ".", "/i", "platform/windows",
+				"/fo", "/src/bin/godot_res.o", "--", "platform/windows/godot_res.rc"}},
+		{"option forms", []string{"-Icore", "--define=A=1", "-F", "pe-i386", "--output=a.o", "--input=/a.rc"},
+			[]string{"/x", "/:auto-includes", "gnu", "/:target", "x86", "/:input-format", "rc", "/:output-format", "coff",
+				"/i", "core", "/d", "A=1", "/fo", "a.o", "--", "/a.rc"}},
+		{"positional, default target", []string{"--preprocessor=clang -E", "a.res", "a.o"},
+			[]string{"/x", "/:auto-includes", "gnu", "/:target", "aarch64", "/:input-format", "res", "/:output-format", "coff",
+				"/fo", "a.o", "--", "a.res"}},
+	} {
+		got, err := windres(nil, test.args, config)
+		if err != nil {
+			t.Errorf("%s: %v", test.name, err)
+			continue
+		}
+		if !slices.Equal(got, test.want) {
+			t.Errorf("%s:\n got %q\nwant %q", test.name, got, test.want)
+		}
+	}
+	for _, args := range [][]string{{"-i", "a.rc"}, {"--unknown", "a.rc", "a.o"}, {"-O", "rc", "a.res", "a.rc"}} {
+		if _, err := windres(nil, args, config); err == nil {
+			t.Errorf("%q: expected an error", args)
+		}
+	}
+	for windres, zig := range map[string]string{"pe-x86-64": "x86_64", "pe-i386": "x86", "pe-aarch64-little": "aarch64",
+		"aarch64-w64-mingw32": "aarch64", "armv7-w64-mingw32": "arm", "pe-arm-little": "arm", "": "x86_64"} {
+		if got := resourceTarget(windres); got != zig {
+			t.Errorf("resourceTarget(%q) = %q, want %q", windres, got, zig)
+		}
+	}
+}
