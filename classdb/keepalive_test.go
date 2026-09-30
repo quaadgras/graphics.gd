@@ -103,3 +103,32 @@ func TestKeepAlive_ValueTypedBody(t *testing.T) {
 	val := reflect.New(reflect.TypeFor[Editor]()).Elem()
 	fn(val)
 }
+
+// TestKeepAlive_MapOfPointers: a map walk hands each entry over in one
+// reused scratch value, so the pointer walker must dedupe on the target
+// rather than on the value it is given, or only the first entry is kept
+// alive and handles held by the rest go stale after a frame.
+func TestKeepAlive_MapOfPointers(t *testing.T) {
+	type Inner struct {
+		held map[int]Node.Instance // nil: walked without touching the engine
+	}
+	type Outer struct {
+		entries map[int]*Inner
+	}
+	fn := compile_keepalive(reflect.TypeFor[Outer]())
+	if fn == nil {
+		t.Fatal("compile_keepalive returned nil for a map of pointers to structs with Instances")
+	}
+	outer := Outer{entries: map[int]*Inner{1: {}, 2: {}, 3: {}}}
+	clear(skips)
+	fn(reflect.ValueOf(&outer).Elem())
+	walked := 0
+	for val := range skips {
+		if val.Type() == reflect.TypeFor[Inner]() {
+			walked++
+		}
+	}
+	if walked != len(outer.entries) {
+		t.Fatalf("walked %d of %d map entries", walked, len(outer.entries))
+	}
+}

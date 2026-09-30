@@ -233,11 +233,15 @@ func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)
 				if val.IsNil() {
 					return
 				}
-				if _, ok := skips[val]; ok {
+				// Key on the target, not val: a map walk hands every entry
+				// over in one reused scratch, so val itself would look the
+				// same for every entry and only the first would be walked.
+				elem := val.Elem()
+				if _, ok := skips[elem]; ok {
 					return // shared or cyclic pointer: already walked this frame
 				}
-				skips[val] = struct{}{}
-				keepalive(val.Elem())
+				skips[elem] = struct{}{}
+				keepalive(elem)
 			}
 		}
 		return nil
@@ -321,8 +325,8 @@ func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)
 // indirection) identity-checks the value it receives against `skips` —
 // a map field's identity is its address, which inside a shared scratch
 // is the same for every entry, conflating distinct maps. Indirect kinds
-// (pointer, slice, interface) are fine — their keepalives immediately
-// resolve to memory outside the scratch. Engine Instance handles get
+// (pointer, slice, interface) are fine: their keepalives resolve to memory
+// outside the scratch before consulting `skips`. Engine Instance handles get
 // their own dedicated keepalive and never consult `skips`.
 func scratch_reusable(rtype reflect.Type) bool {
 	if rtype.Name() == "Instance" && rtype.Implements(reflect.TypeFor[Object.Any]()) && rtype.Kind() == reflect.Array && rtype.Len() == 1 {
