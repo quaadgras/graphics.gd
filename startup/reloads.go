@@ -243,12 +243,7 @@ type reloadsMethodKey struct {
 	class  string
 	method string
 	hash   uint32
-}
-
-type reloadsTokenInfo struct {
-	key   reloadsMethodKey
-	kind  uint8 // reloadsTokenRegistered / reloadsTokenVirtual / reloadsTokenCaller
-	epoch uint32
+	kind   uint8 // reloadsTokenRegistered / reloadsTokenVirtual / reloadsTokenCaller
 }
 
 const (
@@ -260,34 +255,37 @@ const (
 var reloadsEpoch atomic.Uint32 // current module epoch, bumped on swap
 
 var (
-	reloadsEngineClasses    = map[string]gdextension.ExtensionClassID{} // name -> id the engine was registered with
-	reloadsEngineClassNames = map[gdextension.ExtensionClassID]string{} // reverse of the above
-	reloadsClassRemap       = map[gdextension.ExtensionClassID]gdextension.ExtensionClassID{}
-	reloadsDeduped          = map[string]bool{}                // classes whose re-registration was skipped this session
-	reloadsInstances        = map[uint64]reloadsInstanceInfo{} // extension instances by id
-	reloadsBindings         = map[uint64]bool{}                // live wrapper bindings of the current module
-	reloadsCallables        = map[uint64]bool{}                // live callable functions of the current module
-	reloadsTokens           = map[uint64]reloadsTokenInfo{}    // method fn tokens / virtual callData by value
-	reloadsCurrentTokens    = map[reloadsMethodKey]uint64{}    // latest token for a method (current epoch)
-	reloadsListPushes       = map[uint64][]reloadsListPush{}   // method-list handle -> pushed methods
+	reloadsEngineClasses    = map[string]gdextension.ExtensionClassID{}                       // name -> id the engine was registered with
+	reloadsEngineClassNames = map[gdextension.ExtensionClassID]string{}                       // reverse of the above
+	reloadsClassRemap       = map[gdextension.ExtensionClassID]gdextension.ExtensionClassID{} // engine id -> current module's token
+	reloadsEngineClassID    gdextension.ExtensionClassID                                      // last engine id handed out
+	reloadsDeduped          = map[string]bool{}                                               // classes whose re-registration was skipped this session
+	reloadsInstances        = map[uint64]reloadsInstanceInfo{}                                // extension instances by id
+	reloadsBindings         = map[uint64]bool{}                                               // live wrapper bindings of the current module
+	reloadsCallables        = map[uint64]uint64{}                                             // engine id -> the current module's id, of its live callables
+	reloadsCallableID       uint64                                                            // last engine id handed out for a callable
+	reloadsEngineTokens     = map[uint64]reloadsMethodKey{}                                   // engine token -> the method it stands for
+	reloadsEngineTokenOf    = map[reloadsMethodKey]uint64{}                                   // and back, a method keeps its engine token across modules
+	reloadsModuleTokens     = map[reloadsMethodKey]uint64{}                                   // current module's token for each method (0: it has none)
+	reloadsEngineToken      uint64                                                            // last engine token handed out
+	reloadsListPushes       = map[uint64][]reloadsListPush{}                                  // method-list handle -> pushed methods
 )
 
 type reloadsListPush struct {
-	name  string
-	token uint64
+	name   string
+	engine uint64 // token the engine was given
+	module uint64 // the module's own
 }
 
 // reloadsClassToken resolves the current module's class token for an
-// engine-registered class name.
+// engine-registered class name, if the current module has the class.
 func reloadsClassToken(name string) (gdextension.ExtensionClassID, bool) {
 	engineID, ok := reloadsEngineClasses[name]
 	if !ok {
 		return 0, false
 	}
-	if mapped, ok := reloadsClassRemap[engineID]; ok {
-		return mapped, true
-	}
-	return engineID, true
+	token, ok := reloadsClassRemap[engineID]
+	return token, ok
 }
 
 // reloadsTrackRegistrations wraps the native registration entry points:
@@ -310,11 +308,18 @@ func reloadsTrackRegistrations() {
 			reloadsClassesMu.Unlock()
 			return
 		}
-		reloadsEngineClasses[name] = id
-		reloadsEngineClassNames[id] = name
+		// The engine gets an id of the host's own rather than the module's
+		// token: every module numbers its classes from 1, so a class new
+		// to this session would otherwise share its id with a class an
+		// earlier module registered, and be answered as that class.
+		reloadsEngineClassID++
+		engineID = reloadsEngineClassID
+		reloadsEngineClasses[name] = engineID
+		reloadsEngineClassNames[engineID] = name
+		reloadsClassRemap[engineID] = id
 		reloadsClasses = append(reloadsClasses, name)
 		reloadsClassesMu.Unlock()
-		register(class, parent_class, id, virtual, abstract, exposed, runtime, icon_path)
+		register(class, parent_class, engineID, virtual, abstract, exposed, runtime, icon_path)
 	}
 	removal := gdextension.Host.ClassDB.Register.Removal
 	gdextension.Host.ClassDB.Register.Removal = func(class gdextension.StringName) {
@@ -328,6 +333,10 @@ func reloadsTrackRegistrations() {
 		reloadsClassesMu.Lock()
 		if i := slices.Index(reloadsClasses, name); i >= 0 {
 			reloadsClasses = slices.Delete(reloadsClasses, i, i+1)
+		}
+		if engineID, ok := reloadsEngineClasses[name]; ok {
+			delete(reloadsEngineClassNames, engineID)
+			delete(reloadsClassRemap, engineID)
 		}
 		delete(reloadsEngineClasses, name)
 		reloadsClassesMu.Unlock()
@@ -363,25 +372,31 @@ func reloadsTrackRegistrations() {
 			return reflect.ValueOf(prev).Call(args)
 		}))
 	}
-	// Record every method registered through a method list so that
-	// engine method binds cached from earlier sessions can be remapped
-	// to the current module's tokens (see reloadsMapToken).
+	// Methods registered through a method list reach the engine with a
+	// token of the host's own (see reloadsEngineTokenFor), which is only
+	// tied to its method once the list is registered for a class.
 	push := gdextension.Host.ClassDB.MethodList.Push
 	gdextension.Host.ClassDB.MethodList.Push = func(info gdextension.MethodList, name gdextension.StringName, call gdextension.FunctionID, method_flags gdextension.MethodFlags, return_value_info gdextension.PropertyList, arguments_info gdextension.PropertyList, count int, default_arguments gdextension.CallAccepts[gdextension.Variant]) {
+		reloadsEngineToken++
 		reloadsListPushes[uint64(info)] = append(reloadsListPushes[uint64(info)], reloadsListPush{
-			name:  reloadsStringNameToString(name),
-			token: uint64(call),
+			name:   reloadsStringNameToString(name),
+			engine: reloadsEngineToken,
+			module: uint64(call),
 		})
-		push(info, name, call, method_flags, return_value_info, arguments_info, count, default_arguments)
+		push(info, name, gdextension.FunctionID(reloadsEngineToken), method_flags, return_value_info, arguments_info, count, default_arguments)
 	}
 	registerMethods := gdextension.Host.ClassDB.Register.Methods
 	gdextension.Host.ClassDB.Register.Methods = func(class gdextension.StringName, list gdextension.MethodList) {
 		className := reloadsStringNameToString(class)
-		epoch := reloadsEpoch.Load()
 		for _, m := range reloadsListPushes[uint64(list)] {
-			key := reloadsMethodKey{class: className, method: m.name}
-			reloadsCurrentTokens[key] = m.token
-			reloadsTokens[m.token] = reloadsTokenInfo{key: key, kind: reloadsTokenRegistered, epoch: epoch}
+			key := reloadsMethodKey{class: className, method: m.name, kind: reloadsTokenRegistered}
+			reloadsModuleTokens[key] = m.module
+			// A class registered by an earlier module is deduplicated, so
+			// the engine keeps the token it was given back then.
+			if _, known := reloadsEngineTokenOf[key]; !known {
+				reloadsEngineTokens[m.engine] = key
+				reloadsEngineTokenOf[key] = m.engine
+			}
 		}
 		delete(reloadsListPushes, uint64(list))
 		registerMethods(class, list)
@@ -395,10 +410,18 @@ func reloadsTrackRegistrations() {
 		}
 		setup(obj, name, id)
 	}
+	// Callables reach the engine with an id of the host's own: every
+	// module numbers its callables from 1, and the engine keeps an earlier
+	// module's (a signal connection, say) past a swap.
 	callable := gdextension.Host.Callables.Create
 	gdextension.Host.Callables.Create = func(id gdextension.FunctionID, object gdextension.ObjectID, result gdextension.CallReturns[gdextension.Callable]) {
-		reloadsCallables[uint64(id)] = true
-		callable(id, object, result)
+		reloadsCallableID++
+		reloadsCallables[reloadsCallableID] = uint64(id)
+		callable(gdextension.FunctionID(reloadsCallableID), object, result)
+	}
+	lookup := gdextension.Host.Callables.Lookup
+	gdextension.Host.Callables.Lookup = func(c gdextension.Callable) gdextension.FunctionID {
+		return gdextension.FunctionID(reloadsCallables[uint64(lookup(c))])
 	}
 }
 
@@ -417,7 +440,11 @@ func reloadsMarkSessionStale() {
 	clear(reloadsCallables)
 	reloadsClassesMu.Lock()
 	clear(reloadsDeduped)
+	// The next module's registrations map each engine id to its token;
+	// classes it no longer has are left unmapped (answered inertly).
+	clear(reloadsClassRemap)
 	reloadsClassesMu.Unlock()
+	clear(reloadsModuleTokens)
 }
 
 // reloadsInstanceLive reports whether the extension instance id belongs
@@ -427,8 +454,19 @@ func reloadsInstanceLive(id uint64) bool {
 	return ok && info.epoch == reloadsEpoch.Load()
 }
 
-func reloadsBindingLive(id uint64) bool  { return reloadsBindings[id] }
-func reloadsCallableLive(id uint64) bool { return reloadsCallables[id] }
+func reloadsBindingLive(id uint64) bool { return reloadsBindings[id] }
+
+// reloadsLive translates ids that only need to be live, to themselves.
+func reloadsLive(live func(uint64) bool) func(uint64) (uint64, bool) {
+	return func(id uint64) (uint64, bool) { return id, live(id) }
+}
+
+// reloadsCallable translates the engine's id for a callable into the
+// current module's.
+func reloadsCallable(id uint64) (uint64, bool) {
+	module, ok := reloadsCallables[id]
+	return module, ok
+}
 
 // reloadsAdoptInstances hands engine objects that outlived the previous
 // module over to the current one: each surviving instance is re-bound
@@ -475,45 +513,56 @@ func reloadsAdoptInstances() {
 	}
 }
 
-// reloadsMapToken translates a method function token (or virtual call
-// data pointer) minted by an earlier module into the current module's
-// equivalent. Engine method binds cache these from the session that
-// registered the class, so calls arriving after a swap must re-resolve.
-func reloadsMapToken(token uint64) uint64 {
-	info, ok := reloadsTokens[token]
-	if !ok || info.epoch == reloadsEpoch.Load() {
+// reloadsEngineTokenFor returns the token the engine is given for a
+// method (a method function or virtual call data), recording the current
+// module's token for it. The engine caches these from the module that was
+// live at the time, and every module mints its own from scratch (ids from
+// 1, call data at the same addresses), so the engine only ever sees tokens
+// of the host's own, one per method for the life of the process.
+func reloadsEngineTokenFor(key reloadsMethodKey, module uint64) uint64 {
+	reloadsModuleTokens[key] = module
+	if token, ok := reloadsEngineTokenOf[key]; ok {
 		return token
 	}
-	if current, ok := reloadsCurrentTokens[info.key]; ok {
-		if currentInfo, ok := reloadsTokens[current]; ok && currentInfo.epoch == reloadsEpoch.Load() {
-			return current
-		}
-	}
-	// Re-resolve through the class callbacks (records the new token).
-	engineID, ok := reloadsEngineClasses[info.key.class]
+	reloadsEngineToken++
+	reloadsEngineTokens[reloadsEngineToken] = key
+	reloadsEngineTokenOf[key] = reloadsEngineToken
+	return reloadsEngineToken
+}
+
+// reloadsModuleToken translates a token the engine holds into the current
+// module's token for the same method, 0 when the module has no such method.
+func reloadsModuleToken(token uint64) uint64 {
+	key, ok := reloadsEngineTokens[token]
 	if !ok {
-		return token
+		return 0
 	}
-	name := gd.NewStringName(info.key.method)
+	if module, ok := reloadsModuleTokens[key]; ok {
+		return module
+	}
+	// A virtual the current module has not been asked for yet: ask it,
+	// through the class callbacks that record the answer.
+	engineID, ok := reloadsEngineClasses[key.class]
+	if !ok {
+		return 0
+	}
+	name := gd.NewStringName(key.method)
 	defer name.Free()
-	switch info.kind {
+	switch key.kind {
 	case reloadsTokenVirtual:
-		if fn := gdextension.On.Extension.Class.Method(engineID, pointers.Get(name), info.key.hash); fn != 0 {
-			return uint64(fn)
-		}
+		gdextension.On.Extension.Class.Method(engineID, pointers.Get(name), key.hash)
 	case reloadsTokenCaller:
-		if data := gdextension.On.Extension.Class.Caller(engineID, pointers.Get(name), info.key.hash); data != 0 {
-			return uint64(data)
-		}
+		gdextension.On.Extension.Class.Caller(engineID, pointers.Get(name), key.hash)
 	}
-	return token
+	return reloadsModuleTokens[key]
 }
 
 // reloadsGuardStale wraps every callback in the given group whose
-// arguments carry an id of the given type: if the id is not owned by
-// the live module, the callback returns zero values instead of being
-// forwarded. Must run after reloadsInstallGuestCallbacks.
-func reloadsGuardStale(group any, idType reflect.Type, live func(uint64) bool) {
+// arguments carry an id of the given type: each id is translated for the
+// live module, and if it has no equivalent there, the callback returns
+// zero values instead of being forwarded. Must run after
+// reloadsInstallGuestCallbacks.
+func reloadsGuardStale(group any, idType reflect.Type, translate func(uint64) (uint64, bool)) {
 	v := reflect.ValueOf(group).Elem()
 	for i := range v.NumField() {
 		f := v.Field(i)
@@ -533,7 +582,9 @@ func reloadsGuardStale(group any, idType reflect.Type, live func(uint64) bool) {
 		ftype := f.Type()
 		f.Set(reflect.MakeFunc(ftype, func(args []reflect.Value) []reflect.Value {
 			for _, j := range idArgs {
-				if !live(args[j].Uint()) {
+				id, ok := translate(args[j].Uint())
+				args[j] = reflect.ValueOf(id).Convert(idType)
+				if !ok {
 					out := make([]reflect.Value, ftype.NumOut())
 					for k := range out {
 						out[k] = reflect.Zero(ftype.Out(k))
@@ -550,47 +601,45 @@ func reloadsGuardStale(group any, idType reflect.Type, live func(uint64) bool) {
 // module swaps: class ids remap to the live module, and callbacks for
 // dead-module state answer inertly.
 func reloadsInstallSwapGuards() {
-	// Class callbacks: remap the engine's (first-session) class id to
-	// the current module's token.
+	// Class callbacks: map the engine's class id (see
+	// reloadsTrackRegistrations) to the current module's token, classes
+	// the current module does not have answer inertly.
 	class := &gdextension.On.Extension.Class
 	createClass := class.Create
-	class.Create = func(id gdextension.ExtensionClassID, notify bool) gdextension.Object {
-		if mapped, ok := reloadsClassRemap[id]; ok {
-			id = mapped
+	class.Create = func(engineID gdextension.ExtensionClassID, notify bool) gdextension.Object {
+		id, ok := reloadsClassRemap[engineID]
+		if !ok {
+			return 0
 		}
 		return createClass(id, notify)
 	}
 	method := class.Method
-	class.Method = func(id gdextension.ExtensionClassID, name gdextension.StringName, hash uint32) gdextension.FunctionID {
-		engineID := id
-		if mapped, ok := reloadsClassRemap[id]; ok {
-			id = mapped
+	class.Method = func(engineID gdextension.ExtensionClassID, name gdextension.StringName, hash uint32) gdextension.FunctionID {
+		id, ok := reloadsClassRemap[engineID]
+		if !ok {
+			return 0
 		}
 		fn := method(id, name, hash)
-		if fn != 0 {
-			if className, ok := reloadsEngineClassNames[engineID]; ok {
-				key := reloadsMethodKey{class: className, method: reloadsStringNameToString(name), hash: hash}
-				reloadsCurrentTokens[key] = uint64(fn)
-				reloadsTokens[uint64(fn)] = reloadsTokenInfo{key: key, kind: reloadsTokenVirtual, epoch: reloadsEpoch.Load()}
-			}
+		key := reloadsMethodKey{class: reloadsEngineClassNames[engineID], method: reloadsStringNameToString(name), hash: hash, kind: reloadsTokenVirtual}
+		if fn == 0 {
+			reloadsModuleTokens[key] = 0
+			return 0
 		}
-		return fn
+		return gdextension.FunctionID(reloadsEngineTokenFor(key, uint64(fn)))
 	}
 	caller := class.Caller
-	class.Caller = func(id gdextension.ExtensionClassID, name gdextension.StringName, hash uint32) uintptr {
-		engineID := id
-		if mapped, ok := reloadsClassRemap[id]; ok {
-			id = mapped
+	class.Caller = func(engineID gdextension.ExtensionClassID, name gdextension.StringName, hash uint32) uintptr {
+		id, ok := reloadsClassRemap[engineID]
+		if !ok {
+			return 0
 		}
 		data := caller(id, name, hash)
-		if data != 0 {
-			if className, ok := reloadsEngineClassNames[engineID]; ok {
-				key := reloadsMethodKey{class: className, method: reloadsStringNameToString(name), hash: hash}
-				reloadsCurrentTokens[key] = uint64(data)
-				reloadsTokens[uint64(data)] = reloadsTokenInfo{key: key, kind: reloadsTokenCaller, epoch: reloadsEpoch.Load()}
-			}
+		key := reloadsMethodKey{class: reloadsEngineClassNames[engineID], method: reloadsStringNameToString(name), hash: hash, kind: reloadsTokenCaller}
+		if data == 0 {
+			reloadsModuleTokens[key] = 0
+			return 0
 		}
-		return data
+		return uintptr(reloadsEngineTokenFor(key, uint64(data)))
 	}
 	// Track wrapper bindings as they are created, then guard everything
 	// by liveness of the ids involved.
@@ -601,28 +650,36 @@ func reloadsInstallSwapGuards() {
 		reloadsBindings[uint64(id)] = true
 		return id
 	}
-	reloadsGuardStale(binding, reflect.TypeFor[gdextension.ExtensionBindingID](), reloadsBindingLive)
-	reloadsGuardStale(&gdextension.On.Extension.Instance, reflect.TypeFor[gdextension.ExtensionInstanceID](), reloadsInstanceLive)
-	reloadsGuardStale(&gdextension.On.Extension.Script, reflect.TypeFor[gdextension.ExtensionInstanceID](), reloadsInstanceLive)
-	reloadsGuardStale(&gdextension.On.Callables, reflect.TypeFor[gdextension.FunctionID](), reloadsCallableLive)
-	// Method binds and virtual call data the engine cached in earlier
-	// sessions carry tokens from a discarded module: remap them to the
-	// current module before forwarding.
+	reloadsGuardStale(binding, reflect.TypeFor[gdextension.ExtensionBindingID](), reloadsLive(reloadsBindingLive))
+	reloadsGuardStale(&gdextension.On.Extension.Instance, reflect.TypeFor[gdextension.ExtensionInstanceID](), reloadsLive(reloadsInstanceLive))
+	reloadsGuardStale(&gdextension.On.Extension.Script, reflect.TypeFor[gdextension.ExtensionInstanceID](), reloadsLive(reloadsInstanceLive))
+	reloadsGuardStale(&gdextension.On.Callables, reflect.TypeFor[gdextension.FunctionID](), reloadsCallable)
+	// Method binds and virtual call data carry the engine's tokens (see
+	// reloadsEngineTokenFor): translate them to the current module's, a
+	// method the module no longer has is not called.
 	checked := gdextension.On.Extension.Instance.CheckedCall
 	gdextension.On.Extension.Instance.CheckedCall = func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[any], args gdextension.Accepts[any]) {
-		checked(instance, gdextension.FunctionID(reloadsMapToken(uint64(fn))), result, args)
+		if fn := reloadsModuleToken(uint64(fn)); fn != 0 {
+			checked(instance, gdextension.FunctionID(fn), result, args)
+		}
 	}
 	variantCall := gdextension.On.Extension.Instance.VariantCall
 	gdextension.On.Extension.Instance.VariantCall = func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], args gdextension.Accepts[gdextension.Variant]) {
-		variantCall(instance, gdextension.FunctionID(reloadsMapToken(uint64(fn))), result, args)
+		if fn := reloadsModuleToken(uint64(fn)); fn != 0 {
+			variantCall(instance, gdextension.FunctionID(fn), result, args)
+		}
 	}
 	dynamicCall := gdextension.On.Extension.Instance.DynamicCall
 	gdextension.On.Extension.Instance.DynamicCall = func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], err gdextension.Returns[gdextension.CallError]) {
-		dynamicCall(instance, gdextension.FunctionID(reloadsMapToken(uint64(fn))), result, arg_count, args, err)
+		if fn := reloadsModuleToken(uint64(fn)); fn != 0 {
+			dynamicCall(instance, gdextension.FunctionID(fn), result, arg_count, args, err)
+		}
 	}
 	called := gdextension.On.Extension.Instance.Called
 	gdextension.On.Extension.Instance.Called = func(instance gdextension.ExtensionInstanceID, callData gdextension.Pointer, result gdextension.Returns[any], args gdextension.Accepts[any]) {
-		called(instance, gdextension.Pointer(reloadsMapToken(uint64(callData))), result, args)
+		if callData := reloadsModuleToken(uint64(callData)); callData != 0 {
+			called(instance, gdextension.Pointer(callData), result, args)
+		}
 	}
 	// Forget instances and callables when the engine releases them.
 	free := gdextension.On.Extension.Instance.Free
