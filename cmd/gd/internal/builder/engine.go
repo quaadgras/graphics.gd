@@ -71,6 +71,16 @@ func BuildMode() string {
 	return "c-shared"
 }
 
+// pckSection writes the source of an empty "pck" section and returns its
+// path. The export embeds the project's data into that section of the
+// executable, which the engine's own executable defines and a library
+// leaves to whoever links it (only some forks define it in libgodot).
+// retain keeps an ELF linker's --gc-sections from dropping it.
+func pckSection() (string, error) {
+	pck := filepath.Join(project.GraphicsDirectory, ".godot", "pck_section.c")
+	return pck, os.WriteFile(pck, []byte("static const char gd_pck_section[8] __attribute__((section(\"pck\"), used, retain)) = { 0 };\n"), 0644)
+}
+
 // gdSettings returns the [gd] section of the project's project.godot.
 func gdSettings() map[string]string {
 	return projectSettings("gd")

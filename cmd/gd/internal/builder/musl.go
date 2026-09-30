@@ -28,6 +28,8 @@ var built_musl bool
 type Musl struct {
 	lib string
 	out string
+
+	objects []string // sources linked into out along with the engine.
 }
 
 func (musl Musl) Build(args ...string) (err error) {
@@ -121,7 +123,8 @@ func (musl Musl) Build(args ...string) (err error) {
 	// otherwise fail with undefined symbols. `go list -deps` expands ${SRCDIR} to
 	// absolute paths. -lc++ goes last so libc++ resolves any C++ symbols those
 	// archives pull in.
-	zigArgs := []string{"cc", "-target", target, musl.lib, libgo}
+	zigArgs := append([]string{"cc", "-target", target}, musl.objects...)
+	zigArgs = append(zigArgs, musl.lib, libgo)
 	cgoLDFLAGS, err := tooling.Go.Output("list", "-tags", muslTags(), "-deps", "-f", "{{range .CgoLDFLAGS}}{{println .}}{{end}}", ".")
 	if err != nil {
 		return xray.New(err)
@@ -261,6 +264,11 @@ func (musl Musl) BuildMain(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
+	pck, err := pckSection()
+	if err != nil {
+		return xray.New(err)
+	}
+	musl.objects = append(musl.objects, pck)
 	built_musl = false
 	if err := musl.Build(args...); err != nil {
 		return xray.New(err)

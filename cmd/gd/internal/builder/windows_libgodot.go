@@ -62,11 +62,8 @@ func (windows Windows) buildMainLibgodot(GOARCH string, args ...string) error {
 	// have to be forwarded by hand (as the musl build does). The subsystem
 	// is windows (no console), with the C runtime's entry for a main().
 	out := filepath.Join(project.GraphicsDirectory, ".godot", "godot.windows.template_release."+arch+".exe")
-	// The export embeds the project's data into a "pck" section of the
-	// executable, which the engine's own executable defines and a library
-	// leaves to whoever links it.
-	pck := filepath.Join(project.GraphicsDirectory, ".godot", "pck_section.c")
-	if err := os.WriteFile(pck, []byte("static const char gd_pck_section[8] __attribute__((section(\"pck\"), used)) = { 0 };\n"), 0644); err != nil {
+	pck, err := pckSection()
+	if err != nil {
 		return xray.New(err)
 	}
 	link := []string{"c++", "-target", target, "-o", out, pck, filepath.Join(filepath.Dir(libgodot), "godot_res.o"), libgodot, libgo}
