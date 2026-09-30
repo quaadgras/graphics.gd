@@ -171,7 +171,9 @@ func dedupToolexec() (string, error) {
 	if goenv.GOHOSTOS == "windows" {
 		exe = ".exe"
 	}
-	toolexec := filepath.Join(dir, "toolexec"+exe)
+	// The wrapper is named compile (see the comment in its source), so it
+	// needs a directory of its own.
+	toolexec := filepath.Join(dir, "toolexec", "compile"+exe)
 	if _, err := os.Stat(toolexec); err == nil {
 		return toolexec, nil
 	}
@@ -215,13 +217,16 @@ func dedupToolexec() (string, error) {
 	if err := os.MkdirAll(shim, 0755); err != nil {
 		return "", err
 	}
+	if err := os.MkdirAll(filepath.Join(out, "toolexec"), 0755); err != nil {
+		return "", err
+	}
 	if err := os.WriteFile(filepath.Join(shim, "go.mod"), []byte("module toolexec\n\ngo 1.22\n"), 0644); err != nil {
 		return "", err
 	}
 	if err := os.WriteFile(filepath.Join(shim, "main.go"), dedup_toolexec, 0644); err != nil {
 		return "", err
 	}
-	if err := dedupGo(shim, goenv.GOHOSTOS, goenv.GOHOSTARCH, "build", "-buildvcs=false", "-o", filepath.Join(out, "toolexec"+exe), "."); err != nil {
+	if err := dedupGo(shim, goenv.GOHOSTOS, goenv.GOHOSTARCH, "build", "-buildvcs=false", "-o", filepath.Join(out, "toolexec", "compile"+exe), "."); err != nil {
 		return "", fmt.Errorf("building the toolexec wrapper: %w", err)
 	}
 	if err := os.Rename(out, dir); err != nil {

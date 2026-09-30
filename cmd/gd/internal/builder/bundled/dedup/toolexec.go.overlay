@@ -3,6 +3,11 @@
 // packages (see graphics.gd/cmd/gd/internal/builder/dedup.go). It runs
 // that compiler, with -d=skipextinst=3, wherever the go command would
 // run its own, and every other tool unchanged.
+//
+// It is built as toolexec/compile so that the go command, which only
+// passes long command lines in response files to programs named after
+// the tools that read them, gives it one rather than going over the
+// Windows command line length limit.
 package main
 
 import (
@@ -15,17 +20,27 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
+	args := os.Args[1:]
+	if len(args) == 1 && strings.HasPrefix(args[0], "@") {
+		file, err := os.ReadFile(args[0][1:])
+		if err != nil {
+			fatal(err)
+		}
+		args = parseArgs(file)
+	}
+	if len(args) < 1 {
 		fmt.Fprintln(os.Stderr, "usage: toolexec tool [args...]")
 		os.Exit(2)
 	}
-	tool, args := os.Args[1], os.Args[2:]
-	if strings.TrimSuffix(filepath.Base(tool), ".exe") == "compile" {
+	tool, args := args[0], args[1:]
+	name := strings.TrimSuffix(filepath.Base(tool), ".exe")
+	var flags []string
+	if name == "compile" {
 		self, err := os.Executable()
 		if err != nil {
 			fatal(err)
 		}
-		dir := filepath.Dir(self)
+		dir := filepath.Dir(filepath.Dir(self))
 		compile := filepath.Join(dir, filepath.Base(tool))
 		if len(args) == 1 && args[0] == "-V=full" {
 			out, err := exec.Command(compile, "-V=full").Output()
@@ -38,9 +53,26 @@ func main() {
 			fmt.Printf("%s gd-dedup=%s\n", strings.TrimSpace(string(out)), filepath.Base(dir))
 			return
 		}
-		tool, args = compile, append([]string{"-d=skipextinst=3"}, args...)
+		tool, flags = compile, []string{"-d=skipextinst=3"}
 	}
-	cmd := exec.Command(tool, args...)
+	switch name {
+	case "compile", "link", "cgo", "asm", "cover", "pack":
+		if n := len(strings.Join(args, " ")); n > 30<<10 {
+			rsp, err := os.CreateTemp("", "args")
+			if err != nil {
+				fatal(err)
+			}
+			defer os.Remove(rsp.Name())
+			for _, arg := range args {
+				fmt.Fprintln(rsp, encodeArg(arg))
+			}
+			if err := rsp.Close(); err != nil {
+				fatal(err)
+			}
+			args = []string{"@" + rsp.Name()}
+		}
+	}
+	cmd := exec.Command(tool, append(flags, args...)...)
 	cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
 	if err := cmd.Run(); err != nil {
 		var exit *exec.ExitError
@@ -49,6 +81,89 @@ func main() {
 		}
 		fatal(err)
 	}
+}
+
+// encodeArg encodes an argument for a response file the way the go
+// command does.
+func encodeArg(arg string) string {
+	if arg == "" {
+		return `""`
+	}
+	if !strings.ContainsAny(arg, " \t\n\r'\"\\$`") {
+		return arg
+	}
+	var b strings.Builder
+	b.WriteByte('"')
+	for _, r := range arg {
+		switch r {
+		case '\\', '"', '$', '`':
+			b.WriteByte('\\')
+		}
+		b.WriteRune(r)
+	}
+	b.WriteByte('"')
+	return b.String()
+}
+
+// parseArgs parses a response file with the GCC-compatible rules that the
+// Go tools use (cmd/internal/objabi.ParseArgs).
+func parseArgs(s []byte) []string {
+	var args []string
+	var arg strings.Builder
+	inArg := false
+	for i := 0; i < len(s); i++ {
+		c := s[i]
+		switch {
+		case c == ' ' || c == '\t' || c == '\n' || c == '\r':
+			if inArg {
+				args = append(args, arg.String())
+				arg.Reset()
+				inArg = false
+			}
+		case c == '\'':
+			inArg = true
+			for i++; i < len(s) && s[i] != '\''; i++ {
+				arg.WriteByte(s[i])
+			}
+		case c == '"':
+			inArg = true
+			for i++; i < len(s) && s[i] != '"'; i++ {
+				if s[i] == '\\' && i+1 < len(s) {
+					switch s[i+1] {
+					case '\\', '"', '$', '`':
+						i++
+					case '\n':
+						i++
+						continue
+					case '\r':
+						if i+2 < len(s) && s[i+2] == '\n' {
+							i += 2
+							continue
+						}
+					}
+				}
+				arg.WriteByte(s[i])
+			}
+		case c == '\\' && i+1 < len(s):
+			i++
+			if s[i] == '\n' {
+				continue
+			}
+			if s[i] == '\r' && i+1 < len(s) && s[i+1] == '\n' {
+				i++
+				continue
+			}
+			inArg = true
+			arg.WriteByte(s[i])
+		default:
+			inArg = true
+			arg.WriteByte(c)
+		}
+	}
+	if inArg {
+		args = append(args, arg.String())
+	}
+	return args
 }
 
 func fatal(err error) {
