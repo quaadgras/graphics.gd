@@ -252,7 +252,11 @@ func generateImports(file io.Writer, class gdjson.Class, singleton bool) {
 	}
 	fmt.Fprintln(file, "var _ String.Readable")
 	fmt.Fprintln(file, "var _ Path.ToNode")
-	fmt.Fprintln(file, "var _ Packed.Bytes")
+	// Not Packed.Bytes: its conversion methods mention every packed array type,
+	// and a package that mentions an instantiated generic type compiles its
+	// whole method set, so that assertion alone cost every class package
+	// thousands of functions.
+	fmt.Fprintln(file, "var _ Packed.CompressionMode")
 	fmt.Fprintln(file, "var _ Error.Code")
 	fmt.Fprintln(file, "var _ Float.X")
 	fmt.Fprintln(file, "var _ Signal.Any")

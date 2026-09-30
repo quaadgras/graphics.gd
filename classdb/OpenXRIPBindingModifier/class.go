@@ -54,7 +54,7 @@ var _ RID.Any
 var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
-var _ Packed.Bytes
+var _ Packed.CompressionMode
 var _ Error.Code
 var _ Float.X
 var _ Signal.Any

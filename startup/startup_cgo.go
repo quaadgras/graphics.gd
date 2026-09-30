@@ -16,6 +16,7 @@ import (
 	"testing"
 
 	_ "graphics.gd"
+	_ "graphics.gd/internal/cgoexports"
 
 	"graphics.gd/classdb"
 	EngineClass "graphics.gd/classdb/Engine"

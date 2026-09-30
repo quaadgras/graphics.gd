@@ -1,0 +1,57 @@
+// Command toolexec is the -toolexec wrapper that gd builds next to its
+// copy of the Go compiler that shares generic instantiations between
+// packages (see graphics.gd/cmd/gd/internal/builder/dedup.go). It runs
+// that compiler, with -d=skipextinst=3, wherever the go command would
+// run its own, and every other tool unchanged.
+package main
+
+import (
+	"errors"
+	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+)
+
+func main() {
+	if len(os.Args) < 2 {
+		fmt.Fprintln(os.Stderr, "usage: toolexec tool [args...]")
+		os.Exit(2)
+	}
+	tool, args := os.Args[1], os.Args[2:]
+	if strings.TrimSuffix(filepath.Base(tool), ".exe") == "compile" {
+		self, err := os.Executable()
+		if err != nil {
+			fatal(err)
+		}
+		dir := filepath.Dir(self)
+		compile := filepath.Join(dir, filepath.Base(tool))
+		if len(args) == 1 && args[0] == "-V=full" {
+			out, err := exec.Command(compile, "-V=full").Output()
+			if err != nil {
+				fatal(err)
+			}
+			// The go command uses a release compiler's whole -V=full
+			// line as its tool ID, so the suffix keeps the build cache
+			// entries of this compiler apart from the stock one's.
+			fmt.Printf("%s gd-dedup=%s\n", strings.TrimSpace(string(out)), filepath.Base(dir))
+			return
+		}
+		tool, args = compile, append([]string{"-d=skipextinst=3"}, args...)
+	}
+	cmd := exec.Command(tool, args...)
+	cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
+	if err := cmd.Run(); err != nil {
+		var exit *exec.ExitError
+		if errors.As(err, &exit) {
+			os.Exit(exit.ExitCode())
+		}
+		fatal(err)
+	}
+}
+
+func fatal(err error) {
+	fmt.Fprintln(os.Stderr, "gd toolexec:", err)
+	os.Exit(1)
+}
