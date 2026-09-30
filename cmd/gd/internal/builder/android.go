@@ -114,6 +114,17 @@ func (android Android) build(testing, bake bool, args ...string) error {
 	}
 	out := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("libandroid_%v.so", GOARCH))
 	ldflags := "-ldflags=-checklinkname=0"
+	// A -ldflags passed in (gd build's "-s -w") joins these rather than
+	// replacing them: go build keeps only the last -ldflags it is given.
+	rest := args[:0:0]
+	for _, arg := range args {
+		if flags, ok := strings.CutPrefix(arg, "-ldflags="); ok {
+			ldflags += " " + flags
+			continue
+		}
+		rest = append(rest, arg)
+	}
+	args = rest
 	if bake {
 		ldflags += bakedEnvFlags()
 	}
