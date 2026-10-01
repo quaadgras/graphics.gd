@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://d23qxln3you2m"]
+
+[ext_resource type="Texture2D" uid="uid://ch45tvy4pseu5" path="res://test_materials/rock_ao.jpg" id="1"]
+[ext_resource type="Texture2D" uid="uid://8lpiexsf28hi" path="res://test_materials/rock_albedo.jpg" id="2"]
+[ext_resource type="Texture2D" uid="uid://bomgkwg6qmuuh" path="res://test_materials/rock_metal.jpg" id="3"]
+
+[resource]
+albedo_color = Color(4.5, 6, 8, 0.02)
+albedo_texture = ExtResource("2")
+metallic_specular = 1.0
+roughness = 0.5
+normal_enabled = true
+normal_texture = ExtResource("3")
+ao_enabled = true
+ao_texture = ExtResource("1")
+refraction_enabled = true
+refraction_scale = 0.03
+texture_filter = 5

@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bs6ch5go4jcme"]
+
+
+[sub_resource type="BoxMesh" id="1"]
+
+[sub_resource type="StandardMaterial3D" id="2"]
+albedo_color = Color(0, 1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="3"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="4"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="5"]
+albedo_color = Color(0, 0, 1, 1)
+
+[node name="AxisMarker" type="AxisMarker3D" unique_id=797024789]
+
+[node name="Origin" type="Node" parent="." unique_id=842580420]
+
+[node name="Holder" type="Node3D" parent="Origin" unique_id=517615367]
+
+[node name="Cube" type="MeshInstance3D" parent="Origin/Holder" unique_id=1590391482]
+transform = Transform3D(0.0001, 0, 0, 0, 0.0001, 0, 0, 0, 0.0001, 0, 0, 0)
+mesh = SubResource("1")
+surface_material_override/0 = SubResource("2")
+
+[node name="Center" type="MeshInstance3D" parent="." unique_id=1123260130]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("1")
+surface_material_override/0 = SubResource("2")
+
+[node name="X" type="MeshInstance3D" parent="." unique_id=1054712004]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.55, 0, 0)
+mesh = SubResource("1")
+surface_material_override/0 = SubResource("3")
+
+[node name="Y" type="MeshInstance3D" parent="." unique_id=501621576]
+transform = Transform3D(0.1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0.55, 0)
+mesh = SubResource("1")
+surface_material_override/0 = SubResource("4")
+
+[node name="Z" type="MeshInstance3D" parent="." unique_id=2130257622]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0.55)
+mesh = SubResource("1")
+surface_material_override/0 = SubResource("5")

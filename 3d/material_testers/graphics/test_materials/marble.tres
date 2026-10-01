@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cdxnsbmdh03to"]
+
+[ext_resource type="Texture2D" uid="uid://dhjtj2ubybwdw" path="res://test_materials/marble_albedo.png" id="1"]
+
+[resource]
+diffuse_mode = 2
+albedo_texture = ExtResource("1")
+metallic = 0.1
+roughness = 0.1
+rim_enabled = true
+rim_tint = 0.7
+subsurf_scatter_enabled = true
+subsurf_scatter_strength = 0.1
+texture_filter = 5

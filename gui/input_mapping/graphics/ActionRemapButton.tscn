@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cctu6l46yqxu3"]
+
+
+[node name="ActionRemapButton" type="ActionRemapButton" unique_id=2026394768]
+offset_right = 90.0
+offset_bottom = 30.0
+toggle_mode = true

@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bf0f6464i5r38"]
+
+
+[node name="PianoKey" type="PianoKey" unique_id=1648518111]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 20.0
+offset_bottom = 200.0
+size_flags_horizontal = 3
+
+[node name="Key" type="PianoKeyColor" parent="." unique_id=1814277489]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = -1.0
+size_flags_horizontal = 3
+
+[node name="ColorTimer" type="Timer" parent="." unique_id=1534234682]
+one_shot = true
+
+[connection signal="timeout" from="ColorTimer" to="." method="deactivate"]

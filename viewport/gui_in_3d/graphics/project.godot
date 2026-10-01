@@ -1,0 +1,42 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="GUI in 3D"
+config/description="A demo showing a GUI instanced within a 3D scene using viewports,
+as well as forwarding mouse and keyboard input to the GUI."
+config/tags=PackedStringArray("3d", "demo", "gui", "official")
+run/main_scene="res://gui_in_3d.tscn"
+config/features=PackedStringArray("4.6")
+config/icon="res://icon.webp"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=1
+
+[gui]
+
+theme/default_theme_scale=2.0
+
+[layer_names]
+
+3d_physics/layer_2="Control"
+
+[physics]
+
+common/physics_ticks_per_second=120
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+anti_aliasing/quality/msaa_3d=2
+anti_aliasing/quality/use_debanding=true

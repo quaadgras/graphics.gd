@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://dbj84ub7f72wd"]
+
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q1hwu"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_eu7pn"]
+action = &"toggle_pause"
+
+[sub_resource type="Shortcut" id="Shortcut_n2ck8"]
+events = [SubResource("InputEventAction_eu7pn")]
+
+[node name="RichTextBBCode" type="RichTextBBCode" unique_id=1964284039]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = -300.0
+offset_right = 512.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=205270850]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+focus_mode = 2
+theme_override_colors/selection_color = Color(1, 1, 1, 0.164706)
+theme_override_constants/line_separation = 1
+theme_override_constants/table_h_separation = 120
+theme_override_constants/table_v_separation = 10
+theme_override_styles/focus = SubResource("StyleBoxEmpty_q1hwu")
+bbcode_enabled = true
+text = "RichTextLabel is a flexible way of adding text to your project, with support for [i]italics[/i], [b]bold[/b] and [i][b]both[/b][/i].
+[u]Underline[/u] and [s]strikethrough[/s] work too, including with [u][i]italics[/i][/u], [u][b]bold[/b][/u] and [u][i][b]both[/b][/i][/u].
+
+Text [color=#4cf]color[/color], [fgcolor=#49c9]foreground [color=#4cf]color[/color][/fgcolor]  and  [bgcolor=#49c9]background [color=#4cf]color[/color][/bgcolor]  can be adjusted.
+
+It's also possible to include [img]res://unicorn_icon.png[/img] [font_size=24]custom images[/font_size], as well as [color=aqua][url=https://godotengine.org]custom URLs[/url][/color]. [hint=This displays a hint.]Hover this to display a tooltip![/hint]
+Left alignment is default,[center]but center alignment is supported,[/center][right]as well as right alignment.[/right]
+
+[fill][dropcap font_size=48 color=yellow margins=0,-10,0,-12]F[/dropcap]ill alignment is also supported, and allows writing very long text that will end up fitting the horizontal space entirely with words of joy. Drop caps are also supported. When using a drop cap, the first character of a paragraph is made larger, taking up several lines of text and optionally using a specific font or color.[/fill]
+
+Several effects are also available:    [pulse]Pulse[/pulse]    [wave]Wave[/wave]    [tornado]Tornado[/tornado]    [shake]Shake[/shake]    [fade start=75 length=7]Fade[/fade]    [rainbow]Rainbow[/rainbow]
+
+[table=2]
+[cell border=#fff3 bg=#fff1]
+[ul]
+Tables
+are supported.
+[/ul]
+[/cell]
+[cell border=#fc13 bg=#fc11]
+[ol]
+Ordered
+list example.
+[/ol]
+[/cell]
+
+[/table]
+
+You can also create custom tags/effects, or customize behavior of [lb]url[rb] tags on click. For full reference, [color=aqua][url=https://docs.godotengine.org/en/latest/tutorials/ui/bbcode_in_richtextlabel.html]check the documentation.[/url][/color]
+
+"
+context_menu_enabled = true
+selection_enabled = true
+
+[node name="Pause" type="Button" parent="." unique_id=936311136]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+offset_right = 96.0
+grow_vertical = 0
+toggle_mode = true
+shortcut = SubResource("Shortcut_n2ck8")
+shortcut_in_tooltip = false
+text = "Pause"
+
+[connection signal="meta_clicked" from="RichTextLabel" to="." method="on_rich_text_label_meta_clicked"]
+[connection signal="toggled" from="Pause" to="." method="on_pause_toggled"]

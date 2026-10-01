@@ -1,0 +1,404 @@
+[gd_scene format=3 uid="uid://be5x8pl2gwv0u"]
+
+[ext_resource type="Texture2D" uid="uid://1e3euh5r2hvs" path="res://backgrounds/schelde.hdr" id="2_6cpkq"]
+[ext_resource type="PackedScene" uid="uid://dg3nxcx68s12p" path="res://models/test_bed/test_bed.tscn" id="3"]
+[ext_resource type="ArrayMesh" uid="uid://btydvpp0agbfj" path="res://models/godot_ball.res" id="4_7al4s"]
+[ext_resource type="Material" uid="uid://bpvrto0kurosn" path="res://test_materials/blue.tres" id="5"]
+[ext_resource type="Material" uid="uid://dklcnm71gfm7x" path="res://test_materials/white.tres" id="6"]
+[ext_resource type="Material" uid="uid://dvexhp8y6xh6l" path="res://test_materials/gray.tres" id="7"]
+[ext_resource type="Material" uid="uid://bsava25irrlk1" path="res://test_materials/white_plastic.tres" id="8"]
+[ext_resource type="Material" uid="uid://dim5wo47qsn43" path="res://test_materials/mirror.tres" id="9"]
+[ext_resource type="Material" uid="uid://bgwf7rbnk66l4" path="res://test_materials/dark_wood.tres" id="10"]
+[ext_resource type="Material" uid="uid://du6ft6yfao0r4" path="res://test_materials/stones.tres" id="11"]
+[ext_resource type="Material" uid="uid://j0b7yuk5ckuy" path="res://test_materials/brick.tres" id="12"]
+[ext_resource type="Material" uid="uid://61ngufkge4qk" path="res://test_materials/wool.tres" id="13"]
+[ext_resource type="Material" uid="uid://c5rscmg750g8c" path="res://test_materials/aluminium.tres" id="14"]
+[ext_resource type="Material" uid="uid://cdxnsbmdh03to" path="res://test_materials/marble.tres" id="15"]
+[ext_resource type="Material" uid="uid://b3xdajgmx5eni" path="res://test_materials/cheese.tres" id="16"]
+[ext_resource type="Material" uid="uid://dlyyi1i85mxu5" path="res://test_materials/wet_sand.tres" id="17"]
+[ext_resource type="Material" uid="uid://cn6fd2eoyai2f" path="res://test_materials/rock.tres" id="18"]
+[ext_resource type="Material" uid="uid://d23qxln3you2m" path="res://test_materials/ice.tres" id="19"]
+[ext_resource type="Material" uid="uid://dquiluu7n82k7" path="res://test_materials/toon.tres" id="20"]
+
+[sub_resource type="PanoramaSkyMaterial" id="1"]
+panorama = ExtResource("2_6cpkq")
+
+[sub_resource type="Sky" id="2"]
+sky_material = SubResource("1")
+radiance_size = 4
+
+[sub_resource type="Environment" id="Environment_5crof"]
+background_mode = 2
+sky = SubResource("2")
+tonemap_mode = 4
+fog_enabled = true
+fog_density = 0.002
+fog_sky_affect = 0.0
+
+[node name="MaterialTester" type="MaterialTester" unique_id=2095733715]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1535805419]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+visible = false
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=83260320]
+environment = SubResource("Environment_5crof")
+
+[node name="Testers" type="Node3D" parent="." unique_id=1282099214]
+
+[node name="White Plastic" parent="Testers" unique_id=1560197078 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/White Plastic" unique_id=1750643665]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 2
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("8")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/White Plastic/GodotBall" unique_id=1206545665 groups=["reflection_probe"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147483645
+reflection_mask = 2
+
+[node name="Mirror" parent="Testers" unique_id=887423930 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Mirror" unique_id=1535512931]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 4
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("9")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Mirror/GodotBall" unique_id=1441678033 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147483643
+reflection_mask = 4
+
+[node name="Dark Wood" parent="Testers" unique_id=2100335539 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Dark Wood" unique_id=403320753]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 8
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("10")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Dark Wood/GodotBall" unique_id=1072776920 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147483639
+reflection_mask = 8
+
+[node name="Cheese" parent="Testers" unique_id=992461862 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Cheese" unique_id=1282443280]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 16
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("16")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Cheese/GodotBall" unique_id=130977095 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147483631
+reflection_mask = 16
+
+[node name="Stones" parent="Testers" unique_id=1891188741 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Stones" unique_id=508619159]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 32
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("11")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Stones/GodotBall" unique_id=1963963944 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147483615
+reflection_mask = 32
+
+[node name="Brick" parent="Testers" unique_id=1668075783 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Brick" unique_id=386988245]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 64
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("12")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Brick/GodotBall" unique_id=10306800 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147483583
+reflection_mask = 64
+
+[node name="Wool" parent="Testers" unique_id=1092968765 instance=ExtResource("3")]
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Wool" unique_id=1006450910]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 128
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("13")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Wool/GodotBall" unique_id=554220792 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147483519
+reflection_mask = 128
+
+[node name="Aluminium" parent="Testers" unique_id=1853042374 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Aluminium" unique_id=645428617]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 256
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("14")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Aluminium/GodotBall" unique_id=1355333176 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147483391
+reflection_mask = 256
+
+[node name="Marble" parent="Testers" unique_id=1359255596 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Marble" unique_id=835011920]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 512
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("15")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Marble/GodotBall" unique_id=2021977322 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147483135
+reflection_mask = 512
+
+[node name="Wet Sand" parent="Testers" unique_id=1194030910 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Wet Sand" unique_id=1352439268]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 1024
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("17")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Wet Sand/GodotBall" unique_id=662909537 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147482623
+reflection_mask = 1024
+
+[node name="Rock" parent="Testers" unique_id=2036797441 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Rock" unique_id=2049865209]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 2048
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("18")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Rock/GodotBall" unique_id=256008575 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147481599
+reflection_mask = 2048
+
+[node name="Ice" parent="Testers" unique_id=1149801558 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Ice" unique_id=2113447386]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 4096
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("19")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Ice/GodotBall" unique_id=1710600431 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147479551
+reflection_mask = 4096
+
+[node name="Toon" parent="Testers" unique_id=576755291 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 0)
+
+[node name="GodotBall" type="MeshInstance3D" parent="Testers/Toon" unique_id=2138155991]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, -4)
+layers = 8192
+mesh = ExtResource("4_7al4s")
+surface_material_override/0 = ExtResource("20")
+surface_material_override/1 = ExtResource("6")
+surface_material_override/2 = ExtResource("5")
+surface_material_override/3 = ExtResource("7")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Testers/Toon/GodotBall" unique_id=72133132 groups=["reflection_probe"]]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 3, 0)
+size = Vector3(256, 256, 256)
+enable_shadows = true
+cull_mask = 2147475455
+reflection_mask = 8192
+
+[node name="CameraHolder" type="Node3D" parent="." unique_id=1561982243]
+transform = Transform3D(0.877582, 0, -0.479427, 0, 1, 0, 0.479427, 0, 0.877582, -36, 2.8, -4)
+
+[node name="RotationX" type="Node3D" parent="CameraHolder" unique_id=300181783]
+transform = Transform3D(1, 0, 0, 0, 0.877582, 0.479427, 0, -0.479427, 0.877582, 0, 0, 0)
+
+[node name="Camera" type="Camera3D" parent="CameraHolder/RotationX" unique_id=1835896244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+fov = 65.0
+near = 0.1
+
+[node name="UI" type="Control" parent="." unique_id=154427773]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="OptionButton" parent="UI" unique_id=1531674000]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 30.0
+offset_bottom = 36.0
+focus_mode = 0
+
+[node name="ReflectionProbes" type="OptionButton" parent="UI" unique_id=1145310318]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 56.0
+offset_right = 233.0
+offset_bottom = 87.0
+focus_mode = 0
+selected = 2
+item_count = 3
+popup/item_0/text = "No Reflection Probes"
+popup/item_0/id = 0
+popup/item_1/text = "Reflection Probes (Reflection only)"
+popup/item_1/id = 1
+popup/item_2/text = "Reflection Probes (Reflection + Ambient)"
+popup/item_2/id = 2
+
+[node name="Previous" type="Button" parent="UI" unique_id=478591064]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -64.0
+offset_right = 152.0
+offset_bottom = -16.0
+grow_vertical = 0
+focus_mode = 0
+text = "«  Previous"
+
+[node name="Next" type="Button" parent="UI" unique_id=1526527345]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -98.0
+offset_top = -64.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+focus_mode = 0
+text = "Next  »"
+
+[node name="MaterialName" type="Label" parent="UI" unique_id=1561206910]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -0.5
+offset_top = -58.0
+offset_right = 0.5
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 24
+
+[node name="Quit" type="Button" parent="UI" unique_id=1251547691]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -89.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 52.0
+grow_horizontal = 0
+focus_mode = 0
+text = "Quit"
+
+[connection signal="item_selected" from="UI/Background" to="." method="on_bg_item_selected"]
+[connection signal="item_selected" from="UI/ReflectionProbes" to="." method="on_reflection_probes_item_selected"]
+[connection signal="pressed" from="UI/Previous" to="." method="on_previous_pressed"]
+[connection signal="pressed" from="UI/Next" to="." method="on_next_pressed"]
+[connection signal="pressed" from="UI/Quit" to="." method="on_quit_pressed"]

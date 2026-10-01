@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dlyyi1i85mxu5"]
+
+[ext_resource type="Texture2D" uid="uid://bkjrvh4sgc1nk" path="res://test_materials/sand_albedo.jpg" id="1"]
+[ext_resource type="Texture2D" uid="uid://dlj356ry4sc36" path="res://test_materials/sand_metal.jpg" id="2"]
+[ext_resource type="Texture2D" uid="uid://cvlxugj3bomgf" path="res://test_materials/sand_rough.jpg" id="3"]
+[ext_resource type="Texture2D" uid="uid://cpjay3i6cbg6n" path="res://test_materials/sand_normal.jpg" id="4"]
+
+[resource]
+albedo_texture = ExtResource("1")
+metallic = 1.0
+metallic_texture = ExtResource("2")
+roughness_texture = ExtResource("3")
+normal_enabled = true
+normal_scale = 0.43
+normal_texture = ExtResource("4")
+texture_filter = 5

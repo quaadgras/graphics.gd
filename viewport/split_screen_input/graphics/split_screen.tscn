@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://db3nuuj3pqwor"]
+
+[ext_resource type="Texture2D" uid="uid://b1px2dsiv4fjd" path="res://icon.svg" id="4_787wn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m48mh"]
+size = Vector2(128, 128)
+
+[node name="Split" type="SplitScreen" unique_id=334739601]
+auto_translate_mode = 1
+offset_right = 350.0
+offset_bottom = 374.0
+
+[node name="OptionButton" type="OptionButton" parent="." unique_id=1376738709]
+auto_translate_mode = 1
+layout_mode = 2
+
+[node name="InputRoutingViewportContainer" type="InputRoutingViewportContainer" parent="." unique_id=2133028040]
+auto_translate_mode = 1
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="InputRoutingViewportContainer" unique_id=1327171656]
+handle_input_locally = false
+size = Vector2i(350, 350)
+render_target_update_mode = 4
+
+[node name="Player" type="SplitPlayer" parent="InputRoutingViewportContainer/SubViewport" unique_id=70740530]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InputRoutingViewportContainer/SubViewport/Player" unique_id=1321029429]
+shape = SubResource("RectangleShape2D_m48mh")
+
+[node name="Sprite2D" type="Sprite2D" parent="InputRoutingViewportContainer/SubViewport/Player" unique_id=291547810]
+texture = ExtResource("4_787wn")
+
+[node name="Camera2D" type="Camera2D" parent="InputRoutingViewportContainer/SubViewport/Player" unique_id=862053170]
+
+[connection signal="item_selected" from="OptionButton" to="." method="on_option_button_item_selected"]

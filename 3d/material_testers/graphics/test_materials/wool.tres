@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://61ngufkge4qk"]
+
+[ext_resource type="Texture2D" uid="uid://guwbff6oxnk4" path="res://test_materials/wool_depth.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://dprp5p5pn51wi" path="res://test_materials/wool_normal.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://qj7414udh5y3" path="res://test_materials/wool_albedo.png" id="3"]
+
+[resource]
+albedo_texture = ExtResource("3")
+metallic = 0.1
+roughness = 0.77
+normal_enabled = true
+normal_scale = 0.3
+normal_texture = ExtResource("2")
+heightmap_enabled = true
+heightmap_scale = 6.0
+heightmap_deep_parallax = true
+heightmap_min_layers = 4
+heightmap_max_layers = 16
+heightmap_texture = ExtResource("1")
+heightmap_flip_texture = true
+texture_filter = 5

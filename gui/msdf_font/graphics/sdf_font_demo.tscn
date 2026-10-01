@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://dbknjwlpbdyit"]
+
+[ext_resource type="FontFile" uid="uid://b4ngef7pot3yp" path="res://montserrat_semibold_msdf.ttf" id="1_eart1"]
+
+[sub_resource type="Animation" id="1"]
+length = 15.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -6.28319]
+}
+
+[sub_resource type="Animation" id="2"]
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(7, 7)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_88vp7"]
+_data = {
+&"rotate": SubResource("1"),
+&"zoomin_zoomout": SubResource("2")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j5dlp"]
+_data = {
+&"zoomin_zoomout": SubResource("2")
+}
+
+[node name="SDFFontDemo" type="SDFFontDemo" unique_id=1241967680]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="." unique_id=183250173]
+layout_mode = 0
+offset_right = 285.0
+offset_bottom = 107.0
+
+[node name="FontMode" type="Label" parent="." unique_id=615776437]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 218.0
+offset_bottom = 68.0
+text = "Font rendering: MSDF"
+
+[node name="OutlineSize" type="HBoxContainer" parent="." unique_id=332352676]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 56.0
+offset_right = 286.0
+offset_bottom = 96.0
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="OutlineSize" unique_id=113250470]
+layout_mode = 2
+text = "Outline size:"
+
+[node name="HSlider" type="HSlider" parent="OutlineSize" unique_id=1006800733]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 20.0
+value = 5.0
+
+[node name="Value" type="Label" parent="OutlineSize" unique_id=1663755520]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.23
+text = "5"
+
+[node name="Help" type="Label" parent="." unique_id=377570889]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -42.0
+offset_right = 439.0
+offset_bottom = -16.0
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "S: Toggle between traditional and MSDF font rendering"
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=2033118326]
+layout_mode = 0
+offset_left = 576.0
+offset_top = 324.0
+offset_right = 576.0
+offset_bottom = 324.0
+
+[node name="Base" type="Control" parent="CenterContainer" unique_id=1317448160]
+layout_mode = 2
+
+[node name="Rotate" type="AnimationPlayer" parent="CenterContainer/Base" unique_id=468350656]
+libraries/ = SubResource("AnimationLibrary_88vp7")
+autoplay = &"rotate"
+
+[node name="Zoom" type="AnimationPlayer" parent="CenterContainer/Base" unique_id=2126642397]
+libraries/ = SubResource("AnimationLibrary_j5dlp")
+autoplay = &"zoomin_zoomout"
+
+[node name="FontLabel" type="Label" parent="CenterContainer/Base" unique_id=537922364]
+unique_name_in_owner = true
+z_index = -1
+layout_mode = 0
+offset_left = -128.0
+offset_top = -50.0
+offset_right = 128.0
+offset_bottom = 51.0
+theme_override_colors/font_outline_color = Color(0.831373, 0.384314, 0.109804, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("1_eart1")
+text = "Font rendering example
+0123456789
+!@#$%^&*()_+-="
+
+[connection signal="value_changed" from="OutlineSize/HSlider" to="." method="on_outline_size_value_changed"]

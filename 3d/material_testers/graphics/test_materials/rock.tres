@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cn6fd2eoyai2f"]
+
+[ext_resource type="Texture2D" uid="uid://ch45tvy4pseu5" path="res://test_materials/rock_ao.jpg" id="1"]
+[ext_resource type="Texture2D" uid="uid://dd8r8q7sb2hjr" path="res://test_materials/rock_rough.jpg" id="2"]
+[ext_resource type="Texture2D" uid="uid://8lpiexsf28hi" path="res://test_materials/rock_albedo.jpg" id="3"]
+[ext_resource type="Texture2D" uid="uid://bomgkwg6qmuuh" path="res://test_materials/rock_metal.jpg" id="4"]
+
+[resource]
+albedo_texture = ExtResource("3")
+metallic = 0.12
+roughness_texture = ExtResource("2")
+normal_enabled = true
+normal_texture = ExtResource("4")
+ao_enabled = true
+ao_texture = ExtResource("1")
+texture_filter = 5

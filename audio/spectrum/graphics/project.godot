@@ -1,0 +1,35 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Audio Spectrum Demo"
+config/description="This is a demo showing how a spectrum analyzer can be built using Godot."
+config/tags=PackedStringArray("audio", "demo", "official", "visualization")
+run/main_scene="res://show_spectrum.tscn"
+config/features=PackedStringArray("4.6")
+run/low_processor_mode=true
+config/icon="res://icon.webp"
+
+[audio]
+
+buses/default_bus_layout="res://default_bus_layout.tres"
+
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/vsync/vsync_mode=0
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.12549, 0.12549, 0.12549, 1)

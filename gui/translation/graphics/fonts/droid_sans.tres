@@ -1,0 +1,31 @@
+[gd_resource type="FontFile" load_steps=7 format=3 uid="uid://c3nusrk8wkqph"]
+
+[ext_resource type="FontFile" uid="uid://b0brie8xhw7lr" path="res://fonts/DroidSansArabic.ttf" id="1"]
+[ext_resource type="FontFile" uid="uid://bqi7x43wvyyt8" path="res://fonts/DroidSansFallback.ttf" id="2"]
+[ext_resource type="FontFile" uid="uid://cdy4lualr8pss" path="res://fonts/DroidSansHebrew.ttf" id="3"]
+[ext_resource type="FontFile" uid="uid://c3a6v676rje26" path="res://fonts/DroidSansJapanese.ttf" id="4"]
+[ext_resource type="FontFile" uid="uid://bq54ty7twlox" path="res://fonts/DroidSansThai.ttf" id="5"]
+[ext_resource type="FontFile" uid="uid://tboche3yvnv2" path="res://fonts/DroidSans.ttf" id="6"]
+
+[resource]
+resource_name = "DroidSans"
+fallbacks = Array[Font]([ExtResource("6"), ExtResource("1"), ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/glyphs/0/advance = Vector2(0, 0)
+cache/0/16/0/glyphs/0/offset = Vector2(0, 0)
+cache/0/16/0/glyphs/0/size = Vector2(0, 0)
+cache/0/16/0/glyphs/0/uv_rect = Rect2(0, 0, 0, 0)
+cache/0/16/0/glyphs/0/texture_idx = -1
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/16/0/kerning_overrides/50/0 = Vector2(0, 0)
+cache/0/50/0/ascent = 0.0
+cache/0/50/0/descent = 0.0
+cache/0/50/0/underline_position = 0.0
+cache/0/50/0/underline_thickness = 0.0
+cache/0/50/0/scale = 1.0
+cache/0/50/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/50/0/kerning_overrides/50/0 = Vector2(0, 0)

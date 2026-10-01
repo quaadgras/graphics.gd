@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://djjyyk824u858"]
+
+
+[sub_resource type="BoxMesh" id="BoxMesh_uwx0y"]
+size = Vector3(0.05, 3.25, 2.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_uj7hy"]
+size = Vector3(0.2, 0.2, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yypcp"]
+
+[sub_resource type="BoxOccluder3D" id="BoxOccluder3D_gavni"]
+size = Vector3(0.05, 3.3, 2.5)
+
+[sub_resource type="Animation" id="Animation_4cjd4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_6r4px"]
+resource_name = "open"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5gp0p"]
+_data = {
+&"RESET": SubResource("Animation_4cjd4"),
+&"open": SubResource("Animation_6r4px")
+}
+
+[node name="Door" type="Door" unique_id=1549611156]
+
+[node name="Pivot" type="Node3D" parent="." unique_id=501674250]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 1.2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot" unique_id=2091023646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.005, -1.2)
+mesh = SubResource("BoxMesh_uwx0y")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot/MeshInstance3D" unique_id=116373013]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, -0.8)
+mesh = SubResource("BoxMesh_uj7hy")
+surface_material_override/0 = SubResource("StandardMaterial3D_yypcp")
+
+[node name="OccluderInstance3D" type="OccluderInstance3D" parent="." unique_id=372560907]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+occluder = SubResource("BoxOccluder3D_gavni")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=193135326]
+libraries/ = SubResource("AnimationLibrary_5gp0p")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="on_animation_player_animation_finished"]

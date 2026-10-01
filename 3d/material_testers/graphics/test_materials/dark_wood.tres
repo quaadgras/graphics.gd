@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bgwf7rbnk66l4"]
+
+[ext_resource type="Texture2D" uid="uid://du06ffhvoldx3" path="res://test_materials/texture_wood.png" id="1"]
+
+[resource]
+albedo_color = Color(0.806275, 0.575882, 0.361255, 1)
+albedo_texture = ExtResource("1")
+metallic = 0.48
+roughness = 0.28
+texture_filter = 5

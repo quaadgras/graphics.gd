@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://c76ahfbqcyip1"]
+
+[ext_resource type="Texture2D" uid="uid://bqf4lcb6h7mo5" path="res://robot_demo.png" id="2"]
+[ext_resource type="PackedScene" uid="uid://bp4giwsvw7bwu" path="res://robot_3d.tscn" id="3"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_2squv"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="AtlasTexture" id="2"]
+atlas = ExtResource("2")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="3"]
+atlas = ExtResource("2")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="4"]
+atlas = ExtResource("2")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="5"]
+atlas = ExtResource("2")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="6"]
+atlas = ExtResource("2")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("2")
+}, {
+"duration": 1.0,
+"texture": SubResource("3")
+}, {
+"duration": 1.0,
+"texture": SubResource("4")
+}, {
+"duration": 1.0,
+"texture": SubResource("5")
+}, {
+"duration": 1.0,
+"texture": SubResource("6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="3Din2D" type="ThreeDInTwoD" unique_id=1726340126]
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1952147331]
+transparent_bg = true
+msaa_3d = 2
+size = Vector2i(300, 300)
+render_target_update_mode = 4
+
+[node name="Robot3D" parent="SubViewport" unique_id=87932620 instance=ExtResource("3")]
+
+[node name="ViewportSprite" type="Sprite2D" parent="." unique_id=1828452929]
+position = Vector2(650, 300)
+texture = SubResource("ViewportTexture_2squv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=162452204]
+texture_filter = 1
+position = Vector2(350, 300)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("7")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=373943297]
+offset = Vector2(512, 300)

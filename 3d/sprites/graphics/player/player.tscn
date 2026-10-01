@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://csygybcji87vv"]
+
+[ext_resource type="SpriteFrames" uid="uid://dnhnmsah317tf" path="res://player/player_frames.tres" id="2_4ntmi"]
+
+[node name="Player" type="SpritePlayer" unique_id=1528128289]
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="." unique_id=1143454914]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 12.7616, 0, 0, 0)
+gi_mode = 2
+pixel_size = 0.125
+shaded = true
+alpha_cut = 2
+texture_filter = 0
+sprite_frames = ExtResource("2_4ntmi")
+animation = &"idle"

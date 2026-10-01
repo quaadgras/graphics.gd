@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://bev68x5r1igtw"]
+
+[ext_resource type="Texture2D" uid="uid://n28mue73qnk0" path="res://player/bullet.png" id="2"]
+
+[sub_resource type="CanvasItemMaterial" id="1"]
+blend_mode = 1
+
+[sub_resource type="CircleShape2D" id="2"]
+radius = 4.5
+
+[sub_resource type="Animation" id="3"]
+length = 1.5
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1.31),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.03),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GPUParticles2D:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hkd2b"]
+_data = {
+&"shutdown": SubResource("3")
+}
+
+[node name="Bullet" type="Bullet" unique_id=473089145]
+continuous_cd = 2
+
+[node name="GPUParticles2D" type="CPUParticles2D" parent="." unique_id=1623680574]
+material = SubResource("1")
+emitting = false
+texture = ExtResource("2")
+lifetime = 0.3
+speed_scale = 3.0
+spread = 0.0
+gravity = Vector2(0, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=93974332]
+texture = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=964228795]
+shape = SubResource("2")
+
+[node name="Timer" type="Timer" parent="." unique_id=954750638]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1099933579]
+libraries/ = SubResource("AnimationLibrary_hkd2b")
+
+[connection signal="timeout" from="Timer" to="." method="disable"]
