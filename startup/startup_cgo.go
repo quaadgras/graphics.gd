@@ -23,6 +23,7 @@ import (
 	"graphics.gd/classdb/SceneTree"
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/ring"
 	"graphics.gd/internal/threadcheck"
@@ -88,6 +89,11 @@ func init() {
 				for _, cleanup := range slices.Backward(internal.Cleanups()) {
 					cleanup()
 				}
+				// The frames have stopped, so nothing sweeps the objects Go
+				// was still holding in the last of them: release them here
+				// (one pass to expire, one to free) or they leak at exit.
+				gdreference.GC(internal.Free)
+				gdreference.GC(internal.Free)
 				pointers.Cycle()
 				pointers.Cycle()
 				internal.Linked = false

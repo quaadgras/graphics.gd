@@ -11,6 +11,7 @@ import (
 	gd "graphics.gd/internal"
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
@@ -70,6 +71,11 @@ func init() {
 				for _, cleanup := range slices.Backward(gd.Cleanups()) {
 					cleanup()
 				}
+				// The frames have stopped, so nothing sweeps the objects Go
+				// was still holding in the last of them: release them here
+				// (one pass to expire, one to free) or they leak at exit.
+				gdreference.GC(gd.Free)
+				gdreference.GC(gd.Free)
 				pointers.Cycle()
 				pointers.Cycle()
 				close(shutdown)
