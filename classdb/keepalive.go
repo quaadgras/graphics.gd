@@ -302,6 +302,17 @@ func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)
 		}
 		return nil
 	case reflect.Interface:
+		// Only interfaces that hold an engine class (Object.Any, Node.Any
+		// and so on) are looked inside. Any other interface (any, error,
+		// context.Context, ...) can hold values that other goroutines
+		// write under locks the walk cannot know about: following a
+		// context.Context into cancelCtx.children while an HTTP goroutine
+		// added and cancelled child contexts was a fatal "concurrent map
+		// iteration and map write" (#346). Engine objects meant to outlive
+		// a frame must be held by a typed field.
+		if !rtype.Implements(reflect.TypeFor[Object.Any]()) {
+			return nil
+		}
 		return func(val reflect.Value) {
 			if val.IsNil() {
 				return

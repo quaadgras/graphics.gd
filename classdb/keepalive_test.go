@@ -1,8 +1,11 @@
 package classdb
 
 import (
+	"context"
 	"reflect"
+	"sync"
 	"testing"
+	"time"
 
 	"graphics.gd/classdb/MeshInstance3D"
 	"graphics.gd/classdb/Node"
@@ -130,5 +133,61 @@ func TestKeepAlive_MapOfPointers(t *testing.T) {
 	}
 	if walked != len(outer.entries) {
 		t.Fatalf("walked %d of %d map entries", walked, len(outer.entries))
+	}
+}
+
+// TestKeepAlive_Interfaces: only interfaces that hold an engine class are
+// looked inside. Other interfaces can hold values that other goroutines
+// write under their own locks (#346).
+func TestKeepAlive_Interfaces(t *testing.T) {
+	type Held struct {
+		ctx context.Context
+		any any
+		err error
+		m   map[string]any
+	}
+	if fn := compile_keepalive(reflect.TypeFor[Held]()); fn != nil {
+		t.Fatal("compile_keepalive looks inside interfaces that cannot hold an engine class")
+	}
+	type Engine struct {
+		node Node.Any
+	}
+	if fn := compile_keepalive(reflect.TypeFor[Engine]()); fn == nil {
+		t.Fatal("compile_keepalive does not look inside a Node.Any")
+	}
+}
+
+// TestKeepAlive_ContextChildren walks a context.Context while another
+// goroutine adds and cancels children of it, which is how a request context
+// is used. Walking into cancelCtx.children ended in a fatal "concurrent map
+// iteration and map write" within a second (#346).
+func TestKeepAlive_ContextChildren(t *testing.T) {
+	type Held struct {
+		ctx context.Context
+		any any
+	}
+	parent, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	held := Held{ctx: parent, any: parent}
+	stop := make(chan struct{})
+	var wg sync.WaitGroup
+	wg.Go(func() {
+		for {
+			select {
+			case <-stop:
+				return
+			default:
+				_, cancel := context.WithCancel(parent)
+				cancel()
+			}
+		}
+	})
+	defer wg.Wait()
+	defer close(stop)
+	for deadline := time.Now().Add(time.Second); time.Now().Before(deadline); {
+		clear(skips)
+		if fn := compile_keepalive(reflect.TypeFor[Held]()); fn != nil {
+			fn(reflect.ValueOf(&held).Elem())
+		}
 	}
 }
