@@ -116,7 +116,10 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 // unless it is tagged gd:"-", as such a field is not a property.
 func propertyFieldByName(rvalue reflect.Value, name string) reflect.Value {
 	rfield, ok := rvalue.Type().FieldByName(name)
-	if !ok || rfield.Tag.Get("gd") == "-" {
+	// Embedded fields are not properties (registration skips them too): a
+	// ShaderMaterial extension embeds a field named Shader, which must not be
+	// mistaken for the engine's own shader property.
+	if !ok || rfield.Anonymous || rfield.Tag.Get("gd") == "-" {
 		return reflect.Value{}
 	}
 	return rvalue.FieldByIndex(rfield.Index)
@@ -136,7 +139,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	field := propertyFieldByName(rvalue, sname)
 	if !field.IsValid() || !field.CanSet() {
 		for _, rfield := range reflect.VisibleFields(rvalue.Type()) {
-			if !rfield.IsExported() {
+			if !rfield.IsExported() || rfield.Anonymous {
 				continue
 			}
 			tag, hasTag := rfield.Tag.Lookup("gd")
@@ -243,7 +246,7 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	field := propertyFieldByName(rvalue, String.ToPascalCase(sname))
 	if !field.IsValid() {
 		for _, rfield := range reflect.VisibleFields(rvalue.Type()) {
-			if !rfield.IsExported() {
+			if !rfield.IsExported() || rfield.Anonymous {
 				continue
 			}
 			tag, hasTag := rfield.Tag.Lookup("gd")
