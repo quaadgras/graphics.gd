@@ -2,6 +2,7 @@ package gpu
 
 import (
 	"reflect"
+	"unsafe"
 
 	"graphics.gd/classdb/Cubemap"
 	"graphics.gd/classdb/Texture2D"
@@ -111,9 +112,9 @@ type AnyBool interface {
 func NewBool[T AnyBool](x T) Bool {
 	rvalue := reflect.ValueOf(x)
 	if rvalue.Kind() == reflect.Bool {
-		return Bool{X: rvalue.Bool()}
+		return Bool{internalExpression: literal(), X: rvalue.Bool()}
 	}
-	return rvalue.Convert(reflect.TypeFor[Bool]()).Interface().(Bool)
+	return *(*Bool)(unsafe.Pointer(&x)) // x is a struct with the same fields as Bool.
 }
 
 func NewBoolExpression(e Expression) Bool { return Bool{internalExpression: e} }
@@ -132,9 +133,9 @@ type AnyInt interface {
 func NewInt[T AnyInt](x T) Int {
 	rvalue := reflect.ValueOf(x)
 	if rvalue.Kind() != reflect.Struct {
-		return Int{X: int(rvalue.Int())}
+		return Int{internalExpression: literal(), X: int(rvalue.Int())}
 	}
-	return rvalue.Convert(reflect.TypeFor[Int]()).Interface().(Int)
+	return *(*Int)(unsafe.Pointer(&x)) // x is a struct with the same fields as Int.
 }
 func NewIntExpression(e Expression) Int { return Int{internalExpression: e} }
 
@@ -152,9 +153,9 @@ type AnyUint interface {
 func NewUint[T AnyUint](x T) Uint {
 	rvalue := reflect.ValueOf(x)
 	if rvalue.Kind() != reflect.Struct {
-		return Uint{X: uint(rvalue.Uint())}
+		return Uint{internalExpression: literal(), X: uint(rvalue.Uint())}
 	}
-	return rvalue.Convert(reflect.TypeFor[Uint]()).Interface().(Uint)
+	return *(*Uint)(unsafe.Pointer(&x)) // x is a struct with the same fields as Uint.
 }
 func NewUintExpression(e Expression) Uint { return Uint{internalExpression: e} }
 
@@ -175,9 +176,9 @@ func NewFloat[T AnyFloat | IntVariant.Any](x T) Float {
 		if rvalue.Kind() != reflect.Float32 && rvalue.Kind() != reflect.Float64 {
 			rvalue = reflect.ValueOf(float64(rvalue.Int()))
 		}
-		return Float{X: rvalue.Float()}
+		return Float{internalExpression: literal(), X: rvalue.Float()}
 	}
-	return rvalue.Convert(reflect.TypeFor[Float]()).Interface().(Float)
+	return *(*Float)(unsafe.Pointer(&x)) // x is a struct with the same fields as Float.
 }
 func NewFloatExpression(e Expression) Float { return Float{internalExpression: e} }
 

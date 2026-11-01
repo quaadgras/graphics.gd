@@ -93,8 +93,11 @@ func Max[T gpu.AnyFloat | XY](a XY, b T) XY { //glsl:max(vec2,float)vec2 max(vec
 func Min[T gpu.AnyFloat | XY](a XY, b T) XY { //glsl:min(vec2,float)vec2 min(vec2,vec2)vec2
 	return gpu.NewVec2Expression(gpu.Fn("min", a, either(b)))
 }
-func Mix[T gpu.AnyFloat | XY](a XY, b T, t T) XY { //glsl:mix(vec2,vec2,vec2)vec2 mix(vec2,float,float)vec2
-	return gpu.NewVec2Expression(gpu.Fn("mix", a, either(b), either(t)))
+
+// Mix linearly interpolates between a and b by t, where t is either a single
+// weight for all components or a per-component weight.
+func Mix[T gpu.AnyFloat | XY](a, b XY, t T) XY { //glsl:mix(vec2,vec2,float)vec2 mix(vec2,vec2,vec2)vec2
+	return gpu.NewVec2Expression(gpu.Fn("mix", a, b, either(t)))
 }
 func Mod[T gpu.AnyFloat | XY](a XY, b T) XY { //glsl:mod(vec2,vec2)vec2 mod(vec2,float)vec2
 	return gpu.NewVec2Expression(gpu.Fn("mod", a, either(b)))

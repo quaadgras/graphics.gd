@@ -2,12 +2,23 @@
 package float
 
 import (
+	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/internal/gpu"
 	"graphics.gd/variant/Int"
 )
 
 // X is a floating-point value on the GPU (represented by an unspecified number of bits).
 type X gpu.Float
+
+// FromInt converts an integer on the GPU to a float.
+func FromInt(a gpu.Int) X { return gpu.NewFloatExpression(gpu.Fn("float", a)) } //glsl:float(int)float
+
+// FromBool converts a boolean on the GPU to a float, 1.0 for true and 0.0 for false.
+func FromBool(a gpu.Bool) X { return gpu.NewFloatExpression(gpu.Fn("float", a)) } //glsl:float(bool)float
+
+// Any is satisfied by Go floating-point values and by GPU floats, so that a
+// helper function can accept either, like the functions in this package do.
+type Any = gpu.AnyFloat
 
 // New creates a new [X] value from a float.
 func New[T gpu.AnyFloat | Int.Any](x T) X { return gpu.NewFloat(x) }
@@ -28,22 +39,22 @@ func Neg[A gpu.AnyFloat](a A) X { //glsl:-(float)
 	return gpu.NewFloatExpression(gpu.Op(nil, "-", gpu.NewFloat(a)))
 }
 
-func Eq[A, B gpu.AnyFloat](a A, b B) gpu.Bool {
+func Eq[A, B gpu.AnyFloat](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewFloat(a), "==", gpu.NewFloat(b)))
 }
-func Neq[A, B gpu.AnyFloat](a A, b B) gpu.Bool {
+func Neq[A, B gpu.AnyFloat](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewFloat(a), "!=", gpu.NewFloat(b)))
 }
-func Gt[A, B gpu.AnyFloat](a A, b B) gpu.Bool {
+func Gt[A, B gpu.AnyFloat](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewFloat(a), ">", gpu.NewFloat(b)))
 }
-func Gte[A, B gpu.AnyFloat](a A, b B) gpu.Bool {
+func Gte[A, B gpu.AnyFloat](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewFloat(a), ">=", gpu.NewFloat(b)))
 }
-func Lt[A, B gpu.AnyFloat](a A, b B) gpu.Bool {
+func Lt[A, B gpu.AnyFloat](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewFloat(a), "<", gpu.NewFloat(b)))
 }
-func Lte[A, B gpu.AnyFloat](a A, b B) gpu.Bool {
+func Lte[A, B gpu.AnyFloat](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewFloat(a), "<=", gpu.NewFloat(b)))
 }
 
@@ -140,10 +151,10 @@ func Step[A, B gpu.AnyFloat](a A, b B) X { //glsl:step(float,float)float
 func Tan[A gpu.AnyFloat](a A) X   { return gpu.NewFloatExpression(gpu.Fn("tan", gpu.NewFloat(a))) }   //glsl:tan(float)float
 func Tanh[A gpu.AnyFloat](a A) X  { return gpu.NewFloatExpression(gpu.Fn("tanh", gpu.NewFloat(a))) }  //glsl:tanh(float)float
 func Trunc[A gpu.AnyFloat](a A) X { return gpu.NewFloatExpression(gpu.Fn("trunc", gpu.NewFloat(a))) } //glsl:trunc(float)float
-func IsInf[A gpu.AnyFloat](a A) gpu.Bool { //glsl:isinf(float)bvec
+func IsInf[A gpu.AnyFloat](a A) bool.X { //glsl:isinf(float)bvec
 	return gpu.NewBoolExpression(gpu.Fn("isinf", gpu.NewFloat(a)))
 }
-func IsNaN[A gpu.AnyFloat](a A) gpu.Bool { //glsl:isnan(float)bvec
+func IsNaN[A gpu.AnyFloat](a A) bool.X { //glsl:isnan(float)bvec
 	return gpu.NewBoolExpression(gpu.Fn("isnan", gpu.NewFloat(a)))
 }
 func Distance[A, B gpu.AnyFloat](a A, b B) X { //glsl:distance(float,float)float

@@ -24,6 +24,13 @@ func Mul[T gpu.AnyFloat | vec4.RGBA](a vec4.RGBA, b T) vec4.RGBA { //glsl:*(vec4
 func Div[T gpu.AnyFloat | vec4.RGBA](a vec4.RGBA, b T) vec4.RGBA { //glsl:/(vec4,vec4)
 	return gpu.NewRGBAExpression(gpu.Op(either(a), "/", either(b)))
 }
+
+// Mix linearly interpolates between a and b by t, where t is either a single
+// weight for all channels or a per-channel weight.
+func Mix[T gpu.AnyFloat | vec4.RGBA](a, b vec4.RGBA, t T) vec4.RGBA { //glsl:mix(vec4,vec4,float)vec4 mix(vec4,vec4,vec4)vec4
+	return gpu.NewRGBAExpression(gpu.Fn("mix", a, b, either(t)))
+}
+
 func Neg(a vec4.RGBA) vec4.RGBA { return gpu.NewRGBAExpression(gpu.Op(nil, "-", a)) } //glsl:-(vec4)
 
 func either[T gpu.AnyFloat | vec4.RGBA](v T) gpu.Evaluator {

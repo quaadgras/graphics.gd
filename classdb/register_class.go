@@ -352,6 +352,11 @@ func Register[T Class](exports ...any) {
 		if registrator, ok := any(reference).(interface{ OnRegister() }); ok {
 			registrator.OnRegister()
 		}
+		if _, ok := super.(interface {
+			AsShaderMaterial() ShaderMaterial.Instance
+		}); ok && gdclass.OnRegisterShader != nil {
+			gdclass.OnRegisterShader(impl.Constructor)
+		}
 		if Engine.IsEditorHint() {
 			if isEditorPlugin(super) {
 				gdextension.Host.Editor.AddPlugin(pointers.Get(className))

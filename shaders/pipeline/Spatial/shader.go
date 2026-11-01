@@ -118,8 +118,8 @@ type Vertex struct {
 	UV2                   vec2.XY          `gd:"UV2"`                      // UV secondary channel.
 	Color                 vec4.RGBA        `gd:"COLOR"`                    // Color from vertices.
 	PointSize             float.X          `gd:"POINT_SIZE"`               // Point size for point rendering.
-	ModelViewMatrix       mat4.ColumnMajor `gd:"MODEL_VIEW_MATRIX"`        // Model/local space to view space transform (use if possible).
-	ModelViewNormalMatrix mat4.ColumnMajor `gd:"MODEL_VIEW_NORMAL_MATRIX"` //
+	ModelViewMatrix       mat4.ColumnMajor `gd:"MODELVIEW_MATRIX"`         // Model/local space to view space transform (use if possible).
+	ModelViewNormalMatrix mat4.ColumnMajor `gd:"MODELVIEW_NORMAL_MATRIX"`  //
 	ModelMatrix           mat4.ColumnMajor `gd:"MODEL_MATRIX"`             // Model/local space to world space transform.
 	ModelNormalMatrix     mat4.ColumnMajor `gd:"MODEL_NORMAL_MATRIX"`      //
 	ProjectionMatrix      mat4.ColumnMajor `gd:"PROJECTION_MATRIX"`        // View space to clip space transform.

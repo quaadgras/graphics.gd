@@ -2,6 +2,7 @@
 package uint
 
 import (
+	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/internal/gpu"
 )
 
@@ -27,22 +28,22 @@ func Mod[A, B gpu.AnyUint](a A, b B) X {
 	return gpu.NewUintExpression(gpu.Op(gpu.NewUint(a), "%", gpu.NewUint(b)))
 }
 
-func Eq[A, B gpu.AnyUint](a A, b B) gpu.Bool {
+func Eq[A, B gpu.AnyUint](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewUint(a), "==", gpu.NewUint(b)))
 }
-func Neq[A, B gpu.AnyUint](a A, b B) gpu.Bool {
+func Neq[A, B gpu.AnyUint](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewUint(a), "!=", gpu.NewUint(b)))
 }
-func Gt[A, B gpu.AnyUint](a A, b B) gpu.Bool {
+func Gt[A, B gpu.AnyUint](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewUint(a), ">", gpu.NewUint(b)))
 }
-func Gte[A, B gpu.AnyUint](a A, b B) gpu.Bool {
+func Gte[A, B gpu.AnyUint](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewUint(a), ">=", gpu.NewUint(b)))
 }
-func Lt[A, B gpu.AnyUint](a A, b B) gpu.Bool {
+func Lt[A, B gpu.AnyUint](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewUint(a), "<", gpu.NewUint(b)))
 }
-func Lte[A, B gpu.AnyUint](a A, b B) gpu.Bool {
+func Lte[A, B gpu.AnyUint](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewUint(a), "<=", gpu.NewUint(b)))
 }
 

@@ -166,3 +166,9 @@ func (class *ExtensionInherits[S, T]) AsObject() [1]gdreference.Object {
 	gdreference.UseObject((*gdreference.Object)(unsafe.Pointer(&class.super)))
 	return obj
 }
+
+// OnRegisterShader is set by the shaders package, classdb calls it when a
+// ShaderMaterial extension (a shader written in Go) is registered, with the
+// constructor of the class, so that its code can be generated in the
+// background, before the first material is created.
+var OnRegisterShader func(construct func() reflect.Value)

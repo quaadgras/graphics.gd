@@ -2,6 +2,7 @@
 package int
 
 import (
+	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/internal/gpu"
 )
 
@@ -10,6 +11,9 @@ type X gpu.Int
 
 // New creates a new [X] value from an integer.
 func New[T gpu.AnyInt](x T) X { return gpu.NewInt(x) }
+
+// FromFloat converts a float to an integer, dropping its fractional part.
+func FromFloat(a gpu.Float) X { return gpu.NewIntExpression(gpu.Fn("int", a)) } //glsl:int(float)int
 
 func Add[A, B gpu.AnyInt](a A, b B) X { //glsl:+(int,int)
 	return gpu.NewIntExpression(gpu.Op(gpu.NewInt(a), "+", gpu.NewInt(b)))
@@ -30,22 +34,22 @@ func Neg[A gpu.AnyInt](a A) X { //glsl:-(int)
 	return gpu.NewIntExpression(gpu.Op(nil, "-", gpu.NewInt(a)))
 }
 
-func Eq[A, B gpu.AnyInt](a A, b B) gpu.Bool {
+func Eq[A, B gpu.AnyInt](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewInt(a), "==", gpu.NewInt(b)))
 }
-func Neq[A, B gpu.AnyInt](a A, b B) gpu.Bool {
+func Neq[A, B gpu.AnyInt](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewInt(a), "!=", gpu.NewInt(b)))
 }
-func Gt[A, B gpu.AnyInt](a A, b B) gpu.Bool {
+func Gt[A, B gpu.AnyInt](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewInt(a), ">", gpu.NewInt(b)))
 }
-func Gte[A, B gpu.AnyInt](a A, b B) gpu.Bool {
+func Gte[A, B gpu.AnyInt](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewInt(a), ">=", gpu.NewInt(b)))
 }
-func Lt[A, B gpu.AnyInt](a A, b B) gpu.Bool {
+func Lt[A, B gpu.AnyInt](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewInt(a), "<", gpu.NewInt(b)))
 }
-func Lte[A, B gpu.AnyInt](a A, b B) gpu.Bool {
+func Lte[A, B gpu.AnyInt](a A, b B) bool.X {
 	return gpu.NewBoolExpression(gpu.Op(gpu.NewInt(a), "<=", gpu.NewInt(b)))
 }
 

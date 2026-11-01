@@ -1,7 +1,10 @@
 // Pacakge bvec3 provides GPU operations on three-component boolean vectors.
 package bvec3
 
-import "graphics.gd/shaders/internal/gpu"
+import (
+	"graphics.gd/shaders/bool"
+	"graphics.gd/shaders/internal/gpu"
+)
 
 // XYZ is a three-component vector of booleans on the GPU.
 type XYZ gpu.Vec3b
@@ -17,6 +20,6 @@ func Neq(a, b XYZ) XYZ { return gpu.NewVec3bExpression(gpu.Op(a, "!=", b)) }
 func Mix(a, b gpu.Vec3, t XYZ) gpu.Vec3 { //glsl:mix(vec3,vec3,bvec)vec3
 	return gpu.NewVec3Expression(gpu.Fn("mix", a, b, t))
 }
-func All(a XYZ) gpu.Bool { return gpu.NewBoolExpression(gpu.Fn("all", a)) }  //glsl:all(bvec3)bool
-func Any(a XYZ) gpu.Bool { return gpu.NewBoolExpression(gpu.Fn("any", a)) }  //glsl:any(bvec3)bool
-func Not(a XYZ) XYZ      { return gpu.NewVec3bExpression(gpu.Fn("not", a)) } //glsl:not(bvec3)bvec3
+func All(a XYZ) bool.X { return gpu.NewBoolExpression(gpu.Fn("all", a)) }  //glsl:all(bvec3)bool
+func Any(a XYZ) bool.X { return gpu.NewBoolExpression(gpu.Fn("any", a)) }  //glsl:any(bvec3)bool
+func Not(a XYZ) XYZ    { return gpu.NewVec3bExpression(gpu.Fn("not", a)) } //glsl:not(bvec3)bvec3

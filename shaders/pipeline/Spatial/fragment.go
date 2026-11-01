@@ -13,19 +13,19 @@ import (
 )
 
 type Fragment struct {
-	VertexPosition        vec3.XYZ         `gd:"VERTEX"`                   // Position of the vertex, in model space. In world space if world_vertex_coords is used.
-	Position              vec3.XYZ         `gd:"POSITION"`                 // If written to, overrides final vertex position in clip space.
-	Normal                vec3.XYZ         `gd:"NORMAL"`                   // Normal in model space. In world space if world_vertex_coords is used.
-	Tangent               vec3.XYZ         `gd:"TANGENT"`                  // Tangent in model space. In world space if world_vertex_coords is used.
-	Binormal              vec3.XYZ         `gd:"BINORMAL"`                 // Binormal in model space. In world space if world_vertex_coords is used.
-	UV                    vec2.XY          `gd:"UV"`                       // UV main channel.
-	UV2                   vec2.XY          `gd:"UV2"`                      // UV secondary channel.
-	Color                 vec4.RGBA        `gd:"COLOR"`                    // Color from vertices.
-	Roughness             float.X          `gd:"ROUGHNESS"`                // Roughness for vertex lighting.
-	PointSize             float.X          `gd:"POINT_SIZE"`               // Point size for point rendering.
-	ModelViewMatrix       mat4.ColumnMajor `gd:"MODEL_VIEW_MATRIX"`        // Model/local space to view space transform (use if possible).
-	ModelViewNormalMatrix mat4.ColumnMajor `gd:"MODEL_VIEW_NORMAL_MATRIX"` //
-	ProjectionMatrix      mat4.ColumnMajor `gd:"PROJECTION_MATRIX"`        // View space to clip space transform.
+	VertexPosition        vec3.XYZ         `gd:"VERTEX"`                  // Position of the vertex, in model space. In world space if world_vertex_coords is used.
+	Position              vec3.XYZ         `gd:"POSITION"`                // If written to, overrides final vertex position in clip space.
+	Normal                vec3.XYZ         `gd:"NORMAL"`                  // Normal in model space. In world space if world_vertex_coords is used.
+	Tangent               vec3.XYZ         `gd:"TANGENT"`                 // Tangent in model space. In world space if world_vertex_coords is used.
+	Binormal              vec3.XYZ         `gd:"BINORMAL"`                // Binormal in model space. In world space if world_vertex_coords is used.
+	UV                    vec2.XY          `gd:"UV"`                      // UV main channel.
+	UV2                   vec2.XY          `gd:"UV2"`                     // UV secondary channel.
+	Color                 vec4.RGBA        `gd:"COLOR"`                   // Color from vertices.
+	Roughness             float.X          `gd:"ROUGHNESS"`               // Roughness for vertex lighting.
+	PointSize             float.X          `gd:"POINT_SIZE"`              // Point size for point rendering.
+	ModelViewMatrix       mat4.ColumnMajor `gd:"MODELVIEW_MATRIX"`        // Model/local space to view space transform (use if possible).
+	ModelViewNormalMatrix mat4.ColumnMajor `gd:"MODELVIEW_NORMAL_MATRIX"` //
+	ProjectionMatrix      mat4.ColumnMajor `gd:"PROJECTION_MATRIX"`       // View space to clip space transform.
 }
 
 // ViewportSize returns the size of the viewport (in pixels).
