@@ -124,5 +124,10 @@ func main() {
 	classdb.Register[SpritesTester](NewSpritesTester)
 	classdb.Register[SpritePlayer](NewSpritePlayer)
 	classdb.Register[SpriteRotate](NewSpriteRotate)
+	classdb.Register[Negative]()
+	classdb.Register[PaperShader](NewPaperShader)
+	classdb.Register[PaperMaterial](NewPaperMaterial)
+	classdb.Register[PaperEmission](NewPaperEmission)
+	classdb.Register[PaperRainbow](NewPaperRainbow)
 	startup.Scene()
 }

@@ -135,5 +135,6 @@ func (l *LabelsAndTexts) OnLineEditTextSubmitted(_ string) {
 func main() {
 	classdb.Register[LabelsAndTexts](NewLabelsAndTexts)
 	classdb.Register[Label3DLayout]()
+	classdb.Register[Curvature]()
 	startup.Scene()
 }

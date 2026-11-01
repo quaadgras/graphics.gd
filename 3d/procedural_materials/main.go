@@ -139,5 +139,6 @@ func main() {
 	classdb.Register[LoadingScreen]()
 	classdb.Register[MaterialTester](NewMaterialTester)
 	classdb.Register[GridMaterial]()
+	classdb.Register[Plasma]()
 	startup.Scene()
 }

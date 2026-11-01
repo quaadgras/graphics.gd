@@ -9,7 +9,6 @@
 [ext_resource type="Material" uid="uid://c5trc4hy86utg" path="res://Environment/Terrain/terrain_mat.tres" id="5_xal68"]
 [ext_resource type="Material" uid="uid://con3572kpt8a3" path="res://Environment/large_tree_trunk/large_tree_trunk_mat.tres" id="6_q3y6j"]
 [ext_resource type="PackedScene" uid="uid://dr8slkof1nc8r" path="res://Environment/trees/tree.tscn" id="7_rvx5i"]
-[ext_resource type="Shader" uid="uid://b6r7htt0t7v0n" path="res://Environment/water/water_shader.gdshader" id="8_trepf"]
 [ext_resource type="Texture2D" uid="uid://ssrlnj65d4bs" path="res://Environment/water/textures/caustic_texture.png" id="9_8eqnd"]
 [ext_resource type="PackedScene" uid="uid://dx8qkjcbt8emp" path="res://Environment/grass/GrassChunk.tscn" id="10_8c06q"]
 [ext_resource type="PackedScene" uid="uid://cn8o7sv1osssk" path="res://Environment/bushes/bush.tscn" id="11_f8df7"]
@@ -43,9 +42,8 @@ fractal_type = 0
 noise = SubResource("FastNoiseLite_le7wx")
 seamless = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ylhgr"]
+[sub_resource type="Water" id="ShaderMaterial_ylhgr"]
 render_priority = -1
-shader = ExtResource("8_trepf")
 shader_parameter/main_noise_sampler = SubResource("NoiseTexture2D_71o0d")
 shader_parameter/caustic_sampler = ExtResource("9_8eqnd")
 shader_parameter/water_color = Color(0.133333, 0.490196, 0.823529, 1)

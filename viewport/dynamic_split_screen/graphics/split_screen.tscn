@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://cwmuj2nqpb63g"]
 
-[ext_resource type="Shader" uid="uid://ciyywi5gyvefo" path="res://split_screen.gdshader" id="3"]
 [ext_resource type="Texture2D" uid="uid://c37qtfc88xslg" path="res://icon.webp" id="4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_16la2"]
@@ -18,8 +17,7 @@ ambient_light_energy = 0.33
 reflected_light_source = 2
 tonemap_mode = 4
 
-[sub_resource type="ShaderMaterial" id="1"]
-shader = ExtResource("3")
+[sub_resource type="SplitScreen" id="1"]
 shader_parameter/viewport_size = Vector2(0, 0)
 shader_parameter/split_active = false
 shader_parameter/player1_position = Vector2(0, 0)

@@ -1,62 +1,43 @@
 [gd_scene format=3 uid="uid://dl6ocanwim8u8"]
 
-[ext_resource type="Shader" uid="uid://didwvanllpswi" path="res://shaders/outline.gdshader" id="1"]
 [ext_resource type="Texture2D" uid="uid://dyoo5n3l3rbth" path="res://godotea.png" id="2"]
-[ext_resource type="Shader" uid="uid://c1t7wtmjxj1v8" path="res://shaders/aura.gdshader" id="3"]
-[ext_resource type="Shader" uid="uid://c2pi5rd4ikur0" path="res://shaders/blur.gdshader" id="4"]
-[ext_resource type="Shader" uid="uid://b5yalg8oee4bk" path="res://shaders/fatty.gdshader" id="5"]
-[ext_resource type="Shader" uid="uid://dutvqyhs2qth8" path="res://shaders/dropshadow.gdshader" id="6"]
-[ext_resource type="Shader" uid="uid://dh6oxlekrqvxm" path="res://shaders/offsetshadow.gdshader" id="7"]
-[ext_resource type="Shader" uid="uid://0rr5xhbk2o6w" path="res://shaders/silouette.gdshader" id="8"]
-[ext_resource type="Shader" uid="uid://cxw15j1j27i5h" path="res://shaders/glow.gdshader" id="9"]
-[ext_resource type="Shader" uid="uid://dqrfxijvh1s27" path="res://shaders/dissintegrate.gdshader" id="10"]
 
-[sub_resource type="ShaderMaterial" id="1"]
-shader = ExtResource("1")
+[sub_resource type="Outline" id="1"]
 shader_parameter/outline_width = 2.0
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="2"]
 
-[sub_resource type="ShaderMaterial" id="3"]
-shader = ExtResource("1")
+[sub_resource type="Outline" id="3"]
 shader_parameter/outline_width = 2.0
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 
-[sub_resource type="ShaderMaterial" id="4"]
-shader = ExtResource("3")
+[sub_resource type="Aura" id="4"]
 shader_parameter/aura_width = 2.0
 shader_parameter/aura_color = Color(0, 1, 0.486275, 1)
 
-[sub_resource type="ShaderMaterial" id="5"]
-shader = ExtResource("4")
+[sub_resource type="Blur" id="5"]
 shader_parameter/radius = 4.0
 
-[sub_resource type="ShaderMaterial" id="6"]
-shader = ExtResource("5")
+[sub_resource type="Fatty" id="6"]
 shader_parameter/fattyness = 3.0
 
-[sub_resource type="ShaderMaterial" id="7"]
-shader = ExtResource("6")
+[sub_resource type="DropShadow" id="7"]
 shader_parameter/radius = 5.0
 shader_parameter/modulate = Color(0, 0, 0, 1)
 
-[sub_resource type="ShaderMaterial" id="8"]
-shader = ExtResource("7")
+[sub_resource type="OffsetShadow" id="8"]
 shader_parameter/offset = Vector2(8, 8)
 shader_parameter/modulate = Color(0, 0, 0, 1)
 
-[sub_resource type="ShaderMaterial" id="9"]
-shader = ExtResource("8")
+[sub_resource type="Silhouette" id="9"]
 shader_parameter/modulate = Color(0.858824, 0.317647, 0.701961, 1)
 
-[sub_resource type="ShaderMaterial" id="10"]
-shader = ExtResource("9")
+[sub_resource type="Glow" id="10"]
 shader_parameter/radius = 5.0
 shader_parameter/amount = 0.25
 
-[sub_resource type="ShaderMaterial" id="11"]
-shader = ExtResource("10")
+[sub_resource type="Disintegrate" id="11"]
 shader_parameter/amount = 4.0
 
 [node name="SpriteShaders" type="Node2D" unique_id=877250922]

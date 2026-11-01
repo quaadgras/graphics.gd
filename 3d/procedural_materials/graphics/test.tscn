@@ -7,7 +7,6 @@
 [ext_resource type="Material" uid="uid://c6y0v3d18y345" path="res://materials/ice.tres" id="7_k1q1v"]
 [ext_resource type="Material" uid="uid://cyo28qn76a78l" path="res://materials/lava.tres" id="8_jphcw"]
 [ext_resource type="Material" uid="uid://vvdxcx0f27wv" path="res://materials/glass.tres" id="9_vei4q"]
-[ext_resource type="Shader" uid="uid://bse14pb44mx5c" path="res://shaders/plasma.gdshader" id="11_aoush"]
 [ext_resource type="Texture2D" uid="uid://douhbeycol3hk" path="res://checker.png" id="14"]
 
 [sub_resource type="ProceduralSkyMaterial" id="9"]
@@ -190,8 +189,7 @@ height = 1024
 noise = SubResource("FastNoiseLite_25kcu")
 seamless = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2p45w"]
-shader = ExtResource("11_aoush")
+[sub_resource type="Plasma" id="ShaderMaterial_2p45w"]
 shader_parameter/noise1 = SubResource("NoiseTexture2D_n04ac")
 shader_parameter/noise2 = SubResource("NoiseTexture2D_pn44s")
 

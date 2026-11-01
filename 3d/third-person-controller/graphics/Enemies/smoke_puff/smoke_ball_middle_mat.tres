@@ -1,6 +1,5 @@
-[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://cnvmsr64tkgyn"]
+[gd_resource type="SmokeBallMiddle" load_steps=4 format=3 uid="uid://cnvmsr64tkgyn"]
 
-[ext_resource type="Shader" uid="uid://ejwtjd2ixbp3" path="res://Enemies/smoke_puff/smoke_ball_middle.gdshader" id="1_oh10p"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_6jv1k"]
 noise_type = 2
@@ -13,7 +12,6 @@ noise = SubResource("FastNoiseLite_6jv1k")
 [resource]
 resource_local_to_scene = true
 render_priority = 10
-shader = ExtResource("1_oh10p")
 shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_s56rg")
 shader_parameter/progress = 0.0
 shader_parameter/smoothness = 0.01

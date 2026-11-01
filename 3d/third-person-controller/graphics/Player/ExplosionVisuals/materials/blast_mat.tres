@@ -1,6 +1,5 @@
-[gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://8qp4bf0yp6ry"]
+[gd_resource type="Blast" load_steps=8 format=3 uid="uid://8qp4bf0yp6ry"]
 
-[ext_resource type="Shader" uid="uid://brxwkh3wnmdaq" path="res://Player/ExplosionVisuals/shaders/blast_shader.gdshader" id="1_05x44"]
 
 [sub_resource type="Gradient" id="Gradient_m2wvp"]
 offsets = PackedFloat32Array(0.06, 0.97)
@@ -28,7 +27,6 @@ seamless = true
 [resource]
 resource_local_to_scene = true
 render_priority = 0
-shader = ExtResource("1_05x44")
 shader_parameter/noise_sampler = SubResource("NoiseTexture2D_2ng3f")
 shader_parameter/noise_2_sampler = SubResource("NoiseTexture2D_yuelc")
 shader_parameter/uv_y_offset = 0.0

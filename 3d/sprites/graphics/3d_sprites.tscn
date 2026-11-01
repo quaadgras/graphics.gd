@@ -2,14 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://dpi5imxj28c6w" path="res://textures/checker.png" id="2_013ql"]
 [ext_resource type="Texture2D" uid="uid://cch2xwu23ywmm" path="res://textures/icon.svg" id="3_lk0vd"]
-[ext_resource type="Shader" uid="uid://cn7w47jniq55t" path="res://shaders/negative.gdshader" id="5_013ql"]
 [ext_resource type="Texture2D" uid="uid://cr30kf644jdun" path="res://player/player_white.png" id="6_unyd2"]
 [ext_resource type="PackedScene" uid="uid://csygybcji87vv" path="res://player/player.tscn" id="7_unyd2"]
-[ext_resource type="Shader" uid="uid://bdhuacvxqim6d" path="res://shaders/paper.gdshader" id="8_ht5yh"]
-[ext_resource type="Shader" uid="uid://74atijyd14a3" path="res://shaders/paper_rainbow.gdshader" id="8_unyd2"]
 [ext_resource type="Texture2D" uid="uid://b113h01g417xv" path="res://player/player.png" id="9_wqw3d"]
-[ext_resource type="Shader" uid="uid://bim1qkjuie1or" path="res://shaders/paper_material.gdshader" id="10_omy0v"]
-[ext_resource type="Shader" uid="uid://k8vtxe4s1uxj" path="res://shaders/paper_emission.gdshader" id="11_8ak7l"]
 [ext_resource type="Texture2D" uid="uid://dcwftq6uw8wm7" path="res://textures/paper_material.png" id="11_013ql"]
 
 [sub_resource type="ProceduralSkyMaterial" id="9"]
@@ -32,9 +27,8 @@ texture_filter = 5
 material = SubResource("13")
 size = Vector2(128, 128)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lk0vd"]
+[sub_resource type="Negative" id="ShaderMaterial_lk0vd"]
 render_priority = 0
-shader = ExtResource("5_013ql")
 shader_parameter/texture_albedo = ExtResource("3_lk0vd")
 
 [sub_resource type="BoxMesh" id="BoxMesh_juuw1"]
@@ -43,32 +37,28 @@ shader_parameter/texture_albedo = ExtResource("3_lk0vd")
 radial_segments = 32
 rings = 64
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_omy0v"]
+[sub_resource type="PaperShader" id="ShaderMaterial_omy0v"]
 render_priority = 0
-shader = ExtResource("8_ht5yh")
 shader_parameter/texture_albedo = ExtResource("9_wqw3d")
 shader_parameter/outline_thickness = 0.1
 shader_parameter/outline_color = Color(1, 1, 1, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_osfvf"]
+[sub_resource type="PaperMaterial" id="ShaderMaterial_osfvf"]
 render_priority = 0
-shader = ExtResource("10_omy0v")
 shader_parameter/texture_albedo = ExtResource("9_wqw3d")
 shader_parameter/normal_map = ExtResource("11_013ql")
 shader_parameter/outline_thickness = 0.1
 shader_parameter/outline_color = Color(1, 1, 1, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_unyd2"]
+[sub_resource type="PaperEmission" id="ShaderMaterial_unyd2"]
 render_priority = 0
-shader = ExtResource("11_8ak7l")
 shader_parameter/texture_albedo = ExtResource("9_wqw3d")
 shader_parameter/normal_map = ExtResource("11_013ql")
 shader_parameter/outline_thickness = 0.05
 shader_parameter/outline_color = Color(0.301961, 1, 1, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_013ql"]
+[sub_resource type="PaperRainbow" id="ShaderMaterial_013ql"]
 render_priority = 0
-shader = ExtResource("8_unyd2")
 shader_parameter/texture_albedo = ExtResource("9_wqw3d")
 shader_parameter/normal_map = ExtResource("11_013ql")
 shader_parameter/outline_thickness = 0.043

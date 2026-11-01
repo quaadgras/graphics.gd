@@ -220,5 +220,6 @@ func (s *Spheres) Ready() {
 func main() {
 	classdb.Register[SkyShaders]()
 	classdb.Register[Spheres]()
+	classdb.Register[VolumetricClouds](NewVolumetricClouds)
 	startup.Scene()
 }

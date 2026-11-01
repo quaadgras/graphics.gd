@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://v251md8vmtrx"]
 
-[ext_resource type="Shader" uid="uid://dmh645r7cquap" path="res://sky_volumetric_clouds.gdshader" id="2_7kao2"]
 [ext_resource type="Texture2D" uid="uid://cdw8gh7rmtckl" path="res://weather.webp" id="2_wytgt"]
 [ext_resource type="CompressedTexture3D" uid="uid://qlp0s3raunag" path="res://perlworlnoise.png" id="3_k3m6m"]
 [ext_resource type="CompressedTexture3D" uid="uid://1awmqbghlwdf" path="res://worlnoise.webp" id="4_ix4p0"]
@@ -286,8 +285,7 @@ _data = {
 &"day_night_cycle": SubResource("Animation_fgbjk")
 }
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jcxn0"]
-shader = ExtResource("2_7kao2")
+[sub_resource type="VolumetricClouds" id="ShaderMaterial_jcxn0"]
 shader_parameter/worlnoise = ExtResource("4_ix4p0")
 shader_parameter/perlworlnoise = ExtResource("3_k3m6m")
 shader_parameter/cloud_map = ExtResource("2_wytgt")

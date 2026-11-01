@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://n5v4vlr80bj8" path="res://Enemies/smoke_puff/smoke_ball.glb" id="3_gsgkx"]
 [ext_resource type="Material" uid="uid://cnvmsr64tkgyn" path="res://Enemies/smoke_puff/smoke_ball_middle_mat.tres" id="3_wa5gb"]
-[ext_resource type="Shader" uid="uid://uvq0g3f2vige" path="res://Enemies/smoke_puff/smoke_ball.gdshader" id="4_bh8q1"]
 [ext_resource type="AudioStream" uid="uid://ddhimfnmpxlrp" path="res://Enemies/smoke_puff/Sounds/poof_1.wav" id="5_qiexl"]
 [ext_resource type="AudioStream" uid="uid://cgv0ngrh5ofe" path="res://Enemies/smoke_puff/Sounds/poof_2.wav" id="6_1l2bk"]
 
@@ -14,10 +13,9 @@ fractal_octaves = 1
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a2w6x"]
 noise = SubResource("FastNoiseLite_sxisx")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ahlep"]
+[sub_resource type="SmokeBall" id="ShaderMaterial_ahlep"]
 resource_local_to_scene = true
 render_priority = 10
-shader = ExtResource("4_bh8q1")
 shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_a2w6x")
 shader_parameter/progress = 1.0
 shader_parameter/smoothness = 0.2

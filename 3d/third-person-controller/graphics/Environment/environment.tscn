@@ -1,12 +1,10 @@
 [gd_scene load_steps=33 format=3 uid="uid://bde56jd8avj2o"]
 
 [ext_resource type="Sky" uid="uid://jonn5eom7asv" path="res://Environment/sky/blue_sky.tres" id="1_8t23g"]
-[ext_resource type="Shader" uid="uid://b6r7htt0t7v0n" path="res://Environment/water/water_shader.gdshader" id="2_axxqq"]
 [ext_resource type="PackedScene" uid="uid://nhiiwxrhhtao" path="res://Environment/terrain.glb" id="2_u6gug"]
 [ext_resource type="MultiMesh" uid="uid://dcwmnh5np6hna" path="res://Environment/grass/grass_multimesh.res" id="3_ad6l2"]
 [ext_resource type="Texture2D" uid="uid://ssrlnj65d4bs" path="res://Environment/water/textures/caustic_texture.png" id="3_ltffb"]
 [ext_resource type="Material" uid="uid://c5trc4hy86utg" path="res://Environment/Terrain/terrain_mat.tres" id="3_o2vg7"]
-[ext_resource type="Shader" uid="uid://d11gomyjtphq6" path="res://Environment/waterfall/waterfall.gdshader" id="4_lo1st"]
 [ext_resource type="NavigationMesh" uid="uid://bd73n68dlm7qp" path="res://Environment/environment_navmesh.res" id="5_0k4by"]
 [ext_resource type="PackedScene" uid="uid://dr8slkof1nc8r" path="res://Environment/trees/tree.tscn" id="6_r8kjl"]
 [ext_resource type="Material" uid="uid://ovciasxou830" path="res://Environment/grass/grass_mat.tres" id="7_u5eta"]
@@ -46,9 +44,8 @@ fractal_type = 0
 seamless = true
 noise = SubResource("FastNoiseLite_icbax")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_62f0f"]
+[sub_resource type="Waterfall" id="ShaderMaterial_62f0f"]
 render_priority = 0
-shader = ExtResource("4_lo1st")
 shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_b5x5q")
 shader_parameter/water_color_top = Color(0.188235, 0.552941, 0.901961, 1)
 shader_parameter/water_color_bottom = Color(0.160784, 0.294118, 0.560784, 1)
@@ -60,9 +57,8 @@ fractal_type = 0
 seamless = true
 noise = SubResource("FastNoiseLite_23rrj")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8t5sk"]
+[sub_resource type="Water" id="ShaderMaterial_8t5sk"]
 render_priority = -1
-shader = ExtResource("2_axxqq")
 shader_parameter/main_noise_sampler = SubResource("NoiseTexture2D_38v3r")
 shader_parameter/caustic_sampler = ExtResource("3_ltffb")
 shader_parameter/water_color = Color(0.133333, 0.490196, 0.823529, 1)

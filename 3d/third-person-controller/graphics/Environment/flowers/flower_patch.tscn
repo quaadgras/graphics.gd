@@ -1,13 +1,11 @@
 [gd_scene load_steps=6 format=3 uid="uid://bi31qtqv1sf2s"]
 
-[ext_resource type="Shader" uid="uid://c3e5i2ynhtaaa" path="res://Environment/flowers/flower_patch.gdshader" id="1_jw7pd"]
 [ext_resource type="Texture2D" uid="uid://c8f84qeseq2rk" path="res://Environment/flowers/textures/flower_head_albedo.png" id="2_j64bn"]
 [ext_resource type="Texture2D" uid="uid://rqrvv1eud2n1" path="res://Environment/flowers/textures/flower_head_normal.png" id="3_o8sff"]
 [ext_resource type="ArrayMesh" uid="uid://rkhbgqrcux2x" path="res://Environment/flowers/flower_patch.obj" id="4_lp6rb"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tyk6o"]
+[sub_resource type="FlowerPatch" id="ShaderMaterial_tyk6o"]
 render_priority = 0
-shader = ExtResource("1_jw7pd")
 shader_parameter/flower_albedo_sampler = ExtResource("2_j64bn")
 shader_parameter/flower_normal_sampler = ExtResource("3_o8sff")
 

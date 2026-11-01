@@ -40,5 +40,16 @@ func (s *ScreenShaders) OnEffectItemSelected(id int)  { showOnly(s.Effects, id) 
 
 func main() {
 	classdb.Register[ScreenShaders]()
+	classdb.Register[Vignette]()
+	classdb.Register[Blur]()
+	classdb.Register[Pixelize](NewPixelize)
+	classdb.Register[Whirl](NewWhirl)
+	classdb.Register[Sepia]()
+	classdb.Register[Negative]()
+	classdb.Register[Contrasted]()
+	classdb.Register[Normalized]()
+	classdb.Register[BCS](NewBCS)
+	classdb.Register[Mirage](NewMirage)
+	classdb.Register[OldFilm](NewOldFilm)
 	startup.Scene()
 }

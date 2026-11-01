@@ -1,6 +1,7 @@
 package main
 
 import (
+	"graphics.gd/shaders"
 	"strconv"
 
 	"graphics.gd/classdb"
@@ -10,7 +11,6 @@ import (
 	"graphics.gd/classdb/Input"
 	"graphics.gd/classdb/Node3D"
 	"graphics.gd/classdb/SceneTree"
-	"graphics.gd/classdb/ShaderMaterial"
 	"graphics.gd/classdb/StandardMaterial3D"
 	"graphics.gd/classdb/SubViewport"
 	"graphics.gd/classdb/TextureRect"
@@ -100,7 +100,7 @@ type CameraController struct {
 	Camera1   Camera3D.Instance    `gd:"Viewport1/Camera1"`
 	Camera2   Camera3D.Instance    `gd:"Viewport2/Camera2"`
 
-	material ShaderMaterial.Instance
+	material *SplitScreen
 }
 
 func NewCameraController() *CameraController {
@@ -113,15 +113,15 @@ func NewCameraController() *CameraController {
 }
 
 func (c *CameraController) Ready() {
-	c.material, _ = Object.As[ShaderMaterial.Instance](c.View.AsCanvasItem().Material())
+	c.material, _ = Object.As[*SplitScreen](c.View.AsCanvasItem().Material())
 
 	c.onSizeChanged()
 	c.updateSplitscreen()
 
 	Viewport.Get(c.AsNode()).OnSizeChanged(c.onSizeChanged)
 
-	c.material.SetShaderParameter("viewport1", c.Viewport1.AsViewport().GetTexture())
-	c.material.SetShaderParameter("viewport2", c.Viewport2.AsViewport().GetTexture())
+	shaders.Set(&c.material.Viewport1, c.Viewport1.AsViewport().GetTexture().AsTexture2D())
+	shaders.Set(&c.material.Viewport2, c.Viewport2.AsViewport().GetTexture().AsTexture2D())
 }
 
 func (c *CameraController) Process(_ Float.X) {
@@ -165,11 +165,11 @@ func (c *CameraController) updateSplitscreen() {
 		thickness = c.SplitLineThickness
 	}
 
-	c.material.SetShaderParameter("split_active", c.isSplitState())
-	c.material.SetShaderParameter("player1_position", player1Position)
-	c.material.SetShaderParameter("player2_position", player2Position)
-	c.material.SetShaderParameter("split_line_thickness", thickness)
-	c.material.SetShaderParameter("split_line_color", c.SplitLineColor)
+	shaders.Set(&c.material.SplitActive, c.isSplitState())
+	shaders.Set(&c.material.Player1Position, player1Position)
+	shaders.Set(&c.material.Player2Position, player2Position)
+	shaders.Set(&c.material.SplitLineThickness, thickness)
+	shaders.Set(&c.material.SplitLineColor, Color.RGB{R: c.SplitLineColor.R, G: c.SplitLineColor.G, B: c.SplitLineColor.B})
 }
 
 // isSplitState returns true if split screen is active (which occurs when players are
@@ -188,7 +188,7 @@ func (c *CameraController) onSizeChanged() {
 	c.Viewport1.SetSize(size)
 	c.Viewport2.SetSize(size)
 
-	c.material.SetShaderParameter("viewport_size", screenSize)
+	shaders.Set(&c.material.ViewportSize, screenSize)
 }
 
 func (c *CameraController) positionDifferenceInWorld() Vector3.XYZ {
@@ -203,5 +203,6 @@ func main() {
 	classdb.Register[SplitPlayer](NewSplitPlayer)
 	classdb.Register[WallColoring]()
 	classdb.Register[CameraController](NewCameraController)
+	classdb.Register[SplitScreen]()
 	startup.Scene()
 }

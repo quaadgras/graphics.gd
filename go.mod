@@ -4,7 +4,7 @@ go 1.27
 
 require (
 	github.com/hajimehoshi/ebiten/v2 v2.8.6
-	graphics.gd v0.0.0-20260821075859-07846ed60dd8
+	graphics.gd v0.0.0-20261101005239-9f2dea9536b4
 	runtime.link v0.0.0-20260715222822-244f867873e6
 )
 

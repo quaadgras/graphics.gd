@@ -2,7 +2,6 @@
 
 [ext_resource type="Material" uid="uid://bii1msr5lsqwb" path="res://Player/BulletVisuals/bullet_trail_mat.tres" id="1_eipo0"]
 [ext_resource type="ArrayMesh" uid="uid://ch30025kg24b1" path="res://Player/BulletVisuals/BulletModel.obj" id="2_iugoo"]
-[ext_resource type="Shader" uid="uid://cd0ag20xqnlmy" path="res://Player/BulletVisuals/bullet_spark_shader.gdshader" id="3_5yj07"]
 [ext_resource type="Texture2D" uid="uid://dsxj3ih1ne0bu" path="res://Player/BulletVisuals/sparks.png" id="4_ia7or"]
 
 [sub_resource type="Gradient" id="Gradient_3mgi4"]
@@ -35,9 +34,8 @@ color_ramp = SubResource("GradientTexture1D_mmg4b")
 turbulence_noise_strength = 0.1
 turbulence_noise_scale = 0.1
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5uj72"]
+[sub_resource type="BulletSpark" id="ShaderMaterial_5uj72"]
 render_priority = 0
-shader = ExtResource("3_5yj07")
 shader_parameter/sparks_sampler = ExtResource("4_ia7or")
 
 [sub_resource type="QuadMesh" id="QuadMesh_p1s33"]

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"graphics.gd/shaders"
 	"math"
 
 	"graphics.gd/classdb"
@@ -8,7 +9,6 @@ import (
 	"graphics.gd/classdb/FastNoiseLite"
 	"graphics.gd/classdb/NoiseTexture2D"
 	"graphics.gd/classdb/OS"
-	"graphics.gd/classdb/ShaderMaterial"
 	"graphics.gd/classdb/SpinBox"
 	"graphics.gd/classdb/TextureRect"
 	"graphics.gd/classdb/VBoxContainer"
@@ -64,9 +64,9 @@ func (v *NoiseViewer) refreshShaderParams() {
 	// Adjust min/max for shader.
 	min := (v.minNoise + 1) / 2
 	max := (v.maxNoise + 1) / 2
-	material := Object.To[ShaderMaterial.Instance](v.SeamlessNoiseTexture.AsCanvasItem().Material())
-	material.SetShaderParameter("min_value", min)
-	material.SetShaderParameter("max_value", max)
+	material := Object.To[*NoiseViewerShader](v.SeamlessNoiseTexture.AsCanvasItem().Material())
+	shaders.Set(&material.MinValue, min)
+	shaders.Set(&material.MaxValue, max)
 }
 
 func (v *NoiseViewer) OnDocumentationButtonPressed() {
@@ -103,5 +103,6 @@ func (v *NoiseViewer) OnMaxClipSpinBoxValueChanged(value Float.X) {
 
 func main() {
 	classdb.Register[NoiseViewer](NewNoiseViewer)
+	classdb.Register[NoiseViewerShader](NewNoiseViewerShader)
 	startup.Scene()
 }

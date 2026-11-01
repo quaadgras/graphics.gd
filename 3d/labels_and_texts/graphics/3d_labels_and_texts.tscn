@@ -6,7 +6,6 @@
 [ext_resource type="FontFile" uid="uid://bu2bnbh0fwexf" path="res://fonts/Xolonium-Regular-Mipmaps.ttf" id="6_ewmy5"]
 [ext_resource type="Texture2D" uid="uid://rhbxq86iceti" path="res://textures/textmesh_texture.png" id="7_w00di"]
 [ext_resource type="FontFile" uid="uid://sdeojlh6qai4" path="res://fonts/fontello-godot.woff2" id="7_wvpht"]
-[ext_resource type="Shader" uid="uid://duem3fifrhhdb" path="res://curvature.gdshader" id="8_2gwag"]
 [ext_resource type="Texture2D" uid="uid://c34roakxgf8dc" path="res://textures/checker.png" id="14"]
 
 [sub_resource type="ProceduralSkyMaterial" id="9"]
@@ -126,9 +125,8 @@ text = "Curvature Shader"
 font_size = 32
 depth = 0.1
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_iuh2c"]
+[sub_resource type="Curvature" id="ShaderMaterial_iuh2c"]
 render_priority = 0
-shader = ExtResource("8_2gwag")
 
 [sub_resource type="TextMesh" id="TextMesh_fqc7s"]
 text = "Textured TextMesh"

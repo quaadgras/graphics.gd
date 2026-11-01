@@ -1,6 +1,5 @@
-[gd_resource type="ShaderMaterial" load_steps=12 format=3 uid="uid://con3572kpt8a3"]
+[gd_resource type="LargeTreeTrunk" load_steps=12 format=3 uid="uid://con3572kpt8a3"]
 
-[ext_resource type="Shader" path="res://Environment/large_tree_trunk/large_tree_trunk.gdshader" id="1_o0y6w"]
 [ext_resource type="Texture2D" uid="uid://puxw8ak4sfc3" path="res://Environment/dark_bark/dark_bark_albedo.png" id="2_qmmat"]
 [ext_resource type="Texture2D" uid="uid://xxp11wuuoht" path="res://Environment/dark_bark/dark_bark_heightmap.png" id="3_s6e0b"]
 [ext_resource type="Texture2D" uid="uid://2fec5qn5vv22" path="res://Environment/dark_bark/dark_bark_normal.png" id="4_8kbkh"]
@@ -14,7 +13,6 @@
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_o0y6w")
 shader_parameter/triplanar_scale = Vector3(0.1, 0.1, 0.1)
 shader_parameter/triplanar_offset = null
 shader_parameter/triplanar_sharpness = 0.5

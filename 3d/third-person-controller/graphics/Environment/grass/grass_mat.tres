@@ -1,6 +1,5 @@
-[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://ovciasxou830"]
+[gd_resource type="Grass" load_steps=6 format=3 uid="uid://ovciasxou830"]
 
-[ext_resource type="Shader" uid="uid://bkuefu7b47vnw" path="res://Environment/grass/grass.gdshader" id="1_21fji"]
 
 [sub_resource type="Gradient" id="Gradient_og0wy"]
 colors = PackedColorArray(0.11908, 0.387024, 0.176702, 1, 0.278388, 0.581803, 0.267947, 1)
@@ -15,6 +14,5 @@ noise = SubResource("FastNoiseLite_3wvog")
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_21fji")
 shader_parameter/wind_noise_sampler = SubResource("NoiseTexture2D_d8pqm")
 shader_parameter/gradient = SubResource("GradientTexture1D_deq1y")

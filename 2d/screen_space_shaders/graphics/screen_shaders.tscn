@@ -4,64 +4,42 @@
 [ext_resource type="Texture2D" uid="uid://bwdw3gftl3fa5" path="res://art/platformer.jpg" id="3"]
 [ext_resource type="Texture2D" uid="uid://bmlv6y43cvyi5" path="res://art/mountains.jpg" id="4"]
 [ext_resource type="Texture2D" uid="uid://b8osks5hfmw1d" path="res://art/forest.jpg" id="5"]
-[ext_resource type="Shader" uid="uid://dokl6em46uwdd" path="res://shaders/vignette.gdshader" id="6"]
 [ext_resource type="Texture2D" uid="uid://dbqvmo0pgbip8" path="res://art/vignette.png" id="7"]
 [ext_resource type="Texture2D" uid="uid://chow56q3y1nfd" path="res://art/white.png" id="8"]
-[ext_resource type="Shader" uid="uid://cycsadjeb1ud8" path="res://shaders/blur.gdshader" id="9"]
-[ext_resource type="Shader" uid="uid://5pjux72j4kn5" path="res://shaders/pixelize.gdshader" id="10"]
-[ext_resource type="Shader" uid="uid://dqp55y6c3sa07" path="res://shaders/whirl.gdshader" id="11"]
-[ext_resource type="Shader" uid="uid://t0p4xd3qck1x" path="res://shaders/sepia.gdshader" id="12"]
-[ext_resource type="Shader" uid="uid://dwypfrywt3cas" path="res://shaders/negative.gdshader" id="13"]
-[ext_resource type="Shader" uid="uid://dlwklc8sqi23j" path="res://shaders/contrasted.gdshader" id="14"]
-[ext_resource type="Shader" uid="uid://cy5p57nva6ian" path="res://shaders/normalized.gdshader" id="15"]
-[ext_resource type="Shader" uid="uid://bccqpl6t74fyg" path="res://shaders/BCS.gdshader" id="16"]
-[ext_resource type="Shader" uid="uid://cfsyt8fay3dcy" path="res://shaders/mirage.gdshader" id="17"]
-[ext_resource type="Shader" uid="uid://t7x5fom7mp3b" path="res://shaders/old_film.gdshader" id="18"]
 [ext_resource type="Texture2D" uid="uid://cnc8w6wn23thd" path="res://art/filmgrain.png" id="19_mg7oc"]
 
-[sub_resource type="ShaderMaterial" id="1"]
-shader = ExtResource("6")
+[sub_resource type="Vignette" id="1"]
 shader_parameter/vignette = ExtResource("7")
 
-[sub_resource type="ShaderMaterial" id="2"]
-shader = ExtResource("9")
+[sub_resource type="Blur" id="2"]
 shader_parameter/amount = 4.0
 
-[sub_resource type="ShaderMaterial" id="3"]
-shader = ExtResource("10")
+[sub_resource type="Pixelize" id="3"]
 shader_parameter/size_x = 0.008
 shader_parameter/size_y = 0.008
 
-[sub_resource type="ShaderMaterial" id="4"]
-shader = ExtResource("11")
+[sub_resource type="Whirl" id="4"]
 shader_parameter/rotation = 3.0
 
-[sub_resource type="ShaderMaterial" id="5"]
-shader = ExtResource("12")
+[sub_resource type="Sepia" id="5"]
 shader_parameter/base = Color(0.941176, 0.647059, 0.356863, 1)
 
-[sub_resource type="ShaderMaterial" id="6"]
-shader = ExtResource("13")
+[sub_resource type="Negative" id="6"]
 
-[sub_resource type="ShaderMaterial" id="7"]
-shader = ExtResource("14")
+[sub_resource type="Contrasted" id="7"]
 
-[sub_resource type="ShaderMaterial" id="8"]
-shader = ExtResource("15")
+[sub_resource type="Normalized" id="8"]
 
-[sub_resource type="ShaderMaterial" id="9"]
-shader = ExtResource("16")
+[sub_resource type="BCS" id="9"]
 shader_parameter/brightness = 0.8
 shader_parameter/contrast = 1.5
 shader_parameter/saturation = 1.8
 
-[sub_resource type="ShaderMaterial" id="10"]
-shader = ExtResource("17")
+[sub_resource type="Mirage" id="10"]
 shader_parameter/frequency = 60.0
 shader_parameter/depth = 0.005
 
-[sub_resource type="ShaderMaterial" id="11"]
-shader = ExtResource("18")
+[sub_resource type="OldFilm" id="11"]
 shader_parameter/base = Color(0.941176, 0.647059, 0.356863, 1)
 shader_parameter/grain = ExtResource("19_mg7oc")
 shader_parameter/grain_strength = 0.5

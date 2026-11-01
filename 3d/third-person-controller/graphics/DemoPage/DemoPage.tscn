@@ -1,6 +1,5 @@
 [gd_scene load_steps=31 format=3 uid="uid://cnj0t3ad178q6"]
 
-[ext_resource type="Shader" uid="uid://dt2d3nvtyavjt" path="res://DemoPage/Assets/BlurShader.gdshader" id="2_07raf"]
 [ext_resource type="Texture2D" uid="uid://3fxtm3u8im2" path="res://DemoPage/Assets/gdquest_logo_white.svg" id="3_n7elw"]
 [ext_resource type="Texture2D" uid="uid://c1h5gk8rsf3va" path="res://DemoPage/Assets/RoundedRectangle.png" id="4_paxwi"]
 [ext_resource type="Texture2D" uid="uid://bisdpbdirkat6" path="res://DemoPage/Assets/DemoPageBackground.png" id="5_3cf56"]
@@ -26,8 +25,7 @@
 [ext_resource type="Texture2D" uid="uid://4028ms3tu0f0" path="res://DemoPage/Assets/twitter-icon.png" id="26_jj2ra"]
 [ext_resource type="Texture2D" uid="uid://bu5fw8vbrfsmm" path="res://DemoPage/Assets/itch-icon.png" id="27_mjmj1"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oq2x4"]
-shader = ExtResource("2_07raf")
+[sub_resource type="Blur" id="ShaderMaterial_oq2x4"]
 shader_parameter/blur_size = 2.0
 shader_parameter/color_modulate = Color(0.522997, 0.612903, 0.846875, 1)
 

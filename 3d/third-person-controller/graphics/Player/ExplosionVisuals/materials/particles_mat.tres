@@ -1,6 +1,5 @@
-[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://ben1qjmc14yjq"]
+[gd_resource type="ExplosionTrails" load_steps=6 format=3 uid="uid://ben1qjmc14yjq"]
 
-[ext_resource type="Shader" uid="uid://cdylqs56ad18v" path="res://Player/ExplosionVisuals/shaders/explosion_trails_shader.gdshader" id="1_ucjx1"]
 
 [sub_resource type="Gradient" id="Gradient_xshra"]
 interpolation_mode = 2
@@ -22,6 +21,5 @@ seamless = true
 [resource]
 resource_local_to_scene = true
 render_priority = 0
-shader = ExtResource("1_ucjx1")
 shader_parameter/noise_sampler = SubResource("NoiseTexture2D_gkx5e")
 shader_parameter/gradient_1D = SubResource("GradientTexture1D_qwenf")

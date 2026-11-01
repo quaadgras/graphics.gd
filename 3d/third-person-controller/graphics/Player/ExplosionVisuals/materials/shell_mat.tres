@@ -1,6 +1,5 @@
-[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://b68u2dl4qlooi"]
+[gd_resource type="Shell" load_steps=4 format=3 uid="uid://b68u2dl4qlooi"]
 
-[ext_resource type="Shader" uid="uid://dtxi6c7iay2e0" path="res://Player/ExplosionVisuals/shaders/shell_shader.gdshader" id="1_lk055"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4kwk8"]
 noise_type = 2
@@ -15,7 +14,6 @@ seamless = true
 [resource]
 resource_local_to_scene = true
 render_priority = 0
-shader = ExtResource("1_lk055")
 shader_parameter/intensity = 1.0
 shader_parameter/shell_color = Color(0.972549, 0.521569, 0, 1)
 shader_parameter/voronoi_sampler = SubResource("NoiseTexture2D_q4shp")

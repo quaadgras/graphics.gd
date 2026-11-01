@@ -1,6 +1,5 @@
-[gd_resource type="ShaderMaterial" load_steps=13 format=3 uid="uid://c5trc4hy86utg"]
+[gd_resource type="Terrain" load_steps=13 format=3 uid="uid://c5trc4hy86utg"]
 
-[ext_resource type="Shader" uid="uid://b0wx0a0fuunvs" path="res://Environment/Terrain/terrain_shader.gdshader" id="1_tmq40"]
 [ext_resource type="Texture2D" uid="uid://ccle3gd0lgtig" path="res://Environment/Terrain/Textures/voronoi_rock_cliff/voronoi_rock_cliff_albedo.png" id="2_ais5s"]
 [ext_resource type="Texture2D" uid="uid://cqs4w0fnrsnda" path="res://Environment/Terrain/Textures/voronoi_rock_cliff/voronoi_rock_cliff_normal.png" id="3_mrld1"]
 [ext_resource type="Texture2D" uid="uid://c5t0wkqsdvy0a" path="res://Environment/Terrain/Textures/voronoi_rock_cliff/voronoi_rock_cliff_orm.png" id="4_d0u70"]
@@ -21,7 +20,6 @@ seamless = true
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_tmq40")
 shader_parameter/grass_patch_pattern_sampler = SubResource("NoiseTexture2D_jhgfj")
 shader_parameter/wall_mask_sampler = ExtResource("10_5ouax")
 shader_parameter/cliff_albedo_sampler = ExtResource("2_ais5s")
