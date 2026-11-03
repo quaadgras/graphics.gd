@@ -196,6 +196,10 @@ func Setup(build_godot func() error) error {
 		if tooling.Godot.Name == "blazium" {
 			gdextension_version = "4.1.0"
 		}
+		// only the numbers: the rest names the build ("stable.official",
+		// "stable.custom_build.7f7882f94"), which differs between the
+		// editors gd runs and would rewrite the file each time it does.
+		gdextension_version = versionNumbers(gdextension_version)
 		if err := Import(); err != nil {
 			return xray.New(err)
 		}
@@ -212,6 +216,20 @@ func Setup(build_godot func() error) error {
 		return xray.New(err)
 	}
 	return nil
+}
+
+// versionNumbers returns the leading numbers of a Godot version, ie. "4.7.2"
+// of "4.7.2.stable.official.4b4c3ed45".
+func versionNumbers(version string) string {
+	parts := strings.Split(strings.TrimSpace(version), ".")
+	n := 0
+	for n < len(parts) && n < 3 && parts[n] != "" && strings.Trim(parts[n], "0123456789") == "" {
+		n++
+	}
+	if n == 0 {
+		return strings.TrimSpace(version)
+	}
+	return strings.Join(parts[:n], ".")
 }
 
 // muslHostLibrary scopes the linux entries of the library.gdextension template to

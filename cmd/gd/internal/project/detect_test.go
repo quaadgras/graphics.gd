@@ -198,3 +198,16 @@ func TestRequireETC2ASTC(t *testing.T) {
 		})
 	}
 }
+
+func TestVersionNumbers(t *testing.T) {
+	for in, want := range map[string]string{
+		"4.7.2.stable.custom_build.7f7882f94": "4.7.2",
+		"4.7.2.stable.voidlinux\n":            "4.7.2",
+		"4.7.stable.official":                 "4.7",
+		"4.1.0":                               "4.1.0",
+	} {
+		if got := versionNumbers(in); got != want {
+			t.Errorf("versionNumbers(%q) = %q, want %q", in, got, want)
+		}
+	}
+}
