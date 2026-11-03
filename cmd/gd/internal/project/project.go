@@ -93,51 +93,33 @@ func Setup(build_godot func() error) error {
 		return xray.New(err)
 	}
 	var specificGoFile bool
-	var isRun bool
 	for _, arg := range os.Args[1:] {
 		if strings.HasSuffix(arg, ".go") {
 			specificGoFile = true
 		}
-		if arg == "run" {
-			isRun = true
-		}
 	}
-	originalWd := wd
-	wd, hasGoMod, err := findGoMod(wd)
-	if err != nil {
-		return xray.New(err)
-	}
-	var runningSpecificGoFile = specificGoFile && isRun
-	// If there's no go.mod but there's a main.go in the current directory,
-	// automatically run go mod init with the directory name.
-	if !hasGoMod && !runningSpecificGoFile {
-		if _, err := os.Stat(filepath.Join(originalWd, "main.go")); err == nil {
-			if err := tooling.Go.Exec("mod", "init", filepath.Base(originalWd)); err != nil {
-				return xray.New(err)
-			}
-			if err := tooling.Go.Exec("mod", "tidy"); err != nil {
-				return xray.New(err)
-			}
-			if err := tooling.Go.Exec("get", "graphics.gd@release"); err != nil {
-				return xray.New(err)
-			}
-			hasGoMod = true
-			wd = originalWd
-		}
-	}
-	if !runningSpecificGoFile && !hasGoMod {
-		if _, err := os.Stat(filepath.Join(wd, "project.godot")); err == nil {
-			Name = filepath.Base(wd)
-			Directory = wd
-			GraphicsDirectory = wd
-			ReleasesDirectory = filepath.Join(wd, "releases")
-			SetupFile(false, filepath.Join(ReleasesDirectory, ".gdignore"), "")
-			if err := SetupFile(false, filepath.Join(GraphicsDirectory, "export_presets.cfg"), gdscript_export_presets_cfg, filepath.Base(wd), AndroidSafePackageName(filepath.Base(wd)), AppleSafePackageName(filepath.Base(wd))); err != nil {
-				return xray.New(err)
-			}
-			return nil
-		}
+	kind, wd := Detect(wd, os.Args[1:])
+	switch kind {
+	case Nothing:
 		return fmt.Errorf("gd requires your project to have either a go.mod file or a project.godot")
+	case Go:
+		return fmt.Errorf("gd: %s is an ordinary Go module, not a graphics.gd project", wd)
+	case Godot:
+		return setupGodot(wd, build_godot)
+	}
+	// Go files that import graphics.gd/startup, with no go.mod around them:
+	// make them a module that requires graphics.gd (unless gd was asked to
+	// run a particular file, which go runs without one).
+	if _, hasGoMod := findUp(wd, "go.mod"); !hasGoMod && !specificGoFile {
+		if err := tooling.Go.Exec("mod", "init", filepath.Base(wd)); err != nil {
+			return xray.New(err)
+		}
+		if err := tooling.Go.Exec("mod", "tidy"); err != nil {
+			return xray.New(err)
+		}
+		if err := tooling.Go.Exec("get", "graphics.gd@release"); err != nil {
+			return xray.New(err)
+		}
 	}
 	IncludesGo = true
 	Name = filepath.Base(wd)
@@ -184,7 +166,7 @@ func Setup(build_godot func() error) error {
 			return xray.New(err)
 		}
 	}
-	if err := SetupFile(false, filepath.Join(GraphicsDirectory, "export_presets.cfg"), export_presets_cfg, filepath.Base(wd), AndroidSafePackageName(filepath.Base(wd)), AppleSafePackageName(filepath.Base(wd))); err != nil {
+	if err := SetupPresets(filepath.Join(GraphicsDirectory, "export_presets.cfg"), export_presets_cfg, filepath.Base(wd), AndroidSafePackageName(filepath.Base(wd)), AppleSafePackageName(filepath.Base(wd))); err != nil {
 		return xray.New(err)
 	}
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, ".gitignore"), gitignore); err != nil {
@@ -278,6 +260,12 @@ func SetupFile(force bool, name, embed string, args ...any) error {
 		if len(args) > 0 {
 			embed = fmt.Sprintf(embed, args...)
 		}
+		// an editor open on the project reacts to the file changing (for
+		// library.gdextension, by loading the extension again), so a file
+		// that already says this is left alone.
+		if was, err := os.ReadFile(name); err == nil && string(was) == embed {
+			return nil
+		}
 		if err := os.WriteFile(name, []byte(embed), 0o644); err != nil {
 			return xray.New(err)
 		}
@@ -299,11 +287,19 @@ func SetupIcon() error {
 // [Setup] calls this itself, but on musl hosts the whole test suite runs inside
 // the build_godot callback (it is the static editor that runs the tests), which
 // is too early: [builder.Musl] calls this again once it has an editor to run.
-func Import() error {
+func Import() error { return importProject(false) }
+
+// importProject is [Import], which always imports when force is set.
+func importProject(force bool) error {
 	_, missing_godot_dir := os.Stat(filepath.Join(GraphicsDirectory, ".godot"))
-	_, missing_icon_remap := os.Stat(filepath.Join(GraphicsDirectory, "icon.svg.import"))
+	// the icon gd gives every graphics.gd project, which an ordinary Godot
+	// project need not have.
+	var missing_icon_remap error
+	if _, err := os.Stat(filepath.Join(GraphicsDirectory, "icon.svg")); err == nil {
+		_, missing_icon_remap = os.Stat(filepath.Join(GraphicsDirectory, "icon.svg.import"))
+	}
 	stale := staleImports(GraphicsDirectory)
-	if !os.IsNotExist(missing_godot_dir) && !os.IsNotExist(missing_icon_remap) && len(stale) == 0 {
+	if !force && !os.IsNotExist(missing_godot_dir) && !os.IsNotExist(missing_icon_remap) && len(stale) == 0 {
 		return nil
 	}
 	current, err := os.Getwd()
@@ -491,31 +487,6 @@ func SetupFiles(embedded embed.FS, embedRoot, targetDir string) error {
 		}
 		return os.WriteFile(targetPath, data, 0644)
 	})
-}
-
-func findGoMod(wd string) (string, bool, error) {
-	og := wd
-	for last := ""; last != wd; last, wd = wd, filepath.Dir(wd) { // look for a go.mod file
-		_, err := os.Stat(filepath.Join(wd, "go.mod"))
-		if err == nil {
-			return wd, true, nil
-		} else if os.IsNotExist(err) {
-			if _, err := os.Stat(filepath.Join(wd, "graphics")); err == nil {
-				return wd, true, nil
-			}
-			continue
-		} else {
-			return wd, false, err
-		}
-	}
-	wd = og
-	for last := ""; last != wd; last, wd = wd, filepath.Dir(wd) {
-		_, err := os.Stat(filepath.Join(wd, "project.godot"))
-		if err == nil {
-			return wd, false, nil
-		}
-	}
-	return og, false, nil
 }
 
 // CopyDir recursively copies a directory tree from src to dst.

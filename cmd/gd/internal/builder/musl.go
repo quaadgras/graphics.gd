@@ -3,6 +3,7 @@ package builder
 import (
 	"bytes"
 	"embed"
+	"errors"
 	"fmt"
 	"io/fs"
 	"os"
@@ -44,8 +45,26 @@ func (musl Musl) Build(args ...string) (err error) {
 	defer func() {
 		built_musl = true
 	}()
+	// a Godot project with no Go code of its own is linked with a Go
+	// program that only starts the engine up.
 	if !project.IncludesGo {
-		return nil
+		stub, err := stubModule()
+		if err != nil {
+			return xray.New(err)
+		}
+		current, err := os.Getwd()
+		if err != nil {
+			return xray.New(err)
+		}
+		if err := os.Chdir(stub); err != nil {
+			return xray.New(err)
+		}
+		defer os.Chdir(current)
+		defer stubEnv()()
+	}
+	work, err := muslWorkDirectory()
+	if err != nil {
+		return xray.New(err)
 	}
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
@@ -64,7 +83,7 @@ func (musl Musl) Build(args ...string) (err error) {
 	}
 	var runsHere bool // out is the engine this gd goes on to run.
 	if musl.out == "" {
-		musl.out = filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")
+		musl.out = filepath.Join(work, "musl_"+GOARCH+".editor")
 		// The static editor is the engine binary on hosts that have no other:
 		// musl linux systems, and android (Termux), where it runs headless on
 		// the Android kernel.
@@ -113,8 +132,11 @@ func (musl Musl) Build(args ...string) (err error) {
 	default:
 		return fmt.Errorf("gd build: cannot cross-compile linux %v on %v", GOARCH, runtime.GOOS)
 	}
-	libgo := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("musl_%v.a", GOARCH))
+	libgo := filepath.Join(work, fmt.Sprintf("musl_%v.a", GOARCH))
 	args, tags := userTags(muslTags(), args)
+	if !project.IncludesGo {
+		tags += ",gdstub" // see startup/graphics_packages_stub.go
+	}
 	args, err = archiver(args)
 	if err != nil {
 		return xray.New(err)
@@ -123,7 +145,7 @@ func (musl Musl) Build(args ...string) (err error) {
 	unlock = func() {}
 	// the archive is built under a name of this gd's own and takes the
 	// shared name only if it differs from what is there.
-	built := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("musl_%v.%d.a", GOARCH, os.Getpid()))
+	built := filepath.Join(work, fmt.Sprintf("musl_%v.%d.a", GOARCH, os.Getpid()))
 	defer os.Remove(built)
 	defer os.Remove(strings.TrimSuffix(built, ".a") + ".h")
 	if err := tooling.Go.Action("build", args, "-tags", tags, "-buildmode=c-archive", "-overlay="+overlay, "-o", built); err != nil {
@@ -162,6 +184,18 @@ func (musl Musl) Build(args ...string) (err error) {
 		tooling.Godot.Path = holdExecutable(musl.out)
 	}
 	return nil
+}
+
+// muslWorkDirectory returns the directory that the archive and the editor of
+// a musl build go in: the graphics directory of a graphics.gd project, where
+// its .gitignore names them, and the .godot directory (which is never
+// committed) of a Godot project, which is the user's own.
+func muslWorkDirectory() (string, error) {
+	if project.IncludesGo {
+		return project.GraphicsDirectory, nil
+	}
+	dir := filepath.Join(project.GraphicsDirectory, ".godot", "gd")
+	return dir, os.MkdirAll(dir, 0o755)
 }
 
 // restoreCC returns a func that restores CC to its value at the time of the
@@ -232,6 +266,11 @@ func ignoreEnabledExtensions() (restore func(), err error) {
 	}); err != nil {
 		return func() {}, xray.New(err)
 	}
+	// in a graphics.gd project these are gd's own, in a Godot project they
+	// are the project's.
+	if !project.IncludesGo && len(found) > 0 {
+		fmt.Fprintf(os.Stderr, "gd: warning: a musl export is one static executable, which cannot load GDExtensions: it goes without %q\n", found)
+	}
 	var disabled []string
 	restore = func() {
 		for _, path := range disabled {
@@ -244,6 +283,9 @@ func ignoreEnabledExtensions() (restore func(), err error) {
 			return func() {}, xray.New(err)
 		}
 		disabled = append(disabled, path)
+	}
+	if len(disabled) == 0 {
+		return restore, nil
 	}
 	// Godot regenerates extension_list.cfg from the (now-absent) .gdextension files — i.e.
 	// removes it; keep the original so the editor's loaded-extension list survives the build.
@@ -347,7 +389,9 @@ func (musl Musl) Test(args ...string) error {
 	defer func() {
 		built_musl = true
 	}()
-	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
+	if !project.IncludesGo {
+		return errors.New("cannot run 'gd test' on a project that does not include Go code")
+	}
 	goos := os.Getenv("GOOS")
 	os.Setenv("GOOS", "linux")
 	defer os.Setenv("GOOS", goos)

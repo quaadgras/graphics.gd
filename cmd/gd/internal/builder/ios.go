@@ -200,8 +200,10 @@ func (ios IOS) BuildMain(args ...string) error {
 	}
 
 	// Copy the new go.xcframework
-	if err := project.CopyDir(filepath.Join(project.GraphicsDirectory, "go.xcframework"), filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name, "dylibs", "go.xcframework")); err != nil {
-		return xray.New(err)
+	if project.IncludesGo {
+		if err := project.CopyDir(filepath.Join(project.GraphicsDirectory, "go.xcframework"), filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name, "dylibs", "go.xcframework")); err != nil {
+			return xray.New(err)
+		}
 	}
 
 	apple_name := project.AppleSafePackageName(project.Name)

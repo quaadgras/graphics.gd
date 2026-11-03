@@ -93,6 +93,9 @@ type editorPlugin struct {
 }
 
 func (*editorPlugin) Build() bool {
+	if isStub {
+		return true // a Godot project with no Go code, nothing to build.
+	}
 	gd, err := exec.LookPath("gd")
 	if err != nil {
 		return true // no gd, passthrough to usual process.

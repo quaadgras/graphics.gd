@@ -78,6 +78,9 @@ func BuildMode() string {
 // retain keeps an ELF linker's --gc-sections from dropping it.
 func pckSection() (string, error) {
 	pck := filepath.Join(project.GraphicsDirectory, ".godot", "pck_section.c")
+	if err := os.MkdirAll(filepath.Dir(pck), 0o755); err != nil {
+		return "", err
+	}
 	return pck, os.WriteFile(pck, []byte("static const char gd_pck_section[8] __attribute__((section(\"pck\"), used, retain)) = { 0 };\n"), 0644)
 }
 

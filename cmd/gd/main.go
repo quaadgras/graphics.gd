@@ -171,6 +171,21 @@ func testArgs(args ...string) []string {
 }
 
 func gd(args ...string) error {
+	// An ordinary Go module (one that does not use graphics.gd) is built,
+	// run and tested as go would, with gd's compiler.
+	kind := project.Nothing
+	if len(args) == 0 || args[0] == "build" || args[0] == "run" || args[0] == "test" || strings.HasPrefix(args[0], "-") {
+		if wd, err := os.Getwd(); err == nil {
+			kind, _ = project.Detect(wd, args)
+		}
+	}
+	if kind == project.Go {
+		return plainGo(args...)
+	}
+	// before project.Setup, which on musl hosts runs the tests as it sets up.
+	if kind == project.Godot && len(args) > 0 && args[0] == "test" {
+		return errors.New("cannot run 'gd test' on a project that does not include Go code")
+	}
 	if err := setupDeterministicCGO(); err != nil {
 		return xray.New(err)
 	}
@@ -229,7 +244,7 @@ func gd(args ...string) error {
 	// No reload mode on-device (Termux): the reloads host rebuilds the guest
 	// with the Go toolchain, which the Godot Android Editor app that loads
 	// the extension does not have.
-	reloadMode := len(args) == 0 && os.Getenv("GD_NO_RELOAD") == "" && os.Getenv("GOOS") == "" && runtime.GOOS != "android"
+	reloadMode := kind == project.Graphics && len(args) == 0 && os.Getenv("GD_NO_RELOAD") == "" && os.Getenv("GOOS") == "" && runtime.GOOS != "android"
 	if reloadMode {
 		// The reloads host is the project built with the reloads tag; on
 		// musl hosts the build happens inside project.Setup via the musl
@@ -423,6 +438,11 @@ func gd(args ...string) error {
 			if err := AssertExportTemplates(tooling.Godot.InstalledVersion(), GOOS); err != nil {
 				return xray.New(err)
 			}
+			if GOOS == "android" || GOOS == "ios" {
+				if err := project.RequireETC2ASTC(); err != nil {
+					return xray.New(err)
+				}
+			}
 			if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, GOOS, GOARCH), 0755); err != nil {
 				return xray.New(err)
 			}
@@ -435,6 +455,9 @@ func gd(args ...string) error {
 			// template installed (like `gd build` does).
 			if GOOS == "android" || GOOS == "ios" {
 				if err := AssertExportTemplates(tooling.Godot.InstalledVersion(), GOOS); err != nil {
+					return xray.New(err)
+				}
+				if err := project.RequireETC2ASTC(); err != nil {
 					return xray.New(err)
 				}
 			}
@@ -455,6 +478,37 @@ func gd(args ...string) error {
 		}
 	}
 	return nil
+}
+
+// plainGo runs the go command for an ordinary Go module, one that does not
+// use graphics.gd, with the compiler that shares generic instantiations
+// between packages (see builder/dedup.go). The target names that gd knows
+// beyond go's own (GOOS=macos, win, web...) work here too.
+func plainGo(args ...string) error {
+	if len(args) == 0 || strings.HasPrefix(args[0], "-") {
+		fmt.Fprintln(os.Stderr, "gd: this is a Go module that does not use graphics.gd, so there is no Godot project to open.\ngd build, gd run and gd test build it the way go would.")
+		os.Exit(2)
+	}
+	switch os.Getenv("GOOS") {
+	case "macos":
+		os.Setenv("GOOS", "darwin")
+	case "win":
+		os.Setenv("GOOS", "windows")
+	case "ubuntu", "arch", "debian", "nix":
+		os.Setenv("GOOS", "linux")
+	case "iphone", "ios":
+		os.Setenv("GOOS", "ios")
+		if os.Getenv("GOARCH") == "" {
+			os.Setenv("GOARCH", "arm64")
+		}
+	case "browser", "web", "wasm":
+		os.Setenv("GOOS", "js")
+		os.Setenv("GOARCH", "wasm")
+	case "musl":
+		return errors.New("gd: GOOS=musl is for graphics.gd projects; a Go module that does not use graphics.gd builds for GOOS=linux (with CGO_ENABLED=0 for a static executable)")
+	}
+	builder.EnableDedup()
+	return tooling.Go.Exec(args...)
 }
 
 // openAndroidEditorApp opens the staged project in the Godot Android Editor

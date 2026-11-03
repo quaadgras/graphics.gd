@@ -80,6 +80,11 @@ func All(root string) error {
 		if path != root && (strings.HasPrefix(d.Name(), ".") || d.Name() == "addons") {
 			return fs.SkipDir
 		}
+		// the editor leaves a directory with a .gdignore out of the
+		// project (its files are not resources), and so does this.
+		if _, err := os.Stat(filepath.Join(path, ".gdignore")); err == nil && path != root {
+			return fs.SkipDir
+		}
 		prefix := "res://"
 		rel, err := filepath.Rel(root, path)
 		if err == nil && rel != "." {

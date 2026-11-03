@@ -30,7 +30,9 @@ func (browser Browser) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (browser Browser) Build(args ...string) error {
-	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
+	if project.IncludesGo {
+		os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
+	}
 	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, "js", "wasm"), 0755); err != nil {
 		return xray.New(err)
 	}
@@ -50,7 +52,9 @@ func (browser Browser) Build(args ...string) error {
 }
 
 func (browser Browser) Run(args ...string) error {
-	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
+	if project.IncludesGo {
+		os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
+	}
 	build, engine := SplitRunArgs(args)
 	if err := browser.Build(build...); err != nil {
 		return xray.New(err)
@@ -97,7 +101,9 @@ func (browser Browser) BuildMain(args ...string) error {
 }
 
 func (browser Browser) Test(args ...string) error {
-	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
+	if project.IncludesGo {
+		os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
+	}
 	browser.testing = true
 	converted := []string{}
 	for _, arg := range os.Args[2:] {

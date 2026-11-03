@@ -33,6 +33,9 @@ import (
 const GraphicsPackagesSetting = "graphics_gd/generate/graphics_packages"
 
 func init() {
+	if isStub {
+		return
+	}
 	gd.EditorStartupFunctions = append(gd.EditorStartupFunctions, func() {
 		Callable.Defer(Callable.New(func() {
 			// IsEditorHint alone is not enough: a test-harness build of the

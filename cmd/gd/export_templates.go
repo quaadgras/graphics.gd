@@ -13,6 +13,7 @@ import (
 
 	"github.com/schollz/progressbar/v3"
 	"graphics.gd/cmd/gd/internal/gdpaths"
+	"graphics.gd/cmd/gd/internal/project"
 	"graphics.gd/cmd/gd/internal/tooling"
 	"runtime.link/api/xray"
 )
@@ -31,6 +32,9 @@ var templateSpecs = map[string]templateSpec{
 	"linux":   {[]string{"linux_"}, "linux_release.x86_64"},
 	"darwin":  {[]string{"macos."}, "macos.zip"},
 	"ios":     {[]string{"ios."}, "ios.zip"},
+	// the templates of Godot projects with no Go code, whose Web preset gd
+	// writes with thread_support=false (and, before, extensions_support=true).
+	"web": {[]string{"web_nothreads_", "web_dlink_nothreads_"}, "web_nothreads_release.zip"},
 }
 
 // templateCommon files are needed by every platform's export.
@@ -51,9 +55,12 @@ func AssertExportTemplates(version string, goos string) error {
 		return nil
 	}
 	// js/web uses graphics.gd's own web template (handled by the browser
-	// builder), not the stock Godot web templates.
+	// builder), not the stock Godot web templates, unless there is no Go.
 	if goos == "js" || goos == "web" {
-		return nil
+		if project.IncludesGo {
+			return nil
+		}
+		goos = "web"
 	}
 	// musl exports embed gd's own statically-linked engine via the preset's
 	// custom_template, so the stock Godot templates are never read.
