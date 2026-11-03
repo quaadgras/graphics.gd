@@ -41,6 +41,7 @@ func createStaticEngine() {
 		}
 		cargs = append(cargs, C.CString(arg))
 	}
+	setMainExtension()
 	ptr := C.libgodot_create_godot_instance(C.int(len(os.Args)), &cargs[0], (C.GDExtensionInitializationFunction)(C.cgo_extension_init))
 	if ptr == nil {
 		os.Exit(0)

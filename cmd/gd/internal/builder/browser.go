@@ -30,9 +30,6 @@ func (browser Browser) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (browser Browser) Build(args ...string) error {
-	if project.IncludesGo {
-		os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
-	}
 	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, "js", "wasm"), 0755); err != nil {
 		return xray.New(err)
 	}
@@ -52,9 +49,6 @@ func (browser Browser) Build(args ...string) error {
 }
 
 func (browser Browser) Run(args ...string) error {
-	if project.IncludesGo {
-		os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
-	}
 	build, engine := SplitRunArgs(args)
 	if err := browser.Build(build...); err != nil {
 		return xray.New(err)
@@ -62,7 +56,7 @@ func (browser Browser) Run(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-release", "Web"); err != nil {
+	if err := browser.export(); err != nil {
 		return xray.New(err)
 	}
 	PORT := os.Getenv("PORT")
@@ -97,13 +91,25 @@ func (browser Browser) BuildMain(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
+	return browser.export()
+}
+
+// export the project with the Web preset. The Go program runs beside the
+// engine in the browser and connects to it itself, so graphics.gd's
+// library.gdextension is left out of the export (which then leaves it out of
+// the exported extension_list.cfg too): the engine has nothing to load for it.
+func (browser Browser) export() error {
+	if project.IncludesGo {
+		restore, err := excludeFromExport("Web", "library.gdextension")
+		if err != nil {
+			return xray.New(err)
+		}
+		defer restore()
+	}
 	return tooling.Godot.Exec("--headless", "--export-release", "Web")
 }
 
 func (browser Browser) Test(args ...string) error {
-	if project.IncludesGo {
-		os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
-	}
 	browser.testing = true
 	converted := []string{}
 	for _, arg := range os.Args[2:] {

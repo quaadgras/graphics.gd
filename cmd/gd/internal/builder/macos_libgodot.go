@@ -93,7 +93,8 @@ func (macos MacOS) buildMainLibgodot(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	restoreExtensions, err := ignoreEnabledExtensions()
+	// see windows_libgodot.go (a pack export takes no libraries with it).
+	restoreExtensions, err := ignoreEnabledExtensions(hasHandshake(custom.source()))
 	if err != nil {
 		return xray.New(err)
 	}

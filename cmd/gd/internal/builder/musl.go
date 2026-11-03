@@ -34,7 +34,6 @@ type Musl struct {
 }
 
 func (musl Musl) Build(args ...string) (err error) {
-	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
 	goos := os.Getenv("GOOS")
 	os.Setenv("GOOS", "linux")
 	defer os.Setenv("GOOS", goos)
@@ -246,7 +245,12 @@ func (musl Musl) patch() error {
 // rename the project's *.gdextension files aside so Godot's import scan finds none: it then
 // drops extension_list.cfg and the export bundles no extension loaders. The returned func
 // restores everything for the editor and other-platform builds, so callers MUST defer it.
-func ignoreEnabledExtensions() (restore func(), err error) {
+//
+// With keepLinked, graphics.gd's own library.gdextension stays where it is: its code is
+// linked into the program, which registers it under that path (LIBGODOT_MAIN_EXTENSION) so
+// that the engine does not load it again, and the export leaves it out (see
+// [excludeFromExport]). An editor open on the project never sees it go.
+func ignoreEnabledExtensions(keepLinked bool) (restore func(), err error) {
 	dir := project.GraphicsDirectory
 	var found []string
 	if err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, walkErr error) error {
@@ -259,15 +263,15 @@ func ignoreEnabledExtensions() (restore func(), err error) {
 			}
 			return nil
 		}
-		if strings.HasSuffix(path, ".gdextension") {
+		if strings.HasSuffix(path, ".gdextension") && !(keepLinked && project.IncludesGo && path == filepath.Join(dir, "library.gdextension")) {
 			found = append(found, path)
 		}
 		return nil
 	}); err != nil {
 		return func() {}, xray.New(err)
 	}
-	// in a graphics.gd project these are gd's own, in a Godot project they
-	// are the project's.
+	// in a graphics.gd project these are gd's own (or ones linked into the
+	// Go program), in a Godot project they are the project's.
 	if !project.IncludesGo && len(found) > 0 {
 		fmt.Fprintf(os.Stderr, "gd: warning: a musl export is one static executable, which cannot load GDExtensions: it goes without %q\n", found)
 	}
@@ -302,7 +306,6 @@ func ignoreEnabledExtensions() (restore func(), err error) {
 }
 
 func (musl Musl) BuildMain(args ...string) error {
-	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
@@ -341,11 +344,20 @@ func (musl Musl) BuildMain(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	restoreExtensions, err := ignoreEnabledExtensions()
+	restoreExtensions, err := ignoreEnabledExtensions(true)
 	if err != nil {
 		return xray.New(err)
 	}
 	defer restoreExtensions()
+	if project.IncludesGo {
+		// the export template is the Go program, which has graphics.gd's
+		// extension linked in: the export goes without its libraries.
+		restorePreset, err := excludeFromExport("Musl "+arch, "library.gdextension")
+		if err != nil {
+			return xray.New(err)
+		}
+		defer restorePreset()
+	}
 	// The preset exports into releases/musl (which a GOOS=linux build in
 	// libgodot mode does not create) and Godot exits 0 when an export
 	// fails, so the result is checked for.

@@ -1,0 +1,82 @@
+diff --git a/core/extension/gdextension_function_loader.cpp b/core/extension/gdextension_function_loader.cpp
+index 978fd50120..905b1d9383 100644
+--- a/core/extension/gdextension_function_loader.cpp
++++ b/core/extension/gdextension_function_loader.cpp
+@@ -33,7 +33,9 @@
+ #include "core/extension/gdextension.h"
+ 
+ Error GDExtensionFunctionLoader::open_library(const String &p_path) {
+-	ERR_FAIL_COND_V_MSG(!p_path.begins_with("libgodot://"), ERR_FILE_NOT_FOUND, "Function based GDExtensions should have a path starting with libgodot://");
++	// The .gdextension path of an extension linked into the program that embeds
++	// the engine (see GodotInstance::initialize).
++	ERR_FAIL_COND_V_MSG(!p_path.begins_with("libgodot://") && !p_path.ends_with(".gdextension"), ERR_FILE_NOT_FOUND, "Function based GDExtensions should have a path starting with libgodot://, or the path of a .gdextension file.");
+ 	ERR_FAIL_COND_V_MSG(!initialization_function, ERR_DOES_NOT_EXIST, "Initialization function is required for function based GDExtensions.");
+ 
+ 	library_path = p_path;
+diff --git a/core/extension/gdextension_manager.h b/core/extension/gdextension_manager.h
+index 8fe4213ae7..a6416ce86a 100644
+--- a/core/extension/gdextension_manager.h
++++ b/core/extension/gdextension_manager.h
+@@ -41,6 +41,7 @@ class GDExtensionManager : public Object {
+ 	int32_t level = -1;
+ 	HashMap<String, Ref<GDExtension>> gdextension_map;
+ 	HashMap<String, String> gdextension_class_icon_paths;
++	String host_extension_path; // see register_core_extensions.
+ 
+ 	bool startup_callback_called = false;
+ 	bool shutdown_callback_called = false;
+@@ -91,6 +92,8 @@ public:
+ 	static GDExtensionManager *get_singleton();
+ 
+ 	void load_extensions();
++	void set_host_extension_path(const String &p_path) { host_extension_path = p_path; }
++	String get_host_extension_path() const { return host_extension_path; }
+ 	void reload_extensions();
+ 	bool ensure_extensions_loaded(const HashSet<String> &p_extensions);
+ 
+diff --git a/core/extension/godot_instance.cpp b/core/extension/godot_instance.cpp
+index b5c99eb22e..bbbfc9a40f 100644
+--- a/core/extension/godot_instance.cpp
++++ b/core/extension/godot_instance.cpp
+@@ -57,7 +57,14 @@ bool GodotInstance::initialize(GDExtensionInitializationFunction p_init_func) {
+ 	print_verbose("Godot Instance initialization");
+ 	GDExtensionManager *gdextension_manager = GDExtensionManager::get_singleton();
+ 	GDExtensionConstPtr<const GDExtensionInitializationFunction> ptr((const GDExtensionInitializationFunction *)&p_init_func);
+-	GDExtensionManager::LoadStatus status = gdextension_manager->load_extension_from_function("libgodot://main", ptr);
++	// see register_core_extensions.
++	String path = gdextension_manager->get_host_extension_path();
++	if (path.is_empty()) {
++		GDExtensionManager::LoadStatus status = gdextension_manager->load_extension_from_function("libgodot://main", ptr);
++		return status == GDExtensionManager::LoadStatus::LOAD_STATUS_OK;
++	}
++	GDExtensionManager::LoadStatus status = gdextension_manager->load_extension_from_function(path, ptr);
++	gdextension_manager->load_extensions(); // skips the path, it is loaded.
+ 	return status == GDExtensionManager::LoadStatus::LOAD_STATUS_OK;
+ }
+ 
+diff --git a/core/register_core_types.cpp b/core/register_core_types.cpp
+index 80696814aa..ac2a7b34a1 100644
+--- a/core/register_core_types.cpp
++++ b/core/register_core_types.cpp
+@@ -394,7 +394,20 @@ void register_core_extensions() {
+ 
+ 	// Hardcoded for now.
+ 	GDExtension::initialize_gdextensions();
+-	gdextension_manager->load_extensions();
++#ifdef LIBGODOT_ENABLED
++	// A program that embeds the engine with an extension of its own linked in
++	// can name the .gdextension file of that extension, so that the extension
++	// is registered under that path (see GodotInstance::initialize) instead of
++	// being loaded a second time from the file's libraries. The project's
++	// extensions are then loaded after it.
++	String host_extension = OS::get_singleton()->get_environment("LIBGODOT_MAIN_EXTENSION");
++	if (!host_extension.is_empty()) {
++		// It is for this process, not the ones it starts.
++		OS::get_singleton()->unset_environment("LIBGODOT_MAIN_EXTENSION");
++		gdextension_manager->set_host_extension_path(host_extension);
++	} else
++#endif
++		gdextension_manager->load_extensions();
+ 	gdextension_manager->initialize_extensions(GDExtension::INITIALIZATION_LEVEL_CORE);
+ 	_is_core_extensions_registered = true;
+ 

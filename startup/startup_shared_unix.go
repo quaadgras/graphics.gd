@@ -97,6 +97,7 @@ func (engine *engineAsSharedLibrary) Start() {
 	for _, arg := range os.Args {
 		cargs = append(cargs, C.CString(arg))
 	}
+	setMainExtension()
 	ptr := C.call_libgodot_create_godot_instance(libgodot_create_godot_instance, C.int(len(os.Args)), &cargs[0], (C.GDExtensionInitializationFunction)(C.cgo_extension_init))
 	if ptr == nil {
 		return

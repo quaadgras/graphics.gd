@@ -164,10 +164,25 @@ func (custom engine) directory() string {
 	return name + "-" + hex.EncodeToString(sum[:4])
 }
 
+// source returns where the engine's source code is checked out (gd's own
+// clone of it, never the repository it comes from).
+func (custom engine) source() string {
+	return filepath.Join(filepath.Dir(gdpaths.Lib), "src", custom.directory())
+}
+
 // checkout the engine's source code, returning where it is along with
-// the commit that has been checked out.
+// the commit that has been checked out. The source is given graphics.gd's
+// handshake with the engine (see [applyHandshake]) when it does not have it.
 func (custom engine) checkout() (dir, commit string, err error) {
-	dir = filepath.Join(filepath.Dir(gdpaths.Lib), "src", custom.directory())
+	dir, commit, err = custom.checkoutRef()
+	if err == nil {
+		applyHandshake(dir)
+	}
+	return dir, commit, err
+}
+
+func (custom engine) checkoutRef() (dir, commit string, err error) {
+	dir = custom.source()
 	repository := custom.Repository
 	if !strings.Contains(repository, ":") && !filepath.IsAbs(repository) {
 		if repository, err = filepath.Abs(filepath.Join(project.Directory, repository)); err != nil {
@@ -216,7 +231,8 @@ func (custom engine) checkout() (dir, commit string, err error) {
 		fmt.Fprintln(os.Stderr, err)
 		return dir, head, nil
 	}
-	if _, err := git("checkout", "-q", "--detach", "FETCH_HEAD"); err != nil {
+	// forced, the handshake is applied to the files of the last checkout.
+	if _, err := git("checkout", "-q", "-f", "--detach", "FETCH_HEAD"); err != nil {
 		return "", "", err
 	}
 	commit, err = git("rev-parse", "HEAD")
@@ -315,6 +331,9 @@ var sdkSum = sync.OnceValue(func() string {
 func (custom engine) artifact(src, commit, platform, arch string, debug bool, name string) (string, error) {
 	hash := sha256.New()
 	fmt.Fprintln(hash, engineRecipe, custom.Options, sdkSum())
+	if hasHandshake(src) {
+		hash.Write(handshake_patch)
+	}
 	if custom.StripUnusedClasses {
 		profile, err := custom.profile(src)
 		if err != nil {

@@ -97,12 +97,22 @@ func (windows Windows) buildMainLibgodot(GOARCH string, args ...string) error {
 	if err := setPresetOption(preset, "binary_format/architecture", arch); err != nil {
 		return xray.New(err)
 	}
-	// the Go code is in the executable, nothing is to be loaded as an extension.
-	restoreExtensions, err := ignoreEnabledExtensions()
+	// the Go code is in the executable, nothing is to be loaded as an
+	// extension: an engine with the handshake (see handshake.go) is told so
+	// by the program, others need the extension files out of the way.
+	handshake := hasHandshake(custom.source())
+	restoreExtensions, err := ignoreEnabledExtensions(handshake)
 	if err != nil {
 		return xray.New(err)
 	}
 	defer restoreExtensions()
+	if handshake && project.IncludesGo {
+		restorePreset, err := excludeFromExport(preset, "library.gdextension")
+		if err != nil {
+			return xray.New(err)
+		}
+		defer restorePreset()
+	}
 	exportPath, err := presetExportPath(preset)
 	if err != nil {
 		return xray.New(err)
