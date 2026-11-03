@@ -62,6 +62,7 @@ func (musl Musl) Build(args ...string) (err error) {
 		}
 		musl.lib = libgodot
 	}
+	var runsHere bool // out is the engine this gd goes on to run.
 	if musl.out == "" {
 		musl.out = filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")
 		// The static editor is the engine binary on hosts that have no other:
@@ -72,14 +73,17 @@ func (musl Musl) Build(args ...string) (err error) {
 			version, _ := tooling.ListDynamicDependencies.CombinedOutput("--version")
 			hostRunsStaticEditor = strings.HasPrefix(version, "musl")
 		}
-		if hostRunsStaticEditor {
-			defer func() {
-				if err == nil {
-					tooling.Godot.Path = musl.out
-				}
-			}()
-		}
+		runsHere = hostRunsStaticEditor
 	}
+	// setting the project up and linking the editor are done one gd at a
+	// time in a project; compiling the Go code, which is most of a build and
+	// which go itself keeps safe between processes, is not, so any number of
+	// runs build side by side and only take turns for a moment each.
+	unlock, err := lockBuilds(project.GraphicsDirectory)
+	if err != nil {
+		return xray.New(err)
+	}
+	defer func() { unlock() }()
 	if err := project.SetupFiles(musl_sdk, "bundled/musl", filepath.Join(gdpaths.Lib, "musl")); err != nil {
 		return xray.New(err)
 	}
@@ -115,7 +119,14 @@ func (musl Musl) Build(args ...string) (err error) {
 	if err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Go.Action("build", args, "-tags", tags, "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo); err != nil {
+	unlock()
+	unlock = func() {}
+	// the archive is built under a name of this gd's own and takes the
+	// shared name only if it differs from what is there.
+	built := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("musl_%v.%d.a", GOARCH, os.Getpid()))
+	defer os.Remove(built)
+	defer os.Remove(strings.TrimSuffix(built, ".a") + ".h")
+	if err := tooling.Go.Action("build", args, "-tags", tags, "-buildmode=c-archive", "-overlay="+overlay, "-o", built); err != nil {
 		return xray.New(err)
 	}
 	// Forward each linked package's #cgo LDFLAGS to the final link. `go build`
@@ -136,9 +147,19 @@ func (musl Musl) Build(args ...string) (err error) {
 		}
 	}
 	zigArgs = append(zigArgs, tooling.CGOLDFlags()...)
-	zigArgs = append(zigArgs, "-lc++", "-o", musl.out)
-	if err := tooling.Zig.Exec(zigArgs...); err != nil {
+	zigArgs = append(zigArgs, "-lc++")
+	if unlock, err = lockBuilds(project.GraphicsDirectory); err != nil {
+		unlock = func() {}
 		return xray.New(err)
+	}
+	if err := replaceIfChanged(libgo, built); err != nil {
+		return xray.New(err)
+	}
+	if err := linkStatic(musl.out, libgo, zigArgs...); err != nil {
+		return xray.New(err)
+	}
+	if runsHere {
+		tooling.Godot.Path = holdExecutable(musl.out)
 	}
 	return nil
 }
@@ -373,6 +394,13 @@ func (musl Musl) Test(args ...string) error {
 		return fmt.Errorf("gd build: cannot cross-compile linux %v on %v", GOARCH, runtime.GOOS)
 	}
 	libgo := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("musl_%v.a", GOARCH))
+	// the tests are built into the archive and the editor that a run of the
+	// project builds, so they take their turn with it (see [Musl.Build]).
+	unlock, err := lockBuilds(project.GraphicsDirectory)
+	if err != nil {
+		return xray.New(err)
+	}
+	defer func() { unlock() }()
 	// args go on to the test binary, the archiver's flag stays with go.
 	ar, err := archiver(nil)
 	if err != nil {
@@ -386,10 +414,13 @@ func (musl Musl) Test(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Zig.Exec("c++", "-target", target, libgo, libgodot, "-o", filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")); err != nil {
+	editor := filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")
+	if err := linkStatic(editor, libgo, "c++", "-target", target, libgo, libgodot); err != nil {
 		return xray.New(err)
 	}
-	tooling.Godot.Path = filepath.Join(project.GraphicsDirectory, "musl_"+GOARCH+".editor")
+	tooling.Godot.Path = holdExecutable(editor)
+	unlock()
+	unlock = func() {}
 
 	// project.Setup imports the graphics directory after this callback returns,
 	// which is too late for the suite we are about to run — now that there is an
