@@ -13,11 +13,14 @@ package startup
 // (and the editor) keeps running, so new classes become available
 // without a restart.
 //
-// Threading model: everything guest-related happens on the engine main
-// thread. The guest's _start runs inside InstantiateModule here; each
-// engine iteration runs inside the guest's yield host-call; engine
-// callbacks forward back into the guest only as nested calls. The
-// watcher goroutine touches nothing but atomics and the build cache.
+// Threading model: the guest's _start runs inside InstantiateModule here,
+// on the engine main thread; each engine iteration runs inside the
+// guest's yield host-call; engine callbacks forward into the guest as
+// nested calls, from whichever thread the engine makes them on. Only one
+// thread runs guest code at a time (see reloadsGuestMu), and the host's
+// own bookkeeping of classes, instances, callables and method tokens is
+// guarded by reloadsStateMu. The watcher goroutine touches nothing but
+// atomics and the build cache.
 
 import (
 	"context"
@@ -58,8 +61,14 @@ const (
 var reloadsCompiled atomic.Pointer[wazero.CompiledModule]
 
 var (
-	reloadsClassesMu sync.Mutex
-	reloadsClasses   []string
+	// reloadsStateMu guards reloadsClasses and the session bookkeeping
+	// below (reloadsEngineClasses through reloadsListPushes): the guest
+	// adds to it from its host calls while engine callbacks consult it,
+	// and those can come from any thread. It is only ever held around the
+	// bookkeeping itself, never across a call into the engine or the
+	// guest, which may come back here on the same thread.
+	reloadsStateMu sync.Mutex
+	reloadsClasses []string
 )
 
 var reloadsInitLevels []gdextension.InitializationLevel
@@ -290,6 +299,7 @@ type reloadsListPush struct {
 
 // reloadsClassToken resolves the current module's class token for an
 // engine-registered class name, if the current module has the class.
+// The caller holds reloadsStateMu.
 func reloadsClassToken(name string) (gdextension.ExtensionClassID, bool) {
 	engineID, ok := reloadsEngineClasses[name]
 	if !ok {
@@ -307,7 +317,7 @@ func reloadsTrackRegistrations() {
 	register := gdextension.Host.ClassDB.Register.Class
 	gdextension.Host.ClassDB.Register.Class = func(class, parent_class gdextension.StringName, id gdextension.ExtensionClassID, virtual, abstract, exposed, runtime bool, icon_path gdextension.String) {
 		name := reloadsStringNameToString(class)
-		reloadsClassesMu.Lock()
+		reloadsStateMu.Lock()
 		engineID, known := reloadsEngineClasses[name]
 		if known {
 			// The engine already has this class from an earlier session;
@@ -316,7 +326,7 @@ func reloadsTrackRegistrations() {
 			// signals must not re-register either (see below).
 			reloadsClassRemap[engineID] = id
 			reloadsDeduped[name] = true
-			reloadsClassesMu.Unlock()
+			reloadsStateMu.Unlock()
 			return
 		}
 		// The engine gets an id of the host's own rather than the module's
@@ -329,7 +339,7 @@ func reloadsTrackRegistrations() {
 		reloadsEngineClassNames[engineID] = name
 		reloadsClassRemap[engineID] = id
 		reloadsClasses = append(reloadsClasses, name)
-		reloadsClassesMu.Unlock()
+		reloadsStateMu.Unlock()
 		register(class, parent_class, engineID, virtual, abstract, exposed, runtime, icon_path)
 	}
 	removal := gdextension.Host.ClassDB.Register.Removal
@@ -341,7 +351,7 @@ func reloadsTrackRegistrations() {
 			return
 		}
 		name := reloadsStringNameToString(class)
-		reloadsClassesMu.Lock()
+		reloadsStateMu.Lock()
 		if i := slices.Index(reloadsClasses, name); i >= 0 {
 			reloadsClasses = slices.Delete(reloadsClasses, i, i+1)
 		}
@@ -350,7 +360,7 @@ func reloadsTrackRegistrations() {
 			delete(reloadsClassRemap, engineID)
 		}
 		delete(reloadsEngineClasses, name)
-		reloadsClassesMu.Unlock()
+		reloadsStateMu.Unlock()
 		removal(class)
 	}
 	// Drop method/constant/property/signal registrations for classes
@@ -370,9 +380,9 @@ func reloadsTrackRegistrations() {
 		ftype := f.Type()
 		f.Set(reflect.MakeFunc(ftype, func(args []reflect.Value) []reflect.Value {
 			class := args[0].Interface().(gdextension.StringName)
-			reloadsClassesMu.Lock()
+			reloadsStateMu.Lock()
 			skip := reloadsDeduped[reloadsStringNameToString(class)]
-			reloadsClassesMu.Unlock()
+			reloadsStateMu.Unlock()
 			if skip {
 				out := make([]reflect.Value, ftype.NumOut())
 				for k := range out {
@@ -388,17 +398,22 @@ func reloadsTrackRegistrations() {
 	// tied to its method once the list is registered for a class.
 	push := gdextension.Host.ClassDB.MethodList.Push
 	gdextension.Host.ClassDB.MethodList.Push = func(info gdextension.MethodList, name gdextension.StringName, call gdextension.FunctionID, method_flags gdextension.MethodFlags, return_value_info gdextension.PropertyList, arguments_info gdextension.PropertyList, count int, default_arguments gdextension.CallAccepts[gdextension.Variant]) {
+		method := reloadsStringNameToString(name)
+		reloadsStateMu.Lock()
 		reloadsEngineToken++
+		token := reloadsEngineToken
 		reloadsListPushes[uint64(info)] = append(reloadsListPushes[uint64(info)], reloadsListPush{
-			name:   reloadsStringNameToString(name),
-			engine: reloadsEngineToken,
+			name:   method,
+			engine: token,
 			module: uint64(call),
 		})
-		push(info, name, gdextension.FunctionID(reloadsEngineToken), method_flags, return_value_info, arguments_info, count, default_arguments)
+		reloadsStateMu.Unlock()
+		push(info, name, gdextension.FunctionID(token), method_flags, return_value_info, arguments_info, count, default_arguments)
 	}
 	registerMethods := gdextension.Host.ClassDB.Register.Methods
 	gdextension.Host.ClassDB.Register.Methods = func(class gdextension.StringName, list gdextension.MethodList) {
 		className := reloadsStringNameToString(class)
+		reloadsStateMu.Lock()
 		for _, m := range reloadsListPushes[uint64(list)] {
 			key := reloadsMethodKey{class: className, method: m.name, kind: reloadsTokenRegistered}
 			reloadsModuleTokens[key] = m.module
@@ -410,15 +425,19 @@ func reloadsTrackRegistrations() {
 			}
 		}
 		delete(reloadsListPushes, uint64(list))
+		reloadsStateMu.Unlock()
 		registerMethods(class, list)
 	}
 	setup := gdextension.Host.Objects.Extension.Setup
 	gdextension.Host.Objects.Extension.Setup = func(obj gdextension.Object, name gdextension.StringName, id gdextension.ExtensionInstanceID) {
-		reloadsInstances[uint64(id)] = reloadsInstanceInfo{
+		info := reloadsInstanceInfo{
 			obj:   uint64(obj),
 			class: reloadsStringNameToString(name),
 			epoch: reloadsEpoch.Load(),
 		}
+		reloadsStateMu.Lock()
+		reloadsInstances[uint64(id)] = info
+		reloadsStateMu.Unlock()
 		setup(obj, name, id)
 	}
 	// Callables reach the engine with an id of the host's own: every
@@ -426,13 +445,19 @@ func reloadsTrackRegistrations() {
 	// module's (a signal connection, say) past a swap.
 	callable := gdextension.Host.Callables.Create
 	gdextension.Host.Callables.Create = func(id gdextension.FunctionID, object gdextension.ObjectID, result gdextension.CallReturns[gdextension.Callable]) {
+		reloadsStateMu.Lock()
 		reloadsCallableID++
-		reloadsCallables[reloadsCallableID] = uint64(id)
-		callable(gdextension.FunctionID(reloadsCallableID), object, result)
+		engineID := reloadsCallableID
+		reloadsCallables[engineID] = uint64(id)
+		reloadsStateMu.Unlock()
+		callable(gdextension.FunctionID(engineID), object, result)
 	}
 	lookup := gdextension.Host.Callables.Lookup
 	gdextension.Host.Callables.Lookup = func(c gdextension.Callable) gdextension.FunctionID {
-		return gdextension.FunctionID(reloadsCallables[uint64(lookup(c))])
+		engineID := uint64(lookup(c))
+		reloadsStateMu.Lock()
+		defer reloadsStateMu.Unlock()
+		return gdextension.FunctionID(reloadsCallables[engineID])
 	}
 }
 
@@ -446,26 +471,32 @@ func reloadsStringNameToString(name gdextension.StringName) string {
 // callables it owned are answered inertly from now on. Classes stay
 // registered (see reloadsTrackRegistrations).
 func reloadsMarkSessionStale() {
+	reloadsStateMu.Lock()
+	defer reloadsStateMu.Unlock()
 	reloadsEpoch.Add(1)
 	clear(reloadsBindings)
 	clear(reloadsCallables)
-	reloadsClassesMu.Lock()
 	clear(reloadsDeduped)
 	// The next module's registrations map each engine id to its token;
 	// classes it no longer has are left unmapped (answered inertly).
 	clear(reloadsClassRemap)
-	reloadsClassesMu.Unlock()
 	clear(reloadsModuleTokens)
 }
 
 // reloadsInstanceLive reports whether the extension instance id belongs
 // to the current module.
 func reloadsInstanceLive(id uint64) bool {
+	reloadsStateMu.Lock()
 	info, ok := reloadsInstances[id]
+	reloadsStateMu.Unlock()
 	return ok && info.epoch == reloadsEpoch.Load()
 }
 
-func reloadsBindingLive(id uint64) bool { return reloadsBindings[id] }
+func reloadsBindingLive(id uint64) bool {
+	reloadsStateMu.Lock()
+	defer reloadsStateMu.Unlock()
+	return reloadsBindings[id]
+}
 
 // reloadsLive translates ids that only need to be live, to themselves.
 func reloadsLive(live func(uint64) bool) func(uint64) (uint64, bool) {
@@ -475,6 +506,8 @@ func reloadsLive(live func(uint64) bool) func(uint64) (uint64, bool) {
 // reloadsCallable translates the engine's id for a callable into the
 // current module's.
 func reloadsCallable(id uint64) (uint64, bool) {
+	reloadsStateMu.Lock()
+	defer reloadsStateMu.Unlock()
 	module, ok := reloadsCallables[id]
 	return module, ok
 }
@@ -493,6 +526,7 @@ func reloadsAdoptInstances() {
 		info reloadsInstanceInfo
 	}
 	var stale []pending
+	reloadsStateMu.Lock()
 	for id, info := range reloadsInstances {
 		if info.epoch != current {
 			stale = append(stale, pending{id, info})
@@ -505,18 +539,26 @@ func reloadsAdoptInstances() {
 	for _, p := range stale {
 		delete(reloadsInstances, p.id)
 	}
+	reloadsStateMu.Unlock()
 	for _, p := range stale {
+		reloadsStateMu.Lock()
 		token, ok := reloadsClassToken(p.info.class)
+		reloadsStateMu.Unlock()
 		if !ok {
 			continue // class no longer exists; the object stays inert
 		}
 		stack := []uint64{uint64(token), p.info.obj}
-		if err := reloadsAdoptFn.CallWithStack(reloadsCtx, stack); err != nil {
+		reloadsGuestMu.Lock()
+		err := reloadsAdoptFn.CallWithStack(reloadsCtx, stack)
+		reloadsGuestMu.Unlock()
+		if err != nil {
 			fmt.Fprintln(os.Stderr, "graphics.gd: failed to adopt instance of", p.info.class+":", err)
 			continue
 		}
 		if newID := stack[0]; newID != 0 {
+			reloadsStateMu.Lock()
 			reloadsInstances[newID] = reloadsInstanceInfo{obj: p.info.obj, class: p.info.class, epoch: current}
+			reloadsStateMu.Unlock()
 		}
 	}
 	if len(stale) > 0 {
@@ -531,6 +573,8 @@ func reloadsAdoptInstances() {
 // 1, call data at the same addresses), so the engine only ever sees tokens
 // of the host's own, one per method for the life of the process.
 func reloadsEngineTokenFor(key reloadsMethodKey, module uint64) uint64 {
+	reloadsStateMu.Lock()
+	defer reloadsStateMu.Unlock()
 	reloadsModuleTokens[key] = module
 	if token, ok := reloadsEngineTokenOf[key]; ok {
 		return token
@@ -544,17 +588,20 @@ func reloadsEngineTokenFor(key reloadsMethodKey, module uint64) uint64 {
 // reloadsModuleToken translates a token the engine holds into the current
 // module's token for the same method, 0 when the module has no such method.
 func reloadsModuleToken(token uint64) uint64 {
+	reloadsStateMu.Lock()
 	key, ok := reloadsEngineTokens[token]
+	module, known := reloadsModuleTokens[key]
+	engineID, registered := reloadsEngineClasses[key.class]
+	reloadsStateMu.Unlock()
 	if !ok {
 		return 0
 	}
-	if module, ok := reloadsModuleTokens[key]; ok {
+	if known {
 		return module
 	}
 	// A virtual the current module has not been asked for yet: ask it,
 	// through the class callbacks that record the answer.
-	engineID, ok := reloadsEngineClasses[key.class]
-	if !ok {
+	if !registered {
 		return 0
 	}
 	name := gd.NewStringName(key.method)
@@ -565,6 +612,8 @@ func reloadsModuleToken(token uint64) uint64 {
 	case reloadsTokenCaller:
 		gdextension.On.Extension.Class.Caller(engineID, pointers.Get(name), key.hash)
 	}
+	reloadsStateMu.Lock()
+	defer reloadsStateMu.Unlock()
 	return reloadsModuleTokens[key]
 }
 
@@ -618,7 +667,9 @@ func reloadsInstallSwapGuards() {
 	class := &gdextension.On.Extension.Class
 	createClass := class.Create
 	class.Create = func(engineID gdextension.ExtensionClassID, notify bool) gdextension.Object {
+		reloadsStateMu.Lock()
 		id, ok := reloadsClassRemap[engineID]
+		reloadsStateMu.Unlock()
 		if !ok {
 			return 0
 		}
@@ -626,28 +677,38 @@ func reloadsInstallSwapGuards() {
 	}
 	method := class.Method
 	class.Method = func(engineID gdextension.ExtensionClassID, name gdextension.StringName, hash uint32) gdextension.FunctionID {
+		reloadsStateMu.Lock()
 		id, ok := reloadsClassRemap[engineID]
+		className := reloadsEngineClassNames[engineID]
+		reloadsStateMu.Unlock()
 		if !ok {
 			return 0
 		}
 		fn := method(id, name, hash)
-		key := reloadsMethodKey{class: reloadsEngineClassNames[engineID], method: reloadsStringNameToString(name), hash: hash, kind: reloadsTokenVirtual}
+		key := reloadsMethodKey{class: className, method: reloadsStringNameToString(name), hash: hash, kind: reloadsTokenVirtual}
 		if fn == 0 {
+			reloadsStateMu.Lock()
 			reloadsModuleTokens[key] = 0
+			reloadsStateMu.Unlock()
 			return 0
 		}
 		return gdextension.FunctionID(reloadsEngineTokenFor(key, uint64(fn)))
 	}
 	caller := class.Caller
 	class.Caller = func(engineID gdextension.ExtensionClassID, name gdextension.StringName, hash uint32) uintptr {
+		reloadsStateMu.Lock()
 		id, ok := reloadsClassRemap[engineID]
+		className := reloadsEngineClassNames[engineID]
+		reloadsStateMu.Unlock()
 		if !ok {
 			return 0
 		}
 		data := caller(id, name, hash)
-		key := reloadsMethodKey{class: reloadsEngineClassNames[engineID], method: reloadsStringNameToString(name), hash: hash, kind: reloadsTokenCaller}
+		key := reloadsMethodKey{class: className, method: reloadsStringNameToString(name), hash: hash, kind: reloadsTokenCaller}
 		if data == 0 {
+			reloadsStateMu.Lock()
 			reloadsModuleTokens[key] = 0
+			reloadsStateMu.Unlock()
 			return 0
 		}
 		return uintptr(reloadsEngineTokenFor(key, uint64(data)))
@@ -658,7 +719,9 @@ func reloadsInstallSwapGuards() {
 	created := binding.Created
 	binding.Created = func(instance gdextension.ExtensionInstanceID) gdextension.ExtensionBindingID {
 		id := created(instance)
+		reloadsStateMu.Lock()
 		reloadsBindings[uint64(id)] = true
+		reloadsStateMu.Unlock()
 		return id
 	}
 	reloadsGuardStale(binding, reflect.TypeFor[gdextension.ExtensionBindingID](), reloadsLive(reloadsBindingLive))
@@ -696,12 +759,16 @@ func reloadsInstallSwapGuards() {
 	free := gdextension.On.Extension.Instance.Free
 	gdextension.On.Extension.Instance.Free = func(id gdextension.ExtensionInstanceID) {
 		free(id)
+		reloadsStateMu.Lock()
 		delete(reloadsInstances, uint64(id))
+		reloadsStateMu.Unlock()
 	}
 	freeCallable := gdextension.On.Callables.Free
 	gdextension.On.Callables.Free = func(id gdextension.FunctionID) {
 		freeCallable(id)
+		reloadsStateMu.Lock()
 		delete(reloadsCallables, uint64(id))
+		reloadsStateMu.Unlock()
 	}
 }
 
@@ -781,8 +848,8 @@ func reloadsForwardCallbacks() {
 
 func reloadsInstantiateControl() error {
 	_, err := reloadsRuntime.NewHostModuleBuilder("reloads").
-		NewFunctionBuilder().WithGoModuleFunction(api.GoModuleFunc(reloadsHostReady), nil, nil).Export("ready").
-		NewFunctionBuilder().WithGoModuleFunction(api.GoModuleFunc(reloadsHostYield), nil, []api.ValueType{api.ValueTypeI32}).Export("yield").
+		NewFunctionBuilder().WithGoModuleFunction(reloadsOutsideGuest(reloadsHostReady), nil, nil).Export("ready").
+		NewFunctionBuilder().WithGoModuleFunction(reloadsOutsideGuest(reloadsHostYield), nil, []api.ValueType{api.ValueTypeI32}).Export("yield").
 		Instantiate(reloadsCtx)
 	return err
 }
@@ -812,9 +879,9 @@ func reloadsHostReady(_ context.Context, m api.Module, stack []uint64) {
 	// Hand engine objects that survived a module swap over to this
 	// module, now that its classes are registered.
 	reloadsAdoptInstances()
-	reloadsClassesMu.Lock()
+	reloadsStateMu.Lock()
 	fmt.Fprintln(os.Stderr, "graphics.gd: serving classes:", reloadsClasses)
-	reloadsClassesMu.Unlock()
+	reloadsStateMu.Unlock()
 	if reloadsCShared && !EngineClass.IsEditorHint() {
 		// The guest's startup.LoadingScene is this call, and it promises
 		// the project a running engine. Loaded into a godot process, the
@@ -1082,6 +1149,11 @@ func reloadsRun() {
 				config = config.WithEnv("PWD", wd)
 			}
 		}
+		// The module's _start runs the project's main inside this call,
+		// and leaves it only when the module exits, so the guest is
+		// entered here (see reloadsGuestMu) and only let go once the
+		// module is closed.
+		reloadsGuestMu.Lock()
 		mod, err := reloadsRuntime.InstantiateModule(reloadsCtx, compiled, config)
 		if err != nil && !reloadsGuestDead.Load() {
 			if exit, ok := err.(*sys.ExitError); !ok || exit.ExitCode() != 0 {
@@ -1093,6 +1165,7 @@ func reloadsRun() {
 		if mod != nil {
 			mod.Close(reloadsCtx)
 		}
+		reloadsGuestMu.Unlock()
 		if reloadsGuestDead.Load() {
 			// The guest exited on its own (see reloadsGuestDied): its
 			// build would only die again, so drop it and run host-driven

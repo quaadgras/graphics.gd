@@ -1067,10 +1067,10 @@ func gdapi_version_string(_ context.Context, m api.Module, stack []uint64) {
 
 func reloadsInstantiateHostModule(ctx context.Context, rt wazero.Runtime) error {
 	type (
-		FUN = api.GoModuleFunc
 		ARG = []api.ValueType
 		RET = []api.ValueType
 	)
+	FUN := reloadsOutsideGuest
 	const (
 		I32 = api.ValueTypeI32
 		I64 = api.ValueTypeI64
@@ -1362,6 +1362,62 @@ func reloadsBindGuest(mod api.Module) *reloadsGuestExports {
 		on_worker_thread_pool_task:                    mod.ExportedFunction("on_worker_thread_pool_task"),
 		on_worker_thread_pool_group_task:              mod.ExportedFunction("on_worker_thread_pool_group_task"),
 	}
+}
+
+func (g *reloadsGuestExports) owns(fn api.Function) bool {
+	switch fn {
+	case nil:
+		return false
+	case g.on_callable_call,
+		g.on_callable_validation,
+		g.on_callable_free,
+		g.on_callable_hash,
+		g.on_callable_compare,
+		g.on_callable_less_than,
+		g.on_callable_stringify,
+		g.on_callable_get_argument_count,
+		g.on_editor_class_in_use_detection,
+		g.on_engine_init,
+		g.on_engine_exit,
+		g.on_extension_binding_created,
+		g.on_extension_binding_removed,
+		g.on_extension_binding_reference,
+		g.on_extension_class_create,
+		g.on_extension_class_method,
+		g.on_extension_class_caller,
+		g.on_extension_instance_set,
+		g.on_extension_instance_get,
+		g.on_extension_instance_property_list,
+		g.on_extension_instance_property_has_default,
+		g.on_extension_instance_property_get_default,
+		g.on_extension_instance_property_validation,
+		g.on_extension_instance_notification,
+		g.on_extension_instance_stringify,
+		g.on_extension_instance_reference,
+		g.on_extension_instance_rid,
+		g.on_extension_instance_checked_call,
+		g.on_extension_instance_called,
+		g.on_extension_instance_variant_call,
+		g.on_extension_instance_dynamic_call,
+		g.on_extension_instance_free,
+		g.on_extension_script_categorization,
+		g.on_extension_script_get_property_type,
+		g.on_extension_script_get_owner,
+		g.on_extension_script_get_property_state,
+		g.on_extension_script_get_methods,
+		g.on_extension_script_has_method,
+		g.on_extension_script_get_method_argument_count,
+		g.on_extension_script_get,
+		g.on_extension_script_is_placeholder,
+		g.on_extension_script_get_language,
+		g.on_first_frame,
+		g.on_every_frame,
+		g.on_final_frame,
+		g.on_worker_thread_pool_task,
+		g.on_worker_thread_pool_group_task:
+		return true
+	}
+	return false
 }
 
 var reloadsGuest atomic.Pointer[reloadsGuestExports]

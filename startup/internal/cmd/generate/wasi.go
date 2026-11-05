@@ -377,7 +377,10 @@ func generate_reloads_go() error {
 	}
 
 	fmt.Fprint(f, "func reloadsInstantiateHostModule(ctx context.Context, rt wazero.Runtime) error {\n")
-	fmt.Fprint(f, "\ttype (\n\t\tFUN = api.GoModuleFunc\n\t\tARG = []api.ValueType\n\t\tRET = []api.ValueType\n\t)\n")
+	fmt.Fprint(f, "\ttype (\n\t\tARG = []api.ValueType\n\t\tRET = []api.ValueType\n\t)\n")
+	// Every host function lets go of the guest while it runs (see
+	// reloadsOutsideGuest in reloads_call.go).
+	fmt.Fprint(f, "\tFUN := reloadsOutsideGuest\n")
 	fmt.Fprint(f, "\tconst (\n\t\tI32 = api.ValueTypeI32\n\t\tI64 = api.ValueTypeI64\n\t\tF32 = api.ValueTypeF32\n\t\tF64 = api.ValueTypeF64\n\t)\n")
 	fmt.Fprint(f, "\t_, err := rt.NewHostModuleBuilder(\"gd\").\n")
 	for fn := range api.StructureOf(&gdextension.Host).Iter() {
@@ -419,6 +422,23 @@ func generate_reloads_go() error {
 		fmt.Fprintf(f, "\t\t%s: mod.ExportedFunction(%q),\n", name, name)
 	}
 	fmt.Fprint(f, "\t}\n")
+	fmt.Fprint(f, "}\n\n")
+	// owns tells a call into the live module apart from one into a module
+	// that has since been swapped out (see reloadsCallPooled).
+	fmt.Fprint(f, "func (g *reloadsGuestExports) owns(fn api.Function) bool {\n")
+	fmt.Fprint(f, "\tswitch fn {\n")
+	fmt.Fprint(f, "\tcase nil:\n\t\treturn false\n")
+	{
+		var names []string
+		for fn := range api.StructureOf(&gdextension.On).Iter() {
+			if name := fn.Tags.Get("gd"); name != "" {
+				names = append(names, "g."+name)
+			}
+		}
+		fmt.Fprintf(f, "\tcase %s:\n\t\treturn true\n", strings.Join(names, ",\n\t\t"))
+	}
+	fmt.Fprint(f, "\t}\n")
+	fmt.Fprint(f, "\treturn false\n")
 	fmt.Fprint(f, "}\n\n")
 	fmt.Fprint(f, "var reloadsGuest atomic.Pointer[reloadsGuestExports]\n\n")
 	// Nested engine callbacks re-enter the same export, so the call goes
