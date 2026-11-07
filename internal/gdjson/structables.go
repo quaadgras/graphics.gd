@@ -151,6 +151,15 @@ type PhysicsDirectSpaceState2D_Intersection struct {
 	Shape      int        `gd:"shape"`
 }
 
+// PhysicsDirectSpaceState2D_Overlap is one result of intersect_point or
+// intersect_shape, which only report what was hit, not where.
+type PhysicsDirectSpaceState2D_Overlap struct {
+	Collider   any     `gd:"collider" type:"Object.Instance"`
+	ColliderID int64   `gd:"collider_id" type:"Object.ID"`
+	RID        RID.Any `gd:"rid"`
+	Shape      int     `gd:"shape"`
+}
+
 type PhysicsDirectSpaceState2D_RestInfo struct {
 	ColliderID     int64      `gd:"collider_id" type:"Object.ID"`
 	LinearVelocity Vector2.XY `gd:"linear_velocity"`
@@ -168,6 +177,15 @@ type PhysicsDirectSpaceState3D_Intersection struct {
 	FaceIndex  int         `gd:"face_index"`
 	RID        RID.Any     `gd:"rid"`
 	Shape      int         `gd:"shape"`
+}
+
+// PhysicsDirectSpaceState3D_Overlap is one result of intersect_point or
+// intersect_shape, which only report what was hit, not where.
+type PhysicsDirectSpaceState3D_Overlap struct {
+	Collider   any     `gd:"collider" type:"Object.Instance"`
+	ColliderID int64   `gd:"collider_id" type:"Object.ID"`
+	RID        RID.Any `gd:"rid"`
+	Shape      int     `gd:"shape"`
 }
 
 type PhysicsDirectSpaceState3D_RestInfo struct {
@@ -761,12 +779,12 @@ var Structables = map[string]reflect.Type{
 	"OS.execute_with_pipe.":                                             reflect.TypeFor[Pipe](),
 	"OS.get_memory_info.":                                               reflect.TypeFor[MemoryInfo](),
 	"PhysicsDirectSpaceState2D.intersect_ray.":                          reflect.TypeFor[PhysicsDirectSpaceState2D_Intersection](),
-	"PhysicsDirectSpaceState2D.intersect_point.":                        reflect.TypeFor[PhysicsDirectSpaceState2D_Intersection](),
-	"PhysicsDirectSpaceState2D.intersect_shape.":                        reflect.TypeFor[PhysicsDirectSpaceState2D_Intersection](),
+	"PhysicsDirectSpaceState2D.intersect_point.":                        reflect.TypeFor[PhysicsDirectSpaceState2D_Overlap](),
+	"PhysicsDirectSpaceState2D.intersect_shape.":                        reflect.TypeFor[PhysicsDirectSpaceState2D_Overlap](),
 	"PhysicsDirectSpaceState2D.get_rest_info.":                          reflect.TypeFor[PhysicsDirectSpaceState2D_RestInfo](),
 	"PhysicsDirectSpaceState3D.intersect_ray.":                          reflect.TypeFor[PhysicsDirectSpaceState3D_Intersection](),
-	"PhysicsDirectSpaceState3D.intersect_point.":                        reflect.TypeFor[PhysicsDirectSpaceState3D_Intersection](),
-	"PhysicsDirectSpaceState3D.intersect_shape.":                        reflect.TypeFor[PhysicsDirectSpaceState3D_Intersection](),
+	"PhysicsDirectSpaceState3D.intersect_point.":                        reflect.TypeFor[PhysicsDirectSpaceState3D_Overlap](),
+	"PhysicsDirectSpaceState3D.intersect_shape.":                        reflect.TypeFor[PhysicsDirectSpaceState3D_Overlap](),
 	"PhysicsDirectSpaceState3D.get_rest_info.":                          reflect.TypeFor[PhysicsDirectSpaceState3D_RestInfo](),
 	"ProjectSettings.add_property_info.hint":                            TypeFromString("Object", "PropertyInfo"),
 	"ProjectSettings.get_global_class_list.":                            reflect.TypeFor[GlobalClass](),

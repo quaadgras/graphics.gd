@@ -158,8 +158,8 @@ Note: [ConcavePolygonShape2D]s and [CollisionPolygon2D]s in Segments build mode 
 [PhysicsPointQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsPointQueryParameters2D
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) IntersectPoint(parameters PhysicsPointQueryParameters2D.Instance) []PhysicsDirectSpaceState2D_Intersection { //gd:PhysicsDirectSpaceState2D.intersect_point
-	return []PhysicsDirectSpaceState2D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Intersection](gd.InternalArray(Advanced(self).IntersectPoint(parameters, int64(32)))))
+func (self Instance) IntersectPoint(parameters PhysicsPointQueryParameters2D.Instance) []PhysicsDirectSpaceState2D_Overlap { //gd:PhysicsDirectSpaceState2D.intersect_point
+	return []PhysicsDirectSpaceState2D_Overlap(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Overlap](gd.InternalArray(Advanced(self).IntersectPoint(parameters, int64(32)))))
 }
 
 /*
@@ -182,8 +182,8 @@ Note: [ConcavePolygonShape2D]s and [CollisionPolygon2D]s in Segments build mode 
 [PhysicsPointQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsPointQueryParameters2D
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self MoreArgs) IntersectPoint(parameters PhysicsPointQueryParameters2D.Instance, max_results int) []PhysicsDirectSpaceState2D_Intersection { //gd:PhysicsDirectSpaceState2D.intersect_point
-	return []PhysicsDirectSpaceState2D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Intersection](gd.InternalArray(Advanced(self).IntersectPoint(parameters, int64(max_results)))))
+func (self MoreArgs) IntersectPoint(parameters PhysicsPointQueryParameters2D.Instance, max_results int) []PhysicsDirectSpaceState2D_Overlap { //gd:PhysicsDirectSpaceState2D.intersect_point
+	return []PhysicsDirectSpaceState2D_Overlap(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Overlap](gd.InternalArray(Advanced(self).IntersectPoint(parameters, int64(max_results)))))
 }
 
 /*
@@ -227,8 +227,8 @@ The number of intersections can be limited with the 'max_results' parameter, to 
 [PhysicsShapeQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsShapeQueryParameters2D
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self Instance) IntersectShape(parameters PhysicsShapeQueryParameters2D.Instance) []PhysicsDirectSpaceState2D_Intersection { //gd:PhysicsDirectSpaceState2D.intersect_shape
-	return []PhysicsDirectSpaceState2D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Intersection](gd.InternalArray(Advanced(self).IntersectShape(parameters, int64(32)))))
+func (self Instance) IntersectShape(parameters PhysicsShapeQueryParameters2D.Instance) []PhysicsDirectSpaceState2D_Overlap { //gd:PhysicsDirectSpaceState2D.intersect_shape
+	return []PhysicsDirectSpaceState2D_Overlap(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Overlap](gd.InternalArray(Advanced(self).IntersectShape(parameters, int64(32)))))
 }
 
 /*
@@ -247,8 +247,8 @@ The number of intersections can be limited with the 'max_results' parameter, to 
 [PhysicsShapeQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsShapeQueryParameters2D
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
-func (self MoreArgs) IntersectShape(parameters PhysicsShapeQueryParameters2D.Instance, max_results int) []PhysicsDirectSpaceState2D_Intersection { //gd:PhysicsDirectSpaceState2D.intersect_shape
-	return []PhysicsDirectSpaceState2D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Intersection](gd.InternalArray(Advanced(self).IntersectShape(parameters, int64(max_results)))))
+func (self MoreArgs) IntersectShape(parameters PhysicsShapeQueryParameters2D.Instance, max_results int) []PhysicsDirectSpaceState2D_Overlap { //gd:PhysicsDirectSpaceState2D.intersect_shape
+	return []PhysicsDirectSpaceState2D_Overlap(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Overlap](gd.InternalArray(Advanced(self).IntersectShape(parameters, int64(max_results)))))
 }
 
 /*
@@ -443,6 +443,12 @@ type PhysicsDirectSpaceState2D_Intersection struct {
 	} `gd:"position"`
 	RID   RID.Any `gd:"rid"`
 	Shape int     `gd:"shape"`
+}
+type PhysicsDirectSpaceState2D_Overlap struct {
+	Collider   Object.Instance `gd:"collider"`
+	ColliderID Object.ID       `gd:"collider_id"`
+	RID        RID.Any         `gd:"rid"`
+	Shape      int             `gd:"shape"`
 }
 type PhysicsDirectSpaceState2D_RestInfo struct {
 	ColliderID     Object.ID `gd:"collider_id"`

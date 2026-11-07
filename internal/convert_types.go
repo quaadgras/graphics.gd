@@ -366,7 +366,11 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag
 			}
-			fieldValue, err := convertVariantToDesiredGoType(dictionary.Index(NewVariant(name)), field.Type)
+			key := NewVariant(name)
+			if !dictionary.Has(key) {
+				continue // optional key: indexing a missing one logs an engine error
+			}
+			fieldValue, err := convertVariantToDesiredGoType(dictionary.Index(key), field.Type)
 			if err != nil {
 				return reflect.Value{}, xray.New(err)
 			}
@@ -426,7 +430,11 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag
 			}
-			fieldValue, err := convertVariantToDesiredGoType(NewVariant(dictionary.Index(VariantPkg.New(name))), field.Type)
+			key := VariantPkg.New(name)
+			if !dictionary.Has(key) {
+				continue // optional key: indexing a missing one logs an engine error
+			}
+			fieldValue, err := convertVariantToDesiredGoType(NewVariant(dictionary.Index(key)), field.Type)
 			if err != nil {
 				return reflect.Value{}, xray.New(err)
 			}
