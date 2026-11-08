@@ -28,12 +28,12 @@ var macosFrameworks = []string{
 // macosSlices are the architectures a macOS app is built for, universal
 // (like the stock export) unless GOARCH narrows it down to one.
 type macosSlice struct {
-	GOARCH, target, arch, minimum string
+	GOARCH, target, arch, minimum, sdk string
 }
 
 var macosSlices = []macosSlice{
-	{"arm64", "aarch64-macos", "arm64", "11.0"},
-	{"amd64", "x86_64-macos", "x86_64", "10.13"},
+	{"arm64", "aarch64-macos", "arm64", "11.0", "15.5"},   // the SDK of zig 0.15.2's darwin headers.
+	{"amd64", "x86_64-macos", "x86_64", "10.13", "10.13"}, // no Metal there, and a newer SDK needs privacy usage descriptions.
 }
 
 // buildMainLibgodot exports the project as an app whose executable is the
@@ -196,7 +196,7 @@ func (macos MacOS) linkLibgodot(custom engine, slice macosSlice, args []string) 
 	}
 	link := []string{
 		"-arch", slice.arch,
-		"-platform_version", "macos", slice.minimum, slice.minimum,
+		"-platform_version", "macos", slice.minimum, slice.sdk,
 		"-adhoc_codesign", // which apple silicon insists on, to run anything at all.
 		"--error-limit=0", // every missing symbol at once, for the stubs to be completed from.
 		"-syslibroot", "/dev/null",
