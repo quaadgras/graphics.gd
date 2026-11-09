@@ -250,7 +250,9 @@ func (ios IOS) BuildMain(args ...string) error {
 	}
 	var lld_args = []string{
 		"-arch", "arm64",
-		"-platform_version", "ios", "15.0.0", "15.0.0",
+		// the SDK is that of zig 0.15.2's darwin headers: Metal picks its default
+		// shading language version from it, which the engine compiles shaders for.
+		"-platform_version", "ios", "15.0.0", "18.5",
 		"-fixup_chains", "-ignore_auto_link",
 		"-syslibroot", "/dev/null",
 		"-headerpad", "0x1000",
