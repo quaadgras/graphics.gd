@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"graphics.gd/cmd/gd/internal/gdpaths"
 	"graphics.gd/cmd/gd/internal/project"
@@ -67,15 +66,11 @@ func (windows Windows) buildMainLibgodot(GOARCH string, args ...string) error {
 		return xray.New(err)
 	}
 	link := []string{"c++", "-target", target, "-o", out, pck, filepath.Join(filepath.Dir(libgodot), "godot_res.o"), libgodot, libgo}
-	cgoLDFLAGS, err := tooling.Go.Output("list", "-tags", tags, "-deps", "-f", "{{range .CgoLDFLAGS}}{{println .}}{{end}}", ".")
+	cgoFlags, err := cgoLinkFlags(tags)
 	if err != nil {
 		return xray.New(err)
 	}
-	for _, flag := range strings.Split(cgoLDFLAGS, "\n") {
-		if flag = strings.TrimSpace(flag); flag != "" {
-			link = append(link, flag)
-		}
-	}
+	link = append(link, cgoFlags...)
 	link = append(link, tooling.CGOLDFlags()...)
 	// the import libraries the engine's build was given in place of the
 	// ones zig's mingw-w64 lacks (see windows_engine.go).

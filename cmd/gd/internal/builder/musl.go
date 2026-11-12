@@ -150,23 +150,16 @@ func (musl Musl) Build(args ...string) (err error) {
 	if err := tooling.Go.Action("build", args, "-tags", tags, "-buildmode=c-archive", "-overlay="+overlay, "-o", built); err != nil {
 		return xray.New(err)
 	}
-	// Forward each linked package's #cgo LDFLAGS to the final link. `go build`
-	// records them in the c-archive but does not apply them when an external tool
-	// links it (zig here), so a package that statically links a C/C++ library would
-	// otherwise fail with undefined symbols. `go list -deps` expands ${SRCDIR} to
-	// absolute paths. -lc++ goes last so libc++ resolves any C++ symbols those
+	// Forward each linked package's linker flags to the final link (see
+	// cgoLinkFlags). -lc++ goes last so libc++ resolves any C++ symbols those
 	// archives pull in.
 	zigArgs := append([]string{"cc", "-target", target}, musl.objects...)
 	zigArgs = append(zigArgs, musl.lib, libgo)
-	cgoLDFLAGS, err := tooling.Go.Output("list", "-tags", tags, "-deps", "-f", "{{range .CgoLDFLAGS}}{{println .}}{{end}}", ".")
+	cgoFlags, err := cgoLinkFlags(tags)
 	if err != nil {
 		return xray.New(err)
 	}
-	for _, flag := range strings.Split(cgoLDFLAGS, "\n") {
-		if flag = strings.TrimSpace(flag); flag != "" {
-			zigArgs = append(zigArgs, flag)
-		}
-	}
+	zigArgs = append(zigArgs, cgoFlags...)
 	zigArgs = append(zigArgs, tooling.CGOLDFlags()...)
 	zigArgs = append(zigArgs, "-lc++")
 	if unlock, err = lockBuilds(project.GraphicsDirectory); err != nil {

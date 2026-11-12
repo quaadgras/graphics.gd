@@ -203,14 +203,21 @@ func (macos MacOS) linkLibgodot(custom engine, slice macosSlice, args []string) 
 		"-o", executable,
 		libgodot, libgo, versionsObj,
 	}
-	cgoLDFLAGS, err := tooling.Go.Output("list", "-tags", tags, "-deps", "-f", "{{range .CgoLDFLAGS}}{{println .}}{{end}}", ".")
+	cgoFlags, err := cgoLinkFlags(tags)
 	if err != nil {
 		return "", xray.New(err)
 	}
-	for _, flag := range strings.Split(cgoLDFLAGS, "\n") {
-		if flag = strings.TrimSpace(flag); flag != "" && !strings.HasPrefix(flag, "-framework") {
-			link = append(link, flag)
+	for i := 0; i < len(cgoFlags); i++ {
+		// the frameworks are linked from the SDK's own list, below; a
+		// "-framework" comes with its name in the next argument.
+		if cgoFlags[i] == "-framework" {
+			i++
+			continue
 		}
+		if strings.HasPrefix(cgoFlags[i], "-framework") {
+			continue
+		}
+		link = append(link, cgoFlags[i])
 	}
 	link = append(link, "-F", filepath.Join(sdk, "System", "Library", "Frameworks"), "-L", filepath.Join(sdk, "usr", "lib"),
 		"-lSystem", "-lobjc", "-lc++", "-lc++abi", "-lresolv")
