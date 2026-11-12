@@ -450,10 +450,14 @@ func gd(args ...string) error {
 				}
 				return builder.Android{}.InstallOnDevice(append([]string{"-ldflags=-s -w"}, args[1:]...)...)
 			}
+			path, err := builder.ReleasePath(GOOS, GOARCH)
+			if err != nil {
+				return err
+			}
 			if err := release(platform, GOOS, GOARCH, args[1:]...); err != nil {
 				return err
 			}
-			return builder.Install(GOOS, GOARCH)
+			return builder.Install(GOOS, path)
 		case "run":
 			if err := os.Chdir(project.Directory); err != nil {
 				return xray.New(err)

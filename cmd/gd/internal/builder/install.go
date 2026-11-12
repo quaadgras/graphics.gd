@@ -34,16 +34,12 @@ func CanInstall(goos, goarch string) error {
 	return fmt.Errorf("gd install: installing is not supported on %v, use gd build to export a release instead", host)
 }
 
-// Install installs the release that BuildMain exported for goos/goarch on
-// this system: on linux into GOBIN (GOPATH/bin), on macOS into
+// Install installs the release that BuildMain exported for goos/goarch to
+// release (see ReleasePath) on this system: on linux into GOBIN (GOPATH/bin), on macOS into
 // /Applications (~/Applications when that is not writable) and on windows
 // into %LOCALAPPDATA%\Programs, with a Start menu shortcut. Either way GOBIN
 // gets a command that runs it, so it is on the PATH like go install's.
-func Install(goos, goarch string) error {
-	release, err := releasePath(goos, goarch)
-	if err != nil {
-		return err
-	}
+func Install(goos, release string) error {
 	if _, err := os.Stat(release); err != nil {
 		return fmt.Errorf("gd install: the release build did not produce %s", release)
 	}
@@ -58,8 +54,9 @@ func Install(goos, goarch string) error {
 	return fmt.Errorf("gd install: cannot install a %v release", goos)
 }
 
-// releasePath returns where BuildMain exports goos/goarch to.
-func releasePath(goos, goarch string) (string, error) {
+// ReleasePath returns where BuildMain exports goos/goarch to. It is to be
+// asked before the build, which sets GOARCH for the architectures it builds.
+func ReleasePath(goos, goarch string) (string, error) {
 	var arch string
 	switch goarch {
 	case "amd64":

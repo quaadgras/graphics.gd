@@ -43,6 +43,13 @@ func (macos MacOS) buildMainLibgodot(args ...string) error {
 	if !ok {
 		return fmt.Errorf("gd: build/mode=libgodot needs an engine to link, set engine/repository or engine/strip_unused_classes in project.godot")
 	}
+	// linkLibgodot sets GOARCH for each slice it links, which must not
+	// outlive the build: a universal one would leave the last slice's.
+	if GOARCH, set := os.LookupEnv("GOARCH"); set {
+		defer os.Setenv("GOARCH", GOARCH)
+	} else {
+		defer os.Unsetenv("GOARCH")
+	}
 	targets, variant := macosSlices, "universal"
 	if GOARCH := os.Getenv("GOARCH"); GOARCH != "" {
 		variant, targets = GOARCH, nil
