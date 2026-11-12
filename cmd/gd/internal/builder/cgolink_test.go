@@ -29,3 +29,20 @@ func TestSplitPkgConfigOutput(t *testing.T) {
 		}
 	}
 }
+
+func TestLd64Flags(t *testing.T) {
+	in := []string{
+		"-L/x", "-lfoo", "/abs/libbar.a", "-framework", "Metal", "-weak_framework", "ARKit",
+		"-Wl,-rpath,@executable_path", "-Xlinker", "-dead_strip", "-force_load", "/abs/libz.a",
+		"-pthread", "-O2", "-g", "-m64", "-fPIC", "-flto=thin", "-fuse-ld=lld", "-mios-version-min=15.0",
+		"-target", "arm64-apple-ios", "-arch", "arm64", "-isysroot", "/sdk", "-map", "out.map", "-filelist", "files",
+	}
+	want := []string{
+		"-L/x", "-lfoo", "/abs/libbar.a", "-framework", "Metal", "-weak_framework", "ARKit",
+		"-rpath", "@executable_path", "-dead_strip", "-force_load", "/abs/libz.a",
+		"-map", "out.map", "-filelist", "files",
+	}
+	if got := ld64Flags(in); !slices.Equal(got, want) {
+		t.Errorf("ld64Flags =\n%q\nwant\n%q", got, want)
+	}
+}

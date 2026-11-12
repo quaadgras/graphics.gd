@@ -140,3 +140,52 @@ func splitPkgConfigOutput(out string) ([]string, error) {
 	}
 	return args, nil
 }
+
+// ld64Flags turns cgo linker flags, which are written for a C compiler that
+// links (clang, zig cc), into the arguments of ld64.lld, which gd runs
+// itself for Apple platforms: -Wl, and -Xlinker are unwrapped and flags
+// that only mean something to the compiler (-pthread, -O2, -g, -m64,
+// -fPIC...) are left out. The rest (-l, -L, -F, -framework and the linker's own
+// options, files) are the linker's already.
+func ld64Flags(flags []string) []string {
+	var out []string
+	for i := 0; i < len(flags); i++ {
+		flag := flags[i]
+		switch {
+		case strings.HasPrefix(flag, "-Wl,"):
+			out = append(out, strings.Split(strings.TrimPrefix(flag, "-Wl,"), ",")...)
+		case flag == "-Xlinker":
+			if i+1 < len(flags) {
+				i++
+				out = append(out, flags[i])
+			}
+		case flag == "-target" || flag == "-isysroot" || flag == "--sysroot" || flag == "-arch":
+			i++ // a compiler flag with its value (the link has its own -arch).
+		case compilerOnlyFlag(flag):
+		default:
+			out = append(out, flag)
+		}
+	}
+	return out
+}
+
+// compilerOnlyFlag reports whether a cgo linker flag is the compiler's and
+// not the linker's. Many of ld64's own options start with -f and -m too
+// (-framework, -force_load, -fixup_chains, -filelist, -map), so only the
+// compiler's spellings of those are matched.
+func compilerOnlyFlag(flag string) bool {
+	switch {
+	case flag == "-pthread", flag == "-rdynamic", flag == "-static-libgcc", flag == "-static-libstdc++",
+		flag == "-m32", flag == "-m64",
+		strings.HasPrefix(flag, "-O"), strings.HasPrefix(flag, "-g"), strings.HasPrefix(flag, "-std="),
+		strings.HasPrefix(flag, "--sysroot="), strings.HasPrefix(flag, "-isysroot"), strings.HasPrefix(flag, "--target="),
+		strings.HasPrefix(flag, "-march="), strings.HasPrefix(flag, "-mcpu="), strings.HasPrefix(flag, "-mtune="),
+		strings.HasPrefix(flag, "-m") && strings.Contains(flag, "-version-min="),
+		strings.HasPrefix(flag, "-fuse-ld="), strings.HasPrefix(flag, "-flto"), strings.HasPrefix(flag, "-fno-"),
+		strings.HasPrefix(flag, "-fsanitize"), strings.HasPrefix(flag, "-fprofile"), strings.HasPrefix(flag, "-fstack-"),
+		strings.HasPrefix(flag, "-fobjc-"), strings.HasPrefix(flag, "-fopenmp"),
+		flag == "-fPIC", flag == "-fpic", flag == "-fPIE", flag == "-fpie":
+		return true
+	}
+	return false
+}

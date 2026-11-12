@@ -207,6 +207,7 @@ func (macos MacOS) linkLibgodot(custom engine, slice macosSlice, args []string) 
 	if err != nil {
 		return "", xray.New(err)
 	}
+	cgoFlags = ld64Flags(cgoFlags)
 	for i := 0; i < len(cgoFlags); i++ {
 		// the frameworks are linked from the SDK's own list, below; a
 		// "-framework" comes with its name in the next argument.

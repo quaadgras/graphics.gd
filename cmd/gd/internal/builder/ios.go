@@ -172,6 +172,18 @@ func (ios IOS) BuildMain(args ...string) error {
 		existing_project = true
 	}
 
+	// the linker flags of the linked packages' C code (see cgoLinkFlags),
+	// while the go command still runs in the project, for the link below.
+	var cgoFlags []string
+	if project.IncludesGo {
+		_, tags := userTags("ios", args)
+		flags, err := cgoLinkFlags(mergeTags("ios", tags))
+		if err != nil {
+			return xray.New(err)
+		}
+		cgoFlags = ld64Flags(flags)
+	}
+
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
@@ -263,6 +275,7 @@ func (ios IOS) BuildMain(args ...string) error {
 	}
 	if project.IncludesGo {
 		lld_args = append(lld_args, filepath.Join(".", project.Name, "dylibs", "go.xcframework", "ios-arm64", "libgo.a"))
+		lld_args = append(lld_args, cgoFlags...)
 	}
 	lld_args = append(lld_args,
 		"-o", filepath.Join(apple_name+".app", apple_name),
