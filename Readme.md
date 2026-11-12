@@ -154,6 +154,11 @@ memory.
 * IOS     `GOOS=ios gd run` (requires [SideStore](https://sidestore.io) on the IOS device)
 * Web     `GOOS=web gd run`
 
+`gd install` does a release build for the host and installs it: into `GOBIN` (`GOPATH/bin`) on Linux,
+`/Applications` on MacOS, `%LOCALAPPDATA%\Programs` (with a Start menu shortcut) on Windows and,
+on Android under Termux, as an app through the system package installer.
+`gd install` with packages to install (`gd install ./cmd/tool`, `gd install pkg@version`) is `go install`.
+
 ## Platform Restrictions
 
 * 64bit only (`arm64`, `amd64` and `wasm`).

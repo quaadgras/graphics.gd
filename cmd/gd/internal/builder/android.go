@@ -1269,65 +1269,10 @@ func (android Android) runOnDevice(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
-	// Termux ships wrappers for the platform tools; fall back to the system
-	// binaries when they are not on PATH (same as openAndroidEditorApp).
-	systemTool := func(name string) string {
-		if path, err := exec.LookPath(name); err == nil {
-			return path
-		}
-		return "/system/bin/" + name
-	}
-	pm := systemTool("pm")
-	// Every successful install moves the package to a fresh /data/app path,
-	// so a change in `pm path` — including from empty on a first install —
-	// means the user accepted the prompt.
-	before, _ := exec.Command(pm, "path", packageName).Output()
-	opener, err := exec.LookPath("termux-open")
-	if err != nil {
-		if termuxPkgInstall("termux-tools") == nil {
-			opener, err = exec.LookPath("termux-open")
-		}
-		if err != nil {
-			return fmt.Errorf("gd run: termux-open not found to hand %s to the system package installer — install the termux-tools package, or install the APK manually", apkPath)
-		}
-	}
-	// The Termux content provider refuses to serve files to other apps —
-	// including the package installer — until the user opts in, and the
-	// installer surfaces that refusal as a bogus "There was a problem
-	// parsing the package", so opt in for them (transparently) up front.
-	if err := ensureTermuxExternalApps(); err != nil {
-		return fmt.Errorf("gd run: Termux does not let other apps read its files, so the package installer cannot receive the APK, and gd could not opt in for you (%w). Opt in with:\n\n\tmkdir -p ~/.termux && echo \"allow-external-apps = true\" >> ~/.termux/termux.properties && termux-reload-settings\n\nand rerun gd run. (This also lets apps you explicitly grant Termux permissions interact with it — see the Termux wiki.)", err)
-	}
-	if out, err := exec.Command(opener, apkPath).CombinedOutput(); err != nil {
-		return xray.New(fmt.Errorf("termux-open %s: %w\n%s", apkPath, err, out))
-	}
-	fmt.Println("gd: accept the install prompt on the device...")
-	fmt.Println("    (no prompt? Termux needs the 'Install unknown apps' permission in Android's")
-	fmt.Println("    settings, and android only shows the prompt while Termux is in the foreground)")
-	deadline := time.Now().Add(5 * time.Minute)
-	installed := false
-	lastOpen := time.Now()
-	for time.Now().Before(deadline) {
-		after, _ := exec.Command(pm, "path", packageName).Output()
-		if trimmed := bytes.TrimSpace(after); len(trimmed) > 0 && !bytes.Equal(trimmed, bytes.TrimSpace(before)) {
-			installed = true
-			break
-		}
-		// Android only shows the installer while Termux is in the
-		// foreground, and silently drops the request otherwise (the export
-		// takes minutes, plenty of time to have switched away) — re-hand the
-		// APK over periodically so returning to Termux still pops the prompt.
-		if time.Since(lastOpen) > 45*time.Second {
-			_ = exec.Command(opener, apkPath).Run()
-			lastOpen = time.Now()
-		}
-		time.Sleep(2 * time.Second)
-	}
-	if !installed {
-		fmt.Fprintln(os.Stderr, "gd: could not confirm the install; launching whatever is installed. Usual causes:")
-		fmt.Fprintln(os.Stderr, "    - Termux lacks the 'Install unknown apps' permission (Android settings > Apps > Termux)")
-		fmt.Fprintln(os.Stderr, "    - the installer refused an update over a build signed with a different key")
-		fmt.Fprintln(os.Stderr, "      (e.g. installed over adb from a desktop) — uninstall", packageName, "first")
+	if installed, err := installOnDevice("gd run", apkPath, packageName); err != nil {
+		return err
+	} else if !installed {
+		fmt.Fprintln(os.Stderr, "gd: launching whatever is installed")
 	}
 	// Godot's exported APKs expose com.godot.game.GodotAppLauncher as the
 	// (only exported) launcher activity, whatever the applicationId; resolve
@@ -1352,6 +1297,105 @@ func (android Android) runOnDevice(args ...string) error {
 	}
 	fmt.Println("gd: launched", packageName, "— engine logs are not readable from Termux; use wireless adb logcat from another machine to follow them")
 	return nil
+}
+
+// InstallOnDevice exports a release of the project and installs it on the
+// device gd is running on (Termux), see installOnDevice. Unlike runOnDevice
+// nothing of the shell's environment is baked into the library: the app
+// runs on its own, outside of Termux.
+func (android Android) InstallOnDevice(args ...string) error {
+	apkPath, signed, err := android.exportOnDevice(false, args...)
+	if err != nil {
+		return xray.New(err)
+	}
+	if !signed {
+		return fmt.Errorf("gd install: %s is unsigned and cannot be installed — install apksigner ('pkg install apksigner') and try again", apkPath)
+	}
+	GOARCH := "arm64"
+	if env := os.Getenv("GOARCH"); env != "" {
+		GOARCH = env
+	}
+	packageName, err := androidPackageName(GOARCH)
+	if err != nil {
+		return xray.New(err)
+	}
+	installed, err := installOnDevice("gd install", apkPath, packageName)
+	if err != nil {
+		return err
+	}
+	if !installed {
+		return fmt.Errorf("gd install: %s was not installed", apkPath)
+	}
+	fmt.Println("gd: installed", packageName)
+	return nil
+}
+
+// systemTool returns the platform tool name: Termux ships wrappers for them,
+// otherwise the system binaries (same as openAndroidEditorApp).
+func systemTool(name string) string {
+	if path, err := exec.LookPath(name); err == nil {
+		return path
+	}
+	return "/system/bin/" + name
+}
+
+// installOnDevice hands the APK to the system package installer and waits
+// for the user to accept its prompt. Android offers no silent install to a
+// terminal app. It reports whether the install was seen to land, and
+// explains to the user when it was not.
+func installOnDevice(verb, apkPath, packageName string) (installed bool, err error) {
+	pm := systemTool("pm")
+	// Every successful install moves the package to a fresh /data/app path,
+	// so a change in `pm path` — including from empty on a first install —
+	// means the user accepted the prompt.
+	before, _ := exec.Command(pm, "path", packageName).Output()
+	opener, err := exec.LookPath("termux-open")
+	if err != nil {
+		if termuxPkgInstall("termux-tools") == nil {
+			opener, err = exec.LookPath("termux-open")
+		}
+		if err != nil {
+			return false, fmt.Errorf("%s: termux-open not found to hand %s to the system package installer — install the termux-tools package, or install the APK manually", verb, apkPath)
+		}
+	}
+	// The Termux content provider refuses to serve files to other apps —
+	// including the package installer — until the user opts in, and the
+	// installer surfaces that refusal as a bogus "There was a problem
+	// parsing the package", so opt in for them (transparently) up front.
+	if err := ensureTermuxExternalApps(); err != nil {
+		return false, fmt.Errorf("%s: Termux does not let other apps read its files, so the package installer cannot receive the APK, and gd could not opt in for you (%w). Opt in with:\n\n\tmkdir -p ~/.termux && echo \"allow-external-apps = true\" >> ~/.termux/termux.properties && termux-reload-settings\n\nand rerun %s. (This also lets apps you explicitly grant Termux permissions interact with it — see the Termux wiki.)", verb, err, verb)
+	}
+	if out, err := exec.Command(opener, apkPath).CombinedOutput(); err != nil {
+		return false, xray.New(fmt.Errorf("termux-open %s: %w\n%s", apkPath, err, out))
+	}
+	fmt.Println("gd: accept the install prompt on the device...")
+	fmt.Println("    (no prompt? Termux needs the 'Install unknown apps' permission in Android's")
+	fmt.Println("    settings, and android only shows the prompt while Termux is in the foreground)")
+	deadline := time.Now().Add(5 * time.Minute)
+	lastOpen := time.Now()
+	for time.Now().Before(deadline) {
+		after, _ := exec.Command(pm, "path", packageName).Output()
+		if trimmed := bytes.TrimSpace(after); len(trimmed) > 0 && !bytes.Equal(trimmed, bytes.TrimSpace(before)) {
+			installed = true
+			break
+		}
+		// Android only shows the installer while Termux is in the
+		// foreground, and silently drops the request otherwise (the export
+		// takes minutes, plenty of time to have switched away) — re-hand the
+		// APK over periodically so returning to Termux still pops the prompt.
+		if time.Since(lastOpen) > 45*time.Second {
+			_ = exec.Command(opener, apkPath).Run()
+			lastOpen = time.Now()
+		}
+		time.Sleep(2 * time.Second)
+	}
+	if !installed {
+		fmt.Fprintln(os.Stderr, "gd: could not confirm the install. Usual causes:")
+		fmt.Fprintln(os.Stderr, "    - Termux lacks the 'Install unknown apps' permission (Android settings > Apps > Termux)")
+		fmt.Fprintln(os.Stderr, "    - the installer refused an update over a build signed with a different key")
+		fmt.Fprintln(os.Stderr, "      (e.g. installed over adb from a desktop) — uninstall", packageName, "first")
+	}
+	return installed, nil
 }
 
 // termuxPkgInstall installs Termux packages non-interactively, so a first

@@ -174,7 +174,7 @@ func gd(args ...string) error {
 	// An ordinary Go module (one that does not use graphics.gd) is built,
 	// run and tested as go would, with gd's compiler.
 	kind := project.Nothing
-	if len(args) == 0 || args[0] == "build" || args[0] == "run" || args[0] == "test" || strings.HasPrefix(args[0], "-") {
+	if len(args) == 0 || args[0] == "build" || args[0] == "run" || args[0] == "test" || args[0] == "install" || strings.HasPrefix(args[0], "-") {
 		if wd, err := os.Getwd(); err == nil {
 			kind, _ = project.Detect(wd, args)
 		}
@@ -202,6 +202,12 @@ func gd(args ...string) error {
 		case "doc":
 			return doc(args[1:]...)
 		case "build", "run", "test":
+		case "install":
+			// go install of a package (gd install ./cmd/foo, pkg@version),
+			// or outside of a project: there is no release to install.
+			if kind == project.Nothing || hasPackageArgs(args[1:]) {
+				return tooling.Go.Exec(args...)
+			}
 		default:
 			return tooling.Go.Exec(args...)
 		}
@@ -274,7 +280,8 @@ func gd(args ...string) error {
 		// drivers, so it is headless-only.
 		target := os.Getenv("GOOS")
 		muslHost = (args[0] == "test" && (target == "" || target == "musl")) ||
-			((args[0] == "build" || args[0] == "run") && (target == "" || target == "musl" || target == "android" || target == "ios"))
+			((args[0] == "build" || args[0] == "run") && (target == "" || target == "musl" || target == "android" || target == "ios")) ||
+			(args[0] == "install" && (target == "" || target == "android"))
 	}
 	if muslHost {
 		if len(args) > 0 && args[0] == "test" {
@@ -326,7 +333,7 @@ func gd(args ...string) error {
 		}
 		if os.Getenv("GOOS") == "" {
 			GOOS = "musl"
-			if runtime.GOOS == "android" && len(args) > 0 && (args[0] == "build" || args[0] == "run") {
+			if runtime.GOOS == "android" && len(args) > 0 && (args[0] == "build" || args[0] == "run" || args[0] == "install") {
 				// The default on-device build/run target is android; musl is
 				// only the tooling that performs the headless export.
 				GOOS = "android"
@@ -426,27 +433,27 @@ func gd(args ...string) error {
 		// IPA to SideStore over the local network). Anything else cannot run
 		// on-device.
 		if runtime.GOOS == "android" && GOOS != "musl" &&
-			!((GOOS == "android" || GOOS == "ios") && (args[0] == "build" || args[0] == "run")) {
-			return fmt.Errorf("gd %[1]s is not supported for GOOS=%[2]s on android (Termux).\nOn-device, gd %[1]s supports the android and ios targets (GOOS=ios gd %[1]s), and `gd test` runs the suite in the static musl editor.\nRun 'gd' to open the project in the editor app, or use a desktop for other targets", args[0], GOOS)
+			!((GOOS == "android" || GOOS == "ios") && (args[0] == "build" || args[0] == "run")) &&
+			!(GOOS == "android" && args[0] == "install") {
+			return fmt.Errorf("gd %[1]s is not supported for GOOS=%[2]s on android (Termux).\nOn-device, gd build and gd run support the android and ios targets (GOOS=ios gd %[1]s), gd install installs the android app, and `gd test` runs the suite in the static musl editor.\nRun 'gd' to open the project in the editor app, or use a desktop for other targets", args[0], GOOS)
 		}
 		switch args[0] {
 		case "build":
-			if err := os.Chdir(project.Directory); err != nil {
-				return xray.New(err)
+			return release(platform, GOOS, GOARCH, args[1:]...)
+		case "install":
+			if err := builder.CanInstall(GOOS, GOARCH); err != nil {
+				return err
 			}
-			// we need to make sure export templates are installed before building.
-			if err := AssertExportTemplates(tooling.Godot.InstalledVersion(), GOOS); err != nil {
-				return xray.New(err)
-			}
-			if GOOS == "android" || GOOS == "ios" {
-				if err := project.RequireETC2ASTC(); err != nil {
-					return xray.New(err)
+			if GOOS == "android" { // on-device (Termux).
+				if err := prepareRelease(GOOS, GOARCH); err != nil {
+					return err
 				}
+				return builder.Android{}.InstallOnDevice(append([]string{"-ldflags=-s -w"}, args[1:]...)...)
 			}
-			if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, GOOS, GOARCH), 0755); err != nil {
-				return xray.New(err)
+			if err := release(platform, GOOS, GOARCH, args[1:]...); err != nil {
+				return err
 			}
-			return platform.BuildMain(append([]string{"-ldflags=-s -w"}, args[1:]...)...)
+			return builder.Install(GOOS, GOARCH)
 		case "run":
 			if err := os.Chdir(project.Directory); err != nil {
 				return xray.New(err)
@@ -478,6 +485,56 @@ func gd(args ...string) error {
 		}
 	}
 	return nil
+}
+
+// release exports a release build of the project for GOOS/GOARCH into the
+// releases directory.
+func release(platform Builder, GOOS, GOARCH string, args ...string) error {
+	if err := prepareRelease(GOOS, GOARCH); err != nil {
+		return err
+	}
+	return platform.BuildMain(append([]string{"-ldflags=-s -w"}, args...)...)
+}
+
+// prepareRelease checks for what a release build for GOOS/GOARCH needs.
+func prepareRelease(GOOS, GOARCH string) error {
+	if err := os.Chdir(project.Directory); err != nil {
+		return xray.New(err)
+	}
+	// we need to make sure export templates are installed before building.
+	if err := AssertExportTemplates(tooling.Godot.InstalledVersion(), GOOS); err != nil {
+		return xray.New(err)
+	}
+	if GOOS == "android" || GOOS == "ios" {
+		if err := project.RequireETC2ASTC(); err != nil {
+			return xray.New(err)
+		}
+	}
+	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, GOOS, GOARCH), 0755); err != nil {
+		return xray.New(err)
+	}
+	return nil
+}
+
+// hasPackageArgs reports whether go install arguments name packages to
+// install, rather than being only build flags.
+func hasPackageArgs(args []string) bool {
+	for i := 0; i < len(args); i++ {
+		arg := args[i]
+		if !strings.HasPrefix(arg, "-") {
+			return true
+		}
+		if strings.Contains(arg, "=") {
+			continue
+		}
+		switch strings.TrimLeft(arg, "-") {
+		case "C", "p", "o", "tags", "ldflags", "gcflags", "asmflags", "gccgoflags",
+			"mod", "modfile", "overlay", "pkgdir", "buildmode", "compiler",
+			"installsuffix", "toolexec", "pgo", "covermode", "coverpkg":
+			i++ // its value.
+		}
+	}
+	return false
 }
 
 // plainGo runs the go command for an ordinary Go module, one that does not
