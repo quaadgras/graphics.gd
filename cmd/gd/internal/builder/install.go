@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strings"
 
@@ -36,7 +37,8 @@ func CanInstall(goos, goarch string) error {
 // Install installs the release that BuildMain exported for goos/goarch on
 // this system: on linux into GOBIN (GOPATH/bin), on macOS into
 // /Applications (~/Applications when that is not writable) and on windows
-// into %LOCALAPPDATA%\Programs, with a Start menu shortcut.
+// into %LOCALAPPDATA%\Programs, with a Start menu shortcut. Either way GOBIN
+// gets a command that runs it, so it is on the PATH like go install's.
 func Install(goos, goarch string) error {
 	release, err := releasePath(goos, goarch)
 	if err != nil {
@@ -150,8 +152,15 @@ func goPaths() (gobin, gopath string, err error) {
 }
 
 // installMacOS copies the app bundle into /Applications, or into the
-// user's own Applications folder when /Applications is not writable.
+// user's own Applications folder when /Applications is not writable, and
+// puts a GOBIN/<name> script that execs its executable. Not a symbolic
+// link: the engine looks for the bundle's data beside the path it was run
+// as (_NSGetExecutablePath does not resolve links).
 func installMacOS(app string) error {
+	gobin, _, err := goPaths()
+	if err != nil {
+		return err
+	}
 	dir := "/Applications"
 	if probe, err := os.CreateTemp(dir, ".gd-install-"); err == nil {
 		probe.Close()
@@ -168,13 +177,54 @@ func installMacOS(app string) error {
 		return err
 	}
 	fmt.Println("gd: installed", dst)
+	exe, err := bundleExecutable(dst)
+	if err != nil {
+		return err
+	}
+	if err := os.MkdirAll(gobin, 0755); err != nil {
+		return err
+	}
+	script := filepath.Join(gobin, strings.TrimSuffix(filepath.Base(app), ".app"))
+	os.Remove(script)
+	if err := os.WriteFile(script, []byte("#!/bin/sh\nexec '"+strings.ReplaceAll(exe, "'", `'\''`)+"' \"$@\"\n"), 0755); err != nil {
+		return err
+	}
+	fmt.Println("gd: installed", script)
 	return nil
 }
 
+// bundleExecutable returns the executable of the app bundle, the one that
+// its Info.plist names (gd and Godot both write the XML form).
+func bundleExecutable(app string) (string, error) {
+	plist, err := os.ReadFile(filepath.Join(app, "Contents", "Info.plist"))
+	if err == nil {
+		if m := regexp.MustCompile(`<key>CFBundleExecutable</key>\s*<string>([^<]+)</string>`).FindSubmatch(plist); m != nil {
+			exe := filepath.Join(app, "Contents", "MacOS", string(m[1]))
+			if _, err := os.Stat(exe); err == nil {
+				return exe, nil
+			}
+		}
+	}
+	entries, err := os.ReadDir(filepath.Join(app, "Contents", "MacOS"))
+	if err != nil {
+		return "", err
+	}
+	if len(entries) != 1 {
+		return "", fmt.Errorf("gd install: cannot tell which executable of %s to put on the PATH", app)
+	}
+	return filepath.Join(app, "Contents", "MacOS", entries[0].Name()), nil
+}
+
 // installWindows copies the release (the executable and the libraries
-// beside it) into %LOCALAPPDATA%\Programs\<name> and puts a shortcut to it
-// in the Start menu.
+// beside it) into %LOCALAPPDATA%\Programs\<name>, puts a shortcut to it in
+// the Start menu and a GOBIN\<name>.cmd that runs it. Not a symbolic link:
+// those need developer mode, and the engine would look for the libraries
+// beside the link.
 func installWindows(exe string) error {
+	gobin, _, err := goPaths()
+	if err != nil {
+		return err
+	}
 	local := os.Getenv("LOCALAPPDATA")
 	if local == "" {
 		return errors.New("gd install: LOCALAPPDATA is not set")
@@ -185,6 +235,14 @@ func installWindows(exe string) error {
 		return err
 	}
 	fmt.Println("gd: installed", dir)
+	if err := os.MkdirAll(gobin, 0755); err != nil {
+		return err
+	}
+	cmd := filepath.Join(gobin, name+".cmd")
+	if err := os.WriteFile(cmd, []byte("@\""+filepath.Join(dir, filepath.Base(exe))+"\" %*\r\n"), 0755); err != nil {
+		return err
+	}
+	fmt.Println("gd: installed", cmd)
 	if appdata := os.Getenv("APPDATA"); appdata != "" {
 		lnk := filepath.Join(appdata, "Microsoft", "Windows", "Start Menu", "Programs", name+".lnk")
 		quote := func(s string) string { return "'" + strings.ReplaceAll(s, "'", "''") + "'" }

@@ -156,7 +156,8 @@ memory.
 
 `gd install` does a release build for the host and installs it: into `GOBIN` (`GOPATH/bin`) on Linux,
 `/Applications` on MacOS, `%LOCALAPPDATA%\Programs` (with a Start menu shortcut) on Windows and,
-on Android under Termux, as an app through the system package installer.
+on Android under Termux, as an app through the system package installer. On MacOS and Windows, `GOBIN` also gets
+a command that runs the installed app, so it is on the `PATH` like anything else installed with `go install`.
 `gd install` with packages to install (`gd install ./cmd/tool`, `gd install pkg@version`) is `go install`.
 
 ## Platform Restrictions
