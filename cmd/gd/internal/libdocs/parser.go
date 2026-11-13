@@ -1,4 +1,4 @@
-package docgen
+package libdocs
 
 import (
 	"fmt"
@@ -9,17 +9,18 @@ import (
 	"strings"
 
 	"golang.org/x/tools/go/packages"
+	"graphics.gd/internal/docgen"
 	"graphics.gd/variant/String"
 )
 
-func parseDocumentation(path string) (XML, error) {
+func parseDocumentation(path string) (docgen.XML, error) {
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles | packages.NeedSyntax | packages.NeedTypes | packages.NeedImports,
 		Dir:  path,
 	}
 	pkgs, err := packages.Load(cfg, "graphics.gd/internal/gdclass", ".")
 	if err != nil {
-		return XML{}, fmt.Errorf("load error: %w", err)
+		return docgen.XML{}, fmt.Errorf("load error: %w", err)
 	}
 	var gdclassInterface *types.Interface
 	for _, pkg := range pkgs {
@@ -30,14 +31,14 @@ func parseDocumentation(path string) (XML, error) {
 	}
 	var seen = make(map[string]bool)
 	seen["graphics.gd/internal/gdclass"] = true
-	var docs XML
+	var docs docgen.XML
 	for _, pkg := range pkgs {
-		docs.generateFromPackage(pkg, seen, gdclassInterface)
+		generateFromPackage(&docs, pkg, seen, gdclassInterface)
 	}
 	return docs, nil
 }
 
-func documentMemberSignals(members *[]Member, signals *[]Signal, ttype *types.Named, dtype *doc.Type) {
+func documentMemberSignals(members *[]docgen.Member, signals *[]docgen.Signal, ttype *types.Named, dtype *doc.Type) {
 	asStruct, ok := ttype.Underlying().(*types.Struct)
 	if !ok {
 		return
@@ -80,14 +81,14 @@ func documentMemberSignals(members *[]Member, signals *[]Signal, ttype *types.Na
 			}
 			name = rename
 		}
-		*members = append(*members, Member{
+		*members = append(*members, docgen.Member{
 			Name:        name,
 			Description: comments[field.Name()],
 		})
 	}
 }
 
-func (docs *XML) generateFromPackage(pkg *packages.Package, seen map[string]bool, gdclassInterface *types.Interface) error {
+func generateFromPackage(docs *docgen.XML, pkg *packages.Package, seen map[string]bool, gdclassInterface *types.Interface) error {
 	if strings.HasPrefix(pkg.PkgPath, "graphics.gd") || !strings.Contains(pkg.PkgPath, ".") {
 		return nil
 	}
@@ -112,9 +113,9 @@ func (docs *XML) generateFromPackage(pkg *packages.Package, seen map[string]bool
 				continue
 			}
 			if types.Implements(typeName.Type(), gdclassInterface) {
-				var members []Member
-				var methods []Method
-				var signals []Signal
+				var members []docgen.Member
+				var methods []docgen.Method
+				var signals []docgen.Signal
 				documentMemberSignals(&members, &signals, named, documented)
 				for _, method := range documented.Methods {
 					name := String.ToSnakeCase(method.Name)
@@ -122,12 +123,12 @@ func (docs *XML) generateFromPackage(pkg *packages.Package, seen map[string]bool
 					if after, ok0 := strings.CutPrefix(doc, method.Name); ok0 {
 						doc = name + after
 					}
-					methods = append(methods, Method{
+					methods = append(methods, docgen.Method{
 						Name:        name,
 						Description: doc,
 					})
 				}
-				*docs = append(*docs, Class{
+				*docs = append(*docs, docgen.Class{
 					Name:        typeName.Name(),
 					Version:     "4.0",
 					Description: strings.TrimSpace(documented.Doc),
@@ -138,7 +139,7 @@ func (docs *XML) generateFromPackage(pkg *packages.Package, seen map[string]bool
 		}
 	}
 	for _, imp := range pkg.Imports {
-		if err := docs.generateFromPackage(imp, seen, gdclassInterface); err != nil {
+		if err := generateFromPackage(docs, imp, seen, gdclassInterface); err != nil {
 			return err
 		}
 	}

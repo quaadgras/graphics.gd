@@ -25,7 +25,7 @@ import (
 	"graphics.gd/cmd/gd/internal/shim"
 	"graphics.gd/cmd/gd/internal/tooling"
 
-	"graphics.gd/internal/docgen"
+	"graphics.gd/cmd/gd/internal/libdocs"
 
 	"runtime.link/api/xray"
 )
@@ -389,7 +389,7 @@ func gd(args ...string) error {
 		tooling.Godot.Path = stale
 	}
 	if project.IncludesGo {
-		if err := docgen.Process(project.Directory); err != nil {
+		if err := libdocs.Process(project.Directory); err != nil {
 			return xray.New(err)
 		}
 	}

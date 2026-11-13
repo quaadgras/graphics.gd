@@ -1,10 +1,12 @@
-package docgen
+package libdocs
 
 import (
 	"encoding/xml"
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"graphics.gd/internal/docgen"
 )
 
 func Process(packagePath string) error {
@@ -19,7 +21,7 @@ func Process(packagePath string) error {
 	return nil
 }
 
-func serializeDocs(docs XML, outPath string) error {
+func serializeDocs(docs docgen.XML, outPath string) error {
 	file, err := os.Create(outPath)
 	if err != nil {
 		return fmt.Errorf("failed to create xml documentation file: %w", err)
