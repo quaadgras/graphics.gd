@@ -469,7 +469,7 @@ func (s StringName) CasecmpTo(other String) int64 {
 
 var object_methods struct {
 	get_class                    gdextension.MethodForClass `hash:"201670096"`
-	is_class                     gdextension.MethodForClass `hash:"3927539163"`
+	is_class                     gdextension.MethodForClass `hash:"2619796661"`
 	set                          gdextension.MethodForClass `hash:"3776071444"`
 	get                          gdextension.MethodForClass `hash:"2760726917"`
 	set_indexed                  gdextension.MethodForClass `hash:"3500910842"`
