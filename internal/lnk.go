@@ -3,7 +3,6 @@
 package gd
 
 import (
-	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
@@ -89,11 +88,8 @@ func LinkMethods(className gdextension.StringName, methods any, editor bool) {
 		if err != nil {
 			panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 		}
-		bind := gdextension.Host.Objects.Method.Lookup(className, pointers.Get(methodName), hash)
-		if bind == 0 {
-			fmt.Println("null bind ", method.Name)
-		}
-		*(direct.Interface().(*gdextension.MethodForClass)) = bind
+		// 0 for a method that the engine was built without.
+		*(direct.Interface().(*gdextension.MethodForClass)) = gdextension.Host.Objects.Method.Lookup(className, pointers.Get(methodName), hash)
 
 		methodName.Free()
 	}

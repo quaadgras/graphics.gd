@@ -129,9 +129,14 @@ GDExtensionPtrIndexedGetter variant_ptr_indexed_getters[GDEXTENSION_VARIANT_TYPE
 GDExtensionPtrKeyedSetter variant_ptr_keyed_setters[GDEXTENSION_VARIANT_TYPE_VARIANT_MAX];
 GDExtensionPtrKeyedGetter variant_ptr_keyed_getters[GDEXTENSION_VARIANT_TYPE_VARIANT_MAX];
 
-GDExtensionInterfaceMemAlloc gdextension_mem_alloc = NULL;
-GDExtensionInterfaceMemRealloc gdextension_mem_realloc = NULL;
-GDExtensionInterfaceMemFree gdextension_mem_free = NULL;
+GDExtensionInterfaceMemAlloc2 gdextension_mem_alloc2 = NULL;
+GDExtensionInterfaceMemRealloc2 gdextension_mem_realloc2 = NULL;
+GDExtensionInterfaceMemFree2 gdextension_mem_free2 = NULL;
+// mem_alloc and the others are deprecated (and missing from an engine built
+// with deprecated=no), their replacements, without padding, are the same.
+#define gdextension_mem_alloc(m_bytes) gdextension_mem_alloc2((m_bytes), false)
+#define gdextension_mem_realloc(m_ptr, m_bytes) gdextension_mem_realloc2((m_ptr), (m_bytes), false)
+#define gdextension_mem_free(m_ptr) gdextension_mem_free2((m_ptr), false)
 GDExtensionInterfacePrintError gdextension_print_error = NULL;
 GDExtensionInterfacePrintErrorWithMessage gdextension_print_error_with_message = NULL;
 GDExtensionInterfacePrintWarning gdextension_print_warning = NULL;
@@ -193,9 +198,7 @@ GDExtensionInterfaceStringNewWithUtf16Chars gdextension_string_new_with_utf16_ch
 GDExtensionInterfaceStringNewWithUtf32Chars gdextension_string_new_with_utf32_chars = NULL;
 GDExtensionInterfaceStringNewWithWideChars gdextension_string_new_with_wide_chars = NULL;
 GDExtensionInterfaceStringNewWithLatin1CharsAndLen gdextension_string_new_with_latin1_chars_and_len = NULL;
-GDExtensionInterfaceStringNewWithUtf8CharsAndLen gdextension_string_new_with_utf8_chars_and_len = NULL;
 GDExtensionInterfaceStringNewWithUtf8CharsAndLen2 gdextension_string_new_with_utf8_chars_and_len2 = NULL;
-GDExtensionInterfaceStringNewWithUtf16CharsAndLen gdextension_string_new_with_utf16_chars_and_len = NULL;
 GDExtensionInterfaceStringNewWithUtf16CharsAndLen2 gdextension_string_new_with_utf16_chars_and_len2 = NULL;
 GDExtensionInterfaceStringNewWithUtf32CharsAndLen gdextension_string_new_with_utf32_chars_and_len = NULL;
 GDExtensionInterfaceStringNewWithWideCharsAndLen gdextension_string_new_with_wide_chars_and_len = NULL;
@@ -254,7 +257,6 @@ GDExtensionInterfaceObjectSetInstanceBinding gdextension_object_set_instance_bin
 GDExtensionInterfaceObjectFreeInstanceBinding gdextension_object_free_instance_binding = NULL;
 GDExtensionInterfaceObjectSetInstance gdextension_object_set_instance = NULL;
 GDExtensionInterfaceObjectGetClassName gdextension_object_get_class_name = NULL;
-GDExtensionInterfaceObjectCastTo gdextension_object_cast_to = NULL;
 GDExtensionInterfaceObjectGetInstanceFromId gdextension_object_get_instance_from_id = NULL;
 GDExtensionInterfaceObjectGetInstanceId gdextension_object_get_instance_id = NULL;
 GDExtensionInterfaceObjectHasScriptMethod gdextension_object_has_script_method = NULL;
@@ -270,7 +272,6 @@ GDExtensionInterfaceObjectGetScriptInstance gdextension_object_get_script_instan
 GDExtensionInterfaceObjectSetScriptInstance gdextension_object_set_script_instance = NULL;
 GDExtensionInterfaceClassdbConstructObject3 gdextension_classdb_construct_object3 = NULL;
 GDExtensionInterfaceClassdbGetMethodBind gdextension_classdb_get_method_bind = NULL;
-GDExtensionInterfaceClassdbGetClassTag gdextension_classdb_get_class_tag = NULL;
 GDExtensionInterfaceClassdbRegisterExtensionClass6 gdextension_classdb_register_extension_class6 = NULL;
 GDExtensionInterfaceClassdbRegisterExtensionClassMethod gdextension_classdb_register_extension_class_method = NULL;
 GDExtensionInterfaceClassdbRegisterExtensionClassVirtualMethod gdextension_classdb_register_extension_class_virtual_method = NULL;
@@ -320,9 +321,9 @@ bool gd_thread_is_main() {
     return get_thread_caller_id() == main_thread_id;
 }
 EXPORT GDExtensionBool gd_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
-    LOAD_PROC_ADDRESS(mem_alloc, GDExtensionInterfaceMemAlloc);
-	LOAD_PROC_ADDRESS(mem_realloc, GDExtensionInterfaceMemRealloc);
-	LOAD_PROC_ADDRESS(mem_free, GDExtensionInterfaceMemFree);
+    LOAD_PROC_ADDRESS(mem_alloc2, GDExtensionInterfaceMemAlloc2);
+	LOAD_PROC_ADDRESS(mem_realloc2, GDExtensionInterfaceMemRealloc2);
+	LOAD_PROC_ADDRESS(mem_free2, GDExtensionInterfaceMemFree2);
 	LOAD_PROC_ADDRESS(print_error_with_message, GDExtensionInterfacePrintErrorWithMessage);
 	LOAD_PROC_ADDRESS(print_warning, GDExtensionInterfacePrintWarning);
 	LOAD_PROC_ADDRESS(print_warning_with_message, GDExtensionInterfacePrintWarningWithMessage);
@@ -384,9 +385,7 @@ EXPORT GDExtensionBool gd_extension_init(GDExtensionInterfaceGetProcAddress p_ge
 	LOAD_PROC_ADDRESS(string_new_with_utf32_chars, GDExtensionInterfaceStringNewWithUtf32Chars);
 	LOAD_PROC_ADDRESS(string_new_with_wide_chars, GDExtensionInterfaceStringNewWithWideChars);
 	LOAD_PROC_ADDRESS(string_new_with_latin1_chars_and_len, GDExtensionInterfaceStringNewWithLatin1CharsAndLen);
-	LOAD_PROC_ADDRESS(string_new_with_utf8_chars_and_len, GDExtensionInterfaceStringNewWithUtf8CharsAndLen);
 	LOAD_PROC_ADDRESS(string_new_with_utf8_chars_and_len2, GDExtensionInterfaceStringNewWithUtf8CharsAndLen2);
-	LOAD_PROC_ADDRESS(string_new_with_utf16_chars_and_len, GDExtensionInterfaceStringNewWithUtf16CharsAndLen);
 	LOAD_PROC_ADDRESS(string_new_with_utf16_chars_and_len2, GDExtensionInterfaceStringNewWithUtf16CharsAndLen2);
 	LOAD_PROC_ADDRESS(string_new_with_utf32_chars_and_len, GDExtensionInterfaceStringNewWithUtf32CharsAndLen);
 	LOAD_PROC_ADDRESS(string_new_with_wide_chars_and_len, GDExtensionInterfaceStringNewWithWideCharsAndLen);
@@ -445,7 +444,6 @@ EXPORT GDExtensionBool gd_extension_init(GDExtensionInterfaceGetProcAddress p_ge
 	LOAD_PROC_ADDRESS(object_free_instance_binding, GDExtensionInterfaceObjectFreeInstanceBinding);
 	LOAD_PROC_ADDRESS(object_set_instance, GDExtensionInterfaceObjectSetInstance);
 	LOAD_PROC_ADDRESS(object_get_class_name, GDExtensionInterfaceObjectGetClassName);
-	LOAD_PROC_ADDRESS(object_cast_to, GDExtensionInterfaceObjectCastTo);
 	LOAD_PROC_ADDRESS(object_get_instance_from_id, GDExtensionInterfaceObjectGetInstanceFromId);
 	LOAD_PROC_ADDRESS(object_get_instance_id, GDExtensionInterfaceObjectGetInstanceId);
 	LOAD_PROC_ADDRESS(object_has_script_method, GDExtensionInterfaceObjectHasScriptMethod);
@@ -461,7 +459,6 @@ EXPORT GDExtensionBool gd_extension_init(GDExtensionInterfaceGetProcAddress p_ge
 	LOAD_PROC_ADDRESS(object_set_script_instance, GDExtensionInterfaceObjectSetScriptInstance);
 	LOAD_PROC_ADDRESS(classdb_construct_object3, GDExtensionInterfaceClassdbConstructObject3);
 	LOAD_PROC_ADDRESS(classdb_get_method_bind, GDExtensionInterfaceClassdbGetMethodBind);
-	LOAD_PROC_ADDRESS(classdb_get_class_tag, GDExtensionInterfaceClassdbGetClassTag);
 	LOAD_PROC_ADDRESS(classdb_register_extension_class6, GDExtensionInterfaceClassdbRegisterExtensionClass6);
 	LOAD_PROC_ADDRESS(classdb_register_extension_class_method, GDExtensionInterfaceClassdbRegisterExtensionClassMethod);
 	LOAD_PROC_ADDRESS(classdb_register_extension_class_virtual_method, GDExtensionInterfaceClassdbRegisterExtensionClassVirtualMethod);
@@ -1093,11 +1090,55 @@ uintptr_t gd_object_name(uintptr_t obj) {
     gdextension_object_get_class_name((GDExtensionObjectPtr)obj, gd_library, (GDExtensionUninitializedStringNamePtr)&name);
     return name;
 };
+// An object type is the StringName of its class, kept for good (classes are
+// few, and their types are looked up once each). object_cast_to and
+// classdb_get_class_tag, which a type used to be the tag of, are deprecated
+// (and missing from an engine built with deprecated=no): Object.is_class
+// does the same.
+static GDExtensionMethodBindPtr gd_object_is_class = NULL;  // Object.is_class(StringName) bool
+static GDExtensionMethodBindPtr gd_classdb_exists = NULL;   // ClassDB.class_exists(StringName) bool
+static GDExtensionMethodBindPtr gd_classdb_has_method = NULL; // ClassDB.class_has_method(StringName, StringName, bool) bool
+static GDExtensionObjectPtr gd_classdb = NULL;
+static GDExtensionMethodBindPtr gd_method_bind(const char *class_name, const char *method, GDExtensionInt hash) {
+    uintptr_t class_sn = 0, method_sn = 0;
+    gdextension_string_name_new_with_latin1_chars(&class_sn, class_name, true);
+    gdextension_string_name_new_with_latin1_chars(&method_sn, method, true);
+    return gdextension_classdb_get_method_bind(&class_sn, &method_sn, hash);
+}
+// gd_classdb_link the methods of ClassDB and Object that gd needs, which
+// can only be once the engine has registered its classes.
+static void gd_classdb_link(void) {
+    if (gd_object_is_class) {
+        return;
+    }
+    uintptr_t singleton = 0;
+    gdextension_string_name_new_with_latin1_chars(&singleton, "ClassDB", true);
+    gd_classdb = gdextension_global_get_singleton(&singleton);
+    gd_classdb_exists = gd_method_bind("ClassDB", "class_exists", 2619796661);
+    gd_classdb_has_method = gd_method_bind("ClassDB", "class_has_method", 3860701026);
+    gd_object_is_class = gd_method_bind("Object", "is_class", 2619796661);
+}
 uintptr_t gd_object_type(uintptr_t name) {
-    return (uintptr_t)gdextension_classdb_get_class_tag((GDExtensionConstStringNamePtr)&name);
+    gd_classdb_link();
+    GDExtensionBool exists = false;
+    const GDExtensionConstTypePtr args[1] = {&name};
+    gdextension_object_method_bind_ptrcall(gd_classdb_exists, gd_classdb, args, &exists);
+    if (!exists) {
+        return 0;
+    }
+    uintptr_t *type = (uintptr_t *)gdextension_mem_alloc(sizeof(uintptr_t));
+    *type = 0;
+    gdextension_variant_get_ptr_constructor(GDEXTENSION_VARIANT_TYPE_STRING_NAME, 1)(type, args);
+    return (uintptr_t)type;
 };
-uintptr_t gd_object_cast(uintptr_t obj, uintptr_t tag) {
-    return (uintptr_t)gdextension_object_cast_to((GDExtensionObjectPtr)obj, (void *)tag);
+uintptr_t gd_object_cast(uintptr_t obj, uintptr_t type) {
+    if (!obj || !type) {
+        return 0;
+    }
+    GDExtensionBool is = false;
+    const GDExtensionConstTypePtr args[1] = {(const void *)type};
+    gdextension_object_method_bind_ptrcall(gd_object_is_class, (GDExtensionObjectPtr)obj, args, &is);
+    return is ? obj : 0;
 };
 uintptr_t gd_object_lookup(UINT64(id)) {
     return (uintptr_t)gdextension_object_get_instance_from_id((GDObjectInstanceID)UINT64_FROM(id));
@@ -1129,6 +1170,16 @@ void gd_object_id_inside_variant(UINT64(v1), UINT64(v2), UINT64(v3), ANY id) {
     *(uint64_t*)id = gdextension_variant_get_object_instance_id(&self);
 };
 uintptr_t gd_object_method_lookup(uintptr_t class_name, uintptr_t method, INT64(hash)) {
+    // an engine built without some of its classes or features (a build
+    // profile, disable_3d...) is without their methods, which is no error:
+    // they are 0, as they would be if graphics.gd never asked for them.
+    gd_classdb_link();
+    GDExtensionBool has = false, inherited = false;
+    const GDExtensionConstTypePtr args[3] = {&class_name, &method, &inherited};
+    gdextension_object_method_bind_ptrcall(gd_classdb_has_method, gd_classdb, args, &has);
+    if (!has) {
+        return 0;
+    }
     return (uintptr_t)gdextension_classdb_get_method_bind((GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&method, INT64_FROM(hash));
 };
 void gd_object_unsafe_call(uintptr_t obj, uintptr_t method, ANY result, UINT64(shape), ANY args) {
@@ -1640,7 +1691,7 @@ uintptr_t gd_string_decode_latin1(STRING s, INT len) {
 };
 uintptr_t gd_string_decode_utf8(STRING s, INT len) {
     uintptr_t ptr = 0;
-    gdextension_string_new_with_utf8_chars_and_len((GDExtensionUninitializedStringPtr)&ptr, STRING_POINTER(s), len);
+    gdextension_string_new_with_utf8_chars_and_len2((GDExtensionUninitializedStringPtr)&ptr, STRING_POINTER(s), len);
     return ptr;
 };
 uintptr_t gd_string_decode_utf16(STRING s, INT len, bool le) {

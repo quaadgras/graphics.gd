@@ -70,7 +70,7 @@ var builtin struct {
 	PackedByteArray struct {
 		resize    gdextension.MethodForBuiltinType `hash:"848867239"`
 		size      gdextension.MethodForBuiltinType `hash:"3173160232"`
-		duplicate gdextension.MethodForBuiltinType `hash:"851781288"`
+		duplicate gdextension.MethodForBuiltinType `hash:"247621236"`
 		set       gdextension.MethodForBuiltinType `hash:"3638975848"`
 	}
 	PackedColorArray struct {
