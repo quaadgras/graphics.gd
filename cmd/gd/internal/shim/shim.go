@@ -193,6 +193,9 @@ var (
 
 	// appleTarget is how swift names a target, arm64-apple-ios14.0-simulator
 	appleTarget = regexp.MustCompile(`^([a-z0-9_]+)-apple-(ios|macosx|xros)([0-9.]*)(-simulator)?$`)
+
+	// applePlatform matches the configuration keys of Apple's platforms.
+	applePlatform = regexp.MustCompile(`-(macos|ios|visionos|tvos|watchos)(-simulator)?$`)
 )
 
 // architectures that clang has a name for, which zig knows by another.
@@ -248,6 +251,8 @@ func compiler(args, original []string, config Config) ([]string, Target) {
 		version   string
 		simulator bool
 		debug     bool
+		lto       bool // -flto, in any of its forms.
+		compiling bool // -c, as opposed to a link.
 		rest      []string
 	)
 	for i := 0; i < len(original); i++ {
@@ -278,8 +283,12 @@ func compiler(args, original []string, config Config) ([]string, Target) {
 				arg = object
 			}
 			rest = append(rest, arg)
+		case arg == "-flto" || strings.HasPrefix(arg, "-flto="):
+			lto = true
+			rest = append(rest, arg)
 		default:
 			debug = debug || strings.HasPrefix(arg, "-g")
+			compiling = compiling || arg == "-c"
 			rest = append(rest, arg)
 		}
 	}
@@ -293,8 +302,20 @@ func compiler(args, original []string, config Config) ([]string, Target) {
 		args = append(args, "-target", key)
 	}
 	target := config.Targets[key]
+	// zig refuses -flto for the targets it links with its own linker instead
+	// of LLD (Apple's: "LTO requires using LLD"), even to compile. All LTO
+	// asks of a compilation is the LLVM bitcode that -emit-llvm writes, and
+	// gd links those targets with ld64.lld, which does the LTO. ThinLTO's
+	// summary is lost on the way, so a thin build is linked as a full one.
+	appleLTO := lto && applePlatform.MatchString(key)
 	for _, arg := range rest {
 		if dir, ok := strings.CutPrefix(arg, "-I"); ok && contains(target.System, dir) {
+			continue
+		}
+		if appleLTO && (arg == "-flto" || strings.HasPrefix(arg, "-flto=")) {
+			if compiling {
+				args = append(args, "-emit-llvm")
+			}
 			continue
 		}
 		args = append(args, arg)

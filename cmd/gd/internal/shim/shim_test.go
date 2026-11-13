@@ -36,6 +36,14 @@ func TestCompiler(t *testing.T) {
 			[]string{"-shared", object + ".o", "missing.os", "-g0"}, ""},
 		{"xcode", []string{"-c", "-miphoneos-version-min=14.0", "-arch", "arm64", "-I/sdk/usr/include/", "-Icore", "-isysroot", "/sdk"},
 			[]string{"-target", "aarch64-ios.14.0", "-c", "-Icore", "-isysroot", "/sdk", "-g0", "-isystem", "/sdk/usr/include", "-iframework", "/sdk/Frameworks"}, ""},
+		{"apple lto compile", []string{"-c", "-mmacosx-version-min=11.0", "-arch", "arm64", "-flto", "a.cpp"},
+			[]string{"-target", "aarch64-macos.11.0", "-c", "-emit-llvm", "a.cpp", "-g0"}, ""},
+		{"apple thin lto compile", []string{"-target", "arm64-apple-ios15.0", "-flto=thin", "-c", "a.mm"},
+			[]string{"-target", "aarch64-ios.15.0", "-emit-llvm", "-c", "a.mm", "-g0", "-isystem", "/sdk/usr/include", "-iframework", "/sdk/Frameworks"}, ""},
+		{"apple lto link", []string{"-mmacosx-version-min=11.0", "-arch", "arm64", "-flto=8", "a.o", "-o", "a"},
+			[]string{"-target", "aarch64-macos.11.0", "a.o", "-o", "a", "-g0"}, ""},
+		{"other lto", []string{"-target", "x86_64-linux-musl", "-flto", "-c", "a.c"},
+			[]string{"-target", "x86_64-linux-musl", "-flto", "-c", "a.c", "-g0"}, ""},
 	} {
 		got, target := compiler(nil, test.args, config)
 		if test.name == "other targets" {
