@@ -78,6 +78,40 @@ func TestEngineClasses(t *testing.T) {
 	}
 }
 
+// TestEngineClassesBoundByDescendant: ArrayMesh's _bind_methods binds
+// methods of Mesh (ClassDB puts them on Mesh), so Mesh needs ArrayMesh. Not
+// so for a method the ancestor binds itself, or a virtual one.
+func TestEngineClassesBoundByDescendant(t *testing.T) {
+	src := t.TempDir()
+	write := func(path, content string) {
+		path = filepath.Join(src, path)
+		os.MkdirAll(filepath.Dir(path), 0755)
+		if err := os.WriteFile(path, []byte(content), 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	write("doc/classes/Object.xml", `<class name="Object">`)
+	write("doc/classes/Resource.xml", `<class name="Resource" inherits="Object" api_type="core">`)
+	write("doc/classes/Node.xml", `<class name="Node" inherits="Object" api_type="core"><methods><method name="get_viewport" qualifiers="const">`)
+	write("doc/classes/CanvasItem.xml", `<class name="CanvasItem" inherits="Node" api_type="core">`)
+	write("doc/classes/Mesh.xml", `<class name="Mesh" inherits="Resource" api_type="core"><methods><method name="_iter_init"></method><method name="create_outline" qualifiers="const"></method>`)
+	write("doc/classes/ArrayMesh.xml", `<class name="ArrayMesh" inherits="Mesh" api_type="core"><methods><method name="clear_surfaces">`)
+	write("doc/classes/Label3D.xml", `<class name="Label3D" inherits="Node" api_type="core"><methods><method name="create_outline">`)
+	write("scene/resources/mesh.cpp", "void Mesh::_bind_methods() {\n}\nvoid ArrayMesh::_bind_methods() {\n"+
+		"\tClassDB::bind_method(D_METHOD(\"clear_surfaces\"), &ArrayMesh::clear_surfaces);\n"+
+		"\tClassDB::bind_method(D_METHOD(\"create_outline\", \"margin\"), &ArrayMesh::create_outline);\n"+
+		"\tClassDB::bind_method(D_METHOD(\"_iter_init\"), &ArrayMesh::_iter_init);\n}\n")
+	write("scene/main/node.cpp", "void Node::_bind_methods() {\n\tClassDB::bind_method(D_METHOD(\"get_viewport\"), &Node::get_viewport);\n}\n")
+	write("scene/main/canvas_item.cpp", "void CanvasItem::_bind_methods() {\n\tClassDB::bind_method(D_METHOD(\"get_viewport\"), &CanvasItem::get_viewport);\n}\n")
+	_, dependencies, err := engineClasses(src)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !slices.Equal(dependencies["Mesh"], []string{"ArrayMesh"}) || len(dependencies["Node"]) != 0 || len(dependencies["Label3D"]) != 0 || len(dependencies["Object"]) != 0 {
+		t.Errorf("dependencies: %v", dependencies)
+	}
+}
+
 func TestCustomEngine(t *testing.T) {
 	dir := t.TempDir()
 	defer func(d, g string) { project.Directory, project.GraphicsDirectory = d, g }(project.Directory, project.GraphicsDirectory)

@@ -22,10 +22,17 @@ type engineClass struct {
 }
 
 // engineClasses reads the classes of the engine at src, along with the
-// dependencies its ClassDB declares between them (ADD_CLASS_DEPENDENCY).
+// dependencies between them: those its ClassDB declares
+// (ADD_CLASS_DEPENDENCY), and those of a class whose methods are bound by
+// one of its descendants. ArrayMesh's _bind_methods binds
+// &ArrayMesh::create_outline, which is Mesh's, and so are the method
+// pointer's class and the class ClassDB binds it to: with ArrayMesh left
+// out, Mesh is without the method.
 func engineClasses(src string) (classes map[string]engineClass, dependencies map[string][]string, err error) {
 	classes, dependencies = map[string]engineClass{}, map[string][]string{}
+	documented := map[string][]string{} // method name → classes that document it.
 	header := regexp.MustCompile(`<class\s+name="([^"]+)"(?:\s+inherits="([^"]+)")?[^>]*?(?:\s+api_type="([^"]+)")?[^>]*>`)
+	method := regexp.MustCompile(`<method\s+name="([^"]+)"`)
 	docs, err := filepath.Glob(filepath.Join(src, "doc", "classes", "*.xml"))
 	if err != nil {
 		return nil, nil, err
@@ -45,11 +52,25 @@ func engineClasses(src string) (classes map[string]engineClass, dependencies map
 			Inherits: string(match[2]),
 			Core:     string(match[3]) != "editor",
 		}
+		for _, name := range method.FindAllSubmatch(data, -1) {
+			documented[string(name[1])] = append(documented[string(name[1])], string(match[1]))
+		}
+	}
+	descends := func(class, ancestor string) bool {
+		for class = classes[class].Inherits; class != ""; class = classes[class].Inherits {
+			if class == ancestor {
+				return true
+			}
+		}
+		return false
 	}
 	if len(classes) == 0 {
 		return nil, nil, fmt.Errorf("gd: no class documentation in %s, is this a Godot source tree?", src)
 	}
-	binding := regexp.MustCompile(`(?m)^\s*void\s+([A-Za-z0-9_]+)::_bind_methods\(\)|ADD_CLASS_DEPENDENCY\("([^"]+)"\)`)
+	type binder struct{ class, method string }
+	bound := map[binder]bool{} // which class binds which method.
+	var bindings []binder      // by a class, of a method documented as an ancestor's.
+	binding := regexp.MustCompile(`(?m)^\s*void\s+([A-Za-z0-9_]+)::_bind_methods\(\)|ADD_CLASS_DEPENDENCY\("([^"]+)"\)|bind_method\(D_METHOD\("([^"]+)"`)
 	err = filepath.WalkDir(src, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -67,19 +88,36 @@ func engineClasses(src string) (classes map[string]engineClass, dependencies map
 		if err != nil {
 			return err
 		}
-		if !strings.Contains(string(data), "ADD_CLASS_DEPENDENCY") {
+		if !strings.Contains(string(data), "_bind_methods") {
 			return nil
 		}
 		var class string
 		for _, match := range binding.FindAllSubmatch(data, -1) {
-			if match[1] != nil {
+			switch {
+			case match[1] != nil:
 				class = string(match[1])
-			} else if class != "" {
+			case class == "":
+			case match[2] != nil:
 				dependencies[class] = append(dependencies[class], string(match[2]))
+			default:
+				bound[binder{class, string(match[3])}] = true
+				// virtual methods (_iter_init...) belong to whoever implements them.
+				if !strings.HasPrefix(string(match[3]), "_") && !slices.Contains(documented[string(match[3])], class) {
+					bindings = append(bindings, binder{class, string(match[3])})
+				}
 			}
 		}
 		return nil
 	})
+	// bound by a class, documented as an ancestor's that does not bind it
+	// itself: ClassDB put it on that ancestor, from the class's binding.
+	for _, b := range bindings {
+		for _, owner := range documented[b.method] {
+			if descends(b.class, owner) && !bound[binder{owner, b.method}] && !slices.Contains(dependencies[owner], b.class) {
+				dependencies[owner] = append(dependencies[owner], b.class)
+			}
+		}
+	}
 	return classes, dependencies, err
 }
 
