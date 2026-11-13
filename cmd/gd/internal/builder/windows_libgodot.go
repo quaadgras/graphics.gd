@@ -78,7 +78,9 @@ func (windows Windows) buildMainLibgodot(GOARCH string, args ...string) error {
 	for _, library := range windowsSystemLibraries {
 		link = append(link, "-l"+library)
 	}
-	link = append(link, "-static", "-Wl,--subsystem,windows", "-Wl,-e,mainCRTStartup")
+	// -s: a release has no use for its symbols and debug information,
+	// which are tens of megabytes of it.
+	link = append(link, "-static", "-Wl,--subsystem,windows", "-Wl,-e,mainCRTStartup", "-s")
 	if err := tooling.Zig.Exec(link...); err != nil {
 		return xray.New(err)
 	}

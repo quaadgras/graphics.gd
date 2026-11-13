@@ -31,6 +31,11 @@ type Musl struct {
 	out string
 
 	objects []string // sources linked into out along with the engine.
+
+	// strip the symbols and debug information from out, which is a
+	// release: tens of megabytes of every export, which nobody runs a
+	// debugger on. An editor keeps them.
+	strip bool
 }
 
 func (musl Musl) Build(args ...string) (err error) {
@@ -162,6 +167,9 @@ func (musl Musl) Build(args ...string) (err error) {
 	zigArgs = append(zigArgs, cgoFlags...)
 	zigArgs = append(zigArgs, tooling.CGOLDFlags()...)
 	zigArgs = append(zigArgs, "-lc++")
+	if musl.strip {
+		zigArgs = append(zigArgs, "-s")
+	}
 	if unlock, err = lockBuilds(project.GraphicsDirectory); err != nil {
 		unlock = func() {}
 		return xray.New(err)
@@ -329,6 +337,7 @@ func (musl Musl) BuildMain(args ...string) error {
 		return xray.New(err)
 	}
 	musl.objects = append(musl.objects, pck)
+	musl.strip = true
 	built_musl = false
 	if err := musl.Build(args...); err != nil {
 		return xray.New(err)

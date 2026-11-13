@@ -205,6 +205,7 @@ func (macos MacOS) linkLibgodot(custom engine, slice macosSlice, args []string) 
 		"-arch", slice.arch,
 		"-platform_version", "macos", slice.minimum, slice.sdk,
 		"-adhoc_codesign", // which apple silicon insists on, to run anything at all.
+		"-S", "-x",        // a release, without debug information or local symbols (as Godot links its own).
 		"--error-limit=0", // every missing symbol at once, for the stubs to be completed from.
 		"-syslibroot", "/dev/null",
 		"-o", executable,
