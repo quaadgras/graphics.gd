@@ -1,4 +1,4 @@
-//go:build gc && !go1.27
+//go:build gc && !go1.28
 
 package classdb
 
