@@ -194,6 +194,7 @@ func cgocall(fn, arg unsafe.Pointer) int32 {
 	// not touch them) and at the outermost level (ncgo == 1: nested
 	// outbound cgocalls made inside frame callbacks don't qualify either).
 	if fastcbFrameCgoFlag != 0 && fastcbM != 0 && fastcbM.ptr() == mp && mp.ncgo == 1 {
+		fastcbExtExit(mp) // back in Go (see fastcbExtEnter)
 		gp := getg()
 		if readgstatus(gp)&^_Gscan == _Grunning && fastcbSavedPC != 0 {
 			bp := uintptr(0)
@@ -535,6 +536,50 @@ func fastcbConsumeYield() bool {
 	return true
 }
 
+// fastcbExtEnter and fastcbExtExit bracket the resident goroutine's time in
+// external C code on Unix, the counterpart of Windows' preemptExtLock. While
+// resident, the goroutine stays _Grunning when it returns to C, so sysmon's
+// retake (after 10ms) and the GC's suspendG ask preemptM to signal its thread.
+// The signal can't preempt anything there (no async safe point in C), but it
+// interrupts whatever blocking system call the engine is in: poll(2) and
+// friends fail with EINTR whatever SA_RESTART says, and Godot's socket code
+// treats that as a hard error (an ENetMultiplayerPeer closes its host).
+//
+// preemptM sends a signal only if its CAS of m.signalPending from 0 to 1
+// succeeds, so holding it at 1 while in C makes preemptM a no-op for this
+// thread, as the stock protocol's _Gsyscall does. Preemption is not lost:
+// preemptone and suspendG still set the stackguard poison, and the next
+// callback's prologue stops synchronously. A signal already in flight when
+// the goroutine enters C still lands there (and its handler clears the
+// flag until the next crossing), as it would without this. Plain stores, not
+// atomics: the flag is a hint to other threads, it is only ever written as
+// these values, and these are on the hottest crossings.
+//
+//go:nosplit
+func fastcbExtEnter(mp *m) {
+	if GOOS != "windows" {
+		*(*uint32)(unsafe.Pointer(&mp.signalPending)) = 1
+	}
+}
+
+//go:nosplit
+func fastcbExtExit(mp *m) {
+	if GOOS != "windows" {
+		*(*uint32)(unsafe.Pointer(&mp.signalPending)) = 0
+	}
+}
+
+// fastcbExtReturn is fastcbExtEnter for a resident callback's return to C:
+// only if the goroutine is still resident and _Grunning (a yield or clear
+// may have just put it back in _Gsyscall, where preemptM is never called).
+//
+//go:nosplit
+func fastcbExtReturn(gp *g) {
+	if fastcbM != 0 && fastcbM.ptr() == gp.m && readgstatus(gp)&^_Gscan == _Grunning {
+		fastcbExtEnter(gp.m)
+	}
+}
+
 // fastcbCallC runs the C function fn(arg) on the system stack via asmcgocall
 // while the calling goroutine stays _Grunning with its P wired — the resident
 // OUTBOUND path. C->Go callbacks nested inside fn therefore see _Grunning and
@@ -565,7 +610,9 @@ func fastcbCallC(fn, arg unsafe.Pointer) int32 {
 	gp := getg()
 	osPreemptExtEnter(gp.m)
 	fastcbCallCDepth++
+	fastcbExtEnter(gp.m)
 	errno := asmcgocall(fn, arg)
+	fastcbExtExit(gp.m)
 	fastcbCallCDepth--
 	osPreemptExtExit(gp.m)
 	return errno
@@ -640,6 +687,7 @@ func cgocallbackg(fn, frame unsafe.Pointer, ctxt uintptr) {
 			if stockBase {
 				osPreemptExtExit(gp.m)
 			}
+			fastcbExtExit(gp.m)
 			var cb func(frame unsafe.Pointer)
 			cbFV := funcval{uintptr(fn)}
 			*(*unsafe.Pointer)(unsafe.Pointer(&cb)) = noescape(unsafe.Pointer(&cbFV))
@@ -678,6 +726,7 @@ func cgocallbackg(fn, frame unsafe.Pointer, ctxt uintptr) {
 					reentersyscall(fastcbSavedPC, gp.stack.hi-fastcbSavedSPDepth, bp)
 				}
 			}
+			fastcbExtReturn(gp)
 			gp.m.winsyscall = winsyscall
 			return
 		}
@@ -755,6 +804,7 @@ func cgocallbackg(fn, frame unsafe.Pointer, ctxt uintptr) {
 		// path above releases the lock around each nested callback's Go code
 		// and retakes it on the way back to C.
 		osPreemptExtEnter(gp.m)
+		fastcbExtEnter(gp.m) // returning to C _Grunning: no signals
 		return
 	}
 

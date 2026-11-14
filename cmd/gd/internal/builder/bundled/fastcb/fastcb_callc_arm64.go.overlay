@@ -66,13 +66,14 @@ func fastcbEntryFastPC() uintptr {
 // dispatch the binding the stock path relies on: if its Go code blocks, the
 // goroutine returns to this m rather than resuming on another.
 func fastcbentrygofast(instance, userdata, args, ret uintptr) {
+	gp := getg()
+	fastcbExtExit(gp.m) // see fastcbExtEnter
 	lockOSThread()
 	fastcbEntryFn(instance, userdata, ret, args)
 	unlockOSThread()
 	if fastcbCallCDepth == 0 && (fastcbYieldFlag != 0 || fastcbM == 0) {
 		fastcbYieldFlag = 0
 		if fastcbSavedPC != 0 {
-			gp := getg()
 			bp := uintptr(0)
 			if fastcbSavedBPDepth != 0 {
 				bp = gp.stack.hi - fastcbSavedBPDepth
@@ -80,4 +81,5 @@ func fastcbentrygofast(instance, userdata, args, ret uintptr) {
 			reentersyscall(fastcbSavedPC, gp.stack.hi-fastcbSavedSPDepth, bp)
 		}
 	}
+	fastcbExtReturn(gp)
 }

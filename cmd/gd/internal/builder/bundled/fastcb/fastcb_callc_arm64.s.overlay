@@ -74,6 +74,8 @@ TEXT runtime·fastcbCallCFast<ABIInternal>(SB),NOSPLIT|NOFRAME,$0-16
 
 	// Switch to the system stack and TLS g = g0.
 	MOVD	g_m(g), R8
+	MOVW	$1, R9
+	MOVW	R9, m_signalPending(R8)	// fastcbExtEnter: no preemption signals in C
 	MOVD	m_g0(R8), g
 	BL	runtime·save_g(SB)	// clobbers R0, R27
 	MOVD	(g_sched+gobuf_sp)(g), R3
@@ -97,6 +99,8 @@ TEXT runtime·fastcbCallCFast<ABIInternal>(SB),NOSPLIT|NOFRAME,$0-16
 	MOVD	R20, (g_sched+gobuf_pc)(g)
 	SUB	R24, R2, R29		// caller frame pointer (move-adjusted)
 	MOVD	R23, LR
+	MOVD	g_m(g), R8
+	MOVW	ZR, m_signalPending(R8)	// fastcbExtExit
 	MOVD	runtime·fastcbCallCDepth(SB), R2
 	SUB	$1, R2
 	MOVD	R2, runtime·fastcbCallCDepth(SB)

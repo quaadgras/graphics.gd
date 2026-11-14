@@ -90,10 +90,13 @@ func fastcbentrygofast(instance, userdata, args, ret uintptr) {
 		gp.m.winsyscall = winsyscall
 		return
 	}
+	gp := getg()
+	fastcbExtExit(gp.m) // see fastcbExtEnter
 	lockOSThread()
 	fastcbEntryFn(instance, userdata, ret, args)
 	unlockOSThread()
 	fastcbentrygoyield()
+	fastcbExtReturn(gp)
 }
 
 // fastcbentrygoyield is the deferred yield/clear epilogue shared with the
