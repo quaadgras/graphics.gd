@@ -30,7 +30,7 @@ func armEntry(dispatch func(instance, userdata, result, args uintptr), fallback 
 // The fork exports fastcbCallC by linkname, so the resident outbound
 // crossing is a direct call — no per-call func-value construction (the
 // stock overlay path can only reach the hook through its published PC).
-// callC itself is platform-split: linux/amd64 selects the fused
+// callC itself is platform-split: linux/amd64 and darwin/ios arm64 select the fused
 // runtime.fastcbCallCFast (callc_gd_fast.go), everything else falls back
 // to this generic hook (callc_gd_generic.go).
 //

@@ -1,4 +1,4 @@
-//go:build gd && linux && amd64
+//go:build gd && ((linux && amd64) || ((darwin || ios) && arm64))
 
 package fastcb
 
@@ -8,7 +8,7 @@ import "unsafe" // also for go:linkname
 // where the direct entry thunk exists: runtime.fastcbCallCFast is
 // fastcbCallC + asmcgocall specialized for the resident goroutine calling
 // a single-pointer-argument C function with the errno dropped. It skips
-// the osPreemptExt bookkeeping, which is a no-op exactly here (linux), so
+// the osPreemptExt bookkeeping, which is a no-op exactly here (not Windows), so
 // selecting it is gated on the same platforms as the entry thunk.
 //
 //go:linkname runtimeCallCFast runtime.fastcbCallCFast

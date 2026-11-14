@@ -1,4 +1,4 @@
-//go:build gd && (!linux || !amd64)
+//go:build gd && !((linux && amd64) || ((darwin || ios) && arm64))
 
 package fastcb
 
