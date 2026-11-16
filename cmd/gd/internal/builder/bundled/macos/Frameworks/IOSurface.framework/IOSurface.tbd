@@ -6,4 +6,30 @@ targets:
  - arm64-macos
 exports:
  - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _IOSurfaceCreate
+    - _IOSurfaceGetBytesPerElement
+    - _IOSurfaceGetBytesPerElementOfPlane
+    - _IOSurfaceGetElementHeight
+    - _IOSurfaceGetElementHeightOfPlane
+    - _IOSurfaceGetElementWidth
+    - _IOSurfaceGetElementWidthOfPlane
+    - _IOSurfaceGetHeight
+    - _IOSurfaceGetHeightOfPlane
+    - _IOSurfaceGetID
+    - _IOSurfaceGetPlaneCount
+    - _IOSurfaceGetWidth
+    - _IOSurfaceGetWidthOfPlane
+    - _kIOSurfaceBytesPerElement
+    - _kIOSurfaceElementHeight
+    - _kIOSurfaceElementWidth
+    - _kIOSurfaceHeight
+    - _kIOSurfaceIsGlobal
+    - _kIOSurfacePlaneBytesPerElement
+    - _kIOSurfacePlaneElementHeight
+    - _kIOSurfacePlaneElementWidth
+    - _kIOSurfacePlaneHeight
+    - _kIOSurfacePlaneInfo
+    - _kIOSurfacePlaneWidth
+    - _kIOSurfaceWidth
 ...

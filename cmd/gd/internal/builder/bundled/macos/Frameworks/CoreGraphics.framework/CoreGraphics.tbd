@@ -11,6 +11,7 @@ exports:
     - _CGBitmapContextCreate
     - _CGColorSpaceCreateDeviceRGB
     - _CGColorSpaceCreateWithName
+    - _CGColorSpaceGetName
     - _CGColorSpaceRelease
     - _CGContextDrawImage
     - _CGContextRelease
@@ -18,6 +19,7 @@ exports:
     - _CGDisplayCopyDisplayMode
     - _CGDisplayHideCursor
     - _CGDisplayModeGetRefreshRate
+    - _CGDisplayModeRelease
     - _CGDisplayRegisterReconfigurationCallback
     - _CGDisplayRemoveReconfigurationCallback
     - _CGDisplayScreenSize
@@ -39,6 +41,15 @@ exports:
     - _CGWarpMouseCursorPosition
     - _CGWindowListCreate
     - _CGWindowListCreateImageFromArray
+    - _kCGColorSpaceAdobeRGB1998
+    - _kCGColorSpaceDCIP3
+    - _kCGColorSpaceDisplayP3
+    - _kCGColorSpaceExtendedLinearDisplayP3
+    - _kCGColorSpaceExtendedLinearITUR_2020
     - _kCGColorSpaceExtendedLinearSRGB
+    - _kCGColorSpaceExtendedSRGB
+    - _kCGColorSpaceITUR_2100_HLG
+    - _kCGColorSpaceITUR_2100_PQ
+    - _kCGColorSpaceITUR_709
     - _kCGColorSpaceSRGB
 ...

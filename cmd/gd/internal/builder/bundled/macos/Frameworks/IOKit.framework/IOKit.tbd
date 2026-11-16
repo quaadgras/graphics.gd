@@ -61,4 +61,5 @@ exports:
     - _IOServiceGetMatchingService
     - _IOServiceGetMatchingServices
     - _IOServiceMatching
+    - _IORegistryEntrySearchCFProperty
 ...

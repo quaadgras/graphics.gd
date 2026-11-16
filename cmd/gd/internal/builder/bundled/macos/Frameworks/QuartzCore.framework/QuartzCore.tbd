@@ -6,6 +6,21 @@ targets:
  - arm64-macos
 exports:
  - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _kCAFilterLinear
+    - _kCAFilterNearest
+    - _kCAGravityBottom
+    - _kCAGravityBottomLeft
+    - _kCAGravityBottomRight
+    - _kCAGravityCenter
+    - _kCAGravityLeft
+    - _kCAGravityResize
+    - _kCAGravityResizeAspect
+    - _kCAGravityRight
+    - _kCAGravityTop
+    - _kCAGravityTopLeft
+    - _kCAGravityTopRight
    objc-classes:
+    - CAEDRMetadata
     - CAMetalLayer
 ...

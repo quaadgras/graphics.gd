@@ -7,8 +7,33 @@ targets:
 exports:
  - targets: [ x86_64-macos, arm64-macos ]
    symbols:
+    - _MTLCommandBufferEncoderInfoErrorKey
+    - _MTLCommonCounterSetTimestamp
+    - _MTLCommonCounterTimestamp
     - _MTLCopyAllDevices
     - _MTLCopyAllDevicesWithObserver
     - _MTLCreateSystemDefaultDevice
     - _MTLRemoveDeviceObserver
+   objc-classes:
+    - MTLArgumentDescriptor
+    - MTLBlitPassDescriptor
+    - MTLCaptureDescriptor
+    - MTLCaptureManager
+    - MTLCommandBufferDescriptor
+    - MTLCompileOptions
+    - MTLComputePipelineDescriptor
+    - MTLCounterSampleBufferDescriptor
+    - MTLDepthStencilDescriptor
+    - MTLFunctionConstantValues
+    - MTLHeapDescriptor
+    - MTLRenderPassDepthAttachmentDescriptor
+    - MTLRenderPassDescriptor
+    - MTLRenderPassStencilAttachmentDescriptor
+    - MTLRenderPipelineDescriptor
+    - MTLResidencySetDescriptor
+    - MTLSamplerDescriptor
+    - MTLSharedEventListener
+    - MTLStageInputOutputDescriptor
+    - MTLStencilDescriptor
+    - MTLTextureDescriptor
 ...
