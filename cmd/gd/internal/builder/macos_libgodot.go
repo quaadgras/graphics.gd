@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	lipo "github.com/konoui/lipo/cmd"
@@ -159,6 +160,13 @@ func (macos MacOS) buildMainLibgodot(args ...string) error {
 // linkLibgodot builds the engine and the Go program for one architecture
 // and links them into an executable, returning its path.
 func (macos MacOS) linkLibgodot(custom engine, slice macosSlice, args []string) (string, error) {
+	// An engine built with vulkan=yes (through engine/options) needs
+	// MoltenVK linked in: scons does it for the engine's own executable,
+	// gd does it here.
+	moltenvk, err := moltenVK(custom.Options, slice.arch)
+	if err != nil {
+		return "", xray.New(err)
+	}
 	libgodot, err := custom.macos(slice.GOARCH)
 	if err != nil {
 		return "", xray.New(err)
@@ -188,8 +196,12 @@ func (macos MacOS) linkLibgodot(custom engine, slice macosSlice, args []string) 
 	}
 	// @available checks compile to __isPlatformVersionAtLeast from the
 	// compiler's runtime library, the same one the iOS app is given.
+	stub := platformVersionStub
+	if moltenvk != "" {
+		stub += moltenVKConfig
+	}
 	versions := filepath.Join(project.GraphicsDirectory, ".godot", "platform_version.c")
-	if err := os.WriteFile(versions, []byte(platformVersionStub), 0o644); err != nil {
+	if err := os.WriteFile(versions, []byte(stub), 0o644); err != nil {
 		return "", xray.New(err)
 	}
 	versionsObj := strings.TrimSuffix(versions, ".c") + "." + slice.arch + ".o"
@@ -210,6 +222,9 @@ func (macos MacOS) linkLibgodot(custom engine, slice macosSlice, args []string) 
 		"-syslibroot", "/dev/null",
 		"-o", executable,
 		libgodot, libgo, versionsObj,
+	}
+	if moltenvk != "" {
+		link = append(link, moltenvk)
 	}
 	cgoFlags, err := cgoLinkFlags(tags)
 	if err != nil {
@@ -318,4 +333,72 @@ func _init() -> void:
 	}
 	binary.BigEndian.PutUint32(icns[4:], uint32(len(icns)))
 	return true, os.WriteFile(path, icns, 0644)
+}
+
+// moltenVKConfig is the MoltenVK setup from godot_main_macos.mm, which a
+// libgodot build does not compile.
+const moltenVKConfig = `
+extern int setenv(const char *, const char *, int);
+__attribute__((constructor)) static void moltenvk_config(void) {
+    setenv("MVK_CONFIG_FULL_IMAGE_VIEW_SWIZZLE", "1", 1);
+    setenv("MVK_CONFIG_SWAPCHAIN_MIN_MAG_FILTER_USE_NEAREST", "0", 1);
+}
+`
+
+// moltenVK returns the static MoltenVK library for arch when the engine
+// options turn Vulkan on (and "" when they do not), from the vulkan_sdk_path
+// option, Homebrew or MacPorts.
+func moltenVK(options []string, arch string) (string, error) {
+	var vulkan, volk, sdk string
+	for _, option := range options { // the last one wins, as in scons.
+		key, value, _ := strings.Cut(option, "=")
+		switch key {
+		case "vulkan":
+			vulkan = strings.ToLower(value)
+		case "use_volk": // MoltenVK is then loaded at run time (detect.py).
+			volk = strings.ToLower(value)
+		case "vulkan_sdk_path":
+			sdk = value
+		}
+	}
+	// the values scons' BoolVariable reads as true.
+	on := []string{"y", "yes", "t", "true", "1", "on", "all"}
+	if !slices.Contains(on, vulkan) || slices.Contains(on, volk) {
+		return "", nil
+	}
+	// expanded as detect_mvk does.
+	if rest, ok := strings.CutPrefix(sdk, "~/"); ok {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return "", err
+		}
+		sdk = filepath.Join(home, rest)
+	}
+	var roots []string
+	if sdk != "" {
+		roots = append(roots,
+			filepath.Join(sdk, "MoltenVK", "MoltenVK.xcframework"),
+			filepath.Join(sdk, "macOS", "lib", "MoltenVK.xcframework"),
+			sdk,
+		)
+	}
+	// Godot's build also looks in ~/VulkanSDK; here the LunarG SDK
+	// needs vulkan_sdk_path.
+	roots = append(roots,
+		"/opt/homebrew/Frameworks/MoltenVK.xcframework",
+		"/usr/local/homebrew/Frameworks/MoltenVK.xcframework",
+		"/opt/local/Frameworks/MoltenVK.xcframework",
+	)
+	variants := []string{"macos-arm64_x86_64", "macos-" + arch}
+	for _, root := range roots {
+		for _, variant := range variants {
+			library := filepath.Join(root, variant, "libMoltenVK.a")
+			if _, err := os.Stat(library); err == nil {
+				return library, nil
+			}
+		}
+	}
+	return "", fmt.Errorf("gd: Vulkan (engine/options) needs MoltenVK "+
+		"for macos/%s, set vulkan_sdk_path in engine/options "+
+		"or 'brew install molten-vk'", arch)
 }

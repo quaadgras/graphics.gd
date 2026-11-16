@@ -10,6 +10,7 @@ exports:
     - _NSLog
     - _NSSearchPathForDirectoriesInDomains
     - _NSTemporaryDirectory
+    - _NSLocalizedDescriptionKey
    objc-classes:
     - NSAttributedString
     - NSBundle
@@ -23,4 +24,8 @@ exports:
     - NSPredicate
     - NSProcessInfo
     - NSString
+    - NSError
+    - NSMutableString
+    - NSThread
+    - NSUUID
 ...
