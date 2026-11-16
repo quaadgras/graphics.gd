@@ -126,10 +126,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { mode: stock, goarch: universal, os: macos-14 }
+          - { mode: stock, goarch: universal, os: macos-15 }
           - { mode: stock, goarch: universal, os: macos-15-intel }
           - { mode: stock, goarch: universal, os: macos-latest }
-          - { mode: libgodot, goarch: arm64, os: macos-14 }
+          - { mode: libgodot, goarch: arm64, os: macos-15 }
           - { mode: libgodot, goarch: arm64, os: macos-latest }
           - { mode: libgodot, goarch: amd64, os: macos-15-intel }
     steps:
