@@ -1,0 +1,157 @@
+name: macOS compatibility
+
+# Builds a small Go project for macOS on Linux (the way users cross-compile)
+# and runs the apps on older and current macOS runners, to check that what
+# gd builds starts on the oldest macOS it declares support for.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["macos-compat"]
+
+jobs:
+  build:
+    name: build (${{ matrix.mode }}, ${{ matrix.goarch }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { mode: stock, goarch: universal }
+          - { mode: libgodot, goarch: arm64 }
+          - { mode: libgodot, goarch: amd64 }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: graphics.gd
+
+      - uses: actions/setup-go@v4
+        with:
+          go-version: "1.27"
+
+      - name: Compute week key
+        id: week
+        run: echo "week=$(date +%Y-%W)" >> $GITHUB_OUTPUT
+
+      - name: Cache ~/gd directory
+        uses: actions/cache@v4
+        with:
+          path: ~/gd
+          key: macos-compat-${{ matrix.mode }}-${{ matrix.goarch }}-gd-weekly-${{ steps.week.outputs.week }}
+          restore-keys: macos-compat-${{ matrix.mode }}-${{ matrix.goarch }}-gd-weekly-
+
+      - name: Command Line Tooling
+        run: |
+          cd graphics.gd/cmd/gd
+          go build -o "$RUNNER_TEMP/gd"
+
+      - name: Project
+        run: |
+          mkdir -p smoke/graphics
+          cd smoke
+          cat > main.go <<'EOF'
+          package main
+
+          import (
+          	"fmt"
+          	"runtime"
+
+          	"graphics.gd/classdb/Label"
+          	"graphics.gd/classdb/SceneTree"
+          	"graphics.gd/startup"
+          )
+
+          func main() {
+          	startup.LoadingScene()
+          	hello := Label.New()
+          	hello.SetText("Hello, World!")
+          	SceneTree.Add(hello)
+          	fmt.Println("GD_SMOKE_OK", runtime.GOOS, runtime.GOARCH)
+          	startup.Scene()
+          }
+          EOF
+          cat > go.mod <<EOF
+          module smoke
+
+          go 1.27
+
+          replace graphics.gd => $GITHUB_WORKSPACE/graphics.gd
+          EOF
+          go get graphics.gd
+          go mod tidy
+          if [ "${{ matrix.mode }}" = libgodot ]; then
+            cat > graphics/project.godot <<'EOF'
+          config_version=5
+
+          [application]
+          config/name="smoke"
+          run/main_scene="res://main.tscn"
+          run/main_loop_type="GoMainLoop"
+
+          [rendering]
+          textures/vram_compression/import_etc2_astc=true
+
+          [gd]
+          build/mode="libgodot"
+          engine/repository="https://github.com/godotengine/godot"
+          engine/ref="4.7.2-stable"
+          EOF
+            printf '[gd_scene format=3]\n\n[node name="Node" type="Node"]\n' > graphics/main.tscn
+          fi
+
+      - name: Build
+        working-directory: smoke
+        run: |
+          if [ "${{ matrix.goarch }}" != universal ]; then export GOARCH=${{ matrix.goarch }}; fi
+          GOOS=macos DEBUG_CMD=1 "$RUNNER_TEMP/gd" build
+          ls -R releases/darwin | head -50
+
+      - name: Pack
+        working-directory: smoke/releases/darwin
+        run: tar -czf "$RUNNER_TEMP/app.tar.gz" ${{ matrix.goarch }}/smoke.app
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smoke-${{ matrix.mode }}-${{ matrix.goarch }}
+          path: ${{ runner.temp }}/app.tar.gz
+
+  run:
+    name: run (${{ matrix.mode }}, ${{ matrix.goarch }}, ${{ matrix.os }})
+    needs: build
+    if: always()
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { mode: stock, goarch: universal, os: macos-14 }
+          - { mode: stock, goarch: universal, os: macos-15-intel }
+          - { mode: stock, goarch: universal, os: macos-latest }
+          - { mode: libgodot, goarch: arm64, os: macos-14 }
+          - { mode: libgodot, goarch: arm64, os: macos-latest }
+          - { mode: libgodot, goarch: amd64, os: macos-15-intel }
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: smoke-${{ matrix.mode }}-${{ matrix.goarch }}
+
+      - name: Inspect
+        run: |
+          sw_vers
+          uname -m
+          tar -xzf app.tar.gz
+          app=$(ls -d */smoke.app)
+          exe=$(ls "$app"/Contents/MacOS/* | head -1)
+          echo "exe=$exe" >> $GITHUB_ENV
+          file "$exe"
+          vtool -show-build "$exe" || otool -l "$exe" | grep -A5 LC_BUILD_VERSION
+          plutil -p "$app/Contents/Info.plist" | grep -i -E "LSMinimumSystemVersion|CFBundleExecutable"
+          codesign -dv "$exe" 2>&1 || true
+
+      - name: Run
+        run: |
+          set -o pipefail
+          "$exe" --headless --quit-after 120 2>&1 | tee run.log
+          grep -q GD_SMOKE_OK run.log

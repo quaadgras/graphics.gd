@@ -31,9 +31,12 @@ type macosSlice struct {
 	GOARCH, target, arch, minimum, sdk string
 }
 
+// The minimum is the newer of Godot's (11.0 on arm64, 10.13 on x86_64)
+// and Go's: the Go linker records 13.0, the oldest macOS Go 1.27
+// supports, and its runtime is not tested on anything older.
 var macosSlices = []macosSlice{
-	{"arm64", "aarch64-macos", "arm64", "11.0", "15.5"},   // the SDK of zig 0.15.2's darwin headers.
-	{"amd64", "x86_64-macos", "x86_64", "10.13", "10.13"}, // no Metal there, and a newer SDK needs privacy usage descriptions.
+	{"arm64", "aarch64-macos", "arm64", "13.0", "15.5"},  // the SDK of zig 0.15.2's darwin headers.
+	{"amd64", "x86_64-macos", "x86_64", "13.0", "10.13"}, // no Metal there, and a newer SDK needs privacy usage descriptions.
 }
 
 // buildMainLibgodot exports the project as an app whose executable is the
@@ -82,7 +85,7 @@ func (macos MacOS) buildMainLibgodot(args ...string) error {
 			return err
 		}
 		executables = append(executables, executable)
-		if slice.minimum < minimum { // the versions compare as strings, 10.13 < 11.0.
+		if slice.minimum < minimum { // the versions compare as strings, which holds while they share a major version's digit count.
 			minimum = slice.minimum
 		}
 	}
