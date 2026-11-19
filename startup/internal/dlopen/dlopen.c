@@ -8,13 +8,13 @@
  * to a glibc TLS block for the duration of the call (see foreign_tramp.S).
  *
  * The helper comes from one of two sources, in order:
- *   1. An embedded, prebuilt ELF (helper_bin_*.c, cross-built by gen_helper.sh
- *      against an old glibc) loaded from an in-memory fd. This needs no compiler
- *      and is immune to noexec mounts, so a stock glibc desktop/server "just
- *      works". Used only when a real glibc is detected on the host.
+ *   1. An embedded, prebuilt ELF loaded from an in-memory fd: helper_bin_*.c,
+ *      cross-built by gen_helper.sh against an old glibc, when a real glibc is
+ *      detected on the host, else helper_musl_bin_*.c, linked against musl,
+ *      when musl's loader is. This needs no compiler and is immune to noexec
+ *      mounts, so a stock glibc or musl desktop/server "just works".
  *   2. helper_src.h compiled on the fly with cc/gcc/clang and cached per-user.
- *      Used on musl hosts (where the embedded glibc helper cannot run) and as a
- *      fallback if the embedded helper is unusable.
+ *      Used as a fallback if neither embedded helper suits the host.
  *
  * This file is only compiled when targeting musl (not glibc).
  */
@@ -766,47 +766,88 @@ static void *interpose_proc_getter(const char *name, void *wrapped) {
   return NULL;
 }
 
-/* --- embedded prebuilt helper -------------------------------------------------
+/* --- embedded prebuilt helpers ------------------------------------------------
  *
- * helper_bin_<arch>.c defines these (guarded by arch) with the ELF cross-built
- * by gen_helper.sh against an old glibc. */
+ * helper_bin_<arch>.c and helper_musl_bin_<arch>.c define these (guarded by
+ * arch) with the ELFs cross-built by gen_helper.sh: one against an old glibc,
+ * one dynamically linked against musl. */
 #if defined(__x86_64__) || defined(__aarch64__)
 extern const unsigned char helper_bin[];
 extern const unsigned int helper_bin_len;
+extern const unsigned char helper_musl_bin[];
+extern const unsigned int helper_musl_bin_len;
 #define HAVE_EMBEDDED_HELPER 1
 #endif
 
-/* Is a real glibc runtime present on this host? The embedded helper is a glibc
- * binary; jumping into a non-glibc loader (e.g. a musl host, or a gcompat stub
- * masquerading as /lib64/ld-linux-*) could hard-exit us with no chance to fall
- * back. Requiring libc.so.6 on disk keeps the embedded path to genuine glibc
- * hosts; everything else compiles a host-native helper instead. */
+#if defined(__x86_64__)
+#define GLIBC_LDSO "/lib64/ld-linux-x86-64.so.2"
+#define GLIBC_TRIPLE "x86_64-linux-gnu"
+#define MUSL_LDSO "/lib/ld-musl-x86_64.so.1"
+#elif defined(__aarch64__)
+#define GLIBC_LDSO "/lib/ld-linux-aarch64.so.1"
+#define GLIBC_TRIPLE "aarch64-linux-gnu"
+#define MUSL_LDSO "/lib/ld-musl-aarch64.so.1"
+#endif
+
+/* Is a real glibc runtime present on this host? The embedded glibc helper is a
+ * glibc binary; jumping into a non-glibc loader (e.g. a musl host, or a gcompat
+ * stub masquerading as /lib64/ld-linux-*) could hard-exit us with no chance to
+ * fall back. Requiring libc.so.6 on disk keeps that helper to genuine glibc
+ * hosts. libdl.so.2 must sit next to it: the helper is built against glibc
+ * 2.17, where dlopen lives in libdl, and the loader _exit(127)s the whole
+ * process when a needed library is missing (busybox:glibc ships libc.so.6
+ * alone). glibc >= 2.34 still installs libdl.so.2 as a stub. */
 static bool has_glibc_libc(void) {
-  static const char *const paths[] = {
-    "/lib/x86_64-linux-gnu/libc.so.6",
-    "/usr/lib/x86_64-linux-gnu/libc.so.6",
-    "/lib/aarch64-linux-gnu/libc.so.6",
-    "/usr/lib/aarch64-linux-gnu/libc.so.6",
-    "/lib64/libc.so.6",
-    "/usr/lib64/libc.so.6",
-    "/usr/lib/libc.so.6",
-    "/lib/libc.so.6",
+  static const char *const dirs[] = {
+    "/lib/" GLIBC_TRIPLE,
+    "/usr/lib/" GLIBC_TRIPLE,
+    "/lib64",
+    "/usr/lib64",
+    "/usr/lib",
+    "/lib",
   };
-  for (size_t i = 0; i < sizeof(paths)/sizeof(paths[0]); i++)
-    if (access(paths[i], F_OK) == 0) return true;
+  char path[64];
+  for (size_t i = 0; i < sizeof(dirs)/sizeof(dirs[0]); i++) {
+    snprintf(path, sizeof(path), "%s/libc.so.6", dirs[i]);
+    if (access(path, F_OK) != 0) continue;
+    snprintf(path, sizeof(path), "%s/libdl.so.2", dirs[i]);
+    if (access(path, F_OK) == 0) return true;
+  }
+  /* NixOS keeps glibc in /nix/store, out of the paths above. With nix-ld
+   * enabled (NixOS's own way to run binaries built elsewhere) the standard
+   * loader path is nix-ld's shim, which hands over to the real glibc loader
+   * and adds NIX_LD_LIBRARY_PATH to its search path. */
+  if (access("/etc/NIXOS", F_OK) == 0 && access(GLIBC_LDSO, F_OK) == 0)
+    return true;
   return false;
 }
 
-/* Return an fd holding the embedded helper ELF, or -1 if unavailable/unsafe.
- * Uses an anonymous in-memory file (memfd), so it never touches disk and is
- * immune to noexec mounts -- elf_exec_fd maps it PROT_EXEC directly from the fd. */
+/* Is musl's dynamic loader (which is also its libc) present? Checked after
+ * glibc, so a glibc host that happens to have musl installed beside it (e.g.
+ * Debian's musl package) still loads its libraries through glibc. */
+static bool has_musl_loader(void) {
+  return access(MUSL_LDSO, F_OK) == 0;
+}
+
+/* Return an fd holding the embedded helper ELF that suits this host, or -1 if
+ * there is none. Uses an anonymous in-memory file (memfd), so it never touches
+ * disk and is immune to noexec mounts -- elf_exec_fd maps it PROT_EXEC directly
+ * from the fd. */
 static int embedded_helper_fd(void) {
 #ifdef HAVE_EMBEDDED_HELPER
-  if (!has_glibc_libc()) return -1;
+  const unsigned char *p;
+  size_t left;
+  if (has_glibc_libc()) {
+    p = helper_bin;
+    left = helper_bin_len;
+  } else if (has_musl_loader()) {
+    p = helper_musl_bin;
+    left = helper_musl_bin_len;
+  } else {
+    return -1;
+  }
   int fd = memfd_create("gdhelper", MFD_CLOEXEC);
   if (fd < 0) return -1;
-  const unsigned char *p = helper_bin;
-  size_t left = helper_bin_len;
   while (left) {
     ssize_t n = write(fd, p, left);
     if (n <= 0) { close(fd); return -1; }
@@ -821,8 +862,8 @@ static int embedded_helper_fd(void) {
 
 /* --- compiled-helper fallback (per-user, ownership-verified cache) ------------
  *
- * On hosts where the embedded helper can't run (musl, or glibc older than the
- * embedded baseline) we compile helper_src.h with the system C compiler. The
+ * On hosts where no embedded helper can run (no glibc or musl at the standard
+ * paths, or glibc older than the embedded baseline) we compile helper_src.h with the system C compiler. The
  * cache is keyed by a hash of the helper source, so an ABI change to the helper
  * never reuses a stale binary, and lives in a per-user 0700 directory that we
  * verify we own before executing anything from it in-process. */
@@ -996,7 +1037,7 @@ static void foreign_setup(void) {
    * above, or below if every attempt fails. */
   block_foreign_signals(&foreign_setup_mask);
 
-  /* Attempt 1: the embedded prebuilt helper via an in-memory fd (glibc hosts;
+  /* Attempt 1: an embedded prebuilt helper via an in-memory fd (glibc or musl;
    * no compiler needed, immune to noexec). elf_exec_fd only returns on failure;
    * on success it longjmps to the setjmp above. */
   if (allow_embed) {
