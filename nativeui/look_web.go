@@ -4,18 +4,18 @@ package nativeui
 
 import "graphics.gd/variant/Color"
 
-func init() { register(Web, func(o Options) spec { return web(o.Browser, o.Dark) }) }
+func init() { register(lookWeb, func(o options) spec { return web(o.Browser, o.Dark) }) }
 
 // web is the browser's own form controls: what an unstyled <button>,
 // <input> or <select> looks like. Each engine draws them its own way, the
 // same on every desktop operating system; measured from Chromium 155,
 // Firefox 160 and Safari (macOS 27) rendering the same page. Page text is
 // the document font (serif, 16px); controls use a smaller sans.
-func web(browser Browser, dark bool) spec {
+func web(browser browserID, dark bool) spec {
 	switch browser {
-	case Firefox:
+	case browserFirefox:
 		return webFirefox(dark)
-	case Safari:
+	case browserSafari:
 		return webSafari(dark)
 	}
 	return webChromium(dark)

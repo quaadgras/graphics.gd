@@ -8,7 +8,7 @@ import (
 	"graphics.gd/variant/Float"
 )
 
-func init() { register(COSMIC, cosmicLook) }
+func init() { register(lookCOSMIC, cosmicLook) }
 
 // cosmicDefaults are COSMIC's stock dark theme colours, for builds that
 // show the look without the theme files (screenshots, other platforms).
@@ -32,7 +32,7 @@ var cosmicDefaults = map[string][4]float64{
 }
 
 // cosmicLook is libcosmic's widget style, coloured from the user's theme.
-func cosmicLook(o Options) spec {
+func cosmicLook(o options) spec {
 	th, _ := o.cosmicTheme.(*cosmic.Theme)
 	col := func(file string, path ...string) Color.RGBA {
 		c, ok := cosmic.RGBA{}, false

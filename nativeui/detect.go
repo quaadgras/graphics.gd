@@ -10,29 +10,30 @@ import (
 	"graphics.gd/variant/Float"
 )
 
-// Options for New.
-type Options struct {
-	Look    Look
-	Version Version // of the operating system, selects between a look's generations
+// options are what a theme is built from: the look and the system settings it
+// takes, detected by detect.
+type options struct {
+	Look    lookID
+	Version osVersion // of the operating system, selects between a look's generations
 	Dark    bool
 	Accent  Color.RGBA // zero value: use the look's default accent
 	Scale   Float.X    // zero value: 1
 
 	// Palette is the desktop's colour scheme, where it has one (KDE's
 	// kdeglobals); looks that support it take their colours from it.
-	Palette *Palette
+	Palette *palette
 
 	// Browser is the web browser's engine, for the Web look.
-	Browser Browser
+	Browser browserID
 
 	// Font is the interface font the desktop asks for, if it says.
-	Font Typeface
+	Font typeface
 
 	// textScale multiplies the look's font size (Windows' "Text size"
 	// accessibility setting), zero means 1.
 	textScale Float.X
 
-	// cosmicTheme is the COSMIC theme files, read by Detect on COSMIC.
+	// cosmicTheme is the COSMIC theme files, read by detect on COSMIC.
 	cosmicTheme any
 
 	// Desktop is the Linux/BSD desktop environment ("XFCE", "GNOME"...), if any.
@@ -50,7 +51,7 @@ type Options struct {
 }
 
 // Palette is a desktop colour scheme, in Qt's terms.
-type Palette struct {
+type palette struct {
 	Window, WindowText, Button, ButtonText, Base, Text, Highlight, HighlightText Color.RGBA
 
 	// Disabled is the colour of disabled text (Windows' GrayText), zero
@@ -60,47 +61,42 @@ type Palette struct {
 
 // Browser is a web browser engine. Each draws form controls its own way,
 // the same on every desktop operating system.
-type Browser int
+type browserID int
 
 const (
-	Chromium Browser = iota // Chrome, Edge, Opera, Brave...
-	Firefox
-	Safari // WebKit on macOS
+	browserChromium browserID = iota // Chrome, Edge, Opera, Brave...
+	browserFirefox
+	browserSafari // WebKit on macOS
 )
 
-func (b Browser) String() string {
+func (b browserID) String() string {
 	switch b {
-	case Firefox:
+	case browserFirefox:
 		return "Firefox"
-	case Safari:
+	case browserSafari:
 		return "Safari"
 	}
 	return "Chromium"
 }
 
 // Typeface describes an interface font.
-type Typeface struct {
+type typeface struct {
 	Family string
 	Weight int     // CSS weight, 400 regular, 700 bold
-	Size   Float.X // pixels, before Options.Scale
+	Size   Float.X // pixels, before options.Scale
 }
 
 // platformDetect fills in what only some platforms can tell (desktop settings).
-var platformDetect func(*Options)
+var platformDetect func(*options)
 
 // Version of the operating system, as reported by OS.GetVersion. On Windows,
 // Patch is the build number (Windows 11 is 10.0.22000 and later).
-type Version struct {
+type osVersion struct {
 	Major, Minor, Patch int
 }
 
-// Less reports whether v is older than major.minor.
-func (v Version) Less(major, minor int) bool {
-	return v.Major < major || (v.Major == major && v.Minor < minor)
-}
-
-func parseVersion(s string) Version {
-	var v Version
+func parseVersion(s string) osVersion {
+	var v osVersion
 	parts := strings.FieldsFunc(s, func(r rune) bool { return r == '.' || r == ' ' || r == '-' })
 	for i, dst := range []*int{&v.Major, &v.Minor, &v.Patch} {
 		if i < len(parts) {
@@ -110,11 +106,11 @@ func parseVersion(s string) Version {
 	return v
 }
 
-// Detect returns options matching the current system: its look and version,
+// detect returns options matching the current system: its look and version,
 // dark mode, accent color, display scale and accessibility preferences (where
 // the platform reports them).
-func Detect() Options {
-	var opts Options
+func detect() options {
+	var opts options
 	opts.Version = parseVersion(OS.GetVersion())
 	opts.Look = platformLook(opts.Version)
 	if DisplayServer.IsDarkModeSupported() {

@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	register(IOS, func(o Options) spec {
+	register(lookIOS, func(o options) spec {
 		if o.Version.Major >= 26 {
 			return ios26(o.Dark, !o.ReduceTransparency)
 		}

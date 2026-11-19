@@ -4,10 +4,10 @@ package nativeui
 
 import "graphics.gd/variant/Color"
 
-func init() { register(Breeze, breeze) }
+func init() { register(lookBreeze, breeze) }
 
 // breezePalettes are Plasma 6's Breeze Light and Breeze Dark colour schemes.
-var breezePalettes = [2]Palette{
+var breezePalettes = [2]palette{
 	{Window: hex("#eff0f1"), WindowText: hex("#232629"), Button: hex("#fcfcfc"), ButtonText: hex("#232629"),
 		Base: hex("#ffffff"), Text: hex("#232629"), Highlight: hex("#3daee9"), HighlightText: hex("#ffffff")},
 	{Window: hex("#202326"), WindowText: hex("#fcfcfc"), Button: hex("#292c30"), ButtonText: hex("#fcfcfc"),
@@ -17,7 +17,7 @@ var breezePalettes = [2]Palette{
 // breeze is KDE's Breeze widget style. Its shapes were measured from
 // renders of the real style; every colour is derived from the palette, so
 // any KDE colour scheme applies.
-func breeze(o Options) spec {
+func breeze(o options) spec {
 	p := breezePalettes[0]
 	if o.Dark {
 		p = breezePalettes[1]

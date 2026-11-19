@@ -6,7 +6,7 @@ import "testing"
 
 // TestDetectWindows logs what this machine's settings say.
 func TestDetectWindows(t *testing.T) {
-	var opts Options
+	var opts options
 	detectWindows(&opts)
 	t.Logf("dark %v accent %v textScale %v reduceTransparency %v highContrast %v", opts.Dark, opts.Accent, opts.textScale, opts.ReduceTransparency, opts.HighContrast)
 	if opts.Palette != nil {

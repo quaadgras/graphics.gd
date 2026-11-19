@@ -3,7 +3,7 @@
 package nativeui
 
 func init() {
-	register(Windows, func(o Options) spec {
+	register(lookWindows, func(o options) spec {
 		win10 := o.Version.Major == 10 && o.Version.Patch > 0 && o.Version.Patch < 22000
 		switch {
 		case o.HighContrast && o.Palette != nil:
@@ -176,7 +176,7 @@ func windows10(dark bool) spec {
 // colours (Settings, Accessibility, Contrast themes), the way WinUI does:
 // outlines in the text colour, the highlight colour for selection and
 // accented controls.
-func windowsHighContrast(p Palette, win10 bool) spec {
+func windowsHighContrast(p palette, win10 bool) spec {
 	r := 4
 	fonts, size := []string{"Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", "Selawik", "Noto Sans"}, 14
 	if win10 {

@@ -13,15 +13,15 @@ import (
 	"graphics.gd/variant/Object"
 )
 
-func platformLook(Version) Look { return Android }
+func platformLook(osVersion) lookID { return lookAndroid }
 
 func init() { platformDetect = detectAndroid }
 
 // detectAndroid picks One UI on Samsung devices, which draw their own
 // widgets rather than Material's, and reads the wallpaper colour.
-func detectAndroid(opts *Options) {
+func detectAndroid(opts *options) {
 	if isOneUI(getprop("ro.product.manufacturer"), getprop("ro.build.version.oneui")) {
-		opts.Look = OneUI
+		opts.Look = lookOneUI
 	}
 	// Android sizes are in dp, 160 to the inch. Godot's screen scale is a
 	// rounded density bucket, capped by the window size, so use the DPI.
@@ -31,7 +31,7 @@ func detectAndroid(opts *Options) {
 	// Godot's accent is system_accent1_600, the wallpaper palette's tone 40,
 	// which Material derives its scheme from. Samsung's widgets use their
 	// own system_primary_light/dark instead.
-	if opts.Look == OneUI {
+	if opts.Look == lookOneUI {
 		name := "system_primary_light"
 		if opts.Dark {
 			name = "system_primary_dark"

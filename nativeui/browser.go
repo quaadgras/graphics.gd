@@ -4,14 +4,14 @@ import "strings"
 
 // browserFromUserAgent picks the engine from a user agent string.
 // Chromium's agent also says "Safari", and iOS browsers all use WebKit.
-func browserFromUserAgent(ua string) Browser {
+func browserFromUserAgent(ua string) browserID {
 	switch {
 	case strings.Contains(ua, "Firefox/"):
-		return Firefox
+		return browserFirefox
 	case strings.Contains(ua, "Chrome/") || strings.Contains(ua, "Chromium/") || strings.Contains(ua, "Edg/"):
-		return Chromium
+		return browserChromium
 	case strings.Contains(ua, "AppleWebKit/"):
-		return Safari
+		return browserSafari
 	}
-	return Chromium
+	return browserChromium
 }

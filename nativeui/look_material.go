@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	register(Android, func(o Options) spec {
+	register(lookAndroid, func(o options) spec {
 		if o.Accent.A > 0 {
 			return materialDynamic(o.Accent, o.Dark)
 		}

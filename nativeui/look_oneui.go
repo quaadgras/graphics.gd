@@ -4,7 +4,7 @@ package nativeui
 
 import "graphics.gd/variant/Color"
 
-func init() { register(OneUI, func(o Options) spec { return oneUI(o.Accent, o.Dark) }) }
+func init() { register(lookOneUI, func(o options) spec { return oneUI(o.Accent, o.Dark) }) }
 
 // oneUI is Samsung's One UI as its own apps draw it (Samsung's SESL
 // widgets), measured on a Galaxy Z Fold5 with One UI 8.5 (Android 16): the

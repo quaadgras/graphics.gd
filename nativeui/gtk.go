@@ -287,7 +287,7 @@ func (g *gtkBuilder) font(family string, weight int) SystemFont.Instance {
 	return f
 }
 
-func buildGTK(opts Options) (Theme.Instance, error) {
+func buildGTK(opts options) (Theme.Instance, error) {
 	sheet, err := gtkSheet(opts.GTKTheme, opts.Dark)
 	if err != nil {
 		return Theme.Nil, err
@@ -321,19 +321,19 @@ func buildGTK(opts Options) (Theme.Instance, error) {
 	t.SetStylebox("panel", "Panel", bg.AsStyleBox())
 	t.SetStylebox("panel", "PanelContainer", bg.AsStyleBox())
 	t.SetColor("font_color", "Label", gdColor(label.Color))
-	t.SetTypeVariation(HeaderLabel, "Label")
-	t.SetFont("font", HeaderLabel, bold)
-	t.SetTypeVariation(DimLabel, "Label")
-	t.SetColor("font_color", DimLabel, gdColor(g.style("label.dim-label").Color))
-	t.SetTypeVariation(Card, "PanelContainer")
+	t.SetTypeVariation(variationHeaderLabel, "Label")
+	t.SetFont("font", variationHeaderLabel, bold)
+	t.SetTypeVariation(variationDimLabel, "Label")
+	t.SetColor("font_color", variationDimLabel, gdColor(g.style("label.dim-label").Color))
+	t.SetTypeVariation(variationCard, "PanelContainer")
 	frame := g.style("frame border")
 	frame.Padding = [4]float64{8 * g.k, 8 * g.k, 8 * g.k, 8 * g.k}
-	t.SetStylebox("panel", Card, g.box(frame, 64, 64))
+	t.SetStylebox("panel", variationCard, g.box(frame, 64, 64))
 
 	// Buttons.
 	g.buttonLike("Button", "button.text-button", 75, 23)
-	t.SetTypeVariation(AccentButton, "Button")
-	g.buttonLike(AccentButton, "button.text-button.suggested-action", 75, 23)
+	t.SetTypeVariation(variationAccentButton, "Button")
+	g.buttonLike(variationAccentButton, "button.text-button.suggested-action", 75, 23)
 	g.buttonLike("OptionButton", "combobox box.linked button.combo", 100, 23)
 	arrow := g.style("combobox box.linked button.combo")
 	t.SetIcon("arrow", "OptionButton", g.texture(triangle(int(7*g.k), arrow.Color, false)))

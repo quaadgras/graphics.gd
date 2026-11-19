@@ -5,7 +5,7 @@ package nativeui
 import "graphics.gd/variant/Color"
 
 func init() {
-	register(MacOS, func(o Options) spec {
+	register(lookMacOS, func(o options) spec {
 		if o.Version.Major >= 26 {
 			return macOS26(o.Dark, !o.ReduceTransparency)
 		}

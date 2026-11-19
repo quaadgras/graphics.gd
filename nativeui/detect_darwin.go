@@ -2,4 +2,4 @@
 
 package nativeui
 
-func platformLook(Version) Look { return MacOS }
+func platformLook(osVersion) lookID { return lookMacOS }

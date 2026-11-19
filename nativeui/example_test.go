@@ -6,21 +6,18 @@ import (
 	"graphics.gd/nativeui"
 )
 
-// Themes a user interface like the platform's own, following the system's
-// light/dark mode and accent colour as they change.
-func ExampleFollow() {
-	ui := Control.New()
-	nativeui.Follow(ui)
+// Every control in the program looks like the platform's own, and follows
+// the system's light/dark mode and accent colour as they change.
+func ExampleUse() {
+	nativeui.Use()
 
 	save := Button.New()
 	save.SetText("Save")
-	save.AsControl().SetThemeTypeVariation(nativeui.AccentButton) // the default action
-	ui.AsNode().AddChild(save.AsNode())
+	save.AsControl().SetThemeTypeVariation("AccentButton") // the default action
 }
 
-// Builds a theme for a given look, whatever the platform (with the
-// nativeui_all build tag, every look is compiled in).
+// A theme with the system's native look, for one part of the interface.
 func ExampleNew() {
-	ui := Control.New()
-	ui.SetTheme(nativeui.New(nativeui.Options{Look: nativeui.Windows, Dark: true, Scale: 1}))
+	panel := Control.New()
+	panel.SetTheme(nativeui.New())
 }

@@ -141,14 +141,14 @@ func shade(c Color.RGBA, f Float.X) Color.RGBA {
 // looks holds the looks compiled into this build: each platform only gets
 // its own (see the build constraints on the look_*.go files), the
 // nativeui_all build tag includes all of them.
-var looks = map[Look]func(Options) spec{}
+var looks = map[lookID]func(options) spec{}
 
-func register(look Look, fn func(Options) spec) { looks[look] = fn }
+func register(look lookID, fn func(options) spec) { looks[look] = fn }
 
-// Available reports the looks compiled into this build.
-func Available() []Look {
-	var list []Look
-	for look := MacOS; look <= OneUI; look++ {
+// available reports the looks compiled into this build.
+func available() []lookID {
+	var list []lookID
+	for look := lookMacOS; look <= lookOneUI; look++ {
 		if looks[look] != nil {
 			list = append(list, look)
 		}
@@ -156,13 +156,13 @@ func Available() []Look {
 	return list
 }
 
-func lookSpec(opts Options) spec {
+func lookSpec(opts options) spec {
 	fn := looks[opts.Look]
 	if fn == nil {
 		fn = looks[platformLook(opts.Version)]
 	}
 	if fn == nil {
-		for _, l := range Available() {
+		for _, l := range available() {
 			fn = looks[l]
 			break
 		}

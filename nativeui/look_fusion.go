@@ -4,10 +4,10 @@ package nativeui
 
 import "graphics.gd/variant/Color"
 
-func init() { register(Fusion, fusion) }
+func init() { register(lookFusion, fusion) }
 
 // fusionPalette is Qt's built-in default palette (what LXQt starts from).
-var fusionPalette = Palette{Window: hex("#efefef"), WindowText: hex("#000000"), Button: hex("#efefef"), ButtonText: hex("#000000"),
+var fusionPalette = palette{Window: hex("#efefef"), WindowText: hex("#000000"), Button: hex("#efefef"), ButtonText: hex("#000000"),
 	Base: hex("#ffffff"), Text: hex("#000000"), Highlight: hex("#308cc6"), HighlightText: hex("#ffffff")}
 
 func lighter(c Color.RGBA, f float32) Color.RGBA {
@@ -22,7 +22,7 @@ func darker(c Color.RGBA, f float32) Color.RGBA {
 // fusion is Qt's Fusion style, the default of LXQt and of Qt programs
 // outside KDE. Shapes and colour derivations were measured from renders of
 // the real style.
-func fusion(o Options) spec {
+func fusion(o options) spec {
 	p := fusionPalette
 	if o.Palette != nil {
 		p = *o.Palette

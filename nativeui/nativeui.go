@@ -2,24 +2,25 @@
 // native widgets of the platform the program is running on, including light
 // and dark mode, the user's accent colour, display scale and font.
 //
-//	ui := Control.New()
-//	nativeui.Follow(ui) // themed now, and again whenever the system theme changes
+//	nativeui.Use() // every Control, now and whenever the system theme changes
 //
-// or, to build a theme once from options of your own:
-//
-//	opts := nativeui.Detect()
-//	opts.Dark = true
-//	ui.SetTheme(nativeui.New(opts))
+// Use makes the native look Godot's default theme. New returns the same
+// theme as a Theme of your own, as the system is when it's called.
 //
 // Everything is drawn by Godot, so the controls behave the same everywhere;
 // they only look at home. nativeui is theme-only: it styles Godot's own
 // Button, CheckBox, LineEdit, TabContainer... and adds no widgets of its
-// own. A few theme type variations mark roles a theme can't infer:
-// [AccentButton] (the default action), [HeaderLabel], [DimLabel] and [Card].
+// own. Theme type variations mark the roles a theme can't infer, for use
+// with Control.SetThemeTypeVariation:
+//
+//   - "AccentButton", a Button for the default action (Save, OK)
+//   - "HeaderLabel", a Label heading a group of controls
+//   - "DimLabel", a Label for secondary text
+//   - "Card", a PanelContainer grouping related controls
 //
 // # Looks
 //
-// Detect picks the look and its generation from the running system:
+// The look, and its generation, come from the running system:
 //
 //   - Windows: Windows 11 (WinUI/Fluent), Windows 10, or the user's
 //     contrast theme; the accent shades, text size and transparency
@@ -41,12 +42,10 @@
 //
 // Sizes are the platform's: each look's padding, radii and indicator sizes
 // were measured from the real controls (WinUI, AppKit, UIKit, Material
-// Components, browsers, GTK and Qt) and are multiplied by Options.Scale,
-// which Detect sets from the display. A project that stretches its content
-// should set Scale to match.
+// Components, browsers, GTK and Qt) and are multiplied by the display's
+// scale.
 //
-// Each platform only compiles its own looks; build with the nativeui_all tag
-// to include every look (for screenshots and tests).
+// Each platform only compiles its own looks.
 package nativeui
 
 import (
@@ -74,49 +73,49 @@ import (
 )
 
 // Look selects which desktop's widgets to imitate.
-type Look int
+type lookID int
 
 const (
-	Auto    Look = iota // pick from the operating system
-	MacOS               // macOS Sonoma/Sequoia (AppKit)
-	Windows             // Windows 11 (Fluent / WinUI 3)
-	Adwaita             // GNOME (libadwaita)
-	Android             // Android (Material 3)
-	IOS                 // iOS / iPadOS (UIKit)
-	GTK                 // a GTK 3 theme, read from Options.GTKTheme (Linux and the BSDs)
-	GTK2                // a GTK 2 theme (gtk-2.0/gtkrc), read from Options.GTKTheme
-	Breeze              // KDE Plasma (Breeze), coloured by Options.Palette
-	Fusion              // Qt's Fusion (LXQt and Qt outside KDE), coloured by Options.Palette
-	COSMIC              // System76's COSMIC desktop, from its theme files
-	Web                 // the browser's default form controls (Options.Browser picks the engine)
-	OneUI               // Samsung's One UI (Galaxy phones and tablets)
+	lookAuto    lookID = iota // pick from the operating system
+	lookMacOS                 // macOS Sonoma/Sequoia (AppKit)
+	lookWindows               // Windows 11 (Fluent / WinUI 3)
+	lookAdwaita               // GNOME (libadwaita)
+	lookAndroid               // Android (Material 3)
+	lookIOS                   // iOS / iPadOS (UIKit)
+	lookGTK                   // a GTK 3 theme, read from options.GTKTheme (Linux and the BSDs)
+	lookGTK2                  // a GTK 2 theme (gtk-2.0/gtkrc), read from options.GTKTheme
+	lookBreeze                // KDE Plasma (Breeze), coloured by options.Palette
+	lookFusion                // Qt's Fusion (LXQt and Qt outside KDE), coloured by options.Palette
+	lookCOSMIC                // System76's COSMIC desktop, from its theme files
+	lookWeb                   // the browser's default form controls (options.Browser picks the engine)
+	lookOneUI                 // Samsung's One UI (Galaxy phones and tablets)
 )
 
-func (l Look) String() string {
+func (l lookID) String() string {
 	switch l {
-	case MacOS:
+	case lookMacOS:
 		return "macOS"
-	case Windows:
+	case lookWindows:
 		return "Windows 11"
-	case Adwaita:
+	case lookAdwaita:
 		return "Adwaita"
-	case Android:
+	case lookAndroid:
 		return "Android (Material 3)"
-	case IOS:
+	case lookIOS:
 		return "iOS"
-	case GTK:
+	case lookGTK:
 		return "GTK"
-	case GTK2:
+	case lookGTK2:
 		return "GTK 2"
-	case Breeze:
+	case lookBreeze:
 		return "Breeze"
-	case Fusion:
+	case lookFusion:
 		return "Fusion"
-	case COSMIC:
+	case lookCOSMIC:
 		return "COSMIC"
-	case Web:
+	case lookWeb:
 		return "Web"
-	case OneUI:
+	case lookOneUI:
 		return "One UI"
 	}
 	return "Auto"
@@ -125,10 +124,10 @@ func (l Look) String() string {
 // Theme type variations that New adds, for use with
 // Control.SetThemeTypeVariation.
 const (
-	AccentButton = "AccentButton" // the default/suggested action (blue button)
-	HeaderLabel  = "HeaderLabel"  // bold group heading
-	DimLabel     = "DimLabel"     // secondary text
-	Card         = "Card"         // PanelContainer drawn as a grouped box / card
+	variationAccentButton = "AccentButton" // the default/suggested action (blue button)
+	variationHeaderLabel  = "HeaderLabel"  // bold group heading
+	variationDimLabel     = "DimLabel"     // secondary text
+	variationCard         = "Card"         // PanelContainer drawn as a grouped box / card
 )
 
 type builder struct {
@@ -140,19 +139,24 @@ type builder struct {
 func (b *builder) px(v float64) float64 { return math.Round(v * b.scale) }
 
 // gtkTheme builds the GTK look, where it is compiled in.
-var gtkTheme, gtk2Theme func(Options) (Theme.Instance, error)
+var gtkTheme, gtk2Theme func(options) (Theme.Instance, error)
 
-// New builds a theme for the given options.
-func New(opts Options) Theme.Instance {
-	if opts.Look == Auto {
+// New returns a theme with the native look of the system, as it is now:
+// for a Theme of your own, where Use would make it Godot's default theme.
+// It doesn't follow later changes to the system's theme.
+func New() Theme.Instance { return newTheme(detect()) }
+
+// newTheme builds a theme for the given options.
+func newTheme(opts options) Theme.Instance {
+	if opts.Look == lookAuto {
 		opts.Look = platformLook(opts.Version)
 	}
 	if opts.Scale <= 0 {
 		opts.Scale = 1
 	}
-	if (opts.Look == GTK || opts.Look == GTK2) && gtkTheme != nil && opts.GTKTheme != "" {
+	if (opts.Look == lookGTK || opts.Look == lookGTK2) && gtkTheme != nil && opts.GTKTheme != "" {
 		build := gtkTheme
-		if opts.Look == GTK2 {
+		if opts.Look == lookGTK2 {
 			build = gtk2Theme
 		}
 		if theme, err := build(opts); err == nil {
@@ -294,26 +298,26 @@ func (b *builder) build() {
 	// Window background.
 	b.styles("Panel", map[string]box{"panel": {bg: s.window}})
 	b.styles("PanelContainer", map[string]box{"panel": {bg: s.window}})
-	t.SetTypeVariation(Card, "PanelContainer")
-	b.styles(Card, map[string]box{"panel": s.card})
+	t.SetTypeVariation(variationCard, "PanelContainer")
+	b.styles(variationCard, map[string]box{"panel": s.card})
 
 	// Labels.
 	b.colors("Label", s.text, "font_color")
-	t.SetTypeVariation(HeaderLabel, "Label")
-	t.SetFont("font", HeaderLabel, bold)
+	t.SetTypeVariation(variationHeaderLabel, "Label")
+	t.SetFont("font", variationHeaderLabel, bold)
 	if s.headerColor.A > 0 {
-		b.colors(HeaderLabel, s.headerColor, "font_color")
+		b.colors(variationHeaderLabel, s.headerColor, "font_color")
 	}
 	if s.headerFontSize > 0 {
-		t.SetFontSize("font_size", HeaderLabel, int(b.px(float64(s.headerFontSize))))
+		t.SetFontSize("font_size", variationHeaderLabel, int(b.px(float64(s.headerFontSize))))
 	}
 	if s.entryFontSize > 0 {
 		for _, typ := range []string{"LineEdit", "TextEdit"} {
 			t.SetFontSize("font_size", typ, int(b.px(float64(s.entryFontSize))))
 		}
 	}
-	t.SetTypeVariation(DimLabel, "Label")
-	b.colors(DimLabel, s.dim, "font_color")
+	t.SetTypeVariation(variationDimLabel, "Label")
+	b.colors(variationDimLabel, s.dim, "font_color")
 	if len(s.labelFonts) > 0 {
 		// Text outside controls is in the document's font (browsers'
 		// serif), check box and radio labels included.
@@ -328,7 +332,7 @@ func (b *builder) build() {
 			t.SetFont("font", typ, label(400))
 			t.SetFontSize("font_size", typ, size)
 		}
-		t.SetFont("font", HeaderLabel, label(700))
+		t.SetFont("font", variationHeaderLabel, label(700))
 	}
 
 	// Push buttons.
@@ -342,15 +346,15 @@ func (b *builder) build() {
 	if s.buttonBold {
 		t.SetFont("font", "Button", bold)
 	}
-	t.SetTypeVariation(AccentButton, "Button")
-	b.styles(AccentButton, map[string]box{
+	t.SetTypeVariation(variationAccentButton, "Button")
+	b.styles(variationAccentButton, map[string]box{
 		"normal": s.accentButton, "hover": s.accentHover, "pressed": s.accentPressed, "hover_pressed": s.accentPressed,
 	})
 	accentText := s.onAccent
 	if s.accentText.A > 0 {
 		accentText = s.accentText
 	}
-	b.colors(AccentButton, accentText, buttonFontColors...)
+	b.colors(variationAccentButton, accentText, buttonFontColors...)
 
 	// Pop-up buttons.
 	b.styles("OptionButton", map[string]box{

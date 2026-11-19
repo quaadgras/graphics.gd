@@ -3,4 +3,4 @@
 package nativeui
 
 // platformLook on the web, until browser detection picks its own looks.
-func platformLook(Version) Look { return Adwaita }
+func platformLook(osVersion) lookID { return lookAdwaita }

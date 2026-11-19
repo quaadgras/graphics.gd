@@ -7,7 +7,7 @@ import (
 	"graphics.gd/variant/Float"
 )
 
-func init() { register(Adwaita, func(o Options) spec { return adwaita(o.Dark) }) }
+func init() { register(lookAdwaita, func(o options) spec { return adwaita(o.Dark) }) }
 
 func adwaita(dark bool) spec {
 	s := spec{

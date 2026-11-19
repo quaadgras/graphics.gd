@@ -82,7 +82,7 @@ func (g *gtk2Builder) font(family string, weight int) SystemFont.Instance {
 	return f
 }
 
-func buildGTK2(opts Options) (Theme.Instance, error) {
+func buildGTK2(opts options) (Theme.Instance, error) {
 	rc, err := gtkrc.Load(filepath.Join(opts.GTKTheme, "gtk-2.0", "gtkrc"))
 	if err != nil {
 		return Theme.Nil, err
@@ -112,13 +112,13 @@ func buildGTK2(opts Options) (Theme.Instance, error) {
 	t.SetStylebox("panel", "Panel", bg.AsStyleBox())
 	t.SetStylebox("panel", "PanelContainer", bg.AsStyleBox())
 	t.SetColor("font_color", "Label", rc2(label.Fg[gtkrc.Normal]))
-	t.SetTypeVariation(HeaderLabel, "Label")
-	t.SetFont("font", HeaderLabel, bold)
-	t.SetTypeVariation(DimLabel, "Label")
-	t.SetColor("font_color", DimLabel, rc2(label.Fg[gtkrc.Insensitive]))
+	t.SetTypeVariation(variationHeaderLabel, "Label")
+	t.SetFont("font", variationHeaderLabel, bold)
+	t.SetTypeVariation(variationDimLabel, "Label")
+	t.SetColor("font_color", variationDimLabel, rc2(label.Fg[gtkrc.Insensitive]))
 	frame := g.style("GtkFrame")
-	t.SetTypeVariation(Card, "PanelContainer")
-	t.SetStylebox("panel", Card, g.box(frame, 64, 64, pad(8, 8), gtkrc.Call{Function: "SHADOW", Shadow: "ETCHED_IN", Detail: "frame"}))
+	t.SetTypeVariation(variationCard, "PanelContainer")
+	t.SetStylebox("panel", variationCard, g.box(frame, 64, 64, pad(8, 8), gtkrc.Call{Function: "SHADOW", Shadow: "ETCHED_IN", Detail: "frame"}))
 
 	// Buttons: GTK 2 pads the label by the thickness, inner border, focus padding and focus line.
 	button := g.style("GtkHBox.GtkButton")
@@ -145,7 +145,7 @@ func buildGTK2(opts Options) (Theme.Instance, error) {
 		t.SetStylebox("focus", typ, fb.AsStyleBox())
 	}
 	buttonLike("Button", button, 75)
-	t.SetTypeVariation(AccentButton, "Button")
+	t.SetTypeVariation(variationAccentButton, "Button")
 	combo := g.style("GtkHBox.GtkComboBox.GtkToggleButton")
 	buttonLike("OptionButton", combo, 100)
 	arrow := asNRGBA(g.icon(combo, 9, 9, gtkrc.Call{Function: "ARROW", Detail: "arrow", ArrowDirection: "DOWN", Shadow: "OUT", Widget: "GtkComboBox"}))

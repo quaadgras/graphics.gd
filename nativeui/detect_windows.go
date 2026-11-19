@@ -13,7 +13,7 @@ import (
 	"graphics.gd/variant/Float"
 )
 
-func platformLook(Version) Look { return Windows }
+func platformLook(osVersion) lookID { return lookWindows }
 
 func init() { platformDetect = detectWindows }
 
@@ -26,7 +26,7 @@ var (
 // detectWindows reads what Godot's DisplayServer doesn't: the accent shade
 // Fluent controls actually use, the text size, transparency effects and the
 // high contrast colours.
-func detectWindows(opts *Options) {
+func detectWindows(opts *options) {
 	const personalize = `Software\Microsoft\Windows\CurrentVersion\Themes\Personalize`
 	if v, ok := regInt(personalize, "AppsUseLightTheme"); ok {
 		opts.Dark = v == 0
@@ -56,7 +56,7 @@ func detectWindows(opts *Options) {
 	}
 	if highContrastOn() {
 		opts.HighContrast = true
-		opts.Palette = &Palette{
+		opts.Palette = &palette{
 			Window: sysColor(5), WindowText: sysColor(8), // COLOR_WINDOW, COLOR_WINDOWTEXT
 			Base: sysColor(5), Text: sysColor(8),
 			Button: sysColor(15), ButtonText: sysColor(18), // COLOR_BTNFACE, COLOR_BTNTEXT
