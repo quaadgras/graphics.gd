@@ -729,6 +729,8 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	if add_root {
 		s, _ := reflect.TypeAssert[gdclass.Pointer](value)
 		instance.setStrong(s)
+	} else if class.RefCounted {
+		instance.goOwnsRef.Store(true)
 	}
 	// When Go drops the value, its engine object is freed at the end of the
 	// frame. The engine may free the object first (queue_free, a parent
@@ -809,6 +811,7 @@ func (class classImplementation) reloadInstance(value reflect.Value, super *gdre
 		go manageSignals(Object.Instance{*super}.ID(), chSignals)
 	}
 	impl := &instanceImplementation{
+		refCounted: class.RefCounted,
 		object:     gdreference.GetObject(*super),
 		Type:       class.Type,
 		weak:       weak.Make(super),
@@ -966,6 +969,14 @@ type instanceImplementation struct {
 	// builds where the interface layout is known, see iface_gc.go.
 	itab unsafe.Pointer
 
+	// refCounted instances follow the rules of [instanceImplementation.root].
+	// goOwnsRef is set while Go holds its reference to one: from the start
+	// for values made in Go (new(T)), from the first time the engine hands
+	// it to Go for those the engine made. The cleanup releases it when Go
+	// collects the value.
+	refCounted bool
+	goOwnsRef  atomic.Bool
+
 	// FIXME use a bitfield for these booleans.
 	isEditor, isMainLoop, freed bool
 
@@ -1115,11 +1126,50 @@ func (instance *instanceImplementation) ToString() (gd.String, bool) {
 	return gd.String{}, false
 }
 
-func (instance *instanceImplementation) Reference() {
+// Reference and Unreference run when the engine's count of a RefCounted
+// instance moves to or from 1 (Godot only calls them around those values).
+func (instance *instanceImplementation) Reference() { instance.root() }
 
-}
 func (instance *instanceImplementation) Unreference() bool {
+	instance.root()
 	return false
+}
+
+// root decides how a RefCounted instance's Go value is held, as C# does with
+// its GC handles: Go holds at most one reference to the object (released by
+// the value's cleanup), and roots the value while anything else holds one,
+// so that it is collected, and the object freed, once only Go's is left.
+// Without this, a Go resource handed to the engine (a StyleBox in a Theme)
+// stayed rooted after the engine let go of it and was reported as leaked at
+// exit, and one handed back to Go (Theme.GetStylebox) lost its root while the
+// engine still used it.
+func (instance *instanceImplementation) root() {
+	if !instance.refCounted || instance.freed {
+		return
+	}
+	instance.ownedByEngine(!instance.goOwnsRef.Load() || gd.ReferenceCount(instance.object) > 1)
+}
+
+// ownedByEngine roots the Go wrapper (and pins its dispatch word) while the
+// engine holds references to it, or leaves it to Go's GC when only Go does.
+func (instance *instanceImplementation) ownedByEngine(engine bool) {
+	if engine {
+		if instance.strongInterface() != nil {
+			return
+		}
+		s, ok := instance.Interface()
+		if !ok {
+			return
+		}
+		instance.setStrong(s)
+		repinInstance(instance)
+		return
+	}
+	if instance.strongInterface() == nil {
+		return
+	}
+	instance.setStrong(nil)
+	instance.pinner.Unpin()
 }
 
 func (instance *instanceImplementation) CallVirtual(virtual gd.ExtensionClassCallVirtualFunc, args, back gdextension.Pointer) {

@@ -789,8 +789,10 @@ static void extension_instance_stringify(GDExtensionClassInstancePtr instance, G
 static void extension_instance_reference(GDExtensionClassInstancePtr instance) {
     gd_on_extension_instance_reference((uintptr_t)instance, true);
 }
-static GDExtensionBool extension_instance_unreference(GDExtensionClassInstancePtr instance) {
-    return gd_on_extension_instance_reference((uintptr_t)instance, false);
+// GDExtensionClassUnreference returns void: a function returning a value
+// through that pointer type traps on the web (call_indirect signature).
+static void extension_instance_unreference(GDExtensionClassInstancePtr instance) {
+    gd_on_extension_instance_reference((uintptr_t)instance, false);
 }
 static GDExtensionObjectPtr extension_class_create(void *user_data, GDExtensionBool notify_postinitialize) {
     return (GDExtensionObjectPtr)gd_on_extension_class_create((uintptr_t)user_data, notify_postinitialize);
@@ -877,8 +879,8 @@ void gd_classdb_register(uintptr_t class_name, uintptr_t parent, uintptr_t id, b
         .validate_property_func = extension_instance_property_validation,
         .notification_func = (GDExtensionClassNotification2)extension_instance_notification,
         .to_string_func = extension_instance_stringify,
-        //.reference_func = (GDExtensionClassReference)class_reference, // FIXME JavaScript error: null function or function signature mismatch
-        //.unreference_func = (GDExtensionClassUnreference)class_unreference, // FIXME JavaScript error: null function or function signature mismatch
+        .reference_func = extension_instance_reference,
+        .unreference_func = extension_instance_unreference,
         .create_instance_func = extension_class_create,
         .free_instance_func = extension_instance_free,
         .get_virtual_call_data_func = extension_class_caller,

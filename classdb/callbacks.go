@@ -84,7 +84,14 @@ func init() {
 			_, file, line, _ := runtime.Caller(2)
 			fmt.Fprintf(os.Stderr, "%s now owned by %s (%s:%d)\n", gd.ObjectGetClass(gdreference.RawObject(obj)).String(), owner, file, line)
 		}
-		if goOnly {
+		if impl.refCounted {
+			if goOnly { // the engine handed Go a reference
+				if impl.goOwnsRef.Swap(true) {
+					gd.Unreference(impl.object) // Go already has its one
+				}
+			}
+			impl.root()
+		} else if goOnly {
 			// Go owns the object now: drop the strong root AND the
 			// dispatch-word pin so the GC may collect the wrapper (its
 			// cleanup then frees the engine object). The engine no
@@ -104,10 +111,22 @@ func init() {
 		return val.AsObject()[0], true
 	}
 	gd.RegisterCleanup(func() {
+		// Go holds a reference to RefCounted values until it collects them,
+		// which no longer happens at exit: release it, after the loop, as it
+		// may free the object and so remove instances.
+		var release []gdextension.Object
 		for instance := range instances.All {
 			if instance != nil {
+				if instance.goOwnsRef.Load() && !instance.freed {
+					if _, alive := instance.Interface(); alive {
+						release = append(release, instance.object)
+					}
+				}
 				instance.Free()
 			}
+		}
+		for _, raw := range release {
+			gd.Free(raw)
 		}
 		virtualPinner.Unpin()
 		virtualPinner = runtime.Pinner{}

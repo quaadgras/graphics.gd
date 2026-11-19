@@ -123,6 +123,24 @@ func ObjectIsAlive(raw [3]uint64) bool {
 
 var debugFree = strings.Contains(os.Getenv("GDDEBUG"), "free")
 
+// ReferenceCount returns the reference count of a RefCounted object, -1 for
+// any other object.
+func ReferenceCount(raw gdextension.Object) int {
+	ref := gdextension.Host.Objects.Cast(raw, refCountedClassTag)
+	if ref == 0 {
+		return -1
+	}
+	return RefCounted(gdreference.RawObject(ref)).GetReferenceCount()
+}
+
+// Unreference drops one reference to a RefCounted object, which must not be
+// the last.
+func Unreference(raw gdextension.Object) {
+	if ref := gdextension.Host.Objects.Cast(raw, refCountedClassTag); ref != 0 {
+		RefCounted(gdreference.RawObject(ref)).Unreference()
+	}
+}
+
 func Free(raw gdextension.Object) {
 	if raw == 0 {
 		return
