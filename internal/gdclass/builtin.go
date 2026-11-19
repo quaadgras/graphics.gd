@@ -40,6 +40,11 @@ func init() {
 		if constructor, ok := classDB[name]; ok {
 			return constructor(ptr)
 		}
+		// A class whose package isn't imported (or a Go-defined class):
+		// the base Object wrapper, so that it still satisfies Object.Any.
+		if constructor, ok := classDB["Object"]; ok {
+			return constructor(ptr)
+		}
 		return ptr
 	}
 }

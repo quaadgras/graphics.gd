@@ -36,7 +36,7 @@ func init() {
 }
 
 func TestCustomConstructorSelfInstantiates(t *testing.T) {
-	raw, ok := ClassDB.Instantiate("SelfInstantiating").(gdreference.Object)
+	raw, ok := rawObject(ClassDB.Instantiate("SelfInstantiating"))
 	if !ok {
 		t.Fatal("expected ClassDB.Instantiate to return an object")
 	}
@@ -58,4 +58,26 @@ func TestCustomConstructorSelfInstantiates(t *testing.T) {
 	runtime.GC()
 	runtime.GC()
 	self.AsNode().QueueFree()
+}
+
+// rawObject is the engine object an any from the engine holds: the base
+// Object.Instance (for a class without a Go package, like Go-defined ones).
+func rawObject(v any) (gdreference.Object, bool) {
+	switch o := v.(type) {
+	case gdreference.Object:
+		return o, true
+	case interface{ AsObject() [1]gdreference.Object }:
+		return o.AsObject()[0], true
+	}
+	return gdreference.Object{}, false
+}
+
+// TestObjectAsBaseWrapper: an engine object whose class has no Go package
+// (here a Go-defined class) comes back from the engine as an Object.Any, so
+// callers can use it, not as an internal reference type.
+func TestObjectAsBaseWrapper(t *testing.T) {
+	v := ClassDB.Instantiate("SelfInstantiating")
+	if _, ok := v.(Object.Any); !ok {
+		t.Fatalf("ClassDB.Instantiate returned %T, want an Object.Any", v)
+	}
 }

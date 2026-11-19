@@ -193,7 +193,7 @@ func TestConstructorPanic(t *testing.T) {
 		if reached != nil {
 			t.Fatalf("the panic unwound through the engine: %v", reached)
 		}
-		first, ok := made[0].(gdreference.Object)
+		first, ok := rawObject(made[0])
 		if !ok {
 			t.Fatalf("no object for the class whose constructor panics: got %T", made[0])
 		}
@@ -201,7 +201,7 @@ func TestConstructorPanic(t *testing.T) {
 		if !ok || empty.Value != 0 {
 			t.Fatalf("constructor panic: got %+v (%v), want an empty instance", empty, ok)
 		}
-		second, ok := made[1].(gdreference.Object)
+		second, ok := rawObject(made[1])
 		if !ok {
 			t.Fatalf("no object for the class whose creation hook panics: got %T", made[1])
 		}

@@ -97,6 +97,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 	if reflect.TypeOf(value) == rtype {
 		return reflect.ValueOf(value), nil
 	}
+	value = unwrapBaseObject(value)
 	if variant, ok := value.(Variant); ok {
 		val, err := convertVariantToDesiredGoType(variant, rtype)
 		if err != nil {
@@ -229,11 +230,12 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 		default:
 			if rtype.Implements(reflect.TypeFor[IsClass]()) {
 				var object gdreference.Object
-				if isclass, ok := value.(IsClass); ok {
-					object = isclass.AsObject()[0]
-				}
-				object, ok := value.(gdreference.Object)
-				if !ok {
+				switch value := value.(type) {
+				case IsClass:
+					object = value.AsObject()[0]
+				case gdreference.Object:
+					object = value
+				default:
 					return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 				}
 				native := ExtensionInstanceLookup(gdreference.GetObject(object))
@@ -325,7 +327,20 @@ func convertToGoMap(rtype reflect.Type, value any) (reflect.Value, error) {
 	}
 }
 
+// unwrapBaseObject turns the base Object.Instance, which the engine's
+// objects of classes without an imported package convert to, back into the
+// object reference that the conversions below expect.
+func unwrapBaseObject(value any) any {
+	if o, ok := value.(interface{ AsObject() [1]gdreference.Object }); ok {
+		if t := reflect.TypeOf(value); t.PkgPath() == "graphics.gd/variant/Object" && t.Name() == "Instance" {
+			return o.AsObject()[0]
+		}
+	}
+	return value
+}
+
 func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, error) {
+	engineValue = unwrapBaseObject(engineValue)
 	if i64, isInt64 := engineValue.(Int); isInt64 {
 		if reflect.PointerTo(rtype).Implements(reflect.TypeFor[Enum.Pointer]()) {
 			enum := reflect.New(rtype)

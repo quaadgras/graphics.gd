@@ -76,6 +76,7 @@ type Singleton[T gdclass.Interface] = Extension[T]
 var otype gdextension.ObjectType
 
 func init() {
+	gdclass.Register("Object", func(ptr gdreference.Object) any { return Instance{ptr} })
 	gd.Links = append(gd.Links, func() {
 		sname := gdextension.Host.Strings.Intern.UTF8("Object")
 		otype = gdextension.Host.Objects.Type(sname)
