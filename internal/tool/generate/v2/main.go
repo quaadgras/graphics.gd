@@ -481,7 +481,11 @@ func generateTypeDecls(file io.Writer, classDB ClassDB, class gdjson.Class, sing
 	fmt.Fprintf(file, "}\n")
 	fmt.Fprintf(file, "func init() {\n")
 	if class.Name != "Startup" {
-		fmt.Fprintf(file, "\tgd.Links = append(gd.Links, func() {\n")
+		links := "Links"
+		if platformAPIClasses[class.Name] {
+			links = "PlatformLinks" // registered by the platform after the extension links
+		}
+		fmt.Fprintf(file, "\tgd.%[1]s = append(gd.%[1]s, func() {\n", links)
 		fmt.Fprintf(file, "\t\tsname = gdextension.Host.Strings.Intern.UTF8(%q)\n", class.Name)
 		fmt.Fprintf(file, "\t\totype = gdextension.Host.Objects.Type(sname)\n")
 		fmt.Fprintf(file, "\t\tgd.LinkMethods(sname, &methods, %v)\n", class.APIType == "editor")
@@ -954,4 +958,13 @@ func generateInterface(file io.Writer, classDB ClassDB, class gdjson.Class, impl
 			fmt.Fprintln(file, " }")
 		}
 	}
+}
+
+// platformAPIClasses are registered by Godot's register_platform_apis(),
+// which runs after the extension's Scene-level initialization (where the
+// other classes' methods are linked), so their methods are linked at
+// startup instead.
+var platformAPIClasses = map[string]bool{
+	"JavaScriptBridge": true, "JavaScriptObject": true, // web
+	"JavaClassWrapper": true, "JavaClass": true, "JavaObject": true, "JNISingleton": true, // android
 }

@@ -22,6 +22,26 @@ var LinkStartup func()
 // Link needs to be called once for the API to load in all of the
 // dynamic function pointers. Typically, the link layer will take
 // care of this (and you won't need to call it yourself).
+// PlatformLinks link the classes that Godot's register_platform_apis()
+// registers (JavaScriptBridge on the web, JavaClassWrapper on Android...).
+// That runs after the extension's Scene level, so they are linked by
+// LinkPlatform at startup.
+var PlatformLinks []func()
+
+var linkedPlatform bool
+
+// LinkPlatform links PlatformLinks, once; call it when the engine starts
+// its main loop (the GDExtension startup callback).
+func LinkPlatform() {
+	if linkedPlatform {
+		return
+	}
+	linkedPlatform = true
+	for _, fn := range PlatformLinks {
+		fn()
+	}
+}
+
 func Init(level gdextension.InitializationLevel) {
 	if !LinkedCore && level == gdextension.InitializationLevelCore {
 		linkBuiltin()

@@ -87,6 +87,7 @@ func init() {
 		},
 	}
 	gdextension.On.MainLoop.FirstFrame = func() {
+		internal.LinkPlatform() // the platform API classes exist now (see internal.PlatformLinks)
 		Callable.Cycle()
 		if EngineClass.IsEditorHint() {
 			editorSetup()

@@ -115,7 +115,7 @@ var methods struct {
 }
 
 func init() {
-	gd.Links = append(gd.Links, func() {
+	gd.PlatformLinks = append(gd.PlatformLinks, func() {
 		sname = gdextension.Host.Strings.Intern.UTF8("JavaScriptBridge")
 		otype = gdextension.Host.Objects.Type(sname)
 		gd.LinkMethods(sname, &methods, false)

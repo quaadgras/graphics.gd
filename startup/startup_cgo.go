@@ -241,6 +241,7 @@ func (engineLoadingSharedGo) Rendering() iter.Seq[Float.X] {
 
 func init() {
 	gdextension.On.MainLoop.FirstFrame = func() {
+		internal.LinkPlatform() // the platform API classes exist now (see internal.PlatformLinks)
 		threadcheck.Init()
 		// FirstFrame can fire more than once (e.g. on android), so guard the
 		// test main: spawning it per frame would run the whole suite repeatedly.

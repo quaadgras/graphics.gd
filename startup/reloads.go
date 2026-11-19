@@ -819,6 +819,7 @@ func reloadsForwardCallbacks() {
 	}
 	firstFrame := gdextension.On.MainLoop.FirstFrame
 	gdextension.On.MainLoop.FirstFrame = func() {
+		gd.LinkPlatform() // the platform API classes exist now (see internal.PlatformLinks)
 		// The host's own first frame resumes the main coroutine, which
 		// is how a guest waiting in reloadsHostReady gets going.
 		reloadsFirstFrame = true
