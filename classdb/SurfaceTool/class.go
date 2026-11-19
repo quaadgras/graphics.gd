@@ -481,20 +481,6 @@ func (self Instance) GetAabb() AABB.PositionSize { //gd:SurfaceTool.get_aabb
 }
 
 /*
-Generates an LOD for a given 'nd_threshold' in linear units (square root of quadric error metric), using at most 'target_index_count' indices.
-*/
-func (self Instance) GenerateLod(nd_threshold Float.X) []int32 { //gd:SurfaceTool.generate_lod
-	return []int32(slices.Collect(Advanced(self).GenerateLod(float64(nd_threshold), int64(3)).Values()))
-}
-
-/*
-Generates an LOD for a given 'nd_threshold' in linear units (square root of quadric error metric), using at most 'target_index_count' indices.
-*/
-func (self MoreArgs) GenerateLod(nd_threshold Float.X, target_index_count int) []int32 { //gd:SurfaceTool.generate_lod
-	return []int32(slices.Collect(Advanced(self).GenerateLod(float64(nd_threshold), int64(target_index_count)).Values()))
-}
-
-/*
 Sets [Material] to be used by the [Mesh] you are constructing.
 
 Returns 'self' to enable method chaining.
@@ -773,15 +759,6 @@ func (self class) GetAabb() AABB.PositionSize { //gd:SurfaceTool.get_aabb
 	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_aabb, gdextension.SizeAABB, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
-	return ret
-}
-func (self class) GenerateLod(nd_threshold float64, target_index_count int64) Packed.Array[int32] { //gd:SurfaceTool.generate_lod
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_lod, gdextension.SizePackedArray|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), &struct {
-		nd_threshold       float64
-		target_index_count int64
-	}{nd_threshold, target_index_count})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = Packed.Array[int32](Array.Through(gd.WrapPacked[gd.PackedInt32Array, int32](pointers.Let[gd.PackedInt32Array](r_ret))))
 	return ret
 }
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:SurfaceTool.set_material

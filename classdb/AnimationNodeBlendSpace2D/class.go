@@ -454,19 +454,6 @@ func (self Instance) SetBlendMode(value BlendMode) Instance { //gd:AnimationNode
 }
 
 /*
-If true, sync mode is enabled (equivalent to [SyncModeIndependent]). This property is kept for backward compatibility.
-*/
-func (self Instance) Sync() bool { //gd:AnimationNodeBlendSpace2D.sync
-	return bool(class(self).IsUsingSync())
-}
-
-// SetSync sets the property returned by [IsUsingSync]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSync(value bool) Instance { //gd:AnimationNodeBlendSpace2D.sync
-	class(self).SetUseSync(value)
-	return self
-}
-
-/*
 Controls how animations are synced when blended. See [SyncMode] for available options.
 */
 func (self Instance) SyncMode() SyncMode { //gd:AnimationNodeBlendSpace2D.sync_mode

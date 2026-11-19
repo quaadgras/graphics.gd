@@ -10,6 +10,8 @@ for element in packed:
 		print(element)
 */
 
+//go:build !gd_omit_deprecated
+
 package main
 
 import (

@@ -9,7 +9,7 @@ img.set_pixel(1, 2, Color.RED) # Sets the color at (1, 2) to red.
 [csharp]
 int imgWidth = 10;
 int imgHeight = 5;
-var img = Image.Create(imgWidth, imgHeight, false, Image.Format.Rgba8);
+var img = Image.CreateEmpty(imgWidth, imgHeight, false, Image.Format.Rgba8);
 
 img.SetPixel(1, 2, Colors.Red); // Sets the color at (1, 2) to red.
 [/csharp]
@@ -26,6 +26,6 @@ import (
 func Image_SetPixel() {
 	var imgWidth = 10
 	var imgHeight = 5
-	var img = Image.Create(imgWidth, imgHeight, false, Image.FormatRgba8)
+	var img = Image.CreateEmpty(imgWidth, imgHeight, false, Image.FormatRgba8)
 	img.SetPixelv(Vector2i.New(1, 2), Color.W3C.Red) // Sets the color at (1, 2) to red.
 }

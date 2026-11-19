@@ -732,15 +732,6 @@ func Texture3dCreate(format Image.Format, width int, height int, depth int, mipm
 }
 
 /*
-This method does nothing and always returns an invalid [Resource.ID].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-func TextureProxyCreate(base RID.TextureProxy) RID.TextureProxy { //gd:RenderingServer.texture_proxy_create
-	return RID.TextureProxy(RID.TextureProxy(Advanced().TextureProxyCreate(RID.Any(base))))
-}
-
-/*
 Creates a texture based on a native handle that was created outside of Godot's renderer.
 
 Note: If using only the rendering device renderer, it's recommend to use [RenderingDevice.TextureCreateFromExtension] together with [RenderingServer.TextureRdCreate], rather than this method. This way, the texture's format and usage can be controlled more effectively.
@@ -811,13 +802,6 @@ Note: The 'texture' must have the same width, height, depth and format as the cu
 */
 func Texture3dUpdate(texture RID.Texture3D, data []Image.Instance) { //gd:RenderingServer.texture_3d_update
 	Advanced().Texture3dUpdate(RID.Any(texture), gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))
-}
-
-/*
-This method does nothing.
-*/
-func TextureProxyUpdate(texture RID.TextureProxy, proxy_to RID.Texture) { //gd:RenderingServer.texture_proxy_update
-	Advanced().TextureProxyUpdate(RID.Any(texture), RID.Any(proxy_to))
 }
 
 /*
@@ -2102,13 +2086,6 @@ Sets the render reflection mask for this reflection probe. Only instances with a
 */
 func ReflectionProbeSetReflectionMask(probe RID.ReflectionProbe, layers int) { //gd:RenderingServer.reflection_probe_set_reflection_mask
 	Advanced().ReflectionProbeSetReflectionMask(RID.Any(probe), int64(layers))
-}
-
-/*
-Deprecated. This method does nothing.
-*/
-func ReflectionProbeSetResolution(probe RID.ReflectionProbe, resolution int) { //gd:RenderingServer.reflection_probe_set_resolution
-	Advanced().ReflectionProbeSetResolution(RID.Any(probe), int64(resolution))
 }
 
 /*
@@ -3900,9 +3877,6 @@ Sets whether screen-space reflections will be rendered at full or half size. Hal
 */
 func EnvironmentSetSsrHalfSize(half_size bool) { //gd:RenderingServer.environment_set_ssr_half_size
 	Advanced().EnvironmentSetSsrHalfSize(half_size)
-}
-func EnvironmentSetSsrRoughnessQuality(quality EnvironmentSSRRoughnessQuality) { //gd:RenderingServer.environment_set_ssr_roughness_quality
-	Advanced().EnvironmentSetSsrRoughnessQuality(quality)
 }
 
 /*
@@ -5703,20 +5677,6 @@ func SetBootImageWithStretchOptions(image Image.Instance, color Color.RGBA, stre
 }
 
 /*
-Sets a boot image. The 'color' defines the background color. The value of 'scale' indicates if the image will be scaled to fit the screen size. If 'use_filter' is true, the image will be scaled with linear interpolation. If 'use_filter' is false, the image will be scaled with nearest-neighbor interpolation.
-*/
-func SetBootImage(image Image.Instance, color Color.RGBA, scale bool) { //gd:RenderingServer.set_boot_image
-	Advanced().SetBootImage(image, Color.RGBA(color), scale, true)
-}
-
-/*
-Sets a boot image. The 'color' defines the background color. The value of 'scale' indicates if the image will be scaled to fit the screen size. If 'use_filter' is true, the image will be scaled with linear interpolation. If 'use_filter' is false, the image will be scaled with nearest-neighbor interpolation.
-*/
-func SetBootImageOptions(image Image.Instance, color Color.RGBA, scale bool, use_filter bool) { //gd:RenderingServer.set_boot_image
-	Advanced().SetBootImage(image, Color.RGBA(color), scale, use_filter)
-}
-
-/*
 Returns the default clear color which is used when a specific clear color has not been selected. See also [SetDefaultClearColor].
 */
 func GetDefaultClearColor() Color.RGBA { //gd:RenderingServer.get_default_clear_color
@@ -5808,13 +5768,6 @@ func CallOnRenderThread(callable func()) { //gd:RenderingServer.call_on_render_t
 	Advanced().CallOnRenderThread(Callable.New(callable))
 }
 
-/*
-This method does nothing and always returns false.
-*/
-func HasFeature(feature Features) bool { //gd:RenderingServer.has_feature
-	return bool(Advanced().HasFeature(feature))
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 func Advanced() class { once.Do(singleton); return self }
 
@@ -5883,12 +5836,6 @@ func (self class) Texture3dCreate(format Image.Format, width int64, height int64
 	var ret = r_ret
 	return ret
 }
-func (self class) TextureProxyCreate(base RID.Any) RID.Any { //gd:RenderingServer.texture_proxy_create
-	once.Do(singleton)
-	var r_ret = noescape.CallThreadSafe[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.texture_proxy_create, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ base RID.Any }{base})
-	var ret = r_ret
-	return ret
-}
 func (self class) TextureCreateFromNativeHandle(atype TextureType, format Image.Format, native_handle int64, width int64, height int64, depth int64, layers int64, layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_create_from_native_handle
 	once.Do(singleton)
 	var r_ret = noescape.CallThreadSafe[RID.Any](gdreference.GetObject(self.AsObject()[0]), methods.texture_create_from_native_handle, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
@@ -5932,13 +5879,6 @@ func (self class) Texture3dUpdate(texture RID.Any, data Array.Contains[[1]gdclas
 		data    gdextension.Array
 	}{texture, pointers.Get(gd.InternalArray(data))})
 	runtime.KeepAlive(data)
-}
-func (self class) TextureProxyUpdate(texture RID.Any, proxy_to RID.Any) { //gd:RenderingServer.texture_proxy_update
-	once.Do(singleton)
-	noescape.CallThreadSafe[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.texture_proxy_update, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
-		texture  RID.Any
-		proxy_to RID.Any
-	}{texture, proxy_to})
 }
 func (self class) TextureDrawableBlitRect(textures Array.Contains[RID.Any], rect Rect2i.PositionSize, material RID.Any, modulate Color.RGBA, source_textures Array.Contains[RID.Any], to_mipmap int64) { //gd:RenderingServer.texture_drawable_blit_rect
 	once.Do(singleton)
@@ -6951,13 +6891,6 @@ func (self class) ReflectionProbeSetReflectionMask(probe RID.Any, layers int64) 
 		probe  RID.Any
 		layers int64
 	}{probe, layers})
-}
-func (self class) ReflectionProbeSetResolution(probe RID.Any, resolution int64) { //gd:RenderingServer.reflection_probe_set_resolution
-	once.Do(singleton)
-	noescape.CallThreadSafe[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.reflection_probe_set_resolution, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
-		probe      RID.Any
-		resolution int64
-	}{probe, resolution})
 }
 func (self class) ReflectionProbeSetMeshLodThreshold(probe RID.Any, pixels float64) { //gd:RenderingServer.reflection_probe_set_mesh_lod_threshold
 	once.Do(singleton)
@@ -8392,12 +8325,6 @@ func (self class) EnvironmentSetSsrHalfSize(half_size bool) { //gd:RenderingServ
 	once.Do(singleton)
 	noescape.CallThreadSafe[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.environment_set_ssr_half_size, 0|(gdextension.SizeBool<<4), &struct{ half_size bool }{half_size})
 }
-func (self class) EnvironmentSetSsrRoughnessQuality(quality EnvironmentSSRRoughnessQuality) { //gd:RenderingServer.environment_set_ssr_roughness_quality
-	once.Do(singleton)
-	noescape.CallThreadSafe[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.environment_set_ssr_roughness_quality, 0|(gdextension.SizeInt<<4), &struct {
-		quality EnvironmentSSRRoughnessQuality
-	}{quality})
-}
 func (self class) EnvironmentSetSsaoQuality(quality EnvironmentSSAOQuality, half_size bool, adaptive_target float64, blur_passes int64, fadeout_from float64, fadeout_to float64) { //gd:RenderingServer.environment_set_ssao_quality
 	once.Do(singleton)
 	noescape.CallThreadSafe[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.environment_set_ssao_quality, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), &struct {
@@ -9750,16 +9677,6 @@ func (self class) SetBootImageWithStretch(image [1]gdclass.Image, color Color.RG
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0])), color, stretch_mode, use_filter})
 	runtime.KeepAlive(image[0].Anchor())
 }
-func (self class) SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale bool, use_filter bool) { //gd:RenderingServer.set_boot_image
-	once.Do(singleton)
-	noescape.CallThreadSafe[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.set_boot_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
-		image      gdextension.Object
-		color      Color.RGBA
-		scale      bool
-		use_filter bool
-	}{gdextension.Object(gdreference.GetObject(gdclass.GetImage(image[0])[0])), color, scale, use_filter})
-	runtime.KeepAlive(image[0].Anchor())
-}
 func (self class) GetDefaultClearColor() Color.RGBA { //gd:RenderingServer.get_default_clear_color
 	once.Do(singleton)
 	var r_ret = noescape.CallThreadSafe[Color.RGBA](gdreference.GetObject(self.AsObject()[0]), methods.get_default_clear_color, gdextension.SizeColor, &struct{}{})
@@ -9830,12 +9747,6 @@ func (self class) CallOnRenderThread(callable Callable.Function) { //gd:Renderin
 	once.Do(singleton)
 	noescape.CallThreadSafe[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.call_on_render_thread, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 	runtime.KeepAlive(callable)
-}
-func (self class) HasFeature(feature Features) bool { //gd:RenderingServer.has_feature
-	once.Do(singleton)
-	var r_ret = noescape.CallThreadSafe[bool](gdreference.GetObject(self.AsObject()[0]), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Features }{feature})
-	var ret = r_ret
-	return ret
 }
 
 /*

@@ -319,17 +319,6 @@ func (self Instance) GetRid() ID { //gd:Resource.get_rid
 }
 
 /*
-Calls [SetupLocalToScene]. If [ResourceLocalToScene] is set to true, this method is automatically called from [PackedScene.Instantiate] by the newly duplicated resource within the scene instance.
-
-[PackedScene.Instantiate]: https://pkg.go.dev/graphics.gd/classdb/PackedScene#Instance.Instantiate
-[ResourceLocalToScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourceLocalToScene
-[SetupLocalToScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Interface
-*/
-func (self Instance) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
-	Advanced(self).SetupLocalToScene()
-}
-
-/*
 Makes the resource clear its non-exported properties. See also [ResetState]. Useful when implementing a custom resource format by extending [ResourceFormatLoader] and [ResourceFormatSaver].
 
 [ResetState]: https://pkg.go.dev/graphics.gd/classdb/Resource#Interface
@@ -683,10 +672,6 @@ func (self class) GetLocalScene() [1]gdclass.Node { //gd:Resource.get_local_scen
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
 	return ret
-}
-func (self class) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup_local_to_scene, 0, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
 }
 func (self class) ResetState() { //gd:Resource.reset_state
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_state, 0, &struct{}{})

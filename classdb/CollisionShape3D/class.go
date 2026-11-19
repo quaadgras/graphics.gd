@@ -32,7 +32,6 @@ import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -140,13 +139,6 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsCollisionShape3D() Instance
-}
-
-/*
-This method does nothing.
-*/
-func (self Instance) ResourceChanged(resource Resource.Instance) { //gd:CollisionShape3D.resource_changed
-	Advanced(self).ResourceChanged(resource)
 }
 
 /*
@@ -258,11 +250,6 @@ func (self Instance) SetDebugFill(value bool) Instance { //gd:CollisionShape3D.d
 	return self
 }
 
-func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:CollisionShape3D.resource_changed
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(resource[0].Anchor())
-}
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:CollisionShape3D.set_shape
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), &struct{ shape gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetShape3D(shape[0])[0]))})
 	runtime.KeepAlive(self[0].Anchor())

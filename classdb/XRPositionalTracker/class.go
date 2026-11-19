@@ -177,27 +177,6 @@ func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, lin
 	return self
 }
 
-/*
-Returns an input for this tracker. It can return a boolean, float or [Vector2.XY] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
-
-[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
-*/
-func (self Instance) GetInput(name string) any { //gd:XRPositionalTracker.get_input
-	return any(Advanced(self).GetInput(String.Name(String.From(name))).Interface())
-}
-
-/*
-Changes the value for the given input. This method is called by an [XRInterface] implementation and should not be used directly.
-
-Returns 'self' to enable method chaining.
-
-[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
-*/
-func (self Instance) SetInput(name string, value any) Instance { //gd:XRPositionalTracker.set_input
-	Advanced(self).SetInput(String.Name(String.From(name)), variant.New(value))
-	return self
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.XRPositionalTracker
@@ -316,22 +295,6 @@ func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, l
 	}{pointers.Get(gd.InternalStringName(name)), gd.Transposed(transform), linear_velocity, angular_velocity, tracking_confidence})
 	runtime.KeepAlive(self[0].Anchor())
 	runtime.KeepAlive(name)
-}
-func (self class) GetInput(name String.Name) variant.Any { //gd:XRPositionalTracker.get_input
-	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_input, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(name)
-	var ret = variant.Implementation(gd.WrapVariant(pointers.New[gd.Variant](r_ret)))
-	return ret
-}
-func (self class) SetInput(name String.Name, value variant.Any) { //gd:XRPositionalTracker.set_input
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
-		name  gdextension.StringName
-		value gdextension.Variant
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(name)
-	runtime.KeepAlive(value)
 }
 
 /*

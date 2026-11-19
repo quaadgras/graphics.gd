@@ -37,7 +37,6 @@ import "graphics.gd/classdb/MeshLibrary"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/PhysicsMaterial"
-import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Basis"
@@ -354,13 +353,6 @@ Returns the position of a grid cell in the GridMap's local coordinate space. To 
 */
 func (self Instance) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ { //gd:GridMap.map_to_local
 	return Vector3.XYZ(Advanced(self).MapToLocal(Vector3i.XYZ(map_position)))
-}
-
-/*
-This method does nothing.
-*/
-func (self Instance) ResourceChanged(resource Resource.Instance) { //gd:GridMap.resource_changed
-	Advanced(self).ResourceChanged(resource)
 }
 
 /*
@@ -934,11 +926,6 @@ func (self class) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ { //gd:GridM
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
 	return ret
-}
-func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:GridMap.resource_changed
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(resource[0].Anchor())
 }
 func (self class) SetCenterX(enable bool) { //gd:GridMap.set_center_x
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_x, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})

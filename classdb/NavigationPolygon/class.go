@@ -304,13 +304,6 @@ func (self Instance) ClearOutlines() { //gd:NavigationPolygon.clear_outlines
 }
 
 /*
-Creates polygons from the outlines added in the editor or by script.
-*/
-func (self Instance) MakePolygonsFromOutlines() { //gd:NavigationPolygon.make_polygons_from_outlines
-	Advanced(self).MakePolygonsFromOutlines()
-}
-
-/*
 Based on 'value', enables or disables the specified layer in the [ParsedCollisionMask], given a 'layer_number' between 1 and 32.
 
 Returns 'self' to enable method chaining.
@@ -624,10 +617,6 @@ func (self class) RemoveOutline(idx int64) { //gd:NavigationPolygon.remove_outli
 }
 func (self class) ClearOutlines() { //gd:NavigationPolygon.clear_outlines
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_outlines, 0, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) MakePolygonsFromOutlines() { //gd:NavigationPolygon.make_polygons_from_outlines
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_polygons_from_outlines, 0, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 }
 func (self class) SetCellSize(cell_size float64) { //gd:NavigationPolygon.set_cell_size

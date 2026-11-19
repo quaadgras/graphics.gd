@@ -10,7 +10,7 @@ import (
 )
 
 func TestStatic(t *testing.T) {
-	var image Image.Instance = Image.Create(1, 1, false, Image.FormatRgb8)
+	var image Image.Instance = Image.CreateEmpty(1, 1, false, Image.FormatRgb8)
 	if image.GetWidth() != 1 {
 		t.Fail()
 	}

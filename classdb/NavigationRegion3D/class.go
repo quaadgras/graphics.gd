@@ -226,16 +226,6 @@ func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:Navig
 }
 
 /*
-Returns the [Resource.ID] of this region on the [NavigationServer3D].
-
-[NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-func (self Instance) GetRegionRid() RID.NavigationRegion3D { //gd:NavigationRegion3D.get_region_rid
-	return RID.NavigationRegion3D(RID.NavigationRegion3D(Advanced(self).GetRegionRid()))
-}
-
-/*
 Bakes the [NavigationMesh]. If 'on_thread' is set to true (default), the baking is done on a separate thread. Baking on separate thread is useful because navigation baking is not a cheap operation. When it is completed, it automatically sets the new [NavigationMesh]. Please note that baking on separate thread may be very slow if geometry is parsed from meshes as async access to each mesh involves heavy synchronization. Also, please note that baking on a separate thread is automatically disabled on operating systems that cannot use threads (such as Web with threads disabled).
 
 [NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
@@ -465,12 +455,6 @@ func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd
 }
 func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationRegion3D.get_navigation_layer_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) GetRegionRid() RID.Any { //gd:NavigationRegion3D.get_region_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_region_rid, gdextension.SizeRID, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
 	return ret

@@ -87,6 +87,13 @@ func TestUserTags(t *testing.T) {
 	if _, tags := userTags("musl", []string{"-tags=a b"}); tags != "musl,a,b" {
 		t.Errorf("userTags of a space-separated list = %q", tags)
 	}
+	// without base tags (the web build, unless the engine options add some).
+	if _, tags := userTags("", []string{"-tags=a"}); tags != "a" {
+		t.Errorf("userTags without base tags = %q", tags)
+	}
+	if _, tags := userTags("", nil); tags != "" {
+		t.Errorf("userTags without any tags = %q", tags)
+	}
 }
 
 func TestWithLinkerFlag(t *testing.T) {
@@ -102,6 +109,25 @@ func TestWithLinkerFlag(t *testing.T) {
 	} {
 		if got := withLinkerFlag(test.args, "-extar=ar"); !slices.Equal(got, test.want) {
 			t.Errorf("withLinkerFlag(%q) = %q, want %q", test.args, got, test.want)
+		}
+	}
+}
+
+func TestOptimizeTags(t *testing.T) {
+	for options, want := range map[string]string{
+		"":                               "",
+		"lto=full":                       "",
+		"optimize=speed":                 "",
+		"optimize=size":                  "gd_omit_deprecated",
+		"optimize=size_extra lto=full":   "gd_omit_deprecated",
+		"optimize=size deprecated=yes":   "",
+		"deprecated=true optimize=size":  "",
+		"deprecated=no":                  "gd_omit_deprecated",
+		"optimize=speed deprecated=no":   "gd_omit_deprecated",
+		"optimize=size deprecated=False": "gd_omit_deprecated",
+	} {
+		if got := optimizeTagsFor(options); got != want {
+			t.Errorf("optimizeTagsFor(%q) = %q, want %q", options, got, want)
 		}
 	}
 }

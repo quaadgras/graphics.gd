@@ -334,19 +334,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-Deprecated.
-*/
-func (self Instance) GraphOffset() Vector2.XY { //gd:VisualShader.graph_offset
-	return Vector2.XY(class(self).GetGraphOffset())
-}
-
-// SetGraphOffset sets the property returned by [GetGraphOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGraphOffset(value Vector2.XY) Instance { //gd:VisualShader.graph_offset
-	class(self).SetGraphOffset(Vector2.XY(value))
-	return self
-}
-
 func (self class) SetMode(mode Shader.Mode) { //gd:VisualShader.set_mode
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Shader.Mode }{mode})
 	runtime.KeepAlive(self[0].Anchor())

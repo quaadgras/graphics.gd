@@ -669,28 +669,6 @@ func (self MoreArgs) AddIconRadioCheckShortcut(texture Texture2D.Instance, short
 }
 
 /*
-Adds an item that will act as a submenu of the parent [PopupMenu] node when clicked. The 'submenu' argument must be the name of an existing [PopupMenu] that has been added as a child to this node. This submenu will be shown when the item is clicked, hovered for long enough, or activated using the ui_select or ui_right input actions.
-
-An 'id' can optionally be provided. If no 'id' is provided, one will be created from the index.
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-func (self Instance) AddSubmenuItem(label string, submenu string) { //gd:PopupMenu.add_submenu_item
-	Advanced(self).AddSubmenuItem(String.From(label), String.From(submenu), int64(-1))
-}
-
-/*
-Adds an item that will act as a submenu of the parent [PopupMenu] node when clicked. The 'submenu' argument must be the name of an existing [PopupMenu] that has been added as a child to this node. This submenu will be shown when the item is clicked, hovered for long enough, or activated using the ui_select or ui_right input actions.
-
-An 'id' can optionally be provided. If no 'id' is provided, one will be created from the index.
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-func (self MoreArgs) AddSubmenuItem(label string, submenu string, id int) { //gd:PopupMenu.add_submenu_item
-	Advanced(self).AddSubmenuItem(String.From(label), String.From(submenu), int64(id))
-}
-
-/*
 Adds an item that will act as a submenu of the parent [PopupMenu] node when clicked. This submenu will be shown when the item is clicked, hovered for long enough, or activated using the ui_select or ui_right input actions.
 
 'submenu' must be either child of this [PopupMenu] or has no parent node (in which case it will be automatically added as a child). If the 'submenu' popup has another parent, this method will fail.
@@ -848,18 +826,6 @@ Returns 'self' to enable method chaining.
 */
 func (self Instance) SetItemDisabled(index int, disabled bool) Instance { //gd:PopupMenu.set_item_disabled
 	Advanced(self).SetItemDisabled(int64(index), disabled)
-	return self
-}
-
-/*
-Sets the submenu of the item at the given 'index'. The submenu is the name of a child [PopupMenu] node that would be shown when the item is clicked.
-
-Returns 'self' to enable method chaining.
-
-[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
-*/
-func (self Instance) SetItemSubmenu(index int, submenu string) Instance { //gd:PopupMenu.set_item_submenu
-	Advanced(self).SetItemSubmenu(int64(index), String.From(submenu))
 	return self
 }
 
@@ -1114,15 +1080,6 @@ See [SetItemDisabled] for more info on how to disable an item.
 */
 func (self Instance) IsItemDisabled(index int) bool { //gd:PopupMenu.is_item_disabled
 	return bool(Advanced(self).IsItemDisabled(int64(index)))
-}
-
-/*
-Returns the submenu name of the item at the given 'index'. See [AddSubmenuItem] for more info on how to add a submenu.
-
-[AddSubmenuItem]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.AddSubmenuItem
-*/
-func (self Instance) GetItemSubmenu(index int) string { //gd:PopupMenu.get_item_submenu
-	return string(Advanced(self).GetItemSubmenu(int64(index)).String())
 }
 
 /*
@@ -1704,16 +1661,6 @@ func (self class) AddIconRadioCheckShortcut(texture [1]gdclass.Texture2D, shortc
 	runtime.KeepAlive(texture[0].Anchor())
 	runtime.KeepAlive(shortcut[0].Anchor())
 }
-func (self class) AddSubmenuItem(label String.Readable, submenu String.Readable, id int64) { //gd:PopupMenu.add_submenu_item
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
-		label   gdextension.String
-		submenu gdextension.String
-		id      int64
-	}{pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalString(submenu)), id})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(label)
-	runtime.KeepAlive(submenu)
-}
 func (self class) AddSubmenuNodeItem(label String.Readable, submenu [1]gdclass.PopupMenu, id int64) { //gd:PopupMenu.add_submenu_node_item
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_submenu_node_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), &struct {
 		label   gdextension.String
@@ -1811,14 +1758,6 @@ func (self class) SetItemDisabled(index int64, disabled bool) { //gd:PopupMenu.s
 		disabled bool
 	}{index, disabled})
 	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) SetItemSubmenu(index int64, submenu String.Readable) { //gd:PopupMenu.set_item_submenu
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_submenu, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
-		index   int64
-		submenu gdextension.String
-	}{index, pointers.Get(gd.InternalString(submenu))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(submenu)
 }
 func (self class) SetItemSubmenuNode(index int64, submenu [1]gdclass.PopupMenu) { //gd:PopupMenu.set_item_submenu_node
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_submenu_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
@@ -1985,12 +1924,6 @@ func (self class) IsItemDisabled(index int64) bool { //gd:PopupMenu.is_item_disa
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
-	return ret
-}
-func (self class) GetItemSubmenu(index int64) String.Readable { //gd:PopupMenu.get_item_submenu
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_submenu, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = String.Via(gd.WrapString(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) GetItemSubmenuNode(index int64) [1]gdclass.PopupMenu { //gd:PopupMenu.get_item_submenu_node

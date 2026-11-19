@@ -183,16 +183,6 @@ func (self Instance) SetButtonIndex(value Input.JoyButton) Instance { //gd:Input
 	return self
 }
 
-func (self Instance) Pressure() Float.X { //gd:InputEventJoypadButton.pressure
-	return Float.X(Float.X(class(self).GetPressure()))
-}
-
-// SetPressure sets the property returned by [GetPressure]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPressure(value Float.X) Instance { //gd:InputEventJoypadButton.pressure
-	class(self).SetPressure(float64(value))
-	return self
-}
-
 /*
 If true, the button's state is pressed. If false, the button's state is released.
 Returns the instance, so that property settings can be chained.

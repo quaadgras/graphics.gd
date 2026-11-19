@@ -35,7 +35,6 @@ import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/ConfirmationDialog"
-import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/FileDialog"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Viewport"
@@ -146,20 +145,6 @@ type Any interface {
 	AsEditorFileDialog() Instance
 }
 
-/*
-This method is kept for compatibility and does nothing. As an alternative, you can display another dialog after showing the file dialog.
-*/
-func (self Instance) AddSideMenu(menu Control.Instance) { //gd:EditorFileDialog.add_side_menu
-	Advanced(self).AddSideMenu(menu, String.From(""))
-}
-
-/*
-This method is kept for compatibility and does nothing. As an alternative, you can display another dialog after showing the file dialog.
-*/
-func (self MoreArgs) AddSideMenu(menu Control.Instance, title string) { //gd:EditorFileDialog.add_side_menu
-	Advanced(self).AddSideMenu(menu, String.From(title))
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.EditorFileDialog
@@ -202,30 +187,6 @@ func New() Instance {
 	return casted
 }
 
-/*
-If true, the [EditorFileDialog] will not warn the user before overwriting files.
-
-[EditorFileDialog]: https://pkg.go.dev/graphics.gd/classdb/EditorFileDialog
-*/
-func (self Instance) DisableOverwriteWarning() bool { //gd:EditorFileDialog.disable_overwrite_warning
-	return bool(class(self).IsOverwriteWarningDisabled())
-}
-
-// SetDisableOverwriteWarning sets the property returned by [IsOverwriteWarningDisabled]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetDisableOverwriteWarning(value bool) Instance { //gd:EditorFileDialog.disable_overwrite_warning
-	class(self).SetDisableOverwriteWarning(value)
-	return self
-}
-
-func (self class) AddSideMenu(menu [1]gdclass.Control, title String.Readable) { //gd:EditorFileDialog.add_side_menu
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_side_menu, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
-		menu  gdextension.Object
-		title gdextension.String
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetControl(menu[0])[0])), pointers.Get(gd.InternalString(title))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(menu[0].Anchor())
-	runtime.KeepAlive(title)
-}
 func (self class) SetDisableOverwriteWarning(disable bool) { //gd:EditorFileDialog.set_disable_overwrite_warning
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_overwrite_warning, 0|(gdextension.SizeBool<<4), &struct{ disable bool }{disable})
 	runtime.KeepAlive(self[0].Anchor())

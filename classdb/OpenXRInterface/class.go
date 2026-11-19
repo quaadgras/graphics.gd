@@ -33,11 +33,9 @@ import "graphics.gd/variant/Float"
 import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Path"
-import "graphics.gd/variant/Quaternion"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
-import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
 
@@ -240,61 +238,6 @@ If handtracking is enabled and motion range is supported, gets the currently con
 */
 func (self Instance) GetMotionRange(hand Hand) HandMotionRange { //gd:OpenXRInterface.get_motion_range
 	return HandMotionRange(Advanced(self).GetMotionRange(hand))
-}
-
-/*
-If handtracking is enabled and hand tracking source is supported, gets the source of the hand tracking data for 'hand'.
-*/
-func (self Instance) GetHandTrackingSource(hand Hand) HandTrackedSource { //gd:OpenXRInterface.get_hand_tracking_source
-	return HandTrackedSource(Advanced(self).GetHandTrackingSource(hand))
-}
-
-/*
-If handtracking is enabled, returns flags that inform us of the validity of the tracking data.
-*/
-func (self Instance) GetHandJointFlags(hand Hand, joint HandJoints) HandJointFlags { //gd:OpenXRInterface.get_hand_joint_flags
-	return HandJointFlags(Advanced(self).GetHandJointFlags(hand, joint))
-}
-
-/*
-If handtracking is enabled, returns the rotation of a joint ('joint') of a hand ('hand') as provided by OpenXR.
-*/
-func (self Instance) GetHandJointRotation(hand Hand, joint HandJoints) Quaternion.IJKX { //gd:OpenXRInterface.get_hand_joint_rotation
-	return Quaternion.IJKX(Advanced(self).GetHandJointRotation(hand, joint))
-}
-
-/*
-If handtracking is enabled, returns the position of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
-
-[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
-*/
-func (self Instance) GetHandJointPosition(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_position
-	return Vector3.XYZ(Advanced(self).GetHandJointPosition(hand, joint))
-}
-
-/*
-If handtracking is enabled, returns the radius of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is without worldscale applied!
-*/
-func (self Instance) GetHandJointRadius(hand Hand, joint HandJoints) Float.X { //gd:OpenXRInterface.get_hand_joint_radius
-	return Float.X(Float.X(Advanced(self).GetHandJointRadius(hand, joint)))
-}
-
-/*
-If handtracking is enabled, returns the linear velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
-
-[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
-*/
-func (self Instance) GetHandJointLinearVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_linear_velocity
-	return Vector3.XYZ(Advanced(self).GetHandJointLinearVelocity(hand, joint))
-}
-
-/*
-If handtracking is enabled, returns the angular velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D]!
-
-[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
-*/
-func (self Instance) GetHandJointAngularVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_angular_velocity
-	return Vector3.XYZ(Advanced(self).GetHandJointAngularVelocity(hand, joint))
 }
 
 /*
@@ -597,66 +540,6 @@ func (self class) SetMotionRange(hand Hand, motion_range HandMotionRange) { //gd
 }
 func (self class) GetMotionRange(hand Hand) HandMotionRange { //gd:OpenXRInterface.get_motion_range
 	var r_ret = noescape.Call[HandMotionRange](gd.ObjectChecked(self.AsObject()), methods.get_motion_range, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ hand Hand }{hand})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) GetHandTrackingSource(hand Hand) HandTrackedSource { //gd:OpenXRInterface.get_hand_tracking_source
-	var r_ret = noescape.Call[HandTrackedSource](gd.ObjectChecked(self.AsObject()), methods.get_hand_tracking_source, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ hand Hand }{hand})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) GetHandJointFlags(hand Hand, joint HandJoints) HandJointFlags { //gd:OpenXRInterface.get_hand_joint_flags
-	var r_ret = noescape.Call[HandJointFlags](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_flags, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
-		hand  Hand
-		joint HandJoints
-	}{hand, joint})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) GetHandJointRotation(hand Hand, joint HandJoints) Quaternion.IJKX { //gd:OpenXRInterface.get_hand_joint_rotation
-	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_rotation, gdextension.SizeQuaternion|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
-		hand  Hand
-		joint HandJoints
-	}{hand, joint})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) GetHandJointPosition(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_position
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_position, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
-		hand  Hand
-		joint HandJoints
-	}{hand, joint})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) GetHandJointRadius(hand Hand, joint HandJoints) float64 { //gd:OpenXRInterface.get_hand_joint_radius
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_radius, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
-		hand  Hand
-		joint HandJoints
-	}{hand, joint})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) GetHandJointLinearVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_linear_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_linear_velocity, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
-		hand  Hand
-		joint HandJoints
-	}{hand, joint})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) GetHandJointAngularVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_angular_velocity
-	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_angular_velocity, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
-		hand  Hand
-		joint HandJoints
-	}{hand, joint})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
 	return ret

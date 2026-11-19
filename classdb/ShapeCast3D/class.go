@@ -35,7 +35,6 @@ import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
-import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -173,13 +172,6 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsShapeCast3D() Instance
-}
-
-/*
-This method does nothing.
-*/
-func (self Instance) ResourceChanged(resource Resource.Instance) { //gd:ShapeCast3D.resource_changed
-	Advanced(self).ResourceChanged(resource)
 }
 
 /*
@@ -531,11 +523,6 @@ func (self Instance) SetDebugShapeCustomColor(value Color.RGBA) Instance { //gd:
 	return self
 }
 
-func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:ShapeCast3D.resource_changed
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetResource(resource[0])[0]))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(resource[0].Anchor())
-}
 func (self class) SetEnabled(enabled bool) { //gd:ShapeCast3D.set_enabled
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 	runtime.KeepAlive(self[0].Anchor())

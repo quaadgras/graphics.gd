@@ -291,19 +291,6 @@ func (self Instance) SetAccessorType(value GLTFAccessorType) Instance { //gd:GLT
 }
 
 /*
-The glTF accessor type, as an int. Possible values are 0 for "SCALAR", 1 for "VEC2", 2 for "VEC3", 3 for "VEC4", 4 for "MAT2", 5 for "MAT3", and 6 for "MAT4".
-*/
-func (self Instance) Type() int { //gd:GLTFAccessor.type
-	return int(int(class(self).GetType()))
-}
-
-// SetType sets the property returned by [GetType]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetType(value int) Instance { //gd:GLTFAccessor.type
-	class(self).SetType(int64(value))
-	return self
-}
-
-/*
 Minimum value of each component in this accessor.
 */
 func (self Instance) Min() []float64 { //gd:GLTFAccessor.min

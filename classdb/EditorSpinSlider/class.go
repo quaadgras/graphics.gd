@@ -261,19 +261,6 @@ func (self Instance) SetControlState(value ControlState) Instance { //gd:EditorS
 }
 
 /*
-If true, the slider and up/down arrows are hidden.
-*/
-func (self Instance) HideSlider() bool { //gd:EditorSpinSlider.hide_slider
-	return bool(class(self).IsHidingSlider())
-}
-
-// SetHideSlider sets the property returned by [IsHidingSlider]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHideSlider(value bool) Instance { //gd:EditorSpinSlider.hide_slider
-	class(self).SetHideSlider(value)
-	return self
-}
-
-/*
 If true, the [EditorSpinSlider] is considered to be editing an integer value. If false, the [EditorSpinSlider] is considered to be editing a floating-point value. This is used to determine whether a slider should be drawn by default. The slider is only drawn for floats; integers use up-down arrows similar to [SpinBox] instead, unless [ControlState] is set to [ControlStatePreferSlider]. It will also use [EditorSettings] "interface/inspector/integer_drag_speed" instead of [EditorSettings] "interface/inspector/float_drag_speed" if the slider is available.
 
 [ControlState]: https://pkg.go.dev/graphics.gd/classdb/EditorSpinSlider#Instance.ControlState

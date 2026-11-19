@@ -153,34 +153,6 @@ func (self Instance) GetBindingModifier(index int) OpenXRActionBindingModifier.I
 	return OpenXRActionBindingModifier.Instance(Advanced(self).GetBindingModifier(int64(index)))
 }
 
-/*
-Get the number of input/output paths in this binding.
-*/
-func (self Instance) GetPathCount() int { //gd:OpenXRIPBinding.get_path_count
-	return int(int(Advanced(self).GetPathCount()))
-}
-
-/*
-Returns true if this input/output path is part of this binding.
-*/
-func (self Instance) HasPath(path string) bool { //gd:OpenXRIPBinding.has_path
-	return bool(Advanced(self).HasPath(String.From(path)))
-}
-
-/*
-Add an input/output path to this binding.
-*/
-func (self Instance) AddPath(path string) { //gd:OpenXRIPBinding.add_path
-	Advanced(self).AddPath(String.From(path))
-}
-
-/*
-Removes this input/output path from this binding.
-*/
-func (self Instance) RemovePath(path string) { //gd:OpenXRIPBinding.remove_path
-	Advanced(self).RemovePath(String.From(path))
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.OpenXRIPBinding
@@ -269,19 +241,6 @@ func (self Instance) SetBindingModifiers(value []OpenXRActionBindingModifier.Ins
 	return self
 }
 
-/*
-Paths that define the inputs or outputs bound on the device.
-*/
-func (self Instance) Paths() []string { //gd:OpenXRIPBinding.paths
-	return []string(class(self).GetPaths().Strings())
-}
-
-// SetPaths sets the property returned by [GetPaths]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetPaths(value []string) Instance { //gd:OpenXRIPBinding.paths
-	class(self).SetPaths(Packed.MakeStrings(value...))
-	return self
-}
-
 func (self class) SetAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRIPBinding.set_action
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetOpenXRAction(action[0])[0]))})
 	runtime.KeepAlive(self[0].Anchor())
@@ -339,29 +298,6 @@ func (self class) GetPaths() Packed.Strings { //gd:OpenXRIPBinding.get_paths
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = Packed.Strings(Array.Through(gd.WrapPackedStrings(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
-}
-func (self class) GetPathCount() int64 { //gd:OpenXRIPBinding.get_path_count
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_path_count, gdextension.SizeInt, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) HasPath(path String.Readable) bool { //gd:OpenXRIPBinding.has_path
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_path, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
-	var ret = r_ret
-	return ret
-}
-func (self class) AddPath(path String.Readable) { //gd:OpenXRIPBinding.add_path
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
-}
-func (self class) RemovePath(path String.Readable) { //gd:OpenXRIPBinding.remove_path
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
 }
 func (o class) AsOpenXRIPBinding() Advanced           { return Advanced(o) }
 func (o Instance) AsOpenXRIPBinding() Instance        { return o }

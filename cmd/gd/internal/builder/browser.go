@@ -42,10 +42,15 @@ func (browser Browser) Build(args ...string) error {
 	if err := os.Setenv("GOARCH", "wasm"); err != nil {
 		return xray.New(err)
 	}
-	if browser.testing {
-		return tooling.Go.Action("test", args, "-c", "-o", filepath.Join(project.ReleasesDirectory, "js", "wasm", "library.wasm"))
+	var flags []string
+	args, tags := userTags(optimizeTags(), args)
+	if tags != "" {
+		flags = append(flags, "-tags="+tags)
 	}
-	return tooling.Go.Action("build", args, "-o", filepath.Join(project.ReleasesDirectory, "js", "wasm", "library.wasm"))
+	if browser.testing {
+		return tooling.Go.Action("test", args, append(flags, "-c", "-o", filepath.Join(project.ReleasesDirectory, "js", "wasm", "library.wasm"))...)
+	}
+	return tooling.Go.Action("build", args, append(flags, "-o", filepath.Join(project.ReleasesDirectory, "js", "wasm", "library.wasm"))...)
 }
 
 func (browser Browser) Run(args ...string) error {

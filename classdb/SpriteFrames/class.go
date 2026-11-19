@@ -208,25 +208,6 @@ func (self Instance) GetAnimationSpeed(anim string) Float.X { //gd:SpriteFrames.
 }
 
 /*
-If 'loop' is false equivalent to set_animation_loop_mode(LOOP_NONE).
-
-If 'loop' is true equivalent to set_animation_loop_mode(LOOP_LINEAR).
-
-Returns 'self' to enable method chaining.
-*/
-func (self Instance) SetAnimationLoop(anim string, loop bool) Instance { //gd:SpriteFrames.set_animation_loop
-	Advanced(self).SetAnimationLoop(String.Name(String.From(anim)), loop)
-	return self
-}
-
-/*
-Returns true if get_animation_loop_mode(anim) == LOOP_LINEAR. Otherwise, returns false.
-*/
-func (self Instance) GetAnimationLoop(anim string) bool { //gd:SpriteFrames.get_animation_loop
-	return bool(Advanced(self).GetAnimationLoop(String.Name(String.From(anim))))
-}
-
-/*
 Sets the 'loop_mode' for the 'anim' animation.
 
 Returns 'self' to enable method chaining.
@@ -427,21 +408,6 @@ func (self class) SetAnimationSpeed(anim String.Name, fps float64) { //gd:Sprite
 }
 func (self class) GetAnimationSpeed(anim String.Name) float64 { //gd:SpriteFrames.get_animation_speed
 	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_animation_speed, gdextension.SizeFloat|(gdextension.SizeStringName<<4), &struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(anim)
-	var ret = r_ret
-	return ret
-}
-func (self class) SetAnimationLoop(anim String.Name, loop bool) { //gd:SpriteFrames.set_animation_loop
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation_loop, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
-		anim gdextension.StringName
-		loop bool
-	}{pointers.Get(gd.InternalStringName(anim)), loop})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(anim)
-}
-func (self class) GetAnimationLoop(anim String.Name) bool { //gd:SpriteFrames.get_animation_loop
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_animation_loop, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))})
 	runtime.KeepAlive(self[0].Anchor())
 	runtime.KeepAlive(anim)
 	var ret = r_ret

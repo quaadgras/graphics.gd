@@ -509,21 +509,6 @@ func MapGetObstacles(map_ RID.NavigationMap3D) []RID.NavigationObstacle3D { //gd
 }
 
 /*
-This function immediately forces synchronization of the specified navigation 'map' [Resource.ID]. By default navigation maps are only synchronized at the end of each physics frame. This function can be used to immediately (re)calculate all the navigation meshes and region connections of the navigation map. This makes it possible to query a navigation path for a changed map immediately and in the same frame (multiple times if needed).
-
-Due to technical restrictions the current NavigationServer command queue will be flushed. This means all already queued update commands for this physics frame will be executed, even those intended for other maps, regions and agents not part of the specified map. The expensive computation of the navigation meshes and region connections of a map will only be done for the specified map. Other maps will receive the normal synchronization at the end of the physics frame. Should the specified map receive changes after the forced update it will update again as well when the other maps receive their update.
-
-Avoidance processing and dispatch of the safe_velocity signals is unaffected by this function and continues to happen for all maps and agents at the end of the physics frame.
-
-Note: With great power comes great responsibility. This function should only be used by users that really know what they are doing and have a good reason for it. Forcing an immediate update of a navigation map requires locking the NavigationServer and flushing the entire NavigationServer command queue. Not only can this severely impact the performance of a game but it can also introduce bugs if used inappropriately without much foresight.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-func MapForceUpdate(map_ RID.NavigationMap3D) { //gd:NavigationServer3D.map_force_update
-	Advanced().MapForceUpdate(RID.Any(map_))
-}
-
-/*
 Returns the current iteration id of the navigation map. Every time the navigation map changes and synchronizes the iteration id increases. An iteration id of 0 means the navigation map has never synchronized.
 
 Note: The iteration id will wrap back to 1 after reaching its range limit.
@@ -729,13 +714,6 @@ Sets the navigation mesh for the region.
 */
 func RegionSetNavigationMesh(region RID.NavigationRegion3D, navigation_mesh NavigationMesh.Instance) { //gd:NavigationServer3D.region_set_navigation_mesh
 	Advanced().RegionSetNavigationMesh(RID.Any(region), navigation_mesh)
-}
-
-/*
-Bakes the 'navigation_mesh' with bake source geometry collected starting from the 'root_node'.
-*/
-func RegionBakeNavigationMesh(navigation_mesh NavigationMesh.Instance, root_node Node.Instance) { //gd:NavigationServer3D.region_bake_navigation_mesh
-	Advanced().RegionBakeNavigationMesh(navigation_mesh, root_node)
 }
 
 /*
@@ -1683,10 +1661,6 @@ func (self class) MapGetObstacles(mapping RID.Any) Array.Contains[RID.Any] { //g
 	var ret = Array.Through(gd.WrapArray[RID.Any](pointers.New[gd.Array](r_ret)))
 	return ret
 }
-func (self class) MapForceUpdate(mapping RID.Any) { //gd:NavigationServer3D.map_force_update
-	once.Do(singleton)
-	noescape.CallThreadSafe[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.map_force_update, 0|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
-}
 func (self class) MapGetIterationId(mapping RID.Any) int64 { //gd:NavigationServer3D.map_get_iteration_id
 	once.Do(singleton)
 	var r_ret = noescape.CallThreadSafe[int64](gdreference.GetObject(self.AsObject()[0]), methods.map_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
@@ -1872,15 +1846,6 @@ func (self class) RegionSetNavigationMesh(region RID.Any, navigation_mesh [1]gdc
 		navigation_mesh gdextension.Object
 	}{region, gdextension.Object(gdreference.GetObject(gdclass.GetNavigationMesh(navigation_mesh[0])[0]))})
 	runtime.KeepAlive(navigation_mesh[0].Anchor())
-}
-func (self class) RegionBakeNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) { //gd:NavigationServer3D.region_bake_navigation_mesh
-	once.Do(singleton)
-	noescape.CallThreadSafe[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.region_bake_navigation_mesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
-		navigation_mesh gdextension.Object
-		root_node       gdextension.Object
-	}{gdextension.Object(gdreference.GetObject(gdclass.GetNavigationMesh(navigation_mesh[0])[0])), gdextension.Object(gdreference.GetObject(gdclass.GetNode(root_node[0])[0]))})
-	runtime.KeepAlive(navigation_mesh[0].Anchor())
-	runtime.KeepAlive(root_node[0].Anchor())
 }
 func (self class) RegionGetConnectionsCount(region RID.Any) int64 { //gd:NavigationServer3D.region_get_connections_count
 	once.Do(singleton)

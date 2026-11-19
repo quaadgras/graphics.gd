@@ -322,23 +322,6 @@ func (self Instance) SetInertiaOrientation(value Quaternion.IJKX) Instance { //g
 	return self
 }
 
-/*
-The inertia tensor of the physics body, in kilogram meter squared (kg⋅m²). This is only used when the body type is "rigid" or "vehicle".
-
-When converted to a Godot [RigidBody3D] node, if this value is zero, then the inertia will be calculated automatically.
-
-[RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
-*/
-func (self Instance) InertiaTensor() Basis.XYZ { //gd:GLTFPhysicsBody.inertia_tensor
-	return Basis.XYZ(class(self).GetInertiaTensor())
-}
-
-// SetInertiaTensor sets the property returned by [GetInertiaTensor]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetInertiaTensor(value Basis.XYZ) Instance { //gd:GLTFPhysicsBody.inertia_tensor
-	class(self).SetInertiaTensor(Basis.XYZ(value))
-	return self
-}
-
 func (self class) FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_node
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ body_node gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetCollisionObject3D(body_node[0])[0]))})
 	runtime.KeepAlive(body_node[0].Anchor())

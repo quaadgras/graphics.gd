@@ -386,16 +386,6 @@ Creates an empty image of the given size and format. If 'use_mipmaps' is true, g
 
 [GenerateMipmaps]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GenerateMipmaps
 */
-func Create(width int, height int, use_mipmaps bool, format Format) Instance { //gd:Image.create
-	self := Instance{}
-	return Instance(Advanced(self).Create(int64(width), int64(height), use_mipmaps, format))
-}
-
-/*
-Creates an empty image of the given size and format. If 'use_mipmaps' is true, generates mipmaps for this image (see [GenerateMipmaps]).
-
-[GenerateMipmaps]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.GenerateMipmaps
-*/
 func CreateEmpty(width int, height int, use_mipmaps bool, format Format) Instance { //gd:Image.create_empty
 	self := Instance{}
 	return Instance(Advanced(self).CreateEmpty(int64(width), int64(height), use_mipmaps, format))
@@ -901,7 +891,7 @@ Sets the [Color.RGBA] of the pixel at 'point' to 'color'.
 
 	var imgWidth = 10
 	var imgHeight = 5
-	var img = Image.Create(imgWidth, imgHeight, false, Image.FormatRgba8)
+	var img = Image.CreateEmpty(imgWidth, imgHeight, false, Image.FormatRgba8)
 	img.SetPixelv(Vector2i.New(1, 2), Color.W3C.Red) // Sets the color at (1, 2) to red.
 
 This is the same as [SetPixel], but with a [Vector2i.XY] argument instead of two integer arguments.
@@ -928,7 +918,7 @@ Sets the [Color.RGBA] of the pixel at (x, y) to 'color'.
 
 	var imgWidth = 10
 	var imgHeight = 5
-	var img = Image.Create(imgWidth, imgHeight, false, Image.FormatRgba8)
+	var img = Image.CreateEmpty(imgWidth, imgHeight, false, Image.FormatRgba8)
 	img.SetPixelv(Vector2i.New(1, 2), Color.W3C.Red) // Sets the color at (1, 2) to red.
 
 This is the same as [SetPixelv], but with a two integer arguments instead of a [Vector2i.XY] argument.
@@ -1212,16 +1202,6 @@ func (self class) GenerateMipmaps(renormalize bool) Error.Code { //gd:Image.gene
 func (self class) ClearMipmaps() { //gd:Image.clear_mipmaps
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_mipmaps, 0, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) Create(width int64, height int64, use_mipmaps bool, format Format) [1]gdclass.Image { //gd:Image.create
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.create, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16), &struct {
-		width       int64
-		height      int64
-		use_mipmaps bool
-		format      Format
-	}{width, height, use_mipmaps, format})
-	var ret = [1]gdclass.Image{gdclass.NewImage(gd.PointerWithOwnershipTransferredToGo(r_ret))}
-	return ret
 }
 func (self class) CreateEmpty(width int64, height int64, use_mipmaps bool, format Format) [1]gdclass.Image { //gd:Image.create_empty
 	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_empty, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16), &struct {

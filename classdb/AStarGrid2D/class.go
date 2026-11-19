@@ -535,22 +535,6 @@ func (self Instance) SetRegion(value Rect2i.PositionSize) Instance { //gd:AStarG
 }
 
 /*
-The size of the grid (number of cells of size [CellSize] on each axis). If changed, [Update] needs to be called before finding the next path.
-
-[CellSize]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.CellSize
-[Update]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.Update
-*/
-func (self Instance) Size() Vector2i.XY { //gd:AStarGrid2D.size
-	return Vector2i.XY(class(self).GetSize())
-}
-
-// SetSize sets the property returned by [GetSize]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSize(value Vector2i.XY) Instance { //gd:AStarGrid2D.size
-	class(self).SetSize(Vector2i.XY(value))
-	return self
-}
-
-/*
 The offset of the grid which will be applied to calculate the resulting point position returned by [GetPointPath]. If changed, [Update] needs to be called before finding the next path.
 
 [GetPointPath]: https://pkg.go.dev/graphics.gd/classdb/AStarGrid2D#Instance.GetPointPath

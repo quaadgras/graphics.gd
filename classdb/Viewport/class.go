@@ -462,72 +462,6 @@ func (self MoreArgs) PushInput(event InputEvent.Instance, in_local_coords bool) 
 }
 
 /*
-Triggers the given 'event' in this [Viewport]. This can be used to pass an [InputEvent] between viewports, or to locally apply inputs that were sent over the network or saved to a file.
-
-If 'in_local_coords' is false, the event's position is in the embedder's coordinates and will be converted to viewport coordinates. If 'in_local_coords' is true, the event's position is in viewport coordinates.
-
-Calling this method will propagate calls to child nodes for following methods in the given order:
-
-- [Node.ShortcutInput]
-
-- [Node.UnhandledKeyInput]
-
-- [Node.UnhandledInput]
-
-If an earlier method marks the input as handled via [SetInputAsHandled], any later method in this list will not be called.
-
-If none of the methods handle the event and [PhysicsObjectPicking] is true, the event is used for physics object picking.
-
-Note: This method doesn't propagate input events to embedded [Window]s or [SubViewport]s.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[Node.ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ShortcutInput
-[Node.UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledInput
-[Node.UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledKeyInput
-[PhysicsObjectPicking]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.PhysicsObjectPicking
-[SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
-[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-func (self Instance) PushUnhandledInput(event InputEvent.Instance) { //gd:Viewport.push_unhandled_input
-	Advanced(self).PushUnhandledInput(event, false)
-}
-
-/*
-Triggers the given 'event' in this [Viewport]. This can be used to pass an [InputEvent] between viewports, or to locally apply inputs that were sent over the network or saved to a file.
-
-If 'in_local_coords' is false, the event's position is in the embedder's coordinates and will be converted to viewport coordinates. If 'in_local_coords' is true, the event's position is in viewport coordinates.
-
-Calling this method will propagate calls to child nodes for following methods in the given order:
-
-- [Node.ShortcutInput]
-
-- [Node.UnhandledKeyInput]
-
-- [Node.UnhandledInput]
-
-If an earlier method marks the input as handled via [SetInputAsHandled], any later method in this list will not be called.
-
-If none of the methods handle the event and [PhysicsObjectPicking] is true, the event is used for physics object picking.
-
-Note: This method doesn't propagate input events to embedded [Window]s or [SubViewport]s.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[Node.ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ShortcutInput
-[Node.UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledInput
-[Node.UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledKeyInput
-[PhysicsObjectPicking]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.PhysicsObjectPicking
-[SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
-[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
-[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-func (self MoreArgs) PushUnhandledInput(event InputEvent.Instance, in_local_coords bool) { //gd:Viewport.push_unhandled_input
-	Advanced(self).PushUnhandledInput(event, in_local_coords)
-}
-
-/*
 Inform the Viewport that the mouse has entered its area. Use this function before sending an [InputEventMouseButton] or [InputEventMouseMotion] to the [Viewport] with [Viewport.PushInput]. See also [NotifyMouseExited].
 
 Note: In most cases, it is not necessary to call this function because [SubViewport] nodes that are children of [SubViewportContainer] are notified automatically. This is only necessary when interacting with viewports in non-default ways, for example as textures in [TextureRect] or with an [Area3D] that forwards input events.
@@ -1873,14 +1807,6 @@ func (self class) PushTextInput(text String.Readable) { //gd:Viewport.push_text_
 }
 func (self class) PushInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_input
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
-		event           gdextension.Object
-		in_local_coords bool
-	}{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0])), in_local_coords})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(event[0].Anchor())
-}
-func (self class) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_unhandled_input
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_unhandled_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event           gdextension.Object
 		in_local_coords bool
 	}{gdextension.Object(gdreference.GetObject(gdclass.GetInputEvent(event[0])[0])), in_local_coords})

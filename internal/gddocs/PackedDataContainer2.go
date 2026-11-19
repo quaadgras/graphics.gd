@@ -4,6 +4,8 @@ for key in container:
 	prints(key, container[key])
 */
 
+//go:build !gd_omit_deprecated
+
 package main
 
 import (

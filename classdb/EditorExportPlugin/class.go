@@ -1111,61 +1111,6 @@ func (self Instance) AddAppleEmbeddedPlatformCppCode(code string) { //gd:EditorE
 }
 
 /*
-Adds a static library from the given 'path' to the iOS project.
-*/
-func (self Instance) AddIosProjectStaticLib(path string) { //gd:EditorExportPlugin.add_ios_project_static_lib
-	Advanced(self).AddIosProjectStaticLib(String.From(path))
-}
-
-/*
-Adds a static library (*.a) or a dynamic library (*.dylib, *.framework) to the Linking Phase to the iOS Xcode project.
-*/
-func (self Instance) AddIosFramework(path string) { //gd:EditorExportPlugin.add_ios_framework
-	Advanced(self).AddIosFramework(String.From(path))
-}
-
-/*
-Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project and embeds it into resulting binary.
-
-Note: For static libraries (*.a), this works the in same way as [AddAppleEmbeddedPlatformFramework].
-
-Note: This method should not be used for System libraries as they are already present on the device.
-
-[AddAppleEmbeddedPlatformFramework]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.AddAppleEmbeddedPlatformFramework
-*/
-func (self Instance) AddIosEmbeddedFramework(path string) { //gd:EditorExportPlugin.add_ios_embedded_framework
-	Advanced(self).AddIosEmbeddedFramework(String.From(path))
-}
-
-/*
-Adds additional fields to the iOS project Info.plist file.
-*/
-func (self Instance) AddIosPlistContent(plist_content string) { //gd:EditorExportPlugin.add_ios_plist_content
-	Advanced(self).AddIosPlistContent(String.From(plist_content))
-}
-
-/*
-Adds linker flags for the iOS export.
-*/
-func (self Instance) AddIosLinkerFlags(flags string) { //gd:EditorExportPlugin.add_ios_linker_flags
-	Advanced(self).AddIosLinkerFlags(String.From(flags))
-}
-
-/*
-Adds an iOS bundle file from the given 'path' to the exported project.
-*/
-func (self Instance) AddIosBundleFile(path string) { //gd:EditorExportPlugin.add_ios_bundle_file
-	Advanced(self).AddIosBundleFile(String.From(path))
-}
-
-/*
-Adds C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
-*/
-func (self Instance) AddIosCppCode(code string) { //gd:EditorExportPlugin.add_ios_cpp_code
-	Advanced(self).AddIosCppCode(String.From(code))
-}
-
-/*
 Adds file or directory matching 'path' to PlugIns directory of macOS app bundle.
 
 Note: This is useful only for macOS exports.
@@ -1637,41 +1582,6 @@ func (self class) AddAppleEmbeddedPlatformBundleFile(path String.Readable) { //g
 }
 func (self class) AddAppleEmbeddedPlatformCppCode(code String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_cpp_code
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_cpp_code, 0|(gdextension.SizeString<<4), &struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(code)
-}
-func (self class) AddIosProjectStaticLib(path String.Readable) { //gd:EditorExportPlugin.add_ios_project_static_lib
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_project_static_lib, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
-}
-func (self class) AddIosFramework(path String.Readable) { //gd:EditorExportPlugin.add_ios_framework
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
-}
-func (self class) AddIosEmbeddedFramework(path String.Readable) { //gd:EditorExportPlugin.add_ios_embedded_framework
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_embedded_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
-}
-func (self class) AddIosPlistContent(plist_content String.Readable) { //gd:EditorExportPlugin.add_ios_plist_content
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_plist_content, 0|(gdextension.SizeString<<4), &struct{ plist_content gdextension.String }{pointers.Get(gd.InternalString(plist_content))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(plist_content)
-}
-func (self class) AddIosLinkerFlags(flags String.Readable) { //gd:EditorExportPlugin.add_ios_linker_flags
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_linker_flags, 0|(gdextension.SizeString<<4), &struct{ flags gdextension.String }{pointers.Get(gd.InternalString(flags))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(flags)
-}
-func (self class) AddIosBundleFile(path String.Readable) { //gd:EditorExportPlugin.add_ios_bundle_file
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_bundle_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
-}
-func (self class) AddIosCppCode(code String.Readable) { //gd:EditorExportPlugin.add_ios_cpp_code
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_cpp_code, 0|(gdextension.SizeString<<4), &struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))})
 	runtime.KeepAlive(self[0].Anchor())
 	runtime.KeepAlive(code)
 }

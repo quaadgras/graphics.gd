@@ -38,7 +38,9 @@ import (
 // there is none the engine is the stock Godot that the project is exported
 // with. strip_unused_classes leaves out every class the project does not
 // use (see [engine.profile]), classes names those that the project does
-// use, but in a way that cannot be detected. options are passed to scons.
+// use, but in a way that cannot be detected. options are passed to scons,
+// and decide whether Godot's deprecated APIs are left out of the project's
+// Go code too (see [optimizeTags]).
 //
 // gd builds the engine from source with zig, no platform SDKs are needed
 // beyond the ones gd bundles.
@@ -69,6 +71,46 @@ func BuildMode() string {
 		return mode
 	}
 	return "c-shared"
+}
+
+// optimizeTags returns the build tags for the project's Go code that follow
+// from the scons options of its engine (engine/options in the [gd] section
+// of its project.godot). A size-optimized engine (optimize=size) leaves the
+// classdb APIs that Godot has deprecated out of the Go build too, with the
+// gd_omit_deprecated tag: they would otherwise be linked into every binary,
+// as classdb's reflection keeps every exported method of the classes that a
+// program uses, and a project that still calls them no longer compiles,
+// which points it at their replacements. deprecated=yes keeps them, and
+// deprecated=no (an engine without them) always leaves them out.
+func optimizeTags() string {
+	return optimizeTagsFor(gdSettings()["engine/options"])
+}
+
+// optimizeTagsFor returns the [optimizeTags] of the given engine/options.
+func optimizeTagsFor(options string) string {
+	var size bool
+	var deprecated *bool // unset, unless the options set it.
+	for _, option := range strings.Fields(options) {
+		key, value, _ := strings.Cut(option, "=")
+		switch key {
+		case "optimize":
+			size = value == "size" || value == "size_extra"
+		case "deprecated":
+			// as scons reads a boolean variable.
+			yes := slices.Contains([]string{"y", "yes", "t", "true", "1", "on", "all"}, strings.ToLower(value))
+			deprecated = &yes
+		}
+	}
+	if deprecated != nil {
+		if *deprecated {
+			return ""
+		}
+		return "gd_omit_deprecated"
+	}
+	if size {
+		return "gd_omit_deprecated"
+	}
+	return ""
 }
 
 // pckSection writes the source of an empty "pck" section and returns its

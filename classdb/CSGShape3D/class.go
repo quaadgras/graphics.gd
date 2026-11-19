@@ -347,19 +347,6 @@ func (self Instance) SetOperation(value Operation) Instance { //gd:CSGShape3D.op
 }
 
 /*
-This property does nothing.
-*/
-func (self Instance) Snap() Float.X { //gd:CSGShape3D.snap
-	return Float.X(Float.X(class(self).GetSnap()))
-}
-
-// SetSnap sets the property returned by [GetSnap]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSnap(value Float.X) Instance { //gd:CSGShape3D.snap
-	class(self).SetSnap(float64(value))
-	return self
-}
-
-/*
 Calculate tangents for the CSG shape which allows the use of normal and height maps. This is only applied on the root shape, this setting is ignored on any child. Setting this to false can speed up shape generation slightly.
 */
 func (self Instance) CalculateTangents() bool { //gd:CSGShape3D.calculate_tangents

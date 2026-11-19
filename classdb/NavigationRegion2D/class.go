@@ -227,16 +227,6 @@ func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:Navig
 }
 
 /*
-Returns the [Resource.ID] of this region on the [NavigationServer2D].
-
-[NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-func (self Instance) GetRegionRid() RID.NavigationRegion2D { //gd:NavigationRegion2D.get_region_rid
-	return RID.NavigationRegion2D(RID.NavigationRegion2D(Advanced(self).GetRegionRid()))
-}
-
-/*
 Bakes the [NavigationPolygon]. If 'on_thread' is set to true (default), the baking is done on a separate thread.
 
 [NavigationPolygon]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon
@@ -466,12 +456,6 @@ func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd
 }
 func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationRegion2D.get_navigation_layer_value
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) GetRegionRid() RID.Any { //gd:NavigationRegion2D.get_region_rid
-	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_region_rid, gdextension.SizeRID, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
 	return ret

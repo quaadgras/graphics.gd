@@ -18,6 +18,8 @@ skeleton_ik_node.set_influence(0.5)
 skeleton_ik_node.set_influence(0.0)
 */
 
+//go:build !gd_omit_deprecated
+
 package main
 
 import "graphics.gd/classdb/SkeletonIK3D"

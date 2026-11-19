@@ -2329,50 +2329,6 @@ func (self Instance) MenuOption(option int) { //gd:TextEdit.menu_option
 	Advanced(self).MenuOption(int64(option))
 }
 
-/*
-This method does nothing.
-*/
-func (self Instance) AdjustCaretsAfterEdit(caret int, from_line int, from_col int, to_line int, to_col int) { //gd:TextEdit.adjust_carets_after_edit
-	Advanced(self).AdjustCaretsAfterEdit(int64(caret), int64(from_line), int64(from_col), int64(to_line), int64(to_col))
-}
-
-/*
-Returns a list of caret indexes in their edit order, this done from bottom to top. Edit order refers to the way actions such as [InsertTextAtCaret] are applied.
-
-[InsertTextAtCaret]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.InsertTextAtCaret
-*/
-func (self Instance) GetCaretIndexEditOrder() []int32 { //gd:TextEdit.get_caret_index_edit_order
-	return []int32(slices.Collect(Advanced(self).GetCaretIndexEditOrder().Values()))
-}
-
-/*
-Returns the original start line of the selection.
-*/
-func (self Instance) GetSelectionLine() int { //gd:TextEdit.get_selection_line
-	return int(int(Advanced(self).GetSelectionLine(int64(0))))
-}
-
-/*
-Returns the original start line of the selection.
-*/
-func (self MoreArgs) GetSelectionLine(caret_index int) int { //gd:TextEdit.get_selection_line
-	return int(int(Advanced(self).GetSelectionLine(int64(caret_index))))
-}
-
-/*
-Returns the original start column of the selection.
-*/
-func (self Instance) GetSelectionColumn() int { //gd:TextEdit.get_selection_column
-	return int(int(Advanced(self).GetSelectionColumn(int64(0))))
-}
-
-/*
-Returns the original start column of the selection.
-*/
-func (self MoreArgs) GetSelectionColumn(caret_index int) int { //gd:TextEdit.get_selection_column
-	return int(int(Advanced(self).GetSelectionColumn(int64(caret_index))))
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.TextEdit
@@ -4535,34 +4491,6 @@ func (self class) IsMenuVisible() bool { //gd:TextEdit.is_menu_visible
 func (self class) MenuOption(option int64) { //gd:TextEdit.menu_option
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.menu_option, 0|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) AdjustCaretsAfterEdit(caret int64, from_line int64, from_col int64, to_line int64, to_col int64) { //gd:TextEdit.adjust_carets_after_edit
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.adjust_carets_after_edit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
-		caret     int64
-		from_line int64
-		from_col  int64
-		to_line   int64
-		to_col    int64
-	}{caret, from_line, from_col, to_line, to_col})
-	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) GetCaretIndexEditOrder() Packed.Array[int32] { //gd:TextEdit.get_caret_index_edit_order
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_caret_index_edit_order, gdextension.SizePackedArray, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = Packed.Array[int32](Array.Through(gd.WrapPacked[gd.PackedInt32Array, int32](pointers.Let[gd.PackedInt32Array](r_ret))))
-	return ret
-}
-func (self class) GetSelectionLine(caret_index int64) int64 { //gd:TextEdit.get_selection_line
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selection_line, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ caret_index int64 }{caret_index})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) GetSelectionColumn(caret_index int64) int64 { //gd:TextEdit.get_selection_column
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selection_column, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ caret_index int64 }{caret_index})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
 }
 
 /*

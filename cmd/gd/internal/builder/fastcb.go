@@ -191,21 +191,31 @@ func fastcbCallCFiles() (map[string]string, error) {
 	return out, nil
 }
 
-// mergeTags returns base plus the GD_EXTRA_TAGS additions (comma-separated),
-// warning and ignoring them on targets where the fastcb patch does not apply.
+// mergeTags returns base plus the project's [optimizeTags] and the
+// GD_EXTRA_TAGS additions (comma-separated), warning and ignoring the latter
+// on targets where the fastcb patch does not apply.
 func mergeTags(target, base string) string {
+	tags := joinTags(base, optimizeTags())
 	extra := os.Getenv("GD_EXTRA_TAGS")
 	if extra == "" {
-		return base
+		return tags
 	}
 	if !fastcbAllowed[target] {
 		fmt.Fprintf(os.Stderr, "gd: ignoring GD_EXTRA_TAGS for %v\n", target)
-		return base
+		return tags
 	}
-	if base == "" {
-		return extra
+	return joinTags(tags, extra)
+}
+
+// joinTags joins two comma-separated tag lists, either of which may be empty.
+func joinTags(a, b string) string {
+	if a == "" {
+		return b
 	}
-	return base + "," + extra
+	if b == "" {
+		return a
+	}
+	return a + "," + b
 }
 
 // writeOverlay marshals a runtime-overlay replacement map to a JSON file named

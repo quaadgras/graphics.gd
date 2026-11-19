@@ -534,15 +534,6 @@ func (self Instance) TextureGetFormat(texture RID.Texture) RDTextureFormat.Insta
 }
 
 /*
-Returns the internal graphics handle for this texture object. For use when communicating with third-party APIs mostly with GDExtension.
-
-Note: This function returns a uint64_t which internally maps to a GLuint (OpenGL) or VkImage (Vulkan).
-*/
-func (self Instance) TextureGetNativeHandle(texture RID.Texture) int { //gd:RenderingDevice.texture_get_native_handle
-	return int(int(Advanced(self).TextureGetNativeHandle(RID.Any(texture))))
-}
-
-/*
 Creates a new framebuffer format with the specified 'attachments' and 'view_count'. Returns the new framebuffer's unique framebuffer format ID.
 
 If 'view_count' is greater than or equal to 2, enables multiview which is used for VR rendering. This requires support for the Vulkan multiview extension.
@@ -1548,20 +1539,6 @@ func (self MoreArgs) DrawListBegin(framebuffer RID.Framebuffer, draw_flags Rende
 }
 
 /*
-This method does nothing and always returns an empty []int64.
-*/
-func (self Instance) DrawListBeginSplit(framebuffer RID.Framebuffer, splits int, initial_color_action Rendering.InitialAction, final_color_action Rendering.FinalAction, initial_depth_action Rendering.InitialAction, final_depth_action Rendering.FinalAction) []int64 { //gd:RenderingDevice.draw_list_begin_split
-	return []int64(slices.Collect(Advanced(self).DrawListBeginSplit(RID.Any(framebuffer), int64(splits), initial_color_action, final_color_action, initial_depth_action, final_depth_action, Packed.New([1][]Color.RGBA{}[0]...), float64(1.0), int64(0), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), gd.ArrayFromSlice[Array.Contains[RID.Any]]([1][]RID.Any{}[0])).Values()))
-}
-
-/*
-This method does nothing and always returns an empty []int64.
-*/
-func (self MoreArgs) DrawListBeginSplit(framebuffer RID.Framebuffer, splits int, initial_color_action Rendering.InitialAction, final_color_action Rendering.FinalAction, initial_depth_action Rendering.InitialAction, final_depth_action Rendering.FinalAction, clear_color_values []Color.RGBA, clear_depth Float.X, clear_stencil int, region Rect2.PositionSize, storage_textures []RID.Texture) []int64 { //gd:RenderingDevice.draw_list_begin_split
-	return []int64(slices.Collect(Advanced(self).DrawListBeginSplit(RID.Any(framebuffer), int64(splits), initial_color_action, final_color_action, initial_depth_action, final_depth_action, Packed.New(clear_color_values...), float64(clear_depth), int64(clear_stencil), Rect2.PositionSize(region), gd.ArrayFromSlice[Array.Contains[RID.Any]](storage_textures)).Values()))
-}
-
-/*
 Sets blend constants for the specified 'draw_list' to 'color'. Blend constants are used only if the graphics pipeline is created with [DynamicStateBlendConstants] flag set.
 */
 func (self Instance) DrawListSetBlendConstants(draw_list int, color Color.RGBA) { //gd:RenderingDevice.draw_list_set_blend_constants
@@ -1687,13 +1664,6 @@ Switches to the next draw pass.
 */
 func (self Instance) DrawListSwitchToNextPass() int { //gd:RenderingDevice.draw_list_switch_to_next_pass
 	return int(int(Advanced(self).DrawListSwitchToNextPass()))
-}
-
-/*
-This method does nothing and always returns an empty []int64.
-*/
-func (self Instance) DrawListSwitchToNextPassSplit(splits int) []int64 { //gd:RenderingDevice.draw_list_switch_to_next_pass_split
-	return []int64(slices.Collect(Advanced(self).DrawListSwitchToNextPassSplit(int64(splits)).Values()))
 }
 
 /*
@@ -2011,27 +1981,6 @@ func (self Instance) Sync() { //gd:RenderingDevice.sync
 }
 
 /*
-This method does nothing.
-*/
-func (self Instance) Barrier() { //gd:RenderingDevice.barrier
-	Advanced(self).Barrier(32767, 32767)
-}
-
-/*
-This method does nothing.
-*/
-func (self MoreArgs) Barrier(from Rendering.BarrierMask, to Rendering.BarrierMask) { //gd:RenderingDevice.barrier
-	Advanced(self).Barrier(from, to)
-}
-
-/*
-This method does nothing.
-*/
-func (self Instance) FullBarrier() { //gd:RenderingDevice.full_barrier
-	Advanced(self).FullBarrier()
-}
-
-/*
 Create a new local [RenderingDevice]. This is most useful for performing compute operations on the GPU independently from the rest of the engine.
 
 [RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
@@ -2068,13 +2017,6 @@ The VK_EXT_DEBUG_UTILS_EXTENSION_NAME Vulkan extension must be available and ena
 */
 func (self Instance) DrawCommandBeginLabel(name string, color Color.RGBA) { //gd:RenderingDevice.draw_command_begin_label
 	Advanced(self).DrawCommandBeginLabel(String.From(name), Color.RGBA(color))
-}
-
-/*
-This method does nothing.
-*/
-func (self Instance) DrawCommandInsertLabel(name string, color Color.RGBA) { //gd:RenderingDevice.draw_command_insert_label
-	Advanced(self).DrawCommandInsertLabel(String.From(name), Color.RGBA(color))
 }
 
 /*
@@ -2511,12 +2453,6 @@ func (self class) TextureGetFormat(texture RID.Any) [1]gdclass.RDTextureFormat {
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.texture_get_format, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = [1]gdclass.RDTextureFormat{gdclass.NewRDTextureFormat(gd.PointerWithOwnershipTransferredToGo(r_ret))}
-	return ret
-}
-func (self class) TextureGetNativeHandle(texture RID.Any) int64 { //gd:RenderingDevice.texture_get_native_handle
-	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_get_native_handle, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
 	return ret
 }
 func (self class) FramebufferFormatCreate(attachments Array.Contains[[1]gdclass.RDAttachmentFormat], view_count int64) int64 { //gd:RenderingDevice.framebuffer_format_create
@@ -3029,26 +2965,6 @@ func (self class) DrawListBegin(framebuffer RID.Any, draw_flags Rendering.DrawFl
 	var ret = r_ret
 	return ret
 }
-func (self class) DrawListBeginSplit(framebuffer RID.Any, splits int64, initial_color_action Rendering.InitialAction, final_color_action Rendering.FinalAction, initial_depth_action Rendering.InitialAction, final_depth_action Rendering.FinalAction, clear_color_values Packed.Array[Color.RGBA], clear_depth float64, clear_stencil int64, region Rect2.PositionSize, storage_textures Array.Contains[RID.Any]) Packed.Array[int64] { //gd:RenderingDevice.draw_list_begin_split
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.draw_list_begin_split, gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeRect2<<40)|(gdextension.SizeArray<<44), &struct {
-		framebuffer          RID.Any
-		splits               int64
-		initial_color_action Rendering.InitialAction
-		final_color_action   Rendering.FinalAction
-		initial_depth_action Rendering.InitialAction
-		final_depth_action   Rendering.FinalAction
-		clear_color_values   gdextension.PackedArray[Color.RGBA]
-		clear_depth          float64
-		clear_stencil        int64
-		region               Rect2.PositionSize
-		storage_textures     gdextension.Array
-	}{framebuffer, splits, initial_color_action, final_color_action, initial_depth_action, final_depth_action, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](clear_color_values)), clear_depth, clear_stencil, region, pointers.Get(gd.InternalArray(storage_textures))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(clear_color_values)
-	runtime.KeepAlive(storage_textures)
-	var ret = Packed.Array[int64](Array.Through(gd.WrapPacked[gd.PackedInt64Array, int64](pointers.Let[gd.PackedInt64Array](r_ret))))
-	return ret
-}
 func (self class) DrawListSetBlendConstants(draw_list int64, color Color.RGBA) { //gd:RenderingDevice.draw_list_set_blend_constants
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_set_blend_constants, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		draw_list int64
@@ -3141,12 +3057,6 @@ func (self class) DrawListSwitchToNextPass() int64 { //gd:RenderingDevice.draw_l
 	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.draw_list_switch_to_next_pass, gdextension.SizeInt, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
-	return ret
-}
-func (self class) DrawListSwitchToNextPassSplit(splits int64) Packed.Array[int64] { //gd:RenderingDevice.draw_list_switch_to_next_pass_split
-	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.draw_list_switch_to_next_pass_split, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ splits int64 }{splits})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = Packed.Array[int64](Array.Through(gd.WrapPacked[gd.PackedInt64Array, int64](pointers.Let[gd.PackedInt64Array](r_ret))))
 	return ret
 }
 func (self class) DrawListEnd() { //gd:RenderingDevice.draw_list_end
@@ -3318,17 +3228,6 @@ func (self class) Sync() { //gd:RenderingDevice.sync
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.sync, 0, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 }
-func (self class) Barrier(from Rendering.BarrierMask, to Rendering.BarrierMask) { //gd:RenderingDevice.barrier
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.barrier, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
-		from Rendering.BarrierMask
-		to   Rendering.BarrierMask
-	}{from, to})
-	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) FullBarrier() { //gd:RenderingDevice.full_barrier
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.full_barrier, 0, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-}
 func (self class) CreateLocalDevice() [1]gdclass.RenderingDevice { //gd:RenderingDevice.create_local_device
 	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_local_device, gdextension.SizeObject, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
@@ -3345,14 +3244,6 @@ func (self class) SetResourceName(id RID.Any, name String.Readable) { //gd:Rende
 }
 func (self class) DrawCommandBeginLabel(name String.Readable, color Color.RGBA) { //gd:RenderingDevice.draw_command_begin_label
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_command_begin_label, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), &struct {
-		name  gdextension.String
-		color Color.RGBA
-	}{pointers.Get(gd.InternalString(name)), color})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(name)
-}
-func (self class) DrawCommandInsertLabel(name String.Readable, color Color.RGBA) { //gd:RenderingDevice.draw_command_insert_label
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_command_insert_label, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), &struct {
 		name  gdextension.String
 		color Color.RGBA
 	}{pointers.Get(gd.InternalString(name)), color})

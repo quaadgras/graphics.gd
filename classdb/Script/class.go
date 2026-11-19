@@ -292,13 +292,6 @@ func (self Instance) GetRpcConfig() any { //gd:Script.get_rpc_config
 	return any(Advanced(self).GetRpcConfig().Interface())
 }
 
-/*
-Returns true if 'base_object' is an instance of this script.
-*/
-func (self Instance) InstanceHas(base_object Object.Instance) bool { //gd:Script.instance_has
-	return bool(Advanced(self).InstanceHas(base_object))
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.Script
@@ -462,13 +455,6 @@ func (self class) GetRpcConfig() variant.Any { //gd:Script.get_rpc_config
 	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_rpc_config, gdextension.SizeVariant, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = variant.Implementation(gd.WrapVariant(pointers.New[gd.Variant](r_ret)))
-	return ret
-}
-func (self class) InstanceHas(base_object [1]gdreference.Object) bool { //gd:Script.instance_has
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ base_object gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetObject(base_object[0])[0]))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(base_object[0].Anchor())
-	var ret = r_ret
 	return ret
 }
 func (o class) AsScript() Advanced                    { return Advanced(o) }

@@ -250,34 +250,6 @@ func (self MoreArgs) GetOccluderPolygon(layer_id int, polygon_index int, flip_h 
 }
 
 /*
-Sets the occluder for the TileSet occlusion layer with index 'layer_id'.
-
-Returns 'self' to enable method chaining.
-*/
-func (self Instance) SetOccluder(layer_id int, occluder_polygon OccluderPolygon2D.Instance) Instance { //gd:TileData.set_occluder
-	Advanced(self).SetOccluder(int64(layer_id), occluder_polygon)
-	return self
-}
-
-/*
-Returns the occluder polygon of the tile for the TileSet occlusion layer with index 'layer_id'.
-
-'flip_h', 'flip_v', and 'transpose' allow transforming the returned polygon.
-*/
-func (self Instance) GetOccluder(layer_id int) OccluderPolygon2D.Instance { //gd:TileData.get_occluder
-	return OccluderPolygon2D.Instance(Advanced(self).GetOccluder(int64(layer_id), false, false, false))
-}
-
-/*
-Returns the occluder polygon of the tile for the TileSet occlusion layer with index 'layer_id'.
-
-'flip_h', 'flip_v', and 'transpose' allow transforming the returned polygon.
-*/
-func (self MoreArgs) GetOccluder(layer_id int, flip_h bool, flip_v bool, transpose bool) OccluderPolygon2D.Instance { //gd:TileData.get_occluder
-	return OccluderPolygon2D.Instance(Advanced(self).GetOccluder(int64(layer_id), flip_h, flip_v, transpose))
-}
-
-/*
 Sets the constant linear velocity. This does not move the tile. This linear velocity is applied to objects colliding with this tile. This is useful to create conveyor belts.
 
 Returns 'self' to enable method chaining.
@@ -806,25 +778,6 @@ func (self class) GetOccluderPolygon(layer_id int64, polygon_index int64, flip_h
 		flip_v        bool
 		transpose     bool
 	}{layer_id, polygon_index, flip_h, flip_v, transpose})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = [1]gdclass.OccluderPolygon2D{gdclass.NewOccluderPolygon2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
-	return ret
-}
-func (self class) SetOccluder(layer_id int64, occluder_polygon [1]gdclass.OccluderPolygon2D) { //gd:TileData.set_occluder
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
-		layer_id         int64
-		occluder_polygon gdextension.Object
-	}{layer_id, gdextension.Object(gdreference.GetObject(gdclass.GetOccluderPolygon2D(occluder_polygon[0])[0]))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(occluder_polygon[0].Anchor())
-}
-func (self class) GetOccluder(layer_id int64, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
-		layer_id  int64
-		flip_h    bool
-		flip_v    bool
-		transpose bool
-	}{layer_id, flip_h, flip_v, transpose})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = [1]gdclass.OccluderPolygon2D{gdclass.NewOccluderPolygon2D(gd.PointerWithOwnershipTransferredToGo(r_ret))}
 	return ret

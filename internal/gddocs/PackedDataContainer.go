@@ -5,6 +5,8 @@ packed.pack(data)
 ResourceSaver.save(packed, "packed_data.res")
 */
 
+//go:build !gd_omit_deprecated
+
 package main
 
 import (

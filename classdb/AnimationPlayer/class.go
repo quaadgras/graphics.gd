@@ -621,57 +621,6 @@ func (self MoreArgs) SeekTo(seconds Float.X, update bool, update_only bool) { //
 	Advanced(self).SeekTo(float64(seconds), update, update_only)
 }
 
-/*
-Sets the process notification in which to update animations.
-
-Returns 'self' to enable method chaining.
-*/
-func (self Instance) SetProcessCallback(mode AnimationProcessCallback) Instance { //gd:AnimationPlayer.set_process_callback
-	Advanced(self).SetProcessCallback(mode)
-	return self
-}
-
-/*
-Returns the process notification in which to update animations.
-*/
-func (self Instance) GetProcessCallback() AnimationProcessCallback { //gd:AnimationPlayer.get_process_callback
-	return AnimationProcessCallback(Advanced(self).GetProcessCallback())
-}
-
-/*
-Sets the call mode used for "Call Method" tracks.
-
-Returns 'self' to enable method chaining.
-*/
-func (self Instance) SetMethodCallMode(mode AnimationMethodCallMode) Instance { //gd:AnimationPlayer.set_method_call_mode
-	Advanced(self).SetMethodCallMode(mode)
-	return self
-}
-
-/*
-Returns the call mode used for "Call Method" tracks.
-*/
-func (self Instance) GetMethodCallMode() AnimationMethodCallMode { //gd:AnimationPlayer.get_method_call_mode
-	return AnimationMethodCallMode(Advanced(self).GetMethodCallMode())
-}
-
-/*
-Sets the node which node path references will travel from.
-
-Returns 'self' to enable method chaining.
-*/
-func (self Instance) SetRoot(path string) Instance { //gd:AnimationPlayer.set_root
-	Advanced(self).SetRoot(Path.ToNode(String.From(path)))
-	return self
-}
-
-/*
-Returns the node which node path references will travel from.
-*/
-func (self Instance) GetRoot() string { //gd:AnimationPlayer.get_root
-	return string(Advanced(self).GetRoot().String())
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.AnimationPlayer
@@ -1203,37 +1152,6 @@ func (self class) SeekTo(seconds float64, update bool, update_only bool) { //gd:
 		update_only bool
 	}{seconds, update, update_only})
 	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationPlayer.set_process_callback
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_callback, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationProcessCallback }{mode})
-	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) GetProcessCallback() AnimationProcessCallback { //gd:AnimationPlayer.get_process_callback
-	var r_ret = noescape.Call[AnimationProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_process_callback, gdextension.SizeInt, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) SetMethodCallMode(mode AnimationMethodCallMode) { //gd:AnimationPlayer.set_method_call_mode
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_method_call_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationMethodCallMode }{mode})
-	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) GetMethodCallMode() AnimationMethodCallMode { //gd:AnimationPlayer.get_method_call_mode
-	var r_ret = noescape.Call[AnimationMethodCallMode](gd.ObjectChecked(self.AsObject()), methods.get_method_call_mode, gdextension.SizeInt, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) SetRoot(path Path.ToNode) { //gd:AnimationPlayer.set_root
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
-}
-func (self class) GetRoot() Path.ToNode { //gd:AnimationPlayer.get_root
-	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root, gdextension.SizeNodePath, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = Path.ToNode(String.Via(gd.WrapNodePath(pointers.New[gd.NodePath](r_ret))))
-	return ret
 }
 
 /*

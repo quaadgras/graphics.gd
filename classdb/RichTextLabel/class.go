@@ -925,15 +925,6 @@ If [Threaded] is enabled, returns true if the background thread has finished tex
 
 [Threaded]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.Threaded
 */
-func (self Instance) IsReady() bool { //gd:RichTextLabel.is_ready
-	return bool(Advanced(self).IsReady())
-}
-
-/*
-If [Threaded] is enabled, returns true if the background thread has finished text processing, otherwise always return true.
-
-[Threaded]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.Threaded
-*/
 func (self Instance) IsFinished() bool { //gd:RichTextLabel.is_finished
 	return bool(Advanced(self).IsFinished())
 }
@@ -2326,12 +2317,6 @@ func (self class) GetText() String.Readable { //gd:RichTextLabel.get_text
 	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = String.Via(gd.WrapString(pointers.New[gd.String](r_ret)))
-	return ret
-}
-func (self class) IsReady() bool { //gd:RichTextLabel.is_ready
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ready, gdextension.SizeBool, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
 	return ret
 }
 func (self class) IsFinished() bool { //gd:RichTextLabel.is_finished

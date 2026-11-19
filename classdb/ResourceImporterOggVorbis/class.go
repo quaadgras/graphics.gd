@@ -27,7 +27,6 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
-import "graphics.gd/classdb/AudioStreamOggVorbis"
 import "graphics.gd/classdb/ResourceImporter"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -127,26 +126,6 @@ type Any interface {
 	AsResourceImporterOggVorbis() Instance
 }
 
-/*
-Creates a new [AudioStreamOggVorbis] instance from the given buffer. The buffer must contain Ogg Vorbis data.
-
-[AudioStreamOggVorbis]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamOggVorbis
-*/
-func LoadFromBuffer(stream_data []byte) AudioStreamOggVorbis.Instance { //gd:ResourceImporterOggVorbis.load_from_buffer
-	self := Instance{}
-	return AudioStreamOggVorbis.Instance(Advanced(self).LoadFromBuffer(Packed.BytesFrom(stream_data...)))
-}
-
-/*
-Creates a new [AudioStreamOggVorbis] instance from the given file path. The file must be in Ogg Vorbis format.
-
-[AudioStreamOggVorbis]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamOggVorbis
-*/
-func LoadFromFile(path string) AudioStreamOggVorbis.Instance { //gd:ResourceImporterOggVorbis.load_from_file
-	self := Instance{}
-	return AudioStreamOggVorbis.Instance(Advanced(self).LoadFromFile(String.From(path)))
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.ResourceImporterOggVorbis
@@ -189,18 +168,6 @@ func New() Instance {
 	return casted
 }
 
-func (self class) LoadFromBuffer(stream_data Packed.Bytes) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_buffer
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array)))})
-	runtime.KeepAlive(stream_data)
-	var ret = [1]gdclass.AudioStreamOggVorbis{gdclass.NewAudioStreamOggVorbis(gd.PointerWithOwnershipTransferredToGo(r_ret))}
-	return ret
-}
-func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_file
-	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	runtime.KeepAlive(path)
-	var ret = [1]gdclass.AudioStreamOggVorbis{gdclass.NewAudioStreamOggVorbis(gd.PointerWithOwnershipTransferredToGo(r_ret))}
-	return ret
-}
 func (o class) AsResourceImporterOggVorbis() Advanced         { return Advanced(o) }
 func (o Instance) AsResourceImporterOggVorbis() Instance      { return o }
 func (o *Extension[T]) AsResourceImporterOggVorbis() Instance { return o.Super() }

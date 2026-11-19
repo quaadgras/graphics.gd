@@ -194,25 +194,6 @@ func (self Instance) GetDragAreaControls() []Control.Instance { //gd:SplitContai
 	return []Control.Instance(gd.ArrayAs[[]Control.Instance](gd.InternalArray(Advanced(self).GetDragAreaControls())))
 }
 
-/*
-Returns the drag area [Control]. For example, you can move a pre-configured button into the drag area [Control] so that it rides along with the split bar. Try setting the [Button] anchors to center prior to the reparent() call.
-
-	barnacleButton.AsNode().Reparent(splitContainer.GetDragAreaControl().AsNode())
-
-Note: The drag area [Control] is drawn over the [SplitContainer]'s children, so [CanvasItem] draw objects called from the [Control] and children added to the [Control] will also appear over the [SplitContainer]'s children. Try setting [Control.MouseFilter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.
-
-Warning: This is a required internal node, removing and freeing it may cause a crash.
-
-[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Control.MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
-[SplitContainer]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer
-*/
-func (self Instance) GetDragAreaControl() Control.Instance { //gd:SplitContainer.get_drag_area_control
-	return Control.Instance(Advanced(self).GetDragAreaControl())
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.SplitContainer
@@ -428,21 +409,6 @@ func (self Instance) SetDragAreaHighlightInEditor(value bool) Instance { //gd:Sp
 	return self
 }
 
-/*
-The first element of [SplitOffsets].
-
-[SplitOffsets]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer#Instance.SplitOffsets
-*/
-func (self Instance) SplitOffset() int { //gd:SplitContainer.split_offset
-	return int(int(class(self).GetSplitOffset()))
-}
-
-// SetSplitOffset sets the property returned by [GetSplitOffset]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetSplitOffset(value int) Instance { //gd:SplitContainer.split_offset
-	class(self).SetSplitOffset(int64(value))
-	return self
-}
-
 func (self class) SetSplitOffsets(offsets Packed.Array[int32]) { //gd:SplitContainer.set_split_offsets
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_split_offsets, 0|(gdextension.SizePackedArray<<4), &struct {
 		offsets gdextension.PackedArray[int32]
@@ -564,12 +530,6 @@ func (self class) IsDraggingNestedIntersections() bool { //gd:SplitContainer.is_
 	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dragging_nested_intersections, gdextension.SizeBool, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
-	return ret
-}
-func (self class) GetDragAreaControl() [1]gdclass.Control { //gd:SplitContainer.get_drag_area_control
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_control, gdextension.SizeObject, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = [1]gdclass.Control{gdclass.NewControl(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
 	return ret
 }
 func (self class) SetSplitOffset(offset int64) { //gd:SplitContainer.set_split_offset

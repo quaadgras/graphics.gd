@@ -135,23 +135,6 @@ type Any interface {
 	AsAnimationTree() Instance
 }
 
-/*
-Sets the process notification in which to update animations.
-
-Returns 'self' to enable method chaining.
-*/
-func (self Instance) SetProcessCallback(mode AnimationProcessCallback) Instance { //gd:AnimationTree.set_process_callback
-	Advanced(self).SetProcessCallback(mode)
-	return self
-}
-
-/*
-Returns the process notification in which to update animations.
-*/
-func (self Instance) GetProcessCallback() AnimationProcessCallback { //gd:AnimationTree.get_process_callback
-	return AnimationProcessCallback(Advanced(self).GetProcessCallback())
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.AnimationTree
@@ -273,16 +256,6 @@ func (self class) GetAnimationPlayer() Path.ToNode { //gd:AnimationTree.get_anim
 	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_animation_player, gdextension.SizeNodePath, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = Path.ToNode(String.Via(gd.WrapNodePath(pointers.New[gd.NodePath](r_ret))))
-	return ret
-}
-func (self class) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationTree.set_process_callback
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_callback, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationProcessCallback }{mode})
-	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) GetProcessCallback() AnimationProcessCallback { //gd:AnimationTree.get_process_callback
-	var r_ret = noescape.Call[AnimationProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_process_callback, gdextension.SizeInt, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
 	return ret
 }
 

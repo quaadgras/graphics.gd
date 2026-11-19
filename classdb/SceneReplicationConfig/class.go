@@ -212,34 +212,6 @@ func (self Instance) PropertySetReplicationMode(path string, mode ReplicationMod
 	Advanced(self).PropertySetReplicationMode(Path.ToNode(String.From(path)), mode)
 }
 
-/*
-Returns true if the property identified by the given 'path' is configured to be synchronized on process.
-*/
-func (self Instance) PropertyGetSync(path string) bool { //gd:SceneReplicationConfig.property_get_sync
-	return bool(Advanced(self).PropertyGetSync(Path.ToNode(String.From(path))))
-}
-
-/*
-Sets whether the property identified by the given 'path' is configured to be synchronized on process.
-*/
-func (self Instance) PropertySetSync(path string, enabled bool) { //gd:SceneReplicationConfig.property_set_sync
-	Advanced(self).PropertySetSync(Path.ToNode(String.From(path)), enabled)
-}
-
-/*
-Returns true if the property identified by the given 'path' is configured to be reliably synchronized when changes are detected on process.
-*/
-func (self Instance) PropertyGetWatch(path string) bool { //gd:SceneReplicationConfig.property_get_watch
-	return bool(Advanced(self).PropertyGetWatch(Path.ToNode(String.From(path))))
-}
-
-/*
-Sets whether the property identified by the given 'path' is configured to be reliably synchronized when changes are detected on process.
-*/
-func (self Instance) PropertySetWatch(path string, enabled bool) { //gd:SceneReplicationConfig.property_set_watch
-	Advanced(self).PropertySetWatch(Path.ToNode(String.From(path)), enabled)
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.SceneReplicationConfig
@@ -342,36 +314,6 @@ func (self class) PropertySetReplicationMode(path Path.ToNode, mode ReplicationM
 		path gdextension.NodePath
 		mode ReplicationMode
 	}{pointers.Get(gd.InternalNodePath(path)), mode})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
-}
-func (self class) PropertyGetSync(path Path.ToNode) bool { //gd:SceneReplicationConfig.property_get_sync
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.property_get_sync, gdextension.SizeBool|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
-	var ret = r_ret
-	return ret
-}
-func (self class) PropertySetSync(path Path.ToNode, enabled bool) { //gd:SceneReplicationConfig.property_set_sync
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.property_set_sync, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), &struct {
-		path    gdextension.NodePath
-		enabled bool
-	}{pointers.Get(gd.InternalNodePath(path)), enabled})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
-}
-func (self class) PropertyGetWatch(path Path.ToNode) bool { //gd:SceneReplicationConfig.property_get_watch
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.property_get_watch, gdextension.SizeBool|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(path)
-	var ret = r_ret
-	return ret
-}
-func (self class) PropertySetWatch(path Path.ToNode, enabled bool) { //gd:SceneReplicationConfig.property_set_watch
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.property_set_watch, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), &struct {
-		path    gdextension.NodePath
-		enabled bool
-	}{pointers.Get(gd.InternalNodePath(path)), enabled})
 	runtime.KeepAlive(self[0].Anchor())
 	runtime.KeepAlive(path)
 }

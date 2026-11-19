@@ -87,9 +87,9 @@ func userTags(base string, args []string) (rest []string, tags string) {
 			value = args[i]
 		}
 		// the last one counts, as it does for go.
-		tags = strings.Join(append(strings.Split(base, ","), strings.FieldsFunc(value, func(r rune) bool {
+		tags = joinTags(base, strings.Join(strings.FieldsFunc(value, func(r rune) bool {
 			return r == ',' || r == ' '
-		})...), ",")
+		}), ","))
 	}
 	return rest, tags
 }

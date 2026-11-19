@@ -293,15 +293,6 @@ func RemoveTranslation(translation Translation.Instance) { //gd:TranslationServe
 }
 
 /*
-Returns the [Translation] instance that best matches 'locale' in the main translation domain. Returns null if there are no matches.
-
-[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
-*/
-func GetTranslationObject(locale string) Translation.Instance { //gd:TranslationServer.get_translation_object
-	return Translation.Instance(Advanced().GetTranslationObject(String.From(locale)))
-}
-
-/*
 Returns all available [Translation] instances in the main translation domain as added by [AddTranslation].
 
 [Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
@@ -573,13 +564,6 @@ func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:T
 	once.Do(singleton)
 	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.remove_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTranslation(translation[0])[0]))})
 	runtime.KeepAlive(translation[0].Anchor())
-}
-func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object
-	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.get_translation_object, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
-	runtime.KeepAlive(locale)
-	var ret = [1]gdclass.Translation{gdclass.NewTranslation(gd.PointerWithOwnershipTransferredToGo(r_ret))}
-	return ret
 }
 func (self class) GetTranslations() Array.Contains[[1]gdclass.Translation] { //gd:TranslationServer.get_translations
 	once.Do(singleton)

@@ -1,0 +1,613 @@
+{
+	"AStarGrid2D": {
+		"properties": {
+			"size": "Use [member region] instead."
+		}
+	},
+	"AnimatedTexture": {
+		"deprecated": "This class does not work properly in current versions and may be removed in the future. There is currently no equivalent workaround."
+	},
+	"AnimationNodeBlendSpace1D": {
+		"properties": {
+			"sync": "Use [member sync_mode] instead."
+		}
+	},
+	"AnimationNodeBlendSpace2D": {
+		"properties": {
+			"sync": "Use [member sync_mode] instead."
+		}
+	},
+	"AnimationPlayer": {
+		"methods": {
+			"get_method_call_mode": "Use [member AnimationMixer.callback_mode_method] instead.",
+			"get_process_callback": "Use [member AnimationMixer.callback_mode_process] instead.",
+			"get_root": "Use [member AnimationMixer.root_node] instead.",
+			"set_method_call_mode": "Use [member AnimationMixer.callback_mode_method] instead.",
+			"set_process_callback": "Use [member AnimationMixer.callback_mode_process] instead.",
+			"set_root": "Use [member AnimationMixer.root_node] instead."
+		}
+	},
+	"AnimationTree": {
+		"methods": {
+			"get_process_callback": "Use [member AnimationMixer.callback_mode_process] instead.",
+			"set_process_callback": "Use [member AnimationMixer.callback_mode_process] instead."
+		}
+	},
+	"AudioEffectLimiter": {
+		"deprecated": "Use [AudioEffectHardLimiter] instead."
+	},
+	"CSGShape3D": {
+		"properties": {
+			"snap": "The CSG library no longer uses snapping."
+		}
+	},
+	"CollisionShape3D": {
+		"methods": {
+			"resource_changed": "Use [signal Resource.changed] instead."
+		}
+	},
+	"Control": {
+		"properties": {
+			"auto_translate": "Use [member Node.auto_translate_mode] and [method Node.can_auto_translate] instead."
+		}
+	},
+	"DisplayServer": {
+		"methods": {
+			"accessibility_create_element": "Use [AccessibilityServer] instead.",
+			"accessibility_create_sub_element": "Use [AccessibilityServer] instead.",
+			"accessibility_create_sub_text_edit_elements": "Use [AccessibilityServer] instead.",
+			"accessibility_element_get_meta": "Use [AccessibilityServer] instead.",
+			"accessibility_element_set_meta": "Use [AccessibilityServer] instead.",
+			"accessibility_free_element": "Use [AccessibilityServer] instead.",
+			"accessibility_get_window_root": "Use [AccessibilityServer] instead.",
+			"accessibility_has_element": "Use [AccessibilityServer] instead.",
+			"accessibility_set_window_focused": "Use [AccessibilityServer] instead.",
+			"accessibility_set_window_rect": "Use [AccessibilityServer] instead.",
+			"accessibility_update_add_action": "Use [AccessibilityServer] instead.",
+			"accessibility_update_add_child": "Use [AccessibilityServer] instead.",
+			"accessibility_update_add_custom_action": "Use [AccessibilityServer] instead.",
+			"accessibility_update_add_related_controls": "Use [AccessibilityServer] instead.",
+			"accessibility_update_add_related_described_by": "Use [AccessibilityServer] instead.",
+			"accessibility_update_add_related_details": "Use [AccessibilityServer] instead.",
+			"accessibility_update_add_related_flow_to": "Use [AccessibilityServer] instead.",
+			"accessibility_update_add_related_labeled_by": "Use [AccessibilityServer] instead.",
+			"accessibility_update_add_related_radio_group": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_active_descendant": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_background_color": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_bounds": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_checked": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_classname": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_color_value": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_description": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_error_message": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_extra_info": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_flag": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_focus": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_foreground_color": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_in_page_link_target": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_language": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_list_item_count": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_list_item_expanded": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_list_item_index": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_list_item_level": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_list_item_selected": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_list_orientation": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_live": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_member_of": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_name": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_next_on_line": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_num_jump": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_num_range": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_num_step": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_num_value": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_placeholder": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_popup_type": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_previous_on_line": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_role": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_role_description": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_scroll_x": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_scroll_x_range": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_scroll_y": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_scroll_y_range": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_shortcut": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_state_description": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_table_cell_position": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_table_cell_span": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_table_column_count": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_table_column_index": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_table_row_count": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_table_row_index": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_text_align": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_text_decorations": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_text_orientation": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_text_selection": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_tooltip": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_transform": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_url": "Use [AccessibilityServer] instead.",
+			"accessibility_update_set_value": "Use [AccessibilityServer] instead.",
+			"global_menu_add_check_item": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_add_icon_check_item": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_add_icon_item": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_add_icon_radio_check_item": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_add_item": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_add_multistate_item": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_add_radio_check_item": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_add_separator": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_add_submenu_item": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_clear": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_accelerator": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_callback": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_count": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_icon": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_indentation_level": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_index_from_tag": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_index_from_text": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_key_callback": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_max_states": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_state": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_submenu": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_tag": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_text": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_item_tooltip": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_get_system_menu_roots": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_is_item_checkable": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_is_item_checked": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_is_item_disabled": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_is_item_hidden": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_is_item_radio_checkable": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_remove_item": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_accelerator": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_callback": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_checkable": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_checked": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_disabled": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_hidden": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_hover_callbacks": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_icon": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_indentation_level": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_key_callback": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_max_states": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_radio_checkable": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_state": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_submenu": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_tag": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_text": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_item_tooltip": "Use [NativeMenu] or [PopupMenu] instead.",
+			"global_menu_set_popup_callbacks": "Use [NativeMenu] or [PopupMenu] instead."
+		}
+	},
+	"EditorExportPlatformAndroid": {
+		"properties": {
+			"permissions/delete_cache_files": "",
+			"permissions/get_tasks": "Deprecated in API level 21.",
+			"permissions/persistent_activity": "Deprecated in API level 15.",
+			"permissions/process_outgoing_calls": "Deprecated in API level 29.",
+			"permissions/read_external_storage": "Deprecated in API level 33.",
+			"permissions/read_input_state": "Deprecated in API level 16.",
+			"permissions/restart_packages": "Deprecated in API level 15.",
+			"permissions/set_preferred_applications": "Deprecated in API level 15.",
+			"permissions/subscribed_feeds_write": "",
+			"permissions/uninstall_shortcut": ""
+		}
+	},
+	"EditorExportPlugin": {
+		"methods": {
+			"add_ios_bundle_file": "Use [method add_apple_embedded_platform_bundle_file] instead.",
+			"add_ios_cpp_code": "Use [method add_apple_embedded_platform_cpp_code] instead.",
+			"add_ios_embedded_framework": "Use [method add_apple_embedded_platform_embedded_framework] instead.",
+			"add_ios_framework": "Use [method add_apple_embedded_platform_framework] instead.",
+			"add_ios_linker_flags": "Use [method add_apple_embedded_platform_linker_flags] instead.",
+			"add_ios_plist_content": "Use [method add_apple_embedded_platform_plist_content] instead.",
+			"add_ios_project_static_lib": "Use [method add_apple_embedded_platform_project_static_lib] instead."
+		}
+	},
+	"EditorFileDialog": {
+		"methods": {
+			"add_side_menu": "This feature is no longer supported."
+		},
+		"properties": {
+			"disable_overwrite_warning": "Use [member FileDialog.overwrite_warning_enabled] instead."
+		}
+	},
+	"EditorPlugin": {
+		"methods": {
+			"add_control_to_bottom_panel": "Use [method add_dock] instead, with [member EditorDock.default_slot] set to [constant DOCK_SLOT_BOTTOM].",
+			"add_control_to_dock": "Use [method add_dock] instead.",
+			"get_editor_interface": "[EditorInterface] is a global singleton and can be accessed directly by its name.",
+			"remove_control_from_bottom_panel": "Use [method remove_dock] instead.",
+			"remove_control_from_docks": "Use [method remove_dock] instead.",
+			"set_dock_tab_icon": "Use [member EditorDock.dock_icon] instead."
+		}
+	},
+	"EditorScript": {
+		"methods": {
+			"add_root_node": "Use [method EditorInterface.add_root_node] instead.",
+			"get_editor_interface": "[EditorInterface] is a global singleton and can be accessed directly by its name.",
+			"get_scene": "Use [method EditorInterface.get_edited_scene_root] instead."
+		}
+	},
+	"EditorSelection": {
+		"methods": {
+			"get_transformable_selected_nodes": "Use [method get_top_selected_nodes] instead."
+		}
+	},
+	"EditorSpinSlider": {
+		"properties": {
+			"hide_slider": "Use [member control_state] instead."
+		}
+	},
+	"GDScriptLanguageProtocol": {
+		"methods": {
+			"get_text_document": "[GDScriptTextDocument] is deprecated.",
+			"initialize": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"initialized": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"notify_client": "Might result in unwanted side effects for connected clients.",
+			"on_client_connected": "Might result in unwanted side effects for connected clients.",
+			"on_client_disconnected": "Might result in unwanted side effects for connected clients."
+		}
+	},
+	"GDScriptTextDocument": {
+		"deprecated": "",
+		"methods": {
+			"codeLens": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"colorPresentation": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"completion": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"declaration": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"definition": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"didChange": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"didClose": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"didOpen": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"didSave": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"documentLink": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"documentSymbol": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"foldingRange": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"hover": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"nativeSymbol": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"prepareRename": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"references": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"rename": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"resolve": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"show_native_symbol_in_editor": "Use [method ScriptEditor.goto_help] instead.",
+			"signatureHelp": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"willSaveWaitUntil": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client."
+		}
+	},
+	"GDScriptWorkspace": {
+		"methods": {
+			"apply_new_signal": "Might result in unwanted side effects for connected clients.",
+			"didDeleteFiles": "Accessing LSP endpoints directly might lead to unwanted side effects. Connect to the server via TCP, like a regular language server client.",
+			"parse_local_script": "Might result in unwanted side effects for connected clients.",
+			"parse_script": "Might result in unwanted side effects for connected clients.",
+			"publish_diagnostics": "Might result in unwanted side effects for connected clients."
+		}
+	},
+	"GLTFAccessor": {
+		"properties": {
+			"type": "Use [member accessor_type] instead."
+		}
+	},
+	"GLTFPhysicsBody": {
+		"properties": {
+			"inertia_tensor": ""
+		}
+	},
+	"GLTFState": {
+		"methods": {
+			"get_handle_binary_image": "Use [member handle_binary_image_mode] instead.",
+			"set_handle_binary_image": "Use [member handle_binary_image_mode] instead."
+		}
+	},
+	"GeometryInstance3D": {
+		"properties": {
+			"gi_lightmap_scale": "Use [member gi_lightmap_texel_scale] instead."
+		}
+	},
+	"GridMap": {
+		"methods": {
+			"resource_changed": "Use [signal Resource.changed] instead."
+		}
+	},
+	"HingeJoint3D": {
+		"properties": {
+			"angular_limit/softness": "This property is never set by the engine and is kept for compatibility purposes."
+		}
+	},
+	"Image": {
+		"methods": {
+			"create": "Use [method create_empty]."
+		}
+	},
+	"InputEventJoypadButton": {
+		"properties": {
+			"pressure": "This property is never set by the engine and is always [code]0[/code]."
+		}
+	},
+	"LightmapGIData": {
+		"properties": {
+			"light_texture": "The lightmap atlas can now contain multiple textures. See [member lightmap_textures]."
+		}
+	},
+	"MultiMesh": {
+		"properties": {
+			"color_array": "Accessing this property is very slow. Use [method set_instance_color] and [method get_instance_color] instead.",
+			"custom_data_array": "Accessing this property is very slow. Use [method set_instance_custom_data] and [method get_instance_custom_data] instead.",
+			"transform_2d_array": "Accessing this property is very slow. Use [method set_instance_transform_2d] and [method get_instance_transform_2d] instead.",
+			"transform_array": "Accessing this property is very slow. Use [method set_instance_transform] and [method get_instance_transform] instead."
+		}
+	},
+	"NavigationMeshGenerator": {
+		"deprecated": "",
+		"methods": {
+			"bake": "This method is deprecated due to core threading changes. To upgrade existing code, first create a [NavigationMeshSourceGeometryData3D] resource. Use this resource with [method parse_source_geometry_data] to parse the [SceneTree] for nodes that should contribute to the navigation mesh baking. The [SceneTree] parsing needs to happen on the main thread. After the parsing is finished use the resource with [method bake_from_source_geometry_data] to bake a navigation mesh."
+		}
+	},
+	"NavigationPolygon": {
+		"methods": {
+			"make_polygons_from_outlines": "Use [method NavigationServer2D.parse_source_geometry_data] and [method NavigationServer2D.bake_from_source_geometry_data] instead."
+		}
+	},
+	"NavigationRegion2D": {
+		"methods": {
+			"get_region_rid": "Use [method get_rid] instead."
+		}
+	},
+	"NavigationRegion3D": {
+		"methods": {
+			"get_region_rid": "Use [method get_rid] instead."
+		}
+	},
+	"NavigationServer2D": {
+		"methods": {
+			"map_force_update": "This method is no longer supported, as it is incompatible with asynchronous updates. It can only be used in a single-threaded context, at your own risk."
+		}
+	},
+	"NavigationServer3D": {
+		"methods": {
+			"map_force_update": "This method is no longer supported, as it is incompatible with asynchronous updates. It can only be used in a single-threaded context, at your own risk.",
+			"region_bake_navigation_mesh": "This method is deprecated due to core threading changes. To upgrade existing code, first create a [NavigationMeshSourceGeometryData3D] resource. Use this resource with [method parse_source_geometry_data] to parse the [SceneTree] for nodes that should contribute to the navigation mesh baking. The [SceneTree] parsing needs to happen on the main thread. After the parsing is finished use the resource with [method bake_from_source_geometry_data] to bake a navigation mesh."
+		}
+	},
+	"OpenXRExtensionWrapperExtension": {
+		"deprecated": "Use [OpenXRExtensionWrapper] instead."
+	},
+	"OpenXRHand": {
+		"deprecated": "Use [XRHandModifier3D] instead."
+	},
+	"OpenXRIPBinding": {
+		"methods": {
+			"add_path": "Binding is for a single path.",
+			"get_path_count": "Binding is for a single path.",
+			"has_path": "Binding is for a single path.",
+			"remove_path": "Binding is for a single path."
+		},
+		"properties": {
+			"paths": "Use [member binding_path] instead."
+		}
+	},
+	"OpenXRInterface": {
+		"methods": {
+			"get_hand_joint_angular_velocity": "Use [method XRHandTracker.get_hand_joint_angular_velocity] obtained from [method XRServer.get_tracker] instead.",
+			"get_hand_joint_flags": "Use [method XRHandTracker.get_hand_joint_flags] obtained from [method XRServer.get_tracker] instead.",
+			"get_hand_joint_linear_velocity": "Use [method XRHandTracker.get_hand_joint_linear_velocity] obtained from [method XRServer.get_tracker] instead.",
+			"get_hand_joint_position": "Use [method XRHandTracker.get_hand_joint_transform] obtained from [method XRServer.get_tracker] instead.",
+			"get_hand_joint_radius": "Use [method XRHandTracker.get_hand_joint_radius] obtained from [method XRServer.get_tracker] instead.",
+			"get_hand_joint_rotation": "Use [method XRHandTracker.get_hand_joint_transform] obtained from [method XRServer.get_tracker] instead.",
+			"get_hand_tracking_source": "Use [member XRHandTracker.hand_tracking_source] obtained from [method XRServer.get_tracker] instead."
+		}
+	},
+	"PackedDataContainer": {
+		"deprecated": "Use [method @GlobalScope.var_to_bytes] or [method FileAccess.store_var] instead. To enable data compression, use [method PackedByteArray.compress] or [method FileAccess.open_compressed]."
+	},
+	"PackedDataContainerRef": {
+		"deprecated": "Use [method @GlobalScope.var_to_bytes] or [method FileAccess.store_var] instead. To enable data compression, use [method PackedByteArray.compress] or [method FileAccess.open_compressed]."
+	},
+	"ParallaxBackground": {
+		"deprecated": "Use the [Parallax2D] node instead."
+	},
+	"ParallaxLayer": {
+		"deprecated": "Use the [Parallax2D] node instead."
+	},
+	"PopupMenu": {
+		"methods": {
+			"add_submenu_item": "Prefer using [method add_submenu_node_item] instead.",
+			"get_item_submenu": "Prefer using [method get_item_submenu_node] instead.",
+			"set_item_submenu": "Prefer using [method set_item_submenu_node] instead."
+		}
+	},
+	"RenderingDevice": {
+		"methods": {
+			"barrier": "Barriers are automatically inserted by RenderingDevice.",
+			"draw_command_insert_label": "Inserting labels no longer applies due to command reordering.",
+			"draw_list_begin_split": "Split draw lists are used automatically by RenderingDevice.",
+			"draw_list_switch_to_next_pass_split": "Split draw lists are used automatically by RenderingDevice.",
+			"full_barrier": "Barriers are automatically inserted by RenderingDevice.",
+			"texture_get_native_handle": "Use [method get_driver_resource] with [constant DRIVER_RESOURCE_TEXTURE] instead."
+		}
+	},
+	"RenderingServer": {
+		"methods": {
+			"environment_set_ssr_roughness_quality": "This option no longer does anything.",
+			"has_feature": "This method has not been used since Godot 3.0.",
+			"reflection_probe_set_resolution": "This method has not done anything since Godot 3.",
+			"set_boot_image": "Use [method set_boot_image_with_stretch] instead.",
+			"texture_proxy_create": "ProxyTexture was removed in Godot 4.",
+			"texture_proxy_update": "ProxyTexture was removed in Godot 4."
+		}
+	},
+	"Resource": {
+		"methods": {
+			"setup_local_to_scene": "This method should only be called internally."
+		}
+	},
+	"ResourceImporterOggVorbis": {
+		"methods": {
+			"load_from_buffer": "Use [method AudioStreamOggVorbis.load_from_buffer] instead.",
+			"load_from_file": "Use [method AudioStreamOggVorbis.load_from_file] instead."
+		}
+	},
+	"ResourceImporterTexture": {
+		"properties": {
+			"process/normal_map_invert_y": "The same result can be achieved by setting [member process/channel_remap/green] to [code]Green Inverted[/code]."
+		}
+	},
+	"RichTextLabel": {
+		"methods": {
+			"is_ready": "Use [method is_finished] instead."
+		}
+	},
+	"SceneReplicationConfig": {
+		"methods": {
+			"property_get_sync": "Use [method property_get_replication_mode] instead.",
+			"property_get_watch": "Use [method property_get_replication_mode] instead.",
+			"property_set_sync": "Use [method property_set_replication_mode] with [constant REPLICATION_MODE_ALWAYS] instead.",
+			"property_set_watch": "Use [method property_set_replication_mode] with [constant REPLICATION_MODE_ON_CHANGE] instead."
+		}
+	},
+	"Script": {
+		"methods": {
+			"instance_has": "Compare this script with [method Object.get_script] instead."
+		}
+	},
+	"ShapeCast3D": {
+		"methods": {
+			"resource_changed": "Use [signal Resource.changed] instead."
+		}
+	},
+	"Skeleton3D": {
+		"methods": {
+			"clear_bones_global_pose_override": "",
+			"force_update_all_bone_transforms": "This method should only be called internally.",
+			"get_bone_global_pose_no_override": "",
+			"get_bone_global_pose_override": "",
+			"physical_bones_add_collision_exception": "",
+			"physical_bones_remove_collision_exception": "",
+			"physical_bones_start_simulation": "",
+			"physical_bones_stop_simulation": "",
+			"set_bone_global_pose_override": ""
+		},
+		"properties": {
+			"animate_physical_bones": ""
+		}
+	},
+	"SkeletonIK3D": {
+		"deprecated": "",
+		"properties": {
+			"interpolation": "Use [member SkeletonModifier3D.influence] instead."
+		}
+	},
+	"SplitContainer": {
+		"methods": {
+			"get_drag_area_control": "Use the first element of [method get_drag_area_controls] instead."
+		},
+		"properties": {
+			"split_offset": "Use [member split_offsets] instead. The first element of the array is the split offset between the first two children."
+		}
+	},
+	"SpriteFrames": {
+		"methods": {
+			"get_animation_loop": "Use [method get_animation_loop_mode] instead.",
+			"set_animation_loop": "Use [method set_animation_loop_mode] instead."
+		}
+	},
+	"String": {
+		"methods": {
+			"is_valid_identifier": "Use [method is_valid_ascii_identifier] instead."
+		}
+	},
+	"StringName": {
+		"methods": {
+			"is_valid_identifier": "Use [method is_valid_ascii_identifier] instead."
+		}
+	},
+	"SurfaceTool": {
+		"methods": {
+			"generate_lod": "This method is unused internally, as it does not preserve normals or UVs. Consider using [method ImporterMesh.generate_lods] instead."
+		}
+	},
+	"TabContainer": {
+		"properties": {
+			"all_tabs_in_front": "Due to internal changes this doesn't do anything anymore, as they're always in front."
+		}
+	},
+	"TextEdit": {
+		"methods": {
+			"adjust_carets_after_edit": "No longer necessary since methods now adjust carets themselves.",
+			"get_caret_index_edit_order": "Carets no longer need to be edited in any specific order. If the carets need to be sorted, use [method get_sorted_carets] instead.",
+			"get_selection_column": "Use [method get_selection_origin_column] instead.",
+			"get_selection_line": "Use [method get_selection_origin_line] instead."
+		}
+	},
+	"TextServer": {
+		"methods": {
+			"font_get_global_oversampling": "Use [Viewport] oversampling, or the [code skip-lint]oversampling[/code] argument of the [code skip-lint]draw_*[/code] methods instead.",
+			"font_set_global_oversampling": "Use [Viewport] oversampling, or the [code skip-lint]oversampling[/code] argument of the [code skip-lint]draw_*[/code] methods instead.",
+			"format_number": "Use [method TranslationServer.format_number] instead.",
+			"parse_number": "Use [method TranslationServer.parse_number] instead.",
+			"percent_sign": "Use [method TranslationServer.get_percent_sign] instead."
+		}
+	},
+	"TileData": {
+		"methods": {
+			"get_occluder": "Use [method get_occluder_polygon] instead.",
+			"set_occluder": "Use [method set_occluder_polygon] instead."
+		}
+	},
+	"TileMap": {
+		"deprecated": "Use multiple [TileMapLayer] nodes instead. To convert a TileMap to a set of TileMapLayer nodes, open the TileMap bottom panel with the node selected, click the toolbox icon in the top-right corner and choose 'Extract TileMap layers as individual TileMapLayer nodes'.",
+		"methods": {
+			"force_update": "Use [method notify_runtime_tile_data_update] and/or [method update_internals] instead.",
+			"get_navigation_map": "Use [method get_layer_navigation_map] instead.",
+			"set_navigation_map": "Use [method set_layer_navigation_map] instead."
+		}
+	},
+	"TranslationDomain": {
+		"methods": {
+			"get_translation_object": "Use [method find_translations] instead."
+		}
+	},
+	"TranslationServer": {
+		"methods": {
+			"get_translation_object": "Use [method find_translations] instead."
+		}
+	},
+	"TreeItem": {
+		"methods": {
+			"set_custom_draw": "Use [method TreeItem.set_custom_draw_callback] instead."
+		}
+	},
+	"Viewport": {
+		"methods": {
+			"push_unhandled_input": "Use [method push_input] instead."
+		}
+	},
+	"VisualShader": {
+		"properties": {
+			"graph_offset": "This property does nothing and always equals to zero."
+		}
+	},
+	"VisualShaderNodeComment": {
+		"deprecated": "This class has no function anymore and only exists for compatibility."
+	},
+	"Window": {
+		"methods": {
+			"move_to_foreground": "Use [method Window.grab_focus] instead."
+		},
+		"properties": {
+			"auto_translate": "Use [member Node.auto_translate_mode] and [method Node.can_auto_translate] instead."
+		}
+	},
+	"XRInterface": {
+		"methods": {
+			"is_passthrough_enabled": "Check if [member environment_blend_mode] is [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND], instead.",
+			"is_passthrough_supported": "Check that [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] is supported using [method get_supported_environment_blend_modes], instead.",
+			"start_passthrough": "Set the [member environment_blend_mode] to [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND], instead.",
+			"stop_passthrough": "Set the [member environment_blend_mode] to [constant XRInterface.XR_ENV_BLEND_MODE_OPAQUE], instead."
+		}
+	},
+	"XRPositionalTracker": {
+		"methods": {
+			"get_input": "Use through [XRControllerTracker].",
+			"set_input": "Use through [XRControllerTracker]."
+		}
+	}
+}

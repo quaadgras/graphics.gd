@@ -8,6 +8,8 @@ func get_clicked_tile_power():
 		return 0
 */
 
+//go:build !gd_omit_deprecated
+
 package main
 
 import (

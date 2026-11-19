@@ -166,15 +166,6 @@ type Any interface {
 }
 
 /*
-Returns the [Translation] instance that best matches 'locale'. Returns null if there are no matches.
-
-[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
-*/
-func (self Instance) GetTranslationObject(locale string) Translation.Instance { //gd:TranslationDomain.get_translation_object
-	return Translation.Instance(Advanced(self).GetTranslationObject(String.From(locale)))
-}
-
-/*
 Adds a translation.
 */
 func (self Instance) AddTranslation(translation Translation.Instance) { //gd:TranslationDomain.add_translation
@@ -485,13 +476,6 @@ func (self Instance) SetPseudolocalizationSuffix(value string) Instance { //gd:T
 	return self
 }
 
-func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Translation { //gd:TranslationDomain.get_translation_object
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_translation_object, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(locale)
-	var ret = [1]gdclass.Translation{gdclass.NewTranslation(gd.PointerWithOwnershipTransferredToGo(r_ret))}
-	return ret
-}
 func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.add_translation
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation, 0|(gdextension.SizeObject<<4), &struct{ translation gdextension.Object }{gdextension.Object(gdreference.GetObject(gdclass.GetTranslation(translation[0])[0]))})
 	runtime.KeepAlive(self[0].Anchor())

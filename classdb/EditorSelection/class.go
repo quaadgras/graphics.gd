@@ -168,15 +168,6 @@ func (self Instance) GetTopSelectedNodes() []Node.Instance { //gd:EditorSelectio
 	return []Node.Instance(gd.ArrayAs[[]Node.Instance](gd.InternalArray(Advanced(self).GetTopSelectedNodes())))
 }
 
-/*
-Returns the list of top selected nodes only, excluding any children. This is useful for performing transform operations (moving them, rotating, etc.). See [GetTopSelectedNodes].
-
-[GetTopSelectedNodes]: https://pkg.go.dev/graphics.gd/classdb/EditorSelection#Instance.GetTopSelectedNodes
-*/
-func (self Instance) GetTransformableSelectedNodes() []Node.Instance { //gd:EditorSelection.get_transformable_selected_nodes
-	return []Node.Instance(gd.ArrayAs[[]Node.Instance](gd.InternalArray(Advanced(self).GetTransformableSelectedNodes())))
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.EditorSelection
@@ -241,12 +232,6 @@ func (self class) GetSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:Edit
 }
 func (self class) GetTopSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:EditorSelection.get_top_selected_nodes
 	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_top_selected_nodes, gdextension.SizeArray, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = Array.Through(gd.WrapArray[[1]gdclass.Node](pointers.New[gd.Array](r_ret)))
-	return ret
-}
-func (self class) GetTransformableSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:EditorSelection.get_transformable_selected_nodes
-	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_transformable_selected_nodes, gdextension.SizeArray, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = Array.Through(gd.WrapArray[[1]gdclass.Node](pointers.New[gd.Array](r_ret)))
 	return ret

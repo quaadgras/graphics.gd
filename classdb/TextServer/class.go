@@ -1555,20 +1555,6 @@ func (self Instance) FontSupportedVariationList(font_rid RID.Font) map[int]struc
 }
 
 /*
-This method does nothing and always returns 1.0.
-*/
-func (self Instance) FontGetGlobalOversampling() Float.X { //gd:TextServer.font_get_global_oversampling
-	return Float.X(Float.X(Advanced(self).FontGetGlobalOversampling()))
-}
-
-/*
-This method does nothing.
-*/
-func (self Instance) FontSetGlobalOversampling(oversampling Float.X) { //gd:TextServer.font_set_global_oversampling
-	Advanced(self).FontSetGlobalOversampling(float64(oversampling))
-}
-
-/*
 Returns size of the replacement character (box with character hexadecimal code that is drawn in place of invalid characters).
 */
 func (self Instance) GetHexCodeBoxSize(size int, index int) Vector2.XY { //gd:TextServer.get_hex_code_box_size
@@ -2303,60 +2289,6 @@ Returns dominant direction of in the range of text.
 */
 func (self Instance) ShapedTextGetDominantDirectionInRange(shaped RID.TextBuffer, start int, end int) Direction { //gd:TextServer.shaped_text_get_dominant_direction_in_range
 	return Direction(Advanced(self).ShapedTextGetDominantDirectionInRange(RID.Any(shaped), int64(start), int64(end)))
-}
-
-/*
-Converts a number from Western Arabic (0..9) to the numeral system used in the given 'language'.
-
-If 'language' is an empty string, the active locale will be used.
-*/
-func (self Instance) FormatNumber(number string) string { //gd:TextServer.format_number
-	return string(Advanced(self).FormatNumber(String.From(number), String.From("")).String())
-}
-
-/*
-Converts a number from Western Arabic (0..9) to the numeral system used in the given 'language'.
-
-If 'language' is an empty string, the active locale will be used.
-*/
-func (self MoreArgs) FormatNumber(number string, language string) string { //gd:TextServer.format_number
-	return string(Advanced(self).FormatNumber(String.From(number), String.From(language)).String())
-}
-
-/*
-Converts 'number' from the numeral system used in the given 'language' to Western Arabic (0..9).
-
-If 'language' is an empty string, the active locale will be used.
-*/
-func (self Instance) ParseNumber(number string) string { //gd:TextServer.parse_number
-	return string(Advanced(self).ParseNumber(String.From(number), String.From("")).String())
-}
-
-/*
-Converts 'number' from the numeral system used in the given 'language' to Western Arabic (0..9).
-
-If 'language' is an empty string, the active locale will be used.
-*/
-func (self MoreArgs) ParseNumber(number string, language string) string { //gd:TextServer.parse_number
-	return string(Advanced(self).ParseNumber(String.From(number), String.From(language)).String())
-}
-
-/*
-Returns the percent sign used in the given 'language'.
-
-If 'language' is an empty string, the active locale will be used.
-*/
-func (self Instance) PercentSign() string { //gd:TextServer.percent_sign
-	return string(Advanced(self).PercentSign(String.From("")).String())
-}
-
-/*
-Returns the percent sign used in the given 'language'.
-
-If 'language' is an empty string, the active locale will be used.
-*/
-func (self MoreArgs) PercentSign(language string) string { //gd:TextServer.percent_sign
-	return string(Advanced(self).PercentSign(String.From(language)).String())
 }
 
 /*
@@ -3714,16 +3646,6 @@ func (self class) FontSupportedVariationList(font_rid RID.Any) Dictionary.Any { 
 	var ret = Dictionary.Through(gd.WrapDictionary[variant.Any, variant.Any](pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
-func (self class) FontGetGlobalOversampling() float64 { //gd:TextServer.font_get_global_oversampling
-	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.font_get_global_oversampling, gdextension.SizeFloat, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) FontSetGlobalOversampling(oversampling float64) { //gd:TextServer.font_set_global_oversampling
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_set_global_oversampling, 0|(gdextension.SizeFloat<<4), &struct{ oversampling float64 }{oversampling})
-	runtime.KeepAlive(self[0].Anchor())
-}
 func (self class) GetHexCodeBoxSize(size int64, index int64) Vector2.XY { //gd:TextServer.get_hex_code_box_size
 	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_hex_code_box_size, gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		size  int64
@@ -4412,35 +4334,6 @@ func (self class) ShapedTextGetDominantDirectionInRange(shaped RID.Any, start in
 	}{shaped, start, end})
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
-	return ret
-}
-func (self class) FormatNumber(number String.Readable, language String.Readable) String.Readable { //gd:TextServer.format_number
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.format_number, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
-		number   gdextension.String
-		language gdextension.String
-	}{pointers.Get(gd.InternalString(number)), pointers.Get(gd.InternalString(language))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(number)
-	runtime.KeepAlive(language)
-	var ret = String.Via(gd.WrapString(pointers.New[gd.String](r_ret)))
-	return ret
-}
-func (self class) ParseNumber(number String.Readable, language String.Readable) String.Readable { //gd:TextServer.parse_number
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.parse_number, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
-		number   gdextension.String
-		language gdextension.String
-	}{pointers.Get(gd.InternalString(number)), pointers.Get(gd.InternalString(language))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(number)
-	runtime.KeepAlive(language)
-	var ret = String.Via(gd.WrapString(pointers.New[gd.String](r_ret)))
-	return ret
-}
-func (self class) PercentSign(language String.Readable) String.Readable { //gd:TextServer.percent_sign
-	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.percent_sign, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(language)
-	var ret = String.Via(gd.WrapString(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) StringGetWordBreaks(s String.Readable, language String.Readable, chars_per_line int64) Packed.Array[int32] { //gd:TextServer.string_get_word_breaks

@@ -727,21 +727,6 @@ func (self Instance) GetMetadata(column int) any { //gd:TreeItem.get_metadata
 }
 
 /*
-Sets the given column's custom draw callback to the 'callback' method on 'object'.
-
-The method named 'callback' should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2.PositionSize].
-
-Returns 'self' to enable method chaining.
-
-[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
-[TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
-*/
-func (self Instance) SetCustomDraw(column int, obj Object.Instance, callback string) Instance { //gd:TreeItem.set_custom_draw
-	Advanced(self).SetCustomDraw(int64(column), obj, String.Name(String.From(callback)))
-	return self
-}
-
-/*
 Sets the given column's custom draw callback. Use an empty func (Callable()) to clear the custom callback. The cell has to be in [CellModeCustom] to use this feature.
 
 The 'callback' should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2.PositionSize].
@@ -1864,16 +1849,6 @@ func (self class) GetMetadata(column int64) variant.Any { //gd:TreeItem.get_meta
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = variant.Implementation(gd.WrapVariant(pointers.New[gd.Variant](r_ret)))
 	return ret
-}
-func (self class) SetCustomDraw(column int64, obj [1]gdreference.Object, callback String.Name) { //gd:TreeItem.set_custom_draw
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_draw, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12), &struct {
-		column   int64
-		obj      gdextension.Object
-		callback gdextension.StringName
-	}{column, gdextension.Object(gdreference.GetObject(gdclass.GetObject(obj[0])[0])), pointers.Get(gd.InternalStringName(callback))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(obj[0].Anchor())
-	runtime.KeepAlive(callback)
 }
 func (self class) SetCustomDrawCallback(column int64, callback Callable.Function) { //gd:TreeItem.set_custom_draw_callback
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_draw_callback, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {

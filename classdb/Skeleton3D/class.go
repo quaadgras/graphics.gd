@@ -525,13 +525,6 @@ func (self Instance) SetBoneGlobalPose(bone_idx int, pose Transform3D.BasisOrigi
 }
 
 /*
-Force updates the bone transforms/poses for all bones in the skeleton.
-*/
-func (self Instance) ForceUpdateAllBoneTransforms() { //gd:Skeleton3D.force_update_all_bone_transforms
-	Advanced(self).ForceUpdateAllBoneTransforms()
-}
-
-/*
 Force updates the bone transform for the bone at 'bone_idx' and all of its children.
 */
 func (self Instance) ForceUpdateBoneChildTransform(bone_idx int) { //gd:Skeleton3D.force_update_bone_child_transform
@@ -548,116 +541,6 @@ Note: The 'delta' is temporarily accumulated in the [Skeleton3D], and the deferr
 */
 func (self Instance) Advance(delta Float.X) { //gd:Skeleton3D.advance
 	Advanced(self).Advance(float64(delta))
-}
-
-/*
-Removes the global pose override on all bones in the skeleton.
-*/
-func (self Instance) ClearBonesGlobalPoseOverride() { //gd:Skeleton3D.clear_bones_global_pose_override
-	Advanced(self).ClearBonesGlobalPoseOverride()
-}
-
-/*
-Sets the global pose transform, 'pose', for the bone at 'bone_idx'.
-
-'amount' is the interpolation strength that will be used when applying the pose, and 'persistent' determines if the applied pose will remain.
-
-Note: The pose transform needs to be a global pose! To convert a world transform from a [Node3D] to a global bone pose, multiply the [Transform3D.AffineInverse] of the node's [Node3D.GlobalTransform] by the desired world transform.
-
-Returns 'self' to enable method chaining.
-
-[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
-[Node3D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
-[Transform3D.AffineInverse]: https://pkg.go.dev/graphics.gd/classdb/Transform3D#Instance.AffineInverse
-*/
-func (self Instance) SetBoneGlobalPoseOverride(bone_idx int, pose Transform3D.BasisOrigin, amount Float.X) Instance { //gd:Skeleton3D.set_bone_global_pose_override
-	Advanced(self).SetBoneGlobalPoseOverride(int64(bone_idx), Transform3D.BasisOrigin(pose), float64(amount), false)
-	return self
-}
-
-/*
-Sets the global pose transform, 'pose', for the bone at 'bone_idx'.
-
-'amount' is the interpolation strength that will be used when applying the pose, and 'persistent' determines if the applied pose will remain.
-
-Note: The pose transform needs to be a global pose! To convert a world transform from a [Node3D] to a global bone pose, multiply the [Transform3D.AffineInverse] of the node's [Node3D.GlobalTransform] by the desired world transform.
-
-Returns 'self' to enable method chaining.
-
-[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
-[Node3D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
-[Transform3D.AffineInverse]: https://pkg.go.dev/graphics.gd/classdb/Transform3D#Instance.AffineInverse
-*/
-func (self MoreArgs) SetBoneGlobalPoseOverride(bone_idx int, pose Transform3D.BasisOrigin, amount Float.X, persistent bool) MoreArgs { //gd:Skeleton3D.set_bone_global_pose_override
-	Advanced(self).SetBoneGlobalPoseOverride(int64(bone_idx), Transform3D.BasisOrigin(pose), float64(amount), persistent)
-	return self
-}
-
-/*
-Returns the global pose override transform for 'bone_idx'.
-*/
-func (self Instance) GetBoneGlobalPoseOverride(bone_idx int) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_override
-	return Transform3D.BasisOrigin(Advanced(self).GetBoneGlobalPoseOverride(int64(bone_idx)))
-}
-
-/*
-Returns the overall transform of the specified bone, with respect to the skeleton, but without any global pose overrides. Being relative to the skeleton frame, this is not the actual "global" transform of the bone.
-*/
-func (self Instance) GetBoneGlobalPoseNoOverride(bone_idx int) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_no_override
-	return Transform3D.BasisOrigin(Advanced(self).GetBoneGlobalPoseNoOverride(int64(bone_idx)))
-}
-
-/*
-Tells the [PhysicalBone3D] nodes in the Skeleton to stop simulating.
-
-[PhysicalBone3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D
-*/
-func (self Instance) PhysicalBonesStopSimulation() { //gd:Skeleton3D.physical_bones_stop_simulation
-	Advanced(self).PhysicalBonesStopSimulation()
-}
-
-/*
-Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reacting to the physics world.
-
-Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
-
-[PhysicalBone3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D
-*/
-func (self Instance) PhysicalBonesStartSimulation() { //gd:Skeleton3D.physical_bones_start_simulation
-	Advanced(self).PhysicalBonesStartSimulation(gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]))
-}
-
-/*
-Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reacting to the physics world.
-
-Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
-
-[PhysicalBone3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBone3D
-*/
-func (self MoreArgs) PhysicalBonesStartSimulation(bones []string) { //gd:Skeleton3D.physical_bones_start_simulation
-	Advanced(self).PhysicalBonesStartSimulation(gd.ArrayFromSlice[Array.Contains[String.Name]](bones))
-}
-
-/*
-Adds a collision exception to the physical bone.
-
-Works just like the [RigidBody3D] node.
-
-[RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
-*/
-func (self Instance) PhysicalBonesAddCollisionException(exception RID.Body3D) { //gd:Skeleton3D.physical_bones_add_collision_exception
-	Advanced(self).PhysicalBonesAddCollisionException(RID.Any(exception))
-}
-
-/*
-Removes a collision exception to the physical bone.
-
-Works just like the [RigidBody3D] node.
-
-[RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
-*/
-func (self Instance) PhysicalBonesRemoveCollisionException(exception RID.Body3D) { //gd:Skeleton3D.physical_bones_remove_collision_exception
-	Advanced(self).PhysicalBonesRemoveCollisionException(RID.Any(exception))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -740,26 +623,6 @@ func (self Instance) ModifierCallbackModeProcess() ModifierCallbackModeProcess {
 // SetModifierCallbackModeProcess sets the property returned by [GetModifierCallbackModeProcess]. Returns the instance, so that property settings can be chained.
 func (self Instance) SetModifierCallbackModeProcess(value ModifierCallbackModeProcess) Instance { //gd:Skeleton3D.modifier_callback_mode_process
 	class(self).SetModifierCallbackModeProcess(value)
-	return self
-}
-
-/*
-If you follow the recommended workflow and explicitly have [PhysicalBoneSimulator3D] as a child of [Skeleton3D], you can control whether it is affected by raycasting without running [PhysicalBonesStartSimulation], by its [SkeletonModifier3D.Active].
-
-However, for old (deprecated) configurations, [Skeleton3D] has an internal virtual [PhysicalBoneSimulator3D] for compatibility. This property controls the internal virtual [PhysicalBoneSimulator3D]'s [SkeletonModifier3D.Active].
-
-[PhysicalBoneSimulator3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicalBoneSimulator3D
-[PhysicalBonesStartSimulation]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.PhysicalBonesStartSimulation
-[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
-[SkeletonModifier3D.Active]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D#Instance.Active
-*/
-func (self Instance) AnimatePhysicalBones() bool { //gd:Skeleton3D.animate_physical_bones
-	return bool(class(self).GetAnimatePhysicalBones())
-}
-
-// SetAnimatePhysicalBones sets the property returned by [GetAnimatePhysicalBones]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAnimatePhysicalBones(value bool) Instance { //gd:Skeleton3D.animate_physical_bones
-	class(self).SetAnimatePhysicalBones(value)
 	return self
 }
 
@@ -1000,10 +863,6 @@ func (self class) SetBoneGlobalPose(bone_idx int64, pose Transform3D.BasisOrigin
 	}{bone_idx, gd.Transposed(pose)})
 	runtime.KeepAlive(self[0].Anchor())
 }
-func (self class) ForceUpdateAllBoneTransforms() { //gd:Skeleton3D.force_update_all_bone_transforms
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_all_bone_transforms, 0, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-}
 func (self class) ForceUpdateBoneChildTransform(bone_idx int64) { //gd:Skeleton3D.force_update_bone_child_transform
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_bone_child_transform, 0|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
 	runtime.KeepAlive(self[0].Anchor())
@@ -1042,31 +901,6 @@ func (self class) Advance(delta float64) { //gd:Skeleton3D.advance
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.advance, 0|(gdextension.SizeFloat<<4), &struct{ delta float64 }{delta})
 	runtime.KeepAlive(self[0].Anchor())
 }
-func (self class) ClearBonesGlobalPoseOverride() { //gd:Skeleton3D.clear_bones_global_pose_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_bones_global_pose_override, 0, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) SetBoneGlobalPoseOverride(bone_idx int64, pose Transform3D.BasisOrigin, amount float64, persistent bool) { //gd:Skeleton3D.set_bone_global_pose_override
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_global_pose_override, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
-		bone_idx   int64
-		pose       Transform3D.BasisOrigin
-		amount     float64
-		persistent bool
-	}{bone_idx, gd.Transposed(pose), amount, persistent})
-	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) GetBoneGlobalPoseOverride(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_override
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_bone_global_pose_override, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = gd.Transposed(r_ret)
-	return ret
-}
-func (self class) GetBoneGlobalPoseNoOverride(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_no_override
-	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_bone_global_pose_no_override, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ bone_idx int64 }{bone_idx})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = gd.Transposed(r_ret)
-	return ret
-}
 func (self class) SetAnimatePhysicalBones(enabled bool) { //gd:Skeleton3D.set_animate_physical_bones
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animate_physical_bones, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 	runtime.KeepAlive(self[0].Anchor())
@@ -1076,23 +910,6 @@ func (self class) GetAnimatePhysicalBones() bool { //gd:Skeleton3D.get_animate_p
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
 	return ret
-}
-func (self class) PhysicalBonesStopSimulation() { //gd:Skeleton3D.physical_bones_stop_simulation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_stop_simulation, 0, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) PhysicalBonesStartSimulation(bones Array.Contains[String.Name]) { //gd:Skeleton3D.physical_bones_start_simulation
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_start_simulation, 0|(gdextension.SizeArray<<4), &struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(bones)
-}
-func (self class) PhysicalBonesAddCollisionException(exception RID.Any) { //gd:Skeleton3D.physical_bones_add_collision_exception
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_add_collision_exception, 0|(gdextension.SizeRID<<4), &struct{ exception RID.Any }{exception})
-	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //gd:Skeleton3D.physical_bones_remove_collision_exception
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_remove_collision_exception, 0|(gdextension.SizeRID<<4), &struct{ exception RID.Any }{exception})
-	runtime.KeepAlive(self[0].Anchor())
 }
 
 /*

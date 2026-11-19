@@ -394,21 +394,6 @@ func (self Instance) SetGiLightmapTexelScale(value Float.X) Instance { //gd:Geom
 }
 
 /*
-The texel density to use for lightmapping in [LightmapGI].
-
-[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
-*/
-func (self Instance) GiLightmapScale() LightmapScale { //gd:GeometryInstance3D.gi_lightmap_scale
-	return LightmapScale(class(self).GetLightmapScale())
-}
-
-// SetGiLightmapScale sets the property returned by [GetLightmapScale]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetGiLightmapScale(value LightmapScale) Instance { //gd:GeometryInstance3D.gi_lightmap_scale
-	class(self).SetLightmapScale(value)
-	return self
-}
-
-/*
 Starting distance from which the GeometryInstance3D will be visible, taking [VisibilityRangeBeginMargin] into account as well. The default value of 0 is used to disable the range check.
 
 [VisibilityRangeBeginMargin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeBeginMargin

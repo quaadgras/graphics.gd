@@ -720,16 +720,6 @@ func (self Instance) SetBakeFps(value Float.X) Instance { //gd:GLTFState.bake_fp
 	return self
 }
 
-func (self Instance) HandleBinaryImage() BinaryHandler { //gd:GLTFState.handle_binary_image
-	return BinaryHandler(BinaryHandler(class(self).GetHandleBinaryImage()))
-}
-
-// SetHandleBinaryImage sets the property returned by [GetHandleBinaryImage]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetHandleBinaryImage(value BinaryHandler) Instance { //gd:GLTFState.handle_binary_image
-	class(self).SetHandleBinaryImage(int64(value))
-	return self
-}
-
 func (self class) AddUsedExtension(extension_name String.Readable, required bool) { //gd:GLTFState.add_used_extension
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_used_extension, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		extension_name gdextension.String
@@ -1125,16 +1115,6 @@ func (self class) GetBakeFps() float64 { //gd:GLTFState.get_bake_fps
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
 	return ret
-}
-func (self class) GetHandleBinaryImage() int64 { //gd:GLTFState.get_handle_binary_image
-	var r_ret = jumponly.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_handle_binary_image, gdextension.SizeInt, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) SetHandleBinaryImage(method int64) { //gd:GLTFState.set_handle_binary_image
-	jumponly.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_handle_binary_image, 0|(gdextension.SizeInt<<4), &struct{ method int64 }{method})
-	runtime.KeepAlive(self[0].Anchor())
 }
 func (o class) AsGLTFState() Advanced                 { return Advanced(o) }
 func (o Instance) AsGLTFState() Instance              { return o }

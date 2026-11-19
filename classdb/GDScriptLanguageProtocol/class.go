@@ -23,7 +23,6 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
-import "graphics.gd/classdb/GDScriptTextDocument"
 import "graphics.gd/classdb/GDScriptWorkspace"
 import "graphics.gd/classdb/JSONRPC"
 import "graphics.gd/variant/Array"
@@ -131,15 +130,6 @@ func singleton() {
 }
 
 /*
-Returns the language server's [GDScriptTextDocument] instance.
-
-[GDScriptTextDocument]: https://pkg.go.dev/graphics.gd/classdb/GDScriptTextDocument
-*/
-func GetTextDocument() GDScriptTextDocument.Instance { //gd:GDScriptLanguageProtocol.get_text_document
-	return GDScriptTextDocument.Instance(Advanced().GetTextDocument())
-}
-
-/*
 Returns the language server's [GDScriptWorkspace] instance.
 
 [GDScriptWorkspace]: https://pkg.go.dev/graphics.gd/classdb/GDScriptWorkspace
@@ -160,24 +150,6 @@ Returns true if the language server was initialized by a language server client,
 */
 func IsInitialized() bool { //gd:GDScriptLanguageProtocol.is_initialized
 	return bool(Advanced().IsInitialized())
-}
-func Initialize(params map[string]any) any { //gd:GDScriptLanguageProtocol.initialize
-	return any(Advanced().Initialize(gd.DictionaryFromMap(params)).Interface())
-}
-func Initialized(params any) { //gd:GDScriptLanguageProtocol.initialized
-	Advanced().Initialized(variant.New(params))
-}
-func OnClientConnected() error { //gd:GDScriptLanguageProtocol.on_client_connected
-	return error(gd.ToError(Advanced().OnClientConnected()))
-}
-func OnClientDisconnected(client_id int) { //gd:GDScriptLanguageProtocol.on_client_disconnected
-	Advanced().OnClientDisconnected(int64(client_id))
-}
-func NotifyClient(method string, params any) { //gd:GDScriptLanguageProtocol.notify_client
-	Advanced().NotifyClient(String.From(method), variant.New(params), int64(-1))
-}
-func NotifyClientOptions(method string, params any, client_id int) { //gd:GDScriptLanguageProtocol.notify_client
-	Advanced().NotifyClient(String.From(method), variant.New(params), int64(client_id))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -203,12 +175,6 @@ func (self *Instance) SetObject(obj [1]gdreference.Object) bool {
 func (o Instance) AsObject() [1]gdreference.Object      { return *(*[1]gdreference.Object)(ie.As(&o)) }
 func (o *Extension[T]) AsObject() [1]gdreference.Object { return o.Super().AsObject() }
 
-func (self class) GetTextDocument() [1]gdclass.GDScriptTextDocument { //gd:GDScriptLanguageProtocol.get_text_document
-	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.get_text_document, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.GDScriptTextDocument{gdclass.NewGDScriptTextDocument(gd.PointerWithOwnershipTransferredToGo(r_ret))}
-	return ret
-}
 func (self class) GetWorkspace() [1]gdclass.GDScriptWorkspace { //gd:GDScriptLanguageProtocol.get_workspace
 	once.Do(singleton)
 	var r_ret = noescape.Call[gdextension.Object](gdreference.GetObject(self.AsObject()[0]), methods.get_workspace, gdextension.SizeObject, &struct{}{})
@@ -226,38 +192,6 @@ func (self class) IsInitialized() bool { //gd:GDScriptLanguageProtocol.is_initia
 	var r_ret = noescape.Call[bool](gdreference.GetObject(self.AsObject()[0]), methods.is_initialized, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
-}
-func (self class) Initialize(params Dictionary.Any) variant.Any { //gd:GDScriptLanguageProtocol.initialize
-	once.Do(singleton)
-	var r_ret = noescape.Call[gdextension.Variant](gdreference.GetObject(self.AsObject()[0]), methods.initialize, gdextension.SizeVariant|(gdextension.SizeDictionary<<4), &struct{ params gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(params))})
-	runtime.KeepAlive(params)
-	var ret = variant.Implementation(gd.WrapVariant(pointers.New[gd.Variant](r_ret)))
-	return ret
-}
-func (self class) Initialized(params variant.Any) { //gd:GDScriptLanguageProtocol.initialized
-	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.initialized, 0|(gdextension.SizeVariant<<4), &struct{ params gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(params)))})
-	runtime.KeepAlive(params)
-}
-func (self class) OnClientConnected() Error.Code { //gd:GDScriptLanguageProtocol.on_client_connected
-	once.Do(singleton)
-	var r_ret = noescape.Call[int64](gdreference.GetObject(self.AsObject()[0]), methods.on_client_connected, gdextension.SizeInt, &struct{}{})
-	var ret = Error.Code(r_ret)
-	return ret
-}
-func (self class) OnClientDisconnected(client_id int64) { //gd:GDScriptLanguageProtocol.on_client_disconnected
-	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.on_client_disconnected, 0|(gdextension.SizeInt<<4), &struct{ client_id int64 }{client_id})
-}
-func (self class) NotifyClient(method String.Readable, params variant.Any, client_id int64) { //gd:GDScriptLanguageProtocol.notify_client
-	once.Do(singleton)
-	noescape.Call[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.notify_client, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeInt<<12), &struct {
-		method    gdextension.String
-		params    gdextension.Variant
-		client_id int64
-	}{pointers.Get(gd.InternalString(method)), gdextension.Variant(pointers.Get(gd.InternalVariant(params))), client_id})
-	runtime.KeepAlive(method)
-	runtime.KeepAlive(params)
 }
 func (o class) AsJSONRPC() JSONRPC.Advanced         { return *(*JSONRPC.Advanced)(ie.As(&o)) }
 func (o *Extension[T]) AsJSONRPC() JSONRPC.Instance { return o.Super().AsJSONRPC() }

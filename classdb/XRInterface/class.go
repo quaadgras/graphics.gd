@@ -272,36 +272,6 @@ func (self Instance) GetCameraFeedId() int { //gd:XRInterface.get_camera_feed_id
 }
 
 /*
-Returns true if this interface supports passthrough.
-*/
-func (self Instance) IsPassthroughSupported() bool { //gd:XRInterface.is_passthrough_supported
-	return bool(Advanced(self).IsPassthroughSupported())
-}
-
-/*
-Returns true if passthrough is enabled.
-*/
-func (self Instance) IsPassthroughEnabled() bool { //gd:XRInterface.is_passthrough_enabled
-	return bool(Advanced(self).IsPassthroughEnabled())
-}
-
-/*
-Starts passthrough, will return false if passthrough couldn't be started.
-
-Note: The viewport used for XR must have a transparent background, otherwise passthrough may not properly render.
-*/
-func (self Instance) StartPassthrough() bool { //gd:XRInterface.start_passthrough
-	return bool(Advanced(self).StartPassthrough())
-}
-
-/*
-Stops passthrough.
-*/
-func (self Instance) StopPassthrough() { //gd:XRInterface.stop_passthrough
-	Advanced(self).StopPassthrough()
-}
-
-/*
 Returns the transform for a view/eye.
 
 'view' is the view/eye index.
@@ -536,28 +506,6 @@ func (self class) GetCameraFeedId() int64 { //gd:XRInterface.get_camera_feed_id
 	runtime.KeepAlive(self[0].Anchor())
 	var ret = r_ret
 	return ret
-}
-func (self class) IsPassthroughSupported() bool { //gd:XRInterface.is_passthrough_supported
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_passthrough_supported, gdextension.SizeBool, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) IsPassthroughEnabled() bool { //gd:XRInterface.is_passthrough_enabled
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_passthrough_enabled, gdextension.SizeBool, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) StartPassthrough() bool { //gd:XRInterface.start_passthrough
-	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.start_passthrough, gdextension.SizeBool, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = r_ret
-	return ret
-}
-func (self class) StopPassthrough() { //gd:XRInterface.stop_passthrough
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_passthrough, 0, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
 }
 func (self class) GetTransformForView(view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin { //gd:XRInterface.get_transform_for_view
 	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_transform_for_view, gdextension.SizeTransform3D|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {

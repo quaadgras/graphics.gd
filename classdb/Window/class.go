@@ -445,13 +445,6 @@ func (self Instance) SetTaskbarProgressState(state DisplayServer.ProgressState) 
 }
 
 /*
-Causes the window to grab focus, allowing it to receive user input.
-*/
-func (self Instance) MoveToForeground() { //gd:Window.move_to_foreground
-	Advanced(self).MoveToForeground()
-}
-
-/*
 Hides the window. This is not the same as minimized state. Hidden window can't be interacted with and needs to be made visible with [Show].
 
 [Show]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Show
@@ -2102,19 +2095,6 @@ func (self Instance) SetHdrOutputRequested(value bool) Instance { //gd:Window.hd
 }
 
 /*
-Toggles if any text should automatically change to its translated version depending on the current locale.
-*/
-func (self Instance) AutoTranslate() bool { //gd:Window.auto_translate
-	return bool(class(self).IsAutoTranslating())
-}
-
-// SetAutoTranslate sets the property returned by [IsAutoTranslating]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoTranslate(value bool) Instance { //gd:Window.auto_translate
-	class(self).SetAutoTranslate(value)
-	return self
-}
-
-/*
 The human-readable node name that is reported to assistive apps.
 */
 func (self Instance) AccessibilityName() string { //gd:Window.accessibility_name
@@ -2328,10 +2308,6 @@ func (self class) SetTaskbarProgressValue(value float64) { //gd:Window.set_taskb
 }
 func (self class) SetTaskbarProgressState(state DisplayServer.ProgressState) { //gd:Window.set_taskbar_progress_state
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_taskbar_progress_state, 0|(gdextension.SizeInt<<4), &struct{ state DisplayServer.ProgressState }{state})
-	runtime.KeepAlive(self[0].Anchor())
-}
-func (self class) MoveToForeground() { //gd:Window.move_to_foreground
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_to_foreground, 0, &struct{}{})
 	runtime.KeepAlive(self[0].Anchor())
 }
 func (self class) SetVisible(visible bool) { //gd:Window.set_visible

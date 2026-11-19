@@ -13,5 +13,5 @@ var barnacleButton Button.Instance
 var splitContainer SplitContainer.Instance
 
 func SplitContainer_GetDragAreaControl() {
-	barnacleButton.AsNode().Reparent(splitContainer.GetDragAreaControl().AsNode())
+	barnacleButton.AsNode().Reparent(splitContainer.GetDragAreaControls()[0].AsNode())
 }

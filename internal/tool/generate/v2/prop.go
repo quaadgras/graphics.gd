@@ -36,11 +36,16 @@ func (classDB ClassDB) new(file io.Writer, class gdjson.Class) {
 	fmt.Fprintf(file, "}\n")
 }
 
-func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton bool) {
+func (classDB ClassDB) properties(file, dep io.Writer, class gdjson.Class, singleton bool) {
 	if len(class.Properties) == 0 {
 		return
 	}
 	for _, prop := range class.Properties {
+		file := file
+		if message, ok := deprecatedProperty(class.Name, prop.Name, prop.Getter, prop.Setter); ok {
+			file = dep
+			prop.Description = withDeprecation(prop.Description, message)
+		}
 		ptype := classDB.convertTypeSimple(class, class.Name+"."+prop.Name, "", prop.Type)
 		expert := gdtype.EngineTypeAsGoType(class.Name, "", prop.Type)
 		var foundGetter bool

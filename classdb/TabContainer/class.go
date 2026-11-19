@@ -539,19 +539,6 @@ func (self Instance) SetTabsVisible(value bool) Instance { //gd:TabContainer.tab
 }
 
 /*
-This doesn't do anything.
-*/
-func (self Instance) AllTabsInFront() bool { //gd:TabContainer.all_tabs_in_front
-	return bool(class(self).IsAllTabsInFront())
-}
-
-// SetAllTabsInFront sets the property returned by [IsAllTabsInFront]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAllTabsInFront(value bool) Instance { //gd:TabContainer.all_tabs_in_front
-	class(self).SetAllTabsInFront(value)
-	return self
-}
-
-/*
 If true, hovering over a tab while dragging something will switch to that tab. Does not have effect when hovering another tab to rearrange.
 */
 func (self Instance) SwitchOnDragHover() bool { //gd:TabContainer.switch_on_drag_hover

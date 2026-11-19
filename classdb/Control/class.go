@@ -3096,19 +3096,6 @@ func (self Instance) SetTranslationContext(value string) Instance { //gd:Control
 }
 
 /*
-Toggles if any text should automatically change to its translated version depending on the current locale.
-*/
-func (self Instance) AutoTranslate() bool { //gd:Control.auto_translate
-	return bool(class(self).IsAutoTranslating())
-}
-
-// SetAutoTranslate sets the property returned by [IsAutoTranslating]. Returns the instance, so that property settings can be chained.
-func (self Instance) SetAutoTranslate(value bool) Instance { //gd:Control.auto_translate
-	class(self).SetAutoTranslate(value)
-	return self
-}
-
-/*
 The default tooltip text. The tooltip appears when the user's mouse cursor stays idle over this control for a few moments, provided that the [MouseFilter] property is not [MouseFilterIgnore]. The time required for the tooltip to appear can be changed with the [ProjectSettings] "gui/timers/tooltip_delay_sec" setting.
 
 This string is the default return value of [GetTooltip]. Override [GetTooltip] to generate tooltip text dynamically. Override [MakeCustomTooltip] to customize the tooltip interface and behavior.

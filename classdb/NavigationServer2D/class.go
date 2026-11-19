@@ -448,21 +448,6 @@ func MapGetObstacles(map_ RID.NavigationMap2D) []RID.NavigationObstacle2D { //gd
 }
 
 /*
-This function immediately forces synchronization of the specified navigation 'map' [Resource.ID]. By default navigation maps are only synchronized at the end of each physics frame. This function can be used to immediately (re)calculate all the navigation meshes and region connections of the navigation map. This makes it possible to query a navigation path for a changed map immediately and in the same frame (multiple times if needed).
-
-Due to technical restrictions the current NavigationServer command queue will be flushed. This means all already queued update commands for this physics frame will be executed, even those intended for other maps, regions and agents not part of the specified map. The expensive computation of the navigation meshes and region connections of a map will only be done for the specified map. Other maps will receive the normal synchronization at the end of the physics frame. Should the specified map receive changes after the forced update it will update again as well when the other maps receive their update.
-
-Avoidance processing and dispatch of the safe_velocity signals is unaffected by this function and continues to happen for all maps and agents at the end of the physics frame.
-
-Note: With great power comes great responsibility. This function should only be used by users that really know what they are doing and have a good reason for it. Forcing an immediate update of a navigation map requires locking the NavigationServer and flushing the entire NavigationServer command queue. Not only can this severely impact the performance of a game but it can also introduce bugs if used inappropriately without much foresight.
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-func MapForceUpdate(map_ RID.NavigationMap2D) { //gd:NavigationServer2D.map_force_update
-	Advanced().MapForceUpdate(RID.Any(map_))
-}
-
-/*
 Returns the current iteration id of the navigation map. Every time the navigation map changes and synchronizes the iteration id increases. An iteration id of 0 means the navigation map has never synchronized.
 
 Note: The iteration id will wrap back to 1 after reaching its range limit.
@@ -1494,10 +1479,6 @@ func (self class) MapGetObstacles(mapping RID.Any) Array.Contains[RID.Any] { //g
 	var r_ret = noescape.CallThreadSafe[gdextension.Array](gdreference.GetObject(self.AsObject()[0]), methods.map_get_obstacles, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = Array.Through(gd.WrapArray[RID.Any](pointers.New[gd.Array](r_ret)))
 	return ret
-}
-func (self class) MapForceUpdate(mapping RID.Any) { //gd:NavigationServer2D.map_force_update
-	once.Do(singleton)
-	noescape.CallThreadSafe[struct{}](gdreference.GetObject(self.AsObject()[0]), methods.map_force_update, 0|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 }
 func (self class) MapGetIterationId(mapping RID.Any) int64 { //gd:NavigationServer2D.map_get_iteration_id
 	once.Do(singleton)

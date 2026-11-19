@@ -343,7 +343,7 @@ func TestGoroutineReferenceLifetimes(t *testing.T) {
 		defer close(finished)
 		node := Node.New()
 		node.SetName("lifetimes")
-		image := Image.Create(2, 2, false, Image.FormatRgba8)
+		image := Image.CreateEmpty(2, 2, false, Image.FormatRgba8)
 		var (
 			name      = Node.Advanced(node).GetName()                             // String.Name
 			path      = Node.Advanced(node).GetPathTo([1]gdclass.Node(node), false) // Path.ToNode

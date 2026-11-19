@@ -48,8 +48,6 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
-import "graphics.gd/classdb/EditorInterface"
-import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -174,32 +172,6 @@ func (Instance) _run(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallV
 	}
 }
 
-/*
-Makes 'node' root of the currently opened scene. Only works if the scene is empty. If the 'node' is a scene instance, an inheriting scene will be created.
-*/
-func (self Instance) AddRootNode(node Node.Instance) { //gd:EditorScript.add_root_node
-	Advanced(self).AddRootNode(node)
-}
-
-/*
-Returns the edited (current) scene's root [Node]. Equivalent of [EditorInterface.GetEditedSceneRoot].
-
-[EditorInterface.GetEditedSceneRoot]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#GetEditedSceneRoot
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-*/
-func (self Instance) GetScene() Node.Instance { //gd:EditorScript.get_scene
-	return Node.Instance(Advanced(self).GetScene())
-}
-
-/*
-Returns the [EditorInterface] singleton instance.
-
-[EditorInterface]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface
-*/
-func (self Instance) GetEditorInterface() EditorInterface.Instance { //gd:EditorScript.get_editor_interface
-	return EditorInterface.Instance(Advanced(self).GetEditorInterface())
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.EditorScript
@@ -248,23 +220,6 @@ func (class) _run(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirt
 	}
 }
 
-func (self class) AddRootNode(node [1]gdclass.Node) { //gd:EditorScript.add_root_node
-	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_root_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(gdclass.GetNode(node[0])[0]))})
-	runtime.KeepAlive(self[0].Anchor())
-	runtime.KeepAlive(node[0].Anchor())
-}
-func (self class) GetScene() [1]gdclass.Node { //gd:EditorScript.get_scene
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scene, gdextension.SizeObject, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = [1]gdclass.Node{gdclass.NewNode(gdreference.LetObject(r_ret))}
-	return ret
-}
-func (self class) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorScript.get_editor_interface
-	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_interface, gdextension.SizeObject, &struct{}{})
-	runtime.KeepAlive(self[0].Anchor())
-	var ret = [1]gdclass.EditorInterface{gdclass.NewEditorInterface(gd.PointerLifetimeBoundTo(self.AsObject(), r_ret))}
-	return ret
-}
 func (o class) AsEditorScript() Advanced         { return Advanced(o) }
 func (o Instance) AsEditorScript() Instance      { return o }
 func (o *Extension[T]) AsEditorScript() Instance { return o.Super() }
