@@ -30,7 +30,12 @@ func (custom engine) windows(GOARCH string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if _, err := os.Stat(library); err == nil {
+	// The engine is built only when both files are there: a libgodot.a
+	// without its godot_res.o would be taken as built and fail to link.
+	resource := filepath.Join(filepath.Dir(library), "godot_res.o")
+	_, errResource := os.Stat(resource)
+	_, errLibrary := os.Stat(library)
+	if errResource == nil && errLibrary == nil {
 		return library, nil
 	}
 	warnEngineVersion(src)
@@ -86,16 +91,26 @@ func (custom engine) windows(GOARCH string) (string, error) {
 	); err != nil {
 		return "", fmt.Errorf("gd: failed to build the custom engine: %w", err)
 	}
-	if err := custom.combine(zig, src, library, ".windows."+engineTarget(false)+"."+arch); err != nil {
-		return "", err
-	}
+	infix := ".windows." + engineTarget(false) + "." + arch
 	// The executable's version information and icon (which the export
 	// rewrites, so a template has to have them) were compiled along with
 	// the engine, into an object that defines no symbol: an archive would
 	// never give it up, so it is kept beside the library to be linked.
-	resources, _ := filepath.Glob(filepath.Join(src, "bin", "obj", "platform", "windows", "godot_res_template.windows*.o"))
+	// Every architecture builds from the same source, so the objects of
+	// the others may be there too: only this one's is looked for.
+	objects := filepath.Join(src, "bin", "obj", "platform", "windows")
+	resources, _ := filepath.Glob(filepath.Join(objects, "godot_res_template"+infix+"*.o"))
 	if len(resources) != 1 {
-		return "", fmt.Errorf("gd: the engine's build left no resource object in %s", filepath.Join(src, "bin", "obj", "platform", "windows"))
+		return "", fmt.Errorf("gd: the engine's build left no resource object for %s in %s", arch, objects)
 	}
-	return library, copyFile(resources[0], filepath.Join(filepath.Dir(library), "godot_res.o"))
+	if err := copyFile(resources[0], resource); err != nil {
+		return "", err
+	}
+	// The library appears last, once its resource object is in place.
+	tmp := library + ".tmp"
+	defer os.Remove(tmp)
+	if err := custom.combine(zig, src, tmp, infix); err != nil {
+		return "", err
+	}
+	return library, os.Rename(tmp, library)
 }
