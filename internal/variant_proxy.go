@@ -90,11 +90,12 @@ func (VariantProxy) Quaternion(raw complex128) QuaternionType.IJKX {
 func (VariantProxy) AABB(raw complex128) AABBType.PositionSize {
 	return variantAsValueType[AABBType.PositionSize](pointers.Load[Variant](raw), gdextension.TypeAABB)
 }
+// The engine stores a basis by rows, Go by columns (axes).
 func (VariantProxy) Basis(raw complex128) BasisType.XYZ {
-	return variantAsValueType[BasisType.XYZ](pointers.Load[Variant](raw), gdextension.TypeBasis)
+	return BasisType.Transposed(variantAsValueType[BasisType.XYZ](pointers.Load[Variant](raw), gdextension.TypeBasis))
 }
 func (VariantProxy) Transform3D(raw complex128) Transform3DType.BasisOrigin {
-	return variantAsValueType[Transform3DType.BasisOrigin](pointers.Load[Variant](raw), gdextension.TypeTransform3D)
+	return Transposed(variantAsValueType[Transform3DType.BasisOrigin](pointers.Load[Variant](raw), gdextension.TypeTransform3D))
 }
 func (VariantProxy) Projection(raw complex128) ProjectionType.XYZW {
 	return variantAsValueType[ProjectionType.XYZW](pointers.Load[Variant](raw), gdextension.TypeProjection)
@@ -192,11 +193,13 @@ func (VariantProxy) NewAABB(val AABBType.PositionSize) complex128 {
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewBasis(val BasisType.XYZ) complex128 {
+	val = BasisType.Transposed(val) // (rows, as the engine stores it)
 	var ret gdextension.Variant
 	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeBasis, gdextension.SizeBasis, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewTransform3D(val Transform3DType.BasisOrigin) complex128 {
+	val = Transposed(val) // (rows, as the engine stores it)
 	var ret gdextension.Variant
 	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeTransform3D, gdextension.SizeTransform3D, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
