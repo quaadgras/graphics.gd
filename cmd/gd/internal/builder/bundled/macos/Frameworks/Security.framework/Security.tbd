@@ -10,6 +10,10 @@ exports:
    symbols:
     - _SecCertificateCopyData
     - _SecCertificateCreateWithData
+    - _SecIdentityCopyCertificate
+    - _SecIdentityCopyPrivateKey
+    - _SecItemCopyMatching
+    - _SecKeyCreateSignature
     - _SecPolicyCreateSSL
     - _SecTrustCopyAnchorCertificates
     - _SecTrustCopyCertificateChain
@@ -18,4 +22,20 @@ exports:
     - _SecTrustGetCertificateAtIndex
     - _SecTrustGetCertificateCount
     - _SecTrustSetVerifyDate
+    - _kSecClass
+    - _kSecClassIdentity
+    - _kSecKeyAlgorithmECDSASignatureDigestX962SHA1
+    - _kSecKeyAlgorithmECDSASignatureDigestX962SHA256
+    - _kSecKeyAlgorithmECDSASignatureDigestX962SHA384
+    - _kSecKeyAlgorithmECDSASignatureDigestX962SHA512
+    - _kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA1
+    - _kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA256
+    - _kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA384
+    - _kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA512
+    - _kSecKeyAlgorithmRSASignatureDigestPSSSHA256
+    - _kSecKeyAlgorithmRSASignatureDigestPSSSHA384
+    - _kSecKeyAlgorithmRSASignatureDigestPSSSHA512
+    - _kSecMatchLimit
+    - _kSecMatchLimitAll
+    - _kSecReturnRef
 ...

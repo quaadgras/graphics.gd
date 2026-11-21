@@ -89,6 +89,7 @@ exports:
     - ___NSDictionary0__
     - ___kCFBooleanTrue
     - _kCFAllocatorDefault
+    - _kCFBooleanTrue
     - _kCFCoreFoundationVersionNumber
     - _kCFRunLoopCommonModes
     - _kCFRunLoopDefaultMode

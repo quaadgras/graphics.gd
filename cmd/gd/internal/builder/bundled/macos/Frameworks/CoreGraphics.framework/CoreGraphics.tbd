@@ -18,6 +18,7 @@ exports:
     - _CGDisplayBounds
     - _CGDisplayCopyDisplayMode
     - _CGDisplayHideCursor
+    - _CGDisplayIsAsleep
     - _CGDisplayModeGetRefreshRate
     - _CGDisplayModeRelease
     - _CGDisplayRegisterReconfigurationCallback
@@ -28,6 +29,7 @@ exports:
     - _CGEventGetLocation
     - _CGEventSourceCreate
     - _CGEventSourceKeyState
+    - _CGEventSourceSecondsSinceLastEventType
     - _CGEventSourceSetLocalEventsSuppressionInterval
     - _CGImageGetHeight
     - _CGImageGetWidth
