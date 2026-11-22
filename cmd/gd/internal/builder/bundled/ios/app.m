@@ -27,6 +27,11 @@
 
 @implementation GDSceneDelegate
 
+// Its own: UIWindowSceneDelegate declares window, so without this clang
+// leaves it to the superclass, which (the engine's delegate) has none, and
+// UIKit's setting it is an unrecognized selector.
+@synthesize window = _window;
+
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
 	[super scene:scene willConnectToSession:session options:connectionOptions];
 	if (![scene isKindOfClass:[UIWindowScene class]]) {
