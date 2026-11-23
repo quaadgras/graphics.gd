@@ -231,11 +231,22 @@ func (macos MacOS) linkLibgodot(custom engine, slice macosSlice, args []string) 
 		return "", xray.New(err)
 	}
 	cgoFlags = ld64Flags(cgoFlags)
+	frameworks := slices.Clone(macosFrameworks)
 	for i := 0; i < len(cgoFlags); i++ {
-		// the frameworks are linked from the SDK's own list, below; a
+		// the frameworks are linked from the SDK's own list, below, with
+		// any others the Go code links (WebKit, say) after it; a
 		// "-framework" comes with its name in the next argument.
 		if cgoFlags[i] == "-framework" {
+			if i+1 < len(cgoFlags) && !slices.Contains(frameworks, cgoFlags[i+1]) {
+				frameworks = append(frameworks, cgoFlags[i+1])
+			}
 			i++
+			continue
+		}
+		if name, ok := strings.CutPrefix(cgoFlags[i], "-framework,"); ok {
+			if !slices.Contains(frameworks, name) {
+				frameworks = append(frameworks, name)
+			}
 			continue
 		}
 		if strings.HasPrefix(cgoFlags[i], "-framework") {
@@ -245,7 +256,7 @@ func (macos MacOS) linkLibgodot(custom engine, slice macosSlice, args []string) 
 	}
 	link = append(link, "-F", filepath.Join(sdk, "System", "Library", "Frameworks"), "-L", filepath.Join(sdk, "usr", "lib"),
 		"-lSystem", "-lobjc", "-lc++", "-lc++abi", "-lresolv")
-	for _, framework := range macosFrameworks {
+	for _, framework := range frameworks {
 		link = append(link, "-framework", framework)
 	}
 	if err := ld64(link...); err != nil {

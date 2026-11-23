@@ -21,6 +21,8 @@ exports:
     - _SecTrustEvaluateWithError
     - _SecTrustGetCertificateAtIndex
     - _SecTrustGetCertificateCount
+    - _SecTrustSetAnchorCertificates
+    - _SecTrustSetAnchorCertificatesOnly
     - _SecTrustSetVerifyDate
     - _kSecClass
     - _kSecClassIdentity

@@ -1,0 +1,12 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/WebKit.framework/Versions/A/WebKit'
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols:
+    - _WKWebsiteDataTypeDiskCache
+    - _WKWebsiteDataTypeMemoryCache
+...
