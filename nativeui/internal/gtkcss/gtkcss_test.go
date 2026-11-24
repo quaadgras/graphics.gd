@@ -122,3 +122,25 @@ func TestRender(t *testing.T) {
 		f.Close()
 	}
 }
+
+// A theme kept in a GResource bundle, as Ubuntu's Yaru is: its gtk.css only
+// imports a (compressed) stylesheet from gtk.gresource, which imports another
+// and uses an image in it.
+func TestResource(t *testing.T) {
+	sheet, err := Load(filepath.Join("testdata", "resource", "gtk-3.0", "gtk.css"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	st := sheet.Compute(Path("window entry selection"))
+	if want := (RGBA{0xe9 / 255.0, 0x54 / 255.0, 0x20 / 255.0, 1}); st.BackgroundColor != want {
+		t.Fatalf("selection background %v, want %v", st.BackgroundColor, want)
+	}
+	icon := sheet.Compute(Path("window check:checked")).IconSource
+	if icon.Kind != "url" || icon.Path != "resource:///com/example/themes/Test/3.0/assets/check.png" {
+		t.Fatalf("icon %+v", icon)
+	}
+	img := LoadImage(icon.Path)
+	if img == nil || img.Bounds().Dx() != 2 {
+		t.Fatalf("icon image %v", img)
+	}
+}

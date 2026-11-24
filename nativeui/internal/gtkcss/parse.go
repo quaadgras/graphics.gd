@@ -31,8 +31,15 @@ type Decl struct {
 	Base        string
 }
 
-// Load parses the stylesheet at path, following @import.
+// Load parses the stylesheet at path, following @import. A GResource bundle
+// beside it (gtk.gresource) is registered first, as GTK does, so that
+// resource:// imports and url()s resolve.
 func Load(path string) (*Sheet, error) {
+	if bundle := filepath.Join(filepath.Dir(path), "gtk.gresource"); fileExists(bundle) {
+		if err := LoadResources(bundle); err != nil {
+			return nil, fmt.Errorf("gtkcss: %s: %w", bundle, err)
+		}
+	}
 	sheet := &Sheet{Dir: filepath.Dir(path), Colors: map[string]string{}}
 	if err := sheet.load(path, map[string]bool{}); err != nil {
 		return nil, err
@@ -51,12 +58,14 @@ func (s *Sheet) load(path string, seen map[string]bool) error {
 		return nil
 	}
 	seen[path] = true
-	data, err := os.ReadFile(path)
+	data, err := readFile(path)
 	if err != nil {
 		return err
 	}
-	return s.parse(string(data), filepath.Dir(path), seen)
+	return s.parse(string(data), dir(path), seen)
 }
+
+func fileExists(path string) bool { _, err := os.Stat(path); return err == nil }
 
 func stripComments(src string) string {
 	var b strings.Builder
@@ -144,11 +153,7 @@ func (s *Sheet) parse(src, base string, seen map[string]bool) error {
 			switch {
 			case strings.HasPrefix(stmt, "@import"):
 				if file := urlArg(strings.TrimSpace(strings.TrimPrefix(stmt, "@import"))); file != "" {
-					path := file
-					if !filepath.IsAbs(path) {
-						path = filepath.Join(base, file)
-					}
-					if err := s.load(path, seen); err != nil && !os.IsNotExist(err) {
+					if err := s.load(resolve(base, file), seen); err != nil && !os.IsNotExist(err) {
 						return fmt.Errorf("gtkcss: import %s: %w", file, err)
 					}
 				}

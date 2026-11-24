@@ -3,6 +3,7 @@
 package nativeui
 
 import (
+	"fmt"
 	"image"
 	"image/draw"
 	"math"
@@ -291,6 +292,11 @@ func buildGTK(opts options) (Theme.Instance, error) {
 	sheet, err := gtkSheet(opts.GTKTheme, opts.Dark)
 	if err != nil {
 		return Theme.Nil, err
+	}
+	if len(sheet.Rules) == 0 {
+		// Nothing we can read (all in a resource bundle we cannot find, say):
+		// every colour would be transparent black.
+		return Theme.Nil, fmt.Errorf("GTK theme %s: no rules to read", opts.GTKTheme)
 	}
 	g := &gtkBuilder{sheet: sheet, theme: Theme.New(), k: float64(opts.Scale), weight: 400}
 	t := g.theme

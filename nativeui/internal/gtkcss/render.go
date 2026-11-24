@@ -1,11 +1,11 @@
 package gtkcss
 
 import (
+	"bytes"
 	"image"
 	"image/color"
 	_ "image/png"
 	"math"
-	"os"
 	"strings"
 	"sync"
 )
@@ -183,9 +183,8 @@ func LoadImage(path string) image.Image {
 		images.Store(path, img) // no SVG decoder: callers fall back to PNG versions
 		return nil
 	}
-	if f, err := os.Open(path); err == nil {
-		img, _, _ = image.Decode(f)
-		f.Close()
+	if data, err := readFile(path); err == nil {
+		img, _, _ = image.Decode(bytes.NewReader(data))
 	}
 	images.Store(path, img)
 	return img

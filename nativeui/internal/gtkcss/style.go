@@ -1,7 +1,6 @@
 package gtkcss
 
 import (
-	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -235,11 +234,7 @@ func (s *Sheet) image(v, base string, current RGBA) (Image, bool) {
 	}
 	switch name {
 	case "url":
-		p := urlArg(v)
-		if !filepath.IsAbs(p) {
-			p = filepath.Join(base, p)
-		}
-		return Image{Kind: "url", Path: p}, true
+		return Image{Kind: "url", Path: resolve(base, urlArg(v))}, true
 	case "-gtk-scaled":
 		if len(args) > 0 {
 			return s.image(args[0], base, current) // the 1x image
