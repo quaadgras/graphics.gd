@@ -355,23 +355,27 @@ func (exe *toolchain) LookupPlatform(GOOS, GOARCH string) (string, error) {
 	if exe.IsApp && runtime.GOOS == "darwin" {
 		unzip = ""
 	}
+	var kind string
 	switch {
 	case strings.HasSuffix(url, ".zip"):
-		if err := ExtractArchive(dest, install_dir, "zip", unzip, runtime.GOOS != "darwin" || !exe.IsApp); err != nil {
-			return "", xray.New(err)
-		}
-		if err := os.Remove(dest); err != nil {
-			return "", xray.New(err)
-		}
+		kind = "zip"
 	case strings.HasSuffix(url, ".tar.gz"):
-		if err := ExtractArchive(dest, install_dir, "tar.gz", unzip, true); err != nil {
+		kind = "tar.gz"
+	case strings.HasSuffix(url, ".tar.xz"):
+		kind = "tar.xz"
+	}
+	switch {
+	case kind != "" && unzip == "" && !exe.IsApp:
+		// the whole archive is the tool (zig is its binary next to its lib
+		// directory), which replaces whatever an older version left.
+		if err := installArchive(dest, install_dir, kind, install_path+".previous"); err != nil {
 			return "", xray.New(err)
 		}
 		if err := os.Remove(dest); err != nil {
 			return "", xray.New(err)
 		}
-	case strings.HasSuffix(url, ".tar.xz"):
-		if err := ExtractArchive(dest, install_dir, "tar.xz", unzip, true); err != nil {
+	case kind != "":
+		if err := ExtractArchive(dest, install_dir, kind, unzip, kind != "zip" || runtime.GOOS != "darwin" || !exe.IsApp); err != nil {
 			return "", xray.New(err)
 		}
 		if err := os.Remove(dest); err != nil {

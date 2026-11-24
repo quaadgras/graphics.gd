@@ -283,6 +283,75 @@ func extractTar(dest, targetFile, topDir string, tr *tar.Reader) error {
 	return nil
 }
 
+// rename is os.Rename, replaceable by tests to make a move fail.
+var rename = os.Rename
+
+// installArchive installs the contents of an archive (below its top-level
+// directory) into dir, replacing the entries of the same name that an older
+// version of the tool left there: zig's binary and its lib directory are
+// replaced as a whole, so none of the older version's files linger.
+//
+// The archive is extracted beside dir first, so a failed download or
+// extraction leaves the installed version as it was. The older entries are
+// then moved aside into a directory named after previous and the new ones
+// moved into place; if a move fails, the moves made so far are undone. The
+// older entries are removed on success, or by the next update when they
+// cannot be removed yet (a running zig.exe on Windows can be moved, but not
+// deleted).
+func installArchive(archive, dir, kind, previous string) error {
+	staging := strings.TrimSuffix(archive, ".download") + ".staging"
+	if err := os.RemoveAll(staging); err != nil {
+		return fmt.Errorf("removing what an earlier update left at %s: %w", staging, err)
+	}
+	if stale, err := filepath.Glob(previous + "-*"); err == nil {
+		for _, path := range stale {
+			os.RemoveAll(path) // best effort, see above.
+		}
+	}
+	defer os.RemoveAll(staging)
+	if err := ExtractArchive(archive, staging, kind, "", true); err != nil {
+		os.Remove(archive) // an archive that does not extract is downloaded again.
+		return err
+	}
+	entries, err := os.ReadDir(staging)
+	if err != nil {
+		return err
+	}
+	previous, err = os.MkdirTemp(dir, filepath.Base(previous)+"-*")
+	if err != nil {
+		return err
+	}
+	type move struct{ from, to string }
+	var done []move
+	undo := func(cause error) error {
+		for i := len(done) - 1; i >= 0; i-- {
+			if err := rename(done[i].to, done[i].from); err != nil {
+				return fmt.Errorf("%w, and the earlier version could not be restored (%v): its files are in %s", cause, err, previous)
+			}
+		}
+		os.RemoveAll(previous)
+		return cause
+	}
+	for _, entry := range entries {
+		name := entry.Name()
+		installed := filepath.Join(dir, name)
+		if _, err := os.Lstat(installed); err == nil {
+			if err := rename(installed, filepath.Join(previous, name)); err != nil {
+				return undo(fmt.Errorf("moving %s aside: %w", installed, err))
+			}
+			done = append(done, move{installed, filepath.Join(previous, name)})
+		} else if !os.IsNotExist(err) {
+			return undo(err)
+		}
+		if err := rename(filepath.Join(staging, name), installed); err != nil {
+			return undo(fmt.Errorf("installing %s: %w", installed, err))
+		}
+		done = append(done, move{filepath.Join(staging, name), installed})
+	}
+	os.RemoveAll(previous)
+	return nil
+}
+
 // ExtractArchive is the main entry point for extracting archives
 func ExtractArchive(src, dest, archiveType, targetFile string, stripTopDir bool) error {
 	// Normalize targetFile to use forward slashes for consistent archive path matching
