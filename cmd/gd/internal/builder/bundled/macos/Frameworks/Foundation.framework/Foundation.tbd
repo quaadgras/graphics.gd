@@ -11,6 +11,25 @@ exports:
     - _NSSearchPathForDirectoriesInDomains
     - _NSTemporaryDirectory
     - _NSLocalizedDescriptionKey
+    - _NSBundleDidLoadNotification
+    - _NSBundleResourceRequestLowDiskSpaceNotification
+    - _NSCocoaErrorDomain
+    - _NSDebugDescriptionErrorKey
+    - _NSFilePathErrorKey
+    - _NSHelpAnchorErrorKey
+    - _NSLocalizedFailureErrorKey
+    - _NSLocalizedFailureReasonErrorKey
+    - _NSLocalizedRecoveryOptionsErrorKey
+    - _NSLocalizedRecoverySuggestionErrorKey
+    - _NSMachErrorDomain
+    - _NSOSStatusErrorDomain
+    - _NSPOSIXErrorDomain
+    - _NSProcessInfoPowerStateDidChangeNotification
+    - _NSProcessInfoThermalStateDidChangeNotification
+    - _NSRecoveryAttempterErrorKey
+    - _NSStringEncodingErrorKey
+    - _NSURLErrorKey
+    - _NSUnderlyingErrorKey
    objc-classes:
     - NSAttributedString
     - NSBundle

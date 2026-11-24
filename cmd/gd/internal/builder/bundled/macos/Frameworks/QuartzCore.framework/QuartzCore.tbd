@@ -20,6 +20,10 @@ exports:
     - _kCAGravityTop
     - _kCAGravityTopLeft
     - _kCAGravityTopRight
+    - _CADynamicRangeAutomatic
+    - _CADynamicRangeConstrainedHigh
+    - _CADynamicRangeHigh
+    - _CADynamicRangeStandard
    objc-classes:
     - CAEDRMetadata
     - CAMetalLayer

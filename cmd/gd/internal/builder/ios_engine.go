@@ -89,7 +89,7 @@ func setupIOSSDK(dir string) (string, error) {
 		return "", err
 	}
 	hash := sha256.New()
-	fmt.Fprintln(hash, dir, zig)
+	fmt.Fprintln(hash, dir, zig, tooling.Zig.InstalledVersion())
 	err = fs.WalkDir(ios_sdk, "bundled/ios", func(path string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() {
 			return err
@@ -109,8 +109,11 @@ func setupIOSSDK(dir string) (string, error) {
 	if err := os.RemoveAll(dir); err != nil {
 		return "", err
 	}
-	if err := project.CopyDir(filepath.Join(zigLibDir(zig), "libc", "include", "any-macos-any"), filepath.Join(dir, "usr", "include")); err != nil {
+	if err := project.CopyDir(filepath.Join(zigLibDir(zig), "libc", "include", "any-darwin-any"), filepath.Join(dir, "usr", "include")); err != nil {
 		return "", fmt.Errorf("gd: cannot find zig's darwin headers: %w", err)
+	}
+	if err := capDarwinAvailability(filepath.Join(dir, "usr", "include")); err != nil {
+		return "", err
 	}
 	for from, to := range map[string]string{
 		"bundled/ios/include":    filepath.Join(dir, "usr", "include"),

@@ -117,7 +117,7 @@ func (IOS) Build(args ...string) error {
 	if !project.IncludesGo {
 		return nil
 	}
-	ZIG_INCLUDES := filepath.Join(gdpaths.Bin, "lib", "libc", "include", "any-macos-any")
+	ZIG_INCLUDES := filepath.Join(gdpaths.Bin, "lib", "libc", "include", "any-darwin-any")
 	switch GOARCH {
 	case "arm64":
 		// CC is consumed only by go build's cgo — the iOS export no longer
@@ -262,8 +262,8 @@ func (ios IOS) BuildMain(args ...string) error {
 	}
 	var lld_args = []string{
 		"-arch", "arm64",
-		// the SDK is that of zig 0.15.2's darwin headers: Metal picks its default
-		// shading language version from it, which the engine compiles shaders for.
+		// the recorded SDK is deliberately pinned: Metal picks its default shading
+		// language version from it, which the engine compiles shaders for.
 		"-platform_version", "ios", "15.0.0", "18.5",
 		"-fixup_chains", "-ignore_auto_link",
 		"-syslibroot", "/dev/null",

@@ -1,13 +1,11 @@
 package builder
 
 import (
-	"bytes"
 	"embed"
 	"errors"
 	"fmt"
 	"io/fs"
 	"os"
-	"os/user"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -110,9 +108,6 @@ func (musl Musl) Build(args ...string) (err error) {
 	if err := project.SetupFiles(musl_sdk, "bundled/musl", filepath.Join(gdpaths.Lib, "musl")); err != nil {
 		return xray.New(err)
 	}
-	if err := musl.patch(); err != nil {
-		return xray.New(err)
-	}
 	GOROOT, err := tooling.Go.Output("env", "GOROOT")
 	if err != nil {
 		return xray.New(err)
@@ -211,32 +206,6 @@ func restoreCC() func() {
 			os.Unsetenv("CC")
 		}
 	}
-}
-
-func (musl Musl) patch() error {
-	my, err := user.Current()
-	if err != nil {
-		return xray.New(err)
-	}
-	HOME := my.HomeDir
-	var GDPATH = os.Getenv("GDPATH")
-	if GDPATH == "" {
-		GDPATH = filepath.Join(HOME, "gd")
-	}
-	musl_malloc := filepath.Join(GDPATH, "bin", "lib", "libc", "musl", "src", "malloc", "mallocng", "malloc.c")
-	file, err := os.ReadFile(musl_malloc)
-	if err != nil {
-		return xray.New(err)
-	}
-	unpatched := []byte(`struct malloc_context ctx = { 0 };`)
-	if !bytes.Contains(file, unpatched) {
-		return nil // already patched, rewriting would invalidate zig's libc cache
-	}
-	file = bytes.Replace(file, unpatched, []byte(`struct malloc_context ctx = { .brk = -1 };`), 1)
-	if err := os.WriteFile(musl_malloc, file, 0644); err != nil {
-		return xray.New(err)
-	}
-	return nil
 }
 
 // ignoreEnabledExtensions disables every GDExtension for the duration of a musl export.
@@ -423,9 +392,6 @@ func (musl Musl) Test(args ...string) error {
 		return xray.New(err)
 	}
 	if err := project.SetupFiles(musl_sdk, "bundled/musl", filepath.Join(gdpaths.Lib, "musl")); err != nil {
-		return xray.New(err)
-	}
-	if err := musl.patch(); err != nil {
 		return xray.New(err)
 	}
 	GOROOT, err := tooling.Go.Output("env", "GOROOT")

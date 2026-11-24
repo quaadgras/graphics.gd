@@ -53,9 +53,10 @@ func setupAndroidSDK(dir, triple string) (androidSDK, error) {
 		return sdk, err
 	}
 	// The stubs take a moment to compile, so they are only rebuilt when the
-	// bundled SDK (or where it lives, libc.txt is absolute) changes.
+	// bundled SDK (or where it lives, libc.txt is absolute) or the version of
+	// zig (which defines the format of libc.txt) changes.
 	hash := sha256.New()
-	fmt.Fprintln(hash, dir, zig)
+	fmt.Fprintln(hash, dir, zig, tooling.Zig.InstalledVersion())
 	err = fs.WalkDir(android_sdk, "bundled/android", func(path string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() {
 			return err
@@ -89,8 +90,8 @@ func setupAndroidSDK(dir, triple string) (androidSDK, error) {
 			return sdk, fmt.Errorf("build %s stub for %s: %w\n%s", name, triple, err, output)
 		}
 	}
-	libc := fmt.Sprintf("include_dir=%s\nsys_include_dir=%s\ncrt_dir=%s\nmsvc_lib_dir=\nkernel32_lib_dir=\ngcc_dir=\n",
-		sdk.Include, sdk.IncludeArch, sdk.Lib)
+	libc := fmt.Sprintf("include_dir=%s\nsys_include_dir=%s\ncrt_dir=%s\nmsvc_lib_dir=\nkernel32_lib_dir=\ncc_dir=%s\ndarwin_sdk_dir=\n",
+		sdk.Include, sdk.IncludeArch, sdk.Lib, sdk.Lib)
 	if err := os.WriteFile(sdk.LibC, []byte(libc), 0644); err != nil {
 		return sdk, err
 	}

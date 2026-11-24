@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"graphics.gd/cmd/gd/internal/gdpaths"
@@ -62,7 +63,11 @@ func (custom engine) macos(GOARCH string) (string, error) {
 			triple: {
 				System:     []string{filepath.Join(sdk, "usr", "include")},
 				Frameworks: []string{filepath.Join(sdk, "System", "Library", "Frameworks")},
-				Flags:      []string{"-U_LIBCPP_HAS_VENDOR_AVAILABILITY_ANNOTATIONS", "-D_LIBCPP_HAS_VENDOR_AVAILABILITY_ANNOTATIONS=1"},
+				Flags: []string{"-U_LIBCPP_HAS_VENDOR_AVAILABILITY_ANNOTATIONS", "-D_LIBCPP_HAS_VENDOR_AVAILABILITY_ANNOTATIONS=1",
+					// zig searches its own darwin headers ahead of the SDK's for
+					// macOS, so the cap of capDarwinAvailability is made here.
+					"-D__MAC_OS_X_VERSION_MIN_REQUIRED=__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__",
+					"-D__MAC_OS_X_VERSION_MAX_ALLOWED=__MAC_15_5"},
 			},
 		},
 	}
@@ -110,6 +115,33 @@ func (custom engine) combineDarwin(llvm, src, library, infix string) error {
 	return nil
 }
 
+// capDarwinAvailability rewrites the newest OS versions that the darwin
+// headers in include let code build for (__MAC_OS_X_VERSION_MAX_ALLOWED and
+// __IPHONE_OS_VERSION_MAX_ALLOWED) to those of the SDK that gd records when
+// it links (see macosSlices and ios.go). zig's headers come from a newer SDK
+// than gd's bundled frameworks declare, and the engine would otherwise build
+// its code paths for OS versions whose APIs those frameworks lack. For iOS
+// these headers are the only ones; macOS builds also see zig's own copy
+// first, so the macOS engine build defines the cap as well.
+func capDarwinAvailability(include string) error {
+	path := filepath.Join(include, "AvailabilityInternal.h")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("gd: cannot find zig's darwin availability header: %w", err)
+	}
+	for _, cap := range []struct{ macro, prefix, version string }{
+		{"__MAC_OS_X_VERSION_MAX_ALLOWED", "__MAC_", "15_5"},
+		{"__IPHONE_OS_VERSION_MAX_ALLOWED", "__IPHONE_", "18_5"},
+	} {
+		pattern := regexp.MustCompile(`(#define\s+` + cap.macro + `\s+)` + cap.prefix + `\d+(_\d+)*\b`)
+		if !pattern.Match(data) {
+			return fmt.Errorf("gd: zig's %s does not define %s the way gd expects", path, cap.macro)
+		}
+		data = pattern.ReplaceAll(data, []byte("${1}"+cap.prefix+cap.version))
+	}
+	return os.WriteFile(path, data, 0644)
+}
+
 // setupMacOSSDK lays gd's bundled macOS SDK out the way Xcode does one.
 // Most of the frameworks are those of the iOS SDK, whose declarations
 // are the same on macOS, with the macOS ones on top.
@@ -119,7 +151,7 @@ func setupMacOSSDK(dir string) (string, error) {
 		return "", err
 	}
 	hash := sha256.New()
-	fmt.Fprintln(hash, dir, zig)
+	fmt.Fprintln(hash, dir, zig, tooling.Zig.InstalledVersion())
 	for _, bundle := range []struct {
 		fs   fs.FS
 		root string
@@ -144,8 +176,11 @@ func setupMacOSSDK(dir string) (string, error) {
 	if err := os.RemoveAll(dir); err != nil {
 		return "", err
 	}
-	if err := project.CopyDir(filepath.Join(zigLibDir(zig), "libc", "include", "any-macos-any"), filepath.Join(dir, "usr", "include")); err != nil {
+	if err := project.CopyDir(filepath.Join(zigLibDir(zig), "libc", "include", "any-darwin-any"), filepath.Join(dir, "usr", "include")); err != nil {
 		return "", fmt.Errorf("gd: cannot find zig's darwin headers: %w", err)
+	}
+	if err := capDarwinAvailability(filepath.Join(dir, "usr", "include")); err != nil {
+		return "", err
 	}
 	// the C library stubs of the iOS SDK declare their macOS targets too.
 	for _, from := range []string{"bundled/ios/include", "bundled/ios/lib"} {

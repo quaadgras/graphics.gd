@@ -33,7 +33,7 @@ type macosSlice struct {
 }
 
 var macosSlices = []macosSlice{
-	{"arm64", "aarch64-macos", "arm64", "11.0", "15.5"},   // the SDK of zig 0.15.2's darwin headers.
+	{"arm64", "aarch64-macos", "arm64", "11.0", "15.5"},   // pinned, Metal picks its default shading language from it.
 	{"amd64", "x86_64-macos", "x86_64", "10.13", "10.13"}, // no Metal there, and a newer SDK needs privacy usage descriptions.
 }
 

@@ -20,7 +20,7 @@ Frameworks/*/Headers and include/
 	as nothing checks them at link time.
 
 	The C library's headers are not here, gd takes those from zig
-	(lib/libc/include/any-macos-any, under the APSL and BSD licenses).
+	(lib/libc/include/any-darwin-any, under the APSL and BSD licenses).
 
 Frameworks/OpenGLES.framework/Headers/{ES1,ES2,ES3,KHR}
 	The OpenGL ES API as published by Khronos under the MIT license,

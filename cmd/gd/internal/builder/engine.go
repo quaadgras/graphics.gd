@@ -345,7 +345,7 @@ func engineTarget(debug bool) string {
 
 // engineRecipe is incremented whenever gd changes how it builds an engine
 // (flags, SDKs), so that engines built any other way are not reused.
-const engineRecipe = "r2"
+const engineRecipe = "r3"
 
 // sdkSum is a hash of the SDKs gd bundles, which an engine is built against.
 var sdkSum = sync.OnceValue(func() string {

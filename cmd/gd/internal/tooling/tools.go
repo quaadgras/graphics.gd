@@ -32,7 +32,7 @@ var LLVM = toolchain{
 
 var Zig = toolchain{
 	Name:         "zig",
-	Version:      "0.15.2",
+	Version:      "0.17.1",
 	VersionFlags: []string{"version"},
 	DownloadHint: "https://ziglang.org/download/",
 	DownloadURL:  "https://ziglang.org/download/$(VERSION)/zig-$(ARCH)-$(OS)-$(VERSION)$(EXT)",
