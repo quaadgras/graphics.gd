@@ -8,9 +8,6 @@ package threadcheck
 // cost comparable to the native g-register thread check, and with no other
 // threads there is no need for atomics on the variables below.
 
-// currentg returns the current goroutine's g pointer (the wasm g register).
-func currentg() uintptr
-
 // mainG identifies the program's main goroutine. Package initialisers run on
 // it, before any other goroutine can exist. The main goroutine is
 // frame-aligned by construction: in Rendering()/Scene() mode the frame

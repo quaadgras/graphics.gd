@@ -243,7 +243,7 @@ func Cycle() {
 								revision revision
 								checksum [1]uint64
 							}
-							free := *(*func(Solo))(unsafe.Pointer(&jump))
+							free := *(*func(Solo))(funcOf(&jump))
 							if debug {
 								pc := reflect.ValueOf(free).Pointer()
 								fmt.Println(runtime.FuncForPC(pc).FileLine(pc))
@@ -259,7 +259,7 @@ func Cycle() {
 								revision revision
 								checksum [2]uint64
 							}
-							free := *(*func(Pair))(unsafe.Pointer(&jump))
+							free := *(*func(Pair))(funcOf(&jump))
 							if debug {
 								pc := reflect.ValueOf(free).Pointer()
 								fmt.Println(runtime.FuncForPC(pc).FileLine(pc))
@@ -278,7 +278,7 @@ func Cycle() {
 								revision revision
 								checksum [3]uint64
 							}
-							free := *(*func(Trio))(unsafe.Pointer(&jump))
+							free := *(*func(Trio))(funcOf(&jump))
 							if debug {
 								pc := reflect.ValueOf(free).Pointer()
 								fmt.Println(runtime.FuncForPC(pc).FileLine(pc))
@@ -419,7 +419,7 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 			//
 			var (
 				free = free
-				jump = uint64(uintptr(*(*unsafe.Pointer)(unsafe.Pointer(&free))))
+				jump = uint64(wordOf(*(*unsafe.Pointer)(unsafe.Pointer(&free))))
 			)
 			var (
 				local [3]uint64

@@ -1,4 +1,4 @@
-//go:build !gc || go1.28
+//go:build !gc || go1.28 || (gd && wasm.gc)
 
 package classdb
 

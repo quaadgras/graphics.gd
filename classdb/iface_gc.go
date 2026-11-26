@@ -1,4 +1,4 @@
-//go:build gc && !go1.28
+//go:build gc && !go1.28 && !(gd && wasm.gc)
 
 package classdb
 
@@ -15,7 +15,7 @@ import (
 // a type-word (itab) followed by a data-word. This layout is not guaranteed by
 // the language spec, so this file is constrained to the gc compiler and to the
 // Go versions it has been validated against — after checking a new release,
-// bump the !go1.N constraint here and in iface_portable.go. Any other
+// bump the !go1.N constraint here and in iface_reflect.go. Any other
 // compiler or version falls back to reflect in
 // [instanceImplementation.Interface].
 type ifaceWords struct {

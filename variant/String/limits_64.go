@@ -1,4 +1,4 @@
-//go:build amd64 || arm64 || wasm
+//go:build amd64 || arm64 || (wasm && !(gd && wasm.gc))
 
 package String
 

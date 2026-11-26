@@ -28,7 +28,7 @@ type threadObject struct {
 
 func init() {
 	// the id of a cleanup is how its object is found again.
-	if field := reflect.TypeFor[runtime.Cleanup]().Field(0); field.Name != "id" || field.Type.Kind() != reflect.Uint64 || field.Offset != 0 {
+	if field := reflect.TypeFor[runtime.Cleanup]().Field(0); field.Name != "id" || (field.Type.Kind() != reflect.Uint64 && !cleanupIsID) || field.Offset != 0 {
 		panic("gdreference: runtime.Cleanup no longer starts with its id")
 	}
 }

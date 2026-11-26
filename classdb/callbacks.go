@@ -229,7 +229,7 @@ func init() {
 			},
 			Called: func(instance gdextension.ExtensionInstanceID, callData gdextension.Pointer, result gdextension.Returns[any], args gdextension.Accepts[any]) {
 				defer gd.Recover()
-				pv := (*pinnedVirtualFunc)(*(*unsafe.Pointer)(unsafe.Pointer(&callData))) // runtime.Pinned, so this is ok.
+				pv := virtualOf(callData)
 				if pv.tick != nil && instance != 0 {
 					pv.tick(unsafe.Pointer(uintptr(instance)), Float.X(gd.UnsafeGet[float64](gdextension.Pointer(args), 0)))
 					gdreference.Barrier()
@@ -342,8 +342,8 @@ func init() {
 				pv := &pinnedVirtualFunc{fn: virtual, tab: classImpl.tab, tick: classImpl.tickOf(name.String())}
 				virtualPinner.Pin(pv)
 				pinnedVirtuals = append(pinnedVirtuals, pv)
-				pinnedVirtualCache.Insert(key, uintptr(unsafe.Pointer(pv)))
-				return uintptr(unsafe.Pointer(pv))
+				pinnedVirtualCache.Insert(key, virtualWord(pv))
+				return virtualWord(pv)
 			},
 		},
 	}

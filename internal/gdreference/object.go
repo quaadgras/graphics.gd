@@ -19,7 +19,7 @@ func Barrier() {
 }
 
 func init() {
-	if unsafe.Sizeof(runtime.Cleanup{}) != unsafe.Sizeof(object{}) {
+	if unsafe.Sizeof(runtime.Cleanup{}) != unsafe.Sizeof(object{}) && !cleanupIsID {
 		panic("gdreference: size of runtime.Cleanup does not match size of object")
 	}
 }

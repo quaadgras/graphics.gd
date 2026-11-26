@@ -1,3 +1,5 @@
+//go:build wasm && !(gd && wasm.gc)
+
 #include "textflag.h"
 
 // currentg returns the g register: the current goroutine's g pointer.
