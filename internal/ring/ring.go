@@ -10,7 +10,7 @@ import (
 type Entry struct {
 	_      structs.HostLayout
 	Object uintptr // gdextension.Object
-	_      pad     // (the engine reads the entry with 8-byte words: see pad)
+	_      pad     // (the engine reads these two as 8-byte words: see pad)
 	Method uintptr // gdextension.MethodForClass
 	_      pad
 	Shape  uint64     // gdextension.Shape
@@ -18,9 +18,7 @@ type Entry struct {
 	Result [64]byte   // result slot (for future phases)
 	Refs   [16]uint16 // intra-buffer references (for future phases)
 	Owner  uintptr    // back-pointer for future result offloading
-	_      pad
-	PC     uintptr // Go caller PC, captured at enqueue time
-	_      pad
+	PC     uintptr    // Go caller PC, captured at enqueue time
 }
 
 const Size = 256 // power of 2
