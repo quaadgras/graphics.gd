@@ -7,3 +7,4 @@ go.work
 go.work.sum
 internal/releases
 testing
+/playground/dist*

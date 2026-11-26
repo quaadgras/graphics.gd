@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playground: graphics.gd</title>
+<meta name="description" content="Write a graphics.gd program in Go, compile it in your browser and run it on the Godot engine, all in the page.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%232563eb'/><text x='16' y='22' font-family='monospace' font-size='15' font-weight='700' text-anchor='middle' fill='white'>gd</text></svg>">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f8fafc; --fg: #16202e; --muted: #5b6676; --line: #dde3ea;
+    --accent: #2563eb; --on-accent: #fff; --code-bg: #eef2f6; --err: #b42318;
+    --kw: #9333ea; --str: #15803d; --num: #b45309; --com: #7b8794; --typ: #0e7490; --fn: #1d4ed8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10151c; --fg: #e6ebf1; --muted: #98a3b3; --line: #273140;
+      --accent: #6ea8ff; --on-accent: #0b1320; --code-bg: #171e28; --err: #ff8a7a;
+      --kw: #c792ea; --str: #9ece6a; --num: #f0a45d; --com: #6b7889; --typ: #5fd3e6; --fn: #82aaff;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+  /* The playground has the window's width; the text under it does not. */
+  .lede, details.about, footer { max-width: 60rem; }
+  h1 { font-size: 1.7rem; line-height: 1.1; margin: 0 0 .3rem; letter-spacing: -.02em; }
+  h1 span { color: var(--accent); }
+  .lede { font-size: 1rem; color: var(--muted); margin: 0 0 .9rem; }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .88em; background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+  .panel { border: 1px solid var(--line); border-radius: 10px; background: var(--code-bg); overflow: hidden; }
+  .pbar { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .55rem .6rem; }
+  .pbar.top { background: var(--bg); border-bottom: 1px solid var(--line); position: relative; }
+  .btn {
+    font: inherit; font-size: .88rem; line-height: 1.2; padding: .45rem .85rem; border-radius: 6px; cursor: pointer;
+    border: 1px solid var(--line); background: transparent; color: var(--fg);
+  }
+  .btn:hover:not(:disabled) { border-color: var(--muted); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+  .btn.primary:hover:not(:disabled) { filter: brightness(1.08); border-color: var(--accent); }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .btn .hint { font-weight: 400; opacity: .75; margin-left: .45rem; font-size: .8em; }
+  .pbar .status { color: var(--muted); font-size: .85rem; margin-left: auto; font-variant-numeric: tabular-nums; padding-right: .25rem; }
+  .progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; }
+  .progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .15s; }
+  .progress[hidden] { display: none; }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .84rem; line-height: 1.55; tab-size: 4; }
+  /* The source beside the program; one above the other when narrow. */
+  .split { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); --tall: max(24rem, calc(100vh - 21rem)); }
+  .editor { display: flex; min-width: 0; height: var(--tall); }
+  .gutter {
+    flex: none; overflow: hidden; padding: 1rem .6rem 1rem .9rem; text-align: right; color: var(--muted); opacity: .6;
+    user-select: none; white-space: pre; border-right: 1px solid var(--line); min-width: 2.6rem;
+  }
+  /* The source is typed into a textarea whose text is not painted: the
+     same text, coloured, is in the pre under it, which scrolls with it. */
+  .code { position: relative; flex: 1; min-width: 0; }
+  .code pre, .code textarea {
+    position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 1rem; border: 0; border-radius: 0;
+    white-space: pre; overflow-wrap: normal; background: transparent;
+  }
+  .code pre { overflow: hidden; color: var(--fg); pointer-events: none; }
+  .code textarea { resize: none; overflow: auto; color: transparent; caret-color: var(--accent); }
+  .code textarea::selection { color: transparent; background: color-mix(in srgb, var(--accent) 30%, transparent); }
+  textarea:focus { outline: none; }
+  .k { color: var(--kw); } .s { color: var(--str); } .n { color: var(--num); } .c { color: var(--com); font-style: italic; } .t { color: var(--typ); } .f { color: var(--fn); }
+  .editor:focus-within { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 45%, transparent); }
+  .stage { position: relative; min-width: 0; height: var(--tall); background: #000; border-left: 1px solid var(--line); }
+  .stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+  .stage .idle { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 1rem; text-align: center; color: #8b95a5; font-size: .9rem; }
+  .pbar.mid { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); padding: .4rem 1rem; font-size: .8rem; min-height: 2.1rem; }
+  .pbar.mid .label { font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-size: .72rem; }
+  .build { display: flex; align-items: center; gap: .45rem; margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .build.failed { color: var(--err); }
+  .build .spin { width: .7rem; height: .7rem; border: 2px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .build .spin { animation-duration: 2s; } }
+  .out { margin: 0; padding: .75rem 1rem; min-height: 4.5rem; max-height: 12rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; background: transparent; }
+  .out .e { color: var(--err); }
+  .out:empty::before { content: "Output appears here."; color: var(--muted); opacity: .7; }
+  .stats { border-top: 1px solid var(--line); padding: .35rem 1rem; color: var(--muted); font-size: .78rem; font-variant-numeric: tabular-nums; }
+  .stats:empty { display: none; }
+  details.about { margin-top: 2rem; border-top: 1px solid var(--line); padding-top: .5rem; }
+  details.about summary { cursor: pointer; font-weight: 600; font-size: 1.05rem; padding: .5rem 0; }
+  details.about summary:hover { color: var(--accent); }
+  ol { padding-left: 1.3rem; max-width: 52rem; }
+  li { margin: .5rem 0; }
+  footer { margin-top: 2.5rem; color: var(--muted); font-size: .9rem; }
+  kbd { font-family: inherit; font-size: .85em; border: 1px solid var(--line); border-radius: 4px; padding: 0 .3em; }
+  @media (max-width: 60rem) {
+    .split { grid-template-columns: minmax(0, 1fr); }
+    .stage { border-left: 0; border-top: 1px solid var(--line); height: 56vw; min-height: 14rem; }
+    .editor { height: 20rem; }
+  }
+  @media (max-width: 40rem) {
+    /* (Under 16px, iOS zooms into the editor.) */
+    .mono { font-size: 16px; }
+    h1 { font-size: 1.6rem; }
+    .btn .hint { display: none; }
+    .pbar .status { width: 100%; margin-left: 0; order: 9; padding: 0 .25rem; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>graphics.gd <span>playground</span></h1>
+  <p class="lede">A Go program for the Godot engine, compiled in your browser and run in the page.</p>
+
+  <section class="panel" aria-label="Playground">
+    <div class="pbar top">
+      <button id="run" class="btn primary" disabled title="Run (Ctrl+Enter)">Run<span class="hint" id="hint">Ctrl ↵</span></button>
+      <button id="stop" class="btn" hidden>Stop</button>
+      <select id="example" class="btn" aria-label="Examples"><option value="" hidden>Examples</option></select>
+      <button id="share" class="btn" title="Copy a link with this code">Share</button>
+      <span class="status" id="status">loading…</span>
+      <div class="progress" id="progress" hidden><i></i></div>
+    </div>
+    <div class="split">
+      <div class="editor">
+        <div class="gutter mono" id="gutter" aria-hidden="true">1</div>
+        <div class="code">
+          <pre id="hl" class="mono" aria-hidden="true"></pre>
+          <textarea id="src" class="mono" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Source (Go)"></textarea>
+        </div>
+      </div>
+      <div class="stage" id="stage"><div class="idle" id="idle">The program runs here.</div></div>
+    </div>
+    <div class="pbar mid"><span class="label">Output</span><div class="build" id="build" aria-live="polite"></div></div>
+    <pre class="out mono" id="out" aria-live="polite"></pre>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <details class="about">
+    <summary>How it works</summary>
+    <ol>
+      <li>The <code>go</code> command of <a href="https://compiler.gd">compiler.gd</a>, built for <code>GOOS=js</code>, compiles and links your program in a worker.</li>
+      <li>The program runs on the WebAssembly GC beside the Godot engine (graphics.gd's web build of it), which it calls directly; each run starts the engine again in a frame.</li>
+      <li>graphics.gd's source is in the page's file system. The packages that the examples use come precompiled; a class that none of them uses is compiled when you first import it, which takes a few seconds, and is then kept.</li>
+      <li>The build cache lives in IndexedDB; the downloads are kept in the browser's Cache Storage.</li>
+      <li>The standard library and graphics.gd only (no other modules), and one file. <kbd>Ctrl</kbd>+<kbd>Enter</kbd> runs.</li>
+      <li>Needs WebAssembly GC and JSPI: Chrome 137, Firefox 153, Safari 27.</li>
+    </ol>
+  </details>
+
+  <footer>
+    <a href="https://github.com/quaadgras/graphics.gd">github.com/quaadgras/graphics.gd</a> · MIT licensed
+  </footer>
+</main>
+<script type="module">
+import { fetchBody, gunzip, loadManifest } from './fetch.mjs';
+
+// The examples are programs in examples/, which build.sh also builds to
+// make the cache: what they import is what comes precompiled.
+const examples = { 'Hello, World!': 'hello', 'A class in Go: bouncing ball': 'bounce', '3D: spinning cube': 'cube' };
+
+const $ = (id) => document.getElementById(id);
+const src = $('src'), out = $('out'), run = $('run'), stop = $('stop'), status = $('status'), progress = $('progress');
+const stage = $('stage'), idle = $('idle');
+for (const name of Object.keys(examples)) $('example').add(new Option(name, examples[name]));
+const example = async (name) => (await fetch(`examples/${name}/main.go`)).text();
+
+// Line numbers, kept beside the text as it scrolls.
+const gutter = $('gutter');
+let shownLines = 0;
+const numberLines = () => {
+  const n = src.value.split('\n').length;
+  if (n === shownLines) return;
+  shownLines = n;
+  gutter.textContent = Array.from({ length: n }, (_, i) => i + 1).join('\n') + '\n';
+};
+src.addEventListener('scroll', () => { gutter.scrollTop = src.scrollTop; });
+
+// Colours: the source again, in the pre under the textarea (see the
+// styles), a span for each comment, string, number, keyword, predeclared
+// name and called function. One expression finds them, in that order, so
+// that what is inside a comment or a string is not looked at again.
+const hl = $('hl');
+const keywords = new Set('break case chan const continue default defer else fallthrough for func go goto if import interface map package range return select struct switch type var'.split(' '));
+const predeclared = new Set('any bool byte comparable complex64 complex128 error float32 float64 int int8 int16 int32 int64 rune string uint uint8 uint16 uint32 uint64 uintptr true false iota nil append cap clear close complex copy delete imag len make max min new panic print println real recover'.split(' '));
+const token = /(\/\/[^\n]*|\/\*[\s\S]*?(?:\*\/|$))|("(?:[^"\\\n]|\\.)*"?|`[^`]*`?|'(?:[^'\\\n]|\\.)*'?)|(\b(?:0[xX][\da-fA-F_]+|0[bB][01_]+|0[oO]?[0-7_]+|\d[\d_]*(?:\.[\d_]*)?(?:[eE][+-]?\d+)?)i?\b|\.\d[\d_]*(?:[eE][+-]?\d+)?i?)|([A-Za-z_]\w*)(?=(\s*\()?)/g;
+const highlight = () => {
+  const text = src.value;
+  const parts = [];
+  let last = 0;
+  const span = (cls, t) => {
+    const e = document.createElement('span');
+    e.className = cls;
+    e.textContent = t;
+    return e;
+  };
+  for (const m of text.matchAll(token)) {
+    const cls = m[1] ? 'c' : m[2] ? 's' : m[3] ? 'n' : keywords.has(m[4]) ? 'k' : predeclared.has(m[4]) ? 't' : m[5] !== undefined ? 'f' : '';
+    if (!cls) continue;
+    if (m.index > last) parts.push(text.slice(last, m.index));
+    parts.push(span(cls, m[0]));
+    last = m.index + m[0].length;
+  }
+  // (A last line that is empty has no height in a pre without this.)
+  parts.push(text.slice(last) + '\n');
+  hl.replaceChildren(...parts);
+};
+const sync = () => { hl.scrollTop = src.scrollTop; hl.scrollLeft = src.scrollLeft; };
+src.addEventListener('scroll', sync);
+const edited = () => { numberLines(); highlight(); sync(); };
+src.addEventListener('input', edited);
+if (/Mac|iPhone|iPad/.test(navigator.platform)) {
+  $('hint').textContent = '⌘ ↵';
+  run.title = 'Run (⌘+Enter)';
+}
+
+// Sharing: the code, deflated and in base64url, is the URL's fragment
+// (#code=...), which browsers do not send to the server.
+const toB64 = (bytes) => {
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+};
+const fromB64 = (text) => Uint8Array.from(atob(text.replace(/-/g, '+').replace(/_/g, '/')), (c) => c.charCodeAt(0));
+const pipe = async (bytes, stream) => new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer());
+const encode = async (code) => toB64(await pipe(new TextEncoder().encode(code), new CompressionStream('deflate-raw')));
+const decode = async (text) => new TextDecoder().decode(await pipe(fromB64(text), new DecompressionStream('deflate-raw')));
+
+async function loadSource() {
+  const m = location.hash.match(/^#code=([A-Za-z0-9_-]+)$/);
+  if (m) {
+    try {
+      src.value = await decode(m[1]);
+      $('example').value = '';
+      edited();
+      return;
+    } catch {
+      print('This link\'s code could not be read.', 2);
+    }
+  }
+  let saved = null;
+  try { saved = localStorage.getItem('graphics-gd-play-src'); } catch {}
+  src.value = saved || await example('hello');
+  edited();
+}
+addEventListener('hashchange', loadSource);
+// The link is of the code as shared: an edit makes it stale.
+src.addEventListener('input', () => {
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+});
+
+const share = $('share');
+let shareReset = 0;
+share.onclick = async () => {
+  const url = location.origin + location.pathname + '#code=' + await encode(src.value);
+  history.replaceState(null, '', url);
+  try { localStorage.setItem('graphics-gd-play-src', src.value); } catch {}
+  clearTimeout(shareReset);
+  try {
+    await navigator.clipboard.writeText(url);
+    share.textContent = 'Link copied';
+  } catch {
+    // No clipboard (an insecure page, or not allowed): the link is in
+    // the address bar.
+    share.textContent = 'Link in address bar';
+  }
+  shareReset = setTimeout(() => { share.textContent = 'Share'; }, 2000);
+};
+
+// The playground's own notes (fd 0: load and exit) go under the output,
+// not in it; how the build went, above it.
+const stats = $('stats'), build = $('build');
+let ticker = 0;
+const setBuild = (text, failed) => {
+  clearInterval(ticker);
+  build.className = 'build' + (failed ? ' failed' : '');
+  build.textContent = text === 'failed' ? 'build failed' : text;
+  if (text !== 'building') return;
+  // Building: a spinner, the time so far, and the package being compiled
+  // if one is (one that the cache does not have).
+  const t0 = performance.now();
+  build.textContent = '';
+  const spin = document.createElement('i');
+  spin.className = 'spin';
+  const label = document.createElement('span');
+  build.append(spin, label);
+  const tick = () => { label.textContent = `${compiling ? 'compiling ' + compiling : 'building'}… ${((performance.now() - t0) / 1000).toFixed(1)} s`; };
+  tick();
+  ticker = setInterval(tick, 100);
+};
+let compiling = '';
+let notes = [];
+const print = (line, fd) => {
+  if (fd === 0) {
+    notes.push(line.replace(/^\[|\]$/g, ''));
+    stats.textContent = notes.join(' · ');
+    return;
+  }
+  const s = document.createElement('span');
+  if (fd === 2) s.className = 'e';
+  s.textContent = line + '\n';
+  out.append(s);
+  out.scrollTop = out.scrollHeight;
+};
+const clear = () => {
+  out.textContent = '';
+  notes = [];
+  stats.textContent = '';
+  setBuild('');
+};
+
+// The downloads' progress, of the worker's files and of the engine.
+const loads = new Map();
+const loading = (label, done, total) => {
+  if (!total) {
+    status.textContent = label + (label === 'failed' ? '' : '…');
+    return;
+  }
+  loads.set(label, { done, total });
+  let d = 0, t = 0;
+  for (const l of loads.values()) { d += l.done; t += l.total; }
+  progress.hidden = false;
+  progress.firstElementChild.style.width = (100 * d / t).toFixed(1) + '%';
+  status.textContent = `${label}: ${(d / 1e6).toFixed(1)} of ${(t / 1e6).toFixed(1)} MB`;
+};
+
+// The engine: its module, compiled once and given to each run's frame,
+// and the project it opens (an empty one).
+let engine = null;
+async function loadEngine() {
+  const manifest = await loadManifest();
+  const [module, pck] = await Promise.all([
+    (async () => WebAssembly.compileStreaming(new Response(gunzip(await fetchBody(manifest.engine, 'the engine', loading)), { headers: { 'Content-Type': 'application/wasm' } })))(),
+    (async () => (await fetch(manifest.pck)).arrayBuffer())(),
+  ]);
+  engine = { module, pck };
+}
+
+let worker, goReady = false, building = false, frame = null, t0 = 0;
+const ready = () => {
+  if (!goReady || !engine || building) return;
+  progress.hidden = true;
+  status.textContent = frame ? 'running' : 'ready';
+  run.disabled = false;
+};
+function startWorker() {
+  goReady = false;
+  run.disabled = true;
+  worker = new Worker('worker.mjs', { type: 'module' });
+  worker.onerror = (e) => { print('worker: ' + (e.message || 'failed to start'), 2); status.textContent = 'failed'; };
+  worker.onmessage = ({ data }) => {
+    if ('line' in data) print(data.line, data.fd);
+    if ('build' in data) { compiling = ''; setBuild(data.build, data.failed); }
+    // (The program is module "play": its own package is the last one compiled,
+    // and then it is linked.)
+    if ('compiling' in data) compiling = data.compiling === 'play' ? 'and linking your program' : data.compiling;
+    if ('status' in data) loading(data.status, data.done, data.total);
+    if (data.ready) { goReady = true; ready(); }
+    if (data.wasm) play(data.wasm);
+    if (data.finished) {
+      building = false;
+      stop.hidden = !frame;
+      ready();
+    }
+  };
+}
+
+// play runs a program that built, in a new frame, which is sent it once
+// it has loaded.
+let pending = null;
+function play(wasm) {
+  endRun();
+  pending = wasm;
+  t0 = performance.now();
+  frame = document.createElement('iframe');
+  frame.title = 'The program';
+  frame.allow = 'autoplay; fullscreen; gamepad';
+  frame.src = 'run.html';
+  idle.hidden = true;
+  stage.append(frame);
+  status.textContent = 'starting the engine…';
+}
+addEventListener('message', ({ data, source, origin }) => {
+  if (!frame || source !== frame.contentWindow || origin !== location.origin || !data) return;
+  if (data.loaded && pending) {
+    const wasm = pending;
+    pending = null;
+    frame.contentWindow.postMessage({ engine: engine.module, go: wasm, pck: engine.pck.slice(0) }, location.origin, [wasm]);
+  }
+  if ('line' in data) print(data.line, data.fd);
+  if (data.running) {
+    print(`[running after ${Math.round(performance.now() - t0)} ms]`, 0);
+    if (!building) status.textContent = 'running';
+    stop.hidden = false;
+  }
+  if ('exit' in data) {
+    print(`[exit ${data.exit}]`, 0);
+    if (!building) status.textContent = 'ready';
+  }
+});
+// endRun removes the frame of the run before, and with it the program.
+function endRun() {
+  if (!frame) return;
+  frame.remove();
+  frame = null;
+  idle.hidden = false;
+}
+
+function go() {
+  if (!goReady || !engine || building) return;
+  try { localStorage.setItem('graphics-gd-play-src', src.value); } catch {}
+  building = true;
+  run.disabled = true;
+  stop.hidden = false;
+  status.textContent = '';
+  clear();
+  worker.postMessage({ run: src.value });
+}
+
+run.onclick = go;
+stop.onclick = () => {
+  if (building) {
+    // A build cannot be interrupted: start the go command over (the
+    // cache is kept).
+    worker.terminate();
+    setBuild('build stopped');
+    building = false;
+    startWorker();
+  } else {
+    endRun();
+    print('[stopped]', 0);
+    status.textContent = 'ready';
+  }
+  stop.hidden = true;
+};
+$('example').onchange = async (e) => {
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  src.value = await example(e.target.value);
+  edited();
+  clear();
+};
+src.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    go();
+  } else if (e.key === 'Tab' && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    e.preventDefault();
+    const { selectionStart: a, selectionEnd: b } = src;
+    src.setRangeText('\t', a, b, 'end');
+    src.dispatchEvent(new Event('input'));
+  }
+});
+
+loadSource();
+if (!('Suspending' in WebAssembly) || !('promising' in WebAssembly)) {
+  status.textContent = 'not supported here';
+  print('This browser lacks JavaScript Promise Integration (WebAssembly.Suspending), which the playground needs: Chrome 137, Firefox 153 or Safari 27 have it.', 2);
+} else if (!crossOriginIsolated) {
+  status.textContent = 'not served as it needs';
+  print('This page is not cross-origin isolated (its server must send Cross-Origin-Opener-Policy: same-origin and Cross-Origin-Embedder-Policy: require-corp), which the engine\'s threads need.', 2);
+} else {
+  startWorker();
+  loadEngine().then(ready, (e) => { print('failed to load the engine: ' + ((e && e.message) || e), 2); status.textContent = 'failed'; });
+}
+</script>
+</body>
+</html>
