@@ -538,7 +538,14 @@ func prepareArguments(f io.Writer, fn api.Function, js bool) {
 		if arg.Kind() == reflect.UnsafePointer {
 			switch arg {
 			case reflect.TypeFor[gdextension.CallAccepts[any]]():
-				fmt.Fprintf(f, "\t\tmem%d := gdmemory.CopyArguments(shape, p%[1]d)\n", i)
+				// (A call with a receiver has its shape before the arguments'.)
+				argShape := "shape"
+				for j := range fn.NumIn() {
+					if fn.Type.In(j) == reflect.TypeFor[gdextension.CallMutates[any]]() {
+						argShape = "shape>>4"
+					}
+				}
+				fmt.Fprintf(f, "\t\tmem%[1]d := gdmemory.CopyArguments(%[2]s, p%[1]d)\n", i, argShape)
 			case reflect.TypeFor[gdextension.CallReturns[any]]():
 				fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(shape)\n", i)
 			case reflect.TypeFor[gdextension.CallAccepts[gdextension.Variant]]():

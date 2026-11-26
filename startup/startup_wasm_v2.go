@@ -591,7 +591,7 @@ func init() {
 	gdextension.Host.Builtin.Types.Unsafe.Call = func(p0 gdextension.CallMutates[interface{}], p1 gdextension.MethodForBuiltinType, p2 gdextension.CallReturns[interface{}], shape gdextension.Shape, p4 gdextension.CallAccepts[interface{}]) {
 		mem0 := gdmemory.CopyReceiver(shape, p0)
 		mem2 := gdmemory.MakeResult(shape)
-		mem4 := gdmemory.CopyArguments(shape, p4)
+		mem4 := gdmemory.CopyArguments(shape>>4, p4)
 		web_gd_variant_type_unsafe_call(uint32(mem0), uint32(p1), uint32(mem2), uint32(uint64(shape)>>32), uint32(uint64(shape)), uint32(mem4))
 		gdmemory.LoadResult(shape>>4, p0, mem0)
 		gdmemory.LoadResult(shape, p2, mem2)

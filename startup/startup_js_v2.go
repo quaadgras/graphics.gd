@@ -480,7 +480,7 @@ func init() {
 		setup()
 		mem0 := gdmemory.CopyReceiver(shape, p0)
 		mem2 := gdmemory.MakeResult(shape)
-		mem4 := gdmemory.CopyArguments(shape, p4)
+		mem4 := gdmemory.CopyArguments(shape>>4, p4)
 		gd_variant_type_unsafe_call.Invoke(uint32(mem0), uint32(p1), uint32(mem2), uint32(shape>>32), uint32(shape&0xFFFFFFFF), uint32(mem4))
 		gdmemory.LoadResult(shape>>4, p0, mem0)
 		gdmemory.LoadResult(shape, p2, mem2)

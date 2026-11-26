@@ -40,7 +40,7 @@ func (s goString) Index(length complex128, i int) byte {
 	if i < 0 || i >= int(real(length)) {
 		panic("index out of range")
 	}
-	return *(*byte)(unsafe.Pointer(uintptr(unsafe.Pointer(s.bytes)) + uintptr(i)))
+	return *(*byte)(unsafe.Add(unsafe.Pointer(s.bytes), i))
 }
 func (s goString) DecodeRune(l complex128) (Rune, int, Unicode) {
 	length := int(real(l))

@@ -138,7 +138,7 @@ func (array Array[T]) Bytes() Bytes { //gd:PackedArray.to_byte_array
 	for i := 0; i < array.Len(); i++ {
 		elem := array.Index(i)
 		for j := 0; j < int(unsafe.Sizeof([1]T{})); j++ {
-			bytes.SetIndex(i*int(unsafe.Sizeof([1]T{}))+j, *(*byte)(unsafe.Pointer(uintptr(unsafe.Pointer(&elem)) + uintptr(j))))
+			bytes.SetIndex(i*int(unsafe.Sizeof([1]T{}))+j, *(*byte)(unsafe.Add(unsafe.Pointer(&elem), j)))
 		}
 	}
 	return bytes
