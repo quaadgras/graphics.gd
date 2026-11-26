@@ -1,0 +1,9 @@
+{
+ "go": "https://release.graphics.gd/playground/go.wasm.gz?v=2faf0f78d2df",
+ "goroot": "https://release.graphics.gd/playground/goroot.tar.gz?v=8a0ded03a9b2",
+ "gd": "https://release.graphics.gd/playground/gd.tar.gz?v=715c4109d916",
+ "cache": "https://release.graphics.gd/playground/cache.tar.gz?v=1cea2d154745",
+ "engine": "https://release.graphics.gd/playground/engine.wasm.gz?v=de67cc58935a",
+ "pck": "play.pck",
+ "version": "608816498 / 14fb6a3c49"
+}

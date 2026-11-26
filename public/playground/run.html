@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>graphics.gd playground: the program</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  canvas { display: block; width: 100%; height: 100%; outline: none; }
+</style>
+</head>
+<body>
+<canvas id="canvas" tabindex="0">This browser has no canvas.</canvas>
+<!-- The engine's loader, from graphics.gd's web template as patch.mjs changes it. -->
+<script src="godot.js"></script>
+<script type="module">
+// run.html: one run of a program, in a frame of index.html, which makes a
+// new one for every run (the engine does not start twice in a page). The
+// page sends {engine, go, pck}: the engine's module, compiled once by the
+// page; the program, as the worker built it; the project the engine
+// opens. This sends back {line, fd} (1 and 2 are the program's and the
+// engine's output), {running} and {exit}.
+import { runGo } from './wasm_gc_browser.js';
+
+const say = (m) => parent.postMessage(m, location.origin);
+const print = (fd) => (...a) => say({ line: a.join(' '), fd });
+
+async function start({ engine, go, pck }) {
+  window.gdEngineModule = engine;
+  // What the engine's loader asks for in place of wasm_exec.js's Go (see
+  // patch.mjs): the imports it fills in with its own functions, and the
+  // instance, for its memory and the functions the engine calls.
+  window.gdGo = () => ({
+    importObject: { gd: {} },
+    _inst: null,
+    run() {},
+    library: () => WebAssembly.compile(go),
+    instantiate(module) {
+      return new Promise((resolve, reject) => {
+        runGo(module, {
+          args: ['play'],
+          imports: this.importObject,
+          stdout: print(1),
+          stderr: print(2),
+          // (Once the program has run as far as it goes before the
+          // engine starts: its package initialisers and the start of main.)
+          started: (inst) => { this._inst = inst; queueMicrotask(() => resolve(inst)); },
+        }).then((code) => say({ exit: code }), reject);
+      });
+    },
+  });
+  const game = new Engine({
+    canvas: document.getElementById('canvas'),
+    executable: 'godot',
+    args: ['--main-pack', 'play.pck'],
+    canvasResizePolicy: 2,
+    focusCanvas: true,
+    gdextensionLibs: [],
+    onPrint: print(1),
+    onPrintError: print(2),
+    onExit: (code) => say({ exit: code }),
+  });
+  await game.init('godot');
+  game.preloadFile(pck, 'play.pck');
+  await game.start({});
+  say({ running: true });
+}
+
+addEventListener('error', (e) => say({ line: String((e.error && e.error.stack) || e.message), fd: 2 }));
+addEventListener('unhandledrejection', (e) => {
+  // (The program's exit unwinds whatever called it with an error.)
+  if (e.reason && e.reason.goExit !== undefined) return;
+  say({ line: String((e.reason && e.reason.stack) || e.reason), fd: 2 });
+});
+addEventListener('message', ({ data, source, origin }) => {
+  if (source !== parent || origin !== location.origin || !data || !data.go) return;
+  start(data).catch((e) => { say({ line: String((e && e.stack) || e), fd: 2 }); say({ exit: -1 }); });
+});
+say({ loaded: true });
+</script>
+</body>
+</html>

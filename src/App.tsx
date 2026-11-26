@@ -158,6 +158,12 @@ function App() {
                 Examples
               </a>
               <a
+                href="/playground/"
+                className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              >
+                Playground
+              </a>
+              <a
                 href="https://github.com/quaadgras/graphics.gd"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -225,6 +231,12 @@ function App() {
                 className="block text-sm text-zinc-600 dark:text-zinc-400"
               >
                 Samples
+              </a>
+              <a
+                href="/playground/"
+                className="block text-sm text-zinc-600 dark:text-zinc-400"
+              >
+                Playground
               </a>
               <a
                 href="https://github.com/quaadgras/graphics.gd"

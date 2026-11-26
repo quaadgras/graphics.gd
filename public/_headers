@@ -1,0 +1,4 @@
+# The playground's engine has threads: its pages must be cross-origin isolated.
+/playground/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
